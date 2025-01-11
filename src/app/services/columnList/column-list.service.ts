@@ -1,3 +1,4 @@
+import { appConfig } from './../../app.config';
 import { Injectable } from '@angular/core';
 import {
   HttpClient,
@@ -7,13 +8,15 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environment/environment';
+import { AppConfigValues } from '../../config/app-config';
 import { Auth_operations } from '../../Utils/SetToken';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ColumnListService {
-  private apiUrl1 = environment.IMPURITY_TAB_API;
+  
+  private apiUrl = AppConfigValues.appUrls;
   private auth_token = Auth_operations.getToken();
 
   private headers = new HttpHeaders({

@@ -6,20 +6,21 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { environment } from '../../../environment/environment';
+import { environment as env } from '../../../environments/environment';
 import { Auth_operations } from '../../Utils/SetToken';
+import { AppConfigValues } from '../../config/app-config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserPriviledgeService {
-  private user_priviledge_api = environment.USER_PRIVILEDGE_API;
-  private user_today_api = environment.USER_TODAY_PRIVILEDGE_API;
+
+  private apiUrls = AppConfigValues.appUrls;
   private auth_token = Auth_operations.getToken();
 
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
-    'api-key': environment.HEADER_API_KEY,
+    'api-key': env.headerApiKey,
     'access-token': this.auth_token,
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
@@ -32,14 +33,14 @@ export class UserPriviledgeService {
 
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'api-key': environment.HEADER_API_KEY,
+      'api-key': env.headerApiKey,
       'access-token': auth_token,
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
     });
 
     return this.http
-      .get(this.user_priviledge_api, { headers: headers })
+      .get(this.apiUrls.user.privilegeApi, { headers: headers })
       .pipe(catchError(this.handleError));
   }
 
@@ -51,14 +52,14 @@ export class UserPriviledgeService {
 
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'api-key': environment.HEADER_API_KEY,
+      'api-key': env.headerApiKey,
       'access-token': auth_token,
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
     });
 
     return this.http
-      .post(this.user_today_api, body, { headers: headers })
+      .post(this.apiUrls.user.privilegeApi, body, { headers: headers })
       .pipe(catchError(this.handleError));
   }
 

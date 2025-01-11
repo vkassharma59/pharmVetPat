@@ -1,5 +1,6 @@
 export interface AppConfig {
-    appTitle: string;
+  appTitle: string;
+  appUrls: {
     domainPaths: {
       routeOfSynthesis: string;
       companyLogo: string;
@@ -57,5 +58,6 @@ export interface AppConfig {
     query: {
       raiseQuery: string;
     };
+  }
 }
   

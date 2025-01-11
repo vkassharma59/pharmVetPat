@@ -1,14 +1,14 @@
 import { CommonModule, NgIf } from '@angular/common';
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { pharmaDatabaseSearchComponent } from '../pharma-database-search/pharma-database-search.component';
-import { MaincontainerComponent } from '../maincontainer/maincontainer.component';
+import { SearchResultsComponent } from '../search-results/search-results.component';
 import { LoaderComponent } from '../../commons/loader/loader.component';
 import { UtilityService } from '../../services/utility-service/utility.service';
 
 @Component({
   selector: 'chem-home',
   standalone: true,
-  imports: [NgIf, CommonModule, pharmaDatabaseSearchComponent, MaincontainerComponent, LoaderComponent],
+  imports: [NgIf, CommonModule, pharmaDatabaseSearchComponent, SearchResultsComponent, LoaderComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

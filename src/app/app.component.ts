@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './commons/navbar/navbar.component';
 import { HttpClientModule } from '@angular/common/http';
-import { MaincontainerComponent } from './components/maincontainer/maincontainer.component';
+import { SearchResultsComponent } from './components/search-results/search-results.component';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from './components/home/home.component';
 import { LoaderComponent } from './commons/loader/loader.component';
@@ -24,7 +24,7 @@ import { LoginService } from './services/LoginService/login.service';
     NavbarComponent,
     HttpClientModule,
     HomeComponent,
-    MaincontainerComponent,
+    SearchResultsComponent,
     CommonModule,
     LoaderComponent,
     HeaderComponent

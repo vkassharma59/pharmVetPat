@@ -10,17 +10,17 @@ import { LoaderComponent } from '../../commons/loader/loader.component';
 import { CommonModule } from '@angular/common';
 import { UtilityService } from '../../services/utility-service/utility.service';
 @Component({
-  selector: 'app-maincontainer',
+  selector: 'chem-search-results',
   standalone: true,
   imports: [
     LoaderComponent,
     CommonModule,
   ],
 
-  templateUrl: './maincontainer.component.html',
-  styleUrl: './maincontainer.component.css',
+  templateUrl: './search-results.component.html',
+  styleUrl: './search-results.component.css',
 })
-export class MaincontainerComponent {
+export class SearchResultsComponent {
   @Output() showResultFunction: EventEmitter<any> = new EventEmitter<any>();
   @Output() showDataResultFunction: EventEmitter<any> = new EventEmitter<any>();
   @Output() backFunction: EventEmitter<any> = new EventEmitter<any>();

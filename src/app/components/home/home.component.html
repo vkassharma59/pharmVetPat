@@ -11,14 +11,14 @@
 
         <div *ngIf="showResult">
             <!-- Result Sections -->
-            <app-maincontainer
+            <chem-search-results
               (contextmenu)="disableRightClick($event)"
               (backFunction)="handleBackButton($event)"
               [MainDataResultShow]="MainDataResultShow"
               [CurrentAPIBody]="CurrentAPIBody"
               [AllDataStates]="AllDataStates"
               (setLoadingState)="handleSetLoading($event)"
-            ></app-maincontainer>
+            ></chem-search-results>
         </div>
 
         <!-- Loader -->
