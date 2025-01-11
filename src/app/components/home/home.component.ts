@@ -19,8 +19,8 @@ export class HomeComponent implements OnInit {
   user: any = null;
   showResult: boolean = false;
   loading: boolean = false;
-  MainDataResultShow: any = {};
-  AllDataStates: any = [];
+  basicProductData: any = {};
+  allDataSets: any = [];
   CurrentAPIBody = {
     body: {},
     page_no: 1,
@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     const auth = localStorage.getItem('auth');
-    this.AllDataStates = this.utilityService.getDataStates();
+    this.allDataSets = this.utilityService.getDataStates();
     this.resultTabs = this.utilityService.getAllTabsName();
     
     try {
@@ -67,18 +67,20 @@ export class HomeComponent implements OnInit {
   }
 
   handleSearchResults(data: any) {
-    this.AllDataStates = this.utilityService.getDataStates();
-    this.MainDataResultShow = { ...data };
-    console.log('MainDataResultShow ==>', this.MainDataResultShow);
+    this.allDataSets = this.utilityService.getDataStates();
+    this.basicProductData = { ...data };
     if (
-      this.MainDataResultShow?.basic_product_count &&
-      this.MainDataResultShow?.basic_product_data
+      this.basicProductData?.basic_product_count &&
+      this.basicProductData?.basic_product_data
     ) {
-      for (let i = 0; i < this.MainDataResultShow?.basic_product_data?.length; i++) {
-        this.AllDataStates[i][this.resultTabs.productInfo.name] =
-          this.MainDataResultShow?.basic_product_data[i];
+      for (let i = 0; i < this.basicProductData?.basic_product_data?.length; i++) {
+        this.allDataSets[i][this.resultTabs.productInfo.name] =
+          this.basicProductData?.basic_product_data[i];
       }
     } 
+
+    console.log(this.allDataSets);
+    console.log(this.basicProductData);
   }
 
   handleShowResult(data: any) {

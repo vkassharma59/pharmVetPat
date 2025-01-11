@@ -60,17 +60,17 @@ export class UtilityService {
     return tabs.reduce((acc: { [key: string]: any }, tab: any) => {
       acc[tab.name] = tab; // key is tab name, value is the tab object
       return acc;
-    }, {});
+    }, []);
   }
 
-  getDataStates(): Record<number, Record<string, any>> {
+  getDataStates(): Record<string, any>[] {
     const statesCount = 25;
-    return Array.from({ length: statesCount }, (_, index) => ({
-      [index]: RESULT_TABS.reduce<Record<string, any>>((acc, tab) => {
+    return Array.from({ length: statesCount }, () =>
+      RESULT_TABS.reduce<Record<string, any>>((acc, tab) => {
         acc[tab.name] = {};
         return acc;
       }, {})
-    })).reduce((acc, item) => ({ ...acc, ...item }), {});
+    );
   }
 }
 

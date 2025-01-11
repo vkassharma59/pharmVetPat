@@ -132,6 +132,15 @@
   color: var(--unnamed-color-366ee7);
 }
 
+/* == Custom Css ==*/
+main-container {
+  margin-top: 10px;
+}
+.chem-linear-gradient {
+  margin-top: 80px;
+  background: linear-gradient(to bottom, #4396F533, #ffffff);
+}
+
 .goog-logo-link {
   display:none !important;
   font-size:0px !important;

@@ -9,26 +9,31 @@ import {
 import { LoaderComponent } from '../../commons/loader/loader.component';
 import { CommonModule } from '@angular/common';
 import { UtilityService } from '../../services/utility-service/utility.service';
+import { RouteResultComponent } from '../route-result/route-result.component';
+
 @Component({
   selector: 'chem-search-results',
   standalone: true,
   imports: [
     LoaderComponent,
     CommonModule,
+    RouteResultComponent
   ],
-
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.css',
 })
+
 export class SearchResultsComponent {
+  
   @Output() showResultFunction: EventEmitter<any> = new EventEmitter<any>();
   @Output() showDataResultFunction: EventEmitter<any> = new EventEmitter<any>();
   @Output() backFunction: EventEmitter<any> = new EventEmitter<any>();
   @Output() generatePdf: EventEmitter<any> = new EventEmitter<any>();
 
-  @Input() MainDataResultShow: any;
+  @Input() allDataSets: any = [];  
+  @Input() productInfoData: any;  
   @Input() CurrentAPIBody: any;
-  @Input() AllDataStates: any;
+
   userIsLoggedIn: boolean = false;
   loading = false;
   FilterObjectLength = false;
@@ -49,8 +54,10 @@ export class SearchResultsComponent {
   }
 
   ngOnInit() {
-    this.AllDataStates = this.utilityService.getDataStates();
-    console.log('MainDataResultShow in maincontainer', this.MainDataResultShow);
+    console.log('initialData ==>', this.productInfoData);
+    console.log('allDataSets ==>', this.allDataSets);
+    // this.AllDataStates = this.utilityService.getDataStates();
+    // console.log('MainDataResultShow in maincontainer', this.MainDataResultShow);
   }
 
   handleUserLoggedIn(loggedIn: boolean) {
@@ -65,11 +72,11 @@ export class SearchResultsComponent {
   }
 
   handledata() {
-    if (!this.MainDataResultShow.MainDataResultShow) {
-      console.log('No data');
-    } else {
-      console.log('Data is available');
-    }
+    // if (!this.MainDataResultShow.MainDataResultShow) {
+    //   console.log('No data');
+    // } else {
+    //   console.log('Data is available');
+    // }
   }
 
   closeModal() {

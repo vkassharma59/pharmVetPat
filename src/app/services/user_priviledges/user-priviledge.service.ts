@@ -59,7 +59,7 @@ export class UserPriviledgeService {
     });
 
     return this.http
-      .post(this.apiUrls.user.privilegeApi, body, { headers: headers })
+      .post(this.apiUrls.user.todayPrivilegeApi, body, { headers: headers })
       .pipe(catchError(this.handleError));
   }
 

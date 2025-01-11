@@ -1,22 +1,22 @@
-<div class="main-container">
+<div class="main-container py-12" [ngClass]="(!showResult) ? 'chem-linear-gradient': ''">
     <ng-container *ngIf="user; else elseBlock">
         <!-- Search Section -->
-        <chem-pharma-database-search
-            *ngIf="!showResult"
-            (setLoadingState)="handleLoading($event)"
-            (showResultFunction)="handleShowResult($event)"
-            (chemSearchResults)="handleSearchResults($event)"
-            (priviledgeModal)="openPriviledgeModal($event)"
-        ></chem-pharma-database-search>
+        <div>
+            <chem-pharma-database-search
+                *ngIf="!showResult"
+                (setLoadingState)="handleLoading($event)"
+                (showResultFunction)="handleShowResult($event)"
+                (chemSearchResults)="handleSearchResults($event)"
+                (priviledgeModal)="openPriviledgeModal($event)"
+            ></chem-pharma-database-search>
+        </div>
 
         <div *ngIf="showResult">
             <!-- Result Sections -->
             <chem-search-results
-              (contextmenu)="disableRightClick($event)"
               (backFunction)="handleBackButton($event)"
-              [MainDataResultShow]="MainDataResultShow"
-              [CurrentAPIBody]="CurrentAPIBody"
-              [AllDataStates]="AllDataStates"
+              [allDataSets]="allDataSets"
+              [productInfoData]="basicProductData"
               (setLoadingState)="handleSetLoading($event)"
             ></chem-search-results>
         </div>

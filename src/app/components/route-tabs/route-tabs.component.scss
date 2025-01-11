@@ -1,0 +1,23 @@
+::ng-deep {
+  ul.nav.nav-tabs {
+    margin-top: 20px;
+    border-bottom: 0;
+  }
+  li.nav-item {
+    margin-right: 5px;
+    margin-bottom: 5px;
+  }
+  li.nav-item a.nav-link{
+    color: #707070;
+    background: #F6F5F8;
+    border-radius: 0;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+  .nav-item a.nav-link.active {
+    background: #366EE7;
+    color: #fff;
+  }
+}
+
+  

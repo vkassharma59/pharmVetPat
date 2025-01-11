@@ -1,34 +1,33 @@
-<!-- <div class="px-8 pt-3 mt-[8rem] bg-[#F8FAFF]">
-  <button
-    (click)="handleBack()"
-    class="px-4 py-1 my-1 bg-[#F8FAFF] rounded-md font-semibold border-2 text-[#0032A0] border-[#0032A0] hover:bg-[#0032A0] hover:text-white"
-  >
-    Back
-  </button>
-</div> -->
-<div class="flex items-center justify-between px-8 pt-3">
-  <!-- Left Button -->
-  <button
-    (click)="handleBack()"
-    class="px-4 py-1 my-1 bg-[#F8FAFF] rounded-md font-semibold border-2 text-[#0032A0] border-[#0032A0] hover:bg-[#0032A0] hover:text-white"
-  >
-    Back
-  </button>
-  
-  <!-- Center Logo -->
-  <div class="flex justify-center">
-    <img src="assets/images/TechnicalRoutesLogo.png" alt="Technical Routes Logo" class="h-12" />
-  </div>
-  
-  <!-- Right Button -->
-  <button
-    (click)="handleBack()" [ngClass]="{ 'invisible': isBackHidden }"
-    class="px-4 py-1 my-1 bg-[#F8FAFF] rounded-md font-semibold border-2 text-[#0032A0] border-[#0032A0] hover:bg-[#0032A0] hover:text-white"
-  >
-    Back
-  </button>
-</div>
 <app-loader *ngIf="loading"></app-loader>
+
+<ng-container *ngIf="allDataSets.length > 0; else noData">
+  <div *ngFor="let item of allDataSets; let i = index">
+    <chem-route-results
+      (backFunction)="handleBack()"
+      [index]="i"
+      [dataItems]="item"
+      [productInfoData]="productInfoData"
+    ></chem-route-results>
+  </div>
+</ng-container>
+
+<ng-template #noData>
+  <div class="container mt-4">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <button (click)="handleBack()" class="btn btn-success btn-sm">Back to Search</button>
+      </div>
+    </div>
+
+    <div class="py-4">
+      <h1 class="py-2 px-2 bg-blue-300 rounded-md border-blue-400">
+        No data is available...
+      </h1>
+    </div>
+  </div>
+</ng-template>
+
 <!-- <app-result-tab
   *ngIf="MainDataResultShow?.basic_product_count && MainDataResultShow.basic_product_data.length > 0"
   (makePdf)="generatePdf.emit($event)"
@@ -49,16 +48,15 @@
   [AllDataStates]="AllDataStates"
 ></app-record-data> -->
 
-<div
+<!-- <div
   *ngIf="MainDataResultShow?.basic_product_count && MainDataResultShow.basic_product_data.length == 0" class="py-4"
 >
   <h1 class="py-2 px-2 mx-3 bg-blue-300 rounded-md border-blue-400">
     No data is available...
   </h1>
-</div>
+</div> -->
 
 <!-- Priviledge Modal -->
-
 <div
   #priviledgeModal
   class="modal fade bg-black bg-opacity-50"

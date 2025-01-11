@@ -62,7 +62,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   ngOnInit() {
     // Get All tabs name
     this.resultTabs = this.utilityService.getAllTabsName();
-    console.log(this.resultTabs.productInfo);
     
     this.getChemicalStructureFilters();
     this.getintermediateSearchFilters();
