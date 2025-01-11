@@ -1,0 +1,31 @@
+<div *ngIf="!isclose " class="container">
+    <div class="d-flex flex-row justify-between items-center">
+        <div>
+            <h1 class=" py-4 font-medium">Technical Route Platform</h1>
+        </div>
+        <div (click)="handleCross() " class="hover:cursor-pointer"><i class="fa-solid fa-xmark"></i></div>
+
+    </div>
+    <hr />
+    <div class="m-2">
+        <input type="checkbox" id="technicalRoute" name="technicalRoute" value="tabdata" class="m-2">
+        Technical Routes <br />
+        <input type="checkbox" id="BaiscRoute" name="BaiscRoute" value="tabdata" class="m-2">Basic Product Info
+        <br />
+        <input type="checkbox" id="DMFRoute" name="DMFRoute" value="tabdata" class="m-2">DMF Suppliers
+        <br />
+        <input type="checkbox" id="ChemicalRoute" name="ChemicalRoute" value="tabdata" class="m-2">Chemical
+        Directory(Building Block)
+        <br />
+        <input type="checkbox" id="ImpurityRoute" name="ImpurityRoute" value="tabdata" class="m-2">Impurity
+        <br />
+    </div>
+    <div class="m-2">
+        <h6 class="text-red-400 p-2">Choose any 2 vertical report to download</h6>
+        <hr />
+    </div>
+    <div class="mt-4 d-flex flex-row justify-end">
+        <button class="btn1 m-1 p-2">GENERATE</button>
+        <button class="btn1 m-1 p-2">CLOSE</button>
+    </div>
+</div>

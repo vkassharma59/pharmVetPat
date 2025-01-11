@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, user-scalable=no" />
+
+		<title>Event tracking</title>
+		<link rel="shortcut icon" href="favicon-32x32.png" />
+		<meta name="author" content="Herman Bergwerf" />
+
+		<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700" />
+		<link type="text/css" rel="stylesheet" href="build/molview-page.min.css" />
+	</head>
+	<body>
+		<div id="header">
+		<img id="logo" src="img/logo.png" />
+		<a id="return-to-molview" href="index.html">
+			<img id="mark" src="img/mark.png" />
+		</a>
+		</div>
+		<div id="content">
+			<h1>Event tracking</h1>
+<p>MolView tracks a number of events like changing the model representation using
+Google Analytics in order to analyze the usage and popularity of all features
+included in MolView. We can use this information to find out which features are
+used more and might deserve more development. Usage statics are stored by Google
+and are believed to be anonymous. Google will not share this data with
+third parties unless any of the exceptions in part 6 of the Google Analytics
+Terms of Service (<a href="https://www.google.com/analytics/terms/us.html">http://www.google.com/analytics/terms/us.html</a>) is in effect.</p>
+<p>You can enable and disable event tracking by reloading MolView and un-checking
+&quot;Allow MolView to collect interaction data&quot;</p>		</div>
+			</body>
+</html>

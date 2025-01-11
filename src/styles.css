@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*== Styles given by chem ==*/
+:root {
+  /* Colors: */
+  --unnamed-color-f1f8fe: #F1F8FE;
+  --unnamed-color-366ee7: #366EE7;
+  --unnamed-color-2b58ba: #2B58BA;
+  --unnamed-color-172b4d: #172B4D;
+  --unnamed-color-53b471: #53B471;
+  --unnamed-color-489d63: #489D63;
+  --unnamed-color-707070: #707070;
+  --unnamed-color-dadce0: #DADCE0;
+  --unnamed-color-f6f5f8: #F6F5F8;
+  --unnamed-color-ffffff00: #FFFFFF00;
+  --unnamed-color-070e1e: #070E1E;
+  --unnamed-color-606367: #606367;
+  
+  /* Font/text values */
+  --unnamed-font-family-inter: Inter;
+  --unnamed-font-style-normal: normal;
+  --unnamed-font-weight-900: 900px;
+  --unnamed-font-weight-bold: bold;
+  --unnamed-font-weight-normal: normal;
+  --unnamed-font-size-14: 14px;
+  --unnamed-font-size-16: 16px;
+  --unnamed-font-size-18: 18px;
+  --unnamed-font-size-26: 26px;
+  --unnamed-font-size-34: 34px;
+  --unnamed-font-size-44: 44px;
+  --unnamed-character-spacing-0: 0px;
+  --unnamed-line-spacing-17: 17px;
+  --unnamed-line-spacing-20: 20px;
+  --unnamed-line-spacing-21: 21px;
+  --unnamed-line-spacing-24: 24px;
+  --unnamed-line-spacing-30: 30px;
+  --unnamed-line-spacing-36: 36px;
+  --unnamed-line-spacing-54: 54px;
+}
+  
+/* Character Styles */
+.h1-—-inter-—-44pt {
+  font-family: var(--unnamed-font-family-inter);
+  font-style: var(--unnamed-font-style-normal);
+  font-weight: var(--unnamed-font-weight-900);
+  font-size: var(--unnamed-font-size-44);
+  line-height: var(--unnamed-line-spacing-54);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-070e1e);
+}
+
+.h2-—-inter-—-34pt {
+  font-family: var(--unnamed-font-family-inter);
+  font-style: var(--unnamed-font-style-normal);
+  font-weight: var(--unnamed-font-weight-900);
+  font-size: var(--unnamed-font-size-34);
+  line-height: var(--unnamed-line-spacing-36);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-366ee7);
+}
+
+.h3-—-inter-—-26pt {
+  font-family: var(--unnamed-font-family-inter);
+  font-style: var(--unnamed-font-style-normal);
+  font-weight: var(--unnamed-font-weight-900);
+  font-size: var(--unnamed-font-size-26);
+  line-height: var(--unnamed-line-spacing-36);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-366ee7);
+}
+
+.h4-—inter-—-18pt {
+  font-family: var(--unnamed-font-family-inter);
+  font-style: var(--unnamed-font-style-normal);
+  font-weight: var(--unnamed-font-weight-bold);
+  font-size: var(--unnamed-font-size-18);
+  line-height: var(--unnamed-line-spacing-21);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-366ee7);
+}
+
+.-p-—-inter-—-18pt {
+  font-family: var(--unnamed-font-family-inter);
+  font-style: var(--unnamed-font-style-normal);
+  font-weight: var(--unnamed-font-weight-normal);
+  font-size: var(--unnamed-font-size-18);
+  line-height: var(--unnamed-line-spacing-30);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-172b4d);
+}
+
+.field-text-—-inter-—-16pt {
+  font-family: var(--unnamed-font-family-inter);
+  font-style: var(--unnamed-font-style-normal);
+  font-weight: var(--unnamed-font-weight-normal);
+  font-size: var(--unnamed-font-size-16);
+  line-height: var(--unnamed-line-spacing-24);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-606367);
+}
+
+.field-label-—-inter-—-14pt {
+  font-family: var(--unnamed-font-family-inter);
+  font-style: var(--unnamed-font-style-normal);
+  font-weight: var(--unnamed-font-weight-bold);
+  font-size: var(--unnamed-font-size-14);
+  line-height: var(--unnamed-line-spacing-17);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-606367);
+}
+
+.navigation-item-—-inter-—-16pt {
+  font-family: var(--unnamed-font-family-inter);
+  font-style: var(--unnamed-font-style-normal);
+  font-weight: var(--unnamed-font-weight-bold);
+  font-size: var(--unnamed-font-size-16);
+  line-height: var(--unnamed-line-spacing-20);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-606367);
+}
+
+.button-text-—-inter-—-16pt {
+  font-family: var(--unnamed-font-family-inter);
+  font-style: var(--unnamed-font-style-normal);
+  font-weight: var(--unnamed-font-weight-bold);
+  font-size: var(--unnamed-font-size-16);
+  line-height: var(--unnamed-line-spacing-24);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-366ee7);
+}
+
+.goog-logo-link {
+  display:none !important;
+  font-size:0px !important;
+} 
+  
+.goog-te-gadget{
+  
+  font-size:0px !important;
+}
+
+.goog-te-combo {
+  width: 70%;
+  font-weight: bold;
+  color: #000;
+}
+
+.goog-te-gadget .goog-te-combo {
+  margin: 0 !important;
+  cursor: pointer;
+}
+
+select.goog-te-combo:focus-visible {
+  border: none !important;
+  outline: none;
+}
+
+.VIpgJd-ZVi9od-l4eHX-hSRGPd, .VIpgJd-ZVi9od-l4eHX-hSRGPd:link, .VIpgJd-ZVi9od-l4eHX-hSRGPd:visited, .VIpgJd-ZVi9od-l4eHX-hSRGPd:hover, .VIpgJd-ZVi9od-l4eHX-hSRGPd:active {
+  display: none;
+}
+
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: "Montserrat", sans-serif; }
+
+
+body::-webkit-scrollbar {
+  width: 5px;
+  height:5px;
+}
+
+/* Track */
+body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+ ::-webkit-scrollbar-thumb {
+  background: #312e81;
+  border-radius: 5px;
+}
+
+sup {
+  font-weight: bolder;
+}

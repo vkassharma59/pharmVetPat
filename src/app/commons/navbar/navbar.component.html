@@ -1,0 +1,774 @@
+<div class="sticky top-0 z-50 text-[#303030]">
+  <!-- for desktop view -->
+  <div
+    class="sticky top-0 z-50 w-full xl:flex font-semibold items-center py-1 text-[12px] h-10 hidden bg-white"
+  >
+    <div
+      class="border-x flex-grow border-gray-200 sm:w-48 justify-center sm:flex items-center h-full"
+    >
+      <i class="fa-solid fa-envelope mx-2" style="color: #345998"></i>Email
+    </div>
+    <div
+      class="border-x flex-grow border-gray-200 sm:w-48 justify-center sm:flex items-center h-full"
+    >
+      <i class="fa-solid fa-phone mx-2" style="color: #345998"></i> 9078567689
+    </div>
+    <div
+      class="border-x flex-grow border-gray-200 sm:w-48 justify-center sm:flex items-center h-full"
+    >
+      <i class="fa-solid fa-file-circle-plus mx-2" style="color: #345998"></i
+      >Brochure
+    </div>
+    <div
+      class="border-x flex-grow border-gray-200 sm:w-48 justify-center sm:flex items-center h-full"
+    >
+      <i class="fa-solid fa-robot mx-2" style="color: #345998"></i>Download app
+    </div>
+    <div
+      class="border-x flex-grow gap-7 border-gray-200 sm:w-[450px] justify-center sm:flex items-center h-full"
+    >
+      <button
+        (click)="OpenQueryModal()"
+        class="bg-[#0032A0] px-3 rounded-full py-1 text-white"
+      >
+        Demo Request Now
+      </button>
+      <button class="bg-[#FFCD04] px-3 rounded-full py-1 text-black">
+        Pharma Database
+      </button>
+    </div>
+
+    <div
+      class="border-x flex-grow border-gray-200 sm:w-40 justify-center sm:flex items-center h-full"
+    >
+      <a
+        href="https://www.chemrobotics.com/register"
+        class="hover:cursor-pointer"
+        *ngIf="!userAuth?.name"
+        ><button>
+          <i class="fa-solid fa-user-plus mx-2" style="color: #345998"></i>Sign
+          Up
+        </button></a
+      >
+      <span
+        id="auth-button"
+        (click)="handleLogout()"
+        class="hover:cursor-pointer"
+        *ngIf="userAuth?.name"
+        >Logout</span
+      >
+    </div>
+
+    <div
+      class="border-x border-gray-200 sm:w-40 justify-center sm:flex items-center h-full"
+    >
+      <i class="fa-solid fa-user mx-2" style="color: #345998"></i>
+      <span
+        id="auth-button"
+        class="hover:cursor-pointer"
+        (click)="handleOpenSignInModal()"
+        *ngIf="!userAuth?.name"
+        >Sign In</span
+      >
+      <span id="auth-button" class="text-[10px]" *ngIf="userAuth?.name">{{
+        userAuth?.name
+      }}</span>
+    </div>
+  </div>
+  <div
+    class="h-[80px] bg-[#FFCD04] px-10 hidden xl:flex font-semibold text-[14px] justify-between items-center"
+  >
+    <div class="flex items-center">
+      <img
+        src="assets/images/logo.png"
+        alt="Logo Image"
+        class="h-[60px] object-contain aspect-auto"
+      />
+    </div>
+    <div class="sm:flex gap-8 items-center">
+      <div class="flex flex-col items-center justify-center linked">
+        <h1
+          class="text-[14px] leading-[17.07px] font-semibold hover:cursor-pointer relative inline-block transition duration-300"
+        >
+          Home
+        </h1>
+
+        <div class="h-[4px] w-[24px] rounded-full line"></div>
+      </div>
+
+      <div class="relative hover:cursor-pointer">
+        <div class="flex flex-col items-center justify-center linked">
+          <h1
+            class="text-[14px] leading-[17.07px] font-semibold hover:cursor-pointer relative inline-block transition duration-300"
+          >
+            Who we are<i class="fa-solid fa-caret-down mx-2"></i>
+          </h1>
+          <div class="h-[4px] w-[24px] rounded-full line"></div>
+        </div>
+      </div>
+      <div
+        class="relative hover:cursor-pointer"
+        (click)="toggleDropdown($event, 'dropdown2')"
+      >
+        <div class="flex flex-col items-center justify-center linked">
+          <h1
+            class="text-[14px] leading-[17.07px] font-semibold hover:cursor-pointer relative inline-block transition duration-300"
+          >
+            Agro Products<i class="fa-solid fa-caret-down mx-2"></i>
+          </h1>
+          <div class="h-[4px] w-[24px] rounded-full line"></div>
+        </div>
+      </div>
+
+      <div class="flex flex-col items-center justify-center linked">
+        <h1
+          class="text-[14px] leading-[17.07px] font-semibold hover:cursor-pointer relative inline-block transition duration-300"
+        >
+          Services
+        </h1>
+
+        <div class="h-[4px] w-[24px] rounded-full line"></div>
+      </div>
+
+      <div class="flex flex-col items-center justify-center linked">
+        <h1
+          class="text-[14px] leading-[17.07px] font-semibold hover:cursor-pointer relative inline-block transition duration-300"
+        >
+          Career At
+        </h1>
+
+        <div class="h-[4px] w-[24px] rounded-full line"></div>
+      </div>
+
+      <div class="flex flex-col items-center justify-center linked">
+        <h1
+          class="text-[14px] leading-[17.07px] font-semibold hover:cursor-pointer relative inline-block transition duration-300"
+        >
+          Contact Us
+        </h1>
+
+        <div class="h-[4px] w-[24px] rounded-full line"></div>
+      </div>
+
+      <div class="flex flex-col items-center justify-center linked">
+        <h1
+          class="text-[14px] leading-[17.07px] font-semibold hover:cursor-pointer relative inline-block transition duration-300"
+        >
+          Chemrobotics Times
+        </h1>
+
+        <div class="h-[4px] w-[24px] rounded-full line"></div>
+      </div>
+      <div class="flex flex-col items-center justify-center linked">
+        <h1
+          class="text-[14px] leading-[17.07px] font-semibold hover:cursor-pointer relative inline-block transition duration-300"
+        >
+          Buy Chem
+        </h1>
+
+        <div class="h-[4px] w-[24px] rounded-full line"></div>
+      </div>
+
+      <button
+        class="w-[162px] h-[40px] font-semibold leading-[17.07px] text-sm bg-[#0032A0] rounded-full text-white"
+      >
+        Pharma Database
+      </button>
+
+      <div class="relative" (click)="toggleDropdown($event, 'dropdown5')">
+        <button
+          class="h-[40px] w-[103px] text-xs py-1 bg-white rounded-full flex justify-center items-center gap-2"
+        >
+          <img
+            src="assets/images/britian_logo.png"
+            class="w-[25px] h-[25px] object-cover aspect-auto"
+          />
+          <span
+            >Eng
+            <i class="fa-solid fa-caret-down mx-2"></i>
+          </span>
+        </button>
+        <div
+          *ngIf="openDropdown === 'dropdown5'"
+          class="absolute right-1 sm:right-1 mt-2 z-50 w-[180px] py-2 bg-white rounded-md shadow-lg px-3"
+        >
+          <div
+            class="d-flex flex-row gap-2 px-2 py-1 items-center hover:bg-[#F8FAFF] rounded-md"
+          >
+            <img
+              src="assets/images/1.png"
+              class="object-contain aspect-auto"
+              style="width: 39px; height: 25px"
+              alt="error"
+            />
+            <a href="#" class="block px-1 text-sm text-gray-700"> Hindi</a>
+          </div>
+          <div
+            class="d-flex flex-row gap-2 px-2 py-1 items-center hover:bg-[#F8FAFF] rounded-md"
+          >
+            <img
+              src="assets/images/3.png"
+              class="object-contain aspect-auto"
+              style="width: 39px; height: 25px"
+              alt="error"
+            />
+            <a href="#" class="block px-1 text-sm text-gray-700"> English</a>
+          </div>
+
+          <div
+            class="d-flex flex-row gap-2 px-2 py-1 items-center hover:bg-[#F8FAFF] rounded-md"
+          >
+            <img
+              src="assets/russia.png"
+              class="object-contain aspect-auto"
+              style="width: 39px; height: 25px"
+              alt="error"
+            />
+            <a href="#" class="block px-1 text-sm text-gray-700"> Russian</a>
+          </div>
+
+          <div
+            class="d-flex flex-row gap-2 px-2 py-1 items-center hover:bg-[#F8FAFF] rounded-md"
+          >
+            <img
+              src="assets/german.png"
+              class="object-contain aspect-auto"
+              style="width: 39px; height: 25px"
+              alt="error"
+            />
+            <a href="#" class="block px-1 text-sm text-gray-700"> German</a>
+          </div>
+
+          <div
+            class="d-flex flex-row gap-2 px-2 py-1 items-center hover:bg-[#F8FAFF] rounded-md"
+          >
+            <img
+              src="assets/france.png"
+              class="object-contain aspect-auto"
+              style="width: 39px; height: 25px"
+              alt="error"
+            />
+            <a href="#" class="block px-1 text-sm text-gray-700"> French</a>
+          </div>
+
+          <div
+            class="d-flex flex-row gap-2 px-2 py-1 items-center hover:bg-[#F8FAFF] rounded-md"
+          >
+            <img
+              src="assets/Italy.png"
+              class="object-contain aspect-auto"
+              style="width: 39px; height: 25px"
+              alt="error"
+            />
+            <a href="#" class="block px-1 text-sm text-gray-700"> Italian</a>
+          </div>
+          <div
+            class="d-flex flex-row gap-2 px-2 py-1 items-center hover:bg-[#F8FAFF] rounded-md"
+          >
+            <img
+              src="assets/south.png"
+              class="object-contain aspect-auto"
+              style="width: 39px; height: 25px"
+              alt="error"
+            />
+            <a href="#" class="block px-1 text-sm text-gray-700"> Arabic</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- for mobile view -->
+  <div
+    class="z-50 h-16 w-full bg-[#FFCD04] xl:hidden flex justify-between px-4 items-center"
+  >
+    <div class="h-20 w-20 flex items-center">
+      <img src="assets/images/logo.png" alt="Logo Image" />
+    </div>
+    <div class="flex gap-3 items-center">
+      <div
+        class="my-3 relative flex justify-center items-center"
+        (click)="toggleDropdown($event, 'dropdown5')"
+      >
+        <button
+          class="h-[40px] w-[103px] text-xs py-1 bg-white rounded-full flex justify-center items-center gap-2"
+        >
+          <img
+            src="assets/images/britian_logo.png"
+            class="w-[25px] h-[25px] object-cover aspect-auto"
+          />
+          <span
+            >Eng
+            <i class="fa-solid fa-caret-down mx-2"></i>
+          </span>
+        </button>
+        <div
+          *ngIf="openDropdown === 'dropdown5'"
+          class="absolute right-1 sm:right-1 mt-2 z-50 top-[40px] w-[180px] py-2 bg-white rounded-md shadow-lg px-3"
+        >
+          <div
+            class="d-flex flex-row gap-2 px-2 py-1 items-center hover:bg-[#F8FAFF] rounded-md"
+          >
+            <img
+              src="assets/images/1.png"
+              class="object-contain aspect-auto"
+              style="width: 39px; height: 25px"
+              alt="error"
+            />
+            <a href="#" class="block px-1 text-sm text-gray-700"> Hindi</a>
+          </div>
+          <div
+            class="d-flex flex-row gap-2 px-2 py-1 items-center hover:bg-[#F8FAFF] rounded-md"
+          >
+            <img
+              src="assets/images/3.png"
+              class="object-contain aspect-auto"
+              style="width: 39px; height: 25px"
+              alt="error"
+            />
+            <a href="#" class="block px-1 text-sm text-gray-700"> English</a>
+          </div>
+
+          <div
+            class="d-flex flex-row gap-2 px-2 py-1 items-center hover:bg-[#F8FAFF] rounded-md"
+          >
+            <img
+              src="assets/russia.png"
+              class="object-contain aspect-auto"
+              style="width: 39px; height: 25px"
+              alt="error"
+            />
+            <a href="#" class="block px-1 text-sm text-gray-700"> Russian</a>
+          </div>
+
+          <div
+            class="d-flex flex-row gap-2 px-2 py-1 items-center hover:bg-[#F8FAFF] rounded-md"
+          >
+            <img
+              src="assets/german.png"
+              class="object-contain aspect-auto"
+              style="width: 39px; height: 25px"
+              alt="error"
+            />
+            <a href="#" class="block px-1 text-sm text-gray-700"> German</a>
+          </div>
+
+          <div
+            class="d-flex flex-row gap-2 px-2 py-1 items-center hover:bg-[#F8FAFF] rounded-md"
+          >
+            <img
+              src="assets/france.png"
+              class="object-contain aspect-auto"
+              style="width: 39px; height: 25px"
+              alt="error"
+            />
+            <a href="#" class="block px-1 text-sm text-gray-700"> French</a>
+          </div>
+
+          <div
+            class="d-flex flex-row gap-2 px-2 py-1 items-center hover:bg-[#F8FAFF] rounded-md"
+          >
+            <img
+              src="assets/Italy.png"
+              class="object-contain aspect-auto"
+              style="width: 39px; height: 25px"
+              alt="error"
+            />
+            <a href="#" class="block px-1 text-sm text-gray-700"> Italian</a>
+          </div>
+          <div
+            class="d-flex flex-row gap-2 px-2 py-1 items-center hover:bg-[#F8FAFF] rounded-md"
+          >
+            <img
+              src="assets/south.png"
+              class="object-contain aspect-auto"
+              style="width: 39px; height: 25px"
+              alt="error"
+            />
+            <a href="#" class="block px-1 text-sm text-gray-700"> Arabic</a>
+          </div>
+        </div>
+      </div>
+
+      <button *ngIf="!showMenu" (click)="toggleNavbar()" class>
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <button *ngIf="showMenu" (click)="toggleNavbar()" class>
+        <i class="fa-solid fa-x"></i>
+      </button>
+    </div>
+  </div>
+
+  <div>
+    <div
+      class="xl:hidden bg-[#FFCD04] h-[74.5vh] flex-wrap md:justify-center overflow-y-auto"
+      id="mobile-menu"
+      [class.hidden]="!showMenu"
+      [class.flex]="showMenu"
+    >
+      <div class="pt-2 text-[#303030] pb-3 space-y-1 w-full">
+        <a
+          href="#"
+          class="flex justify-center items-center border-b-[#FFCD04] px-3 py-3 hover:bg-white font-semibold text-[14px] leading-[17.07px]"
+          >Home</a
+        >
+        <div class="flex justify-center items-center">
+          <div class="w-full h-[1px] bg-[#6A5500] opacity-[7%]"></div>
+        </div>
+        <div class="relative">
+          <a
+            href="#"
+            class="flex justify-center items-center border-b-[#FFCD04] px-3 py-3 hover:bg-white font-semibold text-[14px] leading-[17.07px]"
+            >Who we are<i class="fa-solid fa-caret-down mx-2"></i
+          ></a>
+        </div>
+        <div class="flex justify-center items-center">
+          <div class="w-full h-[1px] bg-[#6A5500] opacity-[7%]"></div>
+        </div>
+        <div class="relative" (click)="toggleDropdown($event, 'dropdown2')">
+          <a
+            href="#"
+            class="flex justify-center items-center border-b-[#FFCD04] px-3 py-3 hover:bg-white font-semibold text-[14px] leading-[17.07px]"
+            >Agro Products<i class="fa-solid fa-caret-down mx-2"></i
+          ></a>
+          <div
+            *ngIf="openDropdown === 'dropdown2'"
+            class="overflow-x-hidden overflow-y-auto z-50 w-full h-[42vh] bg-white shadow-lg"
+          >
+            <div class="overflow-x-hidden">
+              <div class="row">
+                <div class="col-md-12">
+                  <div>
+                    <h1
+                      class="text-[13px] font-bold leading-[15.85px] text-center flex items-center justify-center h-[32px] bg-[#0032A0] text-white"
+                    >
+                      AGROCHEMICAL/ PESTICIDE DATABASE
+                    </h1>
+                    <p
+                      class="text-[#0032A0] font-semibold text-[13px] leading-[15.85px] text-center text-md py-4"
+                    >
+                      AgroPat Ultimate Discover Suite
+                      <i class="fas fa-chevron-right"></i>
+                    </p>
+                    <hr />
+                    <p
+                      class="text-[#0032A0] font-semibold text-[13px] leading-[15.85px] text-center text-md py-4"
+                    >
+                      AgroPat Ultimate Discover Suite
+                      <i class="fas fa-chevron-right"></i>
+                    </p>
+                    <hr />
+                    <p
+                      class="text-[#0032A0] font-semibold text-[13px] leading-[15.85px] text-center text-md py-4"
+                    >
+                      AgroPat Ultimate Discover Suite
+                      <i class="fas fa-chevron-right"></i>
+                    </p>
+                    <hr />
+                    <p
+                      class="text-[#0032A0] font-semibold text-[13px] leading-[15.85px] text-center text-md py-4"
+                    >
+                      AgroPat Ultimate Discover Suite
+                      <i class="fas fa-chevron-right"></i>
+                    </p>
+                    <hr />
+                    <p
+                      class="text-[#0032A0] font-semibold text-[13px] leading-[15.85px] text-center text-md py-4"
+                    >
+                      AgroPat Ultimate Discover Suite
+                      <i class="fas fa-chevron-right"></i>
+                    </p>
+                    <hr />
+                    <p
+                      class="text-[#0032A0] font-semibold text-[13px] leading-[15.85px] text-center text-md py-4"
+                    >
+                      AgroPat Ultimate Discover Suite
+                      <i class="fas fa-chevron-right"></i>
+                    </p>
+                  </div>
+                  <div class="pt-2">
+                    <h1
+                      class="text-[13px] font-bold leading-[15.85px] text-center flex items-center justify-center h-[32px] bg-[#0032A0] text-white"
+                    >
+                      OTHER DATABASE
+                    </h1>
+                    <p
+                      class="text-[#0032A0] font-semibold text-[13px] leading-[15.85px] text-center text-md py-4"
+                    >
+                      AgroPharm XIM 1.0 DB Beta
+                      <i class="fas fa-chevron-right"></i>
+                    </p>
+                    <hr />
+                    <p
+                      class="text-[#0032A0] font-semibold text-[13px] leading-[15.85px] text-center text-md py-4"
+                    >
+                      AgroPharm XIM 1.0 DB Beta
+                      <i class="fas fa-chevron-right"></i>
+                    </p>
+                    <hr />
+                    <p
+                      class="text-[#0032A0] font-semibold text-[13px] leading-[15.85px] text-center text-md py-4"
+                    >
+                      AgroPharm XIM 1.0 DB Beta
+                      <i class="fas fa-chevron-right"></i>
+                    </p>
+                    <hr />
+                    <p
+                      class="text-[#0032A0] font-semibold text-[13px] leading-[15.85px] text-center text-md py-4"
+                    >
+                      AgroPharm XIM 1.0 DB Beta
+                      <i class="fas fa-chevron-right"></i>
+                    </p>
+                    <hr />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-center items-center">
+          <div class="w-full h-[1px] bg-[#6A5500] opacity-[7%]"></div>
+        </div>
+        <a
+          href="#"
+          class="flex justify-center items-center border-b-[#FFCD04] px-3 py-3 hover:bg-white font-semibold text-[14px] leading-[17.07px]"
+          >Services</a
+        >
+        <div class="flex justify-center items-center">
+          <div class="w-full h-[1px] bg-[#6A5500] opacity-[7%]"></div>
+        </div>
+        <a
+          href="#"
+          class="flex justify-center items-center border-b-[#FFCD04] px-3 py-3 hover:bg-white font-semibold text-[14px] leading-[17.07px]"
+          >Career At</a
+        >
+        <div class="flex justify-center items-center">
+          <div class="w-full h-[1px] bg-[#6A5500] opacity-[7%]"></div>
+        </div>
+        <a
+          href="#"
+          class="flex justify-center items-center border-b-[#FFCD04] px-3 py-3 hover:bg-white font-semibold text-[14px] leading-[17.07px]"
+          >Contact Us</a
+        >
+        <div class="flex justify-center items-center">
+          <div class="w-full h-[1px] bg-[#6A5500] opacity-[7%]"></div>
+        </div>
+        <a
+          href="#"
+          class="flex justify-center items-center border-b-[#FFCD04] px-3 py-3 hover:bg-white font-semibold text-[14px] leading-[17.07px]"
+          >ChemRobotics Times</a
+        >
+        <div class="flex justify-center items-center">
+          <div class="w-full h-[1px] bg-[#6A5500] opacity-[7%]"></div>
+        </div>
+        <a
+          href="#"
+          class="flex justify-center items-center border-b-[#FFCD04] px-3 py-3 hover:bg-white font-semibold text-[14px] leading-[17.07px]"
+          >Buy Chem</a
+        >
+        <div class="flex justify-center items-center">
+          <div class="w-full h-[1px] bg-[#6A5500] opacity-[7%]"></div>
+        </div>
+        <div class="gap-2 py-3 flex justify-center items-center flex-wrap px-1">
+          <button
+            (click)="OpenQueryModal()"
+            class="bg-white px-3 text-[13px] leading-[15.85px] rounded-full py-3 text-[#0032A0] font-semibold"
+          >
+            Demo Request Now
+          </button>
+
+          <button
+            class="bg-[#0032A0] px-3 text-[13px] leading-[15.85px] rounded-full py-3 text-white font-semibold"
+          >
+            Pharma Database
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="xl:hidden bg-[#0032A0] py-3 flex-wrap justify-center md:justify-center items-center gap-3 overflow-y-auto"
+      id="mobile-menu"
+      [class.hidden]="!showMenu"
+      [class.flex]="showMenu"
+    >
+      <a
+        href="#"
+        class="text-white block text-[13px] leading-[15.85px] font-medium"
+      >
+        <i class="fa-solid fa-envelope mx-2"></i>Email</a
+      >
+      <a
+        href="#"
+        class="text-white block text-[13px] leading-[15.85px] font-medium"
+      >
+        <i class="fa-solid fa-phone mx-2"></i>
+        9078567689</a
+      >
+      <a
+        href="#"
+        class="text-white block text-[13px] leading-[15.85px] font-medium"
+        ><i class="fa-solid fa-file-circle-plus mx-2"></i>Brochure</a
+      >
+      <a
+        href="#"
+        class="text-white block text-[13px] leading-[15.85px] font-medium"
+      >
+        <i class="fa-solid fa-robot mx-2"></i>Download app</a
+      >
+
+      <a
+        href="https://www.chemrobotics.com/register"
+        class="text-white block text-[13px] leading-[15.85px] font-medium"
+        *ngIf="!userAuth?.name"
+        ><button>
+          <i class="fa-solid fa-user-plus mx-2" style="color: #ffffff"></i>Sign
+          Up
+        </button></a
+      >
+      <span
+        id="auth-button"
+        class="text-white block text-[13px] leading-[15.85px] font-medium"
+        *ngIf="userAuth?.name"
+        (click)="(handleLogout)"
+        >Logout</span
+      >
+
+      <span
+        id="auth-button"
+        class="text-white block text-[13px] leading-[15.85px] font-medium"
+        (click)="handleOpenSignInModal()"
+        *ngIf="!userAuth?.name"
+      >
+        <i class="fa-solid fa-user mx-2" style="color: #ffffff"></i>Sign
+        In</span
+      >
+      <span
+        id="auth-button"
+        class="text-black block text-[13px] leading-[15.85px] font-medium"
+        *ngIf="userAuth?.name"
+        >{{ userAuth?.name }}</span
+      >
+    </div>
+  </div>
+  <!-- desktop popup modal -->
+  <div
+    *ngIf="openDropdown === 'dropdown2'"
+    class="sticky top-[102px] w-[99vw] h-screen bg-white hidden lg:block shadow-lg"
+  >
+    <div class="containbox flex w-full gap-2">
+      <div class="w-[40%] h-full object-contain aspect-auto">
+        <img src="assets/images/ample/Group 457.png" alt="error" />
+      </div>
+
+      <div class="w-[24%] py-4 pl-4">
+        <h1 class="pb-3 text-lg ps-2 font-bold">
+          AGROCHEMICAL/PESTICIDE DATABASE
+        </h1>
+        <p
+          class="text-[#0032A0] font-semibold text-[13px] leading-15.85px[] ps-2 text-md"
+        >
+          AgroPat Ultimate Discover Suite
+          <i class="fas fa-chevron-right"></i>
+        </p>
+        <p
+          class="text-[#0032A0] font-semibold text-[13px] leading-[15.85px] ps-2 text-md pt-3"
+        >
+          AgroPat Ultimate Discover Suite
+          <i class="fas fa-chevron-right"></i>
+        </p>
+        <p
+          class="text-[#0032A0] font-semibold text-[13px] leading-[15.85px] ps-2 text-md pt-3"
+        >
+          AgroPat Ultimate Discover Suite
+          <i class="fas fa-chevron-right"></i>
+        </p>
+        <p
+          class="text-[#0032A0] font-semibold text-[13px] leading-[15.85px] ps-2 text-md pt-3"
+        >
+          AgroPat Ultimate Discover Suite
+          <i class="fas fa-chevron-right"></i>
+        </p>
+        <p
+          class="text-[#0032A0] font-semibold text-[13px] leading-[15.85px] ps-2 text-md pt-3"
+        >
+          AgroPat Ultimate Discover Suite
+          <i class="fas fa-chevron-right"></i>
+        </p>
+        <p
+          class="text-[#0032A0] font-semibold text-[13px] leading-15.85px[] ps-2 text-md pt-3"
+        >
+          AgroPat Ultimate Discover Suite
+          <i class="fas fa-chevron-right"></i>
+        </p>
+
+        <div class="pt-4">
+          <h1 class="pb-3 font-bold text-lg ps-2 h">OTHER DATABASE</h1>
+          <p
+            class="text-[#0032A0] font-semibold text-[13px] leading-[15.85px] ps-2 text-md"
+          >
+            AgroPharm XIM 1.0 DB Beta
+            <i class="fas fa-chevron-right"></i>
+          </p>
+          <p
+            class="text-[#0032A0] font-semibold text-[13px] leading-[15.85px] ps-2 text-md pt-3"
+          >
+            AgroPharm XIM 1.0 DB Beta
+            <i class="fas fa-chevron-right"></i>
+          </p>
+          <p
+            class="text-[#0032A0] font-semibold text-[13px] leading-15.85px[] ps-2 text-md pt-3"
+          >
+            AgroPharm XIM 1.0 DB Beta
+            <i class="fas fa-chevron-right"></i>
+          </p>
+          <p
+            class="text-[#0032A0] font-semibold text-[13px] leading-[15.85px] ps-2 text-md pt-3"
+          >
+            AgroPharm XIM 1.0 DB Beta
+            <i class="fas fa-chevron-right"></i>
+          </p>
+        </div>
+      </div>
+
+      <div class="w-[35%] py-4">
+        <h1 class="pb-3 font-bold text-lg h">
+          AGROCHEMICAL/INTERMEDIATE/FINE CHEMICAL DATABASE
+        </h1>
+        <p
+          class="text-[#0032A0] font-semibold text-[13px] leading-[15.85px] text-md ps-2"
+        >
+          Technical Routes <i class="fas fa-chevron-right"></i>
+        </p>
+        <p
+          class="text-[#0032A0] font-semibold text-[13px] leading-15.85px[] ps-2 text-md"
+        >
+          ChemiTracker- A Supplier Guide<i class="fas fa-chevron-right"></i>
+        </p>
+
+        <h1 class="pb-3 font-bold text-lg ps-2 pt-3 h">PATENT DATABASE</h1>
+        <p
+          class="text-[#0032A0] font-semibold text-[13px] leading-[15.85px] ps-2 text-md"
+        >
+          QuikPatent-Constraing Patent Guide
+          <i class="fas fa-chevron-right"></i>
+        </p>
+        <h1 class="pb-3 font-bold text-lg ps-2 pt-3 h">
+          PHARMA/API/VETERINARY DATABASE
+        </h1>
+        <p
+          class="text-[#0032A0] font-semibold text-[13px] leading-[15.85px] ps-2 text-md"
+        >
+          PharmVetPat Ultimate<i class="fas fa-chevron-right"></i>
+        </p>
+
+        <h1 class="pb-3 font-bold text-lg ps-2 pt-3 h">JOB PORTAL</h1>
+        <p
+          class="text-[#0032A0] font-semibold text-[13px] leading-15.85px[] ps-2 text-md"
+        >
+          Chemrobitcs Jobs
+          <i class="fas fa-chevron-right"></i>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

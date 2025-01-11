@@ -1,0 +1,56 @@
+.fontstyleh{
+    font-family: 'Montserrat';
+    font-weight: 700;
+    
+}
+
+.fontstylehm{
+   font-family: 'Montserrat';
+    font-weight: 700;
+    font-size:small;
+
+}
+
+
+.fontstylem{
+   font-family: 'Montserrat';
+    font-weight: 700;
+    font-size:small;
+}
+
+
+.fontstyle{
+    font-family: 'Montserrat';
+}
+
+::-webkit-scrollbar {
+  display: block;
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.linked .line {
+  background-color: transparent;
+}
+
+.linked:hover .line {
+  background-color: #0032A0;;
+  opacity: 1;
+  transform: scaleY(1);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+

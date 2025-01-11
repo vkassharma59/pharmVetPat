@@ -1,0 +1,482 @@
+@import "./abstract/mixins";
+
+.text_color_1 {
+    color: #303030;
+}
+
+.text_style_1 {
+    color: #303030;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.text_style_2 {
+    color: #303030;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.text_style_3 {
+    color: #303030;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.text_style_4 {
+    color: #303030;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.text_style_5 {
+    color: #0032A0;
+    font-size: 40px;
+    font-weight: 700;
+
+    @include respond(desktop) {
+        font-size: 30px;
+    }
+
+    @include respond(phone) {
+        font-size: 24px;
+        font-weight: 800;
+    }
+}
+
+.text_style_6 {
+    color: #CBC09B;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.text_style_7 {
+    color: #303030;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.text_style_7_res {
+    color: #303030;
+    font-size: 17px;
+    font-weight: 700;
+
+    @include respond(tab-land) {
+        font-size: 15px;
+    }
+}
+
+.text_style_8 {
+    font-weight: 800;
+    font-size: 80px;
+    color: #F1F1F1;
+    opacity: 0.37;
+
+    @include respond(tab-land) {
+        font-size: 60px;
+    }
+}
+
+.text_style_9 {
+    color: #303030;
+    font-size: 16px;
+    font-weight: 400;
+
+    @include respond(tab-land) {
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    @include respond(phone) {
+        font-size: 14px;
+        font-weight: 500;
+    }
+}
+
+.text_style_10 {
+    color: #303030;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.text_style_11 {
+    color: #303030;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.text_blue_1 {
+    color: #0032A0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.text_blue_2 {
+    color: #0032A0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.text_blue_3 {
+    color: #0032A0;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.text_blue_4 {
+    color: #0032A0;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.text_blue_5 {
+    color: #0032A0;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.text_blue_6 {
+    color: #0032A0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.text_blue_7 {
+    color: #0032A0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.text_blue_8 {
+    color: #0032A0;
+    font-size: 24px;
+    font-weight: 600;
+
+    @include respond(tab-land) {
+        font-size: 20px;
+        font-weight: 500;
+    }
+}
+
+.text_blue_9 {
+    color: #0032A0;
+    font-size: 30px;
+    font-weight: 700;
+
+    @include respond(tab-land) {
+        font-size: 24px;
+        font-weight: 600;
+    } 
+}
+.text_blue_10{
+    color: #0032A0;
+    font-size: 30px;
+    font-weight: 700;    
+}
+.text_blue_11{
+    color: #0032A0;
+    font-size: 20px;
+    font-weight: 700;
+}
+.text_blue_12{
+    color: #0032A0;
+    font-size: 15px;
+    font-weight: 600;
+}
+.text_blue_13{
+    color: #0032A0;
+    font-size: 50px;
+    font-weight: 800;
+}
+.text_blue_14{
+    color: #0032A0;
+    font-size: 16px;
+    font-weight: 700;
+}
+.text_blue_15{
+    color: #0032A0;
+    font-size: 30px;
+    font-weight: 700;
+}
+.text_blue_16{
+    color: #0032A0;
+    font-size: 18px;
+    font-weight: 600;
+}
+.text_black_1{
+    color: #303030;
+    font-size: 20px;
+    font-weight: 600;
+}
+.text_black_1_res{
+    color: #303030;
+    font-size: 20px;
+    font-weight: 600;
+    @include respond(desktop) {
+        font-size: 18px;
+    } 
+    @include respond(phone) {
+        font-size: 16px;
+        font-weight: 800;
+    }
+}
+.text_black_2{
+    color: #303030;
+    font-size: 14px;
+    font-weight: 800;
+}
+.text_black_3_res{
+    color: #303030;
+    font-size: 16px;
+    font-weight: 400;
+    @include respond(desktop) {
+        font-size: 14px;
+    } 
+    @include respond(phone) {
+        font-size: 14px;        
+    }
+}
+.text_black_4_res{
+    color: #303030;
+    font-size: 16px;
+    font-weight: 500;
+    @include respond(desktop) {
+        font-size: 14px;
+    }
+}
+.text_black_5{
+    color: #303030;
+    font-size: 13px;
+    font-weight: 500;
+}
+.text_black_6{
+    color: #303030;
+    font-size: 40px;
+    font-weight: 700;
+}
+.text_black_6_res{
+    color: #303030;
+    font-size: 40px;
+    font-weight: 700;
+    @include respond(tab-land) {
+        font-size: 30px;
+    } 
+    @include respond(tab-port) {
+        font-size: 24px;
+    } 
+}
+.text_black_7{
+    color: #303030;
+    font-size: 30px;
+    font-weight: 800;
+}
+.text_black_8{
+    color: #303030;
+    font-size: 13px;
+    font-weight: 400;
+}
+.text_black_9{
+    color: #303030;    
+    font-size: 16px;
+    font-weight: 700;
+}
+.text_black_10{
+    color: #303030;
+    font-size: 20px;    
+    font-weight: 700;
+}
+.text_black_11{
+    color: #303030;
+    font-size: 18px;
+    font-weight: 500;
+}
+.text_black_12{
+    color: #303030;
+    font-size: 20px;
+    font-weight: 800;
+}
+.text_black_13{
+    color: #303030;
+    font-size: 14px;
+    font-weight: 500;
+}
+.text_black_14{
+    color: #303030;
+    font-size: 20px;
+    font-weight: 600;
+}
+.text_black_15{
+    color: #303030;
+    font-size: 16px;
+    font-weight: 400;
+}
+.text_white_1{
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: 600;
+}
+.text_white_2{
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 600;
+}
+.text_white_3{
+    color: #FFFFFF;
+    font-size: 40px;
+    font-weight: 800;
+    @include respond(tab-land) {
+        font-size: 30px;
+    } 
+    @include respond(tab-port) {
+        font-size: 24px;
+    } 
+}
+.text_white_4{
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 400;    
+}
+.text_white_4_res{
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 400;
+    @include respond(desktop) {
+        font-size: 14px;
+    } 
+    @include respond(phone) {
+        font-size: 14px;        
+    }
+}
+.text_white_5{
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: 600;
+}
+.text_white_5_res{
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: 600;
+    @include respond(desktop) {
+        font-size: 18px;
+    } 
+    @include respond(phone) {
+        font-size: 16px;
+        font-weight: 800;
+    }
+}
+.text_white_6{
+    color: #FFFFFF;
+    font-size: 40px;
+    font-weight: 700;
+}
+.text_white_6_res{
+    color: #FFFFFF;
+    font-size: 40px;
+    font-weight: 700;
+    @include respond(desktop) {
+        font-size: 30px;
+    } 
+    @include respond(phone) {
+        font-size: 24px;
+        font-weight: 800;
+    }
+}
+.text_white_7{
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 700;
+    @include respond(tab-land) {
+        font-size: 14px;
+        font-weight: 600;
+    }
+}
+.text_white_8{
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 500;
+}
+.text_white_9{
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 600;
+}
+.text_white_10{
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 700;
+}
+.text_white_11{
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 300;
+}
+.text_white_12{
+    color: #FFFFFF;
+    font-size: 30px;
+    font-weight: 800;
+}
+.text_white_13{
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 600;
+}
+.text_white_14{
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 500;
+}
+.text_white_15 {
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 700;
+}
+.text_white_16 {
+    color: #FFFFFF;
+    font-size: 24px;
+    font-weight: 800;
+}
+.text_white_17 {
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 500;
+}
+.text_white_18 {
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 700;
+}
+.text_yellow_1{
+    color: #FFCD04;
+    font-size: 40px;
+    font-weight: 700; 
+}
+.text_grey_1 {
+    color: #ACACAC;
+    font-size: 15px;
+    font-weight: 500;
+}
+.text_grey_2{
+    color: #ACACAC;
+    font-size: 13px;
+    font-weight: 500;
+}
+.text_grey_3 {
+    color: #ACACAC;
+    font-size: 13px;
+    font-weight: 300;
+}
+.text_yellow_1 {
+    color: #FFCD04;
+    font-size: 40px;
+    font-weight: 700;
+}
+.text_decoration_none{
+    text-decoration: none;
+}
+.text_light-blue {
+    color: #B6BFD3;
+    font-size: 18px;
+    font-weight: 600;
+}
+.font-style-i{
+    font-style: italic
+}

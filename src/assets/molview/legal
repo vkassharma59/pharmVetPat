@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, user-scalable=no" />
+
+		<title>Legal</title>
+		<link rel="shortcut icon" href="favicon-32x32.png" />
+		<meta name="author" content="Herman Bergwerf" />
+
+		<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700" />
+		<link type="text/css" rel="stylesheet" href="build/molview-page.min.css" />
+	</head>
+	<body>
+		<div id="header">
+		<img id="logo" src="img/logo.png" />
+		<a id="return-to-molview" href="index.html">
+			<img id="mark" src="img/mark.png" />
+		</a>
+		</div>
+		<div id="content">
+			<h1>Terms of Use</h1>
+<p>Welcome to MolView!
+These are the Terms of Use (&quot;Terms&quot;) of molview.org (&quot;This Site&quot;, &quot;MolView&quot;)
+This site contains the latest stable release of the MolView Open-Source Project
+(&quot;The MolView Open-Source Project&quot;, &quot;The MolView Project&quot;)</p>
+<p>By accessing and using this site, you accept and agree to be bound by the terms
+and provision of this agreement.</p>
+<p>ANY PARTICIPATION IN THIS SITE WILL CONSTITUTE ACCEPTANCE OF THESE TERMS.
+IF YOU DO NOT AGREE TO ABIDE BY THE ABOVE, PLEASE DO NOT USE THIS SITE.</p>
+<p>THIS SITE RESERVES THE RIGHT TO UPDATE OR AMEND THE TERMS AT ANY TIME WITHOUT
+NOTICE TO YOU. SUCH UPDATED OR AMENDED TERMS SHALL BE EFFECTIVE UPON PUBLISHING
+ON THIS SITE.</p>
+<h2>1. Copyright</h2>
+<p>MolView and The MolView Project are copyright of Herman Bergwerf.
+The MolView Project is Open-Source and the source code is released under the
+GNU AGPL license. All MolView redistributions are subject to
+The MolView Open-Source Project and it's respective license.
+You can find the latest MolView Project source release at:
+<a href="https://github.com/molview">https://github.com/molview</a></p>
+<h2>2. Site Content</h2>
+<p>This site is frequently updated with new releases from the MolView Project.</p>
+<p>THIS SITE RESERVES THE RIGHT TO CHANGE OR UPDATE IT'S SITE CONTENT
+FOR ANY REASON AT ANY TIME WITHOUT NOTICE TO YOU.</p>
+<p>THIS SITE RESERVES THE RIGHT TO TERMINATE OR RESTRICT THE ACCESS OR USE OF
+THIS SITE FOR ANY REASON AT ANY TIME WITHOUT NOTICE TO YOU.</p>
+<h2>3. Accuracy of Information</h2>
+<p>Some of the data contained in MolView is, directly or indirectly, retrieved from
+remote third-party data sources. Therefore, MolView does not warrant that the
+data which is made available in it's site is accurate.</p>
+<p>THIS SITE DOES NOT WARRANT THAT ANY INFORMATION TRANSMITTED OR MADE AVAILABLE IN
+ITS SITE IS COMPLETE AND CORRECT OR FIT FOR ANY PARTICULAR PURPOSE AND SHALL NOT
+BE RESPONSIBLE OR LIABLE WHATSOEVER FOR  ANY ERROR OR OMISSIONS IN THAT
+INFORMATION OR ANY DAMAGES INCURRED AS A RESULT OF ITS USE.</p>
+<h2>4. Intellectual Property Rights</h2>
+<p>If you own the copyright of any of the data transmitted or made available in
+this site and you want it to be removed, please contact <a href="cdn-cgi/l/email-protection#c4b7b1b4b4abb6b084a9aba8b2ada1b3eaabb6a3"><span class="__cf_email__" data-cfemail="35464045455a474175585a59435c50421b5a4752">[email&#160;protected]</span></a>
+so we can resolve this as soon as possible.</p>
+<p>ALL DATA TRANSMITTED OR MADE AVAILABLE IN THIS SITE IS BELIEVED TO BE FREE OF
+INFRINGEMENT, PLEASE CONTACT <a href="cdn-cgi/l/email-protection#95e6e0e5e5fae7e1d5f8faf9e3fcf0e2bbfae7f2"><span class="__cf_email__" data-cfemail="6d1e181d1d021f192d0002011b04081a43021f0a">[email&#160;protected]</span></a> IF YOU CAN PROVE OTHERWISE.</p>
+<p>THIS SITE DOES NOT OWN THE COPYRIGHT OR INTELLECTUAL PROPERTY RIGHTS OF THE
+THIRD-PARTY DATA CONTAINED IN ITS SITE AND DOES NOT WARRANT FOR ANY KIND OF
+INFRINGEMENT AS A RESULT OF ITS USE.</p>
+<h2>5. Privacy Policy</h2>
+<p>This site does not store any personal information on it's own server.</p>
+<p>This sites uses Google Analytics in order to collect usage data.
+This service is subject to the Google Analytics Terms of Service
+which can be found at: <a href="https://www.google.com/analytics/terms/us.html">https://www.google.com/analytics/terms/us.html</a></p>
+<p>This site uses a client-side local storage technology (WebStorage)
+in order to save user preferences. You can find the full specification of this
+technology by W3C at: <a href="https://www.w3.org/TR/webstorage/">http://www.w3.org/TR/webstorage/</a>
+This local data storage relies on your browser. This site does not warrant that
+any of the information which is saved in this local data storage is correct or
+will be retained by your browser.</p>		</div>
+		<div id="footer">Copyright &copy; 2014, 2015 Herman Bergwerf</div>	<script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+</html>

@@ -1,0 +1,117 @@
+
+form{
+    display: none;
+}
+
+.spaneitems{
+    border: 1px solid black;
+    height: 9vh;
+    line-height: 9vh;
+    vertical-align: middle;
+    border-radius: 4px;
+}
+
+#searchPaneCategory{
+    font-size: 20px;
+    font-weight: bolder;
+    border: 2px solid rgb(64, 54, 92);
+    font-family: 'Montserrat', sans-serif;    
+    background-color: rgb(243, 248, 250);
+    cursor: pointer;
+}
+
+#searchpane{
+    width: 50vw;
+    color:rgb(35, 40, 41);
+    font-size: 35px;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+}
+.top{
+    color:white;
+    text-align: center;
+    font-family: 'Heebo', sans-serif;    
+    width:device-width;
+}
+#toptitle{
+    font-size: 70px;
+}
+h3{
+    display: inline;
+    padding: 4px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;    
+    }
+
+@keyframes animate1 {
+    0%,100%{
+        opacity: 1;
+        background:linear-gradient(rgb(5, 31, 114),rgb(131, 116, 172))
+    }
+    12%{
+        opacity: 0.85;
+    }
+    25%{
+        opacity: 1;
+        background:linear-gradient(rgb(3, 52, 92),rgb(110, 139, 231))
+    }
+    37%{
+        opacity: 0.85;
+    }
+    50%{
+        opacity: 1;
+        background:linear-gradient(rgb(2, 23, 92),rgb(103, 168, 221))
+    }
+    62%{
+        opacity: 0.85;
+    }
+    75%{
+        opacity: 1;
+        background:linear-gradient(rgb(12, 1, 73),rgb(122, 147, 230))
+    }
+    87%{
+        opacity: 0.85;
+    }
+}
+
+#DrawStructurePane2{
+    border: 2px solid rgb(255, 0, 0);
+    border-radius: 20px;
+    vertical-align: middle;
+    min-width: 200px;
+    max-width: 200px;
+    cursor: pointer;
+    border-radius: 20px;
+    margin: 0 auto;
+}
+
+
+#DrawStructurebtn{
+    font-size: 20px;
+    font-weight: 900;
+    width: auto;
+    height: auto;
+    color: rgb(212, 25, 0);
+    border-radius: 20px;
+    margin: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
+#DrawStructurePane:hover #DrawStructurebtn{
+    color :green;
+}
+
+#DrawStructurePane:hover,#DrawStructurePane2:hover{
+    border: 2px solid darkgreen;
+}   
+
+#orspan{
+    color:white;
+    font-family: 'Montserrat', sans-serif;   
+    text-align: center;
+    display: block;
+    max-height: 15px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bolder; 
+}

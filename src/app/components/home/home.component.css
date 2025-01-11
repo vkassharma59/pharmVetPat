@@ -1,0 +1,11 @@
+.hero {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    max-width: 800px;
+    margin: 2rem auto;
+}
+.pt-14{
+    padding-top:14rem;
+}

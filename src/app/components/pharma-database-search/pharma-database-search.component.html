@@ -1,0 +1,349 @@
+<div class="search-container">
+    <div id="api-search" class="content-section">
+      <div class="simple-search">
+         <div class="relative w-full mx-auto mt-6">
+           <!-- Section Title -->
+           <div class="section-title text-lg font-bold text-blue-600 mb-4">
+             Simple Search
+           </div>
+       
+           <!-- Label -->
+           <div class="mb-2 text-sm font-medium text-gray-700">
+             Text Search:
+           </div>
+       
+           <!-- Input and Buttons -->
+           <div class="flex items-center gap-4">
+
+             <!-- Search Input -->
+             <input
+               #simpleSearchkeywordInput
+               type="text"
+               placeholder="Please enter your text"
+               class="flex-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+               (input)="handleChangeKeyword(searchTypes.simpleSearch)"
+               [value]="simpleSearch.keyword"
+               [(ngModel)]="simpleSearch.keyword"
+             />
+       
+             <!-- Search Button -->
+             <button
+               (click)="checkPriviledgeAndHandleSearch(searchTypes.simpleSearch)"
+               [disabled]="!simpleSearch?.keyword?.trim()"
+               class="px-6 py-2 text-blue-600 border border-blue-500 rounded-lg hover:bg-blue-100 transition"
+             >
+               Search
+             </button>
+       
+             <!-- Clear Button -->
+             <button
+               class="px-6 py-2 text-blue-600 bg-blue-50 border border-transparent rounded-lg hover:bg-blue-100 transition"
+               (click)="clearInputAndSuggetions(searchTypes.simpleSearch)"
+             >
+               Clear
+             </button>
+           </div>
+       
+           <!-- Suggestions Dropdown -->
+           <ul
+             *ngIf="simpleSearch?.autosuggestionList?.length"
+             class="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto"
+           >
+             <li
+               *ngFor="let suggestion of simpleSearch?.autosuggestionList"
+               class="px-4 py-2 cursor-pointer hover:bg-blue-100"
+               (click)="handleSuggestionClick(suggestion, searchTypes.simpleSearch)"
+             >
+               {{ suggestion }}
+             </li>
+           </ul>
+         </div>
+      </div>
+
+       <div class="divider"></div>
+       <div class="advanced-search">
+          <div class="section-title">Advanced Search</div>
+          <div class="datatype">
+             <p>Select a Filter:</p>
+             <p>Then:</p>
+             <p>Add more filter:(Optional)</p>
+          </div>
+          <ng-container *ngIf="advanceSearch?.filterInputs?.length">
+            <div class="filter-group" *ngFor="let filter of advanceSearch?.filterInputs; let i = index">
+              <select
+              [(ngModel)]="advanceSearch.filterInputs[i].filter"
+              class="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Please pick one</option>
+              <option *ngFor="let filter of advanceSearch.filters" [value]="filter.value">
+                {{ filter.name }}
+              </option>
+            </select>
+            <input 
+              type="text" 
+              placeholder="Enter your text"
+              [(ngModel)]="advanceSearch.filterInputs[i].keyword"
+              [value]="advanceSearch.filterInputs[i].keyword"
+              (input)="handleChangeKeyword(searchTypes.advanceSearch, i)"
+              >
+            <div class="buttons">
+                <button *ngIf="i==0" (click)="addFilter()">Add another filter +</button>
+                <button *ngIf="i > 0" (click)="removeFilter(i)" style="background-color: #dc3545;">Remove filter -</button>
+            </div>
+
+            <!-- Suggestions Dropdown -->
+            <ul
+              *ngIf="advanceSearch?.autosuggestionList[i]?.length && advanceSearch.filterInputs[i].keyword !== ''"
+              class="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto">
+              <li
+                *ngFor="let suggestion of advanceSearch?.autosuggestionList[i]"
+                class="px-4 py-2 cursor-pointer hover:bg-blue-100"
+                (click)="handleSuggestionClick(suggestion, searchTypes.advanceSearch, i)"
+              >
+                {{suggestion}}
+              </li>
+            </ul>
+          </div>
+          </ng-container>
+          <div class="datatype">
+            <p>Select Data Type:(Optional)</p>
+            <p>Select Date Range:(Optional)</p>
+          </div>
+          <div class="date-filters">
+            <select [(ngModel)]="advanceSearch.dateType">
+                <option value="">Date Type</option>
+                <option value="GENERIC_CONSTRAINING_DATE">GENERIC_CONSTRAINING_DATE</option>
+            </select>
+            <input [(ngModel)]="advanceSearch.startDate" type="date">
+            <input [(ngModel)]="advanceSearch.endDate" type="date">
+          </div>
+          <div class="buttons">
+            <button>Search</button>
+            <button style="border-color: lightskyblue; background-color: lightskyblue;" (click)="clearInputAndSuggetions(searchTypes.advanceSearch)">Reset Filters</button>
+          </div>
+       </div>
+       <div class="tutorial-btn">
+          <button>View Tutorial</button>
+       </div> 
+
+      <div class="divider"></div>
+      <div class="simple-search">
+        <div class="relative w-full mx-auto mt-6">
+          <!-- Section Title -->
+          <div class="section-title text-lg font-bold text-blue-600 mb-4">
+            Intermediate Application Search
+          </div>
+      
+          <!-- Labels -->
+          <div class="flex items-center gap-4 mb-4">
+            <label class="block text-sm font-medium text-gray-700">
+              Select a Filter:
+            </label>
+            <label class="block text-sm font-medium text-gray-700">
+              Then:
+            </label>
+          </div>
+      
+          <!-- Input and Buttons -->
+          <div class="flex items-center gap-4">
+            <!-- Dropdown -->
+            <select
+              [(ngModel)]="intermediateSearch.filter"
+              class="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Please pick one</option>
+              <option *ngFor="let filter of intermediateSearch.filters" [value]="filter.value">
+                {{ filter.name }}
+              </option>
+            </select>
+      
+            <!-- Search Input -->
+            <input
+              #intermediateSearchKeywordInput
+              type="text"
+              placeholder="Please enter your text"
+              class="flex-grow p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              [(ngModel)]="intermediateSearch.keyword"
+              [value]="intermediateSearch.keyword"
+              (input)="handleChangeKeyword(searchTypes.intermediateSearch)"
+            />
+      
+            <!-- Search Button -->
+            <button
+              (click)="checkPriviledgeAndHandleSearch(searchTypes.intermediateSearch)"
+              [disabled]="!intermediateSearch?.keyword?.trim() && intermediateSearch.filter !== ''"
+              class="px-6 py-2 text-blue-600 border border-blue-500 rounded-lg hover:bg-blue-100 transition"
+            >
+              Search
+            </button>
+      
+            <!-- Clear Button -->
+            <button
+              class="px-6 py-2 text-blue-600 bg-blue-50 border border-transparent rounded-lg hover:bg-blue-100 transition"
+              (click)="clearInputAndSuggetions(searchTypes.intermediateSearch)"
+            >
+              Clear
+            </button>
+          </div>
+      
+          <!-- Suggestions Dropdown -->
+          <ul
+            *ngIf="intermediateSearch?.autosuggestionList?.length"
+            class="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto"
+          >
+            <li
+              *ngFor="let suggestion of intermediateSearch?.autosuggestionList"
+              class="px-4 py-2 cursor-pointer hover:bg-blue-100"
+              (click)="handleSuggestionClick(suggestion, searchTypes.intermediateSearch)"
+            >
+              {{ suggestion }}
+            </li>
+          </ul>
+        </div>
+      </div> 
+
+      <div class="divider"></div>
+      <div class="simple-search">
+        <div class="relative w-full mx-auto mt-6">
+          <!-- Section Title -->
+          <div class="section-title text-lg font-bold text-blue-600 mb-4">
+            Or Synthesis Search
+          </div>
+      
+          <!-- Label -->
+          <div class="mb-2 text-sm font-medium text-gray-700">
+            Enter CAS RN or Chemical Name:
+          </div>
+      
+          <!-- Input and Buttons -->
+          <div class="flex items-center gap-4">
+            <!-- Search Input -->
+            <input
+              #synthesisSearchkeywordInput
+              type="text"
+              placeholder="Please enter your text"
+              class="flex-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              (input)="handleChangeKeyword(searchTypes.synthesisSearch)"
+              [value]="synthesisSearch.keyword"
+              [(ngModel)]="synthesisSearch.keyword"
+            />
+      
+            <!-- Search Button -->
+            <button
+              (click)="checkPriviledgeAndHandleSearch(searchTypes.synthesisSearch)"
+              [disabled]="!synthesisSearch?.keyword?.trim()"
+              class="px-6 py-2 text-blue-600 border border-blue-500 rounded-lg hover:bg-blue-100 transition"
+            >
+              Search
+            </button>
+      
+            <!-- Clear Button -->
+            <button
+              class="px-6 py-2 text-blue-600 bg-blue-50 border border-transparent rounded-lg hover:bg-blue-100 transition"
+              (click)="clearInputAndSuggetions(searchTypes.synthesisSearch)"
+            >
+              Clear
+            </button>
+          </div>
+      
+          <!-- Suggestions Dropdown -->
+          <ul
+            *ngIf="synthesisSearch?.autosuggestionList?.length"
+            class="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto"
+          >
+            <li
+              *ngFor="let suggestion of synthesisSearch?.autosuggestionList"
+              class="px-4 py-2 cursor-pointer hover:bg-blue-100"
+              (click)="handleSuggestionClick(suggestion, searchTypes.synthesisSearch)"
+            >
+              {{ suggestion }}
+            </li>
+          </ul>
+        </div>
+      </div>      
+      
+      <div class="divider"></div>
+      <div class="simple-search">
+         <div class="relative w-full mx-auto mt-6">
+           <!-- Section Title -->
+           <div class="section-title text-lg font-bold text-blue-600 mb-4">
+             OR Chemical Structure - Identifier Search
+           </div>
+       
+           <!-- Labels -->
+           <div class="flex items-center gap-4 mb-4">
+             <label class="block text-sm font-medium text-gray-700">
+               Select a Filter:
+             </label>
+             <label class="block text-sm font-medium text-gray-700">
+               Then:
+             </label>
+           </div>
+       
+           <!-- Input and Buttons -->
+           <div class="flex items-center gap-4">
+             <!-- Dropdown -->
+             <select
+              [(ngModel)]="chemicalStructure.filter"
+              class="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+             >
+               <option value="">Please pick one</option>
+               <option *ngFor="let filter of chemicalStructure.filters" [value]="filter.value">
+                 {{ filter.name }}
+               </option>
+             </select>
+       
+             <!-- Search Input -->
+             <input
+               #chemicalStructureKeywordInput
+               type="text"
+               placeholder="Please enter your text"
+               class="flex-grow p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+               [(ngModel)]="chemicalStructure.keyword"
+               [value]="chemicalStructure.keyword"
+               (input)="handleChangeKeyword(searchTypes.chemicalStructure)"
+             />
+       
+             <!-- Search Button -->
+             <button
+               (click)="checkPriviledgeAndHandleSearch(searchTypes.chemicalStructure)"
+               [disabled]="!chemicalStructure?.keyword?.trim() && chemicalStructure.filter !== ''"
+               class="px-6 py-2 text-blue-600 border border-blue-500 rounded-lg hover:bg-blue-100 transition"
+             >
+               Search
+             </button>
+       
+             <!-- Clear Button -->
+             <button
+               class="px-6 py-2 text-blue-600 bg-blue-50 border border-transparent rounded-lg hover:bg-blue-100 transition"
+               (click)="clearInputAndSuggetions(searchTypes.chemicalStructure)"
+             >
+               Clear
+             </button>
+           </div>
+           <p class="example-text">Example: 
+              <span *ngIf="chemicalStructure.example">
+                <span *ngFor="let data of chemicalStructure.example; let i = index">
+                    {{ data?.keyword }}
+                    <span *ngIf="i != chemicalStructure.example.length - 1">, </span>
+                </span>
+              </span>
+            </p>
+       
+           <!-- Suggestions Dropdown -->
+           <ul
+             *ngIf="chemicalStructure?.autosuggestionList?.length"
+             class="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto"
+           >
+             <li
+               *ngFor="let suggestion of chemicalStructure?.autosuggestionList"
+               class="px-4 py-2 cursor-pointer hover:bg-blue-100"
+               (click)="handleSuggestionClick(suggestion, searchTypes.chemicalStructure)"
+             >
+               {{ suggestion }}
+             </li>
+           </ul>
+         </div>
+      </div>       
+   </div>
+ </div>

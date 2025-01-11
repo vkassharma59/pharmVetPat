@@ -1,0 +1,134 @@
+
+#errorPane{
+    background-color: #fff;
+    margin: 40px;
+    display: block;
+    padding: 30px;
+    border: 1px solid #D0D0D0;
+    box-shadow: 0 0 8px #D0D0D0;
+    font: 13px/20px normal Helvetica, Arial, sans-serif;
+    color: #4F5155;
+}
+
+
+.headPane{
+    border-bottom: 3px solid rgb(79, 56, 31);            
+    border-radius: 4px;
+    height: 50px;
+    margin: 10px;
+    line-height: 50px;
+    text-align: left;
+}    
+.headTitle{
+    font-size: 25px;
+    color: rgb(79, 56, 31);
+    font-family: 'Roboto Slab', serif;
+    font-weight: bold;
+}
+body{
+    margin: 20px;
+}
+
+.card{
+    border: 1px solid rgb(66, 31, 77);
+    border-radius:4px;
+    height: 150px;
+    padding: 15px;
+    margin: 10px;
+}
+.cls1{
+    font-size: 20px;
+    padding: 10px;
+    font-family: 'Roboto Slab', serif;
+    color: rgb(66, 31, 77);
+}
+.cls2{
+    font-weight: bold;
+    padding: 10px;
+    color: rgb(79, 56, 31);
+    font-size: 16px;
+}
+.cls3{
+    display: inline-block;   
+    font-size: 15px;
+}
+img{
+    border-radius: 8px;
+    width: 150px;
+    height: 150px;
+    padding: 2px 0;
+}
+.profilecls{
+    float: left;
+}
+.detcls>div{
+    overflow-y: hidden;
+    display: -webkit-box;
+    padding: 3px;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.elePane{
+    border: 1px solid black;
+    margin: 10px;
+    padding-left: 35px;
+    line-height: 50px;
+    text-align: left;
+    border-radius: 4px;
+} 
+.eleTitle{
+    font-size: 20px;
+    border-bottom: 2px solid rgb(33, 32, 64);
+    color: rgb(33, 32, 64);
+    font-family: 'Roboto Slab', serif;
+    font-weight: bold;
+    position: absolute;
+}
+.eleName{
+    font-size: 18px;
+    position: absolute;
+    padding-left: 20px;
+    font-family: 'Roboto Slab', serif;
+}
+.eleName,.eleTitle,.eleTitle2,.elePane,.headPane,.headTitle,div{
+    height: fit-content;
+    position: relative;
+}
+.headTitle,.eleName{
+    display: block;
+}
+
+table{
+        padding: 20px;
+}
+
+th{
+    color:rgb(33, 32, 64);
+    font-family: 'Roboto Slab', serif;
+    font-size: 18px;
+    padding-bottom: 20px;
+}
+
+td:first-child ,th {
+    color:rgb(33, 32, 64);
+    font-family: 'Roboto Slab', serif;
+    font-size: 20px;
+    padding-right: 50px;
+}
+th,td{
+    padding: 5px;
+}
+
+td:last-child{
+    font-size: 18px;
+    font-style: italic;
+}
+
+.eleTitle2{
+    display: block;
+    font-size: 20px;
+    color: rgb(33, 32, 64);
+    font-family: 'Roboto Slab', serif;
+    font-weight: bold;
+}

@@ -1,0 +1,76 @@
+form{
+    display: none;
+}
+
+.card{
+    border: 1px solid rgb(66, 31, 77);
+    border-radius:4px;
+    height: 150px;
+    padding: 15px; 
+    margin: 10px;
+    cursor: pointer;
+}
+.cls1{
+    font-size: 20px;
+    padding: 10px;
+    font-family: 'Castoro', serif;;
+    color: rgb(66, 31, 77);
+}
+.cls2{
+    font-weight: bold;
+    padding: 10px;
+    color: rgb(79, 56, 31);
+    font-size: 16px;
+}
+.cls3{
+    display: inline-block;   
+    font-size: 15px;
+}
+img{
+    border-radius: 8px;
+    width: 150px;
+    height: 150px;
+    padding: 2px 0;
+}
+.profilecls{
+    float: left;
+}
+.detcls>div{
+    padding: 3px;
+}
+.rescnt{
+    background-color: orange;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 3px;
+}
+.rescnt>h2{
+    color: white;
+    padding-left: 20px;
+}
+.card:hover{
+    border: 3px solid rgb(66, 31, 77);
+}
+
+.norescnt{
+    background-color: rgb(230, 48, 48);
+    line-height: 40px;
+    padding: 1px;
+    padding-left: 15px;
+    margin-top: 4px;
+    border-radius: 3px;
+    margin-left: 10px;
+}
+
+.norescnt>h2{
+    color:white;
+    font-style: italic;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.detcls>div{
+    overflow-y: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}

@@ -1,0 +1,106 @@
+<!-- <div class="px-8 pt-3 mt-[8rem] bg-[#F8FAFF]">
+  <button
+    (click)="handleBack()"
+    class="px-4 py-1 my-1 bg-[#F8FAFF] rounded-md font-semibold border-2 text-[#0032A0] border-[#0032A0] hover:bg-[#0032A0] hover:text-white"
+  >
+    Back
+  </button>
+</div> -->
+<div class="flex items-center justify-between px-8 pt-3">
+  <!-- Left Button -->
+  <button
+    (click)="handleBack()"
+    class="px-4 py-1 my-1 bg-[#F8FAFF] rounded-md font-semibold border-2 text-[#0032A0] border-[#0032A0] hover:bg-[#0032A0] hover:text-white"
+  >
+    Back
+  </button>
+  
+  <!-- Center Logo -->
+  <div class="flex justify-center">
+    <img src="assets/images/TechnicalRoutesLogo.png" alt="Technical Routes Logo" class="h-12" />
+  </div>
+  
+  <!-- Right Button -->
+  <button
+    (click)="handleBack()" [ngClass]="{ 'invisible': isBackHidden }"
+    class="px-4 py-1 my-1 bg-[#F8FAFF] rounded-md font-semibold border-2 text-[#0032A0] border-[#0032A0] hover:bg-[#0032A0] hover:text-white"
+  >
+    Back
+  </button>
+</div>
+<app-loader *ngIf="loading"></app-loader>
+<!-- <app-result-tab
+  *ngIf="MainDataResultShow?.basic_product_count && MainDataResultShow.basic_product_data.length > 0"
+  (makePdf)="generatePdf.emit($event)"
+  [MainDataResultShow]="MainDataResultShow"
+  [CurrentAPIBody]="CurrentAPIBody"
+  (showDataResultFunction)="showDataResultFunction.emit($event)"
+  (priviledgeModal)="openPriviledgeModal($event)"
+  (handleLoading)="handleLoadingState($event)"
+></app-result-tab> -->
+
+<!-- <app-record-data
+  (showResultFunction)="showResultFunction.emit($event)"
+  (showDataResultFunction)="showDataResultFunction.emit($event)"
+  (makePdf)="generatePdf.emit($event)"
+  (priviledgeModal)="openPriviledgeModal($event)"
+  [MainDataResultShow]="MainDataResultShow"  
+  [CurrentAPIBody]="CurrentAPIBody"
+  [AllDataStates]="AllDataStates"
+></app-record-data> -->
+
+<div
+  *ngIf="MainDataResultShow?.basic_product_count && MainDataResultShow.basic_product_data.length == 0" class="py-4"
+>
+  <h1 class="py-2 px-2 mx-3 bg-blue-300 rounded-md border-blue-400">
+    No data is available...
+  </h1>
+</div>
+
+<!-- Priviledge Modal -->
+
+<div
+  #priviledgeModal
+  class="modal fade bg-black bg-opacity-50"
+  id="priviledge"
+  tabindex="-1"
+  aria-labelledby="priviledge"
+  aria-hidden="true"
+>
+  <div class="modal-dialog text-center modal-dialog-centered">
+    <div class="modal-content p-x-15 bg_1">
+      <div class="dis-block-2">
+        <!-- <div class="p-top-32">
+          <span class="text_blue_9">Sign In</span>
+        </div> -->
+      </div>
+
+      <div class="">
+        <div class="flex justify-between p-3">
+          <h1 class="text-lg font-bold">Priviledge Alert</h1>
+          <button (click)="closeModal()" class="text-lg font-bold text-black">
+            X
+          </button>
+        </div>
+        <hr />
+        <div class="p-3">
+          <h1>{{ LimitValue }}</h1>
+        </div>
+        <hr />
+        <div class="py-3">
+          <div class="flex justify-center items-center gap-3 pb-3">
+            <div class="">
+              <button
+                type="button"
+                class="text_white_1 bg-gray-700 h-[50px] px-8 py-2 rounded-full text-white font-bold"
+                (click)="closeModal()"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

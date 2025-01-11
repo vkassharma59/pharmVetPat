@@ -1,0 +1,292 @@
+<!-- <div class="footer">
+    <div class="footer_box">
+      <div class="footer_box_top">
+        <div class="footer_box_top_left">
+            <img class="footer_box_top_left_logo" [src]="baseurl + footerdata.footer_logo" />
+            <div class="footer_box_top_left_info text_style_1">
+            <p>{{ footerdata.description }}</p>
+          </div>
+        </div>
+        <div class="footer_box_top_center">
+          <p class="text_style_2">Quick Links</p>
+          <ul class="footer_box_top_center_list text_style_1">
+            <li class="footer_box_top_center_list_item cursor-pointer" routerLink="/home">Home</li>
+            <li class="footer_box_top_center_list_item cursor-pointer" routerLink="/about_us">About Us</li>
+            <li class="footer_box_top_center_list_item cursor-pointer" routerLink="/client">Clients</li>
+            <li class="footer_box_top_center_list_item cursor-pointer" routerLink="/career_at">Career</li>
+            <li class="footer_box_top_center_list_item cursor-pointer" routerLink="/contact_us">Contact Us</li>
+          </ul>
+        </div>
+        <div class="footer_box_top_right">
+          <p class="text_style_2">Contact Us</p>
+          <div class="footer_box_top_right_items">
+            <div>
+              <img src="../../../assets/icons/pincode_icon.png" />
+            </div>
+            <div>
+              <p class="text_style_1">{{ footerdata.address }}</p>
+            </div>
+            <div>
+              <img src="../../../assets/icons/phone_icon.png" />
+            </div>
+            <div>
+              <p class="text_style_1">{{ footerdata.mobile_number }}</p>
+            </div>
+            <div>
+              <img src="../../../assets/icons/email_icon.png" />
+            </div>
+            <div>
+              <p class="text_style_1">{{ footerdata.email }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="footer_box_bottom">
+        <div class="footer_box_bottom_text text_style_3">
+          <p class="footer_box_bottom_text_item1">{{ footerdata.copyright }}</p>
+          <p class="footer_box_bottom_text_item3 text-end">
+            <span>Follow us on</span>
+            <a class="footer_box_bottom_text_item3_icon cursor-pointer" [href]="footerdata.facebook_URL" target="_blank">
+              <img src="../../../assets/icons/facebook.png" />
+            </a>
+            <a class="footer_box_bottom_text_item3_icon cursor-pointer" [href]="footerdata.linkdin_URL" target="_blank">
+              <img src="../../../assets/icons/linkdin_black.png" />
+            </a>
+            <a class="footer_box_bottom_text_item3_icon cursor-pointer" [href]="footerdata.youtube_URL" target="_blank">
+              <img src="../../../assets/icons/youtube.png" />
+            </a>
+            <a class="footer_box_bottom_text_item3_icon cursor-pointer" [href]="footerdata.instagram_URL" target="_blank">
+              <img src="../../../assets/icons/instagram.png" />
+            </a>
+          </p>
+        </div>
+      </div>
+      
+    </div>
+  </div> -->
+<div class="footer font-bold">
+  <div class="footer_box">
+    <div class="footer_box_top">
+      <div class="footer_box_top_left">
+        <img class="footer_box_top_left_logo" src="assets/images/logo.png" />
+        <div class="footer_box_top_left_info text_style_1">
+          <p>
+            ChemRobotics™ Business, Scientific, & Innovation Intelligence for
+            Generic and Discovery Agrochem, Pharmaceutical API & Specialty
+            Chemical Industry including Battery Chemicals, Dyes, and LED
+            Chemical etc.
+          </p>
+          <p class="footer_box_bottom_text_item3">
+            <a
+              class="footer_box_bottom_text_item3_icon cursor-pointer"
+              href="https://www.facebook.com/ChemRobotics"
+              target="_blank"
+            >
+              <i class="fa-brands footer-icn fa-facebook-f p-2"></i>
+            </a>
+            <a
+              class="footer_box_bottom_text_item3_icon cursor-pointer"
+              href="https://www.linkedin.com/company/chemrobotics/"
+              target="_blank"
+            >
+              <i class="fa-brands footer-icn fa-linkedin-in p-2"></i>
+            </a>
+            <a
+              class="footer_box_bottom_text_item3_icon cursor-pointer"
+              href="https://www.youtube.com/channel/UCl21pDcr00u_asN6gCJ6hfQ"
+              target="_blank"
+            >
+              <i class="fa-brands footer-icn fa-youtube p-2"></i>
+            </a>
+            <a
+              class="footer_box_bottom_text_item3_icon cursor-pointer"
+              href="https://www.instagram.com/chemrobotics/"
+              target="_blank"
+            >
+              <i class="fa-brands footer-icn fa-instagram p-2"></i>
+            </a>
+          </p>
+        </div>
+      </div>
+      <div class="footer_box_top_center">
+        <p class="text_style_2">Quick Links</p>
+        <ul class="footer_box_top_center_list text_style_1">
+          <li
+            class="footer_box_top_center_list_item cursor-pointer"
+            (click)="scrollToTop()"
+          >
+            <a href="https://www.chemrobotics.com/?access_key={{ accessKey }}"
+              >Home</a
+            >
+          </li>
+          <li
+            class="footer_box_top_center_list_item cursor-pointer"
+            (click)="scrollToTop()"
+          >
+            <a
+              href="https://www.chemrobotics.com/about-us/?access_key={{
+                accessKey
+              }}"
+              >About Us</a
+            >
+          </li>
+          <li
+            class="footer_box_top_center_list_item cursor-pointer"
+            (click)="scrollToTop()"
+          >
+            <a
+              href="https://www.chemrobotics.com/clients/?access_key={{
+                accessKey
+              }}"
+            >
+              Clients
+            </a>
+          </li>
+          <li
+            class="footer_box_top_center_list_item cursor-pointer"
+            (click)="scrollToTop()"
+          >
+            <a
+              href="https://www.chemrobotics.com/career/?access_key={{
+                accessKey
+              }}"
+              >Career</a
+            >
+          </li>
+          <li
+            class="footer_box_top_center_list_item cursor-pointer"
+            (click)="scrollToTop()"
+          >
+            <a
+              href="https://www.chemrobotics.com/contact/?access_key={{
+                accessKey
+              }}"
+              >Contact Us</a
+            >
+          </li>
+
+          <li
+            class="footer_box_top_center_list_item cursor-pointer"
+            (click)="scrollToTop()"
+          >
+            <a
+              href="https://www.chemrobotics.com/ethics/?access_key={{
+                accessKey
+              }}"
+            >
+              Code of Ethics
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="footer_box_top_center1">
+        <p class="text_style_2">Quick Links</p>
+        <div class="footer_box_top_center1_list text_style_1">
+          <div class="footer_box_top_center1_list_box" (click)="scrollToTop()">
+            <div class="footer_box_top_center1_list_box_item cursor-pointer">
+              <div>&ndash;</div>
+              <a href="https://www.chemrobotics.com/?access_key={{ accessKey }}"
+                >Home</a
+              >
+            </div>
+          </div>
+          <div class="footer_box_top_center1_list_box" (click)="scrollToTop()">
+            <div class="footer_box_top_center1_list_box_item cursor-pointer">
+              <div>&ndash;</div>
+              <a
+                href="https://www.chemrobotics.com/about-us/?access_key={{
+                  accessKey
+                }}"
+                >About Us</a
+              >
+            </div>
+          </div>
+
+          <div class="footer_box_top_center1_list_box" (click)="scrollToTop()">
+            <div class="footer_box_top_center1_list_box_item cursor-pointer">
+              <div>&ndash;</div>
+              <a
+                href="https://www.chemrobotics.com/clients/?access_key={{
+                  accessKey
+                }}"
+                >Clients</a
+              >
+            </div>
+          </div>
+          <div class="footer_box_top_center1_list_box" (click)="scrollToTop()">
+            <div class="footer_box_top_center1_list_box_item cursor-pointer">
+              <div>&ndash;</div>
+              <a
+                href="https://www.chemrobotics.com/career/?access_key={{
+                  accessKey
+                }}"
+                >Career</a
+              >
+            </div>
+          </div>
+          <div
+            class="footer_box_top_center1_list_box cursor-pointer"
+            (click)="scrollToTop()"
+          >
+            <div class="footer_box_top_center1_list_box_item cursor-pointer">
+              <div>&ndash;</div>
+              <a
+                href="https://www.chemrobotics.com/contact/?access_key={{
+                  accessKey
+                }}"
+                >Contact Us</a
+              >
+            </div>
+          </div>
+          <div
+            class="footer_box_top_center1_list_box cursor-pointer"
+            routerLink="/ethics"
+            (click)="scrollToTop()"
+          >
+            <div class="footer_box_top_center1_list_box_item cursor-pointer">
+              <div>&ndash;</div>
+              <a
+                href="https://www.chemrobotics.com/ethics/?access_key={{
+                  accessKey
+                }}"
+                >Code of Ethics</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer_box_top_right">
+        <p class="text_style_2">Contact Us</p>
+        <div class="footer_box_top_right_items">
+          <div>
+            <i class="fa-solid fa-location-dot px-2"></i>
+          </div>
+          <div>
+            <p class="text_style_1">
+              ChemRobotics Private Limited SITE C UPSIDC SURAJPUR, GREATER NOIDA
+              201311, INDIA
+            </p>
+          </div>
+          <div>
+            <i class="fa-solid fa-phone-volume px-2"></i>
+          </div>
+          <div>
+            <p class="text_style_1">+91 6266117944</p>
+          </div>
+          <div>
+            <i class="fa-solid fa-envelope px-2"></i>
+          </div>
+          <div>
+            <p class="text_style_1">support&#64;chemrobotics.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copy-right">
+    <p class="footer_box_bottom_text_item1">
+      ChemRobotics Pvt. Ltd. &copy; 2024, All Rights Reserved
+    </p>
+  </div>
+</div>

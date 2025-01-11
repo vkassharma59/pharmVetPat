@@ -1,0 +1,23 @@
+<div class="chem-body_container">
+  <div
+    (click)="handleScrollToTop()"
+    class="w-12 h-12 bg-[#FFCD04] rounded-full flex justify-center items-center fixed bottom-2 right-2 z-50 border-2 border-[#0032A0] hover:cursor-pointer"
+  >
+    <img src="assets/images/rocket_icon.png" class="object-cover w-8" />
+  </div>
+  <div class="relative">
+    <app-loader *ngIf="loading" class="w-screen h-screen"></app-loader>
+
+    <app-header
+      [userAuth]="userAuth"
+      (setLoadingState)="handleSetLoading($event)"
+    ></app-header>
+
+    <div  class="chem-body py-12">
+      <div class="scroll">
+        <chem-home></chem-home>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

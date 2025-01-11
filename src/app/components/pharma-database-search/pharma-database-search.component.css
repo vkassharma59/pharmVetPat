@@ -1,0 +1,163 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7faff;
+    margin: 0;
+    padding: 0;
+}
+
+.search-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    display: flex;
+    justify-content:space-around;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: black;
+    border-radius: 20px;
+    align-self: center;
+    width: 500px;
+    height: 45px;
+    margin: 0 auto;
+
+}
+
+.header button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.header button:hover {
+    background-color: #0056b3;
+}
+
+.section-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #0056b3;
+}
+
+.simple-search,
+.advanced-search {
+    margin-bottom: 30px;
+}
+
+.simple-search input{
+    width: 55%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.simple-search select,
+.advanced-search select,
+.advanced-search input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.simple-search .buttons,
+.advanced-search .buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.simple-search .buttons button,
+.advanced-search .buttons button {
+    border-color: #007bff;
+    color:  #007bff;
+    padding: 10px 20px;
+    /* border: none; */
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 200px;
+    background-color: white;
+    font-weight: 500;
+}
+
+.simple-search .buttons button:hover,
+.advanced-search .buttons button:hover {
+    /* background-color: #0056b3; */
+    border-color: #0056b3;
+}
+
+.advanced-search .filter-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.advanced-search .filter-group select,
+.advanced-search .filter-group input {
+    flex: 1;
+    /* width: 350px; */
+}
+
+.date-filters {
+    display: flex;
+    gap: 10px;
+}
+
+.tutorial-btn {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.tutorial-btn button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.tutorial-btn button:hover {
+    background-color: #218838;
+}
+.datatype{
+    display: flex;
+    /* margin-bottom: 10px; */
+    font-size: 14px;
+    color: #333;
+
+}
+.hidden {
+    display: none;
+}
+.example-text {
+    font-size: 12px;
+    color: gray;
+    margin-top: -5px;
+}
+
+.divider {
+    border-top: 1px solid #ddd;
+    margin: 20px 0;
+}
+
+.example-text {
+    color: #666;
+}
+
+.divider {
+    border-color: lightgray;
+}

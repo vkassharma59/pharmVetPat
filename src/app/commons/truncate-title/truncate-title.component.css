@@ -1,0 +1,28 @@
+/* tech route tab style for the title */
+.tech-route-tab-title {
+    font-family: 'Montserrat';
+    font-weight: bold;
+    padding: 15px 15px;
+    text-align: justify;
+    background-color: #f3f4f6;
+    border: 2px solid rgb(204, 201, 201);
+    font-size: large;
+    color: #312e88;
+  }
+
+  .tab-title {
+    font-family: 'Montserrat';
+    font-weight: bold;
+    padding: 5px 0px;
+    text-align: justify;
+    font-size: large;
+    color: #312e88;
+  }
+  
+  /* View More button style */
+  .view-more-button {
+    border-bottom: 1px dotted;
+    background: none;
+    cursor: pointer;
+  }
+  

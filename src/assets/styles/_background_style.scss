@@ -1,0 +1,42 @@
+.bg_1{
+    background-color: #FFFFFF;
+}
+.bg_2{
+    background-color: #F8FAFF;
+}
+.bg_3{
+    background-color: #0032A0;
+}
+.bg_4{
+    background: #000000C7;
+}
+.bg_img{
+    position: relative;
+}
+
+.bg_img::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;       
+    // background: url('../../assets/img/bg_img_1.png') left no-repeat;
+    // background-size: 65% 100%;
+}
+
+.bg_img::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    transform: rotate(0deg);    
+    // background: url('../../assets/img/bg_img_2.png') right no-repeat;    
+    // background-size: 55% 100%;
+}
+
+.fade_bg{
+    background: rgba(255, 255, 255, 0.85);
+}

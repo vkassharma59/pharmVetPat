@@ -1,0 +1,1861 @@
+<div class="header z-50">
+  <div class="header_top">
+    <div class="top-link">
+      <div>
+        <a class="nabbar_menu" href="mailto:sales@chemRobotics.com"><i class="fa fa-envelope fa-lg"></i>&nbsp; Email</a>
+      </div>
+      <div>
+        <a class="nabbar_menu" href="tel:916266117944"><i class="fa fa-mobile fa-lg"></i>&nbsp; +91- 6266117944</a>
+      </div>
+      <div>
+        <a class="assets_link" id="assets_link1" href="https://chemroboticspharma.com/assets/data/ChemRobotics_Phama_Brochure_2021.pdf" target="_blank"><i class="fa fa-download fa-lg" aria-hidden="true"></i>&nbsp; Brochure</a>
+      </div>
+      <div>
+        <a class="assets_link" id="assets_link2" href="https://www.chemrobotics.com/agropat/assets/chemrobotics.apk"><i class="fa fa-android fa-lg"></i>&nbsp; Download App</a>
+      </div>
+
+      <div *ngIf="!user" class="ng-scope">
+        <a target="_blank" class="nabbar_menu" href="https://chemrobotics.com/registration"><i class="fa fa-user-plus fa-lg"></i>&nbsp;  Sign Up</a>
+      </div>
+      <div *ngIf="!user"
+          data-bs-toggle="modal"
+          data-bs-target="#sign-in" class="ng-scope">
+        <a class="nabbar_menu" href="javascript:void(0)" data-toggle="modal" data-target="#login_modal"><i class="fa fa-sign-in fa-lg"></i>&nbsp; Login</a>
+      </div>
+
+      <div *ngIf="user" class="ng-scope">
+        <a target="_blank" class="nabbar_menu" href="https://chemrobotics.com/profile"><i class="fa fa-user fa-lg"></i>&nbsp; {{ user?.name }}</a>
+      </div>
+
+      <div 
+        *ngIf="user"
+        data-bs-toggle="modal"
+        data-bs-target="#log_out">
+        <a class="nabbar_menu" href="javascript:void(0)"><i class="fa fa-sign-out fa-lg"></i>&nbsp; Logout</a>
+      </div>
+
+      <div class="linked-btn-bottom">
+         <script src="//platform.linkedin.com/in.js" type="text/javascript">
+           lang: en_US
+         </script>
+         <span class="IN-widget" data-lnkd-debug="<script type=&quot;IN/FollowCompany+init&quot; data-id=&quot;31238177&quot; data-counter=&quot;right&quot;></script>" style="display: inline-block; line-height: 1; vertical-align: bottom; padding: 0px; margin: 0px; text-indent: 0px;"><iframe id="{&quot;xdOrigin&quot;:&quot;https://chemroboticspharma.com&quot;,&quot;xdChannel&quot;:&quot;9375d425-532e-422c-9ec3-647e8eaee6f3&quot;,&quot;framework&quot;:&quot;@linkedin/xdoor-sdk&quot;,&quot;version&quot;:&quot;0.1.176&quot;,&quot;debug&quot;:false}" name="{&quot;xdOrigin&quot;:&quot;https://chemroboticspharma.com&quot;,&quot;xdChannel&quot;:&quot;9375d425-532e-422c-9ec3-647e8eaee6f3&quot;,&quot;framework&quot;:&quot;@linkedin/xdoor-sdk&quot;,&quot;version&quot;:&quot;0.1.176&quot;,&quot;debug&quot;:false}" src="https://www.linkedin.com/pages-extensions/FollowCompany?id=31238177&amp;counter=right&amp;xdOrigin=https%3A%2F%2Fchemroboticspharma.com&amp;xdChannel=9375d425-532e-422c-9ec3-647e8eaee6f3&amp;xd_origin_host=https%3A%2F%2Fchemroboticspharma.com" class="IN-widget IN-widget--iframe" scrolling="no" allowtransparency="true" frameborder="0" border="0" width="1" height="1" title="LinkedIn Embedded Content" style="vertical-align: bottom; width: 121px; height: 24.5px;"></iframe></span>
+      </div>
+   </div>
+  </div>
+  <div
+    class="header_bottom bg-[#FFCD04]"
+    [ngClass]="
+      transparent ? 'header_background_transparent' : 'header_background'
+    "
+  >
+    <div class="header_bottom_logo">
+      <img class="header_bottom_logo_img" src="assets/images/logo.png" />
+    </div>
+    <div class="header_bottom_center">
+      <div class="header_bottom_center_box">
+        <a
+          class="header_bottom_center_box_item"
+          [ngClass]="
+            transparent
+              ? 'header_bottom_center_box_text'
+              : 'header_bottom_center_box_text1'
+          "
+          href="https://chemrobotics.com/"
+          >Home</a
+        >
+      </div>
+      <div
+        (mouseenter)="enterHeaderDesc()"
+        (mouseleave)="leaveHeaderDesc()"
+        class="header_bottom_center_box1"
+        [ngClass]="{ header_bottom_center_box_selected: descDropdown }"
+      >
+        <p
+          class="header_bottom_center_box1_item mb-0 flex items-center gap-1"
+          [ngClass]="
+            transparent
+              ? 'header_bottom_center_box1_text'
+              : 'header_bottom_center_box1_text1'
+          "
+        >
+          Who we are
+          <svg
+            *ngIf="overHeaderDesc || overDescDropdown || !transparent"
+            width="9"
+            height="6"
+            viewBox="0 0 9 6"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
+              fill="#303030"
+            />
+          </svg>
+          <svg
+            *ngIf="!overHeaderDesc && !overDescDropdown && transparent"
+            width="9"
+            height="6"
+            viewBox="0 0 9 6"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
+              fill="white"
+            />
+          </svg>
+        </p>
+        <div
+          class="header_bottom_center_box1_dropdown descDropdown"
+          [ngClass]="{ open: descDropdown }"
+        >
+          <ul
+            (mouseenter)="enterDescBox()"
+            (mouseleave)="leaveDescBox()"
+            class="header_bottom_center_box1_dropdown_list text_blue_3"
+          >
+            <li class="header_bottom_center_box1_dropdown_list_item">
+              <a
+                href="https://www.chemrobotics.com/about-us?access_key={{
+                  accessKey
+                }}"
+                class="header_bottom_center_box1_dropdown_list_item_link"
+              >
+                <span
+                  class="header_bottom_center_box1_dropdown_list_item_link_text"
+                  >About us</span
+                >
+              </a>
+            </li>
+
+            <li class="header_bottom_center_box1_dropdown_list_item">
+              <a
+                href="https://www.chemrobotics.com/advisory?access_key={{
+                  accessKey
+                }}"
+                class="header_bottom_center_box1_dropdown_list_item_link"
+              >
+                <span
+                  class="header_bottom_center_box1_dropdown_list_item_link_text"
+                  >Advisory Panel</span
+                >
+              </a>
+            </li>
+
+            <li class="header_bottom_center_box1_dropdown_list_item">
+              <a
+                href="https://www.chemrobotics.com/awards-recognition?access_key={{
+                  accessKey
+                }}"
+                class="header_bottom_center_box1_dropdown_list_item_link"
+              >
+                <span
+                  class="header_bottom_center_box1_dropdown_list_item_link_text"
+                  >Awards & Recognition</span
+                >
+              </a>
+            </li>
+            <li class="header_bottom_center_box1_dropdown_list_item">
+              <a
+                class="header_bottom_center_box1_dropdown_list_item_link"
+                href="https://www.chemrobotics.com/our-partners?access_key={{
+                  accessKey
+                }}"
+              >
+                <span
+                  class="header_bottom_center_box1_dropdown_list_item_link_text"
+                  >Our Partner</span
+                >
+              </a>
+            </li>
+            <li class="header_bottom_center_box1_dropdown_list_item">
+              <a
+                class="header_bottom_center_box1_dropdown_list_item_link"
+                href="https://www.chemrobotics.com/our-teams?access_key={{
+                  accessKey
+                }}"
+              >
+                <span
+                  class="header_bottom_center_box1_dropdown_list_item_link_text"
+                  >Our Team</span
+                >
+              </a>
+            </li>
+            <li class="header_bottom_center_box1_dropdown_list_item">
+              <a
+                class="header_bottom_center_box1_dropdown_list_item_link"
+                href="https://www.chemrobotics.com/clients?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+              >
+                <span
+                  class="header_bottom_center_box1_dropdown_list_item_link_text"
+                  >Client</span
+                >
+              </a>
+            </li>
+            <li class="header_bottom_center_box1_dropdown_list_item">
+              <a
+                class="header_bottom_center_box1_dropdown_list_item_link"
+                href="https://www.chemrobotics.com/press-release?access_key={{
+                  accessKey
+                }}"
+              >
+                <span
+                  class="header_bottom_center_box1_dropdown_list_item_link_text"
+                  >Press Release</span
+                >
+              </a>
+            </li>
+            <li class="header_bottom_center_box1_dropdown_list_item">
+              <a
+                class="header_bottom_center_box1_dropdown_list_item_link"
+                href="https://www.chemrobotics.com/our-story?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+              >
+                <span
+                  class="header_bottom_center_box1_dropdown_list_item_link_text"
+                  >Our Story</span
+                >
+              </a>
+            </li>
+            <li class="header_bottom_center_box1_dropdown_list_item">
+              <a
+                class="header_bottom_center_box1_dropdown_list_item_link"
+                href="https://www.chemrobotics.com/our-events?access_key={{
+                  accessKey
+                }}"
+              >
+                <span
+                  class="header_bottom_center_box1_dropdown_list_item_link_text"
+                  >Our Events</span
+                >
+              </a>
+            </li>
+            <li class="header_bottom_center_box1_dropdown_list_item">
+              <a
+                class="header_bottom_center_box1_dropdown_list_item_link"
+                href="https://www.chemrobotics.com/gallery?access_key={{
+                  accessKey
+                }}"
+              >
+                <span
+                  class="header_bottom_center_box1_dropdown_list_item_link_text"
+                  >Gallery</span
+                >
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div
+        (mouseenter)="enterHeader()"
+        (mouseleave)="leaveHeader()"
+        class="header_bottom_center_box"
+        [ngClass]="{ header_bottom_center_box_selected: showProducts }"
+      >
+        <p
+          class="mb-0 flex items-center gap-1"
+          [ngClass]="[
+            showProducts
+              ? 'header_bottom_center_box_selected_item'
+              : 'header_bottom_center_box_item',
+            transparent
+              ? 'header_bottom_center_box_text'
+              : 'header_bottom_center_box_text1'
+          ]"
+        >
+          Agro Products
+          <svg
+            *ngIf="showProducts || !transparent"
+            width="9"
+            height="6"
+            viewBox="0 0 9 6"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
+              fill="#303030"
+            />
+          </svg>
+          <svg
+            *ngIf="!showProducts && transparent"
+            width="9"
+            height="6"
+            viewBox="0 0 9 6"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
+              fill="white"
+            />
+          </svg>
+        </p>
+      </div>
+      <div
+        (mouseenter)="enterHeaderServices()"
+        (mouseleave)="leaveHeaderServices()"
+        class="header_bottom_center_box1"
+        [ngClass]="{ header_bottom_center_box_selected: servicesDropdown }"
+      >
+        <p
+          class="header_bottom_center_box1_item mb-0 flex items-center gap-1"
+          [ngClass]="
+            transparent
+              ? 'header_bottom_center_box1_text'
+              : 'header_bottom_center_box1_text1'
+          "
+        >
+          Services
+          <svg
+            *ngIf="overHeaderservices || overServicesDropdown || !transparent"
+            width="9"
+            height="6"
+            viewBox="0 0 9 6"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
+              fill="#303030"
+            />
+          </svg>
+          <svg
+            *ngIf="!overHeaderservices && !overServicesDropdown && transparent"
+            width="9"
+            height="6"
+            viewBox="0 0 9 6"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
+              fill="white"
+            />
+          </svg>
+        </p>
+        <div
+          (mouseenter)="enterServicesBox()"
+          (mouseleave)="leaveServicesBox()"
+          class="header_bottom_center_box1_dropdown servicesDropdown"
+          [ngClass]="{ open: servicesDropdown }"
+        >
+          <ul class="header_bottom_center_box1_dropdown_list text_blue_3">
+            <li class="header_bottom_center_box1_dropdown_list_item">
+              <a
+                class="header_bottom_center_box1_dropdown_list_item_link"
+                href="https://www.chemrobotics.com/agro-regulatory?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+              >
+                <span
+                  class="header_bottom_center_box1_dropdown_list_item_link_text"
+                  >Auto-Regulatory</span
+                >
+              </a>
+            </li>
+            <li class="header_bottom_center_box1_dropdown_list_item">
+              <a
+                class="header_bottom_center_box1_dropdown_list_item_link"
+                href="https://www.chemrobotics.com/patent-india?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+              >
+                <span
+                  class="header_bottom_center_box1_dropdown_list_item_link_text"
+                  >Patents India</span
+                >
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="header_bottom_center_box">
+        <a
+          href="https://www.chemrobotics.com/career?access_key={{ accessKey }}"
+          target="_blank"
+          class="header_bottom_center_box_item"
+          [ngClass]="
+            transparent
+              ? 'header_bottom_center_box_text'
+              : 'header_bottom_center_box_text1'
+          "
+          >Career At</a
+        >
+      </div>
+      <div class="header_bottom_center_box">
+        <a
+          href="https://www.chemrobotics.com/contact?access_key={{ accessKey }}"
+          target="_blank"
+          class="header_bottom_center_box_item"
+          [ngClass]="
+            transparent
+              ? 'header_bottom_center_box_text'
+              : 'header_bottom_center_box_text1'
+          "
+          >Contact Us</a
+        >
+      </div>
+      <div class="header_bottom_center_box">
+        <a
+          href="https://chemrobotics.in?access_key={{ accessKey }}"
+          target="_blank"
+          class="header_bottom_center_box_item"
+          [ngClass]="
+            transparent
+              ? 'header_bottom_center_box_text'
+              : 'header_bottom_center_box_text1'
+          "
+          >Chemrobotics Times</a
+        >
+      </div>
+      <div class="header_bottom_center_box">
+        <a
+          href="https://buychem.chemrobotics.com?access_key={{ accessKey }}"
+          target="_blank"
+          class="header_bottom_center_box_item"
+          [ngClass]="
+            transparent
+              ? 'header_bottom_center_box_text'
+              : 'header_bottom_center_box_text1'
+          "
+          >Buy Chem</a
+        >
+      </div>
+      <div class="header_bottom_center_box">
+        <a
+          href="https://chemroboticspharma.com?access_key={{ accessKey }}"
+          target="_blank"
+          class="header_bottom_center_box_item"
+          [ngClass]="
+            transparent
+              ? 'header_bottom_center_box_text'
+              : 'header_bottom_center_box_text1'
+          "
+          >Pharma Database</a
+        >
+      </div>
+      <div class="header_bottom_center_box">
+        <div class="googleT">
+          <div id="google_translate_element"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    (mouseenter)="enterProductBox()"
+    (mouseleave)="leaveProductBox()"
+    class="header_products z-50"
+    *ngIf="showProducts"
+  >
+    <div class="header_products_right">
+      <div class="header_products_right_box">
+        <img
+          class="header_products_right_box_img w-full"
+          src="assets/img/header_products_right.png"
+        />
+      </div>
+    </div>
+    <div class="header_products_left">
+      <div class="header_products_left_box">
+        <div class="header_products_left_box_grid">
+          <div class="header_products_left_box_grid_col">
+            <p class="text_black_2">AGROCHEMICAL / PESTICIDE DATABASE</p>
+            <ul class="header_products_left_box_grid_col_list text_blue_2">
+              <li class="header_products_left_box_grid_col_list_item">
+                <a
+                  class="header_products_left_box_grid_col_list_item_link"
+                  href="https://www.chemrobotics.com/agropat-ultimate?access_key={{
+                    accessKey
+                  }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_products_left_box_grid_col_list_item_link_text text_blue_3"
+                    >AgroPat Ultimate Discovery Suite</span
+                  >
+                  <svg
+                    width="9"
+                    height="13"
+                    viewBox="0 0 9 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
+                      fill="#0032A0"
+                    />
+                  </svg>
+                </a>
+              </li>
+              <li class="header_products_left_box_grid_col_list_item">
+                <a
+                  class="header_products_left_box_grid_col_list_item_link"
+                  href="https://www.chemrobotics.com/agro-suite/agropat-ultimate-2?access_key={{
+                    accessKey
+                  }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_products_left_box_grid_col_list_item_link_text text_blue_3"
+                    >AgroPat Ultimate Generic Suite</span
+                  >
+                  <svg
+                    width="9"
+                    height="13"
+                    viewBox="0 0 9 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
+                      fill="#0032A0"
+                    />
+                  </svg>
+                </a>
+              </li>
+              <li class="header_products_left_box_grid_col_list_item">
+                <a
+                  class="header_products_left_box_grid_col_list_item_link"
+                  href="https://www.chemrobotics.com/agro-suite/mrl-database?access_key={{
+                    accessKey
+                  }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_products_left_box_grid_col_list_item_link_text text_blue_3"
+                    >Global MRL Database</span
+                  >
+                  <svg
+                    width="9"
+                    height="13"
+                    viewBox="0 0 9 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
+                      fill="#0032A0"
+                    />
+                  </svg>
+                </a>
+              </li>
+              <li class="header_products_left_box_grid_col_list_item">
+                <a
+                  class="header_products_left_box_grid_col_list_item_link"
+                  href="https://ipd.chemrobotics.com?access_key={{ accessKey }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_products_left_box_grid_col_list_item_link_text text_blue_3"
+                    >Indian Pesticide Database (IPD)</span
+                  >
+                  <svg
+                    width="9"
+                    height="13"
+                    viewBox="0 0 9 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
+                      fill="#0032A0"
+                    />
+                  </svg>
+                </a>
+              </li>
+              <li class="header_products_left_box_grid_col_list_item">
+                <a
+                  class="header_products_left_box_grid_col_list_item_link"
+                  href="https://www.chemrobotics.com/agro-suite/global-agro-product-directory?access_key={{
+                    accessKey
+                  }}" target="_blank"
+                >
+                  <span
+                    class="header_products_left_box_grid_col_list_item_link_text text_blue_3"
+                    >Global Agro Product Directory (GAPD)</span
+                  >
+                  <svg
+                    width="9"
+                    height="13"
+                    viewBox="0 0 9 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
+                      fill="#0032A0"
+                    />
+                  </svg>
+                </a>
+              </li>
+            </ul>
+            <p class="text_black_2">OTHER DATABASE</p>
+            <ul class="header_products_left_box_grid_col_list text_blue_2">
+              <li class="header_products_left_box_grid_col_list_item">
+                <a
+                  class="header_products_left_box_grid_col_list_item_link"
+                  href="https://agropharmexim.chemrobotics.com/#/agropharm-xim-beta?access_key={{
+                    accessKey
+                  }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_products_left_box_grid_col_list_item_link_text text_blue_3"
+                    >AgroPharm XIM 1.0 DB Beta</span
+                  >
+                  <svg
+                    width="9"
+                    height="13"
+                    viewBox="0 0 9 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
+                      fill="#0032A0"
+                    />
+                  </svg>
+                </a>
+              </li>
+              <li class="header_products_left_box_grid_col_list_item">
+                <a
+                  class="header_products_left_box_grid_col_list_item_link"
+                  href="https://agropharmeximnew.chemrobotics.com/#/agropharm-xim-new-beta?access_key={{
+                    accessKey
+                  }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_products_left_box_grid_col_list_item_link_text text_blue_3"
+                    >AgroPharm XIM 2.0 DB Beta</span
+                  >
+                  <svg
+                    width="9"
+                    height="13"
+                    viewBox="0 0 9 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
+                      fill="#0032A0"
+                    />
+                  </svg>
+                </a>
+              </li>
+              <li class="header_products_left_box_grid_col_list_item">
+                <a
+                  class="header_products_left_box_grid_col_list_item_link"
+                  href="http://globalbusinessevents.chemrobotics.com?access_key={{
+                    accessKey
+                  }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_products_left_box_grid_col_list_item_link_text text_blue_3"
+                    >Global Business Events - Trade Shows, Exhibitions, &
+                    Conferences Beta</span
+                  >
+                  <svg
+                    width="9"
+                    height="13"
+                    viewBox="0 0 9 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
+                      fill="#0032A0"
+                    />
+                  </svg>
+                </a>
+              </li>
+              <li class="header_products_left_box_grid_col_list_item">
+                <a
+                  class="header_products_left_box_grid_col_list_item_link"
+                  href="https://www.chemrobotics.com/agropharm/#/spcdb?access_key={{
+                    accessKey
+                  }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_products_left_box_grid_col_list_item_link_text text_blue_3"
+                    >SPC Database</span
+                  >
+                  <svg
+                    width="9"
+                    height="13"
+                    viewBox="0 0 9 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
+                      fill="#0032A0"
+                    />
+                  </svg>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="header_products_left_box_grid_col">
+            <p class="text_black_2">
+              AGROCHEM, PHARMACHEM & SPECIALTY CHEMICAL DATABASES
+            </p>
+            <ul class="header_products_left_box_grid_col_list text_blue_2">
+              <li class="header_products_left_box_grid_col_list_item">
+                <a
+                  class="header_products_left_box_grid_col_list_item_link"
+                  href="https://www.chemrobotics.com/agro-suite/technical-routes?access_key={{
+                    accessKey
+                  }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_products_left_box_grid_col_list_item_link_text text_blue_3"
+                    >Technical Routes</span
+                  >
+                  <svg
+                    width="9"
+                    height="13"
+                    viewBox="0 0 9 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
+                      fill="#0032A0"
+                    />
+                  </svg>
+                </a>
+              </li>
+              <li class="header_products_left_box_grid_col_list_item">
+                <a
+                  class="header_products_left_box_grid_col_list_item_link"
+                  href="http://www.technicalroute.chemrobotics.com?access_key={{
+                    accessKey
+                  }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_products_left_box_grid_col_list_item_link_text text_blue_3"
+                    >Technical Routes<sup>N</sup> - Essential Chemical Manufacturing Guide</span
+                  >
+                  <svg
+                    width="9"
+                    height="13"
+                    viewBox="0 0 9 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
+                      fill="#0032A0"
+                    />
+                  </svg>
+                </a>
+              </li>
+              <li class="header_products_left_box_grid_col_list_item">
+                <a
+                  class="header_products_left_box_grid_col_list_item_link"
+                  href="https://chemitracker.chemrobotics.com?access_key={{
+                    accessKey
+                  }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_products_left_box_grid_col_list_item_link_text text_blue_3"
+                    >ChemiTracker - A Supplier Guide</span
+                  >
+                  <svg
+                    width="9"
+                    height="13"
+                    viewBox="0 0 9 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
+                      fill="#0032A0"
+                    />
+                  </svg>
+                </a>
+              </li>
+            </ul>
+            <p class="text_black_2">
+              AGROCHEMICAL & PHARMACEUTICAL PATENT DATABASES PATENT DATABASE
+            </p>
+            <ul class="header_products_left_box_grid_col_list text_blue_2">
+              <li class="header_products_left_box_grid_col_list_item">
+                <a
+                  class="header_products_left_box_grid_col_list_item_link"
+                  href="https://quikpatent.chemrobotics.com?access_key={{
+                    accessKey
+                  }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_products_left_box_grid_col_list_item_link_text text_blue_3"
+                    >QuikPatent - Agrochemical Constraining Patent Guide</span
+                  >
+                  <svg
+                    width="9"
+                    height="13"
+                    viewBox="0 0 9 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
+                      fill="#0032A0"
+                    />
+                  </svg>
+                </a>
+              </li>
+              <li class="header_products_left_box_grid_col_list_item">
+                <a
+                  class="header_products_left_box_grid_col_list_item_link"
+                  href="https://betaquikpatent.chemrobotics.com?access_key={{
+                    accessKey
+                  }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_products_left_box_grid_col_list_item_link_text text_blue_3"
+                    >QuikPatent Beta
+                  </span>
+                  <svg
+                    width="9"
+                    height="13"
+                    viewBox="0 0 9 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
+                      fill="#0032A0"
+                    />
+                  </svg>
+                </a>
+              </li>
+              <li class="header_products_left_box_grid_col_list_item">
+                <a
+                  class="header_products_left_box_grid_col_list_item_link"
+                  href="http://activepatents.chemrobotics.com?access_key={{
+                    accessKey
+                  }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_products_left_box_grid_col_list_item_link_text text_blue_3"
+                  >
+                    ActivePatents - Pharmaceutical API Constraining Patent Guide
+                    Beta</span
+                  >
+                  <svg
+                    width="9"
+                    height="13"
+                    viewBox="0 0 9 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
+                      fill="#0032A0"
+                    />
+                  </svg>
+                </a>
+              </li>
+            </ul>
+            <p class="text_black_2">PHARMACEUTICAL API GENERIC DATABASES</p>
+            <ul class="header_products_left_box_grid_col_list text_blue_2">
+              <li class="header_products_left_box_grid_col_list_item">
+                <a
+                  class="header_products_left_box_grid_col_list_item_link"
+                  href="https://chemroboticspharma.com/pharmVetPat?access_key={{
+                    accessKey
+                  }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_products_left_box_grid_col_list_item_link_text text_blue_3"
+                    >PharmVetPat Ultimate</span
+                  >
+                  <svg
+                    width="9"
+                    height="13"
+                    viewBox="0 0 9 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
+                      fill="#0032A0"
+                    />
+                  </svg>
+                </a>
+              </li>
+            </ul>
+            <p class="text_black_2">CHEMICAL BUY-SALE PLATFORM</p>
+            <ul class="header_products_left_box_grid_col_list text_blue_2">
+              <li class="header_products_left_box_grid_col_list_item">
+                <a
+                  class="header_products_left_box_grid_col_list_item_link"
+                  href="https://buychem.chemrobotics.com?access_key={{
+                    accessKey
+                  }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_products_left_box_grid_col_list_item_link_text text_blue_3"
+                    >BuyChem - Chemical Buy-Sale Platform</span
+                  >
+                  <svg
+                    width="9"
+                    height="13"
+                    viewBox="0 0 9 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
+                      fill="#0032A0"
+                    />
+                  </svg>
+                </a>
+              </li>
+            </ul>
+            <p class="text_black_2">JOB PORTAL</p>
+            <ul class="header_products_left_box_grid_col_list text_blue_2">
+              <li class="header_products_left_box_grid_col_list_item">
+                <a
+                  class="header_products_left_box_grid_col_list_item_link"
+                  href="https://jobs.chemrobotics.com?access_key={{
+                    accessKey
+                  }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_products_left_box_grid_col_list_item_link_text text_blue_3"
+                    >ChemRobotics Jobs</span
+                  >
+                  <svg
+                    width="9"
+                    height="13"
+                    viewBox="0 0 9 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
+                      fill="#0032A0"
+                    />
+                  </svg>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="header_menu" *ngIf="showMenu">
+    <div class="header_menu_list">
+      <div class="header_menu_list_item">
+        <a class="header_menu_list_item_text" href="https://chemrobotics.com/"
+          >Home</a
+        >
+      </div>
+      <div
+        (click)="selectedMenu = selectedMenu === 'our_info' ? '' : 'our_info'"
+        class="header_menu_list_item text_style_4"
+      >
+        Who we are
+        <div class="header_menu_list_item_icon">
+          <svg
+            width="9"
+            height="6"
+            viewBox="0 0 9 6"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
+              fill="#303030"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        *ngIf="selectedMenu === 'our_info'"
+        class="header_menu_list_dropdown"
+      >
+        <div class="header_menu_list_dropdown_content">
+          <div class="header_menu_list_dropdown_content_box text_blue_5">
+            <div>
+              <div class="header_menu_list_dropdown_content_box_item">
+                <a
+                  href="https://www.chemrobotics.com/about-us?access_key={{
+                    accessKey
+                  }}"
+                >
+                  About us
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <div class="header_menu_list_dropdown_content_box_item">
+                <a
+                  href="https://www.chemrobotics.com/advisory?access_key={{
+                    accessKey
+                  }}"
+                >
+                  Advisory
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <div class="header_menu_list_dropdown_content_box_item">
+                <a
+                  href="https://www.chemrobotics.com/awards-recognition?access_key={{
+                    accessKey
+                  }}"
+                >
+                  Awards
+                </a>
+              </div>
+            </div>
+            <div>
+              <div class="header_menu_list_dropdown_content_box_item">
+                <a
+                  href="https://www.chemrobotics.com/gallery?access_key={{
+                    accessKey
+                  }}"
+                >
+                  Gallery
+                </a>
+              </div>
+            </div>
+            <div>
+              <div class="header_menu_list_dropdown_content_box_item">
+                <a
+                  href="https://www.chemrobotics.com/our-partners?access_key={{
+                    accessKey
+                  }}"
+                >
+                  Our Partner
+                </a>
+              </div>
+            </div>
+            <div>
+              <div class="header_menu_list_dropdown_content_box_item">
+                <a
+                  href="https://www.chemrobotics.com/our-teams?access_key={{
+                    accessKey
+                  }}"
+                  class="header_menu_list_dropdown_content_box_item"
+                >
+                  Our Team
+                </a>
+              </div>
+            </div>
+            <div>
+              <div class="header_menu_list_dropdown_content_box_item">
+                <a
+                  href="https://www.chemrobotics.com/clients?access_key={{
+                    accessKey
+                  }}"
+                  class="header_menu_list_dropdown_content_box_item"
+                  >Client</a
+                >
+              </div>
+            </div>
+            <div>
+              <div class="header_menu_list_dropdown_content_box_item">
+                <a
+                  href="https://www.chemrobotics.com/press-release?access_key={{
+                    accessKey
+                  }}"
+                  class="header_menu_list_dropdown_content_box_item"
+                >
+                  Press Release
+                </a>
+              </div>
+            </div>
+            <div>
+              <div class="header_menu_list_dropdown_content_box_item">
+                <a
+                  href="https://www.chemrobotics.com/our-story?access_key={{
+                    accessKey
+                  }}"
+                  class="header_menu_list_dropdown_content_box_item"
+                >
+                  Our Story
+                </a>
+              </div>
+            </div>
+            <div>
+              <div class="header_menu_list_dropdown_content_box_item">
+                <a
+                  href="https://www.chemrobotics.com/our-events?access_key={{
+                    accessKey
+                  }}"
+                  class="header_menu_list_dropdown_content_box_item"
+                >
+                  Our Events
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        (click)="selectedMenu = selectedMenu === 'products' ? '' : 'products'"
+        class="header_menu_list_item text_style_4"
+      >
+        Agro Products
+        <div class="header_menu_list_item_icon">
+          <svg
+            width="9"
+            height="6"
+            viewBox="0 0 9 6"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
+              fill="#303030"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        *ngIf="selectedMenu === 'products'"
+        class="header_menu_list_dropdown"
+      >
+        <div class="header_menu_list_dropdown_content">
+          <div class="header_menu_list_dropdown_content_heading text_white_10">
+            AGROCHEMICAL / PESTICIDE DATABASE
+          </div>
+          <div class="header_menu_list_dropdown_content_box">
+            <div class="header_menu_list_dropdown_content_box_item text_blue_3">
+              <a
+                href="https://www.chemrobotics.com/agropat-ultimate?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+                >AgroPat Ultimate Discover Suite</a
+              >
+            </div>
+            <div class="header_menu_list_dropdown_content_box_item text_blue_3">
+              <a
+                href="https://www.chemrobotics.com/agro-suite/agropat-ultimate-2?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+                >AgroPat Ultimate Generic Suite</a
+              >
+            </div>
+            <div class="header_menu_list_dropdown_content_box_item text_blue_3">
+              <a
+                href="https://www.chemrobotics.com/agro-suite/mrl-database?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+                >Global MRL Database</a
+              >
+            </div>
+            <div class="header_menu_list_dropdown_content_box_item text_blue_3">
+              <a
+                href="https://ipd.chemrobotics.com/#?access_key={{ accessKey }}"
+                target="_blank"
+                >Indian Pesticide Database</a
+              >
+            </div>
+            <div class="header_menu_list_dropdown_content_box_item text_blue_3">
+              <a
+                href="https://ipd.chemrobotics.com/#?access_key={{ accessKey }}"
+                target="_blank"
+                >Indian Pesticide Database (Table View)</a
+              >
+            </div>
+            <div class="header_menu_list_dropdown_content_box_item text_blue_3">
+              <a
+                href="https://www.chemrobotics.com/agro-suite/global-agro-product-directory?access_key={{
+                  accessKey
+                }}" target="_blank"
+                >Global Agro Product Directory</a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="header_menu_list_dropdown_content">
+          <div class="header_menu_list_dropdown_content_heading text_white_10">
+            OTHER DATABASE
+          </div>
+          <div class="header_menu_list_dropdown_content_box">
+            <div class="header_menu_list_dropdown_content_box_item text_blue_3">
+              <a
+                href="https://agropharmexim.chemrobotics.com/#/agropharm-xim-beta?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+                >AgroPharm XIM 1.0 DB Beta</a
+              >
+            </div>
+            <div class="header_menu_list_dropdown_content_box_item text_blue_3">
+              <a
+                href="https://agropharmeximnew.chemrobotics.com/#/agropharm-xim-new-beta?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+                >AgroPharm XIM 2.0 DB Beta</a
+              >
+            </div>
+            <div class="header_menu_list_dropdown_content_box_item text_blue_3">
+              <a
+                href="http://globalbusinessevents.chemrobotics.com?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+                >Global Business Events - Trade Shows, Exhibitions, &
+                Conferences Beta</a
+              >
+            </div>
+            <div class="header_menu_list_dropdown_content_box_item text_blue_3">
+              <a
+                href="https://www.chemrobotics.com/agropharm/#/spcdb?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+                >SPC Database</a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="header_menu_list_dropdown_content">
+          <div class="header_menu_list_dropdown_content_heading text_white_10">
+            AGROCHEM, PHARMACHEM & SPECIALTY CHEMICAL DATABASES
+          </div>
+          <div class="header_menu_list_dropdown_content_box">
+            <div class="header_menu_list_dropdown_content_box_item text_blue_3">
+              <a
+                href="https://www.chemrobotics.com/agro-suite/technical-routes?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+                >Technical Routes</a
+              >
+            </div>
+            <div class="header_menu_list_dropdown_content_box_item text_blue_3">
+              <a
+                href="http://technicalroute.chemrobotics.com?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+                >Technical Routes Beta</a
+              >
+            </div>
+            <div class="header_menu_list_dropdown_content_box_item text_blue_3">
+              <a
+                href="https://chemitracker.chemrobotics.com?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+                >Chemi Tracker - A Supplier Guide</a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="header_menu_list_dropdown_content">
+          <div class="header_menu_list_dropdown_content_heading text_white_10">
+            AGROCHEMICAL & PHARMACEUTICAL PATENT DATABASES PATENT DATABASE
+          </div>
+          <div class="header_menu_list_dropdown_content_box">
+            <div class="header_menu_list_dropdown_content_box_item text_blue_3">
+              <a
+                href="https://quikpatent.chemrobotics.com?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+                >QuikPatent - Agrochemical Constraining Patent Guide</a
+              >
+            </div>
+            <div class="header_menu_list_dropdown_content_box_item text_blue_3">
+              <a
+                href="https://betaquikpatent.chemrobotics.com?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+                >QuikPatent Beta</a
+              >
+            </div>
+            <div class="header_menu_list_dropdown_content_box_item text_blue_3">
+              <a
+                href="http://activepatents.chemrobotics.com?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+                >ActivePatents - Pharmaceutical API Constraining Patent Guide
+                Beta</a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="header_menu_list_dropdown_content">
+          <div class="header_menu_list_dropdown_content_heading text_white_10">
+            PHARMACEUTICAL API GENERIC DATABASES
+          </div>
+          <div class="header_menu_list_dropdown_content_box">
+            <div class="header_menu_list_dropdown_content_box_item text_blue_3">
+              <a
+                href="https://chemroboticspharma.com/pharmVetPat?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+                >PharmVetPat Ultimate</a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="header_menu_list_dropdown_content">
+          <div class="header_menu_list_dropdown_content_heading text_white_10">
+            CHEMICAL BUY-SALE PLATFORM
+          </div>
+          <div class="header_menu_list_dropdown_content_box">
+            <div class="header_menu_list_dropdown_content_box_item text_blue_3">
+              <a
+                href="https://buychem.chemrobotics.com?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+                >BuyChem - Chemical Buy-Sale Platform</a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="header_menu_list_dropdown_content">
+          <div class="header_menu_list_dropdown_content_heading text_white_10">
+            <a
+              href="https://jobs.chemrobotics.com?access_key={{ accessKey }}"
+              target="_blank"
+              >JOB PORTAL</a
+            >
+          </div>
+          <div class="header_menu_list_dropdown_content_box">
+            <div class="header_menu_list_dropdown_content_box_item text_blue_3">
+              ChemRobotics Jobs
+              <svg
+                width="9"
+                height="13"
+                viewBox="0 0 9 13"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M8.11166 5.99274L2.3265 0.207681C2.19269 0.0737718 2.01408 0 1.82362 0C1.63317 0 1.45455 0.0737718 1.32075 0.207681L0.894712 0.633613C0.617487 0.911155 0.617487 1.36224 0.894712 1.63936L5.75266 6.4973L0.889322 11.3606C0.755518 11.4945 0.681641 11.6731 0.681641 11.8634C0.681641 12.054 0.755518 12.2325 0.889322 12.3665L1.31536 12.7923C1.44927 12.9262 1.62778 13 1.81823 13C2.00869 13 2.1873 12.9262 2.32111 12.7923L8.11166 7.00198C8.24578 6.86764 8.31945 6.68829 8.31903 6.49762C8.31945 6.30622 8.24578 6.12697 8.11166 5.99274Z"
+                  fill="#0032A0"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        (click)="selectedMenu = selectedMenu === 'services' ? '' : 'services'"
+        class="header_menu_list_item text_style_4"
+      >
+        Services
+        <div class="header_menu_list_item_icon">
+          <svg
+            width="9"
+            height="6"
+            viewBox="0 0 9 6"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
+              fill="#303030"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        *ngIf="selectedMenu === 'services'"
+        class="header_menu_list_dropdown"
+      >
+        <div class="header_menu_list_dropdown_content">
+          <div class="header_menu_list_dropdown_content_box text_blue_5">
+            <div class="header_menu_list_dropdown_content_box_item">
+              <a
+                href="https://www.chemrobotics.com/agro-regulatory?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+              >
+                Auto-Regulatory
+              </a>
+            </div>
+            <div class="header_menu_list_dropdown_content_box_item">
+              <a
+                href="https://www.chemrobotics.com/patent-india?access_key={{
+                  accessKey
+                }}"
+                target="_blank"
+              >
+                Patents India
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="header_menu_list_item">
+        <a
+          href="https://chemrobotics.in?access_key={{ accessKey }}"
+          target="_blank"
+          class="header_menu_list_item_text"
+          >ChemRobotics Times</a
+        >
+      </div>
+      <div class="header_menu_list_item">
+        <a
+          href="https://www.chemrobotics.com/contact?access_key={{ accessKey }}"
+          target="_blank"
+          class="header_menu_list_item_text"
+          >Contact Us</a
+        >
+      </div>
+      <div class="header_menu_list_item">
+        <a
+          href="https://www.chemrobotics.com/career?access_key={{ accessKey }}"
+          target="_blank"
+          class="header_menu_list_item_text"
+          >Career At</a
+        >
+      </div>
+      <div class="header_menu_list_item">
+        <a
+          href="https://buychem.chemrobotics.com?access_key={{ accessKey }}"
+          target="_blank"
+          class="header_menu_list_item_text"
+          >Buy Chem</a
+        >
+      </div>
+    </div>
+    <div class="header_menu_buttons">
+      <div class="header_menu_buttons_item">
+        <a
+          href="https://chemrobotics.com/demo_request?access_key={{
+            accessKey
+          }}"
+          target="_blank"
+          type="button"
+          class="button_white_2 rounded-pill text_blue_5 flex justify-center items-center"
+        >
+          Demo Request Now
+        </a>
+      </div>
+      <div class="header_menu_buttons_item">
+        <a
+          href="https://chemroboticspharma.com?access_key={{ accessKey }}"
+          target="_blank"
+          type="button"
+          class="button_blue_2 rounded-pill text_white_9 flex justify-center items-center"
+        >
+          Pharma Database
+        </a>
+      </div>
+    </div>
+    <div class="header_menu_bottom text_white_8">
+      <a href="mailto:sales@chemRobotics.com" class="header_menu_bottom_item">
+        <div class="header_menu_bottom_item_icon">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g clip-path="url(#clip0_1596_24230)">
+              <path
+                d="M8.17001 8.57827C7.82171 8.81047 7.41713 8.93322 7 8.93322C6.5829 8.93322 6.17832 8.81047 5.83002 8.57827L0.0932148 4.75362C0.0613867 4.7324 0.0303789 4.71028 0 4.68753V10.9546C0 11.6732 0.583105 12.2434 1.28879 12.2434H12.7112C13.4297 12.2434 14 11.6603 14 10.9546V4.6875C13.9695 4.7103 13.9385 4.73248 13.9066 4.75373L8.17001 8.57827Z"
+                fill="white"
+              />
+              <path
+                d="M0.548242 4.07087L6.28504 7.89555C6.50221 8.04034 6.75109 8.11272 6.99997 8.11272C7.24888 8.11272 7.49779 8.04031 7.71496 7.89555L13.4518 4.07087C13.7951 3.84214 14 3.45933 14 3.04617C14 2.33575 13.422 1.75781 12.7116 1.75781H1.28836C0.577965 1.75784 0 2.33578 0 3.04685C0 3.45933 0.204969 3.84214 0.548242 4.07087Z"
+                fill="white"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_1596_24230">
+                <rect width="14" height="14" fill="white" />
+              </clipPath>
+            </defs>
+          </svg>
+        </div>
+        Email
+      </a>
+      <a href="tel:6266117944" class="header_menu_bottom_item">
+        <div class="header_menu_bottom_item_icon">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13.6868 6.71356C13.7061 4.45776 11.7848 2.38979 9.404 2.10382C9.35664 2.09821 9.30506 2.08966 9.25046 2.08062C9.13259 2.06109 9.0107 2.04102 8.88772 2.04102C8.39977 2.04102 8.26934 2.38377 8.235 2.5882C8.20161 2.78695 8.23346 2.95386 8.32951 3.08449C8.4911 3.30422 8.77543 3.34323 9.0038 3.37448C9.07073 3.38372 9.13388 3.39232 9.18675 3.4042C11.3258 3.88216 12.046 4.63361 12.398 6.75446C12.4066 6.80628 12.4105 6.87013 12.4146 6.93786C12.43 7.19138 12.462 7.71883 13.029 7.71883H13.0291C13.0763 7.71883 13.127 7.71476 13.1798 7.70671C13.7079 7.62646 13.6914 7.14432 13.6834 6.91267C13.6812 6.84743 13.679 6.78571 13.6845 6.74467C13.686 6.73433 13.6868 6.72395 13.6868 6.71356Z"
+              fill="white"
+            />
+            <path
+              d="M8.74919 1.27642C8.81255 1.28099 8.87252 1.28537 8.92246 1.29302C12.435 1.83319 14.0503 3.49739 14.498 7.03737C14.5056 7.09754 14.5068 7.17093 14.508 7.24865C14.5125 7.52522 14.5217 8.10057 15.1396 8.1125L15.1587 8.1127C15.3525 8.1127 15.5067 8.05426 15.6169 7.93888C15.8093 7.73769 15.7959 7.43881 15.785 7.19861C15.7824 7.13968 15.7799 7.08417 15.7805 7.03558C15.8252 3.41511 12.6913 0.132075 9.07401 0.00998758C9.05901 0.00949068 9.0447 0.0102857 9.03024 0.012323C9.02313 0.0133665 9.00996 0.0146584 8.9874 0.0146584C8.95133 0.0146584 8.90696 0.0115279 8.8599 0.00834783C8.80301 0.00447205 8.73851 0 8.67312 0C8.09707 0 7.98755 0.409441 7.97354 0.653516C7.94124 1.21759 8.48693 1.25729 8.74919 1.27642Z"
+              fill="white"
+            />
+            <path
+              d="M14.3285 11.6132C14.2538 11.5561 14.1766 11.4971 14.1043 11.4388C13.7208 11.1302 13.3128 10.8458 12.9182 10.5706C12.8364 10.5136 12.7545 10.4565 12.6729 10.3992C12.1674 10.0442 11.713 9.87169 11.2837 9.87169C10.7055 9.87169 10.2013 10.1912 9.78523 10.8212C9.60088 11.1005 9.37723 11.2363 9.1016 11.2363C8.93862 11.2363 8.75342 11.1898 8.55124 11.098C6.91979 10.3582 5.75482 9.22389 5.08863 7.7266C4.76659 7.00292 4.87099 6.52988 5.43775 6.14488C5.75959 5.92645 6.35864 5.51979 6.31621 4.74106C6.26816 3.85673 4.31695 1.19591 3.49484 0.893701C3.14677 0.765701 2.78105 0.764509 2.4059 0.89072C1.4608 1.20843 0.782593 1.7664 0.444407 2.50419C0.117599 3.21708 0.132357 4.05415 0.48709 4.92491C1.51258 7.44247 2.95437 9.63745 4.77256 11.4488C6.55223 13.2219 8.73961 14.6743 11.2739 15.7656C11.5023 15.8638 11.7419 15.9175 11.9169 15.9566C11.9765 15.97 12.028 15.9814 12.0655 15.9917C12.0861 15.9973 12.1074 16.0003 12.1287 16.0005L12.1487 16.0006C12.1487 16.0006 12.1487 16.0006 12.1488 16.0006C13.3408 16.0006 14.772 14.9114 15.2115 13.6697C15.5966 12.5824 14.8935 12.045 14.3285 11.6132Z"
+              fill="white"
+            />
+            <path
+              d="M9.27641 4.15278C9.07233 4.15795 8.64763 4.16848 8.49862 4.60103C8.4289 4.80316 8.43725 4.97867 8.52346 5.12267C8.64997 5.33395 8.89236 5.39869 9.11283 5.43422C9.91238 5.56252 10.323 6.00465 10.4052 6.82552C10.4433 7.20828 10.7011 7.47556 11.032 7.47556C11.0564 7.47556 11.0815 7.47412 11.1064 7.47109C11.5044 7.42374 11.6973 7.13131 11.6799 6.60202C11.6862 6.04962 11.3972 5.42249 10.9055 4.92296C10.4121 4.4219 9.81737 4.13971 9.27641 4.15278Z"
+              fill="white"
+            />
+          </svg>
+        </div>
+        +91-626 611 7944
+      </a>
+      <div class="header_menu_bottom_item relative z-50">
+        <a (click)="handleOpenDropDown()">
+          <div class="header_menu_bottom_item_icon">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g clip-path="url(#clip0_1596_24225)">
+                <path
+                  d="M12.3667 2.2439L14.2476 2.24756L12.3667 0.404297V2.2439Z"
+                  fill="white"
+                />
+                <path
+                  d="M11.8916 3.19189C11.63 3.19141 11.4183 2.97925 11.4183 2.71765V0H3.50061C3.23865 0 3.02637 0.21228 3.02637 0.474243V8.92627C3.52002 8.72009 4.0614 8.60596 4.62903 8.60596C4.90942 8.60596 5.18335 8.63391 5.44836 8.68689C5.41663 8.62341 5.39844 8.55188 5.39844 8.47595C5.39844 8.21411 5.61072 8.00183 5.87256 8.00183H11.5842C11.8461 8.00183 12.0585 8.21411 12.0585 8.47595C12.0585 8.73792 11.8461 8.9502 11.5842 8.9502H6.2876C7.76477 9.5929 8.80029 11.0663 8.80029 12.7772C8.80029 13.4414 8.64404 14.0696 8.3667 14.6276H14.1428C14.4048 14.6276 14.6171 14.4153 14.6171 14.1533V3.19727L11.8916 3.19189ZM9.87695 4.74536C9.87695 5.00732 9.66467 5.2196 9.40283 5.2196H5.87256C5.61072 5.2196 5.39844 5.00732 5.39844 4.74536C5.39844 4.48352 5.61072 4.27112 5.87256 4.27112H9.40283C9.66467 4.27112 9.87695 4.4834 9.87695 4.74536ZM11.5842 7.08496H5.87256C5.61072 7.08496 5.39844 6.87256 5.39844 6.61072C5.39844 6.34875 5.61072 6.13647 5.87256 6.13647H11.5842C11.8461 6.13647 12.0585 6.34875 12.0585 6.61072C12.0585 6.87256 11.8462 7.08496 11.5842 7.08496Z"
+                  fill="white"
+                />
+                <path
+                  d="M7.85193 12.7775C7.85193 11.0004 6.40613 9.55469 4.62903 9.55469C2.85205 9.55469 1.40625 11.0004 1.40625 12.7775C1.40625 14.5546 2.85205 16.0002 4.62903 16.0002C6.40613 16.0002 7.85193 14.5544 7.85193 12.7775ZM6.15149 13.4757L4.90503 14.3676C4.82239 14.4266 4.72571 14.4561 4.62903 14.4561C4.52942 14.4561 4.42981 14.4247 4.34583 14.3622L3.14856 13.4703C2.93848 13.3138 2.89514 13.0167 3.05151 12.8068C3.20801 12.5967 3.50513 12.5532 3.71521 12.7097L4.15491 13.0372V11.527C4.15491 11.2651 4.36719 11.0529 4.62903 11.0529C4.89099 11.0529 5.10327 11.2651 5.10327 11.527V13.0594L5.59949 12.7043C5.8125 12.552 6.10876 12.6011 6.26111 12.8141C6.41357 13.0271 6.36438 13.3232 6.15149 13.4757Z"
+                  fill="white"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_1596_24225">
+                  <rect width="16" height="16" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          Brochure
+        </a>
+        <div
+          class="header_top_left_box1_item_icon1_dropdown absolute bottom-12"
+        >
+          <!-- Dropdown options -->
+          <div
+            class="options header_top_left_box1_item_icon1_dropdown_content"
+            *ngIf="dropdownOpen"
+          >
+            <ul
+              class="header_top_left_box1_item_icon1_dropdown_content_box p-x-10 text_blue_3 bg_1 w-full"
+            >
+              <a
+                href="https://www.chemrobotics.com/agropat/uploads/brochures/ChemRobotics%20Brochure%20-%20Agrochem%20Intelligence%20Database-2024_1729160831772.pdf"
+                target="_blank"
+                class="w-full header_top_right_body_dropdown_content_box_item cursor-pointer padding-6-6 text_blue_3 d-flex align-items-center bottom-border-1"
+              >
+                <div class="flex justify-center items-center w-full py-3">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="m-r-5"
+                  >
+                    <g clip-path="url(#clip0_1891_104)">
+                      <path
+                        d="M12.3667 2.24438L14.2476 2.24805L12.3667 0.404785V2.24438Z"
+                        fill="#0032A0"
+                      />
+                      <path
+                        d="M11.8916 3.19189C11.63 3.19141 11.4183 2.97925 11.4183 2.71765V0H3.50061C3.23865 0 3.02637 0.21228 3.02637 0.474243V8.92627C3.52002 8.72009 4.0614 8.60596 4.62903 8.60596C4.90942 8.60596 5.18335 8.63391 5.44836 8.68689C5.41663 8.62341 5.39844 8.55188 5.39844 8.47595C5.39844 8.21411 5.61072 8.00183 5.87256 8.00183H11.5842C11.8461 8.00183 12.0585 8.21411 12.0585 8.47595C12.0585 8.73792 11.8461 8.9502 11.5842 8.9502H6.2876C7.76477 9.5929 8.80029 11.0663 8.80029 12.7772C8.80029 13.4414 8.64404 14.0696 8.3667 14.6276H14.1428C14.4048 14.6276 14.6171 14.4153 14.6171 14.1533V3.19727L11.8916 3.19189ZM9.87695 4.74536C9.87695 5.00732 9.66467 5.2196 9.40283 5.2196H5.87256C5.61072 5.2196 5.39844 5.00732 5.39844 4.74536C5.39844 4.48352 5.61072 4.27112 5.87256 4.27112H9.40283C9.66467 4.27112 9.87695 4.4834 9.87695 4.74536ZM11.5842 7.08496H5.87256C5.61072 7.08496 5.39844 6.87256 5.39844 6.61072C5.39844 6.34875 5.61072 6.13647 5.87256 6.13647H11.5842C11.8461 6.13647 12.0585 6.34875 12.0585 6.61072C12.0585 6.87256 11.8462 7.08496 11.5842 7.08496Z"
+                        fill="#0032A0"
+                      />
+                      <path
+                        d="M7.85193 12.7772C7.85193 11.0001 6.40613 9.55444 4.62903 9.55444C2.85205 9.55444 1.40625 11.0001 1.40625 12.7772C1.40625 14.5543 2.85205 16 4.62903 16C6.40613 16 7.85193 14.5542 7.85193 12.7772ZM6.15149 13.4755L4.90503 14.3673C4.82239 14.4264 4.72571 14.4558 4.62903 14.4558C4.52942 14.4558 4.42981 14.4244 4.34583 14.3619L3.14856 13.4701C2.93848 13.3136 2.89514 13.0165 3.05151 12.8065C3.20801 12.5964 3.50513 12.553 3.71521 12.7095L4.15491 13.037V11.5267C4.15491 11.2649 4.36719 11.0526 4.62903 11.0526C4.89099 11.0526 5.10327 11.2649 5.10327 11.5267V13.0592L5.59949 12.7041C5.8125 12.5518 6.10876 12.6008 6.26111 12.8138C6.41357 13.0269 6.36438 13.323 6.15149 13.4755Z"
+                        fill="#0032A0"
+                      />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_1891_104">
+                        <rect width="16" height="16" fill="white" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                  <span class="p-r-10">AgroChem Intelligence</span>
+                </div>
+              </a>
+
+              <a
+                href="https://www.chemrobotics.com/agropat/uploads/brochures/ChemRobotics%20Brochure%20-%20Pharmaceutical%20Intelligence%20Databases-2024_1729160860257.pdf"
+                target="_blank"
+                class="w-full header_top_right_body_dropdown_content_box_item cursor-pointer padding-6-6 text_blue_3 d-flex align-items-center bottom-border-1"
+              >
+                <div class="flex justify-center items-center w-full py-3">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="m-r-5"
+                  >
+                    <g clip-path="url(#clip0_1891_104)">
+                      <path
+                        d="M12.3667 2.24438L14.2476 2.24805L12.3667 0.404785V2.24438Z"
+                        fill="#0032A0"
+                      />
+                      <path
+                        d="M11.8916 3.19189C11.63 3.19141 11.4183 2.97925 11.4183 2.71765V0H3.50061C3.23865 0 3.02637 0.21228 3.02637 0.474243V8.92627C3.52002 8.72009 4.0614 8.60596 4.62903 8.60596C4.90942 8.60596 5.18335 8.63391 5.44836 8.68689C5.41663 8.62341 5.39844 8.55188 5.39844 8.47595C5.39844 8.21411 5.61072 8.00183 5.87256 8.00183H11.5842C11.8461 8.00183 12.0585 8.21411 12.0585 8.47595C12.0585 8.73792 11.8461 8.9502 11.5842 8.9502H6.2876C7.76477 9.5929 8.80029 11.0663 8.80029 12.7772C8.80029 13.4414 8.64404 14.0696 8.3667 14.6276H14.1428C14.4048 14.6276 14.6171 14.4153 14.6171 14.1533V3.19727L11.8916 3.19189ZM9.87695 4.74536C9.87695 5.00732 9.66467 5.2196 9.40283 5.2196H5.87256C5.61072 5.2196 5.39844 5.00732 5.39844 4.74536C5.39844 4.48352 5.61072 4.27112 5.87256 4.27112H9.40283C9.66467 4.27112 9.87695 4.4834 9.87695 4.74536ZM11.5842 7.08496H5.87256C5.61072 7.08496 5.39844 6.87256 5.39844 6.61072C5.39844 6.34875 5.61072 6.13647 5.87256 6.13647H11.5842C11.8461 6.13647 12.0585 6.34875 12.0585 6.61072C12.0585 6.87256 11.8462 7.08496 11.5842 7.08496Z"
+                        fill="#0032A0"
+                      />
+                      <path
+                        d="M7.85193 12.7772C7.85193 11.0001 6.40613 9.55444 4.62903 9.55444C2.85205 9.55444 1.40625 11.0001 1.40625 12.7772C1.40625 14.5543 2.85205 16 4.62903 16C6.40613 16 7.85193 14.5542 7.85193 12.7772ZM6.15149 13.4755L4.90503 14.3673C4.82239 14.4264 4.72571 14.4558 4.62903 14.4558C4.52942 14.4558 4.42981 14.4244 4.34583 14.3619L3.14856 13.4701C2.93848 13.3136 2.89514 13.0165 3.05151 12.8065C3.20801 12.5964 3.50513 12.553 3.71521 12.7095L4.15491 13.037V11.5267C4.15491 11.2649 4.36719 11.0526 4.62903 11.0526C4.89099 11.0526 5.10327 11.2649 5.10327 11.5267V13.0592L5.59949 12.7041C5.8125 12.5518 6.10876 12.6008 6.26111 12.8138C6.41357 13.0269 6.36438 13.323 6.15149 13.4755Z"
+                        fill="#0032A0"
+                      />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_1891_104">
+                        <rect width="16" height="16" fill="white" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                  <span class="p-r-10">Pharmaceutical Intelligence</span>
+                </div>
+              </a>
+
+              <a
+                href="https://www.chemrobotics.com/agropat/uploads/brochures/ChemRobotics%20Brochure%20-%20Speciality%20Chem%20Intelligence%20Databases-2024_1729160964178.pdf"
+                target="_blank"
+                class="w-full header_top_right_body_dropdown_content_box_item cursor-pointer padding-6-6 text_blue_3 d-flex align-items-center bottom-border-1"
+              >
+                <div class="flex justify-center items-center w-full py-3">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="m-r-5"
+                  >
+                    <g clip-path="url(#clip0_1891_104)">
+                      <path
+                        d="M12.3667 2.24438L14.2476 2.24805L12.3667 0.404785V2.24438Z"
+                        fill="#0032A0"
+                      />
+                      <path
+                        d="M11.8916 3.19189C11.63 3.19141 11.4183 2.97925 11.4183 2.71765V0H3.50061C3.23865 0 3.02637 0.21228 3.02637 0.474243V8.92627C3.52002 8.72009 4.0614 8.60596 4.62903 8.60596C4.90942 8.60596 5.18335 8.63391 5.44836 8.68689C5.41663 8.62341 5.39844 8.55188 5.39844 8.47595C5.39844 8.21411 5.61072 8.00183 5.87256 8.00183H11.5842C11.8461 8.00183 12.0585 8.21411 12.0585 8.47595C12.0585 8.73792 11.8461 8.9502 11.5842 8.9502H6.2876C7.76477 9.5929 8.80029 11.0663 8.80029 12.7772C8.80029 13.4414 8.64404 14.0696 8.3667 14.6276H14.1428C14.4048 14.6276 14.6171 14.4153 14.6171 14.1533V3.19727L11.8916 3.19189ZM9.87695 4.74536C9.87695 5.00732 9.66467 5.2196 9.40283 5.2196H5.87256C5.61072 5.2196 5.39844 5.00732 5.39844 4.74536C5.39844 4.48352 5.61072 4.27112 5.87256 4.27112H9.40283C9.66467 4.27112 9.87695 4.4834 9.87695 4.74536ZM11.5842 7.08496H5.87256C5.61072 7.08496 5.39844 6.87256 5.39844 6.61072C5.39844 6.34875 5.61072 6.13647 5.87256 6.13647H11.5842C11.8461 6.13647 12.0585 6.34875 12.0585 6.61072C12.0585 6.87256 11.8462 7.08496 11.5842 7.08496Z"
+                        fill="#0032A0"
+                      />
+                      <path
+                        d="M7.85193 12.7772C7.85193 11.0001 6.40613 9.55444 4.62903 9.55444C2.85205 9.55444 1.40625 11.0001 1.40625 12.7772C1.40625 14.5543 2.85205 16 4.62903 16C6.40613 16 7.85193 14.5542 7.85193 12.7772ZM6.15149 13.4755L4.90503 14.3673C4.82239 14.4264 4.72571 14.4558 4.62903 14.4558C4.52942 14.4558 4.42981 14.4244 4.34583 14.3619L3.14856 13.4701C2.93848 13.3136 2.89514 13.0165 3.05151 12.8065C3.20801 12.5964 3.50513 12.553 3.71521 12.7095L4.15491 13.037V11.5267C4.15491 11.2649 4.36719 11.0526 4.62903 11.0526C4.89099 11.0526 5.10327 11.2649 5.10327 11.5267V13.0592L5.59949 12.7041C5.8125 12.5518 6.10876 12.6008 6.26111 12.8138C6.41357 13.0269 6.36438 13.323 6.15149 13.4755Z"
+                        fill="#0032A0"
+                      />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_1891_104">
+                        <rect width="16" height="16" fill="white" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                  <span class="p-r-10">SpecialityChem Intelligence</span>
+                </div>
+              </a>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="header_top_left_box_item border-r-2 text-white px-3">
+        <div class="header_top_left_box_item_icon">
+          <img
+            src="https://chemrobotics.com/assets/icons/whatsapp_icon.png"
+            alt="WhatsApp Icon"
+            width="50px"
+            height="50px"
+          />
+        </div>
+        <a
+          href="https://chat.whatsapp.com/HQ4vy7F2g1AKuGXOqk7CkQ"
+          target="_blank"
+          class="text-white"
+          >Subscribe for Latest news and Update</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Log Out Modal -->
+
+<div
+  class="modal fade bg_4"
+  id="log_out"
+  tabindex="-1"
+  aria-labelledby="log_out"
+  aria-hidden="true"
+>
+  <div class="modal-dialog text-center modal-dialog-centered">
+    <div class="modal-content p-x-15 bg_1">
+      <div class="dis-block-2">
+        <div class="dis-flex-1">
+          <div class="header_bottom_logo">
+            <img
+              class="header_bottom_logo_img"
+              src="assets/images/logo.png"
+              alt="Logo"
+            />
+          </div>
+        </div>
+        <!-- <div class="p-top-32">
+          <span class="text_blue_9">Sign In</span>
+        </div> -->
+      </div>
+      <div class="py-3">
+        <div>
+          <h1 class="py-3 px-2 text-xl font-bold text-center">
+            Are you Sure to Log Out the Account??
+          </h1>
+        </div>
+        <div class="flex justify-center items-center gap-3 pb-3">
+          <button
+            (click)="handleLogout()"
+            class="button_blue_6 text_white_1 px-8 py-2"
+          >
+            Log Out
+          </button>
+          <div class="">
+            <button
+              type="button"
+              class="text_white_1 bg-gray-700 h-[50px] px-8 py-2 rounded-full"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sign In Form -->
+
+<div
+  class="modal fade bg_4"
+  id="sign-in"
+  tabindex="-1"
+  aria-labelledby="sign_in"
+  aria-hidden="true"
+>
+  <div class="modal-dialog text-center modal-dialog-centered">
+    <div class="modal-content p-x-15 bg_1">
+      <div class="dis-block-2">
+        <div class="dis-flex-1">
+          <div class="header_bottom_logo">
+            <img
+              class="header_bottom_logo_img"
+              src="assets/images/logo.png"
+              alt="Logo"
+            />
+          </div>
+        </div>
+        <div class="p-top-32">
+          <span class="text_blue_9">Sign In</span>
+        </div>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="email" class="form-label dis-flex-4 text_grey_2"
+              >Email ID / User ID</label
+            >
+            <input
+              type="text"
+              [(ngModel)]="email"
+              class="form-control text-black"
+              id="email"
+              name="email"
+              placeholder="Enter Email ID / User ID"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label dis-flex-4 text_grey_2"
+              >Password</label
+            >
+            <input
+              type="password"
+              class="form-control text-black"
+              id="password"
+              name="password"
+              [(ngModel)]="password"
+              placeholder="Enter Password"
+              required
+            />
+          </div>
+          <div class="text_align-right p-b-30">
+            <a
+              href="https://www.chemrobotics.com/forgot-password"
+              target="_blank"
+              class="text_blue_14 cursor-pointer"
+              >Forgot password?</a
+            >
+          </div>
+          <button
+            (click)="handleLogin()"
+            type="submit"
+            class="button_blue_6 text_white_1 w-100"
+          >
+            {{ loadingState }}
+          </button>
+          <div class="p-top-30">
+            <p class="text_black_13">
+              Don’t have an account?
+              <a
+                href="https://chemrobotics.com/registration"
+                target="_blank"
+                class="text_blue_14 cursor-pointer"
+                >Sign Up</a
+              >
+            </p>
+          </div>
+        </form>
+      </div>
+      <!-- <div class="">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div> -->
+    </div>
+  </div>
+</div>
