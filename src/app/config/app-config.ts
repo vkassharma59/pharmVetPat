@@ -4,7 +4,7 @@ import { AppConfig } from "../commons/models/app-config.interface";
 export const appUrl = environment;
 
 export const AppConfigValues: AppConfig = {
-    appTitle: "Digital Rock",
+    appTitle: "Technical Route or Synthesis Database - Chemical Processes and Synthesis",
     appUrls: {
       domainPaths: {
         routeOfSynthesis: '/agropat/images/route_of_synthesis/',

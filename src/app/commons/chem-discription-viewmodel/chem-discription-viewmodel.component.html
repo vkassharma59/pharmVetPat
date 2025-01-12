@@ -1,0 +1,26 @@
+<div *ngIf="data" class="container-fluid py-2 relative">
+  <div class="row">
+    <div class="col-md-12 bg-white sticky top-0">
+      <div class="flex justify-between items-center">
+        <h1
+          class="pt-2 font-bold text-lg-start"
+          style="color: #0032a0; font-size: larger"
+        >
+          {{ data.title }}
+        </h1>
+        <button (click)="onClose()" class="font-bold text-lg text-black">
+          X
+        </button>
+      </div>
+      <hr class="mt-2" />
+    </div>
+
+    <div class="col-md-12 max-h-[500px]">
+      <div class="py-2 px-2 max-h-[500px] overflow-y-auto">
+        <p class="pt-1 text-justify">
+          {{ data.dataRecord }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

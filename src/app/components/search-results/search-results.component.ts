@@ -36,29 +36,13 @@ export class SearchResultsComponent {
 
   userIsLoggedIn: boolean = false;
   loading = false;
-  FilterObjectLength = false;
   LimitValue = '';
-  isBackHidden: boolean = true;   
 
   @ViewChild('priviledgeModal') priviledgeModal!: ElementRef;
 
   constructor(
     private utilityService: UtilityService
   ) {}
-
-  ngOnChanges() {
-    if (this.CurrentAPIBody?.body?.filters) {
-      this.FilterObjectLength =
-        Object.keys(this.CurrentAPIBody?.body?.filters).length !== 0;
-    }
-  }
-
-  ngOnInit() {
-    console.log('initialData ==>', this.productInfoData);
-    console.log('allDataSets ==>', this.allDataSets);
-    // this.AllDataStates = this.utilityService.getDataStates();
-    // console.log('MainDataResultShow in maincontainer', this.MainDataResultShow);
-  }
 
   handleUserLoggedIn(loggedIn: boolean) {
     this.userIsLoggedIn = loggedIn;
@@ -69,14 +53,6 @@ export class SearchResultsComponent {
 
   handleBack() {
     this.backFunction.emit(false);
-  }
-
-  handledata() {
-    // if (!this.MainDataResultShow.MainDataResultShow) {
-    //   console.log('No data');
-    // } else {
-    //   console.log('Data is available');
-    // }
   }
 
   closeModal() {

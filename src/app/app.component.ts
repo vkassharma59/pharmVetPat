@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HomeComponent } from './components/home/home.component';
 import { LoaderComponent } from './commons/loader/loader.component';
 import { ToastrService } from 'ngx-toastr';
-import { HttpClient } from '@angular/common/http';
+import { MatDialogModule } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Auth_operations } from './Utils/SetToken';
 import { UserPriviledgeService } from './services/user_priviledges/user-priviledge.service';
@@ -21,7 +21,8 @@ import { LoginService } from './services/LoginService/login.service';
     HomeComponent,
     CommonModule,
     LoaderComponent,
-    HeaderComponent
+    HeaderComponent,
+    MatDialogModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

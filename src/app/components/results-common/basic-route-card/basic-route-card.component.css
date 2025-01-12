@@ -1,0 +1,39 @@
+.para {
+    color: blue;
+    font-weight: bold;
+    
+
+
+}
+
+
+.btnchemical{
+  background-color:#FACC15 ;
+}
+
+.desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+p{
+    white-space: pre;
+    text-wrap: wrap;
+}
+
+::-webkit-scrollbar {
+    width: 7px;
+    height:7px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #312e81;
+  }
