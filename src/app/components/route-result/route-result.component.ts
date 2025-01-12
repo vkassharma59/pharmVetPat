@@ -13,8 +13,7 @@ import { RouteTabsComponent } from '../route-tabs/route-tabs.component';
 
 export class RouteResultComponent {
 
-  currentTab: string | undefined;
-
+  currentTabData: any = {}
   @Output() backFunction: EventEmitter<any> = new EventEmitter<any>();
 
   @Input() index: number | undefined;
@@ -26,6 +25,7 @@ export class RouteResultComponent {
 
   ngOnInit() {
     this.resultTabs = Object.values(this.utilityService.getAllTabsName()) ;
+    this.currentTabData = this.resultTabs.find((tab: any) => tab.isActive);
   }
 
   handleBack() {
@@ -33,6 +33,6 @@ export class RouteResultComponent {
   }
 
   handleCurrentTab(data: any) {    
-    this.currentTab = data;
+    this.currentTabData = data;
   }
 }

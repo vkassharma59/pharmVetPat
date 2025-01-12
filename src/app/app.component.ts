@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { NavbarComponent } from './commons/navbar/navbar.component';
 import { HttpClientModule } from '@angular/common/http';
-import { SearchResultsComponent } from './components/search-results/search-results.component';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from './components/home/home.component';
 import { LoaderComponent } from './commons/loader/loader.component';
@@ -20,11 +17,8 @@ import { LoginService } from './services/LoginService/login.service';
   standalone: true,
   imports: [
     FooterComponent,
-    RouterOutlet,
-    NavbarComponent,
     HttpClientModule,
     HomeComponent,
-    SearchResultsComponent,
     CommonModule,
     LoaderComponent,
     HeaderComponent
@@ -48,197 +42,8 @@ export class AppComponent {
   };
   code: any = '';
 
-  AllDataStates: any = {
-    0: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    1: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    2: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    3: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    4: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    5: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    6: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    7: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    8: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    9: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    10: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    11: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    12: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    13: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    14: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    15: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    16: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    17: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    18: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    19: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    20: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    21: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    22: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    23: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-    24: {
-      technical_route: {},
-      chemical_directory: {},
-      basic_product: {},
-      dmf_supplier: {},
-      impurity: {},
-    },
-  };
-
-  emptyAllDataStates = this.AllDataStates;
-
-  CurrentAPIBody = {
-    body: {},
-    page_no: 1,
-    api_url: '',
-    currentTab: '',
-    actual_value: '',
-  };
-
   constructor(
     private toastr: ToastrService,
-    private http: HttpClient,
     private UserPriviledgeService: UserPriviledgeService,
     private LoginService: LoginService,
     private route: ActivatedRoute
@@ -260,58 +65,14 @@ export class AppComponent {
     this.toastr.error('hello success', 'thank you');
   }
 
-  handleShowResult(data: any) {
-    this.showResult = true;
-    this.CurrentAPIBody.api_url = data?.API_URL;
-    this.CurrentAPIBody.body = data?.body;
-    this.CurrentAPIBody.currentTab = data?.currentTab;
-    this.CurrentAPIBody.actual_value = data?.actual_value;
-  }
-
-  handleShowSignInModal(data: any) {
-    this.SignInModal = data;
-  }
-
-  handleSetLoading(data: any) {
-    this.loading = data;
-  }
-
-  handleBackButton(data: any) {
-    this.showResult = data;
-  }
-
-  handleDataResult(data: any) {
-    this.AllDataStates = this.emptyAllDataStates;
-    this.MainDataResultShow = { ...data };
-    if (
-      this.MainDataResultShow?.ros_count &&
-      this.MainDataResultShow?.ros_data
-    ) {
-      for (let i = 0; i < this.MainDataResultShow?.ros_data?.length; i++) {
-        this.AllDataStates[i].technical_route =
-          this.MainDataResultShow?.ros_data[i];
-      }
-    } else {
-      if (this.MainDataResultShow?.chem_dir_data) {
-        for (
-          let i = 0;
-          i < this.MainDataResultShow?.chem_dir_data?.length;
-          i++
-        ) {
-          this.AllDataStates[i].chemical_directory =
-            this.MainDataResultShow?.chem_dir_data[i];
-        }
-      }
-    }
-  }
-
-  handleShow() {
-    // console.log(this.MainDataResultShow);
-  }
 
   ngOnInit() {
     // this.router.resetConfig(routes);
     this.UpdateSignIn(true);
+  }
+
+  handleSetLoading(data: boolean) {
+    this.loading = data;
   }
 
   UserPriviledgeUpdate() {

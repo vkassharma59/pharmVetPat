@@ -17,14 +17,15 @@ export class RouteTabsComponent {
   resultTabValues: any = [];
   
   @Output() handleCurrentTab = new EventEmitter<any>();
-  @Input() currentTab: string | undefined;
   @Input() resultTabs: any;
+
 
   constructor(private utilityService: UtilityService) { }
 
   ngOnInit() {
     if(this.resultTabs) {
       this.resultTabValues = JSON.parse(JSON.stringify(this.resultTabs));
+      
     }
   }
 
