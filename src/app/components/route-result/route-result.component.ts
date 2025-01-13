@@ -19,7 +19,7 @@ export class RouteResultComponent {
 
   @Input() index: number | undefined;
   @Input() dataItem: any;
-  @Input() productInfoData: any;
+  @Input() searchData: any;
   resultTabs: any = [];
 
   constructor(private utilityService: UtilityService) {}

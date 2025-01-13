@@ -31,7 +31,7 @@ export class SearchResultsComponent {
   @Output() generatePdf: EventEmitter<any> = new EventEmitter<any>();
 
   @Input() allDataSets: any = [];  
-  @Input() productInfoData: any;  
+  @Input() searchData: any;  
   @Input() CurrentAPIBody: any;
 
   userIsLoggedIn: boolean = false;

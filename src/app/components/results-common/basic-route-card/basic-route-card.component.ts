@@ -6,6 +6,7 @@ import { environment } from '../../../../environments/environment';
 import { Auth_operations } from '../../../Utils/SetToken';
 import { ChemDiscriptionModelComponent } from '../../../commons/chem-discription-model/chem-discription-model.component';
 import { ChemDiscriptionViewModelComponent } from '../../../commons/chem-discription-viewmodel/chem-discription-viewmodel.component';
+import { UtilityService } from '../../../services/utility-service/utility.service';
 
 @Component({
   selector: 'chem-product-info',
@@ -19,11 +20,11 @@ import { ChemDiscriptionViewModelComponent } from '../../../commons/chem-discrip
   styleUrl: './basic-route-card.component.css',
 })
 export class BasicRouteCardComponent {
-  @Input() data: any;
 
-  constructor(
-    private dialog: MatDialog
-  ) {}
+  @Input() data: any;
+  resultTabs: any = {};
+  processedSynonyms: { number: string; text: string }[] = [];
+  basic_column: any = {};
 
   MoreApplicationInfo: any = false;
   linkdata: any = {
@@ -44,9 +45,20 @@ export class BasicRouteCardComponent {
                           15. Kyselina bromoctova`,
   };
 
-  processedSynonyms: { number: string; text: string }[] = [];
+  constructor(
+    private dialog: MatDialog,
+    private utilityService: UtilityService
+  ) {}
 
-  basic_column: any = {};
+  ngOnInit() {
+    this.resultTabs = this.utilityService.getAllTabsName();
+    const column_list = Auth_operations.getColumnList();
+    for (let i = 0; i < column_list[this.resultTabs.productInfo.name].length; i++) {
+      this.basic_column[column_list[this.resultTabs.productInfo.name][i].value] =
+        column_list[this.resultTabs.productInfo.name][i].name;
+    }
+    this.processSynonyms();
+  }
 
   getInventorLogo(data: any) {
     return `${environment.baseUrl}${environment.domainNameCompanyLogo}${data?.INVENTOR_LOGO}`;
@@ -76,16 +88,6 @@ export class BasicRouteCardComponent {
 
   getColumnName(value: any) {
     return this.basic_column[value];
-  }
-
-  ngOnInit() {
-    console.log(this.data);
-    const column_list = Auth_operations.getColumnList();
-    for (let i = 0; i < column_list.product_info_column_list.length; i++) {
-      this.basic_column[column_list.product_info_column_list[i].value] =
-        column_list.product_info_column_list[i].name;
-    }
-    this.processSynonyms();
   }
 
   getPubchemId(value: any) {

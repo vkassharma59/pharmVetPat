@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   user: any = null;
   showResult: boolean = false;
   loading: boolean = false;
-  basicProductData: any = {};
+  searchData: any = {};
   allDataSets: any = [];
   CurrentAPIBody = {
     body: {},
@@ -68,22 +68,41 @@ export class HomeComponent implements OnInit {
 
   handleSearchResults(data: any) {
     this.allDataSets = this.utilityService.getDataStates();
-    this.basicProductData = { ...data };
-    if (
-      this.basicProductData?.basic_product_count &&
-      this.basicProductData?.basic_product_data
-    ) {
-      for (let i = 0; i < this.basicProductData?.basic_product_data?.length; i++) {
-        this.allDataSets[i][this.resultTabs.productInfo.name] =
-          this.basicProductData?.basic_product_data[i];
-      }
-    } 
+    this.searchData = { ...data };
+
+    switch(this.CurrentAPIBody.currentTab) {
+      case this.resultTabs.productInfo.name:
+        if (
+          this.searchData?.basic_product_count &&
+          this.searchData?.basic_product_data
+        ) {
+          this.utilityService.setActiveTab(this.resultTabs.productInfo.name);
+          for (let i = 0; i < this.searchData?.basic_product_data?.length; i++) {
+            this.allDataSets[i][this.resultTabs.productInfo.name] =
+              this.searchData?.basic_product_data[i];
+          }
+        }
+        break;
+      case this.resultTabs.technicalRoutes.name:
+        if (
+          this.searchData?.ros_count &&
+          this.searchData?.ros_data
+        ) {
+          this.utilityService.setActiveTab(this.resultTabs.technicalRoutes.name);
+          for (let i = 0; i < this.searchData?.ros_data?.length; i++) {
+            this.allDataSets[i][this.resultTabs.technicalRoutes.name] =
+              this.searchData?.ros_data[i];
+          }
+        }
+        break;
+    }
 
     console.log(this.allDataSets);
-    console.log(this.basicProductData);
+    console.log(this.searchData);
   }
 
   handleShowResult(data: any) {
+    console.log(data);
     this.showResult = true;
     this.CurrentAPIBody.api_url = data?.API_URL;
     this.CurrentAPIBody.body = data?.body;

@@ -66,6 +66,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
 
   ngOnInit() {
     // Get All tabs name
+    this.utilityService.resetTabs();
     this.resultTabs = this.utilityService.getAllTabsName();
     
     this.getChemicalStructureFilters();
@@ -437,17 +438,17 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
         const response = res?.data?.columns;
-        Auth_operations.setColumnList('product_info_column_list', response);
+        Auth_operations.setColumnList(this.resultTabs.productInfo.name, response);
   
         this.mainSearchService.getSimpleSearchResults({ keyword: this.simpleSearch?.keyword, page_no: 1 }).subscribe({
           next: (res: any) => {
-            this.chemSearchResults.emit(res?.data);            
             this.showResultFunction.emit({
               body,
               API_URL: this.apiUrl,
               currentTab: this.resultTabs.productInfo.name,
               actual_value: '',
             });
+            this.chemSearchResults.emit(res?.data);   
             this.setLoadingState.emit(false);
           },
           error: (e) => {
@@ -504,17 +505,17 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
         const response = res?.data?.columns;
-        Auth_operations.setColumnList('product_info_column_list', response);
+        Auth_operations.setColumnList(this.resultTabs.productInfo.name, response);
   
         this.mainSearchService.getAdvanceSearchResults(apiBody).subscribe({
-          next: (res: any) => {
-            this.chemSearchResults.emit(res?.data);            
+          next: (res: any) => {                     
             this.showResultFunction.emit({
               apiBody,
               API_URL: this.apiUrl,
               currentTab: this.resultTabs.productInfo.name, 
               actual_value: '',
             });
+            this.chemSearchResults.emit(res?.data);   
             this.setLoadingState.emit(false);
           },
           error: (e) => {
@@ -549,18 +550,17 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
         const response = res?.data?.columns;
-        Auth_operations.setColumnList('product_info_column_list', response);
+        Auth_operations.setColumnList(this.resultTabs.technicalRoutes.name, response);
   
         this.mainSearchService.getSyntheticSearchResults({ keyword: this.synthesisSearch?.keyword, page_no: 1 }).subscribe({
-          next: (res: any) => {
-            const tempData = {};
-            this.chemSearchResults.emit(tempData);            
+          next: (res: any) => {                     
             this.showResultFunction.emit({
               body,
               API_URL: this.apiUrl,
-              currentTab: this.resultTabs.productInfo.name, 
+              currentTab: this.resultTabs.technicalRoutes.name, 
               actual_value: '',
             });
+            this.chemSearchResults.emit(res?.data);   
             this.setLoadingState.emit(false);
           },
           error: (e) => {
