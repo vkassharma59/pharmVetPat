@@ -60,6 +60,20 @@ export class MainSearchService {
       .post(this.apiUrls.basicProductInfo.simpleSearchResults, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
+  
+  getSyntheticSearchResults(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.technicalRoutes.synthesisSearch, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
+
+  getAdvanceSearchResults(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.basicProductInfo.advanceSearchResults, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
 
   getChemicalStructureFilters(): Observable<any> {
     return this.http

@@ -62,10 +62,6 @@ export class AppComponent {
     });
   }
 
-  showSuccess(toast: any) {
-    this.toastr.error('hello success', 'thank you');
-  }
-
 
   ngOnInit() {
     // this.router.resetConfig(routes);

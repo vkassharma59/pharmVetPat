@@ -82,6 +82,7 @@
             <input 
               type="text" 
               placeholder="Enter your text"
+              [disabled]="!advanceSearch.filterInputs[i].filter"
               [(ngModel)]="advanceSearch.filterInputs[i].keyword"
               [value]="advanceSearch.filterInputs[i].keyword"
               (input)="handleChangeKeyword(searchTypes.advanceSearch, i)"
@@ -118,7 +119,7 @@
             <input [(ngModel)]="advanceSearch.endDate" type="date">
           </div>
           <div class="buttons">
-            <button>Search</button>
+            <button (click)="checkPriviledgeAndHandleSearch(searchTypes.advanceSearch)">Search</button>
             <button style="border-color: lightskyblue; background-color: lightskyblue;" (click)="clearInputAndSuggetions(searchTypes.advanceSearch)">Reset Filters</button>
           </div>
        </div>
