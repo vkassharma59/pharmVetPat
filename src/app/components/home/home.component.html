@@ -1,4 +1,4 @@
-<div class="main-container py-12" [ngClass]="(!showResult) ? 'chem-linear-gradient': ''">
+<div class="main-container" [ngClass]="(!showResult) ? 'chem-linear-gradient': ''">
     <ng-container *ngIf="user; else elseBlock">
         <!-- Search Section -->
         <div>
@@ -25,216 +25,261 @@
         <app-loader *ngIf="loading" class="w-screen h-screen"></app-loader>
     </ng-container>
     <ng-template #elseBlock>
-        <!-- Hero Section -->
-        <section>
-            <div class="max-w-5xl mx-auto"> 
-                <!-- This div acts as the "card" container -->
-                <h2 class="text-3xl font-bold text-center">
-                <span class="text-[#172B4D] text-[44px] leading-[54px]">Chem</span><span class="text-[44px] leading-[54px] text-[#172B4D] font-medium font-inter">Robotics</span><sup class="align-top text-sm">TM</sup> <span class="text-[#366ee7] font-black font-inter text-[44px] leading-[54px]">Pharma Database</span>
-                </h2>
-    
-                <div class="hero mt-8 mx-auto bg-white rounded-[25px] shadow-md p-8 w-[1521px] h-[610px]">
-                    <!-- Title Section -->
-                    <h2 class="text-[34px] font-bold leading-[30px] tracking-[0px] text-center text-[#366ee7] font-inter">
-                        Login or Register Today
-                    </h2>
-                    
-                    <!-- Description Section -->
-                    <p class="mt-4 text-[22px] leading-[30px] tracking-[0px] text-center text-[#172B4D] font-inter">
-                        Discover new opportunities with our intelligence database for the agrochemical, pharmaceutical, and fine chemical industry.
-                    </p>
-                    
-                    <!-- Buttons Section -->
-                    <div class="mt-6 flex flex-wrap justify-center space-x-4">
-                        <button 
-                            data-bs-toggle="modal"
-                            data-bs-target="#sign-in"
-                            class="bg-[#366ee7] text-white text-[18px] font-bold leading-[36px] tracking-[0px] rounded-lg w-[252px] h-[45px] flex items-center justify-center opacity-100">
-                            Login
-                        </button>
-    
-                        <button class="border border-[#366ee7] text-[#366ee7] text-[18px] leading-[36px] tracking-[0px] rounded-lg w-[252px] h-[45px] flex items-center justify-center opacity-100">
-                            <a href="https://www.chemrobotics.com/registration" target="_blank" class="hover:cursor-pointer">
-                                Register
-                            </a>
-                        </button>
+        <div class="home-body">
+            <section class="container pt-3">
+                <!-- first section start -->
+                <div class="top section design">
+                    <div class="top_section text-center">
+                        <h1 class="h1-—-inter-—-44pt">
+                            <span class="chem">Chem</span><span class="robotics">Robotics<sup class="trademark">™</sup></span>
+                            <span class="pharma">Pharma Database</span>
+                        </h1>
                         
                     </div>
-                    
-                    <!-- Info Section -->
-                    <div class="mt-8 text-center">
-                        <h3 class="text-[26px] leading-[30px] tracking-[0px] font-bold text-[#366EE7] text-center">
-                            Find out more
-                        </h3>
-                        <p class="text-[22px] leading-[30px] tracking-[0px] font-normal text-[#172B4D] text-center">
-                            View our video guide or request a demo
+                    <div class="container-box">
+                    <!-- Card Section -->
+                    <div class="card-box">
+                        <div class="card-body">
+                        <h4 class="mt-3 font-weight-bold h4-—inter-—-18pt">Login or Register Today</h4>
+                        <p class="text-muted p-—-inter-—-18pt py-3">
+                            Login or Register Today Discover new opportunities with our intelligence database for <br>
+                            the agrochemical, pharmaceutical and fine chemical industry
                         </p>
-                        
-                        <button class="mt-4 bg-[#F1F8FE] text-[#366ee7] py-2 px-6 w-[252px] h-[45px] rounded-[5px] opacity-100">
-                            Request a Demo
-                        </button>
-                        
-                        <div class="mt-6">
-                            <video src="video-placeholder.mp4" controls class="mx-auto w-[804px] h-[400px] shadow-md opacity-100 border-2"></video>
+                        <div class="mb-4">
+                            <button 
+                                data-bs-toggle="modal"
+                                data-bs-target="#sign-in"
+                                data-toggle="modal" data-target="#login_modal" 
+                                class="btn btn-primary mr-3">Login
+                            </button>
+                            <button class="btn btn-outline-primary">
+                                <a target="_blank" class="nabbar_menu" href="https://chemrobotics.com/registration">Register</a>
+                            </button>
                         </div>
-                        
+                        <div class="find-more-design">
+                            <h5 class="h4-—inter-—-18pt">Find out more</h5>
+                            <p class="text-muted  py-3">View our video guide or request a demo</p>
+                            <button class="btn btn-light border btn-request-demo">Request a Demo</button>
+                        </div>
+                        </div>
+                    </div>
+            
+                    <!-- Video Section -->
+                    <div class="video-container">
+                        <video controls>
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                        </video>
+                    </div>
                     </div>
                 </div>
-                
-            </div>
-        </section>
-    
-        <section class="pt-14 pb-4">
-            <div class="max-w-5xl mx-auto">
-                <!-- Heading -->
-                <h2 class="text-center text-[#366EE7] font-bold">
-                    <span class="text-[44px] leading-[54px] font-black">ChemRobotics</span>
-                    <sup class="align-top text-sm">TM</sup>
-                    <span class="text-[44px] leading-[54px] font-black">Pharma Database</span>
-                </h2>
-        
-                <!-- Subheading -->
-                <p class="text-center text-[#172B4D] mt-4 text-[18px] leading-[28px]">
-                    Pharmaceutical / veterinary patent and regulatory database which provides information on
-                </p>
-        
-                <!-- Content Section -->
-                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-[#172B4D] text-center text-[16px] leading-[24px]">
-                    <!-- Column 1 -->
-                    <div>
+
+                <!-- second section start -->
+                <div class="heading-section">
+                    <div class="container text-center">
+                      <h1 class="h2-—-inter-—-34pt">
+                        <span class="d-block">ChemRobotics<sup>™</sup>Pharma Database</span>
+                      </h1>
+                      <p class="py-3">
+                        ChemRobotics™ Pharma Database Pharmaceutical / veterinary patent and regulatory database which provides information on
+                      </p>
+                    </div>
+                  <div class="content-section">
+                    <div class="row">
+                      <!-- Column 1 -->
+                      <div class="col-md-4 mb-4 mb-md-0 px-3">
                         <div class="py-1">New and Existing Active Pharmaceutical Ingredients</div>
                         <div class="py-1">Existing Intellectual Property (Patent Landscape)</div>
                         <div class="py-1">Combination</div>
                         <div class="py-1">Developer</div>
                         <div class="py-1">Innovator</div>
-                    </div>
-        
-                    <!-- Column 2 -->
-                    <div class="border-l border-r border-[#366EE7] px-4">
+                      </div>
+                
+                      <!-- Column 2 -->
+                      <div class="col-md-4 mb-4 mb-md-0 px-3">
                         <div class="py-1">Drug Product Approval Information (Orange Book Data)</div>
                         <div class="py-1">DMF holder (USDMF & ESMF)</div>
                         <div class="py-1">Formulation</div>
                         <div class="py-1">Manufacturer</div>
                         <div class="py-1">Regulatory Requirement</div>
-                    </div>
-        
-                    <!-- Column 3 -->
-                    <div>
+                      </div>
+                
+                      <!-- Column 3 -->
+                      <div class="col-md-4 px-3">
                         <div class="py-1">Routes of Synthesis (Product patent routes / commercial routes of synthesis and other disclosed routes)</div>
                         <div class="py-1">Mechanism of Action (MoA)</div>
                         <div class="py-1">Method of Use (MOU)</div>
                         <div class="py-1">Toxicity and Safety Data</div>
+                      </div>
                     </div>
+                  </div>
                 </div>
-            </div>
-        </section>
-    
-        <!-- Features Section -->
-        <section class="pt-4">
-            <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                    <h3 class="text-2xl font-bold text-[#366EE7]">Key Features</h3>
-                    <ul class="text-[#172B4D] text-[18px] mt-4 list-disc list-inside space-y-2">
-                        <li>More than 25000 active pharmaceutical ingredients route of synthesis with their intermediates are disclosed. The route of synthesis also classified as Commercial Routes of Synthesis (ROS), Chinese Routes of Synthesis (ROS), Innovator’s Routes of Synthesis (ROS) etc.</li>
-                        <li>Readily accessible DMF or EPDF information</li>
-                        <li>Patent Landscape – Technology patent landscape for every Active pharmaceutical ingredient, which can be exported in the excel format</li>
-                        <li>Non-Patent Literature – Provides the access of critical important non-patent literature on polymorph, analytical data, particle size and process disclosed in non-patent literature</li>
-                    </ul>
-                    
+            
+                <!-- Features Section -->
+                <div class="key_featured_design">
+                      <!-- Row 1 -->
+                      <div class="row align-items-center py-lg-5">
+                          <!-- Text Content -->
+                          <div class="col-md-6 col-12 text-content">
+                              <h3 class="h4-—inter-—-18pt py-3">Key Features</h3>
+                              <ul>
+                                  <li class="mb-3">
+                                      More than 25000 active pharmaceutical ingredients route of synthesis with their intermediates are disclosed. The route of synthesis also classified as Commercial Routes of Synthesis (ROS), Chinese Routes of Synthesis (ROS), Innovator’s Routes of Synthesis (ROS) etc.
+                                  </li>
+                                  <li class="mb-3">Readily accessible DMF or EPDF information</li>
+                                  <li class="mb-3">
+                                      Patent Landscape – Technology patent landscape for every Active pharmaceutical ingredient, which can be exported in the excel format
+                                  </li>
+                                  <li class="mb-3">
+                                      Non-Patent Literature – Provides the access of critical important non-patent literature on polymorph, analytical data, particle size and process disclosed in non-patent literature
+                                  </li>
+                              </ul>
+                          </div>
+                          <div class="col-md-1">
+                          </div>
+                          <!-- Image Content -->
+                          <div class="col-md-5 col-12 text-center">
+                              <img src="assets/images/home/key-features.png" alt="Key Features" class="img-fluid rounded shadow">
+                          </div>
+                      </div>
+            
+                      <!-- Row 2 -->
+                      <div class="row align-items-center py-lg-5">
+                          <!-- Image Content -->
+                          <div class="col-md-5 col-12 text-center">
+                              <img src="assets/images/home/whats-inclues.png" alt="What’s Included?" class="img-fluid rounded shadow">
+                          </div>
+                          <!-- Text Content -->
+                          <div class="col-md-1">
+                          </div>
+                          <div class="col-md-6 col-12 text-content">
+                              <h3 class="h4-—inter-—-18pt py-3">What’s Included?</h3>
+                              <ul>
+                                  <li class="mb-3">
+                                    Physicochemical properties. More than 30 properties with special emphasis on API polymorphic data, particle size etc for market potential API’s
+                                  </li>
+                                  <li class="mb-3">Product identification with CAS No. / Developmental code / EPA Codes</li>
+                                  <li class="mb-3">
+                                    Compound Patent / Innovator / Developer Information
+                                  </li>
+                                  <li class="mb-3">
+                                    Commercialisation / Regulatory information / Launch information
+                                  <li class="mb-3">
+                                    Generic Constraining Date (GCD) - Search filters for off-patent Agrochemicals
+                                  </li>
+                                  <li class="mb-3">
+                                    Reporting of new discovery candidates - Developmental Molecules (Phase-III, Phase-II, Phase-I and Pre-clinical candidates)
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
                 </div>
-                <div class="flex justify-end">
-                    <img src="assets/images/home/key-features.png" alt="Key Features" class="rounded-lg shadow-md w-3/4">
-                </div>
-            </div>
-        </section>
-    
-        <!-- What's Included Section -->
-        <section class="py-12">
-            <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2">
-                <div class="flex">
-                    <img src="assets/images/home/whats-inclues.png" alt="What's Included" class="rounded-lg shadow-md w-3/4">
-                </div>
-                <div>
-                    <h3 class="text-2xl font-bold text-[#366EE7]">What’s Included?</h3>
-                    <ul class="text-[#172B4D] text-[18px] mt-4 list-disc list-inside space-y-2 text-gray-700">
-                        <li>Physicochemical properties. More than 30 properties with special emphasis on API polymorphic data, particle size for market potential APIs</li>
-                        <li>Product identification with CAS No. / Developmental code / EPA Codes</li>
-                        <li>Compound Patent / Innovator / Developer Information</li>
-                        <li>Commercialisation / Regulatory information / Launch information</li>
-                        <li>Generic Constraining Date (GCD) - Search filters for off-patent Agrochemicals</li>
-                        <li>Reporting of new discovery candidates - Developmental Molecules (Phase-III, Phase-II, Phase-I and Pre-clinical candidates)</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    
-        <!-- Learn More Section -->
-        <section class="py-12">
-            <div class="max-w-3xl mx-auto">
-                <h3 class="text-2xl font-bold text-blue-700 text-center mb-8">Learn More</h3>
-                <div class="rounded-lg">
-                    <!-- Collapsible Item 1 -->
-                    <div class="collapsible-item">
-                        <div class="flex justify-between items-center cursor-pointer collapsible border-t border-b border-gray-300 py-4">
-                            <span class="text-blue-700 text-lg font-bold">Orange Book Data (US Approvals)</span>
-                            <span class="inline-flex items-center justify-center h-6 w-6 rounded-full border-2 border-blue-600 text-blue-600 text-xl leading-none toggle-icon">+</span>
+
+                <!-- FAQ Section -->
+                <div class="accordion-section py-lg-4">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-12 col-lg-8 col-md-8 mx-auto heading-section">
+                        <h3 class="text-center text-primary font-weight-bold mb-4" style="font-weight: bold;font-size: 22px;">Learn More</h3>
+                        <div id="accordion">
+                          <!-- FAQ Item 1 -->
+                          <div class="accordion-card">
+                            <div class="card-header" id="headingZero">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseZero" aria-expanded="false" aria-controls="collapseZero">
+                                  Orange Book Data (US Approvals)
+                                </button>
+                              </h5>
+                            </div>
+                            <div id="collapseZero" class="collapse" aria-labelledby="headingZero" data-parent="#accordion">
+                              <div class="card-body">
+                                <ul>
+                                  <li>Physicochemical properties. More than 30 properties with special emphasis on API polymorphic data, particle size etc for market potential APIs.</li>
+                                  <li>Product identification with CAS No. / Developmental code / EPA Codes.</li>
+                                  <li>Compound Patent / Innovator / Developer Information.</li>
+                                  <li>Commercialisation / Regulatory information / Launch information.</li>
+                                  <li>Generic Constraining Date (GCD) - Search filters for off-patent Agrochemicals.</li>
+                                  <li>Reporting of new discovery candidates - Developmental Molecules (Phase-III, Phase-II, Phase-I and Pre-clinical candidates).</li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+              
+                          <!-- FAQ Item 2 -->
+                          <div class="accordion-card">
+                            <div class="card-header" id="headingZeroPlus">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseZeroPlus" aria-expanded="false" aria-controls="collapseZeroPlus">
+                                  Technical Routes
+                                </button>
+                              </h5>
+                            </div>
+                            <div id="collapseZeroPlus" class="collapse" aria-labelledby="headingZeroPlus" data-parent="#accordion">
+                              <div class="card-body">
+                                <ul>
+                                  <li>Physicochemical properties. More than 30 properties with special emphasis on API polymorphic data, particle size etc for market potential APIs.</li>
+                                  <li>Product identification with CAS No. / Developmental code / EPA Codes.</li>
+                                  <li>Compound Patent / Innovator / Developer Information.</li>
+                                  <li>Commercialisation / Regulatory information / Launch information.</li>
+                                  <li>Generic Constraining Date (GCD) - Search filters for off-patent Agrochemicals.</li>
+                                  <li>Reporting of new discovery candidates - Developmental Molecules (Phase-III, Phase-II, Phase-I and Pre-clinical candidates).</li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+              
+                          <!-- FAQ Item 3 -->
+                          <div class="accordion-card">
+                            <div class="card-header" id="headingOne">
+                              <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                  Technical Supplier
+                                </button>
+                              </h5>
+                            </div>
+                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                              <div class="card-body">
+                                <ul>
+                                  <li>Physicochemical properties. More than 30 properties with special emphasis on API polymorphic data, particle size etc for market potential APIs.</li>
+                                  <li>Product identification with CAS No. / Developmental code / EPA Codes.</li>
+                                  <li>Compound Patent / Innovator / Developer Information.</li>
+                                  <li>Commercialisation / Regulatory information / Launch information.</li>
+                                  <li>Generic Constraining Date (GCD) - Search filters for off-patent Agrochemicals.</li>
+                                  <li>Reporting of new discovery candidates - Developmental Molecules (Phase-III, Phase-II, Phase-I and Pre-clinical candidates).</li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                        <div class="collapsible-content hidden p-4">
-                            <p class="text-gray-700">Details about Orange Book Data go here...</p>
-                        </div>
+                      </div>
                     </div>
-        
-                    <!-- Collapsible Item 2 -->
-                    <div class="collapsible-item mt-4">
-                        <div class="flex justify-between items-center cursor-pointer collapsible border-t border-b border-gray-300 py-4">
-                            <span class="text-blue-700 text-lg font-bold">Technical Routes</span>
-                            <span class="inline-flex items-center justify-center h-6 w-6 rounded-full border-2 border-blue-600 text-blue-600 text-xl leading-none toggle-icon">+</span>
-                        </div>
-                        <div class="collapsible-content hidden p-4">
-                            <p class="text-gray-700">Details about Technical Routes go here...</p>
-                        </div>
-                    </div>
-        
-                    <!-- Collapsible Item 3 -->
-                    <div class="collapsible-item mt-4">
-                        <div class="flex justify-between items-center cursor-pointer collapsible border-t border-b border-gray-300 py-4">
-                            <span class="text-blue-700 text-lg font-bold">Technical Supplier</span>
-                            <span class="inline-flex items-center justify-center h-6 w-6 rounded-full border-2 border-blue-600 text-blue-600 text-xl leading-none toggle-icon">+</span>
-                        </div>
-                        <div class="collapsible-content hidden p-4">
-                            <p class="text-gray-700">Details about Technical Supplier go here...</p>
-                        </div>
-                    </div>
+                  </div>
                 </div>
-            </div>
-        </section>
-        
-        <!-- Get Started Section -->
-        <section class="py-12">
-            <div class="max-w-5xl mx-auto text-center">
-                <img src="https://www.chemrobotics.com/agropat/uploads/thumbnail/footer_logo_1726573453825.png" alt="Get Started" class="mx-auto mb-6 w-55">
-                <h3 class="text-[34px] leading-[32px] font-black text-[#366EE7] text-center opacity-100">
-                    Get Started Today!
-                </h3>
-                
-                <p class="mt-4 text-[26px] leading-[42px] font-normal text-[#172B4D] text-center">
-                    ChemRobotics Pharma Database supports generic and<br> innovator product development to 
-                    <a href="#" class="text-blue-600 underline">maintain profitability</a>.
-                </p>
-                
-                <div class="mt-6 flex justify-center space-x-4">
-                    <button class="border border-[#366EE7] text-[#366EE7] bg-white py-2 px-6 w-[252px] h-[45px] rounded-[5px] hover:bg-blue-100">
-                        Register
-                    </button>
-                    
-                    <button class="bg-[#366EE7] text-white text-[18px] leading-[36px] font-normal py-2 px-6 w-[252px] h-[45px] rounded-lg flex items-center justify-center hover:bg-blue-700">
-                        Request a Demo
-                    </button>
-                    
-                    
-                </div>
-            </div>
-        </section>
+            
+                <!-- Get Started Today! -->
+                <section class="pb-5 mb-5">
+                  <div class="container text-center">
+                    <img 
+                      src="assets/get_start_logo.svg" 
+                      alt="Get Started" 
+                      class="img-fluid mb-4"
+                      style="max-width: 140px;margin: 0 auto;"
+                    >
+                    <h3 class="text-primary font-weight-bold display-5" style="font-weight: bold;font-size: 22px;">
+                      Get Started Today!
+                    </h3>
+                    <p class="mt-3">
+                      ChemRobotics Pharma Database supports generic and<br> innovator product development to
+                      <a href="#" class="text-primary text-decoration-underline">maintain profitability</a>.
+                    </p>
+                    <div class="mt-4 d-flex justify-content-center gap-3 flex-wrap">
+                      <button class="btn btn-outline-primary mr-3">Register</button>
+                      <button class="btn btn-primary"> Request a Demo</button>
+                    </div>
+                  </div>
+                </section>
+            </section>
+        </div>
     </ng-template>
 </div>
 
