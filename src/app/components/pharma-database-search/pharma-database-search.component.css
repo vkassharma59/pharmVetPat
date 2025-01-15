@@ -1,163 +1,147 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f7faff;
-    margin: 0;
-    padding: 0;
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 15px; /* side padding for smaller screens */
+  }
+
+  /* Title / Top Section */
+  .top_section h1 {
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .top_section .chem {
+    color: #172b4d;
+    font-weight: bold;
+  }
+  .top_section .robotics {
+    color: #172b4d;
+    font-weight: normal;
+  }
+  .top_section .robotics .trademark {
+    font-size: 0.5em;
+  }
+  .top_section .pharma {
+    color: #366ee7;
+  }
+
+  /* Header Tabs Row */
+  .header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 20px;
+    width: 600px;
+    height: 40px;
+    margin: 0 auto 30px;
+  }
+  .header button {
+    background-color: #fff;
+    color: #707070;
+    border: none;
+    padding: 8px 11px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .header button.active {
+    background: #0056b3;
+    color: #fff;
+    border-radius: 16px;
+    padding: 4px 10px;
+    font-weight: bold;
+    font-size: 14px;
 }
 
-.search-container {
-    max-width: 900px;
-    margin: 0 auto;
+  /* Card Box */
+  .card-box {
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 20px;
+    padding: 20px 30px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+  }
 
-.header {
-    display: flex;
-    justify-content:space-around;
-    align-items: center;
-    margin-bottom: 20px;
-    background-color: black;
-    border-radius: 20px;
-    align-self: center;
-    width: 500px;
-    height: 45px;
-    margin: 0 auto;
-
-}
-
-.header button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.header button:hover {
-    background-color: #0056b3;
-}
-
-.section-title {
+  /* Section Titles / Text */
+  .section-title {
     font-size: 18px;
+    font-weight: 600;
     margin-bottom: 10px;
     color: #0056b3;
-}
-
-.simple-search,
-.advanced-search {
-    margin-bottom: 30px;
-}
-
-.simple-search input{
-    width: 55%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-.simple-search select,
-.advanced-search select,
-.advanced-search input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.simple-search .buttons,
-.advanced-search .buttons {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.simple-search .buttons button,
-.advanced-search .buttons button {
-    border-color: #007bff;
-    color:  #007bff;
-    padding: 10px 20px;
-    /* border: none; */
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    width: 200px;
-    background-color: white;
-    font-weight: 500;
-}
-
-.simple-search .buttons button:hover,
-.advanced-search .buttons button:hover {
-    /* background-color: #0056b3; */
-    border-color: #0056b3;
-}
-
-.advanced-search .filter-group {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.advanced-search .filter-group select,
-.advanced-search .filter-group input {
-    flex: 1;
-    /* width: 350px; */
-}
-
-.date-filters {
-    display: flex;
-    gap: 10px;
-}
-
-.tutorial-btn {
-    text-align: right;
-    margin-top: 20px;
-}
-
-.tutorial-btn button {
-    background-color: #28a745;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.tutorial-btn button:hover {
-    background-color: #218838;
-}
-.datatype{
-    display: flex;
-    /* margin-bottom: 10px; */
-    font-size: 14px;
-    color: #333;
-
-}
-.hidden {
-    display: none;
-}
-.example-text {
-    font-size: 12px;
-    color: gray;
-    margin-top: -5px;
-}
-
-.divider {
+  }
+  .divider {
     border-top: 1px solid #ddd;
     margin: 20px 0;
-}
+  }
+  .hidden {
+    display: none;
+  }
 
-.example-text {
-    color: #666;
-}
+  /* Inputs & Selects: ensure consistent styling */
+  .form-control {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    line-height: normal;
+    width: 100%;
+    margin: 5px 0;
+    min-height: 40px; /* consistent height with buttons */
+  }
 
-.divider {
-    border-color: lightgray;
-}
+  /* Buttons: consistent size and spacing */
+  .btn {
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    min-height: 40px; /* consistent height with inputs */
+    cursor: pointer;
+  }
+  .btn.btn-outline-primary {
+    border: 1px solid #366ee7;
+    color: #366ee7;
+    background-color: #fff;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    width: 100%;
+  }
+  .btn.btn-outline-primary:hover,
+  .btn.btn-outline-primary:focus {
+    background-color: #366ee7;
+    color: #fff;
+    text-decoration: none;
+  }
+  .btn.btn-outline-secondary {
+    background-color: #f1f8fe;
+    border: 1px solid #366ee7;
+    color: #366ee7;
+    width: 100%;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .btn.btn-outline-secondary:hover,
+  .btn.btn-outline-secondary:focus {
+    background-color: #dceefe;
+    color: #366ee7;
+  }
+  .btn.btn-success {
+    width: 100%;
+    transition: opacity 0.2s ease;
+  }
+  .btn.btn-success:hover {
+    opacity: 0.9;
+  }
+
+  /* Tutorial Buttons Row */
+  .tutorial-btn {
+    margin-top: 20px;
+  }
+
+  /* Responsive Overrides */
+  @media (max-width: 768px) {
+    .btn {
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 500;
+      min-height: 40px; /* consistent height with inputs */
+      cursor: pointer;
+    }
+  }

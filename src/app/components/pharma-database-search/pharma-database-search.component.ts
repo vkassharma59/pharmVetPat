@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, HostListener, OnInit, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MainSearchService } from '../../services/main-search/main-search.service';
-import { NgFor, NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { UserPriviledgeService } from '../../services/user_priviledges/user-priviledge.service';
 import { Auth_operations } from '../../Utils/SetToken';
 import { ColumnListService } from '../../services/columnList/column-list.service';
@@ -13,7 +13,7 @@ import { searchTypes, UtilityService } from '../../services/utility-service/util
 @Component({
   selector: 'chem-pharma-database-search',
   standalone: true,
-  imports: [FormsModule, NgIf, NgFor],
+  imports: [FormsModule, NgIf, NgFor, NgClass],
   templateUrl: './pharma-database-search.component.html',
   styleUrl: './pharma-database-search.component.css'
 })
@@ -50,6 +50,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   resultTabs: any = [];  
   apiUrls = AppConfigValues.appUrls;
   showSuggestions: boolean = false;
+  activeSearchTab: string = 'api-search'
 
   constructor(
     private elementRef: ElementRef,
@@ -79,6 +80,10 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     if (!this.elementRef.nativeElement.contains(event.target)) {
       this.showSuggestions = false;
     }
+  }
+
+  showContent(searchTab: string) {
+    this.activeSearchTab = searchTab;
   }
 
   addFilter() {
