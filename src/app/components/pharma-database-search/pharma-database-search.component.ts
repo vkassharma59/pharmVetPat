@@ -467,10 +467,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     });
   }
 
-  private performIntermediateSearch(): void {
-
-  }
-
   private isValidDate(date) {
     return !isNaN(Date.parse(date));
   }
@@ -601,6 +597,51 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         Auth_operations.setColumnList(this.resultTabs.chemicalDirectory.name , response);
   
         this.mainSearchService.getChemicalStructureResults({ keyword: this.chemicalStructure?.keyword, criteria: this.chemicalStructure?.filter ,page_no: 1 }).subscribe({
+          next: (res: any) => {                     
+            this.showResultFunction.emit({
+              body,
+              API_URL: this.apiUrl,
+              currentTab: this.resultTabs.chemicalDirectory.name, 
+              actual_value: '',
+            });
+            this.chemSearchResults.emit(res?.data);   
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
+
+  private performIntermediateSearch(): void {
+    Auth_operations.setActiveformValues({
+      column: this.column,
+      keyword: this.intermediateSearch.keyword,
+      screenColumn: this.screenColumn,
+    });
+  
+    const body = {
+      criteria: this.criteria,
+      page_no: 1,
+      filter_enable: false,
+      filters: {},
+      order_by: '',
+    };
+  
+    const tech_API = this.apiUrls.chemicalDirectory.columnList;  
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.chemicalDirectory.name , response);
+  
+        this.mainSearchService.getChemicalStructureResults({ keyword: this.intermediateSearch?.keyword, criteria: this.intermediateSearch?.filter ,page_no: 1 }).subscribe({
           next: (res: any) => {                     
             this.showResultFunction.emit({
               body,
