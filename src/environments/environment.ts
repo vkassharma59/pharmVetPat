@@ -8,7 +8,7 @@ export const environment = {
     domainNameRouteOfSynthesis: '/agropat/images/route_of_synthesis/',
     domianNameGooglePatent: 'https://patents.google.com/patent/',
     countryNameLogoDomain: '/agropat/images/flag/',
-    domainNameEspacenetUrl:
-    'https://worldwide.espacenet.com/patent/search/family/042310208/publication/',
+    domainNameEspacenetUrl: 'https://worldwide.espacenet.com/patent/search/family/042310208/publication/',
+    domainNameChemicalDirectoryStructure: '/agropat/images/chemical_directory_structures/',
   };
   

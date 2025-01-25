@@ -4,11 +4,12 @@ import { JsonPipe, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angula
 import { RouteTabsComponent } from '../route-tabs/route-tabs.component';
 import { BasicRouteCardComponent } from '../results-common/basic-route-card/basic-route-card.component';
 import { TechnicalRoutesCardComponent } from '../results-common/technical-routes-card/technical-routes-card.component';
+import { ChemicalDirectoryDataCardComponent } from '../results-common/chemical-directory-card/chemical-directory-data-card.component';
 
 @Component({
   selector: 'chem-route-results',
   standalone: true,
-  imports: [NgIf, RouteTabsComponent, BasicRouteCardComponent, TechnicalRoutesCardComponent, NgSwitch, NgSwitchCase, NgSwitchDefault, JsonPipe],
+  imports: [NgIf, RouteTabsComponent, BasicRouteCardComponent, TechnicalRoutesCardComponent, ChemicalDirectoryDataCardComponent, NgSwitch, NgSwitchCase, NgSwitchDefault, JsonPipe],
   templateUrl: './route-result.component.html',
   styleUrl: './route-result.component.css'
 })

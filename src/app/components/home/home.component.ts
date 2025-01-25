@@ -95,6 +95,18 @@ export class HomeComponent implements OnInit {
           }
         }
         break;
+      case this.resultTabs.chemicalDirectory.name:
+        if (
+          this.searchData?.chem_dir_count &&
+          this.searchData?.chem_dir_data
+        ) {
+          this.utilityService.setActiveTab(this.resultTabs.chemicalDirectory.name);
+          for (let i = 0; i < this.searchData?.chem_dir_data?.length; i++) {
+            this.allDataSets[i][this.resultTabs.chemicalDirectory.name] =
+              this.searchData?.chem_dir_data[i];
+          }
+        }
+        break;
     }
 
     console.log(this.allDataSets);
@@ -102,7 +114,6 @@ export class HomeComponent implements OnInit {
   }
 
   handleShowResult(data: any) {
-    console.log(data);
     this.showResult = true;
     this.CurrentAPIBody.api_url = data?.API_URL;
     this.CurrentAPIBody.body = data?.body;

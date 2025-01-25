@@ -83,7 +83,7 @@ export class BasicRouteCardComponent {
 
     // Remove the temporary textarea element
     document.body.removeChild(textArea);
-    alert('Item Copied!')
+    alert('Item Copied!');
   }
 
   getColumnName(value: any) {

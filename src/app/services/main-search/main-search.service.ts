@@ -75,6 +75,13 @@ export class MainSearchService {
       .pipe(catchError(this.handleError));
   }
 
+  getChemicalStructureResults(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.chemicalDirectory.intermediateApplicationSearch, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
+
   getChemicalStructureFilters(): Observable<any> {
     return this.http
       .get(this.apiUrls.chemicalDirectory.structureFilterColumns, { headers: this.headers })

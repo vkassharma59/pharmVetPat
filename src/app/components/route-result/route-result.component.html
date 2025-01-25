@@ -3,7 +3,6 @@
     <div class="d-flex justify-content-between align-items-center">
       <!-- Left Section -->
       <div class="d-flex align-items-center">
-        <pre>{{currentTabData | json}}</pre>
         <h5 class="text-primary mb-0">{{currentTabData.label}}</h5>
         <span class="divider">&nbsp;|&nbsp;</span>
         <span class="fw-bold">Total Results: {{searchData?.basic_product_count}}</span>
@@ -31,6 +30,10 @@
 
       <ng-container *ngSwitchCase="'technicalRoutes'">
         <chem-technical-route [data]="dataItem.technicalRoutes"></chem-technical-route>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'chemicalDirectory'">
+        <chemical-directory-card [data]="dataItem.chemicalDirectory"></chemical-directory-card>
       </ng-container>
 
       <ng-container *ngSwitchDefault>

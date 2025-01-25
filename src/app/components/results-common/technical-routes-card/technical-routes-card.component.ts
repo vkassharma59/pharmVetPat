@@ -57,6 +57,7 @@ export class TechnicalRoutesCardComponent {
 
     // Remove the temporary textarea element
     document.body.removeChild(textArea);
+    alert('Item Copied!');
   }
 
   getStringLength(value: any) {

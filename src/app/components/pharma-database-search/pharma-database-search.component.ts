@@ -5,8 +5,6 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
 import { UserPriviledgeService } from '../../services/user_priviledges/user-priviledge.service';
 import { Auth_operations } from '../../Utils/SetToken';
 import { ColumnListService } from '../../services/columnList/column-list.service';
-import { environment } from '../../../environment/environment';
-import { environment as env } from '../../../environments/environment';
 import { AppConfigValues } from '../../config/app-config';
 import { searchTypes, UtilityService } from '../../services/utility-service/utility.service';
 
@@ -582,6 +580,47 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   }
 
   private performChemicalStructureSearch(): void {
-    
+    Auth_operations.setActiveformValues({
+      column: this.column,
+      keyword: this.chemicalStructure?.keyword,
+      screenColumn: this.screenColumn,
+    });
+  
+    const body = {
+      criteria: this.criteria,
+      page_no: 1,
+      filter_enable: false,
+      filters: {},
+      order_by: '',
+    };
+  
+    const tech_API = this.apiUrls.chemicalDirectory.columnList;  
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.chemicalDirectory.name , response);
+  
+        this.mainSearchService.getChemicalStructureResults({ keyword: this.chemicalStructure?.keyword, criteria: this.chemicalStructure?.filter ,page_no: 1 }).subscribe({
+          next: (res: any) => {                     
+            this.showResultFunction.emit({
+              body,
+              API_URL: this.apiUrl,
+              currentTab: this.resultTabs.chemicalDirectory.name, 
+              actual_value: '',
+            });
+            this.chemSearchResults.emit(res?.data);   
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
   }
 }
