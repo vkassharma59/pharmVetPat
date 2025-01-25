@@ -77,6 +77,9 @@ export class HomeComponent implements OnInit {
           this.searchData?.basic_product_data
         ) {
           this.utilityService.setActiveTab(this.resultTabs.productInfo.name);
+
+          // Remove extra keys from allDataSets beyond the length
+          this.allDataSets = this.allDataSets.slice(0, this.searchData?.basic_product_data?.length);
           for (let i = 0; i < this.searchData?.basic_product_data?.length; i++) {
             this.allDataSets[i][this.resultTabs.productInfo.name] =
               this.searchData?.basic_product_data[i];
@@ -89,6 +92,9 @@ export class HomeComponent implements OnInit {
           this.searchData?.ros_data
         ) {
           this.utilityService.setActiveTab(this.resultTabs.technicalRoutes.name);
+
+          // Remove extra keys from allDataSets beyond the length
+          this.allDataSets = this.allDataSets.slice(0, this.searchData?.ros_data?.length);
           for (let i = 0; i < this.searchData?.ros_data?.length; i++) {
             this.allDataSets[i][this.resultTabs.technicalRoutes.name] =
               this.searchData?.ros_data[i];
@@ -101,6 +107,9 @@ export class HomeComponent implements OnInit {
           this.searchData?.chem_dir_data
         ) {
           this.utilityService.setActiveTab(this.resultTabs.chemicalDirectory.name);
+
+          // Remove extra keys from allDataSets beyond the length
+          this.allDataSets = this.allDataSets.slice(0, this.searchData?.chem_dir_data?.length);
           for (let i = 0; i < this.searchData?.chem_dir_data?.length; i++) {
             this.allDataSets[i][this.resultTabs.chemicalDirectory.name] =
               this.searchData?.chem_dir_data[i];
