@@ -1,0 +1,49 @@
+p{
+    white-space: pre;
+    text-wrap: wrap;
+}
+
+.tag_title{
+  font-family: 'Montserrat';
+font-style: normal;
+font-weight: 700;
+font-size: 30px;
+line-height: 49px;
+/* identical to box height */
+text-align: center;
+
+color: #0032A0;
+}
+
+::-webkit-scrollbar {
+    width: 7px;
+    height:7px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #312e81;
+  }
+
+
+  .desc{
+    display: -webkit-box;
+    -webkit-line-clamp: 10;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+
+  .res{
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
