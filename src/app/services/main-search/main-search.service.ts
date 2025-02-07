@@ -100,6 +100,13 @@ export class MainSearchService {
       .pipe(catchError(this.handleError));
   }  
 
+  technicalRoutesSearchSpecific(props: any): Observable<any> {
+      const body = props;
+      return this.http
+        .post(this.apiUrls.technicalRoutes.searchSpecific, body, { headers: this.headers })
+        .pipe(catchError(this.handleError));
+  }  
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.log(error);
     if (error.error instanceof ErrorEvent) {

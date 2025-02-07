@@ -6,6 +6,7 @@ import { BasicRouteCardComponent } from '../results-common/basic-route-card/basi
 import { TechnicalRoutesCardComponent } from '../results-common/technical-routes-card/technical-routes-card.component';
 import { ChemicalDirectoryDataCardComponent } from '../results-common/chemical-directory-card/chemical-directory-data-card.component';
 import { DmfOrSuplierComponent } from '../results-common/dmf-or-suplier/dmf-or-suplier.component';
+import { UserPriviledgeService } from '../../services/user_priviledges/user-priviledge.service';
 
 @Component({
   selector: 'chem-route-results',
@@ -19,13 +20,16 @@ export class RouteResultComponent {
 
   currentTabData: any = {}
   @Output() backFunction: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onResultTabChange: EventEmitter<any> = new EventEmitter<any>();
 
   @Input() index: number | undefined;
   @Input() dataItem: any;
   @Input() searchData: any;
   resultTabs: any = [];
 
-  constructor(private utilityService: UtilityService) {}
+  constructor(private utilityService: UtilityService,
+    private userPriviledgeService: UserPriviledgeService
+  ) {}
 
   ngOnInit() {
     this.resultTabs = Object.values(this.utilityService.getAllTabsName()) ;
@@ -37,6 +41,14 @@ export class RouteResultComponent {
   }
 
   handleCurrentTab(data: any) {    
+    const tempObj = 
+    {
+      previousTabData: this.currentTabData,
+      currentTabData: data,
+      index: this.index,
+      dataItem: this.dataItem,
+    }
+    this.onResultTabChange.emit(tempObj);
     this.currentTabData = data;
   }
 }

@@ -24,7 +24,6 @@
 
     <!-- Main Content Section -->
     <div class="card mt-3" [ngSwitch]="currentTabData?.name">
-      {{currentTabData?.name}}
       <ng-container *ngSwitchCase="'productInfo'">
         <chem-product-info [data]="dataItem.productInfo"></chem-product-info>
       </ng-container>

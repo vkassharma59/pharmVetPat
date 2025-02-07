@@ -15,14 +15,33 @@ import { UtilityService } from '../../../services/utility-service/utility.servic
   styleUrl: './technical-routes-card.component.css',
 })
 export class TechnicalRoutesCardComponent {
-  @Input() data: any;
-  @Input() CurrentAPIBody: any;
-  @Input() index: any;
 
   downloadable_values: string[] = [];
   doc_values: any = [];
   tech_column: any = {};
   resultTabs: any = {};
+  _data: any;
+
+  @Input() CurrentAPIBody: any;
+  @Input() index: any;
+  @Input()
+  get data() {
+    return this._data;
+  }
+  set data(value: any) {
+    this.resultTabs = this.utilityService.getAllTabsName();
+    const column_list = Auth_operations.getColumnList();
+    if(column_list[this.resultTabs.technicalRoutes?.name]?.length > 0 && value) {
+      for (let i = 0; i < column_list[this.resultTabs.technicalRoutes.name].length; i++) {
+        this.tech_column[column_list[this.resultTabs.technicalRoutes.name][i].value] =
+          column_list[this.resultTabs.technicalRoutes.name][i].name;
+      }
+
+      this._data = value;
+      console.log(column_list[this.resultTabs.technicalRoutes?.name]);
+      console.log(value);
+    }
+  }
 
   constructor(
     private dialog: MatDialog,
@@ -31,15 +50,6 @@ export class TechnicalRoutesCardComponent {
 
   getColumnName(value: any) {
     return this.tech_column[value];
-  }
-
-  ngOnInit() {
-    this.resultTabs = this.utilityService.getAllTabsName();
-    const column_list = Auth_operations.getColumnList();
-    for (let i = 0; i < column_list[this.resultTabs.technicalRoutes.name].length; i++) {
-      this.tech_column[column_list[this.resultTabs.technicalRoutes.name][i].value] =
-        column_list[this.resultTabs.technicalRoutes.name][i].name;
-    }
   }
 
   handleCopy(text: any) {
