@@ -7,11 +7,13 @@ import { TechnicalRoutesCardComponent } from '../results-common/technical-routes
 import { ChemicalDirectoryDataCardComponent } from '../results-common/chemical-directory-card/chemical-directory-data-card.component';
 import { DmfOrSuplierComponent } from '../results-common/dmf-or-suplier/dmf-or-suplier.component';
 import { UserPriviledgeService } from '../../services/user_priviledges/user-priviledge.service';
+import { ImpComponent } from '../results-common/imp/imp.component';
+import { UsComponent } from '../results-common/us/us.component';
 
 @Component({
   selector: 'chem-route-results',
   standalone: true,
-  imports: [NgIf, RouteTabsComponent, BasicRouteCardComponent, TechnicalRoutesCardComponent,DmfOrSuplierComponent, ChemicalDirectoryDataCardComponent, NgSwitch, NgSwitchCase, NgSwitchDefault, JsonPipe],
+  imports: [NgIf, ImpComponent, UsComponent, RouteTabsComponent, BasicRouteCardComponent, TechnicalRoutesCardComponent,DmfOrSuplierComponent, ChemicalDirectoryDataCardComponent, NgSwitch, NgSwitchCase, NgSwitchDefault, JsonPipe],
   templateUrl: './route-result.component.html',
   styleUrl: './route-result.component.css'
 })

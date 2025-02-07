@@ -1,0 +1,47 @@
+:host
+{
+    background-color: pink;
+}
+
+h5{
+    font-weight: bold;
+    font-size: 15px;
+    padding-top:  15px;
+}
+
+.clickMeURL
+{
+    padding: 15px;
+}
+.clickMeURL a {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px;
+    margin-right: 10px; /* Adds space between links */
+    display: inline-block; /* Ensures spacing applies */
+}
+
+
+    .lastLine {
+        border: 5px solid rgba(0, 0, 255, 0.8) !important; /* Higher opacity */
+        border-radius: 20px !important;
+    }
+    
+
+    .image1
+    {
+        height: 100px;
+        width: 130px;
+    }
+   
+
+    .hover\:cursor-pointer {
+        cursor: pointer;
+        font-size: 18px;
+        color: #007bff;
+        margin-left: 8px;
+      }
+      
+      .hover\:cursor-pointer:hover {
+        color: #0056b3;
+      }

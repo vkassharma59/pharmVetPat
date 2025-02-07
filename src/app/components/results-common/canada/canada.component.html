@@ -1,0 +1,399 @@
+<div class="card-header text-white bg-danger fs-3">
+    <i class="fa-sharp fa-solid fa-flask"></i>HEALTH CANADA  >> SITAGLIPTIN PHOSPHATE<i class="fa-solid fa-download" style="color: #74C0FC;"></i>
+</div>
+    <div class="card-body">
+     <div class="pb-3 mb-3 px-2 rounded-lg">
+         <div class="row">
+             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+                <h1 class="apoclass">1. APO-SITAGLIPTIN</h1>
+                <br><br>
+    
+                <h4 class="fs-5">SITAGLIPTIN(SITAGLIPTIN <br>
+                    PHOSPHATE MONOHYDRATE):50<br>
+                    MG
+                </h4><br>
+    
+                <a href="#" class="firsta">PRODUCT MONOGRAPH/VETERINARY LABELLING(PDF)LINK</a>
+    
+                <br><br>
+                <h5>PRODUCT MONOGRAPH/VETERINARY LABELLING(PDF)<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('PRODUCT')" 
+                    title="Copy to clipboard"
+                ></i>         
+                </h5>
+                <p id="PRODUCT" style="color: blue;" >CA00067970.PDF</p>
+    
+                <p><b>DATE:</b> 2022-03-15</p>
+             </div>
+             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                <p><b>COMPANY</b><i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('COMPANY')" 
+                    title="Copy to clipboard"
+                ></i></p>
+              <p id="COMPANY"> APOTEX INC<br>
+               150 Signet Drive<br>
+               Toronto<br>
+               Ontario<br>
+               Canada M9L 1T9</p>
+
+              <img src="assets/images/components/APOTEX.png" class="image1">
+
+
+             </div>
+             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+                <h3 class="approved">Approved</h3>
+                <img src="assets/images/components/canada.png" class="image2">
+
+             </div>
+
+          </div>
+      </div>
+    </div>
+    <div class="more">
+        <div class="textmore">
+            <button class="btn1" (click)="toggleDropdown()">
+                {{ isDropdownVisible ? 'LESS INFO' : 'MORE INFO' }} 
+                <i class="fa-solid" [ngClass]="{'fa-arrow-up': isDropdownVisible, 'fa-arrow-down': !isDropdownVisible}"></i>
+                </button>
+        </div>  
+    </div>
+
+
+    <!-- ===========DropeDown Code============= -->
+ <div *ngIf="isDropdownVisible" class="dropdown-content border border-dark rounded">
+    <div class="card-body">
+     <div class="pb-3 mb-3 px-2 rounded-lg">
+        <div class="row">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+    
+                <h5>GREEN BOOK REGISTRATION NUMBER(GBRN):<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('GREEN')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <P id="GREEN">10313</P>
+            
+                <h5>PRODUCT NAME:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('PRODUCTNAME')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="PRODUCTNAME">APO-SITAGLIPTIN</p>
+    
+                <h5>COMPANY:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('COMPANY2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="COMPANY2">APOTEX INC<br>
+                150 Signet Drive<br>
+                Toronto<br>
+                Ontaria<br>
+                Canada M9L 1P7</p>
+    
+                <img src="assets/images/components/APOTEX.png" class="image1">
+
+
+                <h5>DOSAGE FORM(S):<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('DOSAGE')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="DOSAGE">Tablet</p><br>
+    
+                <h5> SCHEDULE(S):<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('SCHEDULE')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="SCHEDULE">Prescription</p>
+    
+                <h5> LIST OF ACTIVE INGREDIENTS(S):<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('LIST')" 
+                    title="Copy to clipboard"
+                ></i> </h5>
+                <p id="LIST">SITAGLIPTIN(SITAGLIPTIN PHOSPHATE MONOHYDRATE): 50 MG</p>
+                
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                <h5>CURRENT STATUS DATE:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('CURRENT')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="CURRENT">2022-10-24</p>
+    
+                <h5>A.I. NAME:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('AI')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="AI">SITAGLIPTIN(SITAGLIPTIN PHOSPHATE MONOHYDRATE)</p>
+    
+                <h5>DIN:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('DIN')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="DIN">02428288</p>
+    
+                <h5>ROUTE(S)OF ADMINISTRATION:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('ROUTE')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="ROUTE">Oral</p>
+    
+                <h5>ACTIVE INGREDIENT GROUP(AIG) NUMBER:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('ACTIVE')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="ACTIVE">0152414003</p>
+    
+                <h5>ANATOMICAL THERAPEUTIC CHEMICAL(ATC):<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('ANATOMICAL')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="ANATOMICAL">A10BH01 SITAGLIPTIN</p>
+            </div>
+    
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                <h5>CURRENT STATUS:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('CURRENT')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="CURRENT">Approved</p>
+    
+                <h5>CLASS:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('CLASS')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="CLASS">Human</p>
+    
+                <h5>NUMBER OF ACTIVE INGREDIENT(S):<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('NUMBER2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="NUMBER2">1</p>
+    
+                <h5>STRENGTH:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('STRENGTH')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="STRENGTH">50 MG</p>
+    
+                <h5>PRODUCT MONOGRAPH/VETERINARY LABELLING:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('PRODUCT3')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="PRODUCT3"><b>Date:</b> 2022-03-15</p>
+                
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<hr>
+
+  
+<!-- ===============2nd=================== -->
+<div class="card-body">
+    <div class="pb-3 mb-3 px-2 rounded-lg">
+        <div class="row">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+               <h1 class="apoclass">2. NAT-SITAGLIPTIN</h1>
+               <br><br>
+   
+               <h4 class="fs-5">SITAGLIPTIN(SITAGLIPTIN <br>
+                   PHOSPHATE MONOHYDRATE):100<br>
+                   MG
+               </h4><br>
+   
+               <a href="#" class="firsta">PRODUCT MONOGRAPH/VETERINARY LABELLING(PDF)LINK</a>
+   
+               <br><br>
+               <h5>PRODUCT MONOGRAPH/VETERINARY LABELLING(PDF)<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('PRODUCT11')" 
+                title="Copy to clipboard"></i> </h5> 
+                  
+              <p  id="PRODUCT11" style="color: blue;" >CA00073465.PDF</p>
+   
+               <p><b>DATE:</b> 2023-11-23</p>
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+               <h5>COMPANY:<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('COMPANY11')" 
+                title="Copy to clipboard"></i>
+            </h5>
+              <p id="COMPANY11">NATCO PHARMA(CANADA)INC<br>
+              2000 Argentia Road,Plaza 1,Suite 200<br>
+              Mississauga<br>
+              Ontario<br>
+              Canada L5N 1P7</p>
+   
+               <img src="assets/images/components/Natco.png" class="image3">
+
+
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+               <h3 class="approved">Approved</h3>
+               <img src="assets/images/components/canada.png" class="image2">
+
+            </div>
+
+         </div>
+     </div>
+   </div>
+   <div class="more">
+       <div class="textmore">
+           <button class="btn1" (click)="toggleDropdown2()">
+               {{ isDropdownVisible2 ? 'LESS INFO' : 'MORE INFO' }} 
+               <i class="fa-solid" [ngClass]="{'fa-arrow-up': isDropdownVisible2, 'fa-arrow-down': !isDropdownVisible2}"></i>
+               </button>
+       </div>  
+   </div>
+<div *ngIf="isDropdownVisible2" class="dropdown-content border border-dark rounded">
+   <div class="card-body">
+    <div class="pb-3 mb-3 px-2 rounded-lg">
+       <div class="row">
+           <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+   
+               <h5>GREEN BOOK REGISTRATION NUMBER(GBRN):<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('GREEN11')" 
+                title="Copy to clipboard"></i></h5>
+               <P id="GREEN11">10313</P>
+           
+               <h5>PRODUCT NAME:<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('PRODUCT12')" 
+                title="Copy to clipboard"></i></h5>
+               <p id="PRODUCT12">NAT-SITAGLIPTIN</p>
+   
+               <h5>COMPANY:<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('COMPANY12')" 
+                title="Copy to clipboard"></i></h5>
+               <p id="COMPANY12">NATCO PHARMA(CANADA)INC<br>
+               2000 Argentia Road,Plaza 1,suite 200<br>
+               Mississauga<br>
+               Ontaria<br>
+               Canada L5N 1P7</p>
+   
+               <img src="assets/images/components/Natco.png" class="image3">
+
+               <h5>DOSAGE FORM(S):<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('DOSAGE11')" 
+                title="Copy to clipboard"></i></h5>
+               <p id="DOSAGE11">Tablet</p><br>
+   
+               <h5> SCHEDULE(S):<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('SCHEDULE11')" 
+                title="Copy to clipboard"></i> </h5>
+               <p id="SCHEDULE11">Prescription</p>
+   
+               <h5> LIST OF ACTIVE INGREDIENTS(S):<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('INGREDIENTS11')" 
+                title="Copy to clipboard"></i> </h5>
+               <p id="INGREDIENTS11">SITAGLIPTIN(SITAGLIPTIN PHOSPHATE MONOHYDRATE): 100 MG</p>
+               
+           </div>
+           <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+               <h5>CURRENT STATUS DATE:<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('CURRENT11')" 
+                title="Copy to clipboard"></i></h5>
+               <p id="CURRENT11">2023-11-23</p>
+   
+               <h5>A.I. NAME:<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('AINAME11')" 
+                title="Copy to clipboard"></i></h5>
+               <p id="AINAME11">SITAGLIPTIN(SITAGLIPTIN PHOSPHATE MONOHYDRATE)</p>
+   
+               <h5>DIN:<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('DIN11')" 
+                title="Copy to clipboard"></i></h5>
+               <p id="DIN">02543400</p>
+   
+               <h5>ROUTE(S)OF ADMINISTRATION:<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('ROUTE11')" 
+                title="Copy to clipboard"></i></h5>
+               <p id="ROUTE11">ORAL</p>
+   
+               <h5>ACTIVE INGREDIENT GROUP(AIG) NUMBER:<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('ACTIVE11')" 
+                title="Copy to clipboard"></i></h5>
+               <p id="ACTIVE11">0152414001</p>
+   
+               <h5>ANATOMICAL THERAPEUTIC CHEMICAL(ATC):<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('ANATOMICAL11')" 
+                title="Copy to clipboard"></i></h5>
+               <p id="ANATOMICAL11">A10BH01 SITAGLIPTIN</p>
+           </div>
+   
+           <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+               <h5>CURRENT STATUS:<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('CURRENTSTATUS11')" 
+                title="Copy to clipboard"></i></h5>
+               <p id="CURRENTSTATUS11">Approved</p>
+   
+               <h5>CLASS:<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('CLASS11')" 
+                title="Copy to clipboard"></i></h5>
+               <p id="CLASS11">Human</p>
+   
+               <h5>NUMBER OF ACTIVE INGREDIENT(S):<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('ACTIVEINGREDIENT11')" 
+                title="Copy to clipboard"></i></h5>
+               <p id="ACTIVEINGREDIENT11">1</p>
+   
+               <h5>STRENGTH:<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('STRENGTH11')" 
+                title="Copy to clipboard"></i></h5>
+               <p id="STRENGTH11">100 MG</p>
+   
+               <h5>PRODUCT MONOGRAPH/VETERINARY LABELLING:<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('PRODUCTMONOGRAPH11')" 
+                title="Copy to clipboard"></i></h5>
+               <p id="PRODUCTMONOGRAPH11"><b>Date:</b> 2023-11-23</p>
+               
+           </div>
+       </div>
+   </div>
+</div>
+</div>
+<br><br>
+<hr class="custom-hr">
+
+
+<!-- added comment -->

@@ -1,0 +1,135 @@
+
+
+:host {
+  background-color:#DAE6FE;
+}
+.authorised
+{
+  display: flex;
+  justify-content: center;
+  background-color: green;
+  color: white;
+}
+
+.more 
+{
+    display: inline-block; 
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    padding: 20px;
+  }
+
+
+  .textmore {
+    height: 50px;
+    width: 150px;
+    
+  }
+  .btn1
+  {
+    background-color: blue;
+    color: white;
+    height: 50px;
+    width: 150px;   
+    font-weight: bold;
+    font-size: 17px; 
+  }
+  h5{
+    font-weight: bold;
+    font-size: 15px;
+    padding-top: 15px;
+
+  }
+  h3{
+    font-weight: bold;
+    font-size: 20px;
+    padding-top: 15px;
+    color: blue;
+  }
+  h1{
+    font-weight: bold;
+    font-size: 35px;
+    color: blue;
+    padding-bottom: 10px;
+  }
+
+  .Authorised
+  {
+    font-size: 20px;
+  }
+
+  .lastLine{
+    border: 5px blue solid !important;
+    border-radius: 20px !important;
+}
+
+.clicka
+{
+  background-color: blue;
+  color: white;
+  padding: 5px;
+}
+
+a
+{
+  color: blue;
+}
+.box {
+  background-color: #008037; /* Green background */
+  color: white;
+  padding: 15px;
+  border-radius: 5px;
+  width: 350px;
+  font-size: 16px;
+}
+
+.box h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.box p {
+  margin: 5px 0 0;
+}
+
+.checkmark {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-color: white;
+  color: #008037;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: bold;
+  line-height: 16px;
+  margin-right: 5px;
+}
+
+
+.image1
+{
+  height:60px ;
+  width: 120px;
+  padding-top: 10px;
+
+}
+
+.image2
+{
+  height:80px ;
+  width: 300px;
+  padding-top: 10px;
+
+}
+
+.hover\:cursor-pointer {
+  cursor: pointer;
+  font-size: 18px;
+  color: #007bff;
+  margin-left: 8px;
+}
+
+.hover\:cursor-pointer:hover {
+  color: #0056b3;
+}

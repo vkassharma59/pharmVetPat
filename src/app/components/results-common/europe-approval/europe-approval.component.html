@@ -1,0 +1,669 @@
+<div class="card-header text-white bg-primary fs-5">
+    <i class="fa-solid fa-flask"></i>EUROPEAN MEDICINES AGENCY (EMA) >> SITAGLIPTIN PHOSPHATE 
+    <i class="fa-solid fa-download"></i>
+</div>
+
+  
+<div class="card-body">
+    <div class="pb-3 mb-3 px-2 rounded-lg">
+        <div class="row">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                <h1>1. Steglujan</h1>
+
+                <h5 style="font-size: 20px; padding: 25px;">ertugliflozin l-pyroglutamic acid,<br>
+                    sitagliptin phosphate monohydrate</h5>
+
+                    <a href="#" class="clicka">CLICK ME-FOR ORIGINAL PRODUCT DETAILS</a>
+
+                    
+
+                    <h5><i class="fa-sharp fa-solid fa-table-cells"></i>Table of contents</h5>
+
+                    <a href="#"><i class="fa-regular fa-circle-dot" style="color: #74C0FC;"></i> Product Details</a><br>
+                    <a href="#"><i class="fa-regular fa-circle-dot" style="color: #74C0FC;"></i> Authorisation Details</a><br>
+                    <a href="#"><i class="fa-regular fa-circle-dot" style="color: #74C0FC;"></i> Other</a>
+
+
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+               <h5>Marketing authorisation holder :<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('Marketing3')" 
+                title="Copy to clipboard"
+            ></i></h5>
+               <p id="Marketing3">Merck Sharp &Dohme B.V</p>
+
+               <img src="assets/images/components/Merck.png" class="image1">
+
+
+               <h5>Marketing authorisation date :<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('Marketing4')" 
+                title="Copy to clipboard"
+            ></i></h5>
+               <p id="Marketing4">3/23/2018 1:00:00 AM</p>
+
+
+
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">               
+
+                <div class="box">
+                    <h2><span class="checkmark">✔</span>Authorised</h2>
+                    <p>This medicine is authorised for use in the European Union.</p>
+                </div>
+
+                <img src="assets/images/components/ema-logo.png" class="image2">
+
+               
+
+            </div>
+        </div>   
+
+    </div>
+</div>
+
+<div class="more">
+    <div class="textmore">
+        <button class="btn1" (click)="toggleDropdown()">
+            {{ isDropdownVisible ? 'LESS INFO' : 'MORE INFO' }} 
+            <i class="fa-solid" [ngClass]="{'fa-arrow-up': isDropdownVisible, 'fa-arrow-down': !isDropdownVisible}"></i>
+            </button>
+    </div>  
+</div>
+
+
+<div *ngIf="isDropdownVisible" class="dropdown-content border border-dark rounded">
+    <div class="card-body">
+     <div class="pb-3 mb-3 px-2 rounded-lg">
+
+        <h3><i class="far fa-hand-point-right"></i>Product Details</h3>
+
+        <div class="row">
+
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                
+                <h5>
+                    Medicine name: 
+                    <i 
+                        class="fa-solid fa-copy hover:cursor-pointer" 
+                        (click)="copyText('medicineName')" 
+                        title="Copy to clipboard"
+                    ></i>
+                </h5>
+                <p id="medicineName">Steglujan</p>
+                
+
+                <h5>Category:
+                    <i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('human')" 
+                    title="Copy to clipboard"
+                ></i>
+                </h5>
+                <p id="human">Human</p>
+
+                <h5>Therapeutic area:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Therapeutic')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Therapeutic">diabetes mellitus, Type 2</p>
+
+                <h5>Additional monitoring:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Additional')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Additional">Yes</p>
+
+                <h5>Conditional approval<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Conditional')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Conditional">no</p>
+
+                <h5>Orphan medicine<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Orphan')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Orphan">no</p>
+
+
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+                <h5>Active substance:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Active')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Active">ertugliflozin l-pyroglutamic acid, sitagliptin phosphate<br>
+                     monohydrate</p>
+
+                <h5>International non-proprietary name (INN) / common name:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('International')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="International">ertugliflozin, sitagliptin</p>
+
+                <h5>Product number<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Product')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Product">EMEA/H/C/004313</p>
+
+                <h5>Generic:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Generic')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Generic">no</p>
+
+                <h5>Exceptioanal circumstance:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Exceptioanal')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Exceptioanal">no</p>
+
+                <h5>Patient safety:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Patient')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Patient">no</p>
+
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+                <h5>Authorisation status:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Authorisation')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Authorisation">Authorised</p>
+
+                <h5>GREEN BOOK REGISTRATION NUMBER(BGRN):<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('GREEN')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="GREEN">10083;10313</p>
+
+                <h5>ATC code:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('ATC')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="ATC">A10BD24</p>
+
+                <h5>Biosimilar:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Biosimilar')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Biosimilar">no</p>
+
+                <h5>Accelerated assessment:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Accelerated')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Accelerated">no</p>
+
+               
+
+            </div>
+
+        </div>
+        <hr  style="color: white; border-radius: 10px;">
+
+        <h3><i class="far fa-hand-point-right"></i>Authorization details</h3>
+        <div class="row">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+                <h5>Marketing authorisation date:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Marketing')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Marketing">3/23/2018 1:00:00 AM</p>
+
+                <h5>First published:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('First')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="First">8/20/2018 12:07:00 PM</p>
+
+                <h5>Revision date:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Revision')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Revision">11/26/2020 9:57:00 AM</p>
+
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+                <h5>Human pharmaclotherapeutic group:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Human2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Human2">Drugs used in diabetes,Combination of oral blood glucose
+                    <br>lowering drugs
+                </p>
+
+                <h5>Decision date:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Decision')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Decision">7/23/2020 12:00:00 AM</p>
+
+                <h5>Revision number:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Revision')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Revision">7</p>
+
+
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+                <h5>Marketing authorisation holder:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Marketing')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Marketing">Merck Sharp & Dohme B.V.</p> 
+
+                <img src="assets/images/components/Merck.png" class="image1">
+
+
+            </div>
+        </div>
+
+        <h5>Condition / indication:<i 
+            class="fa-solid fa-copy hover:cursor-pointer" 
+            (click)="copyText('Condition')" 
+            title="Copy to clipboard"
+        ></i></h5>
+        <p id="Condition">Steglujan is indicated in adults aged 18 years and older with type 2 
+            diabetes mellitus as an adjunct to diet and exercise to improve glycaemic control:when metformin and/or a sulphonylurea (SU) and one of the monocomponents of Steglujan do not provide adequate glycaemic control.in patients already being treated
+             with the combination of ertugliflozin and sitagliptin as separate tablets.</p>
+
+        <hr  style="color: white; border-radius: 10px;">
+
+
+        <h3><i class="far fa-hand-point-right"></i>Others</h3>
+        <a href="#" class="clicka">CLICK ME-FOR ORIGINAL PRODUCT DETAILS</a>
+
+
+
+
+    </div>
+   </div>
+</div>
+
+<hr class="lastLine">
+
+
+<!-- =================2nd=============== -->
+
+<div class="card-body">
+    <div class="pb-3 mb-3 px-2 rounded-lg">
+        <div class="row">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                <h1>2. Tesaval</h1>
+
+                <h5 style="font-size: 20px; padding: 25px;">
+                    sitagliptin </h5>
+
+                    <a href="#" class="clicka">CLICK ME-FOR ORIGINAL PRODUCT DETAILS</a>
+
+                    
+
+                    <h5><i class="fa-sharp fa-solid fa-table-cells"></i>Table of contents</h5>
+
+                    <a href="#"><i class="fa-regular fa-circle-dot" style="color: #74C0FC;"></i> Product Details</a><br>
+                    <a href="#"><i class="fa-regular fa-circle-dot" style="color: #74C0FC;"></i> Authorisation Details</a><br>
+                    <a href="#"><i class="fa-regular fa-circle-dot" style="color: #74C0FC;"></i> Other</a>
+
+
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+               <h5>Marketing authorisation holder :<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('Marketing6')" 
+                title="Copy to clipboard"
+            ></i></h5>
+               <p id="Marketing6">Merck Sharp &Dohme B.V</p>
+
+               <img src="assets/images/components/Merck.png" class="image1">
+
+
+               <h5>Marketing authorisation date :<i 
+                class="fa-solid fa-copy hover:cursor-pointer" 
+                (click)="copyText('Marketing5')" 
+                title="Copy to clipboard"
+            ></i></h5>
+               <p id="Marketing5">1/10/2008 1:00:00 AM</p>
+
+
+
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                <!-- <div class="authorised">
+                    <div class="checkbox">
+                        <i class="fa-solid fa-check" style="color: #FFFFFF;"></i>
+
+                    </div>
+                    <div class="authorisedText">
+                        <h5 class="Authorised">Authorised</h5>
+                        <p>This medicine is authorised for use in the<br>
+                        European Union.</p>
+                    </div>
+                </div> -->
+
+                <div class="box">
+                    <h2><span class="checkmark">✔</span>Authorised</h2>
+                    <p>This medicine is authorised for use in the European Union.</p>
+                </div>
+
+                <img src="assets/images/components/ema-logo.png" class="image2">
+
+               
+
+            </div>
+        </div>   
+
+    </div>
+</div>
+
+<div class="more">
+    <div class="textmore">
+        <button class="btn1" (click)="toggleDropdown2()">
+            {{ isDropdownVisible2 ? 'LESS INFO' : 'MORE INFO' }} 
+            <i class="fa-solid" [ngClass]="{'fa-arrow-up': isDropdownVisible2, 'fa-arrow-down': !isDropdownVisible2}"></i>
+            </button>
+    </div>  
+</div> 
+
+
+<div *ngIf="isDropdownVisible2" class="dropdown-content border border-dark rounded">
+    <div class="card-body">
+     <div class="pb-3 mb-3 px-2 rounded-lg">
+
+        <h3><i class="far fa-hand-point-right"></i>Product Details</h3>
+
+        <div class="row">
+
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                <h5>Medicine name:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Medicine2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Medicine2">Tesavel</p>
+
+                <h5>Category:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Category2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Category">Human</p>
+
+                <h5>Therapeutic area:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Therapeutic2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Therapeutic2">Diabetes mellitus, Type 2</p>
+
+                <h5>Additional monitoring:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Additional2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Additional2">no</p>
+
+                <h5>Conditional approval<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Conditional2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Conditional2">no</p>
+
+                <h5>Orphan medicine<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Orphan2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Orphan2">no</p>
+
+
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+                <h5>Active substance:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Active2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Active2">sitagliptin </p>
+
+                <h5>International non-proprietary name (INN) / common name:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('International2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="International2"> sitagliptin</p>
+
+                <h5>Product number<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Product2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Product2">EMEA/H/C/000910</p>
+
+                <h5>Generic:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Generic2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Generic2">no</p>
+
+                <h5>Exceptioanal circumstance:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Condition')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Exceptioanal2">Exceptioanal2</p>
+
+                <h5>Patient safety:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Patient2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Patient2">no</p>
+
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+                <h5>Authorisation status:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Authorisation2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Authorisation2">Authorised</p>
+
+                <h5>GREEN BOOK REGISTRATION NUMBER(BGRN):<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('GREEN2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="GREEN">10313</p>
+
+                <h5>ATC code:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('ATC2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="ATC2">A10BH01</p>
+
+                <h5>Biosimilar:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Biosimilar2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Biosimilar2">no</p>
+
+                <h5>Accelerated assessment:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Accelerated2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Accelerated2">no</p>
+
+               
+
+            </div>
+
+        </div>
+        <hr  style="color: white; border-radius: 10px;">
+
+        <h3><i class="far fa-hand-point-right"></i>Authorization details</h3>
+        <div class="row">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+                <h5>Marketing authorisation date:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Marketing2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Marketing">1/10/2008 1:00:00 AM</p>
+
+                <h5>Date of opinion:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Date')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Date">11/15/2007 1/00/00 AM</p>
+
+                <h5>First published:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('First2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="First2">8/8/2018 12:00:00 AM</p>
+
+                <h5>Revision date:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Revision2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Revision2">2/25/2021 5:20:00 PM</p>
+
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+                <h5>Human pharmaclotherapeutic group:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Human3')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Human3">Drugs used in diabetes,
+                </p>
+
+                <h5>Decision date:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Decision2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Decision2">2/11/2021 1:00:00 AM</p>
+
+                <h5>Revision number:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Revision2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Revision2">24</p>
+
+
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+                <h5>Marketing authorisation holder:<i 
+                    class="fa-solid fa-copy hover:cursor-pointer" 
+                    (click)="copyText('Marketing2')" 
+                    title="Copy to clipboard"
+                ></i></h5>
+                <p id="Marketing2">Merck Sharp & Dohme B.V.</p> 
+
+                <img src="assets/images/components/Merck.png" class="image1">
+
+
+            </div>
+        </div>
+
+        <h5>Condition / indication:<i 
+            class="fa-solid fa-copy hover:cursor-pointer" 
+            (click)="copyText('Condition2')" 
+            title="Copy to clipboard"
+        ></i></h5>
+        <p id="Condition2">For patients with type-2 diabetes mellitus, Tesavel is indicated to improve glycaemic 
+            control:as monotherapy:in patients inadequately controlled by diet and exercise alone
+             and for whom metformin is inappropriate due to contraindications or intolerance;as 
+             dual oral therapy in combination with:metformin when diet and exercise plus metformin
+              alone do not provide adequate glycaemic control;a sulphonylurea when diet and 
+              exercise plus maximal tolerated dose of a sulphonylurea alone do not provide
+               adequate glycaemic control and when metformin is inappropriate due to
+                contraindications or intolerance;a PPARγ agonist (i.e. a thiazolidinedione) 
+                when use of a PPARγ agonist is appropriate and when diet and exercise plus the
+                 PPARγ agonist alone do not provide adequate glycaemic control;as triple oral 
+                 therapy in combination witha sulphonylurea and metformin when diet and exercise 
+                 plus dual therapy with these agents do not provide adequate glycaemic control;a 
+                 peroxisome-proliferator-activated-receptor-gamma (PPARγ) agonist and metformin 
+                 when use of a PPARγ agonist is appropriate and when diet and exercise plus dual
+                  therapy with these agents do not provide adequate glycaemic control.Tesavel is 
+                  also indicated as add on to insulin (with or without metformin) when diet and 
+            exercise plus stable dosage of insulin do not provide adequate glycaemic control.</p>
+
+        <hr  style="color: white; border-radius: 10px;">
+
+
+        <h3><i class="far fa-hand-point-right"></i>Others</h3>
+        <a href="#" class="clicka">CLICK ME-FOR ORIGINAL PRODUCT DETAILS</a>
+
+
+
+
+    </div>
+   </div>
+</div>
+
+<hr class="lastLine">
+
+
+   
+     

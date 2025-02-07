@@ -1,0 +1,186 @@
+<div class="card-header bg-success text-white fs-5">
+    <div class="headertext">
+
+    <div class="Litigationfirst">
+    <i class="fa-solid fa-flask"></i> 
+    chemRobotics™ Pharma Agro Litigation >> SITAGLIPTIN PHOSPHATE 
+
+    </div>
+
+    <div class="LitigationSecond">
+    <i class="fa-solid fa-download"></i>
+
+    <select class="select text-black">
+        <option>All Country</option>
+        <option>INDIA</option>
+        <option>USA</option>
+       
+    </select>
+    </div>
+</div>
+</div>
+
+<div class="card-body pb-3 mb-3 px-2 rounded-lg">
+    <h1>1. SITAGLIPTIN</h1>
+
+    <div class="row">
+
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+
+            <h5>PLAINTIFF(S):</h5>
+            <p>MSD</p>
+
+            <img src="assets/images/components/MSD.png" class="image2">
+
+        </div>
+
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+            <h5>PATIENT NUMBERS:</h5>
+            <p> IL 172563</p>
+
+            <h5>DEFENDANT(S):</h5>
+            <p>TAVA'S</p>
+
+            <img src="assets/images/components/TEVA_PHARMS.png" class="image1">
+
+
+            <h5>UNIFORM RESOURSE LOCATOR(URL):</h5>
+          
+            <a href="https://lnkd.in/fBvf4yH" target="_blank" class="ng-binding">https://lnkd.in/fBvf4yH</a>
+            
+        </div>
+
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+
+            <h5>COUNTRY:</h5>
+            <p>INDIA</p>
+
+            <img src="TEVA_PHARMS.png" alt="INDIA" class="image1">
+            
+        </div>
+
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+
+            <img src="assets/images/components/litigation-tab.jpg" class="image3">
+
+            
+
+            <h5>GREEN BOOK REGISTRATION NUMBER(GBRN):</h5>
+            <p>10313</p>
+            
+        </div>
+
+    </div>
+    
+</div>
+
+<div class="more">
+    <div class="textmore">
+        <button class="btn1" (click)="toggleDropdown2()">
+            {{isDropdownVisible2 ? 'LESS INFO' : 'MORE INFO'}}
+            <i class="fa-solid" [ngClass]="{'fa-arrow-up': isDropdownVisible2, 'fa-arrow-down': !isDropdownVisible2}"></i>
+
+        </button>
+    </div>
+   </div>
+
+   <div *ngIf="isDropdownVisible2" class="dropdown-content border border-dark rounded">
+    <div class="card-body">
+     <div class="pb-3 mb-3 px-2 rounded-lg">
+        <h5>DESCRIPTION:</h5>
+        <P>Israel Patent Office rules in favour of Teva's pre-grant opposition to MSD's application for Sitagliptin Dihydrogen Phosphate salt (IL172563 - WO2005003135). (Lack of novelty &amp; lack of inventive step).<br>
+            https://lnkd.in/fBvf4yH<br>
+            Indian filing - 5948/DELNP/2005 status - 'abandoned'</P>
+
+
+        <h5>DECISION:</h5>
+        <P>FAVOURED</P>
+        
+     </div>
+    </div>
+   </div>
+
+   <hr>
+
+
+
+   <!-- ===================2nd box=================== -->
+
+   <div class="card-body pb-3 mb-3 px-2 rounded-lg">
+    <h1>2. SITAGLIPTIN</h1>
+
+    <div class="row">
+
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+
+            <h5>PLAINTIFF(S):</h5>
+            <p>MERCK</p>
+
+            <img src="assets/images/components/Merck.png" class="image2">
+
+        </div>
+
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+            <h5>PATIENT NUMBERS:</h5>
+            <p> Compound Patent</p>
+
+            
+
+            <img src="assets/images/components/noimg.png" class="image1">
+
+            <h5>UNIFORM RESOURSE LOCATOR(URL):</h5>
+            <a href="https://lnkd.in/ebD8Fxh" target="_blank" class="ng-binding">https://lnkd.in/ebD8Fxh</a>
+
+          
+          
+            
+        </div>
+
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+
+            <h5>COUNTRY:</h5>
+            <p>INDIA</p>
+
+            <img src="TEVA_PHARMS.png" alt="INDIA" class="image1">
+            
+        </div>
+
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+
+            <img src="assets/images/components/litigation-tab.jpg" class="image3">
+
+            
+
+            <h5>GREEN BOOK REGISTRATION NUMBER(GBRN):</h5>
+            <p>10313</p>
+            
+        </div>
+
+    </div>
+    
+</div>
+
+<div class="more">
+    <div class="textmore">
+        <button class="btn1" (click)="toggleDropdown3()">
+            {{isDropdownVisible3 ? 'LESS INFO' : 'MORE INFO'}}
+            <i class="fa-solid" [ngClass]="{'fa-arrow-up': isDropdownVisible3, 'fa-arrow-down': !isDropdownVisible3}"></i>
+
+        </button>
+    </div>
+   </div>
+
+   <div *ngIf="isDropdownVisible3" class="dropdown-content border border-dark rounded">
+    <div class="card-body">
+     <div class="pb-3 mb-3 px-2 rounded-lg">
+        <h5>DESCRIPTION:</h5>
+        <P>Merck wins on Sitagliptin - Sitagliptin salt is covered in sitagliptin compound patent</P>
+
+
+       
+        
+     </div>
+    </div>
+   </div>
+
+   <hr>
