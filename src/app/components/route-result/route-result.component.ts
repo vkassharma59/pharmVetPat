@@ -9,11 +9,17 @@ import { DmfOrSuplierComponent } from '../results-common/dmf-or-suplier/dmf-or-s
 import { UserPriviledgeService } from '../../services/user_priviledges/user-priviledge.service';
 import { ImpComponent } from '../results-common/imp/imp.component';
 import { UsComponent } from '../results-common/us/us.component';
+import { KoreaComponent } from '../results-common/korea/korea.component';
+import { LitigationComponent } from '../results-common/litigation/litigation.component';
+import { EuropeApprovalComponent } from '../results-common/europe-approval/europe-approval.component';
+import { CanadaComponent } from '../results-common/canada/canada.component';
+import { JapanComponent } from '../results-common/japan/japan.component';
+import { IndianComponent } from '../results-common/indian/indian.component';
 
 @Component({
   selector: 'chem-route-results',
   standalone: true,
-  imports: [NgIf, ImpComponent, UsComponent, RouteTabsComponent, BasicRouteCardComponent, TechnicalRoutesCardComponent,DmfOrSuplierComponent, ChemicalDirectoryDataCardComponent, NgSwitch, NgSwitchCase, NgSwitchDefault, JsonPipe],
+  imports: [NgIf, ImpComponent,IndianComponent,JapanComponent,CanadaComponent,EuropeApprovalComponent,KoreaComponent,LitigationComponent, UsComponent, RouteTabsComponent, BasicRouteCardComponent, TechnicalRoutesCardComponent,DmfOrSuplierComponent, ChemicalDirectoryDataCardComponent, NgSwitch, NgSwitchCase, NgSwitchDefault, JsonPipe],
   templateUrl: './route-result.component.html',
   styleUrl: './route-result.component.css'
 })
