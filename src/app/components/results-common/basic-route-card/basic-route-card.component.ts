@@ -21,10 +21,29 @@ import { UtilityService } from '../../../services/utility-service/utility.servic
 })
 export class BasicRouteCardComponent {
 
-  @Input() data: any;
+  
   resultTabs: any = {};
   processedSynonyms: { number: string; text: string }[] = [];
   basic_column: any = {};
+  _data: any;
+
+  @Input() 
+  get data() {
+    return this._data;
+  }
+  set data(value: any) {
+    this._data = value;
+    this.resultTabs = this.utilityService.getAllTabsName();
+    const column_list = Auth_operations.getColumnList();
+    if(column_list[this.resultTabs.productInfo?.name]?.length > 0 && value) {
+      for (let i = 0; i < column_list[this.resultTabs.productInfo.name].length; i++) {
+        this.basic_column[column_list[this.resultTabs.productInfo.name][i].value] =
+          column_list[this.resultTabs.productInfo.name][i].name;
+      }
+      this.processSynonyms();
+      this._data = value;
+    }
+  }
 
   MoreApplicationInfo: any = false;
   linkdata: any = {
@@ -49,16 +68,6 @@ export class BasicRouteCardComponent {
     private dialog: MatDialog,
     private utilityService: UtilityService
   ) {}
-
-  ngOnInit() {
-    this.resultTabs = this.utilityService.getAllTabsName();
-    const column_list = Auth_operations.getColumnList();
-    for (let i = 0; i < column_list[this.resultTabs.productInfo.name].length; i++) {
-      this.basic_column[column_list[this.resultTabs.productInfo.name][i].value] =
-        column_list[this.resultTabs.productInfo.name][i].name;
-    }
-    this.processSynonyms();
-  }
 
   getInventorLogo(data: any) {
     return `${environment.baseUrl}${environment.domainNameCompanyLogo}${data?.INVENTOR_LOGO}`;

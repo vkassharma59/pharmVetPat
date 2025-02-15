@@ -1,5 +1,5 @@
 <div class="card-header text-white bg-primary">
-  chemRobotics™ Basic Product Info >> {{data?.ACTIVE_INGREDIENT}}
+  chemRobotics™ Basic Product Info >> {{_data?.ACTIVE_INGREDIENT}}
 </div>
 <div class="card-body">
   <div class="pb-3 mb-3 px-2 rounded-lg">
@@ -10,15 +10,15 @@
             <strong>Generic Constraining Date (GCD):</strong> 2013-12-31
           </p>
           <div class="d-flex gap-2">
-            <button class="btn btn-primary" [disabled]="!data?.INCHIKEY" ><a href="https://patentscope.wipo.int/search/en/result.jsf?inchikey={{data?.INCHIKEY}}" target="_blank">View Updated Patent at Patent Scope (WIPO)</a></button>
+            <button class="btn btn-primary" [disabled]="!_data?.INCHIKEY" ><a href="https://patentscope.wipo.int/search/en/result.jsf?inchikey={{_data?.INCHIKEY}}" target="_blank">View Updated Patent at Patent Scope (WIPO)</a></button>
             <button class="btn btn-success">View Product Highlight</button>
           </div>
         </div> 
       </div>
-      <div class="col-lg-3" *ngIf="data?.CHEMICAL_STRUCTURE && getColumnName('CHEMICAL_STRUCTURE')">
+      <div class="col-lg-3" *ngIf="_data?.CHEMICAL_STRUCTURE && getColumnName('CHEMICAL_STRUCTURE')">
         <div class="mt-4">
           <img
-            [src]="getImageUrl(data)"
+            [src]="getImageUrl(_data)"
             alt="error"
             class="ps-7 pe-7 aspect-auto object-contain"
             style="height: 256px"
@@ -27,7 +27,7 @@
           <div class="ms-4 pom">
             <button
               class="p-2 bg-[#0032A0] text-white"
-              (click)="openImageModal(getImageUrl(data))"
+              (click)="openImageModal(getImageUrl(_data))"
             >
               <i class="fa-solid fa-magnifying-glass"></i>
             </button>
@@ -39,64 +39,64 @@
           <div class="col-md-12">
             <div class="row">
               <div class="row">
-                <div *ngIf="data?.dummy_3 && getColumnName('dummy_3')" class="pt-3 col-md-4">
+                <div *ngIf="_data?.dummy_3 && getColumnName('dummy_3')" class="pt-3 col-md-4">
                   <h1 class="font-bold">
                     <!-- Chemical Directory Ref. No. -->
                     {{ getColumnName("dummy_3") }}
                     <span
                       class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                      (click)="handleCopy(data?.dummy_3)"
+                      (click)="handleCopy(_data?.dummy_3)"
                       ><i class="fas fa-copy"></i
                     ></span>
                   </h1>
                   <div class="w-full max-h-12 overflow-auto">
-                    <p class="overflow-auto">{{ data?.dummy_3 }}</p>
+                    <p class="overflow-auto">{{ _data?.dummy_3 }}</p>
                   </div>
                 </div>
-                <div *ngIf="data?.gbrn && getColumnName('gbrn')" class="pt-3 col-md-4">
+                <div *ngIf="_data?.gbrn && getColumnName('gbrn')" class="pt-3 col-md-4">
                   <h1 class="font-bold">
                     {{ getColumnName("gbrn") }}
                     <span
                       class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                      (click)="handleCopy(data?.gbrn)"
+                      (click)="handleCopy(_data?.gbrn)"
                       ><i class="fas fa-copy"></i
                     ></span>
                   </h1>
                   <div class="w-full max-h-12 overflow-auto">
-                    <p class="overflow-auto">{{ data?.gbrn }}</p>
+                    <p class="overflow-auto">{{ _data?.gbrn }}</p>
                   </div>
                 </div>
-                <div *ngIf="data?.API_AGROCHEMICAL && getColumnName('API_AGROCHEMICAL')" class="col-md-4">
+                <div *ngIf="_data?.API_AGROCHEMICAL && getColumnName('API_AGROCHEMICAL')" class="col-md-4">
                   <div class="pt-3">
                     <h1 class="font-bold">
                       {{ getColumnName("API_AGROCHEMICAL") }}
                       <span
                         class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                        (click)="handleCopy(data?.API_AGROCHEMICAL)"
+                        (click)="handleCopy(_data?.API_AGROCHEMICAL)"
                         ><i class="fas fa-copy"></i
                       ></span>
                     </h1>
-                    <p class="max-h-12 overflow-auto">{{ data?.API_AGROCHEMICAL }}</p>
+                    <p class="max-h-12 overflow-auto">{{ _data?.API_AGROCHEMICAL }}</p>
                   </div>
                 </div>
-                <div *ngIf="data?.INNOVATOR_ORIGINATOR && getColumnName('INNOVATOR_ORIGINATOR')" class="col-md-4">
+                <div *ngIf="_data?.INNOVATOR_ORIGINATOR && getColumnName('INNOVATOR_ORIGINATOR')" class="col-md-4">
                   <div class="pt-3">
                     <h1 class="font-bold">
                       {{ getColumnName("INNOVATOR_ORIGINATOR") }}
                       <span
                         class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                        (click)="handleCopy(data?.INNOVATOR_ORIGINATOR)"
+                        (click)="handleCopy(_data?.INNOVATOR_ORIGINATOR)"
                         ><i class="fas fa-copy"></i
                       ></span>
                     </h1>
                     <p class="max-h-12 overflow-auto">
-                      {{ data?.INNOVATOR_ORIGINATOR }}
+                      {{ _data?.INNOVATOR_ORIGINATOR }}
                     </p>
                   </div>
 
-                  <div class="" *ngIf="data?.INVENTOR_LOGO && getColumnName('INVENTOR_LOGO')">
+                  <div class="" *ngIf="_data?.INVENTOR_LOGO && getColumnName('INVENTOR_LOGO')">
                     <img
-                      [src]="getInventorLogo(data)"
+                      [src]="getInventorLogo(_data)"
                       alt="error"
                       style="object-fit: contain; width: 155px; height: 65px"
                     />
@@ -110,102 +110,102 @@
 
       <div class="col-md-12 my-2">
         <div class="row">
-          <div *ngIf="data?.IUPAC && getColumnName('IUPAC')" class="col-md-3">
+          <div *ngIf="_data?.IUPAC && getColumnName('IUPAC')" class="col-md-3">
             <div class="pt-3">
               <h1 class="font-bold mt-2">
                 {{ getColumnName("IUPAC") }}
                 <span
                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  (click)="handleCopy(data?.IUPAC)"
+                  (click)="handleCopy(_data?.IUPAC)"
                   ><i class="fas fa-copy"></i
                 ></span>
               </h1>
-              <p class="pt-2 text-justify max-h-20 overflow-auto">{{ data?.IUPAC }}</p>
+              <p class="pt-2 text-justify max-h-20 overflow-auto">{{ _data?.IUPAC }}</p>
             </div>
           </div>
 
-          <div *ngIf="data?.CAS_RN && getColumnName('CAS_RN')" class="col-md-3 mt-2">
+          <div *ngIf="_data?.CAS_RN && getColumnName('CAS_RN')" class="col-md-3 mt-2">
             <div class="pt-3">
               <h1 class="font-bold">
                 {{ getColumnName("CAS_RN") }}
                 <span
                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  (click)="handleCopy(data?.CAS_RN)"
+                  (click)="handleCopy(_data?.CAS_RN)"
                   ><i class="fas fa-copy"></i
                 ></span>
               </h1>
-              <p class="pt-2 text-justify max-h-20 overflow-auto">{{ data?.CAS_RN }}</p>
+              <p class="pt-2 text-justify max-h-20 overflow-auto">{{ _data?.CAS_RN }}</p>
             </div>
           </div>
 
-          <div *ngIf="data?.CAS_NAME && getColumnName('CAS_NAME')" class="col-md-3 mt-2">
+          <div *ngIf="_data?.CAS_NAME && getColumnName('CAS_NAME')" class="col-md-3 mt-2">
             <div class="pt-3">
               <h1 class="font-bold">
                 {{ getColumnName("CAS_NAME") }}
                 <span
                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  (click)="handleCopy(data?.CAS_NAME)"
+                  (click)="handleCopy(_data?.CAS_NAME)"
                   ><i class="fas fa-copy"></i
                 ></span>
               </h1>
               <p class="pt-2 text-justify max-h-20 overflow-auto">
-                {{ data?.CAS_NAME }}
+                {{ _data?.CAS_NAME }}
               </p>
             </div>
           </div>
-          <div *ngIf="data?.PUBCHEM_ID && getColumnName('PUBCHEM_ID')" class="col-md-3 mt-2">
+          <div *ngIf="_data?.PUBCHEM_ID && getColumnName('PUBCHEM_ID')" class="col-md-3 mt-2">
             <div class="pt-3">
               <h1 class="font-bold">{{ getColumnName("PUBCHEM_ID") }}</h1>
               <p class="pt-2 text-justify overflow-auto">
-                <a target="_blank" [href]="getPubchemId(data?.PUBCHEM_ID)">{{
-                  data?.PUBCHEM_ID
+                <a target="_blank" [href]="getPubchemId(_data?.PUBCHEM_ID)">{{
+                  _data?.PUBCHEM_ID
                 }}</a>
               </p>
             </div>
           </div>
-          <div *ngIf="data?.EC_NO && getColumnName('EC_NO')" class="col-md-3">
+          <div *ngIf="_data?.EC_NO && getColumnName('EC_NO')" class="col-md-3">
             <div class="pt-3">
               <h1 class="font-bold">{{ getColumnName("EC_NO") }}</h1>
-              <p class="pt-2 text-justify max-h-20 overflow-auto">{{ data?.EC_NO }}</p>
+              <p class="pt-2 text-justify max-h-20 overflow-auto">{{ _data?.EC_NO }}</p>
             </div>
           </div>
 
-          <div *ngIf="data?.ANATO_THERAP_CHEM_ATC_CLS_CODE && getColumnName('ANATO_THERAP_CHEM_ATC_CLS_CODE')" class="col-md-3">
+          <div *ngIf="_data?.ANATO_THERAP_CHEM_ATC_CLS_CODE && getColumnName('ANATO_THERAP_CHEM_ATC_CLS_CODE')" class="col-md-3">
             <div class="pt-3">
               <h1 class="font-bold">
                 {{ getColumnName("ANATO_THERAP_CHEM_ATC_CLS_CODE") }}
               </h1>
               <p class="pt-2 text-justify max-h-20 overflow-auto">
-                {{ data?.ANATO_THERAP_CHEM_ATC_CLS_CODE }}
+                {{ _data?.ANATO_THERAP_CHEM_ATC_CLS_CODE }}
               </p>
             </div>
           </div>
 
 
-          <div *ngIf="data?.ISOMERISM && getColumnName('ISOMERISM')" class="col-md-3">
+          <div *ngIf="_data?.ISOMERISM && getColumnName('ISOMERISM')" class="col-md-3">
             <div class="pt-3">
               <h1 class="font-bold">
                 {{ getColumnName("ISOMERISM") }}
               </h1>
               <p class="pt-2 text-justify max-h-20 overflow-auto">
-                {{ data?.ISOMERISM }}
+                {{ _data?.ISOMERISM }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.EUROPE_SUP_PROT_CERTIFI_SPC && getColumnName('EUROPE_SUP_PROT_CERTIFI_SPC')" class="col-md-3">
+          <div *ngIf="_data?.EUROPE_SUP_PROT_CERTIFI_SPC && getColumnName('EUROPE_SUP_PROT_CERTIFI_SPC')" class="col-md-3">
             <div class="pt-3">
               <h1 class="font-bold">
                 {{ getColumnName("EUROPE_SUP_PROT_CERTIFI_SPC") }}
               </h1>
               <p class="pt-2 text-justify max-h-20 overflow-auto">
-                {{ data?.EUROPE_SUP_PROT_CERTIFI_SPC }}
+                {{ _data?.EUROPE_SUP_PROT_CERTIFI_SPC }}
               </p>
             </div>
           </div>
 
           <div
-            *ngIf="data?.OTHER_COUNTRIES_SUP_PROT_CERTIFI_SPC && getColumnName('OTHER_COUNTRIES_SUP_PROT_CERTIFI_SPC')"
+            *ngIf="_data?.OTHER_COUNTRIES_SUP_PROT_CERTIFI_SPC && getColumnName('OTHER_COUNTRIES_SUP_PROT_CERTIFI_SPC')"
             class="col-md-3"
           >
             <div class="pt-3">
@@ -213,212 +213,212 @@
                 {{ getColumnName("OTHER_COUNTRIES_SUP_PROT_CERTIFI_SPC") }}
               </h1>
               <p class="pt-2 text-justify max-h-20 overflow-auto">
-                {{ data?.OTHER_COUNTRIES_SUP_PROT_CERTIFI_SPC }}
+                {{ _data?.OTHER_COUNTRIES_SUP_PROT_CERTIFI_SPC }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.DATA_PROTECTION && getColumnName('DATA_PROTECTION')" class="col-md-3">
+          <div *ngIf="_data?.DATA_PROTECTION && getColumnName('DATA_PROTECTION')" class="col-md-3">
             <div class="pt-3">
               <h1 class="font-bold">
                 {{ getColumnName("DATA_PROTECTION") }}
               </h1>
               <p class="pt-2 text-justify max-h-20 overflow-auto">
-                {{ data?.DATA_PROTECTION }}
+                {{ _data?.DATA_PROTECTION }}
               </p>
             </div>
           </div>
-          <div *ngIf="data?.CHEMICAL_CLASS && getColumnName('CHEMICAL_CLASS')" class="col-md-3">
+          <div *ngIf="_data?.CHEMICAL_CLASS && getColumnName('CHEMICAL_CLASS')" class="col-md-3">
             <div class="pt-3">
               <h1 class="font-bold">{{ getColumnName("CHEMICAL_CLASS") }}</h1>
               <p class="pt-2 text-justify max-h-20 overflow-auto">
-                {{ data?.CHEMICAL_CLASS }}
+                {{ _data?.CHEMICAL_CLASS }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.UNIQUE_INGRE_IDENTI_UNII && getColumnName('UNIQUE_INGRE_IDENTI_UNII')" class="col-md-3">
+          <div *ngIf="_data?.UNIQUE_INGRE_IDENTI_UNII && getColumnName('UNIQUE_INGRE_IDENTI_UNII')" class="col-md-3">
             <div class="pt-3">
               <h1 class="font-bold mt-2">
                 {{ getColumnName("UNIQUE_INGRE_IDENTI_UNII") }}
               </h1>
               <p class="pt-2 text-justify max-h-20 overflow-auto">
-                {{ data?.UNIQUE_INGRE_IDENTI_UNII }}
+                {{ _data?.UNIQUE_INGRE_IDENTI_UNII }}
               </p>
             </div>
           </div>
-          <div *ngIf="data?.NAME_OF_GENERIC_CHEM_CLASS && getColumnName('NAME_OF_GENERIC_CHEM_CLASS')" class="col-md-3 mt-2">
+          <div *ngIf="_data?.NAME_OF_GENERIC_CHEM_CLASS && getColumnName('NAME_OF_GENERIC_CHEM_CLASS')" class="col-md-3 mt-2">
             <div class="pt-3">
               <h1 class="font-bold">
                 {{ getColumnName("NAME_OF_GENERIC_CHEM_CLASS") }}
               </h1>
               <p class="pt-2 text-justify max-h-20 overflow-auto">
-                {{ data?.NAME_OF_GENERIC_CHEM_CLASS }}
+                {{ _data?.NAME_OF_GENERIC_CHEM_CLASS }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.MECHANISM_OF_ACTION_MOA && getColumnName('MECHANISM_OF_ACTION_MOA')" class="col-md-3 mt-2">
+          <div *ngIf="_data?.MECHANISM_OF_ACTION_MOA && getColumnName('MECHANISM_OF_ACTION_MOA')" class="col-md-3 mt-2">
             <div class="pt-3">
               <h1 class="font-bold">
                 {{ getColumnName("MECHANISM_OF_ACTION_MOA") }}
               </h1>
               <p class="pt-2 text-justify max-h-20 overflow-auto">
-                {{ data?.MECHANISM_OF_ACTION_MOA }}
+                {{ _data?.MECHANISM_OF_ACTION_MOA }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.GENERIC_PROP_DEV_CADATE_WDRW && getColumnName('GENERIC_PROP_DEV_CADATE_WDRW')" class="col-md-3 mt-2">
+          <div *ngIf="_data?.GENERIC_PROP_DEV_CADATE_WDRW && getColumnName('GENERIC_PROP_DEV_CADATE_WDRW')" class="col-md-3 mt-2">
             <div class="pt-3">
               <h1 class="font-bold">
                 {{ getColumnName("GENERIC_PROP_DEV_CADATE_WDRW") }}
               </h1>
               <p class="pt-2 text-justify max-h-20 overflow-auto">
-                {{ data?.GENERIC_PROP_DEV_CADATE_WDRW }}
+                {{ _data?.GENERIC_PROP_DEV_CADATE_WDRW }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.DEVELOPMENT_STAGE && getColumnName('DEVELOPMENT_STAGE')" class="col-md-3 mt-2">
+          <div *ngIf="_data?.DEVELOPMENT_STAGE && getColumnName('DEVELOPMENT_STAGE')" class="col-md-3 mt-2">
             <div class="pt-3">
               <h1 class="font-bold">
                 {{ getColumnName("DEVELOPMENT_STAGE") }}
               </h1>
               <p class="pt-2 text-justify max-h-20 overflow-auto">
-                {{ data?.DEVELOPMENT_STAGE }}
+                {{ _data?.DEVELOPMENT_STAGE }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.CANONICAL_SMILES && getColumnName('CANONICAL_SMILES')" class="col-md-3">
+          <div *ngIf="_data?.CANONICAL_SMILES && getColumnName('CANONICAL_SMILES')" class="col-md-3">
             <div class="pt-3">
               <h1 class="font-bold mt-2">
                 {{ getColumnName("CANONICAL_SMILES") }}
                 <span
                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  (click)="handleCopy(data?.CANONICAL_SMILES)"
+                  (click)="handleCopy(_data?.CANONICAL_SMILES)"
                   ><i class="fas fa-copy"></i
                 ></span>
               </h1>
               <p class="pt-2 text-justify max-h-20 overflow-auto">
-                {{ data?.CANONICAL_SMILES }}
+                {{ _data?.CANONICAL_SMILES }}
               </p>
             </div>
           </div>
-          <div *ngIf="data?.SMILES_CODE && getColumnName('SMILES_CODE')" class="col-md-3 mt-2">
+          <div *ngIf="_data?.SMILES_CODE && getColumnName('SMILES_CODE')" class="col-md-3 mt-2">
             <div class="pt-3">
               <h1 class="font-bold">
                 {{ getColumnName("SMILES_CODE") }}
                 <span
                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  (click)="handleCopy(data?.SMILES_CODE)"
+                  (click)="handleCopy(_data?.SMILES_CODE)"
                   ><i class="fas fa-copy"></i
                 ></span>
               </h1>
               <p class="pt-2 text-justify max-h-20 overflow-auto">
-                {{ data?.SMILES_CODE }}
+                {{ _data?.SMILES_CODE }}
               </p>
             </div>
           </div>
-          <div *ngIf="data?.INCHI && getColumnName('INCHI')" class="col-md-3 mt-2">
+          <div *ngIf="_data?.INCHI && getColumnName('INCHI')" class="col-md-3 mt-2">
             <div class="pt-3">
               <h1 class="font-bold">
                 {{ getColumnName("INCHI") }}
                 <span
                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  (click)="handleCopy(data?.INCHI)"
+                  (click)="handleCopy(_data?.INCHI)"
                   ><i class="fas fa-copy"></i
                 ></span>
               </h1>
 
-              <p class="pt-2 text-justify max-h-20 overflow-auto">{{ data?.INCHI }}</p>
+              <p class="pt-2 text-justify max-h-20 overflow-auto">{{ _data?.INCHI }}</p>
             </div>
           </div>
 
-          <div *ngIf="data?.INCHIKEY && getColumnName('INCHIKEY')" class="col-md-3">
+          <div *ngIf="_data?.INCHIKEY && getColumnName('INCHIKEY')" class="col-md-3">
             <div class="pt-3">
               <h1 class="font-bold mt-2">
                 {{ getColumnName("INCHIKEY") }}
                 <span
                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  (click)="handleCopy(data?.INCHIKEY)"
+                  (click)="handleCopy(_data?.INCHIKEY)"
                   ><i class="fas fa-copy"></i
                 ></span>
               </h1>
 
               <p class="pt-2 text-justify max-h-20 overflow-auto">
-                {{ data?.INCHIKEY }}
+                {{ _data?.INCHIKEY }}
               </p>
             </div>
           </div>
-          <div *ngIf="data?.YEAR_OF_DISCOVERY && getColumnName('YEAR_OF_DISCOVERY')" class="col-md-3 mt-2">
+          <div *ngIf="_data?.YEAR_OF_DISCOVERY && getColumnName('YEAR_OF_DISCOVERY')" class="col-md-3 mt-2">
             <div class="pt-3">
               <h1 class="font-bold">
                 {{ getColumnName("YEAR_OF_DISCOVERY") }}
               </h1>
               <p class="pt-2 text-justify max-h-20 overflow-auto">
-                {{ data?.YEAR_OF_DISCOVERY }}
+                {{ _data?.YEAR_OF_DISCOVERY }}
               </p>
             </div>
           </div>
-          <div *ngIf="data?.LAUNCHING_YEAR && getColumnName('LAUNCHING_YEAR')" class="col-md-3 mt-2">
+          <div *ngIf="_data?.LAUNCHING_YEAR && getColumnName('LAUNCHING_YEAR')" class="col-md-3 mt-2">
             <div class="pt-3">
               <h1 class="font-bold">{{ getColumnName("LAUNCHING_YEAR") }}</h1>
               <p class="pt-2 text-justify max-h-20 overflow-auto">
-                {{ data?.LAUNCHING_YEAR }}
+                {{ _data?.LAUNCHING_YEAR }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.USES && getColumnName('USES')" class="col-md-3">
+          <div *ngIf="_data?.USES && getColumnName('USES')" class="col-md-3">
             <div class="pt-3">
               <h1 class="font-bold">
                 {{ getColumnName("USES") }}
                 <span
                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  (click)="handleCopy(data?.USES)"
+                  (click)="handleCopy(_data?.USES)"
                   ><i class="fas fa-copy"></i
                 ></span>
               </h1>
-              <p class="pt-2 overflow-y-auto max-h-20">{{ data?.USES }}</p>
+              <p class="pt-2 overflow-y-auto max-h-20">{{ _data?.USES }}</p>
             </div>
           </div>
-          <div *ngIf="data?.INDICATION && getColumnName('INDICATION')" class="col-md-3">
+          <div *ngIf="_data?.INDICATION && getColumnName('INDICATION')" class="col-md-3">
             <div class="pt-3">
               <h1 class="font-bold">{{ getColumnName("INDICATION") }}:</h1>
-              <p class="pt-2 max-h-20 overflow-auto">{{ data?.INDICATION }}</p>
+              <p class="pt-2 max-h-20 overflow-auto">{{ _data?.INDICATION }}</p>
             </div>
           </div>
-          <div *ngIf="data?.YEAR_WISE_OFF_PATENT_MOLECULES && getColumnName('YEAR_WISE_OFF_PATENT_MOLECULES')" class="col-md-3">
+          <div *ngIf="_data?.YEAR_WISE_OFF_PATENT_MOLECULES && getColumnName('YEAR_WISE_OFF_PATENT_MOLECULES')" class="col-md-3">
             <div class="pt-3">
               <h1 class="font-bold">
                 {{ getColumnName("YEAR_WISE_OFF_PATENT_MOLECULES") }}:
               </h1>
               <p class="pt-2 max-h-20 overflow-auto">
-                {{ data?.YEAR_WISE_OFF_PATENT_MOLECULES }}
+                {{ _data?.YEAR_WISE_OFF_PATENT_MOLECULES }}
               </p>
             </div>
           </div>
-          <div *ngIf="data?.GENERIC_CONSTRAINING_DATE && getColumnName('GENERIC_CONSTRAINING_DATE')" class="col-md-4">
+          <div *ngIf="_data?.GENERIC_CONSTRAINING_DATE && getColumnName('GENERIC_CONSTRAINING_DATE')" class="col-md-4">
             <div class="pt-3">
               <h1 class="font-bold">
                 {{ getColumnName("GENERIC_CONSTRAINING_DATE") }}:
               </h1>
               <p class="pt-2 max-h-20 overflow-auto">
-                {{ getUpdationDate(data?.GENERIC_CONSTRAINING_DATE) }}
+                {{ getUpdationDate(_data?.GENERIC_CONSTRAINING_DATE) }}
               </p>
             </div>
           </div>
         </div>
 
-        <div *ngIf="data?.SYNONYMSCOMMON_NAME && getColumnName('SYNONYMSCOMMON_NAME')" class="col-md-12">
+        <div *ngIf="_data?.SYNONYMSCOMMON_NAME && getColumnName('SYNONYMSCOMMON_NAME')" class="col-md-12">
           <div class="pt-3 mt-3 desc">
             <h1 class="font-bold">
               {{ getColumnName("SYNONYMSCOMMON_NAME") }}:
               <span
                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                (click)="handleCopy(data?.SYNONYMSCOMMON_NAME)"
+                (click)="handleCopy(_data?.SYNONYMSCOMMON_NAME)"
                 ><i class="fas fa-copy"></i
               ></span>
             </h1>
@@ -434,7 +434,7 @@
           <p
             class="para pt-2 cursor-pointer"
             (click)="
-              OpenViewModal(data?.SYNONYMSCOMMON_NAME, 'SYNONYMS/COMMON NAME')
+              OpenViewModal(_data?.SYNONYMSCOMMON_NAME, 'SYNONYMS/COMMON NAME')
             "
           >
             View More
@@ -455,45 +455,45 @@
         </div>
 
         <div *ngIf="MoreApplicationInfo">
-          <div *ngIf="data?.DESCRIPTION && getColumnName('DESCRIPTION')" class="col-md-12">
+          <div *ngIf="_data?.DESCRIPTION && getColumnName('DESCRIPTION')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("DESCRIPTION") }}:
                 <span
                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  (click)="handleCopy(data?.DESCRIPTION)"
+                  (click)="handleCopy(_data?.DESCRIPTION)"
                   ><i class="fas fa-copy"></i
                 ></span>
               </h1>
               <div class="h-28 overflow-y-auto overflow-x-hidden">
-                <p class="pt-2 text-justify">{{ data?.DESCRIPTION }}</p>
+                <p class="pt-2 text-justify">{{ _data?.DESCRIPTION }}</p>
               </div>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.DESCRIPTION, 'DESCRIPTION')"
+                (click)="OpenViewModal(_data?.DESCRIPTION, 'DESCRIPTION')"
               >
                 View More
               </p>
             </div>
           </div>
-          <div *ngIf="data?.TRADE_NAMEPROPRIETARY_NAME && getColumnName('TRADE_NAMEPROPRIETARY_NAME')" class="col-md-12">
+          <div *ngIf="_data?.TRADE_NAMEPROPRIETARY_NAME && getColumnName('TRADE_NAMEPROPRIETARY_NAME')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("TRADE_NAMEPROPRIETARY_NAME") }}:
                 <span
                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  (click)="handleCopy(data?.TRADE_NAMEPROPRIETARY_NAME)"
+                  (click)="handleCopy(_data?.TRADE_NAMEPROPRIETARY_NAME)"
                   ><i class="fas fa-copy"></i
                 ></span>
               </h1>
               <p class="pt-2 text-justify max-h-28 overflow-y-auto">
-                {{ data?.TRADE_NAMEPROPRIETARY_NAME }}
+                {{ _data?.TRADE_NAMEPROPRIETARY_NAME }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
                   OpenViewModal(
-                    data?.TRADE_NAMEPROPRIETARY_NAME,
+                    _data?.TRADE_NAMEPROPRIETARY_NAME,
                     'TRADE NAME /PROPRIETARY NAME'
                   )
                 "
@@ -502,25 +502,25 @@
               </p>
             </div>
           </div>
-          <div *ngIf="data?.SUMMARY_PHYSICOCHEM_PROP_COMP && getColumnName('SUMMARY_PHYSICOCHEM_PROP_COMP')" class="col-md-12">
+          <div *ngIf="_data?.SUMMARY_PHYSICOCHEM_PROP_COMP && getColumnName('SUMMARY_PHYSICOCHEM_PROP_COMP')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("SUMMARY_PHYSICOCHEM_PROP_COMP") }}:
 
                 <span
                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  (click)="handleCopy(data?.SUMMARY_PHYSICOCHEM_PROP_COMP)"
+                  (click)="handleCopy(_data?.SUMMARY_PHYSICOCHEM_PROP_COMP)"
                   ><i class="fas fa-copy"></i
                 ></span>
               </h1>
               <p class="pt-2 text-justify max-h-28 overflow-y-auto">
-                {{ data?.SUMMARY_PHYSICOCHEM_PROP_COMP }}
+                {{ _data?.SUMMARY_PHYSICOCHEM_PROP_COMP }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
                   OpenViewModal(
-                    data?.SUMMARY_PHYSICOCHEM_PROP_COMP,
+                    _data?.SUMMARY_PHYSICOCHEM_PROP_COMP,
                     'SUMMARY PHYSICOCHEMICAL PROPERTITIES(COMPUTED)'
                   )
                 "
@@ -529,24 +529,24 @@
               </p>
             </div>
           </div>
-          <div *ngIf="data?.SUMMARY_PHYSICOCHEM_PROP_EXPERI && getColumnName('SUMMARY_PHYSICOCHEM_PROP_EXPERI')" class="col-md-12">
+          <div *ngIf="_data?.SUMMARY_PHYSICOCHEM_PROP_EXPERI && getColumnName('SUMMARY_PHYSICOCHEM_PROP_EXPERI')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("SUMMARY_PHYSICOCHEM_PROP_EXPERI") }}:
                 <span
                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  (click)="handleCopy(data?.SUMMARY_PHYSICOCHEM_PROP_EXPERI)"
+                  (click)="handleCopy(_data?.SUMMARY_PHYSICOCHEM_PROP_EXPERI)"
                   ><i class="fas fa-copy"></i
                 ></span>
               </h1>
               <p class="pt-2 text-justify max-h-28 overflow-y-auto">
-                {{ data?.SUMMARY_PHYSICOCHEM_PROP_EXPERI }}
+                {{ _data?.SUMMARY_PHYSICOCHEM_PROP_EXPERI }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
                   OpenViewModal(
-                    data?.SUMMARY_PHYSICOCHEM_PROP_EXPERI,
+                    _data?.SUMMARY_PHYSICOCHEM_PROP_EXPERI,
                     'SUMMARY PHYSICOCHEMICAL PROPERTITIES(EXPERIMENT)'
                   )
                 "
@@ -555,24 +555,24 @@
               </p>
             </div>
           </div>
-          <div *ngIf="data?.HIST_DEV_LICN_COMM && getColumnName('HIST_DEV_LICN_COMM')" class="col-md-12">
+          <div *ngIf="_data?.HIST_DEV_LICN_COMM && getColumnName('HIST_DEV_LICN_COMM')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("HIST_DEV_LICN_COMM") }}:
                 <span
                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  (click)="handleCopy(data?.HIST_DEV_LICN_COMM)"
+                  (click)="handleCopy(_data?.HIST_DEV_LICN_COMM)"
                   ><i class="fas fa-copy"></i
                 ></span>
               </h1>
               <p class="pt-2 text-justify max-h-28 overflow-y-auto">
-                {{ data?.HIST_DEV_LICN_COMM }}
+                {{ _data?.HIST_DEV_LICN_COMM }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
                   OpenViewModal(
-                    data?.HIST_DEV_LICN_COMM,
+                    _data?.HIST_DEV_LICN_COMM,
                     'HISTORY/DEVELOPMENT/LICENCING/COMMERCIALISATION'
                   )
                 "
@@ -581,24 +581,24 @@
               </p>
             </div>
           </div>
-          <div *ngIf="data?.INVENT_INFO && getColumnName('INVENT_INFO')" class="col-md-12">
+          <div *ngIf="_data?.INVENT_INFO && getColumnName('INVENT_INFO')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("INVENT_INFO") }}:
                 <span
                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  (click)="handleCopy(data?.INVENT_INFO)"
+                  (click)="handleCopy(_data?.INVENT_INFO)"
                   ><i class="fas fa-copy"></i
                 ></span>
               </h1>
               <div class="h-28 overflow-y-auto overflow-x-hidden">
-                <p class="pt-2 text-justify">{{ data?.INVENT_INFO }}</p>
+                <p class="pt-2 text-justify">{{ _data?.INVENT_INFO }}</p>
               </div>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
                   OpenViewModal(
-                    data?.INVENT_INFO,
+                    _data?.INVENT_INFO,
                     'INVENT INFO(COMPOUND PATENT/1ST DISCLOSURE)'
                   )
                 "
@@ -607,32 +607,32 @@
               </p>
             </div>
           </div>
-          <div *ngIf="data?.NOTES && getColumnName('NOTES')" class="col-md-12">
+          <div *ngIf="_data?.NOTES && getColumnName('NOTES')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">{{ getColumnName("NOTES") }}</h1>
-              <p class="text-justify">{{ data?.NOTES }}</p>
+              <p class="text-justify">{{ _data?.NOTES }}</p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.NOTES, 'NOTES')"
+                (click)="OpenViewModal(_data?.NOTES, 'NOTES')"
               >
                 View More
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.LITIGATION_OPP_IPR_MH_REEXAM && getColumnName('LITIGATION_OPP_IPR_MH_REEXAM')" class="col-md-12">
+          <div *ngIf="_data?.LITIGATION_OPP_IPR_MH_REEXAM && getColumnName('LITIGATION_OPP_IPR_MH_REEXAM')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("LITIGATION_OPP_IPR_MH_REEXAM") }}
               </h1>
               <p class="text-justify">
-                {{ data?.LITIGATION_OPP_IPR_MH_REEXAM }}
+                {{ _data?.LITIGATION_OPP_IPR_MH_REEXAM }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
                   OpenViewModal(
-                    data?.LITIGATION_OPP_IPR_MH_REEXAM,
+                    _data?.LITIGATION_OPP_IPR_MH_REEXAM,
                     'LITIGATION / OPPOSITION / INTER PARTIES REVIEW / MARKSMAN HEARING / REEXAMINATION'
                   )
                 "
@@ -642,19 +642,19 @@
             </div>
           </div>
 
-          <div *ngIf="data?.EXCLUSIVITY_NEW_CHEMICAL_ENTITY && getColumnName('EXCLUSIVITY_NEW_CHEMICAL_ENTITY')" class="col-md-12">
+          <div *ngIf="_data?.EXCLUSIVITY_NEW_CHEMICAL_ENTITY && getColumnName('EXCLUSIVITY_NEW_CHEMICAL_ENTITY')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("EXCLUSIVITY_NEW_CHEMICAL_ENTITY") }}
               </h1>
               <p class="text-justify">
-                {{ data?.EXCLUSIVITY_NEW_CHEMICAL_ENTITY }}
+                {{ _data?.EXCLUSIVITY_NEW_CHEMICAL_ENTITY }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
                   OpenViewModal(
-                    data?.EXCLUSIVITY_NEW_CHEMICAL_ENTITY,
+                    _data?.EXCLUSIVITY_NEW_CHEMICAL_ENTITY,
                     'EXCLUSIVITY: NEW CHEMICAL ENTITY (NCE) / NEW BIOLOGICAL ENTITY (NBE) / 505(B)(2) NEW DRUG APPLICATION (NDA)'
                   )
                 "
@@ -664,19 +664,19 @@
             </div>
           </div>
 
-          <div *ngIf="data?.ORPHAN_DRUG_EXCLUSIVITY_ODE && getColumnName('ORPHAN_DRUG_EXCLUSIVITY_ODE')" class="col-md-12">
+          <div *ngIf="_data?.ORPHAN_DRUG_EXCLUSIVITY_ODE && getColumnName('ORPHAN_DRUG_EXCLUSIVITY_ODE')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("ORPHAN_DRUG_EXCLUSIVITY_ODE") }}
               </h1>
               <p class="text-justify">
-                {{ data?.ORPHAN_DRUG_EXCLUSIVITY_ODE }}
+                {{ _data?.ORPHAN_DRUG_EXCLUSIVITY_ODE }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
                   OpenViewModal(
-                    data?.ORPHAN_DRUG_EXCLUSIVITY_ODE,
+                    _data?.ORPHAN_DRUG_EXCLUSIVITY_ODE,
                     'ORPHAN DRUG EXCLUSIVITY (ODE)'
                   )
                 "
@@ -686,19 +686,19 @@
             </div>
           </div>
 
-          <div *ngIf="data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE && getColumnName('PEDIATRIC_DRUG_EXCLUSIVITY_PDE')" class="col-md-12">
+          <div *ngIf="_data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE && getColumnName('PEDIATRIC_DRUG_EXCLUSIVITY_PDE')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("PEDIATRIC_DRUG_EXCLUSIVITY_PDE") }}
               </h1>
               <p class="text-justify">
-                {{ data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE }}
+                {{ _data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
                   OpenViewModal(
-                    data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE,
+                    _data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE,
                     'PEDIATRIC DRUG EXCLUSIVITY (PDE)'
                   )
                 "
@@ -708,19 +708,19 @@
             </div>
           </div>
 
-          <div *ngIf="data?.NCE_MINUS_OR_QIDP_MINUS && getColumnName('NCE_MINUS_OR_QIDP_MINUS')" class="col-md-12">
+          <div *ngIf="_data?.NCE_MINUS_OR_QIDP_MINUS && getColumnName('NCE_MINUS_OR_QIDP_MINUS')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("NCE_MINUS_OR_QIDP_MINUS") }}
               </h1>
               <p class="text-justify">
-                {{ data?.NCE_MINUS_OR_QIDP_MINUS }}
+                {{ _data?.NCE_MINUS_OR_QIDP_MINUS }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
                   OpenViewModal(
-                    data?.NCE_MINUS_OR_QIDP_MINUS,
+                    _data?.NCE_MINUS_OR_QIDP_MINUS,
                     'NCE MINUS 1 (N-1 DATE) / OR QIDP MINUS-1 (QIDP-1 DATE)'
                   )
                 "
@@ -730,18 +730,18 @@
             </div>
           </div>
 
-          <div *ngIf="data?.EUROPE_EXCLUSIVITY && getColumnName('EUROPE_EXCLUSIVITY')" class="col-md-12">
+          <div *ngIf="_data?.EUROPE_EXCLUSIVITY && getColumnName('EUROPE_EXCLUSIVITY')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("EUROPE_EXCLUSIVITY") }}
               </h1>
               <p class="text-justify">
-                {{ data?.EUROPE_EXCLUSIVITY }}
+                {{ _data?.EUROPE_EXCLUSIVITY }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
-                  OpenViewModal(data?.EUROPE_EXCLUSIVITY, 'EUROPE EXCLUSIVITY')
+                  OpenViewModal(_data?.EUROPE_EXCLUSIVITY, 'EUROPE EXCLUSIVITY')
                 "
               >
                 View More
@@ -749,18 +749,18 @@
             </div>
           </div>
 
-          <div *ngIf="data?.CANADA_EXCLUSIVITY && getColumnName('CANADA_EXCLUSIVITY')" class="col-md-12">
+          <div *ngIf="_data?.CANADA_EXCLUSIVITY && getColumnName('CANADA_EXCLUSIVITY')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("CANADA_EXCLUSIVITY") }}
               </h1>
               <p class="text-justify">
-                {{ data?.CANADA_EXCLUSIVITY }}
+                {{ _data?.CANADA_EXCLUSIVITY }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
-                  OpenViewModal(data?.CANADA_EXCLUSIVITY, 'CANADA EXCLUSIVITY')
+                  OpenViewModal(_data?.CANADA_EXCLUSIVITY, 'CANADA EXCLUSIVITY')
                 "
               >
                 View More
@@ -768,19 +768,19 @@
             </div>
           </div>
 
-          <div *ngIf="data?.OTHER_COUNTRIES_EXCLUSIVITIES && getColumnName('OTHER_COUNTRIES_EXCLUSIVITIES')" class="col-md-12">
+          <div *ngIf="_data?.OTHER_COUNTRIES_EXCLUSIVITIES && getColumnName('OTHER_COUNTRIES_EXCLUSIVITIES')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("OTHER_COUNTRIES_EXCLUSIVITIES") }}
               </h1>
               <p class="text-justify">
-                {{ data?.OTHER_COUNTRIES_EXCLUSIVITIES }}
+                {{ _data?.OTHER_COUNTRIES_EXCLUSIVITIES }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
                   OpenViewModal(
-                    data?.OTHER_COUNTRIES_EXCLUSIVITIES,
+                    _data?.OTHER_COUNTRIES_EXCLUSIVITIES,
                     'OTHER COUNTRIES EXCLUSIVITY'
                   )
                 "
@@ -790,70 +790,70 @@
             </div>
           </div>
 
-          <div *ngIf="data?.COMMENTRY && getColumnName('COMMENTRY')" class="col-md-12">
+          <div *ngIf="_data?.COMMENTRY && getColumnName('COMMENTRY')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("COMMENTRY") }}
               </h1>
               <p class="text-justify">
-                {{ data?.COMMENTRY }}
+                {{ _data?.COMMENTRY }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.COMMENTRY, 'COMMENTRY')"
+                (click)="OpenViewModal(_data?.COMMENTRY, 'COMMENTRY')"
               >
                 View More
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.REMARKS && getColumnName('REMARKS')" class="col-md-12">
+          <div *ngIf="_data?.REMARKS && getColumnName('REMARKS')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("REMARKS") }}
               </h1>
               <p class="text-justify">
-                {{ data?.REMARKS }}
+                {{ _data?.REMARKS }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.REMARKS, 'REMARKS')"
+                (click)="OpenViewModal(_data?.REMARKS, 'REMARKS')"
               >
                 View More
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.LITERATURE && getColumnName('LITERATURE')" class="col-md-12">
+          <div *ngIf="_data?.LITERATURE && getColumnName('LITERATURE')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("LITERATURE") }}
               </h1>
               <p class="text-justify">
-                {{ data?.LITERATURE }}
+                {{ _data?.LITERATURE }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.LITERATURE, 'LITERATURE')"
+                (click)="OpenViewModal(_data?.LITERATURE, 'LITERATURE')"
               >
                 View More
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.INFORMATION_SOURCES && getColumnName('INFORMATION_SOURCES')" class="col-md-12">
+          <div *ngIf="_data?.INFORMATION_SOURCES && getColumnName('INFORMATION_SOURCES')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("INFORMATION_SOURCES") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.INFORMATION_SOURCES }}
+                {{ _data?.INFORMATION_SOURCES }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
                   OpenViewModal(
-                    data?.INFORMATION_SOURCES,
+                    _data?.INFORMATION_SOURCES,
                     'INFORMATION_SOURCES'
                   )
                 "
@@ -863,18 +863,18 @@
             </div>
           </div>
 
-          <div *ngIf="data?.PDF_MULTIPLE_PDF && getColumnName('PDF_MULTIPLE_PDF')" class="col-md-12">
+          <div *ngIf="_data?.PDF_MULTIPLE_PDF && getColumnName('PDF_MULTIPLE_PDF')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("PDF_MULTIPLE_PDF") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.PDF_MULTIPLE_PDF }}
+                {{ _data?.PDF_MULTIPLE_PDF }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
-                  OpenViewModal(data?.PDF_MULTIPLE_PDF, 'PDF MULTIPLE PDF')
+                  OpenViewModal(_data?.PDF_MULTIPLE_PDF, 'PDF MULTIPLE PDF')
                 "
               >
                 View More
@@ -882,19 +882,19 @@
             </div>
           </div>
 
-          <div *ngIf="data?.ORANGE_BOOK_PATENTS && getColumnName('ORANGE_BOOK_PATENTS')" class="col-md-12">
+          <div *ngIf="_data?.ORANGE_BOOK_PATENTS && getColumnName('ORANGE_BOOK_PATENTS')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("ORANGE_BOOK_PATENTS") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.ORANGE_BOOK_PATENTS }}
+                {{ _data?.ORANGE_BOOK_PATENTS }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
                   OpenViewModal(
-                    data?.ORANGE_BOOK_PATENTS,
+                    _data?.ORANGE_BOOK_PATENTS,
                     'ORANGE BOOK PATENTS'
                   )
                 "
@@ -904,52 +904,52 @@
             </div>
           </div>
 
-          <div *ngIf="data?.USDMF_HOLDER && getColumnName('USDMF_HOLDER')" class="col-md-12">
+          <div *ngIf="_data?.USDMF_HOLDER && getColumnName('USDMF_HOLDER')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("USDMF_HOLDER") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.USDMF_HOLDER }}
+                {{ _data?.USDMF_HOLDER }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.USDMF_HOLDER, 'USDMF HOLDER')"
+                (click)="OpenViewModal(_data?.USDMF_HOLDER, 'USDMF HOLDER')"
               >
                 View More
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.EP_DMF_HOLDER && getColumnName('EP_DMF_HOLDER')" class="col-md-12">
+          <div *ngIf="_data?.EP_DMF_HOLDER && getColumnName('EP_DMF_HOLDER')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("EP_DMF_HOLDER") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.EP_DMF_HOLDER }}
+                {{ _data?.EP_DMF_HOLDER }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.EP_DMF_HOLDER, 'EP DMF HOLDER')"
+                (click)="OpenViewModal(_data?.EP_DMF_HOLDER, 'EP DMF HOLDER')"
               >
                 View More
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.OTHER_DMF_HOLDER && getColumnName('OTHER_DMF_HOLDER')" class="col-md-12">
+          <div *ngIf="_data?.OTHER_DMF_HOLDER && getColumnName('OTHER_DMF_HOLDER')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("OTHER_DMF_HOLDER") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.OTHER_DMF_HOLDER }}
+                {{ _data?.OTHER_DMF_HOLDER }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
-                  OpenViewModal(data?.OTHER_DMF_HOLDER, 'OTHER DMF HOLDER')
+                  OpenViewModal(_data?.OTHER_DMF_HOLDER, 'OTHER DMF HOLDER')
                 "
               >
                 View More
@@ -957,19 +957,19 @@
             </div>
           </div>
 
-          <div *ngIf="data?.PRODUCT_CLASSIFICATION && getColumnName('PRODUCT_CLASSIFICATION')" class="col-md-12">
+          <div *ngIf="_data?.PRODUCT_CLASSIFICATION && getColumnName('PRODUCT_CLASSIFICATION')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("PRODUCT_CLASSIFICATION") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.PRODUCT_CLASSIFICATION }}
+                {{ _data?.PRODUCT_CLASSIFICATION }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
                   OpenViewModal(
-                    data?.PRODUCT_CLASSIFICATION,
+                    _data?.PRODUCT_CLASSIFICATION,
                     'PRODUCT_CLASSIFICATION'
                   )
                 "
@@ -979,53 +979,53 @@
             </div>
           </div>
 
-          <div *ngIf="data?.PRODUCT_TYPE && getColumnName('PRODUCT_TYPE')" class="col-md-12">
+          <div *ngIf="_data?.PRODUCT_TYPE && getColumnName('PRODUCT_TYPE')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("PRODUCT_TYPE") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.PRODUCT_TYPE }}
+                {{ _data?.PRODUCT_TYPE }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.PRODUCT_TYPE, 'PRODUCT TYPE')"
+                (click)="OpenViewModal(_data?.PRODUCT_TYPE, 'PRODUCT TYPE')"
               >
                 View More
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.PESTICIDE_TYPE && getColumnName('PESTICIDE_TYPE')" class="col-md-12">
+          <div *ngIf="_data?.PESTICIDE_TYPE && getColumnName('PESTICIDE_TYPE')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("PESTICIDE_TYPE") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.PESTICIDE_TYPE }}
+                {{ _data?.PESTICIDE_TYPE }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.PESTICIDE_TYPE, 'PESTICIDE TYPE')"
+                (click)="OpenViewModal(_data?.PESTICIDE_TYPE, 'PESTICIDE TYPE')"
               >
                 View More
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.RELEATED_COMPOUNDS_AIS && getColumnName('RELEATED_COMPOUNDS_AIS')" class="col-md-12">
+          <div *ngIf="_data?.RELEATED_COMPOUNDS_AIS && getColumnName('RELEATED_COMPOUNDS_AIS')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("RELEATED_COMPOUNDS_AIS") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.RELEATED_COMPOUNDS_AIS }}
+                {{ _data?.RELEATED_COMPOUNDS_AIS }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
                   OpenViewModal(
-                    data?.RELEATED_COMPOUNDS_AIS,
+                    _data?.RELEATED_COMPOUNDS_AIS,
                     'RELEATED COMPOUNDS AIS'
                   )
                 "
@@ -1035,18 +1035,18 @@
             </div>
           </div>
 
-          <div *ngIf="data?.SUBSTANCE_ORIGIN && getColumnName('SUBSTANCE_ORIGIN')" class="col-md-12">
+          <div *ngIf="_data?.SUBSTANCE_ORIGIN && getColumnName('SUBSTANCE_ORIGIN')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("SUBSTANCE_ORIGIN") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.SUBSTANCE_ORIGIN }}
+                {{ _data?.SUBSTANCE_ORIGIN }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
-                  OpenViewModal(data?.SUBSTANCE_ORIGIN, 'SUBSTANCE ORIGIN')
+                  OpenViewModal(_data?.SUBSTANCE_ORIGIN, 'SUBSTANCE ORIGIN')
                 "
               >
                 View More
@@ -1054,53 +1054,53 @@
             </div>
           </div>
 
-          <div *ngIf="data?.LAUNCH_STATUS && getColumnName('LAUNCH_STATUS')" class="col-md-12">
+          <div *ngIf="_data?.LAUNCH_STATUS && getColumnName('LAUNCH_STATUS')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("LAUNCH_STATUS") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.LAUNCH_STATUS }}
+                {{ _data?.LAUNCH_STATUS }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.LAUNCH_STATUS, 'LAUNCH STATUS')"
+                (click)="OpenViewModal(_data?.LAUNCH_STATUS, 'LAUNCH STATUS')"
               >
                 View More
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.ISO_STATUS && getColumnName('ISO_STATUS')" class="col-md-12">
+          <div *ngIf="_data?.ISO_STATUS && getColumnName('ISO_STATUS')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("ISO_STATUS") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.ISO_STATUS }}
+                {{ _data?.ISO_STATUS }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.ISO_STATUS, 'ISO STATUS')"
+                (click)="OpenViewModal(_data?.ISO_STATUS, 'ISO STATUS')"
               >
                 View More
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.US_EPA_CHEMICAL_CODE && getColumnName('US_EPA_CHEMICAL_CODE')" class="col-md-12">
+          <div *ngIf="_data?.US_EPA_CHEMICAL_CODE && getColumnName('US_EPA_CHEMICAL_CODE')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("US_EPA_CHEMICAL_CODE") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.US_EPA_CHEMICAL_CODE }}
+                {{ _data?.US_EPA_CHEMICAL_CODE }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
                   OpenViewModal(
-                    data?.US_EPA_CHEMICAL_CODE,
+                    _data?.US_EPA_CHEMICAL_CODE,
                     'US EPA CHEMICAL CODE'
                   )
                 "
@@ -1110,34 +1110,34 @@
             </div>
           </div>
 
-          <div *ngIf="data?.UN_NUMBER && getColumnName('UN_NUMBER')" class="col-md-12">
+          <div *ngIf="_data?.UN_NUMBER && getColumnName('UN_NUMBER')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("UN_NUMBER") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.UN_NUMBER }}
+                {{ _data?.UN_NUMBER }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.UN_NUMBER, 'UN NUMBER')"
+                (click)="OpenViewModal(_data?.UN_NUMBER, 'UN NUMBER')"
               >
                 View More
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.STRAIN_NO && getColumnName('STRAIN_NO')" class="col-md-12">
+          <div *ngIf="_data?.STRAIN_NO && getColumnName('STRAIN_NO')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("STRAIN_NO") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.STRAIN_NO }}
+                {{ _data?.STRAIN_NO }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.STRAIN_NO, 'STRAIN NO')"
+                (click)="OpenViewModal(_data?.STRAIN_NO, 'STRAIN NO')"
               >
                 View More
               </p>
@@ -1145,7 +1145,7 @@
           </div>
 
           <div
-            *ngIf="data?.GOOGLEPATENTHYPERLINKOFPATENTINVENTINFO && getColumnName('GOOGLEPATENTHYPERLINKOFPATENTINVENTINFO')"
+            *ngIf="_data?.GOOGLEPATENTHYPERLINKOFPATENTINVENTINFO && getColumnName('GOOGLEPATENTHYPERLINKOFPATENTINVENTINFO')"
             class="col-md-12"
           >
             <div class="pt-3 mt-3">
@@ -1153,13 +1153,13 @@
                 {{ getColumnName("GOOGLEPATENTHYPERLINKOFPATENTINVENTINFO") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.GOOGLEPATENTHYPERLINKOFPATENTINVENTINFO }}
+                {{ _data?.GOOGLEPATENTHYPERLINKOFPATENTINVENTINFO }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
                   OpenViewModal(
-                    data?.GOOGLEPATENTHYPERLINKOFPATENTINVENTINFO,
+                    _data?.GOOGLEPATENTHYPERLINKOFPATENTINVENTINFO,
                     'GOOGLEPATENTHYPERLINKOFPATENT(INVENTINFO)'
                   )
                 "
@@ -1169,70 +1169,70 @@
             </div>
           </div>
 
-          <div *ngIf="data?.INVENT_INFO2 && getColumnName('INVENT_INFO2')" class="col-md-12">
+          <div *ngIf="_data?.INVENT_INFO2 && getColumnName('INVENT_INFO2')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("INVENT_INFO2") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.INVENT_INFO2 }}
+                {{ _data?.INVENT_INFO2 }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.INVENT_INFO2, 'INVENT INFO2')"
+                (click)="OpenViewModal(_data?.INVENT_INFO2, 'INVENT INFO2')"
               >
                 View More
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.INVENT_INFO3 && getColumnName('INVENT_INFO3')" class="col-md-12">
+          <div *ngIf="_data?.INVENT_INFO3 && getColumnName('INVENT_INFO3')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("INVENT_INFO3") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.INVENT_INFO3 }}
+                {{ _data?.INVENT_INFO3 }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.INVENT_INFO3, 'INVENT INFO3')"
+                (click)="OpenViewModal(_data?.INVENT_INFO3, 'INVENT INFO3')"
               >
                 View More
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.year_wise_iso && getColumnName('year_wise_iso')" class="col-md-12">
+          <div *ngIf="_data?.year_wise_iso && getColumnName('year_wise_iso')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("year_wise_iso") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.year_wise_iso }}
+                {{ _data?.year_wise_iso }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.year_wise_iso, 'year wise iso')"
+                (click)="OpenViewModal(_data?.year_wise_iso, 'year wise iso')"
               >
                 View More
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.company_registration_number && getColumnName('company_registration_number')" class="col-md-12">
+          <div *ngIf="_data?.company_registration_number && getColumnName('company_registration_number')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("company_registration_number") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.company_registration_number }}
+                {{ _data?.company_registration_number }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
                   OpenViewModal(
-                    data?.company_registration_number,
+                    _data?.company_registration_number,
                     'company registration number'
                   )
                 "
@@ -1242,18 +1242,18 @@
             </div>
           </div>
 
-          <div *ngIf="data?.developmental_code && getColumnName('developmental_code')" class="col-md-12">
+          <div *ngIf="_data?.developmental_code && getColumnName('developmental_code')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("developmental_code") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.developmental_code }}
+                {{ _data?.developmental_code }}
               </p>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="
-                  OpenViewModal(data?.developmental_code, 'developmental code')
+                  OpenViewModal(_data?.developmental_code, 'developmental code')
                 "
               >
                 View More
@@ -1261,191 +1261,191 @@
             </div>
           </div>
 
-          <div *ngIf="data?.dummy_1 && getColumnName('dummy_1')" class="col-md-12">
+          <div *ngIf="_data?.dummy_1 && getColumnName('dummy_1')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("dummy_1") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.dummy_1 }}
+                {{ _data?.dummy_1 }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.dummy_2 && getColumnName('dummy_2')" class="col-md-12">
+          <div *ngIf="_data?.dummy_2 && getColumnName('dummy_2')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("dummy_2") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.dummy_2 }}
+                {{ _data?.dummy_2 }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.dummy_3 && getColumnName('dummy_3')" class="col-md-12">
+          <div *ngIf="_data?.dummy_3 && getColumnName('dummy_3')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("dummy_3") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.dummy_3 }}
+                {{ _data?.dummy_3 }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.dummy_4 && getColumnName('dummy_4')" class="col-md-12">
+          <div *ngIf="_data?.dummy_4 && getColumnName('dummy_4')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("dummy_4") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.dummy_4 }}
+                {{ _data?.dummy_4 }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.dummy_5 && getColumnName('dummy_5')" class="col-md-12">
+          <div *ngIf="_data?.dummy_5 && getColumnName('dummy_5')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("dummy_5") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.dummy_5 }}
+                {{ _data?.dummy_5 }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.dummy_6 && getColumnName('dummy_6')" class="col-md-12">
+          <div *ngIf="_data?.dummy_6 && getColumnName('dummy_6')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("dummy_6") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.dummy_6 }}
+                {{ _data?.dummy_6 }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.dummy_7 && getColumnName('dummy_7')" class="col-md-12">
+          <div *ngIf="_data?.dummy_7 && getColumnName('dummy_7')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("dummy_7") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.dummy_7 }}
+                {{ _data?.dummy_7 }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.dummy_8 && getColumnName('dummy_8')" class="col-md-12">
+          <div *ngIf="_data?.dummy_8 && getColumnName('dummy_8')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("dummy_8") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.dummy_8 }}
+                {{ _data?.dummy_8 }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.dummy_9 && getColumnName('dummy_9')" class="col-md-12">
+          <div *ngIf="_data?.dummy_9 && getColumnName('dummy_9')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("dummy_9") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.dummy_9 }}
+                {{ _data?.dummy_9 }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.dummy_10 && getColumnName('dummy_10')" class="col-md-12">
+          <div *ngIf="_data?.dummy_10 && getColumnName('dummy_10')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("dummy_10") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.dummy_10 }}
+                {{ _data?.dummy_10 }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.dummy_11 && getColumnName('dummy_11')" class="col-md-12">
+          <div *ngIf="_data?.dummy_11 && getColumnName('dummy_11')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("dummy_11") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.dummy_11 }}
+                {{ _data?.dummy_11 }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.dummy_12 && getColumnName('dummy_12')" class="col-md-12">
+          <div *ngIf="_data?.dummy_12 && getColumnName('dummy_12')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("dummy_12") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.dummy_12 }}
+                {{ _data?.dummy_12 }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.dummy_13 && getColumnName('dummy_13')" class="col-md-12">
+          <div *ngIf="_data?.dummy_13 && getColumnName('dummy_13')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("dummy_13") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.dummy_13 }}
+                {{ _data?.dummy_13 }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.dummy_14 && getColumnName('dummy_14')" class="col-md-12">
+          <div *ngIf="_data?.dummy_14 && getColumnName('dummy_14')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold">
                 {{ getColumnName("dummy_14") }}
               </h1>
               <p class="text-justify max-h-28 overflow-auto">
-                {{ data?.dummy_14 }}
+                {{ _data?.dummy_14 }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="data?.LINK_1 && getColumnName('LINK_1')" class="col-md-12">
+          <div *ngIf="_data?.LINK_1 && getColumnName('LINK_1')" class="col-md-12">
             <div class="pt-4">
               <h1 class="font-bold">{{ getColumnName("LINK_1") }}:</h1>
-              <p class="text-justify overflow-auto">{{ data?.LINK_1 }}</p>
+              <p class="text-justify overflow-auto">{{ _data?.LINK_1 }}</p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.LINK_1, 'LINK-1')"
+                (click)="OpenViewModal(_data?.LINK_1, 'LINK-1')"
               >
                 View More
               </p>
             </div>
           </div>
-          <div *ngIf="data?.LINK_2 && getColumnName('LINK_2')" class="col-md-12">
+          <div *ngIf="_data?.LINK_2 && getColumnName('LINK_2')" class="col-md-12">
             <div class="pt-4 pb-3">
               <h1 class="font-bold">{{ getColumnName("LINK_2") }}:</h1>
-              <p class="para pt-2 overflow-auto">{{ data?.LINK_2 }}</p>
+              <p class="para pt-2 overflow-auto">{{ _data?.LINK_2 }}</p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.LINK_2, 'LINK-2')"
+                (click)="OpenViewModal(_data?.LINK_2, 'LINK-2')"
               >
                 View More
               </p>
             </div>
           </div>
-          <div *ngIf="data?.LINK_3 && getColumnName('LINK_3')" class="col-md-12">
+          <div *ngIf="_data?.LINK_3 && getColumnName('LINK_3')" class="col-md-12">
             <div class="pt-4">
               <h1 class="font-bold">{{ getColumnName("LINK_3") }}:</h1>
-              <p class="text-justify overflow-auto">{{ data?.LINK_3 }}</p>
+              <p class="text-justify overflow-auto">{{ _data?.LINK_3 }}</p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.LINK_3, 'LINK-3')"
+                (click)="OpenViewModal(_data?.LINK_3, 'LINK-3')"
               >
                 View More
               </p>
@@ -1453,36 +1453,36 @@
           </div>
 
           <div class="col-md-12">
-            <div *ngIf="data?.LINK_4 && getColumnName('LINK_4')" class="pt-4">
+            <div *ngIf="_data?.LINK_4 && getColumnName('LINK_4')" class="pt-4">
               <h1 class="font-bold">{{ getColumnName("LINK_4") }}:</h1>
-              <p class="text-justify overflow-auto">{{ data?.LINK_4 }}</p>
+              <p class="text-justify overflow-auto">{{ _data?.LINK_4 }}</p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.LINK_4, 'LINK-4')"
+                (click)="OpenViewModal(_data?.LINK_4, 'LINK-4')"
               >
                 View More
               </p>
             </div>
           </div>
           <div class="col-md-12">
-            <div *ngIf="data?.LINK_5 && getColumnName('LINK_5')" class="pt-4">
+            <div *ngIf="_data?.LINK_5 && getColumnName('LINK_5')" class="pt-4">
               <h1 class="font-bold">{{ getColumnName("LINK_5") }}:</h1>
-              <p class="text-justify overflow-auto">{{ data?.LINK_5 }}</p>
+              <p class="text-justify overflow-auto">{{ _data?.LINK_5 }}</p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.LINK_5, 'LINK-5')"
+                (click)="OpenViewModal(_data?.LINK_5, 'LINK-5')"
               >
                 View More
               </p>
             </div>
           </div>
           <div class="col-md-12">
-            <div *ngIf="data?.LINK_6 && getColumnName('LINK_6')" class="pt-4">
+            <div *ngIf="_data?.LINK_6 && getColumnName('LINK_6')" class="pt-4">
               <h1 class="font-bold">{{ getColumnName("LINK_6") }}:</h1>
-              <p class="text-justify overflow-auto">{{ data?.LINK_6 }}</p>
+              <p class="text-justify overflow-auto">{{ _data?.LINK_6 }}</p>
               <p
                 class="para pt-2 cursor-pointer"
-                (click)="OpenViewModal(data?.LINK_6, 'LINK-6')"
+                (click)="OpenViewModal(_data?.LINK_6, 'LINK-6')"
               >
                 View More
               </p>

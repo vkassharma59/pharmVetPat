@@ -164,50 +164,228 @@ export class SearchResultsComponent {
   }
   
   private searchBasedOnTabName(resultTabData: any) { 
-    console.log(resultTabData);
+    this.setLoadingState.emit(true);
     const currentTabData = resultTabData.currentTabData.name;
     switch(currentTabData) {
       case this.resultTabs?.technicalRoutes.name:
-        this.performTechnicalRouteSearch(resultTabData);
+        if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.technicalRoutes.name]).length === 0) {
+          this.performTechnicalRouteSearch(resultTabData);
+        } else {
+          this.setLoadingState.emit(false);
+        }        
         break;
+      case this.resultTabs?.productInfo.name:
+        if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.productInfo.name]).length === 0) {
+          this.perforProductInfoSearch(resultTabData);
+        } else {
+          this.setLoadingState.emit(false);
+        }     
+        break;
+      case this.resultTabs?.chemicalDirectory.name:
+        if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.chemicalDirectory.name]).length === 0) {
+          this.perforChemicalDirectorySearch(resultTabData);
+        } else {
+          this.setLoadingState.emit(false);
+        }     
+        break;
+      case this.resultTabs?.impurity.name:
+        if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.impurity.name]).length === 0) {
+          this.perforImpuritySearch(resultTabData);
+        } else {
+          this.setLoadingState.emit(false);
+        }     
+        break;
+      case this.resultTabs?.chemiTracker.name:
+        if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.chemiTracker.name]).length === 0) {
+          this.perforChemiTrackerSearch(resultTabData);
+        } else {
+          this.setLoadingState.emit(false);
+        }     
+        break;
+      default:
+        this.setLoadingState.emit(false);
     }
   }
 
-    private performTechnicalRouteSearch(resultTabData: any): void {
-      const body = {
-        search_type: "GBRN",
-        keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn,
-        page_no: 1,
-        filter_enable: false,
-        filters: {},
-        order_by: '',
-      }
-    
-      const tech_API = this.apiUrls.technicalRoutes.columnList;  
-      this.columnListService.getColumnList(tech_API).subscribe({
-        next: (res: any) => {
-          const response = res?.data?.columns;
-          Auth_operations.setColumnList(this.resultTabs.technicalRoutes.name, response);
-    
-          this.mainSearchService.technicalRoutesSearchSpecific(body).subscribe({
-            next: (result: any) => {              
-              if(result?.data?.ros_data.length > 0) {
-                this.allDataSets[resultTabData.index][this.resultTabs.technicalRoutes.name] = result?.data?.ros_data[0];
-              }      
-              this.setLoadingState.emit(false);
-            },
-            error: (e) => {
-              console.error('Error during main search:', e);
-              this.setLoadingState.emit(false);
-            },
-          });
-        },
-        error: (e) => {
-          console.error('Error fetching column list:', e);
-          this.setLoadingState.emit(false);
-        },
-      });
+  private performTechnicalRouteSearch(resultTabData: any): void {
+    const body = {
+      search_type: "GBRN",
+      keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn,
+      page_no: 1,
+      filter_enable: false,
+      filters: {},
+      order_by: '',
     }
+  
+    const tech_API = this.apiUrls.technicalRoutes.columnList;  
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.technicalRoutes.name, response);
+  
+        this.mainSearchService.technicalRoutesSearchSpecific(body).subscribe({
+          next: (result: any) => {              
+            if(result?.data?.ros_data.length > 0) {
+              this.allDataSets[resultTabData.index][this.resultTabs.technicalRoutes.name] = result?.data?.ros_data[0];
+            }      
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
+
+  private perforProductInfoSearch(resultTabData: any): void {
+    const body = {
+      search_type: "GBRN",
+      keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn,
+      page_no: 1,
+      filter_enable: false,
+      filters: {},
+      order_by: '',
+    }
+  
+    const tech_API = this.apiUrls.basicProductInfo.columnList;  
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.productInfo.name, response);
+  
+        this.mainSearchService.basicProductSearchSpecific(body).subscribe({
+          next: (result: any) => {     
+            if(result?.data?.basic_product_data.length > 0) {
+              this.allDataSets[resultTabData.index][this.resultTabs.productInfo.name] = result?.data?.basic_product_data[0];
+            }      
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
+
+  private perforChemicalDirectorySearch(resultTabData: any): void {
+    const body = {
+      search_type: "GBRN",
+      keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn,
+      page_no: 1,
+      filter_enable: false,
+      filters: {},
+      order_by: '',
+    }
+  
+    const tech_API = this.apiUrls.chemicalDirectory.columnList;  
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.chemicalDirectory.name, response);
+  
+        this.mainSearchService.chemicalDirectorySearchSpecific(body).subscribe({
+          next: (result: any) => {     
+            if(result?.data?.chem_dir_data.length > 0) {
+              this.allDataSets[resultTabData.index][this.resultTabs.chemicalDirectory.name] = result?.data?.chem_dir_data[0];
+            }      
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
+
+  private perforImpuritySearch(resultTabData: any): void {
+    const body = {
+      search_type: "GBRN",
+      keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn,
+      page_no: 1,
+      filter_enable: false,
+      filters: {},
+      order_by: '',
+    }
+  
+    const tech_API = this.apiUrls.impurity.columnList;  
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.impurity.name, response);
+  
+        this.mainSearchService.impuritySearchSpecific(body).subscribe({
+          next: (result: any) => {     
+            if(result?.data?.impurity_data.length > 0) {
+              this.allDataSets[resultTabData.index][this.resultTabs.impurity.name] = result?.data?.impurity_data[0];
+            }      
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
+
+  private perforChemiTrackerSearch(resultTabData: any): void {
+    const body = {
+      search_type: "GBRN",
+      keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn,
+      page_no: 1,
+      filter_enable: false,
+      filters: {},
+      order_by: '',
+    }
+  
+    const tech_API = this.apiUrls.chemiTracker.columnList;  
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.chemiTracker.name, response);
+  
+        this.mainSearchService.chemiTrackerSearchSpecific(body).subscribe({
+          next: (result: any) => {     
+            if(result?.data?.chemi_tracker_data.length > 0) {
+              this.allDataSets[resultTabData.index][this.resultTabs.chemiTracker.name] = result?.data?.chemi_tracker_data[0];
+            }      
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
 
   onResultTabChange(data: Event){
     this.searchBasedOnTabName(data);

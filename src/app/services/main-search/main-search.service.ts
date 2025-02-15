@@ -107,6 +107,32 @@ export class MainSearchService {
         .pipe(catchError(this.handleError));
   }  
 
+  basicProductSearchSpecific(props: any): Observable<any> {
+      const body = props;
+      return this.http
+        .post(this.apiUrls.basicProductInfo.searchSpecific, body, { headers: this.headers })
+        .pipe(catchError(this.handleError));
+  }  
+
+  chemicalDirectorySearchSpecific(props: any): Observable<any> {
+      const body = props;
+      return this.http
+        .post(this.apiUrls.chemicalDirectory.searchSpecific, body, { headers: this.headers })
+        .pipe(catchError(this.handleError));
+  }  
+  impuritySearchSpecific(props: any): Observable<any> {
+      const body = props;
+      return this.http
+        .post(this.apiUrls.impurity.searchSpecific, body, { headers: this.headers })
+        .pipe(catchError(this.handleError));
+  }  
+  chemiTrackerSearchSpecific(props: any): Observable<any> {
+      const body = props;
+      return this.http
+        .post(this.apiUrls.chemiTracker.searchSpecific, body, { headers: this.headers })
+        .pipe(catchError(this.handleError));
+  }  
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.log(error);
     if (error.error instanceof ErrorEvent) {

@@ -15,16 +15,10 @@ import { UtilityService } from '../../../services/utility-service/utility.servic
   styleUrl: './chemical-directory-data-card.component.css',
 })
 export class ChemicalDirectoryDataCardComponent {
-  @Input() data: any;
-  @Input() CurrentAPIBody: any;
-  @Output() ROSChange: EventEmitter<any> = new EventEmitter<any>();
 
   MoreInfo: boolean = false;
   MoreApplicationInfo: boolean = false;
-  constructor(
-    private dialog: MatDialog,
-    private utilityService: UtilityService
-  ) {}
+  _data: any = {};
   searchType: string = 'trrn'; // Replace with actual search type
   keyword: string = ''; // Initialize as empty string
   pageNo: number = 1;
@@ -32,17 +26,33 @@ export class ChemicalDirectoryDataCardComponent {
   chem_column: any = {};
   resultTabs: any = {};
 
-  getColumnName(value: any) {
-    return this.chem_column[value];
+  @Input() CurrentAPIBody: any;
+  @Output() ROSChange: EventEmitter<any> = new EventEmitter<any>();
+  @Input() 
+  get data() {  
+    return this._data;  
   }
-
-  ngOnInit() {
+  set data(value) {    
     this.resultTabs = this.utilityService.getAllTabsName();
     const column_list = Auth_operations.getColumnList();
-    for (let i = 0; i < column_list[this.resultTabs.chemicalDirectory.name].length; i++) {
-      this.chem_column[column_list[this.resultTabs.chemicalDirectory.name][i].value] =
-        column_list[this.resultTabs.chemicalDirectory.name][i].name;
+    if(column_list[this.resultTabs.chemicalDirectory?.name]?.length > 0 && value) {
+      for (let i = 0; i < column_list[this.resultTabs.chemicalDirectory.name].length; i++) {
+        this.chem_column[column_list[this.resultTabs.chemicalDirectory.name][i].value] =
+          column_list[this.resultTabs.chemicalDirectory.name][i].name;
+      }
+
+      this._data = value;
     }
+  }
+
+  
+  constructor(
+    private dialog: MatDialog,
+    private utilityService: UtilityService
+  ) {}
+
+  getColumnName(value: any) {
+    return this.chem_column[value];
   }
 
   handleCopy(text: any) {

@@ -36,6 +36,14 @@
         <chemical-directory-card [data]="dataItem.chemicalDirectory"></chemical-directory-card>
       </ng-container>
 
+      <ng-container *ngSwitchCase="'impurity'">
+        <chem-impurity-card [data]="dataItem.impurity"></chem-impurity-card>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'chemiTracker'">
+        <chem-chemi-tracker-card></chem-chemi-tracker-card>
+      </ng-container>
+
       <ng-container *ngSwitchCase="'dmfSuppliers'">
         <chem-dmf-or-suplier></chem-dmf-or-suplier>
       </ng-container>
