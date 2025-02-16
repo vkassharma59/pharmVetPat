@@ -1,1 +1,815 @@
-<p>chemi-tracker-card works!</p>
+<div class="card-header text-white bg-primary">
+    ChemiTracker >> <span *ngIf="_data?.chemical_name">{{_data?.chemical_name}}</span>
+</div>
+<div class="card-body" *ngIf="_data">
+    <div class="row">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="">
+                    <div class="col-md-12 pt-2">
+                        <div class="row">
+                        <div
+                            *ngIf="data?.chemical_structure && getColumnName('chemical_structure')"
+                            class="col-lg-2 col-md-6 col-sm-12"
+                        >
+                            <img
+                            *ngIf="data?.chemical_structure"
+                            class="aspect-auto"
+                            [src]="getChemicalImage(data)"
+                            alt="error"
+                            style="
+                                height: 270px;
+                                width: 470px;
+                                padding: 20px 20px;
+                                object-fit: contain;
+                            "
+                            />
+
+                            <div class="ms-4 pom" *ngIf="data?.chemical_structure && getColumnName('chemical_structure')">
+                            <button
+                                class="p-2 bg-[#0032A0] text-white"
+                                (click)="openImageModal(getChemicalImage(data))"
+                            >
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                            </div>
+                        </div>
+                        <div
+                            *ngIf="data?.trade_name_s_proprietary_name_s && getColumnName('trade_name_s_proprietary_name_s')"
+                            class="py-3 col-lg-2 col-md-6 col-sm-12"
+                        >
+                            <h1 class="font-bold ps-3">
+                            {{ getColumnName("trade_name_s_proprietary_name_s") }}
+                            </h1>
+                            <p class="font-grey-100 ps-3 overflow-auto">
+                            {{ data?.trade_name_s_proprietary_name_s }}
+                            </p>
+                        </div>
+                        <div
+                            *ngIf="data?.chemical_name && getColumnName('chemical_name')"
+                            class="py-3 col-lg-2 col-md-6 col-sm-12"
+                        >
+                            <h1 class="font-bold ps-3">
+                            {{ getColumnName("chemical_name") }}
+                            </h1>
+                            <p class="font-grey-100 ps-3 overflow-auto">
+                            {{ data?.chemical_name }}
+                            </p>
+                        </div>
+                        </div>
+
+                        <div class="">
+                        <div class="py-2">
+                            <div class="row">
+                            <div
+                                *ngIf="data?.active_pharmaceutical_ingredients && getColumnName('active_pharmaceutical_ingredients')"
+                                class="col-lg-2 col-md-6 col-sm-12"
+                            >
+                                <div class="">
+                                <h1 class="font-bold ps-3">
+                                    {{
+                                    getColumnName("active_pharmaceutical_ingredients")
+                                    }}
+                                </h1>
+                                <p class="ps-3 overflow-auto h-16">
+                                    {{ data?.active_pharmaceutical_ingredients }}
+                                </p>
+                                </div>
+                            </div>
+                            <div
+                                *ngIf="data?.gbrn && getColumnName('gbrn')"
+                                class="col-lg-2 col-md-6 col-sm-12"
+                            >
+                                <div class="ps-3">
+                                <h1 class="font-bold">
+                                    {{ getColumnName("gbrn") }}:
+                                    <span
+                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                    (click)="handleCopy(data?.gbrn)"
+                                    ><i class="fas fa-copy"></i
+                                    ></span>
+                                </h1>
+                                <p class="max-h-20 overflow-auto">
+                                    {{ data?.gbrn }}
+                                </p>
+                                </div>
+                            </div>
+                            <div
+                                *ngIf="data?.cas_rn && getColumnName('cas_rn')"
+                                class="col-lg-2 col-md-6 col-sm-12"
+                            >
+                                <div class="">
+                                <h1 class="font-bold ps-3">
+                                    {{ getColumnName("cas_rn") }}:
+                                    <span
+                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                    (click)="handleCopy(data?.cas_rn)"
+                                    ><i class="fas fa-copy"></i
+                                    ></span>
+                                </h1>
+                                <p class="ps-3 max-h-20 w-40 overflow-auto">
+                                    {{ data?.cas_rn }}
+                                </p>
+                                </div>
+                            </div>
+                            <div
+                                *ngIf="data?.iupac && getColumnName('iupac')"
+                                class="col-lg-2 col-md-6 col-sm-12"
+                            >
+                                <div class="">
+                                <h1 class="font-bold ps-3">
+                                    {{ getColumnName("iupac") }}:
+                                    <span
+                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                    (click)="handleCopy(data?.iupac)"
+                                    ><i class="fas fa-copy"></i
+                                    ></span>
+                                </h1>
+                                <p class="ps-3 overflow-auto">{{ data?.iupac }}</p>
+                                </div>
+                            </div>
+                            <div
+                                *ngIf="data?.field_of_applications && getColumnName('field_of_applications')"
+                                class="col-lg-2 col-md-6 col-sm-12"
+                            >
+                                <div class="">
+                                <h1 class="font-bold ps-3">
+                                    {{ getColumnName("field_of_applications") }}:
+                                    <span
+                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                    (click)="handleCopy(data?.field_of_applications)"
+                                    ><i class="fas fa-copy"></i
+                                    ></span>
+                                </h1>
+                                <p class="ps-3 overflow-auto">
+                                    {{ data?.field_of_applications }}
+                                </p>
+                                </div>
+                            </div>
+                            <div
+                                *ngIf="data?.role_of_chemical_ai_intermediate && getColumnName('role_of_chemical_ai_intermediate')"
+                                class="col-lg-2 col-md-6 col-sm-12"
+                            >
+                                <div class="">
+                                <h1 class="font-bold ps-3">
+                                    {{
+                                    getColumnName("role_of_chemical_ai_intermediate")
+                                    }}:
+                                </h1>
+                                <p class="ps-3 overflow-auto">
+                                    {{ data?.role_of_chemical_ai_intermediate }}
+                                </p>
+                                </div>
+                            </div>
+
+                            <div
+                                *ngIf="data?.releated_compounds && getColumnName('releated_compounds')"
+                                class="col-lg-2 col-md-6 col-sm-12"
+                            >
+                                <div class="">
+                                <h1 class="font-bold ps-3">
+                                    {{ getColumnName("releated_compounds") }}:
+                                </h1>
+                                <p class="ps-3 overflow-auto">
+                                    {{ data?.releated_compounds }}
+                                </p>
+                                </div>
+                            </div>
+
+                            <div
+                                *ngIf="data?.price && getColumnName('price')"
+                                class="col-lg-2 col-md-6 col-sm-12"
+                            >
+                                <div class="">
+                                <h1 class="font-bold ps-3">
+                                    {{ getColumnName("price") }}:
+                                </h1>
+                                <p class="ps-3 overflow-auto">
+                                    {{ data?.price }}
+                                </p>
+                                </div>
+                            </div>
+                            <div
+                                *ngIf="data?.structure_elucidation_report_ser && getColumnName('structure_elucidation_report_ser')"
+                                class="col-lg-2 col-md-6 col-sm-12"
+                            >
+                                <div class="ps-3">
+                                <h1 class="font-bold">
+                                    {{
+                                    getColumnName("structure_elucidation_report_ser")
+                                    }}:
+                                </h1>
+                                <p class="overflow-auto">
+                                    {{ data?.structure_elucidation_report_ser }}
+                                </p>
+                                </div>
+                            </div>
+                            <div
+                                *ngIf="data?.company_logo && getColumnName('company_logo')"
+                                class="col-lg-2 col-md-6 col-sm-12"
+                            >
+                                <div class="ps-3">
+                                <h1 class="font-bold">
+                                    {{ getColumnName("company_logo") }}:
+                                </h1>
+                                <div *ngIf="data?.company_logo">
+                                    <img
+                                    [src]="getCompanyLogo(data)"
+                                    alt="error"
+                                    class="object-contain"
+                                    style="height: 75px"
+                                    />
+                                </div>
+                                </div>
+                            </div>
+                            <div
+                                *ngIf="data?.company_website && getColumnName('company_website')"
+                                class="col-lg-2 col-md-6 col-sm-12"
+                            >
+                                <div class="ps-3">
+                                <h1 class="font-bold">
+                                    {{ getColumnName("company_website") }}:
+                                    <span
+                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                    (click)="handleCopy(data?.company_website)"
+                                    ><i class="fas fa-copy"></i
+                                    ></span>
+                                </h1>
+                                <a
+                                    [href]="getCompanyWebsite(data?.company_website)"
+                                    target="_blank"
+                                    class="text-blue-700"
+                                    >{{ data?.company_website }}</a
+                                >
+                                </div>
+                            </div>
+
+                            <div
+                                *ngIf="data?.country_of_company && getColumnName('country_of_company')"
+                                class="col-lg-2 col-md-6 col-sm-12"
+                            >
+                                <div class="ps-3">
+                                <h1 class="font-bold">
+                                    {{ getColumnName("country_of_company") }}:
+                                </h1>
+                                <p class="overflow-auto">
+                                    {{ data.country_of_company }}
+                                </p>
+                                </div>
+                                <div *ngIf="data?.country_of_company" class="">
+                                <img
+                                    [src]="getCountryUrl(data)"
+                                    class="ps-3"
+                                    alt="error"
+                                    style="
+                                    width: 100px;
+                                    object-fit: contain;
+                                    margin-bottom: 12px;
+                                    "
+                                />
+                                </div>
+                            </div>
+
+                            <div
+                                *ngIf="data?.email && getColumnName('email')"
+                                class="col-lg-2 col-md-6 col-sm-12"
+                            >
+                                <div class="ps-3">
+                                <h1 class="font-bold">
+                                    {{ getColumnName("email") }}:
+                                </h1>
+                                <div class="w-full overflow-x-auto">
+                                    <p class="overflow-auto">{{ data?.email }}</p>
+                                </div>
+                                </div>
+                            </div>
+                            <div
+                                *ngIf="data?.contact_details && getColumnName('contact_details')"
+                                class="col-lg-2 col-md-6 col-sm-12"
+                            >
+                                <div class="ps-3">
+                                <h1 class="font-bold">
+                                    {{ getColumnName("contact_details") }}:
+                                </h1>
+                                <p class="overflow-auto">
+                                    {{ data?.contact_details }}
+                                </p>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row py-2">
+                            <div
+                            *ngIf="data?.description && getColumnName('description')"
+                            class="col-lg-12 col-md-12 col-sm-12"
+                            >
+                            <div class="py-3 ps-3">
+                                <h1 class="font-bold">
+                                {{ getColumnName("description") }}:
+                                <span
+                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                    (click)="handleCopy(data?.description)"
+                                    ><i class="fas fa-copy"></i
+                                ></span>
+                                </h1>
+                                <div class="max-h-28 overflow-y-auto">
+                                <p class="overflow-auto">{{ data?.description }}</p>
+                                </div>
+                            </div>
+                            </div>
+
+                            <div
+                            *ngIf="data?.certificate_of_analysis_coa && getColumnName('certificate_of_analysis_coa')"
+                            class="col-lg-2 col-md-6 col-sm-12"
+                            >
+                            <div class="ps-3">
+                                <h1 class="font-bold">
+                                {{ getColumnName("certificate_of_analysis_coa") }}:
+                                </h1>
+                                <p class="overflow-auto">
+                                {{ data?.certificate_of_analysis_coa }}
+                                </p>
+                            </div>
+                            </div>
+
+                            <div
+                            *ngIf="data?.pdf_multiple_pdf && getColumnName('pdf_multiple_pdf')"
+                            class="col-lg-2 col-md-6 col-sm-12 py-1"
+                            >
+                            <div class="ps-3">
+                                <h1 class="font-bold">
+                                {{ getColumnName("pdf_multiple_pdf") }}:
+                                </h1>
+                                <p class="overflow-auto">
+                                {{ data?.pdf_multiple_pdf }}
+                                </p>
+                            </div>
+                            </div>
+
+                            <div
+                            *ngIf="data?.dummy_1 && getColumnName('dummy_1')"
+                            class="col-lg-2 col-md-6 col-sm-12 py-1"
+                            >
+                            <div class="ps-3">
+                                <h1 class="font-bold">
+                                {{ getColumnName("dummy_1") }}:
+                                </h1>
+                                <p class="overflow-auto">
+                                {{ data?.dummy_1 }}
+                                </p>
+                            </div>
+                            </div>
+
+                            <div
+                            *ngIf="data?.dummy_2 && getColumnName('dummy_2')"
+                            class="col-lg-2 col-md-6 col-sm-12 py-1"
+                            >
+                            <div class="ps-3">
+                                <h1 class="font-bold">
+                                {{ getColumnName("dummy_2") }}:
+                                </h1>
+                                <p class="overflow-auto">
+                                {{ data?.dummy_2 }}
+                                </p>
+                            </div>
+                            </div>
+
+                            <div
+                            *ngIf="data?.dummy_3 && getColumnName('dummy_3')"
+                            class="col-lg-2 col-md-6 col-sm-12 py-1"
+                            >
+                            <div class="ps-3">
+                                <h1 class="font-bold">
+                                {{ getColumnName("dummy_3") }}:
+                                </h1>
+                                <p class="overflow-auto">
+                                {{ data?.dummy_3 }}
+                                </p>
+                            </div>
+                            </div>
+
+                            <div
+                            *ngIf="data?.dummy_4 && getColumnName('dummy_4')"
+                            class="col-lg-2 col-md-6 col-sm-12 py-1"
+                            >
+                            <div class="ps-3">
+                                <h1 class="font-bold">
+                                {{ getColumnName("dummy_4") }}:
+                                </h1>
+                                <p class="overflow-auto">
+                                {{ data?.dummy_4 }}
+                                </p>
+                            </div>
+                            </div>
+
+                            <div
+                            *ngIf="data?.dummy_5 && getColumnName('dummy_5')"
+                            class="col-lg-2 col-md-6 col-sm-12 py-1"
+                            >
+                            <div class="ps-3">
+                                <h1 class="font-bold">
+                                {{ getColumnName("dummy_5") }}:
+                                </h1>
+                                <p class="overflow-auto">
+                                {{ data?.dummy_5 }}
+                                </p>
+                            </div>
+                            </div>
+
+                            <div
+                            *ngIf="data?.dummy_6 && getColumnName('dummy_6')"
+                            class="col-lg-2 col-md-6 col-sm-12 py-1"
+                            >
+                            <div class="ps-3">
+                                <h1 class="font-bold">
+                                {{ getColumnName("dummy_6") }}:
+                                </h1>
+                                <p class="overflow-auto">
+                                {{ data?.dummy_6 }}
+                                </p>
+                            </div>
+                            </div>
+
+                            <div
+                            *ngIf="data?.dummy_7 && getColumnName('dummy_7')"
+                            class="col-lg-2 col-md-6 col-sm-12 py-1"
+                            >
+                            <div class="ps-3">
+                                <h1 class="font-bold">
+                                {{ getColumnName("dummy_7") }}:
+                                </h1>
+                                <p class="overflow-auto">
+                                {{ data?.dummy_7 }}
+                                </p>
+                            </div>
+                            </div>
+
+                            <div
+                            *ngIf="data?.dummy_8 && getColumnName('dummy_8')"
+                            class="col-lg-2 col-md-6 col-sm-12 py-1"
+                            >
+                            <div class="ps-3">
+                                <h1 class="font-bold">
+                                {{ getColumnName("dummy_8") }}:
+                                </h1>
+                                <p class="overflow-auto">
+                                {{ data?.dummy_8 }}
+                                </p>
+                            </div>
+                            </div>
+
+                            <div
+                            *ngIf="data?.dummy_9 && getColumnName('dummy_9')"
+                            class="col-lg-2 col-md-6 col-sm-12 py-1"
+                            >
+                            <div class="ps-3">
+                                <h1 class="font-bold">
+                                {{ getColumnName("dummy_9") }}:
+                                </h1>
+                                <p class="overflow-auto">
+                                {{ data?.dummy_9 }}
+                                </p>
+                            </div>
+                            </div>
+
+                            <div
+                            *ngIf="data?.dummy_10 && getColumnName('dummy_10')"
+                            class="col-lg-2 col-md-6 col-sm-12 py-1"
+                            >
+                            <div class="ps-3">
+                                <h1 class="font-bold">
+                                {{ getColumnName("dummy_10") }}:
+                                </h1>
+                                <p class="overflow-auto">
+                                {{ data?.dummy_10 }}
+                                </p>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex justify-center">
+        <button
+        (click)="toggleMoreInfo()"
+        class="py-2 px-3 mt-5 btnchemical rounded-md btn"
+        >
+        {{
+            MoreInfo
+            ? "Less Information"
+            : "More Information"
+        }}
+        </button>
+    </div>
+    <div *ngIf="MoreInfo">
+        <div class="">
+        <div class="row">
+            <div class="col-md-12">
+            <div
+                *ngIf="data?.chemical_directory_search_term_id && getColumnName('chemical_directory_search_term_id')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">
+                {{ getColumnName("chemical_directory_search_term_id") }}:
+                </h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.chemical_directory_search_term_id }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.buychem_registration_number && getColumnName('buychem_registration_number')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">
+                {{ getColumnName("buychem_registration_number") }}:
+                <span
+                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                    (click)="handleCopy(data?.buychem_registration_number)"
+                    ><i class="fas fa-copy"></i
+                ></span>
+                </h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.buychem_registration_number }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.cas_name && getColumnName('cas_name')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">{{ getColumnName("cas_name") }}:</h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.cas_name }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.chemical_class && getColumnName('chemical_class')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">
+                {{ getColumnName("chemical_class") }}:
+                </h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.chemical_class }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.vendor_registration_number && getColumnName('vendor_registration_number')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">
+                {{ getColumnName("vendor_registration_number") }}:
+                <span
+                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                    (click)="handleCopy(data?.vendor_registration_number)"
+                    ><i class="fas fa-copy"></i
+                ></span>
+                </h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.vendor_registration_number }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.molecular_formula && getColumnName('molecular_formula')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">
+                {{ getColumnName("molecular_formula") }}:
+                <span
+                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                    (click)="handleCopy(data?.molecular_formula)"
+                    ><i class="fas fa-copy"></i
+                ></span>
+                </h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.molecular_formula }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.molecular_weight && getColumnName('molecular_weight')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">
+                {{ getColumnName("molecular_weight") }}:
+                <span
+                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                    (click)="handleCopy(data?.molecular_weight)"
+                    ><i class="fas fa-copy"></i
+                ></span>
+                </h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.molecular_weight }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.synonyms_common_name && getColumnName('synonyms_common_name')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">
+                {{ getColumnName("synonyms_common_name") }}:
+                <span
+                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                    (click)="handleCopy(data?.synonyms_common_name)"
+                    ><i class="fas fa-copy"></i
+                ></span>
+                </h1>
+                <p class="p-2 max-h-20 overflow-y-auto">
+                {{ data?.synonyms_common_name }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.summary_physicochemical_properties_experimental && getColumnName('summary_physicochemical_properties_experimental')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">
+                {{
+                    getColumnName(
+                    "summary_physicochemical_properties_experimental"
+                    )
+                }}:
+                <span
+                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                    (click)="
+                    handleCopy(
+                        data?.summary_physicochemical_properties_experimental
+                    )
+                    "
+                    ><i class="fas fa-copy"></i
+                ></span>
+                </h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.summary_physicochemical_properties_experimental }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.releated_compounds_ais_apis && getColumnName('releated_compounds_ais_apis')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">
+                {{ getColumnName("releated_compounds_ais_apis") }}:
+                <span
+                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                    (click)="handleCopy(data?.releated_compounds_ais_apis)"
+                    ><i class="fas fa-copy"></i
+                ></span>
+                </h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.releated_compounds_ais_apis }}
+                </p>
+            </div>
+            <div
+                *ngIf="
+                data?.cas_rn_related_to_active_ingredient_as_intermediate_impurity_etc && getColumnName('cas_rn_related_to_active_ingredient_as_intermediate_impurity_etc')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">
+                {{
+                    getColumnName(
+                    "cas_rn_related_to_active_ingredient_as_intermediate_impurity_etc"
+                    )
+                }}:
+                </h1>
+                <p class="p-2 overflow-auto">
+                {{
+                    data?.cas_rn_related_to_active_ingredient_as_intermediate_impurity_etc
+                }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.company_description && getColumnName('company_description')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">
+                {{ getColumnName("company_description") }}
+                <span
+                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                    (click)="handleCopy(data?.company_description)"
+                    ><i class="fas fa-copy"></i
+                ></span>
+                </h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.company_description }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.regulatory_registered_countries && getColumnName('regulatory_registered_countries')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">
+                {{ getColumnName("regulatory_registered_countries") }}
+                </h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.regulatory_registered_countries }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.quantity && getColumnName('quantity')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">{{ getColumnName("quantity") }}:</h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.quantity }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.pack_size && getColumnName('pack_size')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">{{ getColumnName("pack_size") }}:</h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.pack_size }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.purity && getColumnName('purity')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">{{ getColumnName("purity") }}:</h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.purity }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.currency && getColumnName('currency')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">{{ getColumnName("currency") }}:</h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.currency }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.quantity && getColumnName('quantity')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">{{ getColumnName("quantity") }}:</h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.quantity }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.priority && getColumnName('priority')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">{{ getColumnName("priority") }}:</h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.priority }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.commentry && getColumnName('commentry')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">{{ getColumnName("commentry") }}:</h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.commentry }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.notes && getColumnName('notes')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">{{ getColumnName("notes") }}:</h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.notes }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.remark_s && getColumnName('remark_s')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">{{ getColumnName("remark_s") }}:</h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.remark_s }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.literature && getColumnName('literature')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">{{ getColumnName("literature") }}:</h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.literature }}
+                </p>
+            </div>
+            <div
+                *ngIf="data?.information_sources && getColumnName('information_sources')"
+                class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
+            >
+                <h1 class="p-2 font-bold">
+                {{ getColumnName("information_sources") }}:
+                </h1>
+                <p class="p-2 overflow-auto">
+                {{ data?.information_sources }}
+                </p>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+<div class="card-body" *ngIf="!_data">
+    <p>No data found!</p>
+</div>

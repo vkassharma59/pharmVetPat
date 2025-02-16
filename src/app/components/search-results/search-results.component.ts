@@ -208,9 +208,16 @@ export class SearchResultsComponent {
   }
 
   private performTechnicalRouteSearch(resultTabData: any): void {
+
+    if(!resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn) {
+      this.allDataSets[resultTabData.index][this.resultTabs.technicalRoutes.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
+
     const body = {
       search_type: "GBRN",
-      keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn,
+      keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn ? resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn : '',
       page_no: 1,
       filter_enable: false,
       filters: {},
@@ -244,9 +251,16 @@ export class SearchResultsComponent {
   }
 
   private perforProductInfoSearch(resultTabData: any): void {
+
+    if(!resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn) {
+      this.allDataSets[resultTabData.index][this.resultTabs.productInfo.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
+
     const body = {
       search_type: "GBRN",
-      keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn,
+      keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn ? resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn : '',
       page_no: 1,
       filter_enable: false,
       filters: {},
@@ -280,9 +294,16 @@ export class SearchResultsComponent {
   }
 
   private perforChemicalDirectorySearch(resultTabData: any): void {
+
+    if(!resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn) {
+      this.allDataSets[resultTabData.index][this.resultTabs.chemicalDirectory.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
+
     const body = {
       search_type: "GBRN",
-      keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn,
+      keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn ? resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn : '',
       page_no: 1,
       filter_enable: false,
       filters: {},
@@ -316,9 +337,16 @@ export class SearchResultsComponent {
   }
 
   private perforImpuritySearch(resultTabData: any): void {
+
+    if(!resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn) {
+      this.allDataSets[resultTabData.index][this.resultTabs.impurity.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
+
     const body = {
       search_type: "GBRN",
-      keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn,
+      keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn ? resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn : '',
       page_no: 1,
       filter_enable: false,
       filters: {},
@@ -352,9 +380,16 @@ export class SearchResultsComponent {
   }
 
   private perforChemiTrackerSearch(resultTabData: any): void {
+
+    if(!resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn) {
+      this.allDataSets[resultTabData.index][this.resultTabs.chemiTracker.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
+
     const body = {
       search_type: "GBRN",
-      keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn,
+      keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn ? resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn : '',
       page_no: 1,
       filter_enable: false,
       filters: {},

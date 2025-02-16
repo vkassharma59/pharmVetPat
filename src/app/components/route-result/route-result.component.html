@@ -41,7 +41,7 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="'chemiTracker'">
-        <chem-chemi-tracker-card></chem-chemi-tracker-card>
+        <chem-chemi-tracker-card [data]="dataItem.chemiTracker"></chem-chemi-tracker-card>
       </ng-container>
 
       <ng-container *ngSwitchCase="'dmfSuppliers'">
