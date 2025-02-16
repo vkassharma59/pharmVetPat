@@ -2,7 +2,7 @@
   chemRobotics™ Basic Product Info >> {{_data?.ACTIVE_INGREDIENT}}
 </div>
 <div class="card-body">
-  <div class="pb-3 mb-3 px-2 rounded-lg">
+  <div class="pb-3 mb-3 px-2 rounded-lg" *ngIf="!isEmptyObject(_data); else noData">
     <div class="row">
       <div class="col-md-12">
         <div class="d-flex justify-content-between align-items-center py-2">
@@ -1492,4 +1492,7 @@
       </div>
     </div>
   </div>
+  <ng-template #noData>
+    <p>No Data Found!</p>
+  </ng-template>
 </div>

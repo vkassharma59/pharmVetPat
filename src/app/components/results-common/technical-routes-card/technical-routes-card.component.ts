@@ -20,7 +20,7 @@ export class TechnicalRoutesCardComponent {
   doc_values: any = [];
   tech_column: any = {};
   resultTabs: any = {};
-  _data: any;
+  _data: any = [];
 
   @Input() CurrentAPIBody: any;
   @Input() index: any;
@@ -31,15 +31,13 @@ export class TechnicalRoutesCardComponent {
   set data(value: any) {
     this.resultTabs = this.utilityService.getAllTabsName();
     const column_list = Auth_operations.getColumnList();
-    if(column_list[this.resultTabs.technicalRoutes?.name]?.length > 0 && value) {
+    if(column_list[this.resultTabs.technicalRoutes?.name]?.length > 0 && Object.keys(value).length > 0 && value) {
       for (let i = 0; i < column_list[this.resultTabs.technicalRoutes.name].length; i++) {
         this.tech_column[column_list[this.resultTabs.technicalRoutes.name][i].value] =
           column_list[this.resultTabs.technicalRoutes.name][i].name;
       }
 
       this._data = value;
-      console.log(column_list[this.resultTabs.technicalRoutes?.name]);
-      console.log(value);
     }
   }
 
@@ -47,6 +45,10 @@ export class TechnicalRoutesCardComponent {
     private dialog: MatDialog,
     private utilityService: UtilityService
   ) {}
+
+  isEmptyObject(obj: any): boolean {
+    return Object.keys(obj).length === 0;
+  }
 
   getColumnName(value: any) {
     return this.tech_column[value];

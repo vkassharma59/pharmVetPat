@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ImpurityCardComponent {
 
-  _data: any;
+  _data: any = [];
   MoreInfo: boolean = false;
   searchType: string = 'trrn'; // Replace with actual search type
   keyword: string = ''; // Initialize as empty string
@@ -31,7 +31,7 @@ export class ImpurityCardComponent {
   set data(value) {    
     this.resultTabs = this.utilityService.getAllTabsName();
     const column_list = Auth_operations.getColumnList();
-    if(column_list[this.resultTabs.impurity?.name]?.length > 0 && value) {
+    if(column_list[this.resultTabs.impurity?.name]?.length > 0 && Object.keys(value).length > 0 && value) {
       for (let i = 0; i < column_list[this.resultTabs.impurity.name].length; i++) {
         this.impurity_column[column_list[this.resultTabs.impurity.name][i].value] =
           column_list[this.resultTabs.impurity.name][i].name;
@@ -43,6 +43,10 @@ export class ImpurityCardComponent {
 
   constructor(private dialog: MatDialog,
       private utilityService: UtilityService) {}
+  
+  isEmptyObject(obj: any): boolean {
+    return Object.keys(obj).length === 0;
+  }
 
   toggleMoreInfo() {
     this.MoreInfo = !this.MoreInfo;

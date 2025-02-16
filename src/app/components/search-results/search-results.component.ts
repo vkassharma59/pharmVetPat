@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { LoaderComponent } from '../../commons/loader/loader.component';
 import { CommonModule } from '@angular/common';
-import { UtilityService } from '../../services/utility-service/utility.service';
+import { searchTypes, UtilityService } from '../../services/utility-service/utility.service';
 import { RouteResultComponent } from '../route-result/route-result.component';
 import { UserPriviledgeService } from '../../services/user_priviledges/user-priviledge.service';
 import { AppConfigValues } from '../../config/app-config';
@@ -164,10 +164,11 @@ export class SearchResultsComponent {
   }
   
   private searchBasedOnTabName(resultTabData: any) { 
+    console.log();
     this.setLoadingState.emit(true);
     const currentTabData = resultTabData.currentTabData.name;
     switch(currentTabData) {
-      case this.resultTabs?.technicalRoutes.name:
+      case this.resultTabs?.technicalRoutes.name: 
         if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.technicalRoutes.name]).length === 0) {
           this.performTechnicalRouteSearch(resultTabData);
         } else {
@@ -295,6 +296,8 @@ export class SearchResultsComponent {
 
   private perforChemicalDirectorySearch(resultTabData: any): void {
 
+    // Auth_operations.getActiveformValues().activeForm
+
     if(!resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn) {
       this.allDataSets[resultTabData.index][this.resultTabs.chemicalDirectory.name] = {};
       this.setLoadingState.emit(false);
@@ -302,8 +305,8 @@ export class SearchResultsComponent {
     }
 
     const body = {
-      search_type: "GBRN",
-      keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn ? resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn : '',
+      search_type: (resultTabData.previousTabData.name === this.resultTabs.technicalRoutes.name) ? "TRRN" : "GBRN",
+      keyword: (resultTabData.previousTabData.name === this.resultTabs.technicalRoutes.name) ? resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.trrn : resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn,
       page_no: 1,
       filter_enable: false,
       filters: {},

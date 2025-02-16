@@ -18,7 +18,7 @@ export class ChemicalDirectoryDataCardComponent {
 
   MoreInfo: boolean = false;
   MoreApplicationInfo: boolean = false;
-  _data: any = {};
+  _data: any = [];
   searchType: string = 'trrn'; // Replace with actual search type
   keyword: string = ''; // Initialize as empty string
   pageNo: number = 1;
@@ -35,7 +35,7 @@ export class ChemicalDirectoryDataCardComponent {
   set data(value) {    
     this.resultTabs = this.utilityService.getAllTabsName();
     const column_list = Auth_operations.getColumnList();
-    if(column_list[this.resultTabs.chemicalDirectory?.name]?.length > 0 && value) {
+    if(column_list[this.resultTabs.chemicalDirectory?.name]?.length > 0 && Object.keys(value).length > 0 && value) {
       for (let i = 0; i < column_list[this.resultTabs.chemicalDirectory.name].length; i++) {
         this.chem_column[column_list[this.resultTabs.chemicalDirectory.name][i].value] =
           column_list[this.resultTabs.chemicalDirectory.name][i].name;
@@ -50,6 +50,10 @@ export class ChemicalDirectoryDataCardComponent {
     private dialog: MatDialog,
     private utilityService: UtilityService
   ) {}
+
+  isEmptyObject(obj: any): boolean {
+    return Object.keys(obj).length === 0;
+  }
 
   getColumnName(value: any) {
     return this.chem_column[value];

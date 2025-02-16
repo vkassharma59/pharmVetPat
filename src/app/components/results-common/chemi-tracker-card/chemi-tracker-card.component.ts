@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
 
 export class ChemiTrackerCardComponent {
 
-  _data: any;
+  _data: any = [];
   MoreInfo: boolean = false;
   pageNo: number = 1;
   chemi_tracker_column: any = {};
@@ -29,7 +29,7 @@ export class ChemiTrackerCardComponent {
   set data(value) {    
     this.resultTabs = this.utilityService.getAllTabsName();
     const column_list = Auth_operations.getColumnList();
-    if(column_list[this.resultTabs.chemiTracker?.name]?.length > 0 && value) {
+    if(column_list[this.resultTabs.chemiTracker?.name]?.length > 0 && Object.keys(value).length > 0 && value) {
       for (let i = 0; i < column_list[this.resultTabs.chemiTracker.name].length; i++) {
         this.chemi_tracker_column[column_list[this.resultTabs.chemiTracker.name][i].value] =
           column_list[this.resultTabs.chemiTracker.name][i].name;
@@ -42,6 +42,10 @@ export class ChemiTrackerCardComponent {
   constructor(private dialog: MatDialog,
       private utilityService: UtilityService) {}
 
+  isEmptyObject(obj: any): boolean {
+    return Object.keys(obj).length === 0;
+  }
+  
   toggleMoreInfo() {
     this.MoreInfo = !this.MoreInfo;
   }

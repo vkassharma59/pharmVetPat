@@ -3,6 +3,7 @@ let ip_address = '';
 let screenColumn = '';
 let keyword = '';
 let column = '';
+let activeForm = '';
 let loginToken = '';
 
 let column_list: any = {
@@ -41,10 +42,11 @@ const setActiveformValues = (props: any) => {
   screenColumn = props.screenColumn;
   keyword = props.keyword.value;
   column = props.column;
+  activeForm = props.activeForm;
 };
 
 const getActiveformValues = () => {
-  return { screenColumn, keyword, column };
+  return { screenColumn, keyword, column, activeForm };
 };
 
 const setLoginToken = (token: any) => {

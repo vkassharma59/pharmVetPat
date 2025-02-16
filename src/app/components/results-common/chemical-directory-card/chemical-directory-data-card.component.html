@@ -1,7 +1,7 @@
 <div class="card-header text-white bg-primary">
   Chemical Directory (Building Block) >> {{_data?.chemical_name}}
 </div>
-<div class="card-body" *ngIf="_data">
+<div class="card-body" *ngIf="!isEmptyObject(_data); else noData">
   <div class="pb-3 mb-3 px-2 flex flex-wrap">
     <div class="lg:w-3/4 w-full">
       <div class="flex flex-wrap">
@@ -1597,6 +1597,8 @@
     </div>
   </div>
 </div>
-<div class="card-body" *ngIf="!_data">
-  <p>No data found!</p>
-</div>
+<ng-template #noData>
+  <div class="card-body">
+    <p>No data found!</p>
+  </div>
+</ng-template>

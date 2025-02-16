@@ -1,7 +1,7 @@
 <div class="card-header text-white bg-primary">
     Impurity >> {{_data?.name}}
 </div>
-<div class="card-body" *ngIf="_data">
+<div class="card-body" *ngIf="!isEmptyObject(_data); else noData">
     <div>
         <div class="row">
           <div class="col-md-12">
@@ -643,6 +643,8 @@
         </div>
     </div>
 </div>
-<div class="card-body" *ngIf="!_data">
+<ng-template #noData>
+  <div class="card-body">
     <p>No data found!</p>
-</div>
+  </div>
+</ng-template>

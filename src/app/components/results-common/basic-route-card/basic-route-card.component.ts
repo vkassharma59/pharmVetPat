@@ -25,7 +25,7 @@ export class BasicRouteCardComponent {
   resultTabs: any = {};
   processedSynonyms: { number: string; text: string }[] = [];
   basic_column: any = {};
-  _data: any;
+  _data: any = [];
 
   @Input() 
   get data() {
@@ -35,7 +35,7 @@ export class BasicRouteCardComponent {
     this._data = value;
     this.resultTabs = this.utilityService.getAllTabsName();
     const column_list = Auth_operations.getColumnList();
-    if(column_list[this.resultTabs.productInfo?.name]?.length > 0 && value) {
+    if(column_list[this.resultTabs.productInfo?.name]?.length > 0 && Object.keys(value).length > 0 &&  value) {
       for (let i = 0; i < column_list[this.resultTabs.productInfo.name].length; i++) {
         this.basic_column[column_list[this.resultTabs.productInfo.name][i].value] =
           column_list[this.resultTabs.productInfo.name][i].name;
@@ -68,6 +68,10 @@ export class BasicRouteCardComponent {
     private dialog: MatDialog,
     private utilityService: UtilityService
   ) {}
+
+  isEmptyObject(obj: any): boolean {
+    return Object.keys(obj).length === 0;
+  }
 
   getInventorLogo(data: any) {
     return `${environment.baseUrl}${environment.domainNameCompanyLogo}${data?.INVENTOR_LOGO}`;

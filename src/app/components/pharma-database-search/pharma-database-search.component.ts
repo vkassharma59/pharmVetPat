@@ -427,6 +427,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       column: this.column,
       keyword: this.simpleSearch?.keyword,
       screenColumn: this.screenColumn,
+      activeForm: searchTypes.simpleSearch,
     });
   
     const body = {
@@ -478,6 +479,13 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       alert("filterInputs must be a non-empty array.");
       return;
     }
+
+    Auth_operations.setActiveformValues({
+      column: this.column,
+      keyword: '',
+      screenColumn: this.screenColumn,
+      activeForm: searchTypes.advanceSearch,
+    });
     
     const apiBody = {
       criteria: this.advanceSearch?.filterInputs.map((input, index) => {
@@ -535,6 +543,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       column: this.column,
       keyword: this.synthesisSearch?.keyword,
       screenColumn: this.screenColumn,
+      activeForm: searchTypes.synthesisSearch,
     });
   
     const body = {
@@ -576,10 +585,12 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   }
 
   private performChemicalStructureSearch(): void {
+
     Auth_operations.setActiveformValues({
       column: this.column,
       keyword: this.chemicalStructure?.keyword,
       screenColumn: this.screenColumn,
+      activeForm: searchTypes.chemicalStructure
     });
   
     const body = {
@@ -621,17 +632,19 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   }
 
   private performIntermediateSearch(): void {
+
     Auth_operations.setActiveformValues({
       column: this.column,
       keyword: this.intermediateSearch.keyword,
       screenColumn: this.screenColumn,
+      activeForm: searchTypes.intermediateSearch
     });
   
     const body = {
       criteria: this.criteria,
       page_no: 1,
       filter_enable: false,
-      filters: {},
+      filters: {}, 
       order_by: '',
     };
   
