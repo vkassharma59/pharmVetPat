@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, input, Output } from '@angular/core';
-import { UtilityService } from '../../services/utility-service/utility.service';
+import { searchTypes, UtilityService } from '../../services/utility-service/utility.service';
 import { JsonPipe, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { RouteTabsComponent } from '../route-tabs/route-tabs.component';
 import { BasicRouteCardComponent } from '../results-common/basic-route-card/basic-route-card.component';
@@ -9,6 +9,7 @@ import { DmfOrSuplierComponent } from '../results-common/dmf-or-suplier/dmf-or-s
 import { UserPriviledgeService } from '../../services/user_priviledges/user-priviledge.service';
 import { ImpurityCardComponent } from '../results-common/impurity-card/impurity-card.component';
 import { ChemiTrackerCardComponent } from '../results-common/chemi-tracker-card/chemi-tracker-card.component';
+import { Auth_operations } from '../../Utils/SetToken';
 
 @Component({
   selector: 'chem-route-results',
@@ -28,28 +29,75 @@ export class RouteResultComponent {
   @Input() dataItem: any;
   @Input() searchData: any;
   resultTabs: any = [];
+  resultTabWithKeys: any = [];
 
   constructor(private utilityService: UtilityService,
     private userPriviledgeService: UserPriviledgeService
   ) {}
 
   ngOnInit() {
-    this.resultTabs = Object.values(this.utilityService.getAllTabsName()) ;
+    this.resultTabs = Object.values(this.utilityService.getAllTabsName());
     this.currentTabData = this.resultTabs.find((tab: any) => tab.isActive);
+
+    //
+    this.resultTabWithKeys = this.utilityService.getAllTabsName();        
   }
 
   handleBack() {
     this.backFunction.emit(false);
   }
 
-  handleCurrentTab(data: any) {    
+  handleCurrentTab(data: any) { 
+    const searchThrough = Auth_operations.getActiveformValues().activeForm;
+
+    let searchWith = '';
+    let searchWithValue;
+
+    switch(searchThrough) {
+      case searchTypes.chemicalStructure:
+        if(data.name === this.resultTabWithKeys.technicalRoutes.name) {
+          searchWith = 'TRRN';
+          searchWithValue = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name].trrn;
+        } else {
+          searchWith = 'GBRN';
+          searchWithValue = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name].gbrn;
+        }
+        break;
+      case searchTypes.synthesisSearch:
+        if(data.name === this.resultTabWithKeys.chemicalDirectory.name) {
+          searchWith = 'TRRN';
+          searchWithValue = this.dataItem[this.resultTabWithKeys.technicalRoutes.name].trrn;
+        } else {
+          searchWith = 'GBRN';
+          searchWithValue = this.dataItem[this.resultTabWithKeys.technicalRoutes.name].gbrn;
+        }
+        break;        
+      case searchTypes.intermediateSearch:
+          if(data.name === this.resultTabWithKeys.technicalRoutes.name) {
+            searchWith = 'TRRN';
+            searchWithValue = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name].trrn;
+          } else {
+            searchWith = 'GBRN';
+            searchWithValue = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name].gbrn;
+          }
+          break;
+      case (searchTypes.simpleSearch || searchTypes.advanceSearch):
+        searchWith = 'GBRN';
+        searchWithValue = this.dataItem[this.resultTabWithKeys.productInfo.name].gbrn;
+        break;
+      default:
+        console.log('No search type selected');
+    }
+    
     const tempObj = 
     {
-      previousTabData: this.currentTabData,
       currentTabData: data,
       index: this.index,
       dataItem: this.dataItem,
+      searchWith: searchWith,
+      searchWithValue: searchWithValue
     }
+
     this.onResultTabChange.emit(tempObj);
     this.currentTabData = data;
   }

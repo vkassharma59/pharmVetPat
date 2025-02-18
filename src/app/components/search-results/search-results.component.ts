@@ -164,7 +164,6 @@ export class SearchResultsComponent {
   }
   
   private searchBasedOnTabName(resultTabData: any) { 
-    console.log();
     this.setLoadingState.emit(true);
     const currentTabData = resultTabData.currentTabData.name;
     switch(currentTabData) {
@@ -210,15 +209,15 @@ export class SearchResultsComponent {
 
   private performTechnicalRouteSearch(resultTabData: any): void {
 
-    if(!resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn) {
+    if(resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.technicalRoutes.name] = {};
       this.setLoadingState.emit(false);
       return;
     }
 
     const body = {
-      search_type: "GBRN",
-      keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn ? resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn : '',
+      search_type: resultTabData?.searchWith,
+      keyword: resultTabData?.searchWithValue,
       page_no: 1,
       filter_enable: false,
       filters: {},
@@ -253,15 +252,15 @@ export class SearchResultsComponent {
 
   private perforProductInfoSearch(resultTabData: any): void {
 
-    if(!resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn) {
+    if(resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.productInfo.name] = {};
       this.setLoadingState.emit(false);
       return;
     }
 
     const body = {
-      search_type: "GBRN",
-      keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn ? resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn : '',
+      search_type: resultTabData?.searchWith,
+      keyword: resultTabData?.searchWithValue,
       page_no: 1,
       filter_enable: false,
       filters: {},
@@ -298,15 +297,15 @@ export class SearchResultsComponent {
 
     // Auth_operations.getActiveformValues().activeForm
 
-    if(!resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn) {
+    if(resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.chemicalDirectory.name] = {};
       this.setLoadingState.emit(false);
       return;
     }
 
     const body = {
-      search_type: (resultTabData.previousTabData.name === this.resultTabs.technicalRoutes.name) ? "TRRN" : "GBRN",
-      keyword: (resultTabData.previousTabData.name === this.resultTabs.technicalRoutes.name) ? resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.trrn : resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn,
+      search_type: resultTabData?.searchWith,
+      keyword: resultTabData?.searchWithValue,
       page_no: 1,
       filter_enable: false,
       filters: {},
@@ -341,15 +340,15 @@ export class SearchResultsComponent {
 
   private perforImpuritySearch(resultTabData: any): void {
 
-    if(!resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn) {
+    if(resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.impurity.name] = {};
       this.setLoadingState.emit(false);
       return;
     }
 
     const body = {
-      search_type: "GBRN",
-      keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn ? resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn : '',
+      search_type: resultTabData?.searchWith,
+      keyword: resultTabData?.searchWithValue,
       page_no: 1,
       filter_enable: false,
       filters: {},
@@ -384,15 +383,15 @@ export class SearchResultsComponent {
 
   private perforChemiTrackerSearch(resultTabData: any): void {
 
-    if(!resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn) {
+    if(resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.chemiTracker.name] = {};
       this.setLoadingState.emit(false);
       return;
     }
 
     const body = {
-      search_type: "GBRN",
-      keyword: resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn ? resultTabData?.dataItem?.[resultTabData.previousTabData.name]?.gbrn : '',
+      search_type: resultTabData?.searchWith,
+      keyword: resultTabData?.searchWithValue,
       page_no: 1,
       filter_enable: false,
       filters: {},
