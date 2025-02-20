@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
   imports: [CommonModule],
   templateUrl: './europe-approval.component.html',
   styleUrl: './europe-approval.component.css'
-})
+})  
 export class EuropeApprovalComponent {
   isDropdownVisible: boolean = false;
   isDropdownVisible2: boolean = false;

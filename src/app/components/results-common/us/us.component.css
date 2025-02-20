@@ -25,19 +25,6 @@
     flex-grow: 1;
   }
   
-  /* .refresh-btn {
-    background-color: #ff4d4d;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .refresh-btn i {
-    font-size: 18px;
-  } */
-  
   .dropdown-width {
     width: 180px; 
   }
@@ -95,4 +82,13 @@
   .bg-opacity-50 {
     background-color: rgba(0, 0, 0, 0.5);
   }
+  
+  .hover\:cursor-pointer {
+    cursor: pointer;
+  }
+  
+  .hover\:cursor-pointer:hover {
+    color: #0056b3; /* Change icon color on hover */
+  }
+  
   

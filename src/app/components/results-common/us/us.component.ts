@@ -74,7 +74,7 @@ export class UsComponent {
   }
 
   closePopup6() {
-    this.isPopupOpen5 = false;
+    this.isPopupOpen6 = false;
   }
 
    // ==================================
@@ -89,4 +89,173 @@ export class UsComponent {
      this.isPopupOpen7 = false;
    }
 
+   // ==================================
+
+   isPopupOpen8 = false;
+
+   openPopup8() {
+     this.isPopupOpen8 = true;
+   }
+ 
+   closePopup8() {
+     this.isPopupOpen8 = false;
+   }
+
+      // ==================================
+
+      isPopupOpen9= false;
+
+      openPopup9() {
+        this.isPopupOpen9 = true;
+      }
+    
+      closePopup9() {
+        this.isPopupOpen9 = false;
+      }
+
+         // ==================================
+
+         isPopupOpen10= false;
+
+         openPopup10() {
+           this.isPopupOpen10 = true;
+         }
+       
+         closePopup10() {
+           this.isPopupOpen10 = false;
+         }
+
+       // ==================================
+
+       isPopupOpen11= false;
+
+       openPopup11() {
+         this.isPopupOpen11 = true;
+       }
+     
+       closePopup11() {
+         this.isPopupOpen11 = false;
+       }     
+       
+       // ==================================
+
+       isPopupOpen12= false;
+
+       openPopup12() {
+         this.isPopupOpen12 = true;
+       }
+     
+       closePopup12() {
+         this.isPopupOpen12 = false;
+       }     
+
+        // ==================================
+
+        isPopupOpen13= false;
+
+        openPopup13() {
+          this.isPopupOpen13 = true;
+        }
+      
+        closePopup13() {
+          this.isPopupOpen13 = false;
+        }  
+        
+         // ==================================
+
+         isPopupOpen14= false;
+
+         openPopup14() {
+           this.isPopupOpen14 = true;
+         }
+       
+         closePopup14() {
+           this.isPopupOpen14 = false;
+         }  
+  // ==================================
+
+  isPopupOpen15= false;
+
+  openPopup15() {
+    this.isPopupOpen15 = true;
+  }
+
+  closePopup15() {
+    this.isPopupOpen15 = false;
+  }  
+  // ==================================
+
+  isPopupOpen16= false;
+
+  openPopup16() {
+    this.isPopupOpen16 = true;
+  }
+
+  closePopup16() {
+    this.isPopupOpen16 = false;
+  }  
+
+    // ==================================
+
+    isPopupOpen17= false;
+
+    openPopup17() {
+      this.isPopupOpen17 = true;
+    }
+  
+    closePopup17() {
+      this.isPopupOpen17 = false;
+    }  
+
+      // ==================================
+
+  isPopupOpen18= false;
+
+  openPopup18() {
+    this.isPopupOpen18 = true;
+  }
+
+  closePopup18() {
+    this.isPopupOpen18 = false;
+  }  
+
+    // ==================================
+
+    isPopupOpen19= false;
+
+    openPopup19() {
+      this.isPopupOpen19 = true;
+    }
+  
+    closePopup19() {
+      this.isPopupOpen19 = false;
+    }  
+
+      // ==================================
+
+  isPopupOpen20= false;
+
+  openPopup20() {
+    this.isPopupOpen20 = true;
+  }
+
+  closePopup20() {
+    this.isPopupOpen20 = false;
+  }  
+
+
+  copyText(elementId: string) {
+    const textToCopy = document.getElementById(elementId)?.innerText;
+
+    if (textToCopy) {
+      navigator.clipboard.writeText(textToCopy)
+        .then(() => {
+          alert('Text copied to clipboard!');
+        })
+        .catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+    }
+  }
+  
 }
