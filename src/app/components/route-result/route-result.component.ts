@@ -17,10 +17,11 @@ import { JapanComponent } from '../results-common/japan/japan.component';
 import { IndianComponent } from '../results-common/indian/indian.component';
 import { SpcdbComponent } from '../results-common/spcdb/spcdb.component';
 import { EximComponent } from '../results-common/exim/exim.component';
+import { ImpurityComponent } from '../results-common/impurity/impurity.component';
 @Component({
   selector: 'chem-route-results',
   standalone: true,
-  imports: [NgIf, ImpComponent,IndianComponent,JapanComponent,CanadaComponent,EuropeApprovalComponent,KoreaComponent,LitigationComponent, UsComponent,SpcdbComponent,EximComponent, RouteTabsComponent, BasicRouteCardComponent, TechnicalRoutesCardComponent,DmfOrSuplierComponent, ChemicalDirectoryDataCardComponent, NgSwitch, NgSwitchCase, NgSwitchDefault, JsonPipe],
+  imports: [NgIf, ImpComponent,IndianComponent,ImpurityComponent,JapanComponent,CanadaComponent,EuropeApprovalComponent,KoreaComponent,LitigationComponent, UsComponent,SpcdbComponent,EximComponent, RouteTabsComponent, BasicRouteCardComponent, TechnicalRoutesCardComponent,DmfOrSuplierComponent, ChemicalDirectoryDataCardComponent, NgSwitch, NgSwitchCase, NgSwitchDefault, JsonPipe],
   templateUrl: './route-result.component.html',
   styleUrl: './route-result.component.css'
 })

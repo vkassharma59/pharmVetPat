@@ -1,0 +1,86 @@
+<div class="card-header text-white fs-5" 
+     style="background-color: #8B008B; padding: 10px;">
+
+  <div class="d-flex flex-wrap align-items-center justify-content-between">
+    
+    <div class="d-flex align-items-center me-3">
+      <i class="fa-solid fa-flask me-2"></i>
+      <span>AgroPharm XIM DB >> SITAGLIPTIN PHOSPHATE</span>
+    </div>
+
+    <p class="mb-0 me-3">Total Records: <b>200</b></p>
+
+    <div class="d-flex align-items-center flex-wrap">
+      <select class="form-select text-black me-2" style="width: 150px;">
+        <option>All Chapter</option>
+        <option>Chapter 29</option>
+        <option>Chapter 38</option>   
+      </select>
+
+      <select class="form-select text-black me-2" style="width: 150px;">
+        <option>All Type</option>
+        <option>Export</option>
+        <option>Import</option>   
+      </select>
+
+      <select class="form-select text-black me-2" style="width: 150px;">
+        <option>All Year-Month</option>
+        <option>APR--2019</option>
+        <option>APR--2020</option>  
+        <option>APR--2021</option> 
+      </select>
+
+      <select class="form-select text-black me-2" style="width: 150px;">
+        <option>Sorting By</option>
+        <option>Oldest</option>
+        <option>Newest</option>   
+      </select>
+    </div>
+  </div>
+
+  <div class="d-flex flex-wrap align-items-center justify-content-start mt-2">
+    <select class="form-select text-black me-2" style="width: 150px;">
+      <option>All Exporter</option>
+      <option>1</option>
+      <option>2</option>   
+    </select>
+
+    <select class="form-select text-black me-2" style="width: 150px;">
+      <option>All Importer</option>
+      <option>1</option>
+      <option>2</option>   
+    </select>
+  </div>
+
+</div>
+
+
+<br><br>
+
+<div class="table-container">
+  <div class="search-container">
+    <button mat-raised-button color="primary" (click)="downloadPDF()">Download PDF</button>
+    <button mat-raised-button color="accent" (click)="downloadCSV()">Download CSV</button>
+    <button mat-raised-button color="warn" (click)="downloadExcel()">Download Excel</button>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+    <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell">
+        <div class="header-container">
+          <span>{{ columnHeaders[column] }}</span>
+          <mat-form-field appearance="outline">
+            <input matInput (keyup)="applyColumnFilter(column, $event)" (click)="$event.stopPropagation()" />
+          </mat-form-field>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+  

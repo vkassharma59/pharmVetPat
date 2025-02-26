@@ -1,0 +1,119 @@
+/* ✅ Search Container */
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* ✅ Card-style Table */
+.mat-elevation-z8 {
+  padding: 20px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ Form Fields (Smaller Input Box) */
+mat-form-field {
+  width: 120px; /* Decreased input width */
+  font-size: 12px; /* Smaller text */
+}
+
+.filter-field input {
+  height: 24px;  /* Decreased height */
+  font-size: 12px;
+  padding: 2px 5px;
+}
+
+/* ✅ Table Styling */
+.mat-table {
+  width: 100%;
+  min-width: 800px;
+  border-collapse: collapse;
+  border: 2px solid #8E24AA; /* Purple border */
+}
+
+/* ✅ Table Header */
+.mat-header-cell {
+  background-color: #8B008B !important;
+  color: white !important;
+  font-weight: bold;
+  text-align: center;
+  padding: 14px;
+  font-size: 16px; /* Increased font size */
+}
+
+/* ✅ Table Data Cells */
+.mat-cell {
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+  border-bottom: 1px solid #8E24AA;
+  height: 50px; /* Increased row height */
+}
+
+/* ✅ Alternating Row Colors */
+tr:nth-child(even) td {
+  background-color: #E1BEE7; /* Light Pink */
+}
+
+tr:nth-child(odd) td {
+  background-color: #F3E5F5; /* Light Purple */
+}
+
+/* ✅ Hover Effect */
+.mat-table tbody tr:hover td {
+  background-color: #D8BFD8 !important; /* Soft Purple */
+  transition: 0.3s ease-in-out;
+}
+
+/* ✅ Fixed Paginator */
+.mat-paginator {
+  position: sticky;
+  bottom: 0;
+  background: #673AB7; /* Purple */
+  color: white;
+  z-index: 10;
+}
+
+/* ✅ Scrollable Table */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  max-height: 500px;
+  border: 1px solid #ccc;
+}
+
+/* ✅ Buttons */
+button {
+  text-transform: none;
+  margin: 5px;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+/* ✅ Button Colors */
+button[color="primary"] {
+  background-color: #8B008B;
+  color: white;
+}
+
+button[color="accent"] {
+  background-color: #FF69B4;
+  color: white;
+}
+
+button[color="warn"] {
+  background-color: #DC143C;
+  color: white;
+}
+
+/* Force sorting icon to always be visible */
+.mat-sort-header-arrow {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+  display: inline-block !important;
+  visibility: visible !important;
+}
