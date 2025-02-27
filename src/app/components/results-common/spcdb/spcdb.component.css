@@ -1,0 +1,39 @@
+.headertext {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.totalRecords {
+    color: white;
+    border-color: white;
+    margin: 0;
+}
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    white-space: nowrap; /* Prevent wrapping of content */
+}
+
+table {
+    width: 500%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Ensure equal width columns */
+    font-size: 15px;
+
+}
+
+th, td {
+    border: 1px solid #DEE2E6;
+    padding: 8px;
+   
+    height: 50px; /* Fixed height */
+    word-wrap: break-word; /* Ensure text wraps inside the cell */
+    white-space: normal; /* Allows text to wrap */
+}
+
+th {
+    background-color: #E0881B;
+    color: white;
+}

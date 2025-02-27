@@ -10,11 +10,21 @@ import { UserPriviledgeService } from '../../services/user_priviledges/user-priv
 import { ImpurityCardComponent } from '../results-common/impurity-card/impurity-card.component';
 import { ChemiTrackerCardComponent } from '../results-common/chemi-tracker-card/chemi-tracker-card.component';
 import { Auth_operations } from '../../Utils/SetToken';
+import { ImpComponent } from '../results-common/imp/imp.component';
+import { UsComponent } from '../results-common/us/us.component';
+import { KoreaComponent } from '../results-common/korea/korea.component';
+import { LitigationComponent } from '../results-common/litigation/litigation.component';
+import { EuropeApprovalComponent } from '../results-common/europe-approval/europe-approval.component';
+import { CanadaComponent } from '../results-common/canada/canada.component';
+import { JapanComponent } from '../results-common/japan/japan.component';
+import { IndianComponent } from '../results-common/indian/indian.component';
+import { SpcdbComponent } from '../results-common/spcdb/spcdb.component';
+import { EximComponent } from '../results-common/exim/exim.component';
 
 @Component({
   selector: 'chem-route-results',
   standalone: true,
-  imports: [NgIf, RouteTabsComponent, ImpurityCardComponent, ChemiTrackerCardComponent, BasicRouteCardComponent, TechnicalRoutesCardComponent,DmfOrSuplierComponent, ChemicalDirectoryDataCardComponent, NgSwitch, NgSwitchCase, NgSwitchDefault, JsonPipe],
+  imports: [NgIf, ImpComponent,IndianComponent,ChemiTrackerCardComponent,ImpurityCardComponent,JapanComponent,CanadaComponent,EuropeApprovalComponent,KoreaComponent,LitigationComponent, UsComponent,SpcdbComponent,EximComponent, RouteTabsComponent, BasicRouteCardComponent, TechnicalRoutesCardComponent,DmfOrSuplierComponent, ChemicalDirectoryDataCardComponent, NgSwitch, NgSwitchCase, NgSwitchDefault, JsonPipe],
   templateUrl: './route-result.component.html',
   styleUrl: './route-result.component.css'
 })

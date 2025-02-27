@@ -48,6 +48,53 @@
         <chem-dmf-or-suplier></chem-dmf-or-suplier>
       </ng-container>
 
+      <ng-container *ngSwitchCase="'europeApproval'">
+        <chem-europe-approval></chem-europe-approval>
+      </ng-container>
+     
+      <ng-container *ngSwitchCase="'usApproval'">
+        <chem-us></chem-us>
+      </ng-container>
+   
+      <ng-container *ngSwitchCase="'canadaApproval'">
+        <chem-canada></chem-canada>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'japanApproval'">
+        <chem-japan></chem-japan>
+      </ng-container>
+
+
+      <ng-container *ngSwitchCase="'koreaApproval'">
+        <chem-korea></chem-korea>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'indianMedicine'">
+        <chem-indian></chem-indian>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'litigation'">
+        <chem-litigation></chem-litigation>
+      </ng-container>
+
+
+      <ng-container *ngSwitchCase="'impPatents'">
+        <chem-imp></chem-imp>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'spcDb'">
+        <chem-spcdb></chem-spcdb>
+      </ng-container>
+
+
+      <ng-container *ngSwitchCase="'US'">
+        <!-- <chem-us-approval></chem-us-approval> -->
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'eximData'">
+        <chem-exim></chem-exim>
+      </ng-container>
+
       <ng-container *ngSwitchDefault>
         <div class="card-header text-white bg-danger">Invalid Tab!</div>
         <div class="card-body">Please select a valid tab from the options above.</div>

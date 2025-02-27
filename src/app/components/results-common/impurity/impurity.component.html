@@ -1,0 +1,464 @@
+
+<div class="card-header text-white fs-5" style="background-color: #95880F;">
+    <div class="headertext d-flex justify-content-between align-items-center">
+        <!-- Left Side -->
+        <div class="Litigationfirst d-flex align-items-center">
+            <i class="fa-solid fa-flask me-2"></i>
+            <span>Impurity >> SITAGLIPTIN PHOSPHATE</span>
+        </div>
+
+       
+        <div class="d-flex align-items-center ms-auto">
+            <i class="fa-solid fa-download me-2"></i>
+            
+            <div class="totalreward me-2">
+                <p class="totalRecords mb-0" style="background-color: white; color: black;">Total Impurity Field: 166</p>
+            </div>
+            
+            <i class="fa fa-refresh me-2" aria-hidden="true"></i>
+
+            <div class="LitigationSecond me-2">
+                <select class="select text-black">
+                    <option>View All</option>
+                    <option>Impurity Standards(35)</option>
+                    <option>Impurity Standards, Research Chemicals(1)</option>
+                    <option>Reference Standards(2)</option>
+                    <option>Isotope Labelled Compounds(2)</option>
+                </select>
+            </div>
+
+            <i class="fa-solid fa-download"></i>
+        </div>
+    </div>
+</div>
+
+<div class="card-body">
+    <div class="pb-3 mb-3 px-2 rounded-lg border border-dark">
+        <div class="d-flex align-items-start">
+            <div class="me-3">
+                <img src="assets/components/Merck.png" class="image1" style="max-width: 150px; height: auto;">
+            </div>
+
+            <div class="flex-grow-1">
+                <h3 style="font-size: 30px; font-weight: bold; padding-bottom: 15px;">
+                    <span style="color: blue;">1.</span>Name: Sitagliptin N-Boc Impurity
+                </h3>
+
+                <div class="row">
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+                        <h5>GBRN:</h5>
+                        <p>10313</p>
+
+                        <h5>CAS RN:</h5>
+                        <p>CAS: 486460-23-5</p>
+
+                        <h5>OUBCHEM ID:</h5>
+                        <p>46836576</p>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                        <h5>IMPURITY NAME:</h5>
+                        <p>Sitagliptin N-Boc Impurity</p>
+
+                        <h5>CATEGORY:</h5>
+                        <p>Impurity Standards</p>
+
+                        <h5>CHEMICAL CLASS:</h5>
+                        <p></p>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                        <h5>MOLECULAR FORMULA:</h5>
+                        <p>Molecular Formula: C21H23F6N503</p>
+
+                        <h5>FORMULA WEIGHT:</h5>
+                        <p>507.4 g/mol</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12">
+                        <h5>IUPAC:</h5>
+                        <p>tert-butyl N-[(2R)-4-oxo-4-[3-(trifluoromethyl)-6,8-dihydro-5H-<br>
+                            [1,2,4]triazolo[4,3-a]pyrazin-7-yl]-1-(2,4,5-trifluorophenyl)butan-2-yl]carbamate
+                        </p>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12">
+                        <h5>CHEMICAL NAME:</h5>
+                        <p>(R)-tert-butyl (4-oxo-4-(3-(trifluoromethyl)-5,6-dihydro-[1,2,4]triazolo[4,3
+                            -a]pyrazin-7(8H)-yl)-1-(2,4,5-trifluorophenyl)butan-2-yl)carbamate
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="more">
+    <div class="textmore">
+        <button class="btn1" (click)="toggleDropdown()">
+            {{ isDropdownVisible ? 'LESS INFO' : 'MORE INFO' }} 
+            <i class="fa-solid" [ngClass]="{'fa-arrow-up': isDropdownVisible, 'fa-arrow-down': !isDropdownVisible}"></i>
+            </button>
+    </div>  
+</div>
+<div *ngIf="isDropdownVisible" class="dropdown-content border p-3">
+
+    <h4 style="color: #95880F; font-size: 25px;">Description</h4>
+    <hr class="hr-custom">
+
+    <div class="chemicalname border border-dark p-3 mb-3">
+        <h4 class="d-inline-block position-relative">CHEMICAL NAME:
+            <span class="underline"></span>
+        </h4>
+        <p>(R)-tert-butyl (4-oxo-4-(3-(trifluoromethyl)-5,6-dihydro-[1,2,4]triazolo[4,3
+            -a]pyrazin-7(8H)-yl)-1-(2,4,5-trifluorophenyl)butan-2-yl)carbamate</p>
+    </div>
+    
+    <h4 style="color: #95880F; font-size: 25px;">Names and Identifiers</h4>
+    <hr class="hr-custom">
+    
+    <div class="chemicalname border border-dark p-3 mb-3">
+        <h4 class="d-inline-block position-relative">IUPAC NAME:
+            <span class="underline"></span>
+        </h4>
+        <p>tert-butyl N-[(2R)-4-oxo-4-[3-(trifluoromethyl)-6,8-dihydro-5H-<br>
+            [1,2,4]triazolo[4,3-a]pyrazin-7-yl]-1-(2,4,5-trifluorophenyl)butan-2-yl]carbamate</p>
+    </div>
+
+    <div class="chemicalname border border-dark p-3 mb-3">
+        <h4 class="d-inline-block position-relative">MOLECULAR FORMULA:
+            <span class="underline"></span>
+        </h4>
+        <p>Molecular Formula: C21H23F6N503</p>
+    </div>
+    
+    <div class="chemicalname border border-dark p-3 mb-3">
+        <h4 class="d-inline-block position-relative">FORMULA WEIGHT:
+            <span class="underline"></span>
+        </h4>
+        <p>507.4 g/mol</p>
+    </div>
+
+    <div class="chemicalname border border-dark p-3 mb-3">
+        <h4 class="d-inline-block position-relative">CAS RN:
+            <span class="underline"></span>
+        </h4>
+        <p>CAS: 486460-23-5 </p>
+    </div>
+
+    <div class="chemicalname border border-dark p-3 mb-3">
+        <h4 class="d-inline-block position-relative">SYNONYMS / COMMON NAME
+            <span class="underline"></span>
+        </h4>
+        <p>
+            Synonyms: N-[(1R)-3-[5,6-Dihydro-3-(trifluoromethyl)-1,2,4-triazolo[4,3-a]pyrazin-7(8H)-yl]-3-oxo-1-[(2,4,5-trifluorophenyl)methyl]propyl]carbamic acid 1,1-dimethylethyl ester<br>
+Depositor-Supplied Synonyms: 1.N-Boc-Sitagliptin<br>
+2.486460-23-5<br>
+3.(R)-tert-Butyl (4-oxo-4-(3-(trifluoromethyl)-5,6-dihydro-[1,2,4]triazolo[4,3-a]pyrazin-7(8H)-yl)-1-(2,4,5-trifluorophenyl)butan-2-yl)carbamate<br>
+4.Sitagliptin N-Boc Impurity<br>
+5.SCHEMBL1509255<br>
+6.CTK4J0930<br>
+7.DTXSID20676589<br>
+8.tert-butyl N-[(2R)-4-oxo-4-[3-(trifluoromethyl)-6,8-dihydro-5H-[1,2,4]triazolo[4,3-a]pyrazin-7-yl]-1-(2,4,5-trifluorophenyl)butan-2-yl]carbamate<br>
+9.J3.498.939G<br>
+10.(R)-[3-OXO-1-(2,4,5-TRIFLUORO-BENZYL)-3-(3-TRIFLUOROMETHYL-5,6-DIHYDRO-8H-[1,2,4]TRIAZOLO[4,3-A]PYRAZIN-7-YL)-PROPYL]-CARBAMIC ACID TERT-BUTYL ESTER<br>
+11.(R)-tert-butyl4-oxo-4-(3-(trifluoromethyl)-5,6-dihydro-[1,2,4]-triazolo[4,3-a]pyrazin-7(8H)-yl)-1-(2,4,5-trifluorophenyl)butan-2-yl-carbamate<br>
+12.7-[(3R)-3-[(1,1-Dimethylethoxycarbonyl)amino]-4-(2,4,5-trifluorophenyl)-butanoyl]-3-(trifluoromethyl)-5,6,7,8-tetrahydro-1,2,4-triazolo[4,3-a]pyrazine<br>
+13.7-[(3R)-3-[(1,1-Dimethylethoxycarbonyl)amino]-4-(2,4,5-trifluorophenyl)butanoyl]-3-(trifluoromethyl)-5,6,7,8-tetrahydro-1,2,4-triazolo[4,3-a]pyrazine<br>
+14.7-[(3R)-3-[N-(tert-butoxycarbonyl)amino]-4-(2,4,5-trifluorophenyl)-butanoyl]-3-(trifluoromethyl)-5,6,7,8-tetrahydro-1,2,4-triazolo[4,3-a]pyrazine<br>
+15.7-[(3R)-3-[N-(tert-butoxycarbonyl)amino]-4-(2,4,5-trifluorophenyl)butanoyl]-3-(trifluoro-methyl)-5,6,7,8-tetrahydro-1,2,4-triazolo[4,3-a]pyrazine<br>
+16.tert-butyl (R)-4-(3-(trifluoromethyl)-5,6-dihydro-[1,2,4]triazolo[4,3-a]pyrazin-7(8H)-yl)-1-(2,4,5-trifluorophenyl)-4-oxobutan-2-yl-carbamate<br>
+17.tert-Butyl [(2R)-4-oxo-4-[3-(trifluoromethyl)-5,6-dihydro[1,2,4]triazolo[4,3-a]pyrazin-7(8H)-yl]-1-(2,4,5-trifluorophenyl)butan-2-yl]carbamate<br>
+CAS: 486460-23-5<br>    
+</p>
+</div>
+
+<div class="chemicalname border border-dark p-3 mb-3">
+    <h4 class="d-inline-block position-relative">PUBCHEM ID
+        <span class="underline"></span>
+    </h4>
+    <p>46836576</p>
+</div>
+<div class="chemicalname border border-dark p-3 mb-3">
+    <h4 class="d-inline-block position-relative">COMMENTRY
+        <span class="underline"></span>
+    </h4>
+   
+</div>
+
+<div class="chemicalname border border-dark p-3 mb-3">
+    <h4 class="d-inline-block position-relative">NOTES
+        <span class="underline"></span>
+    </h4>
+    
+</div>
+
+<div class="chemicalname border border-dark p-3 mb-3">
+    <h4 class="d-inline-block position-relative">REMARKS
+        <span class="underline"></span>
+    </h4>
+   
+</div>
+
+<div class="chemicalname border border-dark p-3 mb-3">
+    <h4 class="d-inline-block position-relative">LITERATURE REFRENCE
+        <span class="underline"></span>
+    </h4>
+   
+</div>
+
+<div class="chemicalname border border-dark p-3 mb-3">
+    <h4 class="d-inline-block position-relative">INFORMATION SOURCE
+        <span class="underline"></span>
+    </h4>
+   
+</div>
+
+<div class="chemicalname border border-dark p-3 mb-3">
+    <h4 class="d-inline-block position-relative">STRUCTURE ELUCIDATION REPORT(SER)
+        <span class="underline"></span>
+    </h4>
+   
+</div>
+
+<div class="chemicalname border border-dark p-3 mb-3">
+    <h4 class="d-inline-block position-relative">CIRTIFICATE OF ANALYSIS(COA)
+        <span class="underline"></span>
+    </h4>
+  
+</div>
+
+
+
+<div class="chemicalname border border-dark p-3 mb-3">
+    <h4 class="d-inline-block position-relative">PDF(MULTIPLE PDF)
+        <span class="underline"></span>
+    </h4>
+   
+</div>
+<div class="chemicalname border border-dark p-3 mb-3">
+    <h4 class="d-inline-block position-relative">Techinal Routes Registration Number(TRRN)
+        <span class="underline"></span>
+    </h4>
+   
+</div>
+
+</div>
+
+<!-- ===============2nd================ -->
+ 
+<div class="card-body">
+    <div class="pb-3 mb-3 px-2 rounded-lg border border-dark">
+        <div class="d-flex align-items-start">
+            <div class="me-3">
+                <img src="assets/components/Merck.png" class="image1" style="max-width: 150px; height: auto;">
+            </div>
+
+            <div class="flex-grow-1">
+                <h3 style="font-size: 30px; font-weight: bold; padding-bottom: 15px;">
+                    <span style="color: blue;">2.</span>Name: Sitagliptin Diaxo Impurity(Base)
+                </h3>
+
+                <div class="row">
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+                        <h5>GBRN:</h5>
+                        <p>10313</p>
+
+                        <h5>CAS RN:</h5>
+                        <p>CAS: 764667-64-3</p>
+
+                        <h5>OUBCHEM ID:</h5>
+                        <p>54711477</p>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                        <h5>IMPURITY NAME:</h5>
+                        <p>Sitagliptin Diaxo Impurity(Base)</p>
+
+                        <h5>CATEGORY:</h5>
+                        <p>Impurity Standards</p>
+
+                        <h5>CHEMICAL CLASS:</h5>
+                        <p></p>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                        <h5>MOLECULAR FORMULA:</h5>
+                        <p>Molecular Formula: C14H11F305</p>
+
+                        <h5>FORMULA WEIGHT:</h5>
+                        <p>316.23 g/mol</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12">
+                        <h5>IUPAC:</h5>
+                        <p>5-[1-hydroxy-2-(2,4,5-trifluorophenyl)ethylidene]-2,2-dimethyl-1,3-dioxane-4,6-dione
+
+                        </p>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12">
+                        <h5>CHEMICAL NAME:</h5>
+                        <p>5-[1-Hydroxy-2-(2,4,5-trifluorophenyl)ethylidene]-2,2-dimethyl-1,3-dioxane-4,6-dione
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="more">
+    <div class="textmore">
+        <button class="btn1" (click)="toggleDropdown2()">
+            {{ isDropdownVisible2 ? 'LESS INFO' : 'MORE INFO' }} 
+            <i class="fa-solid" [ngClass]="{'fa-arrow-up': isDropdownVisible2, 'fa-arrow-down': !isDropdownVisible2}"></i>
+            </button>
+    </div>  
+</div>
+<div *ngIf="isDropdownVisible2" class="dropdown-content border p-3">
+
+    <h4 style="color: #95880F; font-size: 25px;">Description</h4>
+    <hr class="hr-custom">
+
+    <div class="chemicalname border border-dark p-3 mb-3">
+        <h4 class="d-inline-block position-relative">CHEMICAL NAME:
+            <span class="underline"></span>
+        </h4>
+        <p>5-[1-Hydroxy-2-(2,4,5-trifluorophenyl)ethylidene]-2,2-dimethyl-1,3-dioxane-4,6-dione
+        </p>
+    </div>
+    
+    <h4 style="color: #95880F; font-size: 25px;">Names and Identifiers</h4>
+    <hr class="hr-custom">
+    
+    <div class="chemicalname border border-dark p-3 mb-3">
+        <h4 class="d-inline-block position-relative">IUPAC NAME:
+            <span class="underline"></span>
+        </h4>
+        <p>5-[1-Hydroxy-2-(2,4,5-trifluorophenyl)ethylidene]-2,2-dimethyl-1,3-dioxane-4,6-dione</p>
+    </div>
+
+    <div class="chemicalname border border-dark p-3 mb-3">
+        <h4 class="d-inline-block position-relative">MOLECULAR FORMULA:
+            <span class="underline"></span>
+        </h4>
+        <p>Molecular Formula: C14</p>
+    </div>
+    
+    <div class="chemicalname border border-dark p-3 mb-3">
+        <h4 class="d-inline-block position-relative">FORMULA WEIGHT:
+            <span class="underline"></span>
+        </h4>
+        <p>507.4 g/mol</p>
+    </div>
+
+    <div class="chemicalname border border-dark p-3 mb-3">
+        <h4 class="d-inline-block position-relative">CAS RN:
+            <span class="underline"></span>
+        </h4>
+        <p>CAS: 486460-23-5 </p>
+    </div>
+
+    <div class="chemicalname border border-dark p-3 mb-3">
+        <h4 class="d-inline-block position-relative">SYNONYMS / COMMON NAME
+            <span class="underline"></span>
+        </h4>
+        <p>
+            Synonyms: N-[(1R)-3-[5,6-Dihydro-3-(trifluoromethyl)-1,2,4-triazolo[4,3-a]pyrazin-7(8H)-yl]-3-oxo-1-[(2,4,5-trifluorophenyl)methyl]propyl]carbamic acid 1,1-dimethylethyl ester<br>
+Depositor-Supplied Synonyms: 1.N-Boc-Sitagliptin<br>
+2.486460-23-5<br>
+3.(R)-tert-Butyl (4-oxo-4-(3-(trifluoromethyl)-5,6-dihydro-[1,2,4]triazolo[4,3-a]pyrazin-7(8H)-yl)-1-(2,4,5-trifluorophenyl)butan-2-yl)carbamate<br>
+4.Sitagliptin N-Boc Impurity<br>
+5.SCHEMBL1509255<br>
+6.CTK4J0930<br>
+7.DTXSID20676589<br>
+8.tert-butyl N-[(2R)-4-oxo-4-[3-(trifluoromethyl)-6,8-dihydro-5H-[1,2,4]triazolo[4,3-a]pyrazin-7-yl]-1-(2,4,5-trifluorophenyl)butan-2-yl]carbamate<br>
+9.J3.498.939G<br>
+10.(R)-[3-OXO-1-(2,4,5-TRIFLUORO-BENZYL)-3-(3-TRIFLUOROMETHYL-5,6-DIHYDRO-8H-[1,2,4]TRIAZOLO[4,3-A]PYRAZIN-7-YL)-PROPYL]-CARBAMIC ACID TERT-BUTYL ESTER<br>
+11.(R)-tert-butyl4-oxo-4-(3-(trifluoromethyl)-5,6-dihydro-[1,2,4]-triazolo[4,3-a]pyrazin-7(8H)-yl)-1-(2,4,5-trifluorophenyl)butan-2-yl-carbamate<br>
+12.7-[(3R)-3-[(1,1-Dimethylethoxycarbonyl)amino]-4-(2,4,5-trifluorophenyl)-butanoyl]-3-(trifluoromethyl)-5,6,7,8-tetrahydro-1,2,4-triazolo[4,3-a]pyrazine<br>
+13.7-[(3R)-3-[(1,1-Dimethylethoxycarbonyl)amino]-4-(2,4,5-trifluorophenyl)butanoyl]-3-(trifluoromethyl)-5,6,7,8-tetrahydro-1,2,4-triazolo[4,3-a]pyrazine<br>
+14.7-[(3R)-3-[N-(tert-butoxycarbonyl)amino]-4-(2,4,5-trifluorophenyl)-butanoyl]-3-(trifluoromethyl)-5,6,7,8-tetrahydro-1,2,4-triazolo[4,3-a]pyrazine<br>
+15.7-[(3R)-3-[N-(tert-butoxycarbonyl)amino]-4-(2,4,5-trifluorophenyl)butanoyl]-3-(trifluoro-methyl)-5,6,7,8-tetrahydro-1,2,4-triazolo[4,3-a]pyrazine<br>
+16.tert-butyl (R)-4-(3-(trifluoromethyl)-5,6-dihydro-[1,2,4]triazolo[4,3-a]pyrazin-7(8H)-yl)-1-(2,4,5-trifluorophenyl)-4-oxobutan-2-yl-carbamate<br>
+17.tert-Butyl [(2R)-4-oxo-4-[3-(trifluoromethyl)-5,6-dihydro[1,2,4]triazolo[4,3-a]pyrazin-7(8H)-yl]-1-(2,4,5-trifluorophenyl)butan-2-yl]carbamate<br>
+CAS: 486460-23-5<br>    
+</p>
+</div>
+
+<div class="chemicalname border border-dark p-3 mb-3">
+    <h4 class="d-inline-block position-relative">PUBCHEM ID
+        <span class="underline"></span>
+    </h4>
+    <p>46836576</p>
+</div>
+<div class="chemicalname border border-dark p-3 mb-3">
+    <h4 class="d-inline-block position-relative">COMMENTRY
+        <span class="underline"></span>
+    </h4>
+   
+</div>
+
+<div class="chemicalname border border-dark p-3 mb-3">
+    <h4 class="d-inline-block position-relative">NOTES
+        <span class="underline"></span>
+    </h4>
+    
+</div>
+
+<div class="chemicalname border border-dark p-3 mb-3">
+    <h4 class="d-inline-block position-relative">REMARKS
+        <span class="underline"></span>
+    </h4>
+   
+</div>
+
+<div class="chemicalname border border-dark p-3 mb-3">
+    <h4 class="d-inline-block position-relative">LITERATURE REFRENCE
+        <span class="underline"></span>
+    </h4>
+   
+</div>
+
+<div class="chemicalname border border-dark p-3 mb-3">
+    <h4 class="d-inline-block position-relative">INFORMATION SOURCE
+        <span class="underline"></span>
+    </h4>
+   
+</div>
+
+<div class="chemicalname border border-dark p-3 mb-3">
+    <h4 class="d-inline-block position-relative">STRUCTURE ELUCIDATION REPORT(SER)
+        <span class="underline"></span>
+    </h4>
+   
+</div>
+
+<div class="chemicalname border border-dark p-3 mb-3">
+    <h4 class="d-inline-block position-relative">CIRTIFICATE OF ANALYSIS(COA)
+        <span class="underline"></span>
+    </h4>
+  
+</div>
+
+
+
+<div class="chemicalname border border-dark p-3 mb-3">
+    <h4 class="d-inline-block position-relative">PDF(MULTIPLE PDF)
+        <span class="underline"></span>
+    </h4>
+   
+</div>
+<div class="chemicalname border border-dark p-3 mb-3">
+    <h4 class="d-inline-block position-relative">Techinal Routes Registration Number(TRRN)
+        <span class="underline"></span>
+    </h4>
+   
+</div>
+
+
+
+
+</div>
+
