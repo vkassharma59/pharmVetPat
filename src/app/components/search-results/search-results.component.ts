@@ -233,7 +233,7 @@ export class SearchResultsComponent {
         this.mainSearchService.technicalRoutesSearchSpecific(body).subscribe({
           next: (result: any) => {              
             if(result?.data?.ros_data.length > 0) {
-              this.allDataSets[resultTabData.index][this.resultTabs.technicalRoutes.name] = result?.data?.ros_data[0];
+              this.allDataSets[resultTabData.index][this.resultTabs.technicalRoutes.name] = result?.data?.ros_data;
             }      
             this.setLoadingState.emit(false);
           },
@@ -276,7 +276,7 @@ export class SearchResultsComponent {
         this.mainSearchService.basicProductSearchSpecific(body).subscribe({
           next: (result: any) => {     
             if(result?.data?.basic_product_data.length > 0) {
-              this.allDataSets[resultTabData.index][this.resultTabs.productInfo.name] = result?.data?.basic_product_data[0];
+              this.allDataSets[resultTabData.index][this.resultTabs.productInfo.name] = result?.data?.basic_product_data;
             }      
             this.setLoadingState.emit(false);
           },
@@ -321,7 +321,7 @@ export class SearchResultsComponent {
         this.mainSearchService.chemicalDirectorySearchSpecific(body).subscribe({
           next: (result: any) => {     
             if(result?.data?.chem_dir_data.length > 0) {
-              this.allDataSets[resultTabData.index][this.resultTabs.chemicalDirectory.name] = result?.data?.chem_dir_data[0];
+              this.allDataSets[resultTabData.index][this.resultTabs.chemicalDirectory.name] = result?.data?.chem_dir_data;
             }      
             this.setLoadingState.emit(false);
           },
@@ -364,7 +364,7 @@ export class SearchResultsComponent {
         this.mainSearchService.impuritySearchSpecific(body).subscribe({
           next: (result: any) => {     
             if(result?.data?.impurity_data.length > 0) {
-              this.allDataSets[resultTabData.index][this.resultTabs.impurity.name] = result?.data?.impurity_data[0];
+              this.allDataSets[resultTabData.index][this.resultTabs.impurity.name] = result?.data?.impurity_data;
             }      
             this.setLoadingState.emit(false);
           },
@@ -407,7 +407,7 @@ export class SearchResultsComponent {
         this.mainSearchService.chemiTrackerSearchSpecific(body).subscribe({
           next: (result: any) => {     
             if(result?.data?.chemi_tracker_data.length > 0) {
-              this.allDataSets[resultTabData.index][this.resultTabs.chemiTracker.name] = result?.data?.chemi_tracker_data[0];
+              this.allDataSets[resultTabData.index][this.resultTabs.chemiTracker.name] = result?.data?.chemi_tracker_data;
             }      
             this.setLoadingState.emit(false);
           },

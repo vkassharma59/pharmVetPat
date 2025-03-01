@@ -25,7 +25,7 @@
     <!-- Main Content Section -->
     <div class="card mt-3" [ngSwitch]="currentTabData?.name">
       <ng-container *ngSwitchCase="'productInfo'">
-        <chem-product-info [data]="dataItem.productInfo"></chem-product-info>
+        <chem-product-info [data]="dataItem.productInfo"></chem-product-info>     
       </ng-container>
 
       <ng-container *ngSwitchCase="'technicalRoutes'">
@@ -33,24 +33,20 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="'chemicalDirectory'">
-        <chemical-directory-card [data]="dataItem.chemicalDirectory"></chemical-directory-card>
+        <chemical-directory [data]="dataItem.chemicalDirectory"></chemical-directory>
       </ng-container>
 
       <ng-container *ngSwitchCase="'impurity'">
-        <chem-impurity-card [data]="dataItem.impurity"></chem-impurity-card>
+        <chem-impurity [data]="dataItem.impurity"></chem-impurity>
       </ng-container>
 
       <ng-container *ngSwitchCase="'chemiTracker'">
-        <chem-chemi-tracker-card [data]="dataItem.chemiTracker"></chem-chemi-tracker-card>
-      </ng-container>
-
-      <ng-container *ngSwitchCase="'dmfSuppliers'">
-        <chem-dmf-or-suplier></chem-dmf-or-suplier>
+        <chem-chemi-tracker [data]="dataItem.chemiTracker"></chem-chemi-tracker>
       </ng-container>
 
       <ng-container *ngSwitchDefault>
-        <div class="card-header text-white bg-danger">Invalid Tab!</div>
-        <div class="card-body">Please select a valid tab from the options above.</div>
+        <div class="card-header text-white bg-primary">Comming Soon..</div>
+        <div class="card-body">We are wokring on this tab, Please come back later.</div>
       </ng-container>
     </div>
   </div>

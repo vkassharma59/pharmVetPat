@@ -81,7 +81,7 @@ export class HomeComponent implements OnInit {
           // Remove extra keys from allDataSets beyond the length
           this.allDataSets = this.allDataSets.slice(0, this.searchData?.basic_product_data?.length);
           for (let i = 0; i < this.searchData?.basic_product_data?.length; i++) {
-            this.allDataSets[i][this.resultTabs.productInfo.name] =
+            this.allDataSets[i][this.resultTabs.productInfo.name][0] =
               this.searchData?.basic_product_data[i];
           }
         }
@@ -96,7 +96,7 @@ export class HomeComponent implements OnInit {
           // Remove extra keys from allDataSets beyond the length
           this.allDataSets = this.allDataSets.slice(0, this.searchData?.ros_data?.length);
           for (let i = 0; i < this.searchData?.ros_data?.length; i++) {
-            this.allDataSets[i][this.resultTabs.technicalRoutes.name] =
+            this.allDataSets[i][this.resultTabs.technicalRoutes.name][0] =
               this.searchData?.ros_data[i];
           }
         }
@@ -111,15 +111,12 @@ export class HomeComponent implements OnInit {
           // Remove extra keys from allDataSets beyond the length
           this.allDataSets = this.allDataSets.slice(0, this.searchData?.chem_dir_data?.length);
           for (let i = 0; i < this.searchData?.chem_dir_data?.length; i++) {
-            this.allDataSets[i][this.resultTabs.chemicalDirectory.name] =
+            this.allDataSets[i][this.resultTabs.chemicalDirectory.name][0] =
               this.searchData?.chem_dir_data[i];
           }
         }
         break;
     }
-
-    console.log(this.allDataSets);
-    console.log(this.searchData);
   }
 
   handleShowResult(data: any) {

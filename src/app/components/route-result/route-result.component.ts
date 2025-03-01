@@ -2,19 +2,18 @@ import { Component, EventEmitter, Input, input, Output } from '@angular/core';
 import { searchTypes, UtilityService } from '../../services/utility-service/utility.service';
 import { JsonPipe, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { RouteTabsComponent } from '../route-tabs/route-tabs.component';
-import { BasicRouteCardComponent } from '../results-common/basic-route-card/basic-route-card.component';
-import { TechnicalRoutesCardComponent } from '../results-common/technical-routes-card/technical-routes-card.component';
-import { ChemicalDirectoryDataCardComponent } from '../results-common/chemical-directory-card/chemical-directory-data-card.component';
-import { DmfOrSuplierComponent } from '../results-common/dmf-or-suplier/dmf-or-suplier.component';
 import { UserPriviledgeService } from '../../services/user_priviledges/user-priviledge.service';
-import { ImpurityCardComponent } from '../results-common/impurity-card/impurity-card.component';
-import { ChemiTrackerCardComponent } from '../results-common/chemi-tracker-card/chemi-tracker-card.component';
 import { Auth_operations } from '../../Utils/SetToken';
+import { BasicRouteComponent } from '../results-common/basic-route/basic-route.component';
+import { TechnicalRoutesComponent } from '../results-common/technical-routes/technical-routes.component';
+import { ImpurityComponent } from '../results-common/impurity/impurity.component';
+import { ChemiTrackerComponent } from '../results-common/chemi-tracker/chemi-tracker.component';
+import { ChemicalDirectoryComponent } from '../results-common/chemical-directory/chemical-directory.component';
 
 @Component({
   selector: 'chem-route-results',
   standalone: true,
-  imports: [NgIf, RouteTabsComponent, ImpurityCardComponent, ChemiTrackerCardComponent, BasicRouteCardComponent, TechnicalRoutesCardComponent,DmfOrSuplierComponent, ChemicalDirectoryDataCardComponent, NgSwitch, NgSwitchCase, NgSwitchDefault, JsonPipe],
+  imports: [NgIf, RouteTabsComponent, ImpurityComponent, ChemiTrackerComponent, BasicRouteComponent, TechnicalRoutesComponent, ChemicalDirectoryComponent, NgSwitch, NgSwitchCase, NgSwitchDefault, JsonPipe],
   templateUrl: './route-result.component.html',
   styleUrl: './route-result.component.css'
 })
@@ -57,33 +56,33 @@ export class RouteResultComponent {
       case searchTypes.chemicalStructure:
         if(data.name === this.resultTabWithKeys.technicalRoutes.name) {
           searchWith = 'TRRN';
-          searchWithValue = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name].trrn;
+          searchWithValue = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name][0].trrn;
         } else {
           searchWith = 'GBRN';
-          searchWithValue = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name].gbrn;
+          searchWithValue = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name][0].gbrn;
         }
         break;
       case searchTypes.synthesisSearch:
         if(data.name === this.resultTabWithKeys.chemicalDirectory.name) {
           searchWith = 'TRRN';
-          searchWithValue = this.dataItem[this.resultTabWithKeys.technicalRoutes.name].trrn;
+          searchWithValue = this.dataItem[this.resultTabWithKeys.technicalRoutes.name][0].trrn;
         } else {
           searchWith = 'GBRN';
-          searchWithValue = this.dataItem[this.resultTabWithKeys.technicalRoutes.name].gbrn;
+          searchWithValue = this.dataItem[this.resultTabWithKeys.technicalRoutes.name][0].gbrn;
         }
         break;        
       case searchTypes.intermediateSearch:
           if(data.name === this.resultTabWithKeys.technicalRoutes.name) {
             searchWith = 'TRRN';
-            searchWithValue = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name].trrn;
+            searchWithValue = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name][0].trrn;
           } else {
             searchWith = 'GBRN';
-            searchWithValue = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name].gbrn;
+            searchWithValue = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name][0].gbrn;
           }
           break;
       case (searchTypes.simpleSearch || searchTypes.advanceSearch):
         searchWith = 'GBRN';
-        searchWithValue = this.dataItem[this.resultTabWithKeys.productInfo.name].gbrn;
+        searchWithValue = this.dataItem[this.resultTabWithKeys.productInfo.name][0].gbrn;
         break;
       default:
         console.log('No search type selected');

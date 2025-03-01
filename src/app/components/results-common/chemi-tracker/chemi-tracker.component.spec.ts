@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DmfOrSuplierComponent } from './dmf-or-suplier.component';
+import { ChemiTrackerComponent } from './chemi-tracker.component';
 
-describe('DmfOrSuplierComponent', () => {
-  let component: DmfOrSuplierComponent;
-  let fixture: ComponentFixture<DmfOrSuplierComponent>;
+describe('ChemiTrackerComponent', () => {
+  let component: ChemiTrackerComponent;
+  let fixture: ComponentFixture<ChemiTrackerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DmfOrSuplierComponent]
+      imports: [ChemiTrackerComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(DmfOrSuplierComponent);
+    fixture = TestBed.createComponent(ChemiTrackerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
