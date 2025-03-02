@@ -77,6 +77,10 @@
         <chem-litigation></chem-litigation>
       </ng-container>
 
+      <ng-container *ngSwitchCase="'activePatent'">
+        <chem-active-patent></chem-active-patent>
+      </ng-container>
+      
 
       <ng-container *ngSwitchCase="'impPatents'">
         <chem-imp></chem-imp>

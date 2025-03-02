@@ -110,10 +110,10 @@ button[color="warn"] {
   color: white;
 }
 
-/* Force sorting icon to always be visible */
-.mat-sort-header-arrow {
-  opacity: 1 !important;
-  transform: scale(1) !important;
-  display: inline-block !important;
-  visibility: visible !important;
+
+
+::ng-deep .mat-sort-header-arrow {
+  opacity: 1 !important;  /* Always show sorting icon */
+  transform: none !important;
 }
+
