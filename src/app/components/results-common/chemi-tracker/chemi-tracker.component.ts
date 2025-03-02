@@ -1,19 +1,20 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { ImpurityCardComponent } from '../impurity-card/impurity-card.component';
+import { ChemiTrackerCardComponent } from '../chemi-tracker-card/chemi-tracker-card.component';
+import { CommonModule } from '@angular/common';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 
 @Component({
-  selector: 'chem-impurity',
+  selector: 'chem-chemi-tracker',
   standalone: true,
-  imports: [CommonModule, ImpurityCardComponent],
-  templateUrl: './impurity.component.html',
-  styleUrl: './impurity.component.css'
+  imports: [ChemiTrackerCardComponent, CommonModule],
+  templateUrl: './chemi-tracker.component.html',
+  styleUrl: './chemi-tracker.component.css'
 })
-export class ImpurityComponent {
-
-  resultTabs: any = {};
+export class ChemiTrackerComponent {
+  
+  resultTabs: any = {}; 
   _data: any = [];
+  
   @Input()
   get data() {
     return this._data;

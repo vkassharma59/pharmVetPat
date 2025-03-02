@@ -1,5 +1,5 @@
 <div class="card-header text-white bg-primary">
-  chemRobotics™ Basic Product Info >> {{_data?.ACTIVE_INGREDIENT}}
+  {{resultTabs?.productInfo?.label}} >> {{_data?.ACTIVE_INGREDIENT}}
 </div>
 <div class="card-body">
   <div class="pb-3 mb-3 px-2 rounded-lg" *ngIf="!isEmptyObject(_data); else noData">

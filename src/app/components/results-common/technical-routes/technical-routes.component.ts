@@ -1,16 +1,16 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { ImpurityCardComponent } from '../impurity-card/impurity-card.component';
+import { TechnicalRoutesCardComponent } from '../technical-routes-card/technical-routes-card.component';
+import { CommonModule } from '@angular/common';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 
 @Component({
-  selector: 'chem-impurity',
+  selector: 'chem-technical-route',
   standalone: true,
-  imports: [CommonModule, ImpurityCardComponent],
-  templateUrl: './impurity.component.html',
-  styleUrl: './impurity.component.css'
+  imports: [TechnicalRoutesCardComponent, CommonModule],
+  templateUrl: './technical-routes.component.html',
+  styleUrl: './technical-routes.component.css'
 })
-export class ImpurityComponent {
+export class TechnicalRoutesComponent {
 
   resultTabs: any = {};
   _data: any = [];

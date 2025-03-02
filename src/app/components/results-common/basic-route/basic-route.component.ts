@@ -1,16 +1,17 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { ImpurityCardComponent } from '../impurity-card/impurity-card.component';
+import { BasicRouteCardComponent } from '../basic-route-card/basic-route-card.component';
+import { CommonModule } from '@angular/common';
 import { UtilityService } from '../../../services/utility-service/utility.service';
+import { Auth_operations } from '../../../Utils/SetToken';
 
 @Component({
-  selector: 'chem-impurity',
+  selector: 'chem-product-info',
   standalone: true,
-  imports: [CommonModule, ImpurityCardComponent],
-  templateUrl: './impurity.component.html',
-  styleUrl: './impurity.component.css'
+  imports: [CommonModule, BasicRouteCardComponent],
+  templateUrl: './basic-route.component.html',
+  styleUrl: './basic-route.component.css'
 })
-export class ImpurityComponent {
+export class BasicRouteComponent {
 
   resultTabs: any = {};
   _data: any = [];

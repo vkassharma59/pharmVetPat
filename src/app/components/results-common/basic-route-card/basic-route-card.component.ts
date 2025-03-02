@@ -9,7 +9,7 @@ import { ChemDiscriptionViewModelComponent } from '../../../commons/chem-discrip
 import { UtilityService } from '../../../services/utility-service/utility.service';
 
 @Component({
-  selector: 'chem-product-info',
+  selector: 'chem-product-info-card',
   standalone: true,
   imports: [
     CommonModule,

@@ -1,16 +1,16 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { ImpurityCardComponent } from '../impurity-card/impurity-card.component';
+import { ChemicalDirectoryDataCardComponent } from '../chemical-directory-card/chemical-directory-data-card.component';
+import { CommonModule } from '@angular/common';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 
 @Component({
-  selector: 'chem-impurity',
+  selector: 'chemical-directory',
   standalone: true,
-  imports: [CommonModule, ImpurityCardComponent],
-  templateUrl: './impurity.component.html',
-  styleUrl: './impurity.component.css'
+  imports: [ChemicalDirectoryDataCardComponent, CommonModule],
+  templateUrl: './chemical-directory.component.html',
+  styleUrl: './chemical-directory.component.css'
 })
-export class ImpurityComponent {
+export class ChemicalDirectoryComponent {
 
   resultTabs: any = {};
   _data: any = [];

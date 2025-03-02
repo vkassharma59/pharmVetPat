@@ -66,7 +66,7 @@ export class UtilityService {
     const statesCount = 25;
     return Array.from({ length: statesCount }, () =>
       RESULT_TABS.reduce<Record<string, any>>((acc, tab) => {
-        acc[tab.name] = {};
+        acc[tab.name] = [];
         return acc;
       }, {})
     );

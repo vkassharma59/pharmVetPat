@@ -1,5 +1,5 @@
 <div class="card-header text-white bg-primary">
-    Impurity >> {{_data?.name}}
+  {{resultTabs?.impurity?.label}} >> {{_data?.name}}
 </div>
 <div class="card-body" *ngIf="!isEmptyObject(_data); else noData">
     <div>

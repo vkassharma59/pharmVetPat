@@ -8,7 +8,7 @@ import { ChemDiscriptionViewModelComponent } from '../../../commons/chem-discrip
 import { UtilityService } from '../../../services/utility-service/utility.service';
 
 @Component({
-  selector: 'chem-technical-route',
+  selector: 'chem-technical-route-card',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './technical-routes-card.component.html',
