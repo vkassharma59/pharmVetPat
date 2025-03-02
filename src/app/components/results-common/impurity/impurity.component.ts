@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ImpurityCardComponent } from '../impurity-card/impurity-card.component';
+import { UtilityService } from '../../../services/utility-service/utility.service';
 
 @Component({
   selector: 'chem-impurity',
@@ -11,12 +12,17 @@ import { ImpurityCardComponent } from '../impurity-card/impurity-card.component'
 })
 export class ImpurityComponent {
 
-    _data: any = [];
-    @Input()
-    get data() {
-      return this._data;
-    }
-    set data(value: any) {
-      this._data = value;
-    }
+  resultTabs: any = {};
+  _data: any = [];
+  @Input()
+  get data() {
+    return this._data;
+  }
+  set data(value: any) {
+    this._data = value;
+  }
+
+  constructor(private utilityService: UtilityService) {
+    this.resultTabs = this.utilityService.getAllTabsName();
+  }
 }

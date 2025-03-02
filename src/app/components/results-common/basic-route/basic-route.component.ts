@@ -13,12 +13,17 @@ import { Auth_operations } from '../../../Utils/SetToken';
 })
 export class BasicRouteComponent {
 
-    _data: any = [];
-    @Input()
-    get data() {
-      return this._data;
-    }
-    set data(value: any) {
-      this._data = value;
-    }
+  resultTabs: any = {};
+  _data: any = [];
+  @Input()
+  get data() {
+    return this._data;
+  }
+  set data(value: any) {
+    this._data = value;
+  }
+
+  constructor(private utilityService: UtilityService) {
+    this.resultTabs = this.utilityService.getAllTabsName();
+  }
 }
