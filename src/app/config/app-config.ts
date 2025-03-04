@@ -46,6 +46,10 @@ export const AppConfigValues: AppConfig = {
         searchSpecific: `${appUrl.apiUrl}/impurity/search-specific`,
         columnList: `${appUrl.apiUrl}/impurity/column-list`,
       },
+      canadaApproval: {
+        searchSpecific: `${appUrl.apiUrl}/health-canada/search-specific`,
+        columnList: `${appUrl.apiUrl}/health-canada/column-list`,
+      },
       chemiTracker: {
         searchSpecific: `${appUrl.apiUrl}/chemi-tracker/search-specific`,
         columnList: `${appUrl.apiUrl}/chemi-tracker/column-list`,

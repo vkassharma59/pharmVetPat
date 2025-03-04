@@ -202,6 +202,13 @@ export class SearchResultsComponent {
           this.setLoadingState.emit(false);
         }     
         break;
+      case this.resultTabs?.canadaApproval.name:
+        if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.canadaApproval.name]).length === 0) {
+          this.performCanadaApprovalSearch(resultTabData);
+        } else {
+          this.setLoadingState.emit(false);
+        }     
+        break;
       default:
         this.setLoadingState.emit(false);
     }
@@ -408,6 +415,49 @@ export class SearchResultsComponent {
           next: (result: any) => {     
             if(result?.data?.chemi_tracker_data.length > 0) {
               this.allDataSets[resultTabData.index][this.resultTabs.chemiTracker.name] = result?.data?.chemi_tracker_data;
+            }      
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
+
+  private performCanadaApprovalSearch(resultTabData: any): void {
+
+    if(resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+      this.allDataSets[resultTabData.index][this.resultTabs.canadaApproval.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
+
+    const body = {
+      search_type: resultTabData?.searchWith,
+      keyword: resultTabData?.searchWithValue,
+      page_no: 1,
+      filter_enable: false,
+      filters: {},
+      order_by: '',
+    }
+  
+    const tech_API = this.apiUrls.canadaApproval.columnList;  
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.canadaApproval.name, response);
+  
+        this.mainSearchService.chemiTrackerSearchSpecific(body).subscribe({
+          next: (result: any) => {     
+            if(result?.data?.chemi_tracker_data.length > 0) {
+              this.allDataSets[resultTabData.index][this.resultTabs.canadaApproval.name] = result?.data?.chemi_tracker_data;
             }      
             this.setLoadingState.emit(false);
           },
