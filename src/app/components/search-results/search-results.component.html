@@ -1,7 +1,7 @@
 <app-loader *ngIf="loading"></app-loader>
 
 <ng-container *ngIf="allDataSets.length > 0; else noData">
-  <div *ngFor="let item of allDataSets; let i = index">
+  <div *ngFor="let item of allDataSets; let i = index">    
     <chem-route-results
       (backFunction)="handleBack()"
       [index]="i"
@@ -9,6 +9,7 @@
       [searchData]="searchData"
       (onResultTabChange)="onResultTabChange($event)"
     ></chem-route-results>
+     
   </div>
 </ng-container>
 

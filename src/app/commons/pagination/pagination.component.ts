@@ -7,12 +7,12 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from '../../../environment/environment';
+import { environment } from '../../../environments/environment';
 import { ServicePaginationService } from '../../services/pagination/service-pagination.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-pagination',
+  selector: 'chem-pagination',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './pagination.component.html',
@@ -145,7 +145,7 @@ export class PaginationComponent {
 
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
-    'api-key': environment.HEADER_API_KEY,
+    'api-key': environment.headerApiKey,
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
   });

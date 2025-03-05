@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { environment } from '../../../environment/environment';
+import { environment } from '../../../environments/environment';
 import { AppConfigValues } from '../../config/app-config';
 import { Auth_operations } from '../../Utils/SetToken';
 
@@ -21,7 +21,7 @@ export class ColumnListService {
 
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
-    'api-key': environment.HEADER_API_KEY,
+    'api-key': environment.headerApiKey,
     'access-token': this.auth_token,
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',

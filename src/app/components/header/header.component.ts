@@ -10,7 +10,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { DropdownModule } from 'primeng/dropdown';
 import { LoginService } from '../../services/LoginService/login.service';
-import { environment } from '../../../environment/environment';
 import { Auth_operations } from '../../Utils/SetToken';
 
 declare var google: any;
