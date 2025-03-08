@@ -19,6 +19,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./pagination.component.css'],
 })
 export class PaginationComponent {
+
   @Output() showDataResultFunction: EventEmitter<any> = new EventEmitter<any>();
   @Output() setLoading: EventEmitter<any> = new EventEmitter<any>();
   @Input() CurrentAPIBody: any;
@@ -29,6 +30,31 @@ export class PaginationComponent {
   PageArray = [1, 2, 3, 4, 5];
 
   ResultDataCount = 0;
+
+  ngOnInit(): void {
+    this.ResultDataCount = this.CurrentAPIBody.count;
+    this.PageArray = [];
+    for (
+      let i = 1;
+      i <= Math.min(Math.ceil(this.ResultDataCount / 25), 5);
+      i++
+    ) {
+      this.PageArray.push(i);
+    }
+
+    this.totalPageNumbers = this.ResultDataCount;
+    console.log(this.totalPageNumbers);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['paginationRerenderTrigger']) {
+      // console.log(
+      //   'Data changed:', 
+      //   changes['paginationRerenderTrigger'].currentValue
+      // );
+    }
+    this.handleChangeDataValues();
+  }
 
   handleFirstClick = () => {
     const pageCount = Math.ceil(this.ResultDataCount / 25);
@@ -83,14 +109,8 @@ export class PaginationComponent {
   };
 
   handleChangeDataValues() {
-    if (
-      this.CurrentAPIBody?.currentTab == 'active_ingredient' ||
-      this.CurrentAPIBody?.currentTab == 'intermediate_synthesis'
-    ) {
-      this.ResultDataCount = this.MainDataResultShow?.ros_count;
-    } else {
-      this.ResultDataCount = this.MainDataResultShow?.chem_dir_count;
-    }
+
+    this.ResultDataCount = this.CurrentAPIBody.count;
     this.PageArray = [];
     const pageCount = Math.ceil(this.ResultDataCount / 25);
     const currentPageindex = this.CurrentAPIBody?.body?.page_no;
@@ -108,36 +128,6 @@ export class PaginationComponent {
     // console.log(this.PageArray, this.CurrentAPIBody, this.MainDataResultShow);
   }
 
-  ngOnInit(): void {
-    if (
-      this.CurrentAPIBody?.currentTab == 'active_ingredient' ||
-      this.CurrentAPIBody?.currentTab == 'intermediate_synthesis'
-    ) {
-      this.ResultDataCount = this.MainDataResultShow?.ros_count;
-    } else {
-      this.ResultDataCount = this.MainDataResultShow?.chem_dir_count;
-    }
-    this.PageArray = [];
-    for (
-      let i = 1;
-      i <= Math.min(Math.ceil(this.ResultDataCount / 25), 5);
-      i++
-    ) {
-      this.PageArray.push(i);
-    }
-
-    this.totalPageNumbers = this.ResultDataCount;
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['paginationRerenderTrigger']) {
-      // console.log(
-      //   'Data changed:',
-      //   changes['paginationRerenderTrigger'].currentValue
-      // );
-    }
-    this.handleChangeDataValues();
-  }
   constructor(
     private http: HttpClient,
     private ServicePaginationService: ServicePaginationService
@@ -154,12 +144,13 @@ export class PaginationComponent {
     this.setLoading.emit(true);
     this.CurrentAPIBody.body.page_no = page;
     this.MainPageNo = page;
-    // console.log(this.CurrentAPIBody);
+    console.log(this.CurrentAPIBody);
 
     this.ServicePaginationService.getNextPaginationData(
       this.CurrentAPIBody
     ).subscribe({
       next: (res) => {
+        console.log(res?.data);
         this.showDataResultFunction.emit(res?.data);
         this.setLoading.emit(false);
         window.scroll({

@@ -25,11 +25,19 @@ export class RouteResultComponent {
   @Output() onResultTabChange: EventEmitter<any> = new EventEmitter<any>();
 
   @Input() index: number | undefined;
-  @Input() dataItem: any;
   @Input() searchData: any;
   resultTabs: any = [];
   resultTabWithKeys: any = [];
+  _dataItem: any = {};
 
+  @Input() 
+  get dataItem() {
+    return this._dataItem;
+  }
+  set dataItem(value: any) {
+    this._dataItem = value;
+  }
+  
   constructor(private utilityService: UtilityService,
     private userPriviledgeService: UserPriviledgeService
   ) {}

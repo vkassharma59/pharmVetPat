@@ -9,8 +9,13 @@
       [searchData]="searchData"
       (onResultTabChange)="onResultTabChange($event)"
     ></chem-route-results>
-     
   </div>
+  <chem-pagination 
+    (showDataResultFunction)="showDataResultFunction.emit($event)"
+    [CurrentAPIBody]="CurrentAPIBody"
+    [paginationRerenderTrigger]="paginationRerenderTrigger"
+    (setLoading)="handleLoadingState($event)"
+    ></chem-pagination>
 </ng-container>
 
 <ng-template #noData>

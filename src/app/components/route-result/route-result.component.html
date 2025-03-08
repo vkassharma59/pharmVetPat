@@ -25,23 +25,23 @@
     <!-- Main Content Section -->
     <div class="card mt-3" [ngSwitch]="currentTabData?.name">
       <ng-container *ngSwitchCase="'productInfo'">
-        <chem-product-info [data]="dataItem.productInfo"></chem-product-info>     
+        <chem-product-info [data]="_dataItem.productInfo"></chem-product-info>     
       </ng-container>
 
       <ng-container *ngSwitchCase="'technicalRoutes'">
-        <chem-technical-route [data]="dataItem.technicalRoutes"></chem-technical-route>
+        <chem-technical-route [data]="_dataItem.technicalRoutes"></chem-technical-route>
       </ng-container>
 
       <ng-container *ngSwitchCase="'chemicalDirectory'">
-        <chemical-directory [data]="dataItem.chemicalDirectory"></chemical-directory>
+        <chemical-directory [data]="_dataItem.chemicalDirectory"></chemical-directory>
       </ng-container>
 
       <ng-container *ngSwitchCase="'impurity'">
-        <chem-impurity [data]="dataItem.impurity"></chem-impurity>
+        <chem-impurity [data]="_dataItem.impurity"></chem-impurity>
       </ng-container>
 
       <ng-container *ngSwitchCase="'chemiTracker'">
-        <chem-chemi-tracker [data]="dataItem.chemiTracker"></chem-chemi-tracker>
+        <chem-chemi-tracker [data]="_dataItem.chemiTracker"></chem-chemi-tracker>
       </ng-container>
 
       <ng-container *ngSwitchDefault>

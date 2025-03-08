@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit {
   CurrentAPIBody = {
     body: {},
     page_no: 1,
+    count: 0,
     api_url: '',
     currentTab: '',
     actual_value: '',
@@ -41,6 +42,7 @@ export class HomeComponent implements OnInit {
     const auth = localStorage.getItem('auth');
     this.allDataSets = this.utilityService.getDataStates();
     this.resultTabs = this.utilityService.getAllTabsName();
+    this.CurrentAPIBody.count = 0;
     
     try {
       this.user = auth ? JSON.parse(auth) : null; // Safely parse only if `auth` exists
@@ -77,7 +79,7 @@ export class HomeComponent implements OnInit {
           this.searchData?.basic_product_data
         ) {
           this.utilityService.setActiveTab(this.resultTabs.productInfo.name);
-
+          this.CurrentAPIBody.count = this.searchData?.basic_product_count;
           // Remove extra keys from allDataSets beyond the length
           this.allDataSets = this.allDataSets.slice(0, this.searchData?.basic_product_data?.length);
           for (let i = 0; i < this.searchData?.basic_product_data?.length; i++) {
@@ -92,7 +94,7 @@ export class HomeComponent implements OnInit {
           this.searchData?.ros_data
         ) {
           this.utilityService.setActiveTab(this.resultTabs.technicalRoutes.name);
-
+          this.CurrentAPIBody.count = this.searchData?.ros_count;
           // Remove extra keys from allDataSets beyond the length
           this.allDataSets = this.allDataSets.slice(0, this.searchData?.ros_data?.length);
           for (let i = 0; i < this.searchData?.ros_data?.length; i++) {
@@ -107,12 +109,12 @@ export class HomeComponent implements OnInit {
           this.searchData?.chem_dir_data
         ) {
           this.utilityService.setActiveTab(this.resultTabs.chemicalDirectory.name);
-
+          this.CurrentAPIBody.count = this.searchData?.chem_dir_count;
           // Remove extra keys from allDataSets beyond the length
           this.allDataSets = this.allDataSets.slice(0, this.searchData?.chem_dir_data?.length);
           for (let i = 0; i < this.searchData?.chem_dir_data?.length; i++) {
             this.allDataSets[i][this.resultTabs.chemicalDirectory.name][0] =
-              this.searchData?.chem_dir_data[i];
+              this.searchData?.chem_dir_data[i];              
           }
         }
         break;

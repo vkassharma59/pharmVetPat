@@ -22,7 +22,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   criteria: string = ''; 
   userAuth: any = {}; 
   column: string = '';
-  apiUrl: string;
   searchTypes: any;
     
   chemicalStructure : any = { filter: ''}
@@ -55,8 +54,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     private mainSearchService: MainSearchService,
     private userPriviledgeService: UserPriviledgeService,
     private utilityService: UtilityService,
-    private columnListService: ColumnListService){
-      this.apiUrl =  this.apiUrls.basicProductInfo.simpleSearchResults;
+    private columnListService: ColumnListService){      
       this.searchTypes = searchTypes;
       this.advanceSearch.filterInputs = [
         { filter: '', keyword: '' }
@@ -436,6 +434,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       filter_enable: false,
       filters: {},
       order_by: '',
+      keyword: this.simpleSearch?.keyword
     };
   
     const tech_API = this.apiUrls.basicProductInfo.columnList;  
@@ -444,11 +443,11 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.productInfo.name, response);
   
-        this.mainSearchService.getSimpleSearchResults({ keyword: this.simpleSearch?.keyword, page_no: 1 }).subscribe({
+        this.mainSearchService.getSimpleSearchResults(body).subscribe({
           next: (res: any) => {
             this.showResultFunction.emit({
               body,
-              API_URL: this.apiUrl,
+              API_URL: this.apiUrls.basicProductInfo.simpleSearchResults,
               currentTab: this.resultTabs.productInfo.name,
               actual_value: '',
             });
@@ -518,7 +517,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
           next: (res: any) => {                     
             this.showResultFunction.emit({
               apiBody,
-              API_URL: this.apiUrl,
+              API_URL: this.apiUrls.basicProductInfo.simpleSearchResults,
               currentTab: this.resultTabs.productInfo.name, 
               actual_value: '',
             });
@@ -564,7 +563,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
           next: (res: any) => {                     
             this.showResultFunction.emit({
               body,
-              API_URL: this.apiUrl,
+              API_URL: this.apiUrls.technicalRoutes.synthesisSearch,
               currentTab: this.resultTabs.technicalRoutes.name, 
               actual_value: '',
             });
@@ -611,7 +610,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
           next: (res: any) => {                     
             this.showResultFunction.emit({
               body,
-              API_URL: this.apiUrl,
+              API_URL: this.apiUrls.chemicalDirectory.intermediateApplicationSearch,
               currentTab: this.resultTabs.chemicalDirectory.name, 
               actual_value: '',
             });
@@ -658,7 +657,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
           next: (res: any) => {                     
             this.showResultFunction.emit({
               body,
-              API_URL: this.apiUrl,
+              API_URL: this.apiUrls.chemicalDirectory.intermediateApplicationSearch,
               currentTab: this.resultTabs.chemicalDirectory.name, 
               actual_value: '',
             });

@@ -15,6 +15,7 @@ import { AppConfigValues } from '../../config/app-config';
 import { ColumnListService } from '../../services/columnList/column-list.service';
 import { Auth_operations } from '../../Utils/SetToken';
 import { MainSearchService } from '../../services/main-search/main-search.service';
+import { PaginationComponent } from '../../commons/pagination/pagination.component';
 
 @Component({
   selector: 'chem-search-results',
@@ -22,7 +23,8 @@ import { MainSearchService } from '../../services/main-search/main-search.servic
   imports: [
     LoaderComponent,
     CommonModule,
-    RouteResultComponent
+    RouteResultComponent,
+    PaginationComponent 
   ],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.css',
@@ -30,8 +32,8 @@ import { MainSearchService } from '../../services/main-search/main-search.servic
 
 export class SearchResultsComponent {
   
-  @Output() showResultFunction: EventEmitter<any> = new EventEmitter<any>();
   @Output() showDataResultFunction: EventEmitter<any> = new EventEmitter<any>();
+  @Output() showResultFunction: EventEmitter<any> = new EventEmitter<any>();
   @Output() backFunction: EventEmitter<any> = new EventEmitter<any>();
   @Output() generatePdf: EventEmitter<any> = new EventEmitter<any>();
 
@@ -41,6 +43,7 @@ export class SearchResultsComponent {
   @Input() searchData: any;  
   @Input() CurrentAPIBody: any;
 
+  paginationRerenderTrigger: any = 0;
   userIsLoggedIn: boolean = false;
   loading = false;
   LimitValue = '';
@@ -56,6 +59,10 @@ export class SearchResultsComponent {
     private mainSearchService: MainSearchService,
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
+  }
+
+  ngOnChanges(_changes: any) {
+    this.paginationRerenderTrigger = !this.paginationRerenderTrigger;
   }
 
   handleUserLoggedIn(loggedIn: boolean) {
@@ -88,7 +95,7 @@ export class SearchResultsComponent {
     modalElement.setAttribute('role', 'dialog');
   }
 
-  checkPriviledgeAndHandleSearch(resultTabData: any) {
+  checkPriviledgeAndHandleSearch(_resultTabData: any) {
     
     let todaysLimit: any = '';
     this.setLoadingState.emit(true);

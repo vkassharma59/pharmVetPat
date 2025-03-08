@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { environment } from '../../../environment/environment';
+import { environment } from '../../../environments/environment';
 import { Auth_operations } from '../../Utils/SetToken';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class ServicePaginationService {
 
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
-    'api-key': environment.HEADER_API_KEY,
+    'api-key': environment.headerApiKey,
     'access-token': this.auth_token,
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
