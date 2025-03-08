@@ -9,6 +9,22 @@
     align-items: center;
 }
 
+.collapse {
+	transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+	overflow: hidden;
+  }
+  
+.collapse.show {
+height: auto;
+opacity: 1;
+}
+
+.collapse:not(.show) {
+height: 0;
+opacity: 0;
+}
+  
+
 .pt-10 {
 	margin: 30px 0px;
 }

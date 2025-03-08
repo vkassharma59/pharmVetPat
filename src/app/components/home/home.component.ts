@@ -20,6 +20,11 @@ export class HomeComponent implements OnInit {
   showResult: boolean = false;
   loading: boolean = false;
   searchData: any = {};
+  accordionData: any = {
+    "accordionItem1": true,
+    "accordionItem2": false, 
+    "accordionItem3": false,
+  };
   allDataSets: any = [];
   CurrentAPIBody = {
     body: {},
@@ -50,6 +55,10 @@ export class HomeComponent implements OnInit {
       console.error('Error parsing auth data from localStorage', error);
       this.user = null;
     }
+  }
+
+  openCloseAccordian(key: string) {
+    this.accordionData[key] = !this.accordionData[key];
   }
 
   disableRightClick(event: MouseEvent) {
