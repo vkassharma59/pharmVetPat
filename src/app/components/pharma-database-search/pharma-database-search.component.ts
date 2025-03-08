@@ -551,6 +551,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       filter_enable: false,
       filters: {},
       order_by: '',
+      keyword: this.synthesisSearch?.keyword
     };
   
     const tech_API = this.apiUrls.technicalRoutes.columnList;  
@@ -559,7 +560,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.technicalRoutes.name, response);
   
-        this.mainSearchService.getSyntheticSearchResults({ keyword: this.synthesisSearch?.keyword, page_no: 1 }).subscribe({
+        this.mainSearchService.getSyntheticSearchResults(body).subscribe({
           next: (res: any) => {                     
             this.showResultFunction.emit({
               body,
@@ -593,11 +594,12 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     });
   
     const body = {
-      criteria: this.criteria,
+      criteria: this.chemicalStructure?.filter,
       page_no: 1,
       filter_enable: false,
       filters: {},
       order_by: '',
+      keyword: this.chemicalStructure?.keyword
     };
   
     const tech_API = this.apiUrls.chemicalDirectory.columnList;  
@@ -606,7 +608,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.chemicalDirectory.name , response);
   
-        this.mainSearchService.getChemicalStructureResults({ keyword: this.chemicalStructure?.keyword, criteria: this.chemicalStructure?.filter ,page_no: 1 }).subscribe({
+        this.mainSearchService.getChemicalStructureResults(body).subscribe({
           next: (res: any) => {                     
             this.showResultFunction.emit({
               body,
@@ -640,11 +642,12 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     });
   
     const body = {
-      criteria: this.criteria,
       page_no: 1,
       filter_enable: false,
       filters: {}, 
       order_by: '',
+      keyword: this.intermediateSearch?.keyword, 
+      criteria: this.intermediateSearch?.filter
     };
   
     const tech_API = this.apiUrls.chemicalDirectory.columnList;  
@@ -653,7 +656,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.chemicalDirectory.name , response);
   
-        this.mainSearchService.getChemicalStructureResults({ keyword: this.intermediateSearch?.keyword, criteria: this.intermediateSearch?.filter ,page_no: 1 }).subscribe({
+        this.mainSearchService.getChemicalStructureResults(body).subscribe({
           next: (res: any) => {                     
             this.showResultFunction.emit({
               body,
