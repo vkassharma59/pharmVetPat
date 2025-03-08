@@ -40,7 +40,7 @@
             <!-- Suggestions Dropdown -->
             <ul
             *ngIf="simpleSearch?.autosuggestionList?.length"
-            class="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto"
+            class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48" style="width: 70%"
             >
               <li
                 *ngFor="let suggestion of simpleSearch?.autosuggestionList"
@@ -107,7 +107,7 @@
                 <!-- Suggestions Dropdown -->
                 <ul
                   *ngIf="advanceSearch?.autosuggestionList[i]?.length && advanceSearch.filterInputs[i].keyword !== ''"
-                  class="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto">
+                  class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48" style="width: 70%">
                   <li
                     *ngFor="let suggestion of advanceSearch?.autosuggestionList[i]"
                     class="px-4 py-2 cursor-pointer hover:bg-blue-100"
@@ -212,7 +212,7 @@
             <!-- Suggestions Dropdown -->
             <ul
               *ngIf="intermediateSearch?.autosuggestionList?.length"
-              class="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto"
+              class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48" style="width: 70%"
               >
                 <li
                   *ngFor="let suggestion of intermediateSearch?.autosuggestionList"
@@ -262,7 +262,7 @@
             <!-- Suggestions Dropdown -->
               <ul
                 *ngIf="synthesisSearch?.autosuggestionList?.length"
-                class="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto">
+                class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48" style="width: 70%">
               <li
                 *ngFor="let suggestion of synthesisSearch?.autosuggestionList"
                 class="px-4 py-2 cursor-pointer hover:bg-blue-100"
@@ -321,7 +321,7 @@
             <!-- Suggestions Dropdown -->
             <ul
               *ngIf="chemicalStructure?.autosuggestionList?.length"
-              class="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto"
+              class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48" style="width: 70%"
             >
               <li
                 *ngFor="let suggestion of chemicalStructure?.autosuggestionList"
