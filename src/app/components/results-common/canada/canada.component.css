@@ -1,0 +1,141 @@
+/* 
+
+:host {
+    background-color:#FFEBEB;
+  }
+  
+.headerpart {
+    background-color: red;
+    height: 30px;
+}
+
+.header h3 {
+    color: white; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+h5{
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.firsta {
+    text-decoration: none;
+    background-color: red;
+    color: white;
+    display: inline-block; 
+    padding: 10px 20px; 
+    border-radius: 5px; 
+    font-size: 10px;
+}
+.number
+{
+    margin-top: 0px;
+}
+.row
+{
+    padding: 20px;
+}
+.img1
+{
+    height: 120px;
+    width: 150px;
+}
+.approved
+{
+    background-color: red;
+    text-align: center;
+    color: white;
+    height: 40px;
+    width: 200px;
+    font-size: 20px;
+    font-weight: bold;
+   
+
+}
+.more 
+{
+    display: inline-block; 
+    text-align: center;
+    justify-content: center;
+    display: flex;
+  }
+
+
+  .textmore {
+    height: 80px;
+    width: 150px;
+    
+  }
+.apoclass
+{
+    color: red;
+    font-size: 40px;
+    font-weight: bold;
+
+}
+.more 
+{
+    display: inline-block; 
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    padding: 20px;
+  }
+
+
+  .textmore {
+    height: 50px;
+    width: 150px;
+    
+  }
+  .btn1
+  {
+    background-color: blue;
+    color: white;
+    height: 50px;
+    width: 150px; 
+    font-weight: bold;
+    font-size: 17px;   
+  }
+
+
+hr {
+    border: 5px blue solid !important;
+    border-radius: 20px !important;
+}
+
+.image1
+{
+  height:100px ;
+  width: 150px;
+  padding: 10px;
+}
+
+.image2
+{
+  height:140px ;
+  width: 280px;
+  padding: 10px;
+}
+
+.image3
+{
+  height:80px ;
+  width: 150px;
+  padding: 10px;
+}
+
+.hover\:cursor-pointer {
+  cursor: pointer;
+  font-size: 18px;
+  color: #007bff;
+  margin-left: 8px;
+}
+
+.hover\:cursor-pointer:hover {
+  color: #0056b3;
+} */

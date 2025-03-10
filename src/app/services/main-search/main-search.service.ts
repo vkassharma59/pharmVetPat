@@ -133,11 +133,26 @@ export class MainSearchService {
         .pipe(catchError(this.handleError));
   }  
   canadaApprovalSearchSpecific(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.canadaApproval.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+}  
+   japanApprovalSearchSpecific(props: any): Observable<any> {
+    const body = props;
+     return this.http
+      .post(this.apiUrls.japanApproval.searchSpecific, body, { headers: this.headers })
+     .pipe(catchError(this.handleError));
+    }  
+
+    koreaApprovalSearchSpecific(props: any): Observable<any> {
       const body = props;
-      return this.http
-        .post(this.apiUrls.canadaApproval.searchSpecific, body, { headers: this.headers })
-        .pipe(catchError(this.handleError));
-  }  
+       return this.http
+        .post(this.apiUrls.koreaApproval.searchSpecific, body, { headers: this.headers })
+       .pipe(catchError(this.handleError));
+      }  
+  
+
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.log(error);

@@ -1,0 +1,86 @@
+
+
+:host
+{
+    background-color: #EDEDED;
+}
+
+
+.more     
+{
+    display: inline-block; 
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    padding: 20px;
+  }
+
+
+  .textmore {
+    height: 50px;
+    width: 150px;
+    
+  }
+  .btn1
+  {
+    background-color: blue;
+    color: white;
+    height: 50px;
+    width: 150px; 
+    font-weight: bold;
+    font-size: 17px;   
+  }
+
+  h5{
+    padding-top: 15px;
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  .introductiondropdown
+  {
+    overflow-y: scroll;
+    height: 250px;
+  }
+
+  .sideeffect
+  {
+    overflow-y: scroll;
+    height: 250px;
+  }
+
+  .safetydata
+  {
+    overflow-y: scroll;
+    height: 250px;
+  }
+
+  .quicktips
+  {
+    overflow-y: scroll;
+    height: 250px;
+  }
+
+  .benefits
+  {
+    overflow-y: scroll;
+    height: 250px;
+
+  }
+
+  hr {
+    border: 5px blue solid !important;
+    border-radius: 20px !important;
+    
+}
+
+
+.hover\:cursor-pointer {
+  cursor: pointer;
+}
+
+.hover\:cursor-pointer:hover {
+  color: #0056b3; /* Change icon color on hover */
+}
+
+

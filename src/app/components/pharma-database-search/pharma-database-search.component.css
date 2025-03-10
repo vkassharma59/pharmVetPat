@@ -145,3 +145,21 @@
       cursor: pointer;
     }
   }
+
+
+  .col-md-8 {
+    position: relative; /* Ensures absolute dropdown positions correctly */
+  }
+  .suggestions-dropdown {
+    width: 100%; /* Ensures it matches input width */
+    min-width: 200px; /* Prevents it from being too narrow */
+    max-width: 100%; /* Prevents overflow */
+    z-index: 999; /* Ensures it stays on top */
+  }
+  @media (max-width: 768px) {
+    .suggestions-dropdown {
+      width: 90%; /* Makes it more readable */
+      left: 5%; /* Centers it properly */
+    }
+  }
+  

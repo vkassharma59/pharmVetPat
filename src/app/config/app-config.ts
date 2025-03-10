@@ -50,6 +50,14 @@ export const AppConfigValues: AppConfig = {
         searchSpecific: `${appUrl.apiUrl}/health-canada/search-specific`,
         columnList: `${appUrl.apiUrl}/health-canada/column-list`,
       },
+      japanApproval: {
+        searchSpecific: `${appUrl.apiUrl}/japan-pmda/search-specific`,
+        columnList: `${appUrl.apiUrl}/japan-pmda/column-list`,
+      },
+      koreaApproval: {
+        searchSpecific: `${appUrl.apiUrl}/korea-orange-book/search-specific`,
+        columnList: `${appUrl.apiUrl}/korea-orange-book/column-list`,
+      },
       chemiTracker: {
         searchSpecific: `${appUrl.apiUrl}/chemi-tracker/search-specific`,
         columnList: `${appUrl.apiUrl}/chemi-tracker/column-list`,
