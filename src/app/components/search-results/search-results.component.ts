@@ -202,6 +202,27 @@ export class SearchResultsComponent {
           this.setLoadingState.emit(false);
         }     
         break;
+        case this.resultTabs?.canadaApproval.name:
+          if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.canadaApproval.name]).length === 0) {
+            this.performCanadaApprovalSearch(resultTabData);
+          } else {
+            this.setLoadingState.emit(false);
+          }     
+          break;
+          case this.resultTabs?.japanApproval.name:
+            if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.japanApproval.name]).length === 0) {
+              this.performJapanApprovalSearch(resultTabData);
+            } else {
+              this.setLoadingState.emit(false);
+            }     
+            break;
+            case this.resultTabs?.koreaApproval.name:
+              if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.koreaApproval.name]).length === 0) {
+                this.performKoreaApprovalSearch(resultTabData);
+              } else {
+                this.setLoadingState.emit(false);
+              }     
+              break;
       default:
         this.setLoadingState.emit(false);
     }
@@ -424,6 +445,137 @@ export class SearchResultsComponent {
     });
   }
 
+  
+  private performCanadaApprovalSearch(resultTabData: any): void {
+
+    if(resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+      this.allDataSets[resultTabData.index][this.resultTabs.canadaApproval.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
+
+    const body = {
+      search_type: resultTabData?.searchWith,
+      keyword: resultTabData?.searchWithValue,
+      page_no: 1,
+      filter_enable: false,
+      filters: {},
+      order_by: '',
+    }
+  
+    const tech_API = this.apiUrls.canadaApproval.columnList;  
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.canadaApproval.name, response);
+  
+        this.mainSearchService.canadaApprovalSearchSpecific(body).subscribe({
+          next: (result: any) => {  
+            console.log(result);
+            if(result?.data?.health_canada_data.length > 0) {
+              this.allDataSets[resultTabData.index][this.resultTabs.canadaApproval.name] = result?.data?.health_canada_data;
+            }      
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
+   private performJapanApprovalSearch(resultTabData: any): void {
+
+    if(resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+      this.allDataSets[resultTabData.index][this.resultTabs.japanApproval.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
+
+    const body = {
+      search_type: resultTabData?.searchWith,
+      keyword: resultTabData?.searchWithValue,
+      page_no: 1,
+      filter_enable: false,
+      filters: {},
+      order_by: '',
+    }
+  
+    const tech_API = this.apiUrls.japanApproval.columnList;  
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.japanApproval.name, response);
+  
+        this.mainSearchService.japanApprovalSearchSpecific(body).subscribe({
+          next: (result: any) => {  
+            console.log(result);
+          
+            if(result?.data?.japan_pmda_data.length > 0) {
+              this.allDataSets[resultTabData.index][this.resultTabs.japanApproval.name] = result?.data?.japan_pmda_data;
+            }       
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
+  private performKoreaApprovalSearch(resultTabData: any): void {
+
+    if(resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+      this.allDataSets[resultTabData.index][this.resultTabs.koreaApproval.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
+
+    const body = {
+      search_type: resultTabData?.searchWith,
+      keyword: resultTabData?.searchWithValue,
+      page_no: 1,
+      filter_enable: false,
+      filters: {},
+      order_by: '',
+    }
+  
+    const tech_API = this.apiUrls.koreaApproval.columnList;  
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.koreaApproval.name, response);
+  
+        this.mainSearchService.koreaApprovalSearchSpecific(body).subscribe({
+          next: (result: any) => {  
+            console.log(result);
+            if(result?.data?.korea_orange_book_data.length > 0) {
+              this.allDataSets[resultTabData.index][this.resultTabs.koreaApproval.name] = result?.data?.korea_orange_book_data;
+            }      
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
   onResultTabChange(data: Event){
     this.searchBasedOnTabName(data);
   }

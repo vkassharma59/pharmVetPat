@@ -41,6 +41,18 @@ export interface AppConfig {
       searchSpecific: string;
       columnList: string;
     };
+    canadaApproval: {
+      searchSpecific: string;
+      columnList: string;
+    };
+    japanApproval: {
+      searchSpecific: string;
+      columnList: string;
+    };
+    koreaApproval: {
+      searchSpecific: string;
+      columnList: string;
+    };
     chemiTracker: {
       searchSpecific: string;
       columnList: string;

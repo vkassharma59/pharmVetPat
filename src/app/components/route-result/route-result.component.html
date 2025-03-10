@@ -53,16 +53,16 @@
       </ng-container>
    
       <ng-container *ngSwitchCase="'canadaApproval'">
-        <chem-canada></chem-canada>
+        <chem-canada [data]="dataItem.canadaApproval"></chem-canada>
       </ng-container>
-
+     
       <ng-container *ngSwitchCase="'japanApproval'">
-        <chem-japan></chem-japan>
+        <chem-japan [data]="dataItem.japanApproval"></chem-japan>
       </ng-container>
 
 
       <ng-container *ngSwitchCase="'koreaApproval'">
-        <chem-korea></chem-korea>
+        <chem-korea [data]="dataItem.koreaApproval"></chem-korea>
       </ng-container>
 
       <ng-container *ngSwitchCase="'indianMedicine'">

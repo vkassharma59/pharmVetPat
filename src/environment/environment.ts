@@ -71,6 +71,7 @@ export const environment = {
     'https://apilive.chemrobotics.com/chemi-tracker/column-list',
   IMPURITY_COLUMN_LIST: 'https://apilive.chemrobotics.com/impurity/column-list',
 
+
   PPRODUCT_INFO_COLUMN_LIST: 'https://apilive.chemrobotics.com/basic-product-info/column-list',
   CHEMICAL_STRUCTURE_AUTO_SUGGESTIONS_API:
   'https://apilive.chemrobotics.com/chemical-directory/auto-suggestions',

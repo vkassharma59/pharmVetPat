@@ -1,0 +1,19 @@
+p
+{
+    padding-bottom: 20px;
+    
+}
+:host {
+    display: block;
+    background-color: #FDCCD6;
+    width: 100%;
+    height: 100%;
+}
+.productName
+{
+    font-size: 30px !important;
+    padding-bottom: 25px;
+    color: #C00C2F;
+}
+
+

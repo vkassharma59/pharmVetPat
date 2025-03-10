@@ -1,0 +1,12 @@
+
+p
+{
+    padding-bottom: 15px;
+}
+
+:host {
+    display: block;
+    background-color: #FFEBEB ;
+    width: 100%;
+    height: 100%;
+}
