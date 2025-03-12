@@ -53,6 +53,14 @@ export interface AppConfig {
       searchSpecific: string;
       columnList: string;
     };
+    indianMedicine: {
+      searchSpecific: string;
+      columnList: string;
+    };
+    litigation: {
+      searchSpecific: string;
+      columnList: string;
+    };
     chemiTracker: {
       searchSpecific: string;
       columnList: string;

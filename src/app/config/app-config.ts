@@ -58,6 +58,14 @@ export const AppConfigValues: AppConfig = {
         searchSpecific: `${appUrl.apiUrl}/korea-orange-book/search-specific`,
         columnList: `${appUrl.apiUrl}/korea-orange-book/column-list`,
       },
+      indianMedicine: {
+        searchSpecific: `${appUrl.apiUrl}/indian-medicine/search-specific`,
+        columnList: `${appUrl.apiUrl}/indian-medicine/column-list`,
+      },
+      litigation: {
+        searchSpecific: `${appUrl.apiUrl}/litigation/search-specific`,
+        columnList: `${appUrl.apiUrl}/litigation/column-list`,
+      },
       chemiTracker: {
         searchSpecific: `${appUrl.apiUrl}/chemi-tracker/search-specific`,
         columnList: `${appUrl.apiUrl}/chemi-tracker/column-list`,

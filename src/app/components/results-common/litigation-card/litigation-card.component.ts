@@ -7,19 +7,18 @@ import { ImageModalComponent } from '../../../commons/image-modal/image-modal.co
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-canada-health',
+  selector: 'app-litigation-card',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './canada-health.component.html',
-  styleUrl: './canada-health.component.css'
+  templateUrl: './litigation-card.component.html',
+  styleUrl: './litigation-card.component.css'
 })
-
-export class CanadaHealthComponent {
+export class LitigationCardComponent {
 
   _data: any = [];
   MoreInfo: boolean = false;
   pageNo: number = 1;
-  canada_approval_column: any = {};
+  litigation_column: any = {};
   resultTabs: any = {};
 
   @Input()
@@ -29,10 +28,10 @@ export class CanadaHealthComponent {
   set data(value) {    
     this.resultTabs = this.utilityService.getAllTabsName();
     const column_list = Auth_operations.getColumnList();
-    if(column_list[this.resultTabs.canadaApproval?.name]?.length > 0 && Object.keys(value).length > 0 && value) {
-      for (let i = 0; i < column_list[this.resultTabs.canadaApproval.name].length; i++) {
-        this.canada_approval_column[column_list[this.resultTabs.canadaApproval.name][i].value] =
-          column_list[this.resultTabs.canadaApproval.name][i].name;
+    if(column_list[this.resultTabs.litigation?.name]?.length > 0 && Object.keys(value).length > 0 && value) {
+      for (let i = 0; i < column_list[this.resultTabs.litigation.name].length; i++) {
+        this.litigation_column[column_list[this.resultTabs.litigation.name][i].value] =
+          column_list[this.resultTabs.litigation.name][i].name;
       }
 
       this._data = value;
@@ -51,7 +50,7 @@ export class CanadaHealthComponent {
   }
 
   getColumnName(value: any) {
-    return this.canada_approval_column[value];
+    return this.litigation_column[value];
   }
 
   getPubchemId(value: any) {
@@ -87,14 +86,21 @@ export class CanadaHealthComponent {
     // Remove the temporary textarea element
     document.body.removeChild(textArea);
   }
+
   getImageUrl = (data: any) => {
     return (
       environment.baseUrl +
       environment.domainNameCompanyLogo +
-      this.data?.commentry
+      this.data?.defendant_logo
+    );
+  };
+  getImageUrl1 = (data: any) => {
+    return (
+      environment.baseUrl +
+      environment.domainNameCompanyLogo +
+      this.data?.plaintiff_logo
     );
   };
 
 
 }
-

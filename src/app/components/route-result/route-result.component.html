@@ -66,11 +66,11 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="'indianMedicine'">
-        <chem-indian></chem-indian>
+        <chem-indian [data]="dataItem.indianMedicine"></chem-indian>
       </ng-container>
 
       <ng-container *ngSwitchCase="'litigation'">
-        <chem-litigation></chem-litigation>
+        <chem-litigation [data]="dataItem.litigation"></chem-litigation>
       </ng-container>
 
       <ng-container *ngSwitchCase="'activePatent'">

@@ -151,6 +151,20 @@ export class MainSearchService {
         .post(this.apiUrls.koreaApproval.searchSpecific, body, { headers: this.headers })
        .pipe(catchError(this.handleError));
       }  
+
+      indianMedicineSearchSpecific(props: any): Observable<any> {
+        const body = props;
+         return this.http
+          .post(this.apiUrls.indianMedicine.searchSpecific, body, { headers: this.headers })
+         .pipe(catchError(this.handleError));
+        }  
+
+        litigationSearchSpecific(props: any): Observable<any> {
+          const body = props;
+           return this.http
+            .post(this.apiUrls.litigation.searchSpecific, body, { headers: this.headers })
+           .pipe(catchError(this.handleError));
+          }  
   
 
 

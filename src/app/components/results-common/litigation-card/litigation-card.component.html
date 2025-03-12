@@ -1,0 +1,178 @@
+<!-- <pre>{{_data | json}}</pre>  -->
+
+<div class="card-header text-white " style="font-size: 20px; background-color:#65A521;">
+    {{resultTabs?.litigation?.label}} >> <span>SITAGLIPTIN PHOSPHATE</span>
+</div>
+<div class="card-body">
+    <div class="pb-3 mb-3 px-2 rounded-lg">
+        <p class="text-wrap  whitespace-normal"
+           style="color: #65A521; font-size: 25px; font-weight: bold; padding-bottom: 15px;">
+            {{ _data?.active_ingredient_biologics_combination }}
+        </p>
+
+        <div class="row">
+            <!-- Column 1 -->
+            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                <div *ngIf="_data?.plaintiffs && getColumnName('plaintiffs')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("plaintiffs") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.plaintiffs)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.plaintiffs }}
+                    </p>
+                </div>
+
+         
+                     <img *ngIf="_data?.plaintiff_logo"
+                     class="plaintiff_logo"
+                     [src]="getImageUrl1(_data)"
+                     alt="error"
+                     style="height: 200px; width: 200px; padding: 20px; object-fit: contain;">
+                
+            </div>
+
+            <!-- Column 2 -->
+            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                <div *ngIf="_data?.patent_numbers && getColumnName('patent_numbers')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("patent_numbers") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.patent_numbers)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.patent_numbers }}
+                    </p>
+                </div>
+
+                <div *ngIf="_data?.defendants && getColumnName('defendants')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("defendants") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.defendants)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.defendants }}
+                    </p>
+                </div>
+
+                <div>
+                <img *ngIf="_data?.defendant_logo"
+                class="defendant_logo"
+                [src]="getImageUrl(_data)"
+                alt="error"
+                style="height: 150px; width: 100%; padding: 20px; object-fit: contain;">
+
+               </div>
+               <br>
+                
+                <div *ngIf="_data?.uniform_resource_locator_url && getColumnName('uniform_resource_locator_url')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("uniform_resource_locator_url") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.uniform_resource_locator_url)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal" style="color: blue;">
+                        {{ _data?.uniform_resource_locator_url }}
+                    </p>
+                </div>
+
+               
+            </div>
+
+            <!-- Column 3 -->
+             
+            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                <div *ngIf="_data?.country && getColumnName('country')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("country") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.country)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.country }}
+                    </p>
+                </div>
+
+               
+            </div>
+
+            <!-- Column 4 -->
+            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+
+                <div *ngIf="_data?.gbrn && getColumnName('gbrn')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("gbrn") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.gbrn)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.gbrn }}
+                    </p>
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="flex justify-center">
+    <button
+      (click)="toggleMoreInfo()"
+      class="py-2 px-3 mt-3 mb-3 btnchemical rounded-md btn"
+     
+      
+    >
+      {{
+        MoreInfo
+          ? "Less Information"
+          : "More Information"
+      }}
+    </button>
+</div>
+
+<div class="card-body" *ngIf="MoreInfo" style="border: 2px solid black; border-radius: 8px; padding: 10px; margin-top: 10px;">
+    <div class="row">
+
+        <div *ngIf="_data?.description && getColumnName('description')">
+            <h1 class="font-bold"> {{ getColumnName("description") }}
+                <span
+                                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                  (click)="handleCopy(_data?.description)"
+                                  ><i class="fas fa-copy"></i
+                                ></span>
+            </h1>
+            <p class="text-wrap max-h-24 overflow-y-auto break-words whitespace-normal">
+                {{ _data?.description }}
+            </p>
+           </div>
+
+           <div *ngIf="_data?.decision && getColumnName('decision')">
+            <h1 class="font-bold"> {{ getColumnName("decision") }}
+                <span
+                                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                  (click)="handleCopy(_data?.decision)"
+                                  ><i class="fas fa-copy"></i
+                                ></span>
+            </h1>
+            <p class="text-wrap max-h-24 overflow-y-auto break-words whitespace-normal">
+                {{ _data?.decision }}
+            </p>
+           </div>
+     </div>
+</div>   
+<br><br>  

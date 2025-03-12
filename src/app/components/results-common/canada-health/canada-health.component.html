@@ -4,21 +4,6 @@
     {{resultTabs?.canadaApproval?.label}} >> <span *ngIf="_data?.product_name">SITAGLIPTIN PHOSPHATE</span>
 </div>
 
-
-
-<!-- <img
-*ngIf="data?.chemical_structure"
-class="commentry"
-[src]="getChemicalImage(data)"
-alt="error"
-style="
-    height: 270px;
-    width: 470px;
-    padding: 20px 20px;
-    object-fit: contain;
-"
-/> -->
-
 <div class="card-body">
     <div class="pb-3 mb-3 px-2 rounded-lg">
         <div class="row">
@@ -85,35 +70,32 @@ style="
                     </p>
                 </div>
 
-                <div class="">
-                    <img [src]="getImageUrl(_data)" alt="error" class="object-contain"
-                        style="height: 250px; padding: 20px 15px" />
-                </div>
-                <!-- <img
+
+
+                <img
                 *ngIf="data?.commentry"
                 class="commentry"
-                [src]="getChemicalImage(data)"
+                [src]="getImageUrl(data)"
                 alt="error"
                 style="
-                    height: 270px;
-                    width: 470px;
+                    height: 250px;
+                    width: 250px;
                     padding: 20px 20px;
                     object-fit: contain;
                 "
-                /> -->
+                />
+
             </div>
 
             <!-- Third Column -->
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
 
                 <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal"
-    style="background-color: red; color: white; text-align: center; padding: 8px; border-radius: 5px; font-size: 18px; font-weight: bold;">
-    {{ _data?.current_status }}
-</p>
+                 style="background-color: red; color: white; text-align: center; padding: 8px; border-radius: 5px; font-size: 18px; font-weight: bold;">
+                 {{ _data?.current_status }}
+                </p>
 
-
-                <img src="assets/components/canada.png" class="image2">
-
+                
             </div>
         </div>
     </div>
@@ -125,7 +107,8 @@ style="
     <button
       (click)="toggleMoreInfo()"
       class="py-2 px-3 mt-3 mb-3 btnchemical rounded-md btn"
-      style="background-color: blue; color: white;"
+      style="font-size: 20px;"
+     
     >
       {{
         MoreInfo
@@ -179,16 +162,20 @@ style="
         </p>
     </div>
 
-    <div class="col-md-2" *ngIf="_data?.commentry">
-        <div class="">
-          <img
-            [src]="getImageUrl(_data)"
+   
+            <img
+            *ngIf="data?.commentry"
+            class="commentry"
+            [src]="getImageUrl(data)"
             alt="error"
-            class="object-contain"
-            style="height: 50px; padding: 20px 15px"
-          />
-         </div>
-    </div>
+            style="
+                height: 250px;
+                width: 250px;
+                padding: 20px 20px;
+                object-fit: contain;
+            "
+            />
+         
 
     <div *ngIf="_data?.dosage_forms && getColumnName('dosage_forms')">
         <h1 class="font-bold"> {{ getColumnName("dosage_forms") }}

@@ -230,6 +230,21 @@ export class SearchResultsComponent {
                 this.setLoadingState.emit(false);
               }     
               break;
+
+              case this.resultTabs?.indianMedicine.name:
+                if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.indianMedicine.name]).length === 0) {
+                  this.performIndianMedicineSearch(resultTabData);
+                } else {
+                  this.setLoadingState.emit(false);
+                }     
+                break;
+                case this.resultTabs?.litigation.name:
+                if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.litigation.name]).length === 0) {
+                  this.performLitigationSearch(resultTabData);
+                } else {
+                  this.setLoadingState.emit(false);
+                }     
+                break;
       default:
         this.setLoadingState.emit(false);
     }
@@ -582,6 +597,95 @@ export class SearchResultsComponent {
       },
     });
   }
+
+   private performIndianMedicineSearch(resultTabData: any): void {
+
+    if(resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+      this.allDataSets[resultTabData.index][this.resultTabs.indianMedicine.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
+
+    const body = {
+      search_type: resultTabData?.searchWith,
+      keyword: resultTabData?.searchWithValue,
+      page_no: 1,
+      filter_enable: false,
+      filters: {},
+      order_by: '',
+    }
+  
+    const tech_API = this.apiUrls.indianMedicine.columnList;  
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.indianMedicine.name, response);
+  
+        this.mainSearchService.indianMedicineSearchSpecific(body).subscribe({
+          next: (result: any) => {  
+            console.log(result);
+            if(result?.data?.indian_medicine_data.length > 0) {
+              this.allDataSets[resultTabData.index][this.resultTabs.indianMedicine.name] = result?.data?.indian_medicine_data;
+            }      
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
+  
+  private performLitigationSearch(resultTabData: any): void {
+
+    if(resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+      this.allDataSets[resultTabData.index][this.resultTabs.litigation.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
+
+    const body = {
+      search_type: resultTabData?.searchWith,
+      keyword: resultTabData?.searchWithValue,
+      page_no: 1,
+      filter_enable: false,
+      filters: {},
+      order_by: '',
+    }
+  
+    const tech_API = this.apiUrls.litigation.columnList;  
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.litigation.name, response);
+  
+        this.mainSearchService.litigationSearchSpecific(body).subscribe({
+          next: (result: any) => {  
+            console.log(result);
+            if(result?.data?.litigation_data.length > 0) {
+              this.allDataSets[resultTabData.index][this.resultTabs.litigation.name] = result?.data?.litigation_data;
+            }      
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
+
   onResultTabChange(data: Event){
     this.searchBasedOnTabName(data);
   }
