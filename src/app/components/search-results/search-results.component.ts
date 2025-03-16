@@ -49,6 +49,8 @@ export class SearchResultsComponent {
   LimitValue = '';
   apiUrls = AppConfigValues.appUrls;
   resultTabs: any = [];
+  currentTabData: any = {};
+  childApiBody: any = {};
 
   @ViewChild('priviledgeModal') priviledgeModal!: ElementRef;
 
@@ -170,10 +172,11 @@ export class SearchResultsComponent {
     );
   }
   
-  private searchBasedOnTabName(resultTabData: any) { 
+  onResultTabChange(resultTabData: any) { 
     this.setLoadingState.emit(true);
-    const currentTabData = resultTabData.currentTabData.name;
-    switch(currentTabData) {
+    this.currentTabData = resultTabData?.currentTabData;
+
+    switch(this.currentTabData.name) {
       case this.resultTabs?.technicalRoutes.name: 
         if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.technicalRoutes.name]).length === 0) {
           this.performTechnicalRouteSearch(resultTabData);
@@ -229,13 +232,15 @@ export class SearchResultsComponent {
       return;
     }
 
-    const body = {
+    this.childApiBody = {
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
       filter_enable: false,
       filters: {},
       order_by: '',
+      index: resultTabData.index,
+      count: 0
     }
   
     const tech_API = this.apiUrls.technicalRoutes.columnList;  
@@ -244,9 +249,10 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.technicalRoutes.name, response);
   
-        this.mainSearchService.technicalRoutesSearchSpecific(body).subscribe({
+        this.mainSearchService.technicalRoutesSearchSpecific(this.childApiBody).subscribe({
           next: (result: any) => {              
             if(result?.data?.ros_data.length > 0) {
+              this.childApiBody.count = result?.data?.ros_count;
               this.allDataSets[resultTabData.index][this.resultTabs.technicalRoutes.name] = result?.data?.ros_data;
             }      
             this.setLoadingState.emit(false);
@@ -272,12 +278,14 @@ export class SearchResultsComponent {
       return;
     }
 
-    const body = {
+    this.childApiBody = {
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
+      api_url: this.apiUrls.basicProductInfo.searchSpecific,
       page_no: 1,
       filter_enable: false,
       filters: {},
+      index: resultTabData.index,
       order_by: '',
     }
   
@@ -287,9 +295,10 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.productInfo.name, response);
   
-        this.mainSearchService.basicProductSearchSpecific(body).subscribe({
+        this.mainSearchService.basicProductSearchSpecific(this.childApiBody).subscribe({
           next: (result: any) => {     
             if(result?.data?.basic_product_data.length > 0) {
+              this.childApiBody.count = result?.data?.basic_product_count;
               this.allDataSets[resultTabData.index][this.resultTabs.productInfo.name] = result?.data?.basic_product_data;
             }      
             this.setLoadingState.emit(false);
@@ -309,15 +318,13 @@ export class SearchResultsComponent {
 
   private perforChemicalDirectorySearch(resultTabData: any): void {
 
-    // Auth_operations.getActiveformValues().activeForm
-
     if(resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.chemicalDirectory.name] = {};
       this.setLoadingState.emit(false);
       return;
     }
 
-    const body = {
+    this.childApiBody = {
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
@@ -332,9 +339,10 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.chemicalDirectory.name, response);
   
-        this.mainSearchService.chemicalDirectorySearchSpecific(body).subscribe({
+        this.mainSearchService.chemicalDirectorySearchSpecific(this.childApiBody).subscribe({
           next: (result: any) => {     
             if(result?.data?.chem_dir_data.length > 0) {
+              this.childApiBody.count = result?.data?.chem_dir_count;
               this.allDataSets[resultTabData.index][this.resultTabs.chemicalDirectory.name] = result?.data?.chem_dir_data;
             }      
             this.setLoadingState.emit(false);
@@ -360,7 +368,7 @@ export class SearchResultsComponent {
       return;
     }
 
-    const body = {
+    this.childApiBody = {
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
@@ -375,9 +383,10 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.impurity.name, response);
   
-        this.mainSearchService.impuritySearchSpecific(body).subscribe({
+        this.mainSearchService.impuritySearchSpecific(this.childApiBody).subscribe({
           next: (result: any) => {     
             if(result?.data?.impurity_data.length > 0) {
+              this.childApiBody.count = result?.data?.impurity_count;
               this.allDataSets[resultTabData.index][this.resultTabs.impurity.name] = result?.data?.impurity_data;
             }      
             this.setLoadingState.emit(false);
@@ -403,7 +412,7 @@ export class SearchResultsComponent {
       return;
     }
 
-    const body = {
+    this.childApiBody = {
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
@@ -418,9 +427,10 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.chemiTracker.name, response);
   
-        this.mainSearchService.chemiTrackerSearchSpecific(body).subscribe({
+        this.mainSearchService.chemiTrackerSearchSpecific(this.childApiBody).subscribe({
           next: (result: any) => {     
             if(result?.data?.chemi_tracker_data.length > 0) {
+              this.childApiBody.count = result?.data?.chemi_tracker_count;
               this.allDataSets[resultTabData.index][this.resultTabs.chemiTracker.name] = result?.data?.chemi_tracker_data;
             }      
             this.setLoadingState.emit(false);
@@ -446,7 +456,7 @@ export class SearchResultsComponent {
       return;
     }
 
-    const body = {
+    this.childApiBody = {
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
@@ -461,9 +471,10 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.canadaApproval.name, response);
   
-        this.mainSearchService.chemiTrackerSearchSpecific(body).subscribe({
+        this.mainSearchService.chemiTrackerSearchSpecific(this.childApiBody).subscribe({
           next: (result: any) => {     
             if(result?.data?.chemi_tracker_data.length > 0) {
+              this.childApiBody.count = result?.data?.chemi_tracker_count;
               this.allDataSets[resultTabData.index][this.resultTabs.canadaApproval.name] = result?.data?.chemi_tracker_data;
             }      
             this.setLoadingState.emit(false);
@@ -481,7 +492,24 @@ export class SearchResultsComponent {
     });
   }
 
-  onResultTabChange(data: Event){
-    this.searchBasedOnTabName(data);
+  onChildPaginationChange(data: any){
+    console.log(data);
+    console.log(this.currentTabData);    
+
+    switch(this.currentTabData.name) {
+      case this.resultTabs.productInfo.name:
+        if(data?.basic_product_data.length > 0) {
+          this.childApiBody.count = data?.basic_product_count;
+          this.allDataSets[this.childApiBody.index][this.resultTabs.productInfo.name] = data?.basic_product_data;
+        }     
+        break;
+      case this.resultTabs.chemiTracker.name:
+        this.perforChemiTrackerSearch(this.currentTabData);
+        break;
+      case this.resultTabs.canadaApproval.name:
+        this.performCanadaApprovalSearch(this.currentTabData);
+        break;   
+      default:
+    }
   }
 }

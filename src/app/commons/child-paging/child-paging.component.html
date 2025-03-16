@@ -1,0 +1,50 @@
+<nav
+  aria-label="Page navigation example "
+  class="w-full flex py-3 justify-center"
+  *ngIf="count > 25 || false"
+>
+  <ul class="inline-flex -space-x-px text-sm">
+    <li>
+      <button
+        (click)="handleFirstClick()"
+        class="flex items-center justify-center px-2 md:px-3 h-8 md:h-8 ms-0 leading-tight rounded-s-lg border-2 text-[#0032A0] hover:text-white border-[#0032A0] hover:bg-[#0032A0]"
+      >
+        First
+      </button>
+    </li>
+    <li>
+      <button
+        (click)="handlePreviousClick()"
+        class="flex items-center justify-center px-2 md:px-3 h-8 md:h-8 ms-0 leading-tight border-2 text-[#0032A0] hover:text-white border-[#0032A0] hover:bg-[#0032A0]"
+      >
+        Previous
+      </button>
+    </li>
+
+    <li *ngFor="let value of PageArray; let i = index">
+      <button
+        (click)="handlePageClick(value)"
+        [ngClass]="{ 'bg-[#0032A0] text-white': MainPageNo === value }"
+        class="flex items-center justify-center px-2 md:px-3 h-8 md:h-8 leading-tight border-2 text-[#0032A0] hover:text-white border-[#0032A0] hover:bg-[#0032A0]"
+      >
+        {{ value }}
+      </button>
+    </li>
+    <li>
+      <button
+        (click)="handleNextclick()"
+        class="flex items-center justify-center px-2 md:px-3 h-8 md:h-8 leading-tight text-[#0032A0] border-2 hover:text-white border-[#0032A0] hover:bg-[#0032A0]"
+      >
+        Next
+      </button>
+    </li>
+    <li>
+      <button
+        (click)="handleLastClick()"
+        class="flex items-center justify-center px-2 md:px-3 h-8 md:h-8 leading-tight text-[#0032A0] border-2 hover:text-white border-[#0032A0] hover:bg-[#0032A0] rounded-e-lg"
+      >
+        Last
+      </button>
+    </li>
+  </ul>
+</nav>

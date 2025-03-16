@@ -25,7 +25,12 @@
     <!-- Main Content Section -->
     <div class="card mt-3" [ngSwitch]="currentTabData?.name">
       <ng-container *ngSwitchCase="'productInfo'">
-        <chem-product-info [data]="_dataItem.productInfo"></chem-product-info>     
+        <chem-product-info 
+          [data]="_dataItem.productInfo"
+          [currentChildAPIBody]="currentChildAPIBody"
+          (handleSetLoading)="handleSetLoading.emit($event)"
+          (handleResultTabData)="handleChildPaginationSearch.emit($event)">
+        </chem-product-info>     
       </ng-container>
 
       <ng-container *ngSwitchCase="'technicalRoutes'">

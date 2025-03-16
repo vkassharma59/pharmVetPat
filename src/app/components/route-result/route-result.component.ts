@@ -21,14 +21,21 @@ import { ChemicalDirectoryComponent } from '../results-common/chemical-directory
 export class RouteResultComponent {
 
   currentTabData: any = {}
-  @Output() backFunction: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onResultTabChange: EventEmitter<any> = new EventEmitter<any>();
-
-  @Input() index: number | undefined;
-  @Input() searchData: any;
   resultTabs: any = [];
   resultTabWithKeys: any = [];
   _dataItem: any = {};
+
+  @Output() handleSetLoading: EventEmitter<any> = new EventEmitter<any>();
+  @Output() backFunction: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onResultTabChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() handleChildPaginationSearch: EventEmitter<any> = new EventEmitter<any>();
+  @Input() currentChildAPIBody: any;
+  @Input() currentApiData: any;
+
+  @Input() index: number | undefined;
+  @Input() searchData: any;
+
+  
 
   @Input() 
   get dataItem() {

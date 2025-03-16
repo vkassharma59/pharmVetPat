@@ -7,7 +7,10 @@
       [index]="i"
       [dataItem]="item"
       [searchData]="searchData"
+      [currentChildAPIBody]="childApiBody"
       (onResultTabChange)="onResultTabChange($event)"
+      (handleSetLoading)="handleLoadingState($event)"
+      (handleChildPaginationSearch)="onChildPaginationChange($event)"
     ></chem-route-results>
   </div>
   <chem-pagination 

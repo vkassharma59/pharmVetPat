@@ -8,12 +8,17 @@
                     class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-bold h-[37px] flex justify-center items-center"
                 >
                     Sub Route
-                    {{ (1 - 1) * 25 + (i + 1) }}
+                    {{ (currentChildAPIBody?.body?.page_no - 1) * 25 + (i + 1) }}
                 </span>
             </div>
         </div>
         <chem-product-info-card [data]="dataItem"></chem-product-info-card>
     </ng-container>
+    <app-child-paging
+        [currentChildAPIBody]="currentChildAPIBody"
+        (handleChangeTabData)="handleResultTabData.emit($event)"
+        (setLoading)="handleSetLoading.emit($event)"
+    ></app-child-paging>
 </ng-container>
 <ng-template #noData>
     <div class="card-header text-white bg-primary">
