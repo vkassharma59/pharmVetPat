@@ -1,21 +1,37 @@
  <!-- New Design -->
  <div class="container">
   <!-- Title / Top Section -->
-  <div class="top_section text-center py-3">
+  <!-- <div class="top_section text-center py-3">
     <h1 class="h1-—-inter-—-44pt">
       <span class="chem">Chem</span>
       <span class="robotics">Robotics<sup class="trademark">™</sup></span>
       <span class="pharma">Pharma Database</span>
     </h1>
-  </div>
+  </div> -->
+  <div class="top_section">
+    <h1 class="heading">
+        <span class="chem">Chem</span>
+        <span class="robotics">Robotics<sup class="trademark">™</sup></span>
+        <span class="pharma">Pharma Database</span>
+    </h1>
+</div>
+
+
+  
 
   <!-- Header with tabs (responsive row) -->
   <div class="header">
-    <button (click)="showContent('api-search')" [ngClass]="(activeSearchTab == 'api-search' ) ? 'active' : ''">API or Agrochemical Search</button>
-    <button (click)="showContent('intermediate-search')" [ngClass]="(activeSearchTab == 'intermediate-search' ) ? 'active' : ''">Intermediate / KSM Search</button>
-    <button (click)="showContent('see-all')" [ngClass]="(activeSearchTab == 'see-all' ) ? 'active' : ''">See all</button>
+    <button (click)="showContent('api-search')" [ngClass]="(activeSearchTab == 'api-search') ? 'active' : ''">
+      API or Agrochemical Search
+    </button>
+    <button (click)="showContent('intermediate-search')" [ngClass]="(activeSearchTab == 'intermediate-search') ? 'active' : ''">
+      Intermediate / KSM Search
+    </button>
+    <button (click)="showContent('see-all')" [ngClass]="(activeSearchTab == 'see-all') ? 'active' : ''">
+      See all
+    </button>
   </div>
-
+  
   <div class="card-box">
     <!-- ========== 1) API / Agrochemical Search ========== -->
     <div id="api-search" class="content-section" *ngIf="activeSearchTab == 'api-search' || activeSearchTab == 'see-all'">
@@ -38,10 +54,15 @@
             />
 
             <!-- Suggestions Dropdown -->
-            <ul
+            <!-- <ul
             *ngIf="simpleSearch?.autosuggestionList?.length"
-            class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto" style="width: 70%"
-            >
+            class="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto"
+            > -->
+            <ul
+               *ngIf="simpleSearch?.autosuggestionList?.length"
+                class="absolute z-10 left-0 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto suggestions-dropdown"
+               >
+
               <li
                 *ngFor="let suggestion of simpleSearch?.autosuggestionList"
                 class="px-4 py-2 cursor-pointer hover:bg-blue-100"

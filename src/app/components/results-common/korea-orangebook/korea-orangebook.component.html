@@ -1,0 +1,392 @@
+<!-- <pre>{{_data | json}}</pre>  -->
+<div class="card-header text-white " style="font-size: 20px; background-color: #C00C2F;">
+    {{resultTabs?.koreaApproval?.label}} >> <span>SITAGLIPTIN PHOSPHATE</span>
+</div>
+
+<div class="card-body">
+    <div class="pb-3 mb-3 px-2 rounded-lg">
+        <div class="row">
+
+            <p class="productName">
+                {{ _data?.product_name }}
+            </p>
+            
+
+            <p style="font-size: 25px; padding-bottom: 20px;">
+                {{ _data?.company_name }}
+            </p>
+
+
+            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+
+                <div *ngIf="_data?.green_book_registration_number && getColumnName('green_book_registration_number')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("green_book_registration_number") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.green_book_registration_number)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.green_book_registration_number }}
+                    </p>
+                </div>
+
+                <div *ngIf="_data?.ingredient_name && getColumnName('ingredient_name')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("ingredient_name") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.ingredient_name)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.ingredient_name }}
+                    </p>
+                </div>
+
+                <div *ngIf="_data?.permission_date && getColumnName('permission_date')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("permission_date") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.permission_date)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.permission_date }}
+                    </p>
+                </div>
+
+                <div *ngIf="_data?.chief_ingredient_patent && getColumnName('chief_ingredient_patent')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("chief_ingredient_patent") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.chief_ingredient_patent)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.chief_ingredient_patent }}
+                    </p>
+                </div>
+              
+            </div>
+
+            <div class="col-xl-2 col-lg-4 col-md-4 col-sm-12">
+               
+                <div *ngIf="_data?.country && getColumnName('country')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("country") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.country)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.country }}
+                    </p>
+                </div>
+
+
+                <img *ngIf="_data?.company_logo"
+                     class="company_logo"
+                     [src]="getImageUrl(_data)"
+                     alt="error"
+                     style="height: 150px; width: 100%; padding: 20px; object-fit: contain;">
+
+                <div *ngIf="_data?.content && getColumnName('content')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("content") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.content)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.content }}
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="col-xl-2 col-lg-4 col-md-4 col-sm-12">
+               
+                <div *ngIf="_data?.reference_code && getColumnName('reference_code')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("reference_code") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.reference_code)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.reference_code }}
+                    </p>
+                </div>
+
+                <div *ngIf="_data?.remark_s && getColumnName('remark_s')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("remark_s") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.remark_s)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.remark_s }}
+                    </p>
+                </div>
+                <div *ngIf="_data?.pdf_csv_text_file_downloadable_format && getColumnName('pdf_csv_text_file_downloadable_format')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("pdf_csv_text_file_downloadable_format") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.pdf_csv_text_file_downloadable_format)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.pdf_csv_text_file_downloadable_format }}
+                    </p>
+                </div>
+                <div *ngIf="_data?.created_at && getColumnName('created_at')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("created_at") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.created_at)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.created_at }}
+                    </p>
+                </div>
+                <div *ngIf="_data?.id && getColumnName('id')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("id") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.id)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.id }}
+                    </p>
+                </div>
+                
+
+            </div>
+
+            <div class="col-xl-2 col-lg-4 col-md-4 col-sm-12">
+                
+               
+                <div *ngIf="_data?.product_name && getColumnName('product_name')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("product_name") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.product_name)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.product_name }}
+                    </p>
+                </div>
+                <br>
+
+                <div *ngIf="_data?.generic_drug && getColumnName('generic_drug')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("generic_drug") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.generic_drug)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.generic_drug }}
+                    </p>
+                </div>
+
+                <div *ngIf="_data?.registered_patent_holder && getColumnName('registered_patent_holder')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("registered_patent_holder") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.registered_patent_holder)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.registered_patent_holder }}
+                    </p>
+                </div>
+
+                <div *ngIf="_data?.registered_patent_number && getColumnName('registered_patent_number')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("registered_patent_number") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.registered_patent_number)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.registered_patent_number }}
+                    </p>
+                </div>
+
+                <div *ngIf="_data?.patent_expiration_date && getColumnName('patent_expiration_date')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("patent_expiration_date") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.patent_expiration_date)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.patent_expiration_date }}
+                    </p>
+                </div>
+
+                <div *ngIf="_data?.date_of_registration && getColumnName('date_of_registration')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("date_of_registration") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.date_of_registration)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.date_of_registration }}
+                    </p>
+                </div>
+
+                <div *ngIf="_data?.notes && getColumnName('notes')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("notes") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.notes)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.notes }}
+                    </p>
+                </div>
+
+
+            </div>
+
+            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+                
+                <div *ngIf="_data?.company_name && getColumnName('company_name')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("company_name") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.company_name)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.company_name }}
+                    </p>
+                </div>
+
+                <div *ngIf="_data?.product_name_patent && getColumnName('product_name_patent')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("product_name_patent") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.product_name_patent)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.product_name_patent }}
+                    </p>
+                  
+                </div>
+
+                <div *ngIf="_data?.consolidation_treaty && getColumnName('consolidation_treaty')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("consolidation_treaty") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.consolidation_treaty)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.consolidation_treaty }}
+                    </p>
+                  
+                </div>
+
+                <div *ngIf="_data?.bioequivalence_test && getColumnName('bioequivalence_test')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("bioequivalence_test") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.bioequivalence_test)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.bioequivalence_test }}
+                    </p>
+                  
+                </div>
+
+                <div *ngIf="_data?.cancellation_date && getColumnName('cancellation_date')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("cancellation_date") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.cancellation_date)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.cancellation_date }}
+                    </p>
+                  
+                </div>
+
+                <div *ngIf="_data?.patent_registration && getColumnName('patent_registration')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("patent_registration") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.patent_registration)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.patent_registration }}
+                    </p>
+                  
+                </div>
+
+                <div *ngIf="_data?.patent_right_holder && getColumnName('patent_right_holder')">
+                    <h1 class="font-bold">
+                        {{ getColumnName("patent_right_holder") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                              (click)="handleCopy(_data?.patent_right_holder)">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.patent_right_holder }}
+                    </p>
+                  
+                </div>
+            
+            </div>
+        </div>
+        <br><br>
+        <div class="clickMeURL">
+            <a target="_blank" class="custom-link" [href]="getPubchemId(_data?.url_patent)">
+                CLICK ME - URL PATENT
+            </a>
+            
+            <a target="_blank" class="custom-link" [href]="getPubchemId(_data?.url_k_orangebook)">
+                CLICK ME - URL K-ORANGEBOOK
+            </a>
+        </div>
+        
+
+    </div>
+</div>

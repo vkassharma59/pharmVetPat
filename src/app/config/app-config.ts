@@ -46,9 +46,33 @@ export const AppConfigValues: AppConfig = {
         searchSpecific: `${appUrl.apiUrl}/impurity/search-specific`,
         columnList: `${appUrl.apiUrl}/impurity/column-list`,
       },
+      impPatents: {
+        searchSpecific: `${appUrl.apiUrl}/imp-patents/search-specific`,
+        columnList: `${appUrl.apiUrl}/imp-patents/column-list`,
+      },
+      europeApproval: {
+        searchSpecific: `${appUrl.apiUrl}/ema/search-specific`,
+        columnList: `${appUrl.apiUrl}/ema/column-list`,
+      },
       canadaApproval: {
         searchSpecific: `${appUrl.apiUrl}/health-canada/search-specific`,
         columnList: `${appUrl.apiUrl}/health-canada/column-list`,
+      },
+      japanApproval: {
+        searchSpecific: `${appUrl.apiUrl}/japan-pmda/search-specific`,
+        columnList: `${appUrl.apiUrl}/japan-pmda/column-list`,
+      },
+      koreaApproval: {
+        searchSpecific: `${appUrl.apiUrl}/korea-orange-book/search-specific`,
+        columnList: `${appUrl.apiUrl}/korea-orange-book/column-list`,
+      },
+      indianMedicine: {
+        searchSpecific: `${appUrl.apiUrl}/indian-medicine/search-specific`,
+        columnList: `${appUrl.apiUrl}/indian-medicine/column-list`,
+      },
+      litigation: {
+        searchSpecific: `${appUrl.apiUrl}/litigation/search-specific`,
+        columnList: `${appUrl.apiUrl}/litigation/column-list`,
       },
       chemiTracker: {
         searchSpecific: `${appUrl.apiUrl}/chemi-tracker/search-specific`,

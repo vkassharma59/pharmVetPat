@@ -5,7 +5,7 @@
   }
 
   /* Title / Top Section */
-  .top_section h1 {
+  /* .top_section h1 {
     font-weight: bold;
     text-align: center;
     margin-bottom: 20px;
@@ -23,10 +23,53 @@
   }
   .top_section .pharma {
     color: #366ee7;
-  }
+  } */
+
+  .top_section {
+    text-align: center;
+    padding: 1rem;
+}
+
+.top_section .heading {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: clamp(1.5rem, 4vw, 2.75rem);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.3rem;
+    align-items: baseline;
+}
+
+/* Keep Chem, Robotics, and Pharma Database together on larger screens */
+@media (min-width: 769px) {
+    .heading {
+        flex-wrap: nowrap; /* Prevent wrapping on large screens */
+    }
+}
+
+.top_section .chem {
+    color: #172b4d;
+    font-weight: bold;
+}
+
+.top_section .robotics {
+    color: #172b4d;
+    font-weight: normal;
+}
+
+.top_section .robotics .trademark {
+    font-size: 0.5em;
+}
+
+.top_section .pharma {
+    color: #366ee7;
+}
+
+
 
   /* Header Tabs Row */
-  .header {
+  /* .header {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -53,7 +96,58 @@
     padding: 4px 10px;
     font-weight: bold;
     font-size: 14px;
+} */
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 20px;
+  width: 90%; /* Adjusts width dynamically */
+  max-width: 600px;
+  height: auto;
+  padding: 10px;
+  margin: 0 auto 30px;
+  flex-wrap: wrap; /* Allows wrapping for smaller screens */
+  gap: 10px;
 }
+
+.header button {
+  background-color: #fff;
+  color: #707070;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  white-space: nowrap; /* Prevents text from wrapping inside buttons */
+}
+
+.header button.active {
+  background: #0056b3;
+  color: #fff;
+  border-radius: 16px;
+  padding: 8px 14px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column; /* Stack buttons on small screens */
+    width: 100%;
+    gap: 8px;
+  }
+
+  .header button {
+    width: 90%; /* Buttons take full width on small screens */
+    text-align: center;
+  }
+}
+
 
   /* Card Box */
   .card-box {
@@ -145,3 +239,21 @@
       cursor: pointer;
     }
   }
+
+
+  .col-md-8 {
+    position: relative; /* Ensures absolute dropdown positions correctly */
+  }
+  .suggestions-dropdown {
+    width: 100%; /* Ensures it matches input width */
+    min-width: 200px; /* Prevents it from being too narrow */
+    max-width: 100%; /* Prevents overflow */
+    z-index: 999; /* Ensures it stays on top */
+  }
+  @media (max-width: 768px) {
+    .suggestions-dropdown {
+      width: 90%; /* Makes it more readable */
+      left: 5%; /* Centers it properly */
+    }
+  }
+  

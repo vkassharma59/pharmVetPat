@@ -1,0 +1,36 @@
+import { Component, Input } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { UtilityService } from '../../../services/utility-service/utility.service';
+import { Auth_operations } from '../../../Utils/SetToken';
+import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
+import { CommonModule } from '@angular/common';
+import { environment } from '../../../../environments/environment';
+import { JapanPMDAComponent } from "../japan-pmda/japan-pmda.component";
+
+@Component({
+  selector: 'chem-japan',
+  standalone: true,
+  imports: [CommonModule, JapanPMDAComponent],
+  templateUrl: './japan.component.html',
+  styleUrl: './japan.component.css'
+})
+export class JapanComponent {
+   
+   resultTabs: any = {};
+   _data: any = [];
+   @Input()
+   get data() {
+     return this._data;
+   }
+   set data(value: any) {
+     this._data = value;
+   }
+ 
+   constructor(private utilityService: UtilityService) {
+     this.resultTabs = this.utilityService.getAllTabsName();
+   }
+   ngOnChanges() {
+    console.log('JapanComponent received data:', this._data);
+  }
+  
+}

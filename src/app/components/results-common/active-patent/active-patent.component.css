@@ -1,0 +1,21 @@
+.container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+  .avatar {
+    width: 40px; /* Set image size */
+    height: 40px;
+    border-radius: 50%; /* Circular images */
+  }
+  

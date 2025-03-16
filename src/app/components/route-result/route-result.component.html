@@ -49,6 +49,57 @@
         <chem-chemi-tracker [data]="_dataItem.chemiTracker"></chem-chemi-tracker>
       </ng-container>
 
+      <ng-container *ngSwitchCase="'europeApproval'">
+        <chem-europe-approval [data]="dataItem.europeApproval"></chem-europe-approval>
+      </ng-container>
+     
+      <ng-container *ngSwitchCase="'usApproval'">
+        <chem-us></chem-us>
+      </ng-container>
+   
+      <ng-container *ngSwitchCase="'canadaApproval'">
+        <chem-canada [data]="dataItem.canadaApproval"></chem-canada>
+      </ng-container>
+     
+      <ng-container *ngSwitchCase="'japanApproval'">
+        <chem-japan [data]="dataItem.japanApproval"></chem-japan>
+      </ng-container>
+
+
+      <ng-container *ngSwitchCase="'koreaApproval'">
+        <chem-korea [data]="dataItem.koreaApproval"></chem-korea>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'indianMedicine'">
+        <chem-indian [data]="dataItem.indianMedicine"></chem-indian>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'litigation'">
+        <chem-litigation [data]="dataItem.litigation"></chem-litigation>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'activePatent'">
+        <chem-active-patent></chem-active-patent>
+      </ng-container>
+      
+
+      <ng-container *ngSwitchCase="'impPatents'">
+        <chem-imp [data]="dataItem.impPatents"></chem-imp>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'spcDb'">
+        <chem-spcdb></chem-spcdb>
+      </ng-container>
+
+
+      <ng-container *ngSwitchCase="'US'">
+        <!-- <chem-us-approval></chem-us-approval> -->
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'eximData'">
+        <chem-exim></chem-exim>
+      </ng-container>
+
       <ng-container *ngSwitchDefault>
         <div class="card-header text-white bg-primary">Comming Soon..</div>
         <div class="card-body">We are wokring on this tab, Please come back later.</div>
