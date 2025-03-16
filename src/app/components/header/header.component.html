@@ -1,451 +1,468 @@
 <div class="header z-50">
   <div class="header_top">
-    <div class="top-link">
-      <div>
-        <a class="nabbar_menu" href="mailto:sales@chemRobotics.com"><i class="fa fa-envelope fa-lg"></i>&nbsp; Email</a>
-      </div>
-      <div>
-        <a class="nabbar_menu" href="tel:916266117944"><i class="fa fa-mobile fa-lg"></i>&nbsp; +91- 6266117944</a>
-      </div>
-      <div>
-        <a class="assets_link" id="assets_link1" href="https://chemroboticspharma.com/assets/data/ChemRobotics_Phama_Brochure_2021.pdf" target="_blank"><i class="fa fa-download fa-lg" aria-hidden="true"></i>&nbsp; Brochure</a>
-      </div>
-      <div>
-        <a class="assets_link" id="assets_link2" href="https://www.chemrobotics.com/agropat/assets/chemrobotics.apk"><i class="fab fa-android fa-lg"></i>&nbsp; Download App</a>
-      </div>
-
-      <div *ngIf="!user" class="ng-scope">
-        <a target="_blank" class="nabbar_menu" href="https://chemrobotics.com/registration"><i class="fa fa-user-plus fa-lg"></i>&nbsp;  Sign Up</a>
-      </div>
-      <div *ngIf="!user"
+    <div class="menu" >
+      <div [ngClass]="(isMenuOpen) ? 'show' : 'top-link'">
+        <div class="menu-content show1">
+          <div >
+            <a class="nabbar_menu" href="mailto:sales@chemRobotics.com"><i class="fa fa-envelope fa-lg"></i>&nbsp; Email</a>
+          </div>
+          <div >
+            <a class="nabbar_menu" href="tel:916266117944"><i class="fa fa-mobile fa-lg"></i>&nbsp; +91- 6266117944</a>
+          </div>
+          <div >
+            <a class="assets_link nabbar_menu" id="assets_link1" href="https://chemroboticspharma.com/assets/data/ChemRobotics_Phama_Brochure_2021.pdf" target="_blank"><i class="fa fa-download fa-lg" aria-hidden="true"></i>&nbsp; Brochure</a>
+          </div>
+          <div >
+            <a class="assets_link nabbar_menu" id="assets_link2" href="https://www.chemrobotics.com/agropat/assets/chemrobotics.apk"><i class="fab fa-android fa-lg"></i>&nbsp; Download App</a>
+          </div>
+          
+          <div *ngIf="!user" class="ng-scope" >
+            <a target="_blank" class="nabbar_menu" href="https://chemrobotics.com/registration"><i class="fa fa-user-plus fa-lg"></i>&nbsp;  Sign Up</a>
+          </div>
+          <div *ngIf="!user"
           data-bs-toggle="modal"
-          data-bs-target="#sign-in" class="ng-scope">
-        <a class="nabbar_menu" href="javascript:void(0)" data-toggle="modal" data-target="#login_modal"><i class="fa fa-sign-in fa-lg"></i>&nbsp; Login</a>
-      </div>
-
-      <div *ngIf="user" class="ng-scope">
-        <a target="_blank" class="nabbar_menu" href="https://chemrobotics.com/profile"><i class="fa fa-user fa-lg"></i>&nbsp; {{ user?.name }}</a>
-      </div>
-
-      <div 
+          data-bs-target="#sign-in" class="ng-scope" >
+          <a class="nabbar_menu" href="javascript:void(0)" data-toggle="modal" data-target="#login_modal"><i class="fa fa-sign-in fa-lg"></i>&nbsp; Login</a>
+        </div>
+        <div *ngIf="user" class="ng-scope" >
+          <a target="_blank" class="nabbar_menu" href="https://chemrobotics.com/profile"><i class="fa fa-user fa-lg"></i>&nbsp; {{ user?.name }}</a>
+        </div>
+        
+        <div 
         *ngIf="user"
         data-bs-toggle="modal"
         data-bs-target="#log_out">
         <a class="nabbar_menu" href="javascript:void(0)"><i class="fa fa-sign-out fa-lg"></i>&nbsp; Logout</a>
       </div>
-
-      <div class="linked-btn-bottom">
-         <script src="//platform.linkedin.com/in.js" type="text/javascript">
-           lang: en_US
-         </script>
-         <span class="IN-widget" data-lnkd-debug="<script type=&quot;IN/FollowCompany+init&quot; data-id=&quot;31238177&quot; data-counter=&quot;right&quot;></script>" style="display: inline-block; line-height: 1; vertical-align: bottom; padding: 0px; margin: 0px; text-indent: 0px;"><iframe id="{&quot;xdOrigin&quot;:&quot;https://chemroboticspharma.com&quot;,&quot;xdChannel&quot;:&quot;9375d425-532e-422c-9ec3-647e8eaee6f3&quot;,&quot;framework&quot;:&quot;@linkedin/xdoor-sdk&quot;,&quot;version&quot;:&quot;0.1.176&quot;,&quot;debug&quot;:false}" name="{&quot;xdOrigin&quot;:&quot;https://chemroboticspharma.com&quot;,&quot;xdChannel&quot;:&quot;9375d425-532e-422c-9ec3-647e8eaee6f3&quot;,&quot;framework&quot;:&quot;@linkedin/xdoor-sdk&quot;,&quot;version&quot;:&quot;0.1.176&quot;,&quot;debug&quot;:false}" src="https://www.linkedin.com/pages-extensions/FollowCompany?id=31238177&amp;counter=right&amp;xdOrigin=https%3A%2F%2Fchemroboticspharma.com&amp;xdChannel=9375d425-532e-422c-9ec3-647e8eaee6f3&amp;xd_origin_host=https%3A%2F%2Fchemroboticspharma.com" class="IN-widget IN-widget--iframe" scrolling="no" allowtransparency="true" frameborder="0" border="0" width="1" height="1" title="LinkedIn Embedded Content" style="vertical-align: bottom; width: 121px; height: 24.5px;"></iframe></span>
-      </div>
-   </div>
-  </div>
-  <div
-    class="header_bottom bg-[#FFCD04]"
-    [ngClass]="
-      transparent ? 'header_background_transparent' : 'header_background'
-    "
-  >
-    <div class="header_bottom_logo">
-      <img class="header_bottom_logo_img" src="assets/images/logo.png" />
-    </div>
-    <div class="header_bottom_center">
-      <div class="header_bottom_center_box">
-        <a
-          class="header_bottom_center_box_item"
-          [ngClass]="
-            transparent
-              ? 'header_bottom_center_box_text'
-              : 'header_bottom_center_box_text1'
-          "
-          href="https://chemrobotics.com/"
-          >Home</a
-        >
-      </div>
-      <div
-        (mouseenter)="enterHeaderDesc()"
-        (mouseleave)="leaveHeaderDesc()"
-        class="header_bottom_center_box1"
-        [ngClass]="{ header_bottom_center_box_selected: descDropdown }"
-      >
-        <p
-          class="header_bottom_center_box1_item mb-0 flex items-center gap-1"
-          [ngClass]="
-            transparent
-              ? 'header_bottom_center_box1_text'
-              : 'header_bottom_center_box1_text1'
-          "
-        >
-          Who we are
-          <svg
-            *ngIf="overHeaderDesc || overDescDropdown || !transparent"
-            width="9"
-            height="6"
-            viewBox="0 0 9 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
-              fill="#303030"
-            />
-          </svg>
-          <svg
-            *ngIf="!overHeaderDesc && !overDescDropdown && transparent"
-            width="9"
-            height="6"
-            viewBox="0 0 9 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
-              fill="white"
-            />
-          </svg>
-        </p>
-        <div
-          class="header_bottom_center_box1_dropdown descDropdown"
-          [ngClass]="{ open: descDropdown }"
-        >
-          <ul
-            (mouseenter)="enterDescBox()"
-            (mouseleave)="leaveDescBox()"
-            class="header_bottom_center_box1_dropdown_list text_blue_3"
-          >
-            <li class="header_bottom_center_box1_dropdown_list_item">
-              <a
-                href="https://www.chemrobotics.com/about-us?access_key={{
-                  accessKey
-                }}"
-                class="header_bottom_center_box1_dropdown_list_item_link"
-              >
-                <span
-                  class="header_bottom_center_box1_dropdown_list_item_link_text"
-                  >About us</span
-                >
-              </a>
-            </li>
-
-            <li class="header_bottom_center_box1_dropdown_list_item">
-              <a
-                href="https://www.chemrobotics.com/advisory?access_key={{
-                  accessKey
-                }}"
-                class="header_bottom_center_box1_dropdown_list_item_link"
-              >
-                <span
-                  class="header_bottom_center_box1_dropdown_list_item_link_text"
-                  >Advisory Panel</span
-                >
-              </a>
-            </li>
-
-            <li class="header_bottom_center_box1_dropdown_list_item">
-              <a
-                href="https://www.chemrobotics.com/awards-recognition?access_key={{
-                  accessKey
-                }}"
-                class="header_bottom_center_box1_dropdown_list_item_link"
-              >
-                <span
-                  class="header_bottom_center_box1_dropdown_list_item_link_text"
-                  >Awards & Recognition</span
-                >
-              </a>
-            </li>
-            <li class="header_bottom_center_box1_dropdown_list_item">
-              <a
-                class="header_bottom_center_box1_dropdown_list_item_link"
-                href="https://www.chemrobotics.com/our-partners?access_key={{
-                  accessKey
-                }}"
-              >
-                <span
-                  class="header_bottom_center_box1_dropdown_list_item_link_text"
-                  >Our Partner</span
-                >
-              </a>
-            </li>
-            <li class="header_bottom_center_box1_dropdown_list_item">
-              <a
-                class="header_bottom_center_box1_dropdown_list_item_link"
-                href="https://www.chemrobotics.com/our-teams?access_key={{
-                  accessKey
-                }}"
-              >
-                <span
-                  class="header_bottom_center_box1_dropdown_list_item_link_text"
-                  >Our Team</span
-                >
-              </a>
-            </li>
-            <li class="header_bottom_center_box1_dropdown_list_item">
-              <a
-                class="header_bottom_center_box1_dropdown_list_item_link"
-                href="https://www.chemrobotics.com/clients?access_key={{
-                  accessKey
-                }}"
-                target="_blank"
-              >
-                <span
-                  class="header_bottom_center_box1_dropdown_list_item_link_text"
-                  >Client</span
-                >
-              </a>
-            </li>
-            <li class="header_bottom_center_box1_dropdown_list_item">
-              <a
-                class="header_bottom_center_box1_dropdown_list_item_link"
-                href="https://www.chemrobotics.com/press-release?access_key={{
-                  accessKey
-                }}"
-              >
-                <span
-                  class="header_bottom_center_box1_dropdown_list_item_link_text"
-                  >Press Release</span
-                >
-              </a>
-            </li>
-            <li class="header_bottom_center_box1_dropdown_list_item">
-              <a
-                class="header_bottom_center_box1_dropdown_list_item_link"
-                href="https://www.chemrobotics.com/our-story?access_key={{
-                  accessKey
-                }}"
-                target="_blank"
-              >
-                <span
-                  class="header_bottom_center_box1_dropdown_list_item_link_text"
-                  >Our Story</span
-                >
-              </a>
-            </li>
-            <li class="header_bottom_center_box1_dropdown_list_item">
-              <a
-                class="header_bottom_center_box1_dropdown_list_item_link"
-                href="https://www.chemrobotics.com/our-events?access_key={{
-                  accessKey
-                }}"
-              >
-                <span
-                  class="header_bottom_center_box1_dropdown_list_item_link_text"
-                  >Our Events</span
-                >
-              </a>
-            </li>
-            <li class="header_bottom_center_box1_dropdown_list_item">
-              <a
-                class="header_bottom_center_box1_dropdown_list_item_link"
-                href="https://www.chemrobotics.com/gallery?access_key={{
-                  accessKey
-                }}"
-              >
-                <span
-                  class="header_bottom_center_box1_dropdown_list_item_link_text"
-                  >Gallery</span
-                >
-              </a>
-            </li>
-          </ul>
+      
+      <div class="linked-btn-bottom" >
+        <script src="//platform.linkedin.com/in.js" type="text/javascript">
+          lang: en_US
+          </script>
+           <span class="IN-widget" data-lnkd-debug="<script type=&quot;IN/FollowCompany+init&quot; data-id=&quot;31238177&quot; data-counter=&quot;right&quot;></script>" style="display: inline-block; line-height: 1; vertical-align: bottom; padding: 0px; margin: 0px; text-indent: 0px;"><iframe id="{&quot;xdOrigin&quot;:&quot;https://chemroboticspharma.com&quot;,&quot;xdChannel&quot;:&quot;9375d425-532e-422c-9ec3-647e8eaee6f3&quot;,&quot;framework&quot;:&quot;@linkedin/xdoor-sdk&quot;,&quot;version&quot;:&quot;0.1.176&quot;,&quot;debug&quot;:false}" name="{&quot;xdOrigin&quot;:&quot;https://chemroboticspharma.com&quot;,&quot;xdChannel&quot;:&quot;9375d425-532e-422c-9ec3-647e8eaee6f3&quot;,&quot;framework&quot;:&quot;@linkedin/xdoor-sdk&quot;,&quot;version&quot;:&quot;0.1.176&quot;,&quot;debug&quot;:false}" src="https://www.linkedin.com/pages-extensions/FollowCompany?id=31238177&amp;counter=right&amp;xdOrigin=https%3A%2F%2Fchemroboticspharma.com&amp;xdChannel=9375d425-532e-422c-9ec3-647e8eaee6f3&amp;xd_origin_host=https%3A%2F%2Fchemroboticspharma.com" class="IN-widget IN-widget--iframe" scrolling="no" allowtransparency="true" frameborder="0" border="0" width="1" height="1" title="LinkedIn Embedded Content" style="vertical-align: bottom; width: 121px; height: 24.5px;"></iframe></span>
+          </div>
         </div>
-      </div>
+        </div>
+      
       <div
-        (mouseenter)="enterHeader()"
-        (mouseleave)="leaveHeader()"
-        class="header_bottom_center_box"
-        [ngClass]="{ header_bottom_center_box_selected: showProducts }"
+      class="header_bottom bg-[#FFCD04]"
+      [ngClass]="
+      transparent ? 'header_background_transparent' : 'header_background'
+      "
       >
-        <p
+      <div class="header_bottom_logo">
+        <img class="header_bottom_logo_img" src="assets/images/logo.png" />
+      </div>
+    </div>
+    <div class="menu-icon "  (click)="menuDropDown()">
+      <div id="menuIcon">
+        &#9776;
+      </div>
+    </div>
+</div>
+    <div [ngClass]="(isMenuOpen) ? 'show' : 'header_bottom_center'">
+      <div class="drop-content show2">
+        <div class="header_bottom_center_box">
+          <a
+            class="header_bottom_center_box_item"
+            [ngClass]="
+              transparent
+                ? 'header_bottom_center_box_text'
+                : 'header_bottom_center_box_text1'
+            "
+            href="https://chemrobotics.com/"
+            >Home</a
+          >
+        </div>
+        <div
+          (mouseenter)="enterHeaderDesc()"
+          (mouseleave)="leaveHeaderDesc()"
+          class="header_bottom_center_box1"
+          [ngClass]="{ header_bottom_center_box_selected: descDropdown }"
+        >
+        
+        <button (click)="dropdown(0)">
+          <p
+            class="header_bottom_center_box1_item mb-0 flex items-center gap-1"
+            [ngClass]="
+              transparent
+                ? 'header_bottom_center_box1_text'
+                : 'header_bottom_center_box1_text1'
+            "
+          >
+            Who we are
+            <svg
+              *ngIf="overHeaderDesc || overDescDropdown || !transparent"
+              width="9"
+              height="6"
+              viewBox="0 0 9 6"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
+                fill="#303030"
+              />
+            </svg>
+            <svg
+              *ngIf="!overHeaderDesc && !overDescDropdown && transparent"
+              width="9"
+              height="6"
+              viewBox="0 0 9 6"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
+                fill="white"
+              />
+            </svg>
+          </p>
+        </button>
+          <div
+            class="header_bottom_center_box1_dropdown "
+            [ngClass]="(descDropdown[0]) ? 'visible': 'descDropdown'"
+          >
+            <ul
+              (mouseenter)="enterDescBox()"
+              (mouseleave)="leaveDescBox()"
+              class="header_bottom_center_box1_dropdown_list text_blue_3"
+            >
+              <li class="header_bottom_center_box1_dropdown_list_item">
+                <a
+                  href="https://www.chemrobotics.com/about-us?access_key={{
+                    accessKey
+                  }}"
+                  class="header_bottom_center_box1_dropdown_list_item_link"
+                >
+                  <span
+                    class="header_bottom_center_box1_dropdown_list_item_link_text"
+                    >About us</span
+                  >
+                </a>
+              </li>
+  
+              <li class="header_bottom_center_box1_dropdown_list_item">
+                <a
+                  href="https://www.chemrobotics.com/advisory?access_key={{
+                    accessKey
+                  }}"
+                  class="header_bottom_center_box1_dropdown_list_item_link"
+                >
+                  <span
+                    class="header_bottom_center_box1_dropdown_list_item_link_text"
+                    >Advisory Panel</span
+                  >
+                </a>
+              </li>
+  
+              <li class="header_bottom_center_box1_dropdown_list_item">
+                <a
+                  href="https://www.chemrobotics.com/awards-recognition?access_key={{
+                    accessKey
+                  }}"
+                  class="header_bottom_center_box1_dropdown_list_item_link"
+                >
+                  <span
+                    class="header_bottom_center_box1_dropdown_list_item_link_text"
+                    >Awards & Recognition</span
+                  >
+                </a>
+              </li>
+              <li class="header_bottom_center_box1_dropdown_list_item">
+                <a
+                  class="header_bottom_center_box1_dropdown_list_item_link"
+                  href="https://www.chemrobotics.com/our-partners?access_key={{
+                    accessKey
+                  }}"
+                >
+                  <span
+                    class="header_bottom_center_box1_dropdown_list_item_link_text"
+                    >Our Partner</span
+                  >
+                </a>
+              </li>
+              <li class="header_bottom_center_box1_dropdown_list_item">
+                <a
+                  class="header_bottom_center_box1_dropdown_list_item_link"
+                  href="https://www.chemrobotics.com/our-teams?access_key={{
+                    accessKey
+                  }}"
+                >
+                  <span
+                    class="header_bottom_center_box1_dropdown_list_item_link_text"
+                    >Our Team</span
+                  >
+                </a>
+              </li>
+              <li class="header_bottom_center_box1_dropdown_list_item">
+                <a
+                  class="header_bottom_center_box1_dropdown_list_item_link"
+                  href="https://www.chemrobotics.com/clients?access_key={{
+                    accessKey
+                  }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_bottom_center_box1_dropdown_list_item_link_text"
+                    >Client</span
+                  >
+                </a>
+              </li>
+              <li class="header_bottom_center_box1_dropdown_list_item">
+                <a
+                  class="header_bottom_center_box1_dropdown_list_item_link"
+                  href="https://www.chemrobotics.com/press-release?access_key={{
+                    accessKey
+                  }}"
+                >
+                  <span
+                    class="header_bottom_center_box1_dropdown_list_item_link_text"
+                    >Press Release</span
+                  >
+                </a>
+              </li>
+              <li class="header_bottom_center_box1_dropdown_list_item">
+                <a
+                  class="header_bottom_center_box1_dropdown_list_item_link"
+                  href="https://www.chemrobotics.com/our-story?access_key={{
+                    accessKey
+                  }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_bottom_center_box1_dropdown_list_item_link_text"
+                    >Our Story</span
+                  >
+                </a>
+              </li>
+              <li class="header_bottom_center_box1_dropdown_list_item">
+                <a
+                  class="header_bottom_center_box1_dropdown_list_item_link"
+                  href="https://www.chemrobotics.com/our-events?access_key={{
+                    accessKey
+                  }}"
+                >
+                  <span
+                    class="header_bottom_center_box1_dropdown_list_item_link_text"
+                    >Our Events</span
+                  >
+                </a>
+              </li>
+              <li class="header_bottom_center_box1_dropdown_list_item">
+                <a
+                  class="header_bottom_center_box1_dropdown_list_item_link"
+                  href="https://www.chemrobotics.com/gallery?access_key={{
+                    accessKey
+                  }}"
+                >
+                  <span
+                    class="header_bottom_center_box1_dropdown_list_item_link_text"
+                    >Gallery</span
+                  >
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          (mouseenter)="enterHeader()"
+          (mouseleave)="leaveHeader()"
+          class="header_bottom_center_box"
+          [ngClass]="{ header_bottom_center_box_selected: showProducts }"
+          (click)="dropdown(2)"
+        >
+          <p
           class="mb-0 flex items-center gap-1"
           [ngClass]="[
             showProducts
-              ? 'header_bottom_center_box_selected_item'
-              : 'header_bottom_center_box_item',
+            ? 'header_bottom_center_box_selected_item'
+            : 'header_bottom_center_box_item',
             transparent
-              ? 'header_bottom_center_box_text'
-              : 'header_bottom_center_box_text1'
+            ? 'header_bottom_center_box_text'
+            : 'header_bottom_center_box_text1'
           ]"
-        >
-          Agro Products
-          <svg
-            *ngIf="showProducts || !transparent"
-            width="9"
-            height="6"
-            viewBox="0 0 9 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
           >
-            <path
-              d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
-              fill="#303030"
-            />
-          </svg>
-          <svg
-            *ngIf="!showProducts && transparent"
-            width="9"
-            height="6"
-            viewBox="0 0 9 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
-              fill="white"
-            />
-          </svg>
-        </p>
-      </div>
-      <div
-        (mouseenter)="enterHeaderServices()"
-        (mouseleave)="leaveHeaderServices()"
-        class="header_bottom_center_box1"
-        [ngClass]="{ header_bottom_center_box_selected: servicesDropdown }"
-      >
-        <p
-          class="header_bottom_center_box1_item mb-0 flex items-center gap-1"
-          [ngClass]="
-            transparent
-              ? 'header_bottom_center_box1_text'
-              : 'header_bottom_center_box1_text1'
-          "
-        >
-          Services
-          <svg
-            *ngIf="overHeaderservices || overServicesDropdown || !transparent"
-            width="9"
-            height="6"
-            viewBox="0 0 9 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
-              fill="#303030"
-            />
-          </svg>
-          <svg
-            *ngIf="!overHeaderservices && !overServicesDropdown && transparent"
-            width="9"
-            height="6"
-            viewBox="0 0 9 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
-              fill="white"
-            />
-          </svg>
-        </p>
-        <div
-          (mouseenter)="enterServicesBox()"
-          (mouseleave)="leaveServicesBox()"
-          class="header_bottom_center_box1_dropdown servicesDropdown"
-          [ngClass]="{ open: servicesDropdown }"
-        >
-          <ul class="header_bottom_center_box1_dropdown_list text_blue_3">
-            <li class="header_bottom_center_box1_dropdown_list_item">
-              <a
-                class="header_bottom_center_box1_dropdown_list_item_link"
-                href="https://www.chemrobotics.com/agro-regulatory?access_key={{
-                  accessKey
-                }}"
-                target="_blank"
-              >
-                <span
-                  class="header_bottom_center_box1_dropdown_list_item_link_text"
-                  >Auto-Regulatory</span
-                >
-              </a>
-            </li>
-            <li class="header_bottom_center_box1_dropdown_list_item">
-              <a
-                class="header_bottom_center_box1_dropdown_list_item_link"
-                href="https://www.chemrobotics.com/patent-india?access_key={{
-                  accessKey
-                }}"
-                target="_blank"
-              >
-                <span
-                  class="header_bottom_center_box1_dropdown_list_item_link_text"
-                  >Patents India</span
-                >
-              </a>
-            </li>
-          </ul>
+            Agro Products
+            <svg
+              *ngIf="showProducts || !transparent"
+              width="9"
+              height="6"
+              viewBox="0 0 9 6"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
+                fill="#303030"
+              />
+            </svg>
+            <svg
+              *ngIf="!showProducts && transparent"
+              width="9"
+              height="6"
+              viewBox="0 0 9 6"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
+                fill="white"
+              />
+            </svg>
+          </p>
         </div>
-      </div>
-      <div class="header_bottom_center_box">
-        <a
-          href="https://www.chemrobotics.com/career?access_key={{ accessKey }}"
-          target="_blank"
-          class="header_bottom_center_box_item"
-          [ngClass]="
-            transparent
-              ? 'header_bottom_center_box_text'
-              : 'header_bottom_center_box_text1'
-          "
-          >Career At</a
+        <div
+          (mouseenter)="enterHeaderServices()"
+          (mouseleave)="leaveHeaderServices()"
+          class="header_bottom_center_box1"
+          [ngClass]="{ header_bottom_center_box_selected: servicesDropdown }"
         >
-      </div>
-      <div class="header_bottom_center_box">
-        <a
-          href="https://www.chemrobotics.com/contact?access_key={{ accessKey }}"
-          target="_blank"
-          class="header_bottom_center_box_item"
-          [ngClass]="
-            transparent
-              ? 'header_bottom_center_box_text'
-              : 'header_bottom_center_box_text1'
-          "
-          >Contact Us</a
-        >
-      </div>
-      <div class="header_bottom_center_box">
-        <a
-          href="https://chemrobotics.in?access_key={{ accessKey }}"
-          target="_blank"
-          class="header_bottom_center_box_item"
-          [ngClass]="
-            transparent
-              ? 'header_bottom_center_box_text'
-              : 'header_bottom_center_box_text1'
-          "
-          >Chemrobotics Times</a
-        >
-      </div>
-      <div class="header_bottom_center_box">
-        <a
-          href="https://buychem.chemrobotics.com?access_key={{ accessKey }}"
-          target="_blank"
-          class="header_bottom_center_box_item"
-          [ngClass]="
-            transparent
-              ? 'header_bottom_center_box_text'
-              : 'header_bottom_center_box_text1'
-          "
-          >Buy Chem</a
-        >
-      </div>
-      <div class="header_bottom_center_box">
-        <a
-          href="https://chemroboticspharma.com?access_key={{ accessKey }}"
-          target="_blank"
-          class="header_bottom_center_box_item"
-          [ngClass]="
-            transparent
-              ? 'header_bottom_center_box_text'
-              : 'header_bottom_center_box_text1'
-          "
-          >Pharma Database</a
-        >
-      </div>
-      <div class="header_bottom_center_box">
-        <div class="googleT">
-          <div id="google_translate_element"></div>
+          <button (click)="dropdown(1)">
+            <p
+            class="header_bottom_center_box1_item mb-0 flex items-center gap-1"
+            [ngClass]="
+              transparent
+                ? 'header_bottom_center_box1_text'
+                : 'header_bottom_center_box1_text1'
+            "
+          >
+            Services
+            <svg
+              *ngIf="overHeaderservices || overServicesDropdown || !transparent"
+              width="9"
+              height="6"
+              viewBox="0 0 9 6"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
+                fill="#303030"
+              />
+            </svg>
+            <svg
+              *ngIf="!overHeaderservices && !overServicesDropdown && transparent"
+              width="9"
+              height="6"
+              viewBox="0 0 9 6"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0.160635 1.126L3.99992 5.76188C4.0618 5.83657 4.13857 5.89652 4.22495 5.93762C4.31133 5.97872 4.40528 6 4.50036 6C4.59544 6 4.68939 5.97872 4.77577 5.93762C4.86215 5.89652 4.93892 5.83657 5.0008 5.76188L8.84009 1.126C9.20649 0.683502 8.90271 0 8.33965 0H0.659978C0.0969123 0 -0.206869 0.683502 0.160635 1.126Z"
+                fill="white"
+              />
+            </svg>
+          </p>
+          </button>
+          <div
+            (mouseenter)="enterServicesBox()"
+            (mouseleave)="leaveServicesBox()"
+            class="header_bottom_center_box1_dropdown "
+            [ngClass]="(descDropdown[1]) ? 'visible': 'servicesDropdown'"
+          >
+            <ul class="header_bottom_center_box1_dropdown_list text_blue_3">
+              <li class="header_bottom_center_box1_dropdown_list_item">
+                <a
+                  class="header_bottom_center_box1_dropdown_list_item_link"
+                  href="https://www.chemrobotics.com/agro-regulatory?access_key={{
+                    accessKey
+                  }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_bottom_center_box1_dropdown_list_item_link_text"
+                    >Auto-Regulatory</span
+                  >
+                </a>
+              </li>
+              <li class="header_bottom_center_box1_dropdown_list_item">
+                <a
+                  class="header_bottom_center_box1_dropdown_list_item_link"
+                  href="https://www.chemrobotics.com/patent-india?access_key={{
+                    accessKey
+                  }}"
+                  target="_blank"
+                >
+                  <span
+                    class="header_bottom_center_box1_dropdown_list_item_link_text"
+                    >Patents India</span
+                  >
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="header_bottom_center_box">
+<a
+            href="https://www.chemrobotics.com/career?access_key={{ accessKey }}"
+            target="_blank"
+            class="header_bottom_center_box_item"
+            [ngClass]="
+              transparent
+                ? 'header_bottom_center_box_text'
+                : 'header_bottom_center_box_text1'
+            "
+            >Career At</a
+          >
+        </div>
+        <div class="header_bottom_center_box">
+          <a
+            href="https://www.chemrobotics.com/contact?access_key={{ accessKey }}"
+            target="_blank"
+            class="header_bottom_center_box_item"
+            [ngClass]="
+              transparent
+                ? 'header_bottom_center_box_text'
+                : 'header_bottom_center_box_text1'
+            "
+            >Contact Us</a
+          >
+        </div>
+        <div class="header_bottom_center_box">
+          <a
+            href="https://chemrobotics.in?access_key={{ accessKey }}"
+            target="_blank"
+            class="header_bottom_center_box_item"
+            [ngClass]="
+              transparent
+                ? 'header_bottom_center_box_text'
+                : 'header_bottom_center_box_text1'
+            "
+            >Chemrobotics Times</a
+          >
+        </div>
+        <div class="header_bottom_center_box">
+          <a
+            href="https://buychem.chemrobotics.com?access_key={{ accessKey }}"
+            target="_blank"
+            class="header_bottom_center_box_item"
+            [ngClass]="
+              transparent
+                ? 'header_bottom_center_box_text'
+                : 'header_bottom_center_box_text1'
+            "
+            >Buy Chem</a
+          >
+        </div>
+        <div class="header_bottom_center_box">
+          <a
+            href="https://chemroboticspharma.com?access_key={{ accessKey }}"
+            target="_blank"
+            class="header_bottom_center_box_item"
+            [ngClass]="
+              transparent
+                ? 'header_bottom_center_box_text'
+                : 'header_bottom_center_box_text1'
+            "
+            >Pharma Database</a
+          >
+        </div>
+        <div class="header_bottom_center_box" style="font-size: 1rem;">
+          <div class="googleT" >
+            <div id="google_translate_element"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -590,7 +607,7 @@
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path
+  <path
                       d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
                       fill="#0032A0"
                     />
@@ -783,7 +800,7 @@
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path
+  <path
                       d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
                       fill="#0032A0"
                     />
@@ -1122,7 +1139,7 @@
       </div>
       <div
         (click)="selectedMenu = selectedMenu === 'products' ? '' : 'products'"
-        class="header_menu_list_item text_style_4"
+        class="header_menu_list_item text_style_4 "  (click)="dropdown(2)"
       >
         Agro Products
         <div class="header_menu_list_item_icon">
@@ -1143,8 +1160,9 @@
       <div
         *ngIf="selectedMenu === 'products'"
         class="header_menu_list_dropdown"
+        
       >
-        <div class="header_menu_list_dropdown_content">
+        <div class="header_menu_list_dropdown_content" [ngClass]="(descDropdown[2])?'visible':'products'">
           <div class="header_menu_list_dropdown_content_heading text_white_10">
             AGROCHEMICAL / PESTICIDE DATABASE
           </div>
@@ -1474,7 +1492,7 @@
           type="button"
           class="button_blue_2 rounded-pill text_white_9 flex justify-center items-center"
         >
-          Pharma Database
+  Pharma Database
         </a>
       </div>
     </div>

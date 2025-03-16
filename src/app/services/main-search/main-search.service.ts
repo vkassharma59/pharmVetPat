@@ -165,6 +165,21 @@ export class MainSearchService {
             .post(this.apiUrls.litigation.searchSpecific, body, { headers: this.headers })
            .pipe(catchError(this.handleError));
           }  
+          
+
+          impPatentsSearchSpecific(props: any): Observable<any> {
+            const body = props;
+             return this.http
+              .post(this.apiUrls.impPatents.searchSpecific, body, { headers: this.headers })
+             .pipe(catchError(this.handleError));
+            }  
+
+            europeApprovalSearchSpecific(props: any): Observable<any> {
+              const body = props;
+               return this.http
+                .post(this.apiUrls.europeApproval.searchSpecific, body, { headers: this.headers })
+               .pipe(catchError(this.handleError));
+              }  
   
 
 

@@ -46,6 +46,14 @@ export const AppConfigValues: AppConfig = {
         searchSpecific: `${appUrl.apiUrl}/impurity/search-specific`,
         columnList: `${appUrl.apiUrl}/impurity/column-list`,
       },
+      impPatents: {
+        searchSpecific: `${appUrl.apiUrl}/imp-patents/search-specific`,
+        columnList: `${appUrl.apiUrl}/imp-patents/column-list`,
+      },
+      europeApproval: {
+        searchSpecific: `${appUrl.apiUrl}/ema/search-specific`,
+        columnList: `${appUrl.apiUrl}/ema/column-list`,
+      },
       canadaApproval: {
         searchSpecific: `${appUrl.apiUrl}/health-canada/search-specific`,
         columnList: `${appUrl.apiUrl}/health-canada/column-list`,

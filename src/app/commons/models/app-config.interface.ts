@@ -41,6 +41,14 @@ export interface AppConfig {
       searchSpecific: string;
       columnList: string;
     };
+    impPatents: {
+      searchSpecific: string;
+      columnList: string;
+    };
+    europeApproval: {
+      searchSpecific: string;
+      columnList: string;
+    };
     canadaApproval: {
       searchSpecific: string;
       columnList: string;

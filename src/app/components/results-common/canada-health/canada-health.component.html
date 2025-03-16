@@ -21,7 +21,7 @@
 
                 <a target="_blank" style="background-color: red; color: white; padding: 10px;"
                     [href]="getPubchemId(_data?.product_monograph_veterinary_labelling_pdf_link)">
-                    {{ _data?.product_monograph_veterinary_labelling_pdf_link }}
+                   PRODUCT MONOGRAPH/VETERINARY LABELLING(PDF) LINK
                 </a>
                 <br><br>
 
@@ -107,7 +107,7 @@
     <button
       (click)="toggleMoreInfo()"
       class="py-2 px-3 mt-3 mb-3 btnchemical rounded-md btn"
-      style="font-size: 20px;"
+      style="font-size: 20px; background-color: #FF0000; color: white;"
      
     >
       {{
@@ -371,6 +371,110 @@
             </h1>
             <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
                 {{ _data?.product_monograph_veterinary_labelling }}
+            </p>
+        </div>
+
+        <div *ngIf="_data?.original_market_date_see_footnote1 && getColumnName('original_market_date_see_footnote1')">
+            <h1 class="font-bold"> {{ getColumnName("original_market_date_see_footnote1") }}
+                <span
+                                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                  (click)="handleCopy(_data?.original_market_date_see_footnote1)"
+                                  ><i class="fas fa-copy"></i
+                                ></span>
+            </h1>
+            <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                {{ _data?.original_market_date_see_footnote1 }}
+            </p>
+        </div>
+
+        <div *ngIf="_data?.biosimilar_biologic_drug && getColumnName('biosimilar_biologic_drug')">
+            <h1 class="font-bold"> {{ getColumnName("biosimilar_biologic_drug") }}
+                <span
+                                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                  (click)="handleCopy(_data?.biosimilar_biologic_drug)"
+                                  ><i class="fas fa-copy"></i
+                                ></span>
+            </h1>
+            <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                {{ _data?.biosimilar_biologic_drug }}
+            </p>
+        </div>
+
+        <div *ngIf="_data?.american_hospital_formulary_service_ahfs && getColumnName('american_hospital_formulary_service_ahfs')">
+            <h1 class="font-bold"> {{ getColumnName("american_hospital_formulary_service_ahfs") }}
+                <span
+                                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                  (click)="handleCopy(_data?.american_hospital_formulary_service_ahfs)"
+                                  ><i class="fas fa-copy"></i
+                                ></span>
+            </h1>
+            <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                {{ _data?.american_hospital_formulary_service_ahfs }}
+            </p>
+        </div>
+
+        <div *ngIf="_data?.notes && getColumnName('notes')">
+            <h1 class="font-bold"> {{ getColumnName("notes") }}
+                <span
+                                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                  (click)="handleCopy(_data?.notes)"
+                                  ><i class="fas fa-copy"></i
+                                ></span>
+            </h1>
+            <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                {{ _data?.notes }}
+            </p>
+        </div>
+
+        <div *ngIf="_data?.remarks && getColumnName('remarks')">
+            <h1 class="font-bold"> {{ getColumnName("remarks") }}
+                <span
+                                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                  (click)="handleCopy(_data?.remarks)"
+                                  ><i class="fas fa-copy"></i
+                                ></span>
+            </h1>
+            <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                {{ _data?.remarks }}
+            </p>
+        </div>
+
+        <div *ngIf="_data?.information_sources && getColumnName('information_sources')">
+            <h1 class="font-bold"> {{ getColumnName("information_sources") }}
+                <span
+                                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                  (click)="handleCopy(_data?.information_sources)"
+                                  ><i class="fas fa-copy"></i
+                                ></span>
+            </h1>
+            <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                {{ _data?.information_sources }}
+            </p>
+        </div>
+
+        <div *ngIf="_data?.created_at && getColumnName('created_at')">
+            <h1 class="font-bold"> {{ getColumnName("created_at") }}
+                <span
+                                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                  (click)="handleCopy(_data?.created_at)"
+                                  ><i class="fas fa-copy"></i
+                                ></span>
+            </h1>
+            <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                {{ _data?.created_at }}
+            </p>
+        </div>
+
+        <div *ngIf="_data?.id && getColumnName('id')">
+            <h1 class="font-bold"> {{ getColumnName("id") }}
+                <span
+                                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                  (click)="handleCopy(_data?.id)"
+                                  ><i class="fas fa-copy"></i
+                                ></span>
+            </h1>
+            <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                {{ _data?.id }}
             </p>
         </div>
 

@@ -209,6 +209,13 @@ export class SearchResultsComponent {
           this.setLoadingState.emit(false);
         }     
         break;
+        case this.resultTabs?.impPatents.name:
+          if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.impPatents.name]).length === 0) {
+            this.performImpPatentsSearch(resultTabData);
+          } else {
+            this.setLoadingState.emit(false);
+          }     
+          break;
         case this.resultTabs?.canadaApproval.name:
           if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.canadaApproval.name]).length === 0) {
             this.performCanadaApprovalSearch(resultTabData);
@@ -241,6 +248,13 @@ export class SearchResultsComponent {
                 case this.resultTabs?.litigation.name:
                 if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.litigation.name]).length === 0) {
                   this.performLitigationSearch(resultTabData);
+                } else {
+                  this.setLoadingState.emit(false);
+                }     
+                break;
+                case this.resultTabs?.europeApproval.name:
+                if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.europeApproval.name]).length === 0) {
+                  this.performEuropeApprovalSearch(resultTabData);
                 } else {
                   this.setLoadingState.emit(false);
                 }     
@@ -670,6 +684,94 @@ export class SearchResultsComponent {
             console.log(result);
             if(result?.data?.litigation_data.length > 0) {
               this.allDataSets[resultTabData.index][this.resultTabs.litigation.name] = result?.data?.litigation_data;
+            }      
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
+
+   private performImpPatentsSearch(resultTabData: any): void {
+
+    if(resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+      this.allDataSets[resultTabData.index][this.resultTabs.impPatents.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
+
+    const body = {
+      search_type: resultTabData?.searchWith,
+      keyword: resultTabData?.searchWithValue,
+      page_no: 1,
+      filter_enable: false,
+      filters: {},
+      order_by: '',
+    }
+  
+    const tech_API = this.apiUrls.impPatents.columnList;  
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.impPatents.name, response);
+  
+        this.mainSearchService.impPatentsSearchSpecific(body).subscribe({
+          next: (result: any) => {  
+            console.log(result);
+            if(result?.data?.imp_patent_data.length > 0) {
+              this.allDataSets[resultTabData.index][this.resultTabs.impPatents.name] = result?.data?.imp_patent_data;
+            }      
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
+
+  private performEuropeApprovalSearch(resultTabData: any): void {
+
+    if(resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+      this.allDataSets[resultTabData.index][this.resultTabs.europeApproval.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
+
+    const body = {
+      search_type: resultTabData?.searchWith,
+      keyword: resultTabData?.searchWithValue,
+      page_no: 1,
+      filter_enable: false,
+      filters: {},
+      order_by: '',
+    }
+  
+    const tech_API = this.apiUrls.europeApproval.columnList;  
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.europeApproval.name, response);
+  
+        this.mainSearchService.europeApprovalSearchSpecific(body).subscribe({
+          next: (result: any) => {  
+            console.log(result);
+            if(result?.data?.ema_data.length > 0) {
+              this.allDataSets[resultTabData.index][this.resultTabs.europeApproval.name] = result?.data?.ema_data;
             }      
             this.setLoadingState.emit(false);
           },

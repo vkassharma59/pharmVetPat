@@ -45,7 +45,7 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="'europeApproval'">
-        <chem-europe-approval></chem-europe-approval>
+        <chem-europe-approval [data]="dataItem.europeApproval"></chem-europe-approval>
       </ng-container>
      
       <ng-container *ngSwitchCase="'usApproval'">
@@ -79,7 +79,7 @@
       
 
       <ng-container *ngSwitchCase="'impPatents'">
-        <chem-imp></chem-imp>
+        <chem-imp [data]="dataItem.impPatents"></chem-imp>
       </ng-container>
 
       <ng-container *ngSwitchCase="'spcDb'">

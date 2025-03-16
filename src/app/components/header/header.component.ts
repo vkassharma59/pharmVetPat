@@ -40,7 +40,7 @@ export class HeaderComponent {
   };
   showSecondForm: boolean = false;
   showProducts = false;
-  descDropdown = false;
+  descDropdown:boolean[]= [false,false];
   servicesDropdown = false;
   overAgroProducts = false;
   overProductsDropdown = false;
@@ -297,6 +297,17 @@ export class HeaderComponent {
       }
     }
   }
+isMenuOpen:boolean=false;
+dropdown(index:number):void{
+    // this.isdataVisible=this.isdataVisible.map(()=> false);
+    // this.isdataVisible[index]=true;
+    this.descDropdown[index]=!this.descDropdown[index];
+    console.log(this.descDropdown);
+  }
+  menuDropDown():void{
+    this.isMenuOpen=!this.isMenuOpen;
+    console.log(this.isMenuOpen);
+  }
 
   @HostListener('window:scroll', [])
   onWindowScroll() {

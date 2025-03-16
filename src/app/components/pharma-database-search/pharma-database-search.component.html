@@ -1,21 +1,37 @@
  <!-- New Design -->
  <div class="container">
   <!-- Title / Top Section -->
-  <div class="top_section text-center py-3">
+  <!-- <div class="top_section text-center py-3">
     <h1 class="h1-—-inter-—-44pt">
       <span class="chem">Chem</span>
       <span class="robotics">Robotics<sup class="trademark">™</sup></span>
       <span class="pharma">Pharma Database</span>
     </h1>
-  </div>
+  </div> -->
+  <div class="top_section">
+    <h1 class="heading">
+        <span class="chem">Chem</span>
+        <span class="robotics">Robotics<sup class="trademark">™</sup></span>
+        <span class="pharma">Pharma Database</span>
+    </h1>
+</div>
+
+
+  
 
   <!-- Header with tabs (responsive row) -->
   <div class="header">
-    <button (click)="showContent('api-search')" [ngClass]="(activeSearchTab == 'api-search' ) ? 'active' : ''">API or Agrochemical Search</button>
-    <button (click)="showContent('intermediate-search')" [ngClass]="(activeSearchTab == 'intermediate-search' ) ? 'active' : ''">Intermediate / KSM Search</button>
-    <button (click)="showContent('see-all')" [ngClass]="(activeSearchTab == 'see-all' ) ? 'active' : ''">See all</button>
+    <button (click)="showContent('api-search')" [ngClass]="(activeSearchTab == 'api-search') ? 'active' : ''">
+      API or Agrochemical Search
+    </button>
+    <button (click)="showContent('intermediate-search')" [ngClass]="(activeSearchTab == 'intermediate-search') ? 'active' : ''">
+      Intermediate / KSM Search
+    </button>
+    <button (click)="showContent('see-all')" [ngClass]="(activeSearchTab == 'see-all') ? 'active' : ''">
+      See all
+    </button>
   </div>
-
+  
   <div class="card-box">
     <!-- ========== 1) API / Agrochemical Search ========== -->
     <div id="api-search" class="content-section" *ngIf="activeSearchTab == 'api-search' || activeSearchTab == 'see-all'">
