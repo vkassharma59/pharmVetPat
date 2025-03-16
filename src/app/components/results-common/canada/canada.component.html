@@ -14,6 +14,11 @@
         </div>  
         <app-canada-health [data]="dataItem"></app-canada-health>
     </ng-container>
+    <app-child-paging
+        [currentChildAPIBody]="currentChildAPIBody"
+        (handleChangeTabData)="handleResultTabData.emit($event)"
+        (setLoading)="handleSetLoading.emit($event)"
+    ></app-child-paging>
 </ng-container>
 <ng-template #noData>
     <div class="card-header text-white bg-primary">

@@ -178,90 +178,89 @@ export class SearchResultsComponent {
 
     switch(this.currentTabData.name) {
       case this.resultTabs?.technicalRoutes.name: 
-        if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.technicalRoutes.name]).length === 0) {
-          this.performTechnicalRouteSearch(resultTabData);
-        } else {
-          this.setLoadingState.emit(false);
-        }        
-        break;
+          if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.technicalRoutes.name]).length === 0) {
+            this.performTechnicalRouteSearch(resultTabData);
+          } else {
+            this.setLoadingState.emit(false);
+          }        
+          break;
       case this.resultTabs?.productInfo.name:
-        if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.productInfo.name]).length === 0) {
-          this.perforProductInfoSearch(resultTabData);
-        } else {
-          this.setLoadingState.emit(false);
-        }     
-        break;
+          if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.productInfo.name]).length === 0) {
+            this.perforProductInfoSearch(resultTabData);
+          } else {
+            this.setLoadingState.emit(false);
+          }     
+          break;
       case this.resultTabs?.chemicalDirectory.name:
-        if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.chemicalDirectory.name]).length === 0) {
-          this.perforChemicalDirectorySearch(resultTabData);
-        } else {
-          this.setLoadingState.emit(false);
-        }     
-        break;
+          if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.chemicalDirectory.name]).length === 0) {
+            this.perforChemicalDirectorySearch(resultTabData);
+          } else {
+            this.setLoadingState.emit(false);
+          }     
+          break;
       case this.resultTabs?.impurity.name:
-        if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.impurity.name]).length === 0) {
-          this.perforImpuritySearch(resultTabData);
-        } else {
-          this.setLoadingState.emit(false);
-        }     
-        break;
+          if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.impurity.name]).length === 0) {
+            this.perforImpuritySearch(resultTabData);
+          } else {
+            this.setLoadingState.emit(false);
+          }     
+          break;
       case this.resultTabs?.chemiTracker.name:
-        if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.chemiTracker.name]).length === 0) {
-          this.perforChemiTrackerSearch(resultTabData);
-        } else {
-          this.setLoadingState.emit(false);
-        }     
-        break;
-        case this.resultTabs?.impPatents.name:
+          if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.chemiTracker.name]).length === 0) {
+            this.perforChemiTrackerSearch(resultTabData);
+          } else {
+            this.setLoadingState.emit(false);
+          }     
+          break;
+      case this.resultTabs?.impPatents.name:
           if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.impPatents.name]).length === 0) {
             this.performImpPatentsSearch(resultTabData);
           } else {
             this.setLoadingState.emit(false);
           }     
           break;
-        case this.resultTabs?.canadaApproval.name:
+      case this.resultTabs?.canadaApproval.name:
           if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.canadaApproval.name]).length === 0) {
             this.performCanadaApprovalSearch(resultTabData);
           } else {
             this.setLoadingState.emit(false);
           }     
           break;
-          case this.resultTabs?.japanApproval.name:
-            if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.japanApproval.name]).length === 0) {
-              this.performJapanApprovalSearch(resultTabData);
-            } else {
-              this.setLoadingState.emit(false);
-            }     
-            break;
-            case this.resultTabs?.koreaApproval.name:
-              if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.koreaApproval.name]).length === 0) {
-                this.performKoreaApprovalSearch(resultTabData);
-              } else {
-                this.setLoadingState.emit(false);
-              }     
-              break;
-
-              case this.resultTabs?.indianMedicine.name:
-                if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.indianMedicine.name]).length === 0) {
-                  this.performIndianMedicineSearch(resultTabData);
-                } else {
-                  this.setLoadingState.emit(false);
-                }     
-                break;
-                case this.resultTabs?.litigation.name:
-                if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.litigation.name]).length === 0) {
-                  this.performLitigationSearch(resultTabData);
-                } else {
-                  this.setLoadingState.emit(false);
-                }     
-                break;
-                case this.resultTabs?.europeApproval.name:
-                if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.europeApproval.name]).length === 0) {
-                  this.performEuropeApprovalSearch(resultTabData);
-                } else {
-                  this.setLoadingState.emit(false);
-                }     
-                break;
+      case this.resultTabs?.japanApproval.name:
+          if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.japanApproval.name]).length === 0) {
+            this.performJapanApprovalSearch(resultTabData);
+          } else {
+            this.setLoadingState.emit(false);
+          }     
+          break;
+      case this.resultTabs?.koreaApproval.name:
+          if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.koreaApproval.name]).length === 0) {
+            this.performKoreaApprovalSearch(resultTabData);
+          } else {
+            this.setLoadingState.emit(false);
+          }     
+          break;
+      case this.resultTabs?.indianMedicine.name:
+          if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.indianMedicine.name]).length === 0) {
+            this.performIndianMedicineSearch(resultTabData);
+          } else {
+            this.setLoadingState.emit(false);
+          }     
+          break;
+      case this.resultTabs?.litigation.name:
+          if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.litigation.name]).length === 0) {
+            this.performLitigationSearch(resultTabData);
+          } else {
+            this.setLoadingState.emit(false);
+          }     
+      break;
+      case this.resultTabs?.europeApproval.name:
+          if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.europeApproval.name]).length === 0) {
+            this.performEuropeApprovalSearch(resultTabData);
+          } else {
+            this.setLoadingState.emit(false);
+          }     
+        break;
       default:
         this.setLoadingState.emit(false);
     }
@@ -276,6 +275,7 @@ export class SearchResultsComponent {
     }
 
     this.childApiBody = {
+      api_url: this.apiUrls.technicalRoutes.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
@@ -368,12 +368,14 @@ export class SearchResultsComponent {
     }
 
     this.childApiBody = {
+      api_url: this.apiUrls.chemicalDirectory.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
       filter_enable: false,
       filters: {},
       order_by: '',
+      index: resultTabData.index,
     }
   
     const tech_API = this.apiUrls.chemicalDirectory.columnList;  
@@ -412,12 +414,14 @@ export class SearchResultsComponent {
     }
 
     this.childApiBody = {
+      api_url: this.apiUrls.impurity.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
       filter_enable: false,
       filters: {},
       order_by: '',
+      index: resultTabData.index,
     }
   
     const tech_API = this.apiUrls.impurity.columnList;  
@@ -456,12 +460,14 @@ export class SearchResultsComponent {
     }
 
     this.childApiBody = {
+      api_url: this.apiUrls.chemiTracker.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
       filter_enable: false,
       filters: {},
       order_by: '',
+      index: resultTabData.index,
     }
   
     const tech_API = this.apiUrls.chemiTracker.columnList;  
@@ -490,7 +496,6 @@ export class SearchResultsComponent {
       },
     });
   }
-
   
   private performCanadaApprovalSearch(resultTabData: any): void {
 
@@ -501,12 +506,14 @@ export class SearchResultsComponent {
     }
 
     this.childApiBody = {
+      api_url: this.apiUrls.canadaApproval.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
       filter_enable: false,
       filters: {},
       order_by: '',
+      index: resultTabData.index,
     }
   
     const tech_API = this.apiUrls.canadaApproval.columnList;  
@@ -518,6 +525,7 @@ export class SearchResultsComponent {
           next: (result: any) => {  
             console.log(result);
             if(result?.data?.health_canada_data.length > 0) {
+              this.childApiBody.count = result?.data?.health_canada_count;
               this.allDataSets[resultTabData.index][this.resultTabs.canadaApproval.name] = result?.data?.health_canada_data;
             }      
             this.setLoadingState.emit(false);
@@ -542,13 +550,15 @@ export class SearchResultsComponent {
       return;
     }
 
-    const body = {
+    this.childApiBody = {
+      api_url: this.apiUrls.japanApproval.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
       filter_enable: false,
       filters: {},
       order_by: '',
+      index: resultTabData.index
     }
   
     const tech_API = this.apiUrls.japanApproval.columnList;  
@@ -557,11 +567,12 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.japanApproval.name, response);
   
-        this.mainSearchService.japanApprovalSearchSpecific(body).subscribe({
+        this.mainSearchService.japanApprovalSearchSpecific(this.childApiBody).subscribe({
           next: (result: any) => {  
             console.log(result);
           
             if(result?.data?.japan_pmda_data.length > 0) {
+              this.childApiBody.count = result?.data?.japan_pmda_count;
               this.allDataSets[resultTabData.index][this.resultTabs.japanApproval.name] = result?.data?.japan_pmda_data;
             }       
             this.setLoadingState.emit(false);
@@ -586,13 +597,15 @@ export class SearchResultsComponent {
       return;
     }
 
-    const body = {
+    this.childApiBody = {
+      api_url: this.apiUrls.koreaApproval.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
       filter_enable: false,
       filters: {},
       order_by: '',
+      index: resultTabData.index
     }
   
     const tech_API = this.apiUrls.koreaApproval.columnList;  
@@ -601,10 +614,11 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.koreaApproval.name, response);
   
-        this.mainSearchService.koreaApprovalSearchSpecific(body).subscribe({
+        this.mainSearchService.koreaApprovalSearchSpecific(this.childApiBody).subscribe({
           next: (result: any) => {  
             console.log(result);
             if(result?.data?.korea_orange_book_data.length > 0) {
+              this.childApiBody.count = result?.data?.korea_orange_book_count;
               this.allDataSets[resultTabData.index][this.resultTabs.koreaApproval.name] = result?.data?.korea_orange_book_data;
             }      
             this.setLoadingState.emit(false);
@@ -630,13 +644,15 @@ export class SearchResultsComponent {
       return;
     }
 
-    const body = {
+    this.childApiBody = {
+      api_url: this.apiUrls.indianMedicine.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
       filter_enable: false,
       filters: {},
       order_by: '',
+      index: resultTabData.index
     }
   
     const tech_API = this.apiUrls.indianMedicine.columnList;  
@@ -645,10 +661,11 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.indianMedicine.name, response);
   
-        this.mainSearchService.indianMedicineSearchSpecific(body).subscribe({
+        this.mainSearchService.indianMedicineSearchSpecific(this.childApiBody).subscribe({
           next: (result: any) => {  
             console.log(result);
             if(result?.data?.indian_medicine_data.length > 0) {
+              this.childApiBody.count = result?.data?.indian_medicine_count;
               this.allDataSets[resultTabData.index][this.resultTabs.indianMedicine.name] = result?.data?.indian_medicine_data;
             }      
             this.setLoadingState.emit(false);
@@ -674,13 +691,15 @@ export class SearchResultsComponent {
       return;
     }
 
-    const body = {
+    this.childApiBody = {
+      api_url: this.apiUrls.litigation.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
       filter_enable: false,
       filters: {},
       order_by: '',
+      index: resultTabData.index
     }
   
     const tech_API = this.apiUrls.litigation.columnList;  
@@ -689,10 +708,11 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.litigation.name, response);
   
-        this.mainSearchService.litigationSearchSpecific(body).subscribe({
+        this.mainSearchService.litigationSearchSpecific(this.childApiBody).subscribe({
           next: (result: any) => {  
             console.log(result);
             if(result?.data?.litigation_data.length > 0) {
+              this.childApiBody.count = result?.data?.litigation_count;
               this.allDataSets[resultTabData.index][this.resultTabs.litigation.name] = result?.data?.litigation_data;
             }      
             this.setLoadingState.emit(false);
@@ -718,13 +738,15 @@ export class SearchResultsComponent {
       return;
     }
 
-    const body = {
+    this.childApiBody = {
+      api_url: this.apiUrls.impPatents.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
       filter_enable: false,
       filters: {},
       order_by: '',
+      index: resultTabData.index
     }
   
     const tech_API = this.apiUrls.impPatents.columnList;  
@@ -733,10 +755,11 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.impPatents.name, response);
   
-        this.mainSearchService.impPatentsSearchSpecific(body).subscribe({
+        this.mainSearchService.impPatentsSearchSpecific(this.childApiBody).subscribe({
           next: (result: any) => {  
             console.log(result);
             if(result?.data?.imp_patent_data.length > 0) {
+              this.childApiBody.count = result?.data?.imp_patent_count;
               this.allDataSets[resultTabData.index][this.resultTabs.impPatents.name] = result?.data?.imp_patent_data;
             }      
             this.setLoadingState.emit(false);
@@ -762,13 +785,15 @@ export class SearchResultsComponent {
       return;
     }
 
-    const body = {
+    this.childApiBody = {
+      api_url: this.apiUrls.europeApproval.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
       filter_enable: false,
       filters: {},
       order_by: '',
+      index: resultTabData.index
     }
   
     const tech_API = this.apiUrls.europeApproval.columnList;  
@@ -777,10 +802,10 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.europeApproval.name, response);
   
-        this.mainSearchService.europeApprovalSearchSpecific(body).subscribe({
-          next: (result: any) => {  
-            console.log(result);
+        this.mainSearchService.europeApprovalSearchSpecific(this.childApiBody).subscribe({
+          next: (result: any) => {
             if(result?.data?.ema_data.length > 0) {
+              this.childApiBody.count = result?.data?.ema_count;
               this.allDataSets[resultTabData.index][this.resultTabs.europeApproval.name] = result?.data?.ema_data;
             }      
             this.setLoadingState.emit(false);
@@ -800,22 +825,81 @@ export class SearchResultsComponent {
 
   onChildPaginationChange(data: any){
     console.log(data);
-    console.log(this.currentTabData);    
-
     switch(this.currentTabData.name) {
-      case this.resultTabs.productInfo.name:
-        if(data?.basic_product_data.length > 0) {
-          this.childApiBody.count = data?.basic_product_count;
-          this.allDataSets[this.childApiBody.index][this.resultTabs.productInfo.name] = data?.basic_product_data;
-        }     
-        break;
-      case this.resultTabs.chemiTracker.name:
-        this.perforChemiTrackerSearch(this.currentTabData);
-        break;
-      case this.resultTabs.canadaApproval.name:
-        this.performCanadaApprovalSearch(this.currentTabData);
-        break;   
+      case this.resultTabs?.technicalRoutes.name: 
+          if(data?.ros_data.length > 0) {
+            this.childApiBody.count = data?.ros_count;
+            this.allDataSets[this.childApiBody.index][this.resultTabs.technicalRoutes.name] = data?.ros_data;
+          }   
+          break;
+      case this.resultTabs?.productInfo.name:
+          if(data?.basic_product_data.length > 0) {
+            this.childApiBody.count = data?.basic_product_count;
+            this.allDataSets[this.childApiBody.index][this.resultTabs.productInfo.name] = data?.basic_product_data;
+          }   
+          break;
+      case this.resultTabs?.chemicalDirectory.name:
+          if(data?.chem_dir_data.length > 0) {
+            this.childApiBody.count = data?.chem_dir_count;
+            this.allDataSets[this.childApiBody.index][this.resultTabs.chemicalDirectory.name] = data?.chem_dir_data;
+          }    
+          break;
+      case this.resultTabs?.impurity.name:
+          if(data?.impurity_data.length > 0) {
+            this.childApiBody.count = data?.impurity_count;
+            this.allDataSets[this.childApiBody.index][this.resultTabs.impurity.name] = data?.impurity_data;
+          }     
+          break;
+      case this.resultTabs?.chemiTracker.name:
+          if(data?.chemi_tracker_data.length > 0) {
+            this.childApiBody.count = data?.chemi_tracker_count;
+            this.allDataSets[this.childApiBody.index][this.resultTabs.chemiTracker.name] = data?.chemi_tracker_data;
+          }     
+          break;    
+      case this.resultTabs?.impPatents.name:
+          if(data?.imp_patent_data.length > 0) {
+            this.childApiBody.count = data?.imp_patent_count;
+            this.allDataSets[this.childApiBody.index][this.resultTabs.impPatents.name] = data?.imp_patent_data;
+          }       
+          break;
+      case this.resultTabs?.canadaApproval.name:
+          if(data?.health_canada_data.length > 0) {
+            this.childApiBody.count = data?.health_canada_count;
+            this.allDataSets[this.childApiBody.index][this.resultTabs.canadaApproval.name] = data?.health_canada_data;
+          }       
+          break;
+      case this.resultTabs?.japanApproval.name:
+          if(data?.japan_pmda_data.length > 0) {
+            this.childApiBody.count = data?.japan_pmda_count;
+            this.allDataSets[this.childApiBody.index][this.resultTabs.japanApproval.name] = data?.japan_pmda_data;
+          }       
+          break;    
+      case this.resultTabs?.koreaApproval.name:
+          if(data?.korea_orange_book_data.length > 0) {
+            this.childApiBody.count = data?.korea_orange_book_count;
+              this.allDataSets[this.childApiBody.index][this.resultTabs.koreaApproval.name] = data?.korea_orange_book_data;
+          }       
+          break;
+      case this.resultTabs?.indianMedicine.name:
+          if(data?.indian_medicine_data.length > 0) {
+            this.childApiBody.count = data?.indian_medicine_count;
+            this.allDataSets[this.childApiBody.index][this.resultTabs.indianMedicine.name] = data?.indian_medicine_data;
+          }       
+          break;
+      case this.resultTabs?.litigation.name:
+          if(data?.litigation_data.length > 0) {
+            this.childApiBody.count = data?.litigation_count;
+              this.allDataSets[this.childApiBody.index][this.resultTabs.litigation.name] = data?.litigation_data;
+          }       
+          break;    
+      case this.resultTabs?.europeApproval.name:
+          if(data?.ema_data.length > 0) {
+            this.childApiBody.count = data?.ema_count;
+              this.allDataSets[this.childApiBody.index][this.resultTabs.europeApproval.name] = data?.ema_data;
+          }       
+          break; 
       default:
+        this.setLoadingState.emit(false);
     }
   }
 }

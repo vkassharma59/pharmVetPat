@@ -13,7 +13,12 @@
             </div>
         </div>
         <app-japan-pmda [data]="dataItem"></app-japan-pmda>
-    </ng-container>  
+    </ng-container>
+    <app-child-paging
+        [currentChildAPIBody]="currentChildAPIBody"
+        (handleChangeTabData)="handleResultTabData.emit($event)"
+        (setLoading)="handleSetLoading.emit($event)"
+    ></app-child-paging>  
 </ng-container>
 <ng-template #noData>
     <div class="card-header text-white bg-primary">

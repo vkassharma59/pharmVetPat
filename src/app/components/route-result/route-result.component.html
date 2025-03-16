@@ -34,23 +34,43 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="'technicalRoutes'">
-        <chem-technical-route [data]="_dataItem.technicalRoutes"></chem-technical-route>
+        <chem-technical-route 
+          [data]="_dataItem.technicalRoutes"
+          [currentChildAPIBody]="currentChildAPIBody"
+          (handleSetLoading)="handleSetLoading.emit($event)"
+          (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-technical-route>
       </ng-container>
 
       <ng-container *ngSwitchCase="'chemicalDirectory'">
-        <chemical-directory [data]="_dataItem.chemicalDirectory"></chemical-directory>
+        <chemical-directory 
+          [data]="_dataItem.chemicalDirectory"
+          [currentChildAPIBody]="currentChildAPIBody"
+          (handleSetLoading)="handleSetLoading.emit($event)"
+          (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chemical-directory>
       </ng-container>
 
       <ng-container *ngSwitchCase="'impurity'">
-        <chem-impurity [data]="_dataItem.impurity"></chem-impurity>
+        <chem-impurity 
+          [data]="_dataItem.impurity"
+          [currentChildAPIBody]="currentChildAPIBody"
+          (handleSetLoading)="handleSetLoading.emit($event)"
+          (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-impurity>
       </ng-container>
 
       <ng-container *ngSwitchCase="'chemiTracker'">
-        <chem-chemi-tracker [data]="_dataItem.chemiTracker"></chem-chemi-tracker>
+        <chem-chemi-tracker 
+          [data]="_dataItem.chemiTracker"
+          [currentChildAPIBody]="currentChildAPIBody"
+          (handleSetLoading)="handleSetLoading.emit($event)"
+          (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-chemi-tracker>
       </ng-container>
 
       <ng-container *ngSwitchCase="'europeApproval'">
-        <chem-europe-approval [data]="dataItem.europeApproval"></chem-europe-approval>
+        <chem-europe-approval 
+          [data]="dataItem.europeApproval"
+          [currentChildAPIBody]="currentChildAPIBody"
+          (handleSetLoading)="handleSetLoading.emit($event)"
+          (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-europe-approval>
       </ng-container>
      
       <ng-container *ngSwitchCase="'usApproval'">
@@ -58,24 +78,44 @@
       </ng-container>
    
       <ng-container *ngSwitchCase="'canadaApproval'">
-        <chem-canada [data]="dataItem.canadaApproval"></chem-canada>
+        <chem-canada 
+          [data]="dataItem.canadaApproval"
+          [currentChildAPIBody]="currentChildAPIBody"
+          (handleSetLoading)="handleSetLoading.emit($event)"
+          (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-canada>
       </ng-container>
      
       <ng-container *ngSwitchCase="'japanApproval'">
-        <chem-japan [data]="dataItem.japanApproval"></chem-japan>
+        <chem-japan 
+          [data]="dataItem.japanApproval"
+          [currentChildAPIBody]="currentChildAPIBody"
+          (handleSetLoading)="handleSetLoading.emit($event)"
+          (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-japan>
       </ng-container>
 
 
       <ng-container *ngSwitchCase="'koreaApproval'">
-        <chem-korea [data]="dataItem.koreaApproval"></chem-korea>
+        <chem-korea 
+          [data]="dataItem.koreaApproval"
+          [currentChildAPIBody]="currentChildAPIBody"
+          (handleSetLoading)="handleSetLoading.emit($event)"
+          (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-korea>
       </ng-container>
 
       <ng-container *ngSwitchCase="'indianMedicine'">
-        <chem-indian [data]="dataItem.indianMedicine"></chem-indian>
+        <chem-indian 
+          [data]="dataItem.indianMedicine"
+          [currentChildAPIBody]="currentChildAPIBody"
+          (handleSetLoading)="handleSetLoading.emit($event)"
+          (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-indian>
       </ng-container>
 
       <ng-container *ngSwitchCase="'litigation'">
-        <chem-litigation [data]="dataItem.litigation"></chem-litigation>
+        <chem-litigation 
+          [data]="dataItem.litigation"
+          [currentChildAPIBody]="currentChildAPIBody"
+          (handleSetLoading)="handleSetLoading.emit($event)"
+          (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-litigation>
       </ng-container>
 
       <ng-container *ngSwitchCase="'activePatent'">
@@ -84,7 +124,11 @@
       
 
       <ng-container *ngSwitchCase="'impPatents'">
-        <chem-imp [data]="dataItem.impPatents"></chem-imp>
+        <chem-imp 
+          [data]="dataItem.impPatents"
+          [currentChildAPIBody]="currentChildAPIBody"
+          (handleSetLoading)="handleSetLoading.emit($event)"
+          (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-imp>
       </ng-container>
 
       <ng-container *ngSwitchCase="'spcDb'">

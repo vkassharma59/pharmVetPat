@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { Auth_operations } from '../../../Utils/SetToken';
@@ -6,15 +6,21 @@ import { ImageModalComponent } from '../../../commons/image-modal/image-modal.co
 import { CommonModule } from '@angular/common';
 import { environment } from '../../../../environments/environment';
 import { CanadaHealthComponent } from '../canada-health/canada-health.component';
+import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
 
 @Component({
   selector: 'chem-canada',
   standalone: true,
-  imports: [CommonModule, CanadaHealthComponent],
+  imports: [CommonModule, CanadaHealthComponent, ChildPagingComponent],
   templateUrl: './canada.component.html',
   styleUrl: './canada.component.css'
 })
 export class CanadaComponent {
+
+  @Output() handleResultTabData = new EventEmitter<any>();
+  @Output() handleSetLoading = new EventEmitter<boolean>();
+  @Input() currentChildAPIBody: any;
+
   resultTabs: any = {};
   _data: any = [];
   @Input()
