@@ -75,6 +75,8 @@ export class ImpurityCardComponent {
 
     // Remove the temporary textarea element
     document.body.removeChild(textArea);
+    alert('Item Copied!');
+
   }
 
   getImageUrl = (data: any) => {

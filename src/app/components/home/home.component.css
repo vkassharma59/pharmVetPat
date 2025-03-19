@@ -31,13 +31,19 @@ opacity: 0;
 
 /* ============================== */
 .top_section h1 {
-    font-weight: bold;
     text-align: center;
     font-size: 2.75rem; /* Default size (44px) */
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 5px;
+}
+
+/* ✅ Ensures "Pharm VetPat™" Always Stays on the Same Line */
+.pharm-line {
+    white-space: nowrap; /* Prevent line break */
+    display: inline-flex; /* Keep in a single row */
+    align-items: center; /* Align text properly */
 }
 
 /* Mobile Styles */
@@ -56,11 +62,22 @@ opacity: 0;
         font-size: 1.5rem; /* Further reduce font size on small screens */
         flex-direction: column; /* Stack elements on small screens */
     }
+
+    .pharm-line {
+        display: inline-block; /* Keep "Pharm VetPat™" together */
+    }
+
+    .pharma {
+        display: block; /* Moves "Generic Suite" below */
+        text-align: center;
+    }
+
     .top_section h1 .robotics .trademark {
         font-size: 0.35em;
     }
 }
 
+/* ✅ Text Styling */
 .top_section h1 .chem {
     color: #172B4D;
     font-weight: bold;

@@ -204,6 +204,11 @@
               <div *ngIf="_data?.company_name && getColumnName('company_name')" class="col-md-6">
                 <h1 class="pt-0 uppercase font-bold">
                   {{ getColumnName("company_name") }}
+                  <span
+                      class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                      (click)="handleCopy(_data?.company_name)"
+                      ><i class="fas fa-copy"></i
+                    ></span>
                 </h1>
                 <p class="pt-0 pb-4">{{ _data?.company_name }}</p>
               </div>
@@ -211,12 +216,22 @@
                 <div *ngIf="_data?.company_type && getColumnName('company_type')" class="col-md-6">
                   <h1 class="pt-0 uppercase font-bold">
                     {{ getColumnName("company_type") }}
+                    <span
+                      class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                      (click)="handleCopy(_data?.company_type)"
+                      ><i class="fas fa-copy"></i
+                    ></span>
                   </h1>
                   <p class="pt-0 pb-4">{{ _data?.company_type }}</p>
                 </div>
                 <div *ngIf="_data?.route_type && getColumnName('route_type')" class="col-md-6">
                   <h1 class="uppercase font-bold">
                     {{ getColumnName("route_type") }}
+                    <span
+                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                    (click)="handleCopy(_data?.route_type)"
+                    ><i class="fas fa-copy"></i
+                  ></span>
                   </h1>
                   <p class="pt-0 pb-4">{{ _data?.route_type }}</p>
                 </div>
@@ -224,6 +239,11 @@
                 <div *ngIf="_data?.patent_type && getColumnName('patent_type')" class="col-md-6">
                   <h1 class="pt-0 uppercase font-bold">
                     {{ getColumnName("patent_type") }}
+                    <span
+                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                    (click)="handleCopy(_data?.patent_type)"
+                    ><i class="fas fa-copy"></i
+                  ></span>
                   </h1>
                   <p class="pt-0 pb-4">{{ _data?.patent_type }}</p>
                 </div>
@@ -231,6 +251,11 @@
                 <div *ngIf="_data?.country_of_company && getColumnName('country_of_company')" class="col-md-6">
                   <h1 class="pt-0 uppercase font-bold">
                     {{ getColumnName("country_of_company") }}:
+                    <span
+                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                    (click)="handleCopy(_data?.country_of_company)"
+                    ><i class="fas fa-copy"></i
+                  ></span>
                   </h1>
                   <p class="pt-0 pb-4">{{ _data?.country_of_company }}</p>
                 </div>
@@ -248,6 +273,11 @@
                 <div *ngIf="_data?.smilies_of_reactants && getColumnName('smilies_of_reactants')" class="col-md-6">
                   <h1 class="pt-0 uppercase font-bold">
                     {{ getColumnName("smilies_of_reactants") }}
+                    <span
+                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                    (click)="handleCopy(_data?.smilies_of_reactants)"
+                    ><i class="fas fa-copy"></i
+                  ></span>
                   </h1>
                   <p class="pt-0 pb-4">{{ _data?.smilies_of_reactants }}</p>
                 </div>

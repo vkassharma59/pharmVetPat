@@ -10,6 +10,10 @@ export const environment = {
     countryNameLogoDomain: '/agropat/images/flag/',
     domainNameEspacenetUrl: 'https://worldwide.espacenet.com/patent/search/family/042310208/publication/',
     domainNameChemicalDirectoryStructure: '/agropat/images/chemical_directory_structures/',
-    countryNameLogoDomain2:  '/agropat/images/'
+    //new created here
+    countryNameLogoDomain2: '/agropat/images/',  
+    baseUrlProduct: 'https://imd.chemrobotics.com',
+    productImages: '/assets/img/ProductImages/',
+
   };
   

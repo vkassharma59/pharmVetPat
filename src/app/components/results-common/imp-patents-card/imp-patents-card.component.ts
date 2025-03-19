@@ -3,9 +3,7 @@ import { Auth_operations } from '../../../Utils/SetToken';
 import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { environment } from '../../../../environments/environment';
-import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
 import { CommonModule } from '@angular/common';
-
 
 @Component({
   selector: 'chem-imp-patents-card',
@@ -19,82 +17,79 @@ export class ImpPatentsCardComponent {
   _data: any = [];
   MoreInfo: boolean = false;
   pageNo: number = 1;
-  imp_patents_column: any = {};
+  imp_patents_column: Record<string, string> = {};
   resultTabs: any = {};
-  
+
+  // API Call Counter (Static for all instances)
+  static apiCallCount: number = 0; 
+  localCount: number = 0; 
 
   @Input()
   get data() {  
     return this._data;  
   }
-  set data(value) {    
-    this.resultTabs = this.utilityService.getAllTabsName();
-    const column_list = Auth_operations.getColumnList();
-    if(column_list[this.resultTabs.impPatents?.name]?.length > 0 && Object.keys(value).length > 0 && value) {
-      for (let i = 0; i < column_list[this.resultTabs.impPatents.name].length; i++) {
-        this.imp_patents_column[column_list[this.resultTabs.impPatents.name][i].value] =
-          column_list[this.resultTabs.impPatents.name][i].name;
+  set data(value: any) {    
+    if (value && Object.keys(value).length > 0) {
+      // Increment Global and Local API call counts
+      ImpPatentsCardComponent.apiCallCount++;
+      this.localCount = ImpPatentsCardComponent.apiCallCount;
+      console.log(`API data received ${this.localCount} times`);
+
+      this.resultTabs = this.utilityService.getAllTabsName();
+      const column_list = Auth_operations.getColumnList();
+      
+      if (column_list[this.resultTabs.impPatents?.name]?.length > 0) {
+        this.imp_patents_column = column_list[this.resultTabs.impPatents.name].reduce(
+          (acc: Record<string, string>, column: any) => {
+            acc[column.value] = column.name;
+            return acc;
+          }, {}
+        );
       }
 
       this._data = value;
     }
   }
 
-  constructor(private dialog: MatDialog,
-      private utilityService: UtilityService) {}
+  constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
   
-  toggleMoreInfo() {
+  toggleMoreInfo(): void {
     this.MoreInfo = !this.MoreInfo;
   }
 
-  getColumnName(value: any) {
-    return this.imp_patents_column[value];
+  getColumnName(value: any): string {
+    return this.imp_patents_column[value] || value;
   }
 
-  getPubchemId(value: any) {
-    return `https://pubchem.ncbi.nlm.nih.gov/#query=${value}`;
+  getPubchemId(value: any): string {
+    return `https://pubchem.ncbi.nlm.nih.gov/#query=${encodeURIComponent(value)}`;
   }
 
   getCompanyLogo(value: any): string {
-    return `${environment.baseUrl}${environment.domainNameCompanyLogo}${value?.company_logo}`;
+    return `${environment.baseUrl}${environment.domainNameCompanyLogo}${value?.company_logo || ''}`;
   }
 
-  getCountryUrl(value: any) {
-    return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country_of_company}.png`;
+  getCountryUrl(value: any): string {
+    return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country_of_company || ''}.png`;
   }
   
-  getCompanyWebsite(value: any) {
-    return `https://${value}`;
+  getCompanyWebsite(value: any): string {
+    return value ? `https://${value}` : '#';
   }
 
-
-  handleCopy(text: any) {
-    // Create a temporary textarea element
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    document.body.appendChild(textArea);
-
-    // Select the text
-    textArea.select();
-    textArea.setSelectionRange(0, 99999); // For mobile devices
-
-    // Copy the text inside the textarea
-    document.execCommand('copy');
-
-    // Remove the temporary textarea element
-    document.body.removeChild(textArea);
+  handleCopy(text: string): void {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Item Copied!');
+    }).catch(err => {
+      console.error('Failed to copy text: ', err);
+    });
   }
 
-  getImageUrl = (data: any) => {
-    return (
-      environment.baseUrl +
-      environment.domainNameCompanyLogo +
-      this.data?.company_logo
-    );
-  };
-
+  getImageUrl(): string {
+    return `${environment.baseUrl}${environment.domainNameCompanyLogo}${this._data?.company_logo || ''}`;
+  }
 }

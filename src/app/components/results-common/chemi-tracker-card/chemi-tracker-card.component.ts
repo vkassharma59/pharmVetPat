@@ -85,6 +85,8 @@ export class ChemiTrackerCardComponent {
 
     // Remove the temporary textarea element
     document.body.removeChild(textArea);
+    alert('Item Copied!');
+
   }
 
   getChemicalImage = (data: any) => {

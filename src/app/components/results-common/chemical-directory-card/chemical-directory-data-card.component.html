@@ -277,6 +277,11 @@
           >
             <h2 class="p-2 font-semibold uppercase">
               {{ getColumnName("chemical_name") }}
+              <span
+                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                  (click)="handleCopy(_data?.chemical_name)"
+                  ><i class="fas fa-copy"></i
+                ></span>
             </h2>
             <p class="p-2 overflow-auto">{{ _data.chemical_name }}</p>
           </div>
@@ -287,6 +292,11 @@
           >
             <h2 class="p-2 font-semibold uppercase">
               {{ getColumnName("description") }}:
+              <span
+                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                  (click)="handleCopy(_data?.chemical_name)"
+                  ><i class="fas fa-copy"></i
+                ></span>
             </h2>
             <p class="p-2 overflow-auto">{{ _data.description }}</p>
           </div>
@@ -296,6 +306,11 @@
           >
             <h2 class="p-2 font-semibold uppercase">
               {{ getColumnName("field_of_application") }}:
+              <span
+                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                  (click)="handleCopy(_data?.field_of_application)"
+                  ><i class="fas fa-copy"></i
+                ></span>
             </h2>
             <p class="p-2 overflow-auto">{{ _data.field_of_application }}</p>
           </div>
@@ -306,6 +321,11 @@
           >
             <h2 class="p-2 font-semibold uppercase">
               {{ getColumnName("indication") }}:
+              <span
+                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                  (click)="handleCopy(_data?.indication)"
+                  ><i class="fas fa-copy"></i
+                ></span>
             </h2>
             <p class="p-2 overflow-auto">{{ _data.indication }}</p>
           </div>
@@ -318,6 +338,11 @@
           >
             <h2 class="p-2 font-semibold uppercase">
               {{ getColumnName("iupac") }}:
+              <span
+              class="mx-1 hover:cursor-pointer text-[#0032A0]"
+              (click)="handleCopy(_data?.iupac)"
+              ><i class="fas fa-copy"></i
+            ></span>
             </h2>
             <p class="p-2 overflow-auto">{{ _data?.iupac }}</p>
           </div>
@@ -327,6 +352,11 @@
           >
             <h2 class="p-2 font-semibold uppercase">
               {{ getColumnName("inchi") }}:
+              <span
+              class="mx-1 hover:cursor-pointer text-[#0032A0]"
+              (click)="handleCopy(_data?.inchi)"
+              ><i class="fas fa-copy"></i
+            ></span>
             </h2>
             <p class="p-2 overflow-auto">{{ _data?.inchi }}</p>
           </div>
@@ -336,6 +366,11 @@
           >
             <h2 class="p-2 font-semibold uppercase">
               {{ getColumnName("inchikey") }}:
+              <span
+              class="mx-1 hover:cursor-pointer text-[#0032A0]"
+              (click)="handleCopy(_data?.inchikey)"
+              ><i class="fas fa-copy"></i
+            ></span>
             </h2>
             <p class="p-2 overflow-auto">{{ _data?.inchikey }}</p>
           </div>
@@ -345,6 +380,11 @@
           >
             <h2 class="p-2 font-semibold uppercase">
               {{ getColumnName("canonical_smiles") }}:
+              <span
+              class="mx-1 hover:cursor-pointer text-[#0032A0]"
+              (click)="handleCopy(_data?.canonical_smiles)"
+              ><i class="fas fa-copy"></i
+            ></span>
             </h2>
             <p class="p-2 overflow-auto">{{ _data.canonical_smiles }}</p>
           </div>
@@ -355,6 +395,11 @@
           >
             <h2 class="p-2 font-semibold uppercase">
               {{ getColumnName("molecular_formula") }}:
+              <span
+              class="mx-1 hover:cursor-pointer text-[#0032A0]"
+              (click)="handleCopy(_data?.molecular_formula)"
+              ><i class="fas fa-copy"></i
+            ></span>
             </h2>
             <p class="p-2 overflow-auto">{{ _data.molecular_formula }}</p>
           </div>
@@ -618,6 +663,11 @@
           >
             <h2 class="p-2 font-semibold">
               {{ getColumnName("pubchem_id") }}:
+              <span
+              class="mx-1 hover:cursor-pointer text-[#0032A0]"
+              (click)="handleCopy(_data?.pubchem_id)"
+              ><i class="fas fa-copy"></i
+            ></span>
             </h2>
             <p class="p-2">
               <a [href]="getPubchemId(_data?.pubchem_id)">{{
@@ -636,12 +686,22 @@
             >
               <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("molecular_formula") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.molecular_formula)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">{{ _data.molecular_formula }}</p>
             </div>
             <div *ngIf="_data.molecular_weight" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("molecular_weight") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.molecular_weight)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">{{ _data.molecular_weight }}</p>
             </div>
@@ -651,6 +711,11 @@
             >
               <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("hydrogen_bond_donor_count") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.hydrogen_bond_donor_count)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">{{ _data.hydrogen_bond_donor_count }}</p>
             </div>
@@ -661,6 +726,11 @@
             >
               <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("hydrogen_bond_acceptor_count") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.hydrogen_bond_donor_count)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.hydrogen_bond_acceptor_count }}
@@ -672,6 +742,11 @@
             >
               <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("rotatable_bond_count") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.rotatable_bond_count)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.rotatable_bond_count }}
@@ -680,6 +755,11 @@
             <div *ngIf="_data.exact_mass" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("exact_mass") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.exact_mass)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.exact_mass }}
@@ -691,6 +771,11 @@
             >
               <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("monoisotopic_mass") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.monoisotopic_mass)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.monoisotopic_mass }}
@@ -703,6 +788,11 @@
             >
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("topological_polar_surface_area") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.topological_polar_surface_area)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.topological_polar_surface_area }}
@@ -712,6 +802,11 @@
             <div *ngIf="_data.heavy_atom_count" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("heavy_atom_count") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.heavy_atom_count)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.heavy_atom_count }}
@@ -724,6 +819,11 @@
             >
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("isotope_atom_count") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.isotope_atom_count)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.isotope_atom_count }}
@@ -736,6 +836,11 @@
             >
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("defined_atom_stereocenter_count") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.defined_atom_stereocenter_count)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.defined_atom_stereocenter_count }}
@@ -748,6 +853,11 @@
             >
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("undefined_atom_stereocenter_count") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.undefined_atom_stereocenter_count)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.undefined_atom_stereocenter_count }}
@@ -760,6 +870,11 @@
             >
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("defined_bond_stereocenter_count") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.defined_bond_stereocenter_count)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.defined_bond_stereocenter_count }}
@@ -772,6 +887,11 @@
             >
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("undefined_bond_stereocenter_count") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.undefined_bond_stereocenter_count)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.undefined_bond_stereocenter_count }}
@@ -784,6 +904,11 @@
             >
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("covalently_bonded_unit_count") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.covalently_bonded_unit_count)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.covalently_bonded_unit_count }}
@@ -793,6 +918,11 @@
             <div *ngIf="_data.complexity" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("complexity") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.complexity)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.complexity }}
@@ -802,6 +932,11 @@
             <div *ngIf="_data.cskf" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("cskf") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.cskf)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.cskf }}
@@ -811,6 +946,11 @@
             <div *ngIf="_data.logp_computed" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("logp_computed") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.logp_computed)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.logp_computed }}
@@ -832,6 +972,11 @@
             <div *ngIf="_data.formal_charge" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("formal_charge") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.formal_charge)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.formal_charge }}
@@ -844,6 +989,11 @@
             >
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("summary_physicochemical_properties") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.summary_physicochemical_properties)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.summary_physicochemical_properties }}
@@ -853,6 +1003,11 @@
             <div *ngIf="_data.isomerism" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("isomerism") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.isomerism)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.isomerism }}
@@ -865,6 +1020,11 @@
             >
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("physical_description") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.physical_description)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.physical_description }}
@@ -874,6 +1034,11 @@
             <div *ngIf="_data.polymorphism" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("polymorphism") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.polymorphism)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.polymorphism }}
@@ -883,6 +1048,11 @@
             <div *ngIf="_data.melting_point" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("melting_point") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.melting_point)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.melting_point }}
@@ -892,6 +1062,11 @@
             <div *ngIf="_data.boiling_point" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("boiling_point") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.boiling_point)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.boiling_point }}
@@ -901,6 +1076,11 @@
             <div *ngIf="_data.color_form" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("color_form") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.color_form)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.color_form }}
@@ -910,6 +1090,11 @@
             <div *ngIf="_data.decomposition" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("decomposition") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.decomposition)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.decomposition }}
@@ -919,6 +1104,11 @@
             <div *ngIf="_data.corrosivity" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("corrosivity") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.corrosivity)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.corrosivity }}
@@ -928,6 +1118,11 @@
             <div *ngIf="_data.refractive_index" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("refractive_index") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.refractive_index)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.refractive_index }}
@@ -940,6 +1135,11 @@
             >
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("kovats_retention_index") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.kovats_retention_index)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.kovats_retention_index }}
@@ -952,6 +1152,11 @@
             >
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("degradation_point") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.degradation_point)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.degradation_point }}
@@ -961,6 +1166,11 @@
             <div *ngIf="_data.flashpoint" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("flashpoint") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.flashpoint)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.flashpoint }}
@@ -970,6 +1180,11 @@
             <div *ngIf="_data.freezing_point" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("freezing_point") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.freezing_point)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.freezing_point }}
@@ -979,6 +1194,11 @@
             <div *ngIf="_data.sublimation" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("sublimation") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.sublimation)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.sublimation }}
@@ -991,6 +1211,11 @@
             >
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("agueous_solubility") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.agueous_solubility)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.agueous_solubility }}
@@ -1003,6 +1228,11 @@
             >
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("solubility_in_organic_solvent") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.solubility_in_organic_solvent)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.solubility_in_organic_solvent }}
@@ -1012,6 +1242,11 @@
             <div *ngIf="_data.density" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("density") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.density)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.density }}
@@ -1024,6 +1259,11 @@
             >
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("bulk_density_specific_gravity") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.bulk_density_specific_gravity)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.bulk_density_specific_gravity }}
@@ -1033,6 +1273,11 @@
             <div *ngIf="_data.vapour_pressure" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("vapour_pressure") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.vapour_pressure)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.vapour_pressure }}
@@ -1042,6 +1287,11 @@
             <div *ngIf="_data.logp" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("logp") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.logp)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.logp }}
@@ -1051,6 +1301,11 @@
             <div *ngIf="_data.stability" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("stability") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.stability)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.stability }}
@@ -1060,6 +1315,11 @@
             <div *ngIf="_data.ph" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("ph") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.ph)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.ph }}
@@ -1072,6 +1332,11 @@
             >
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("dissociation_constants") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.dissociation_constants)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.dissociation_constants }}
@@ -1084,6 +1349,11 @@
             >
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("henrys_law_constant") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.henrys_law_constant)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.henrys_law_constant }}
@@ -1093,6 +1363,11 @@
             <div *ngIf="_data.application_rate" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("application_rate") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.application_rate)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.application_rate }}
@@ -1105,6 +1380,11 @@
             >
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("maximum_uv_vis_absorption") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.maximum_uv_vis_absorption)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.maximum_uv_vis_absorption }}
@@ -1117,6 +1397,11 @@
             >
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("maximum_uv_vis_absorption") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.maximum_uv_vis_absorption)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.maximum_uv_vis_absorption }}
@@ -1126,6 +1411,11 @@
             <div *ngIf="_data.surface_tension" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("surface_tension") }}:
+                <span
+                class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                (click)="handleCopy(_data?.surface_tension)"
+                ><i class="fas fa-copy"></i
+              ></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.surface_tension }}
