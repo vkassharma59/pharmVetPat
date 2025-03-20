@@ -182,7 +182,7 @@
             background: #FFF;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: end;
             border-radius: 0px 0px 20px 20px;
 
             &_img {
@@ -194,7 +194,7 @@
         &_center {
             display: flex;
             align-items: center;
-            justify-content: space-evenly;
+            justify-content: end;
             padding-bottom: 10px;
             padding-top: 35px;
 
@@ -245,7 +245,7 @@
                     font-weight: 600;
 
                     @include respond(desktop) {
-                        font-size: 12px;
+                        font-size: 15px;
                         font-weight: 700;
                     }
                 }
@@ -312,7 +312,7 @@
                     font-weight: 600;
 
                     @include respond(desktop) {
-                        font-size: 11px;
+                        font-size: 15px;
                         font-weight: 700;
                     }
                 }
@@ -676,7 +676,7 @@
 .drop-content{
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: end;
     padding-bottom: 10px;
 }
 @media screen and (max-width:1000px) {
