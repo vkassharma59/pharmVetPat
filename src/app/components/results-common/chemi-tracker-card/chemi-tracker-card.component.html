@@ -1,5 +1,5 @@
 <div class="card-header text-white bg-primary">
-    {{resultTabs?.chemiTracker?.label}} >> <span *ngIf="_data?.chemical_name">{{_data?.chemical_name}}</span>
+    {{ localCount }}. {{resultTabs?.chemiTracker?.label}} >> <span *ngIf="_data?.chemical_name">{{_data?.chemical_name}}</span>
 </div>
 <div class="card-body" *ngIf="!isEmptyObject(_data); else noData">
     <div class="row">

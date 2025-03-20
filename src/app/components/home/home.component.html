@@ -35,10 +35,10 @@
                   <div class="top_section text-center">
                     <h1 class="h1-responsive">
                         <span class="pharm-line">
-                            <span class="chem">Pharm</span>
-                            <span class="robotics">VetPat<sup class="trademark">™</sup></span>
+                            <span class="chem">Chem</span>
+                            <span class="robotics">Robotics<sup class="trademark">™</sup></span>
                         </span>
-                        <span class="pharma">Generic Suite</span>
+                        <span class="pharma">Pharma Database</span>
                     </h1>
                 </div>
                 
@@ -187,18 +187,22 @@
                   <div class="container">
                     <div class="row">
                       <div class="col-12 col-lg-8 col-md-8 mx-auto heading-section">
-                        <h3 class="text-center text-primary font-weight-bold mb-4" style="font-weight: bold;font-size: 22px;">Learn More</h3>
+                        <h3 class="text-center text-primary font-weight-bold mb-4" style="font-weight: bold; font-size: 22px;">Learn More</h3>
                         <div id="accordion">
+                          
                           <!-- FAQ Item 1 -->
                           <div class="accordion-card">
                             <div class="card-header" id="headingZero">
                               <h5 class="mb-0">
-                                <button (click)="openCloseAccordian('accordionItem1')" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseZero" aria-expanded="false" aria-controls="collapseZero">
-                                  Orange Book Data (US Approvals)
-                                </button>
+                                <button 
+                                (click)="openCloseAccordion('accordionItem1', $event)" 
+                                class="btn btn-link" 
+                                [ngClass]="{'active': activeAccordion === 'accordionItem1'}">
+                                Orange Book Data (US Approvals)
+                              </button>
                               </h5>
                             </div>
-                            <div id="collapseZero" [ngClass]="accordionData.accordionItem1 ? 'show' : 'collapse'" aria-labelledby="headingZero" data-parent="#accordion">
+                            <div id="collapseZero" [ngClass]="{'show': activeAccordion === 'accordionItem1', 'collapse': activeAccordion !== 'accordionItem1'}" aria-labelledby="headingZero">
                               <div class="card-body">
                                 <ul>
                                   <li>Physicochemical properties. More than 30 properties with special emphasis on API polymorphic data, particle size etc for market potential APIs.</li>
@@ -211,17 +215,20 @@
                               </div>
                             </div>
                           </div>
-              
+                
                           <!-- FAQ Item 2 -->
                           <div class="accordion-card">
                             <div class="card-header" id="headingZeroPlus">
                               <h5 class="mb-0">
-                                <button (click)="openCloseAccordian('accordionItem2')" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseZeroPlus" aria-expanded="false" aria-controls="collapseZeroPlus">
-                                  Technical Routes
-                                </button>
+                                <button 
+                                (click)="openCloseAccordion('accordionItem2', $event)" 
+                                class="btn btn-link" 
+                                [ngClass]="{'active': activeAccordion === 'accordionItem2'}">
+                                Technical Routes
+                              </button>
                               </h5>
                             </div>
-                            <div id="collapseZeroPlus" [ngClass]="accordionData.accordionItem2 ? 'show' : 'collapse'" aria-labelledby="headingZeroPlus" data-parent="#accordion">
+                            <div id="collapseZeroPlus" [ngClass]="{'show': activeAccordion === 'accordionItem2', 'collapse': activeAccordion !== 'accordionItem2'}" aria-labelledby="headingZeroPlus">
                               <div class="card-body">
                                 <ul>
                                   <li>Physicochemical properties. More than 30 properties with special emphasis on API polymorphic data, particle size etc for market potential APIs.</li>
@@ -234,17 +241,20 @@
                               </div>
                             </div>
                           </div>
-              
+                
                           <!-- FAQ Item 3 -->
                           <div class="accordion-card">
                             <div class="card-header" id="headingOne">
                               <h5 class="mb-0">
-                                <button (click)="openCloseAccordian('accordionItem3')" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                <button 
+                                 (click)="openCloseAccordion('accordionItem3', $event)" 
+                                  class="btn btn-link" 
+                                  [ngClass]="{'active': activeAccordion === 'accordionItem3'}">
                                   Technical Supplier
                                 </button>
                               </h5>
                             </div>
-                            <div id="collapseOne" [ngClass]="accordionData.accordionItem3 ? 'show' : 'collapse'" aria-labelledby="headingOne" data-parent="#accordion">
+                            <div id="collapseOne" [ngClass]="{'show': activeAccordion === 'accordionItem3', 'collapse': activeAccordion !== 'accordionItem3'}" aria-labelledby="headingOne">
                               <div class="card-body">
                                 <ul>
                                   <li>Physicochemical properties. More than 30 properties with special emphasis on API polymorphic data, particle size etc for market potential APIs.</li>
@@ -257,11 +267,13 @@
                               </div>
                             </div>
                           </div>
+                
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                
             
                 <!-- Get Started Today! -->
                 <section class="pb-5 mb-5">

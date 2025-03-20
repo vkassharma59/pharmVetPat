@@ -1,23 +1,72 @@
+// ::ng-deep {
+//   ul.nav.nav-tabs {
+//     margin-top: 20px;
+//     border-bottom: 0;
+//   }
+//   li.nav-item {
+//     margin-right: 5px;
+//     margin-bottom: 5px;
+//   }
+//   li.nav-item a.nav-link{
+//     color: #707070;
+//     background: #F6F5F8;
+//     border-radius: 0;
+//     border-radius: 4px;
+//     font-size: 12px;
+//   }
+//   .nav-item a.nav-link.active {
+//     background: #366EE7;
+//     color: #fff;
+//   }
+// }
 ::ng-deep {
   ul.nav.nav-tabs {
     margin-top: 20px;
     border-bottom: 0;
   }
+
   li.nav-item {
     margin-right: 5px;
     margin-bottom: 5px;
+    white-space: nowrap; 
   }
-  li.nav-item a.nav-link{
+
+  li.nav-item a.nav-link {
     color: #707070;
     background: #F6F5F8;
-    border-radius: 0;
     border-radius: 4px;
     font-size: 12px;
   }
+
   .nav-item a.nav-link.active {
     background: #366EE7;
     color: #fff;
   }
+
+  @media (max-width: 768px) {
+    .tabs-container {
+      display: flex;
+      flex-direction: column; 
+      height: 120px; 
+      overflow-y: auto; 
+      -webkit-overflow-scrolling: touch; 
+    }
+
+    .tabs-container::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .tabs-container::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 10px;
+    }
+
+    .tabs-container::-webkit-scrollbar-track {
+      background: transparent;
+    }
+  }
 }
+
+
 
   

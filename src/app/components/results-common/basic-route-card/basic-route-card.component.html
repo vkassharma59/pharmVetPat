@@ -1,10 +1,10 @@
 <div class="card-header text-white bg-primary">
-  {{resultTabs?.productInfo?.label}} >> {{_data?.ACTIVE_INGREDIENT}}
+  {{ localCount }}. {{resultTabs?.productInfo?.label}} >> {{_data?.ACTIVE_INGREDIENT}}
 </div>
 <div class="card-body">
   <div class="pb-3 mb-3 px-2 rounded-lg" *ngIf="!isEmptyObject(_data); else noData">
     <div class="row">
-      <div class="col-md-12">
+      <!-- <div class="col-md-12">
         <div class="d-flex justify-content-between align-items-center py-2">
           <p class="mb-0 px-3 py-2" style="background-color: #d9dbe4; color: #545454; border-radius: 5px;">
             <strong>Generic Constraining Date (GCD):</strong> 2013-12-31
@@ -14,7 +14,21 @@
             <button class="btn btn-success">View Product Highlight</button>
           </div>
         </div> 
+      </div> -->
+      <div class="d-flex justify-content-between align-items-center py-2 flex-sm-row flex-column text-center">
+        <p class="mb-2 mb-sm-0 px-3 py-2 w-100 w-sm-auto" style="background-color: #d9dbe4; color: #545454; border-radius: 5px;">
+          <strong>Generic Constraining Date (GCD):</strong> 2013-12-31
+        </p>
+        <div class="d-flex gap-2 flex-sm-row flex-column w-100 w-sm-auto">
+          <button class="btn btn-primary w-100 w-sm-auto" [disabled]="!_data?.INCHIKEY">
+            <a href="https://patentscope.wipo.int/search/en/result.jsf?inchikey={{_data?.INCHIKEY}}" target="_blank" style="color: white; text-decoration: none;">
+              View Updated Patent at Patent Scope (WIPO)
+            </a>
+          </button>
+          <button class="btn btn-success w-100 w-sm-auto">View Product Highlight</button>
+        </div>
       </div>
+      
       <div class="col-lg-3" *ngIf="_data?.CHEMICAL_STRUCTURE && getColumnName('CHEMICAL_STRUCTURE')">
         <div class="mt-4">
           <img

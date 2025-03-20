@@ -13,34 +13,35 @@ import { CommonModule } from '@angular/common';
   templateUrl: './chemi-tracker-card.component.html',
   styleUrl: './chemi-tracker-card.component.css'
 })
-
 export class ChemiTrackerCardComponent {
 
+  private static counter = 0; // Static variable to persist count
   _data: any = [];
   MoreInfo: boolean = false;
   pageNo: number = 1;
+  localCount: number;
   chemi_tracker_column: any = {};
   resultTabs: any = {};
+
+  constructor(private dialog: MatDialog, private utilityService: UtilityService) {
+    this.localCount = ++ChemiTrackerCardComponent.counter; // Increment and assign unique count
+  }
 
   @Input()
   get data() {  
     return this._data;  
   }
   set data(value) {    
+    this._data = value;
     this.resultTabs = this.utilityService.getAllTabsName();
     const column_list = Auth_operations.getColumnList();
-    if(column_list[this.resultTabs.chemiTracker?.name]?.length > 0 && Object.keys(value).length > 0 && value) {
+    if (column_list[this.resultTabs.chemiTracker?.name]?.length > 0 && Object.keys(value).length > 0 && value) {
       for (let i = 0; i < column_list[this.resultTabs.chemiTracker.name].length; i++) {
         this.chemi_tracker_column[column_list[this.resultTabs.chemiTracker.name][i].value] =
           column_list[this.resultTabs.chemiTracker.name][i].name;
       }
-
-      this._data = value;
     }
   }
-
-  constructor(private dialog: MatDialog,
-      private utilityService: UtilityService) {}
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
@@ -71,22 +72,14 @@ export class ChemiTrackerCardComponent {
   }
 
   handleCopy(text: any) {
-    // Create a temporary textarea element
     const textArea = document.createElement('textarea');
     textArea.value = text;
     document.body.appendChild(textArea);
-
-    // Select the text
     textArea.select();
-    textArea.setSelectionRange(0, 99999); // For mobile devices
-
-    // Copy the text inside the textarea
+    textArea.setSelectionRange(0, 99999);
     document.execCommand('copy');
-
-    // Remove the temporary textarea element
     document.body.removeChild(textArea);
     alert('Item Copied!');
-
   }
 
   getChemicalImage = (data: any) => {
@@ -98,7 +91,7 @@ export class ChemiTrackerCardComponent {
   };
 
   openImageModal(imageUrl: string): void {
-    const dialogRef = this.dialog.open(ImageModalComponent, {
+    this.dialog.open(ImageModalComponent, {
       width: 'calc(100vw - 5vw)',
       height: '700px',
       panelClass: 'full-screen-modal',

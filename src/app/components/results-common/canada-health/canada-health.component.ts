@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Auth_operations } from '../../../Utils/SetToken';
 import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from '../../../services/utility-service/utility.service';
@@ -12,8 +12,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './canada-health.component.html',
   styleUrl: './canada-health.component.css'
 })
-
-export class CanadaHealthComponent {
+export class CanadaHealthComponent implements OnInit, OnDestroy {
 
   _data: any = [];
   MoreInfo: boolean = false;
@@ -22,8 +21,7 @@ export class CanadaHealthComponent {
   resultTabs: any = {};
 
   static apiCallCount: number = 0; // Global static counter
-
-  localCount: number = 0; // Stores the instance-specific count
+  localCount: number = 0; // Instance-specific count
 
   @Input()
   get data() {  
@@ -31,9 +29,9 @@ export class CanadaHealthComponent {
   }
   set data(value: any) {    
     if (value && Object.keys(value).length > 0) {
-      CanadaHealthComponent.apiCallCount++; // Increment the static counter
-      this.localCount = CanadaHealthComponent.apiCallCount; // Assign to local instance
-     
+      CanadaHealthComponent.apiCallCount++; // Increment static counter
+      this.localCount = CanadaHealthComponent.apiCallCount; // Assign instance count
+
       console.log(`API data received ${this.localCount} times`);
 
       this.resultTabs = this.utilityService.getAllTabsName();
@@ -51,6 +49,18 @@ export class CanadaHealthComponent {
   }
 
   constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
+
+  ngOnInit() {
+    // Reset counter only when the component is first loaded
+    if (CanadaHealthComponent.apiCallCount === 0) {
+      CanadaHealthComponent.apiCallCount = 0;
+    }
+  }
+
+  ngOnDestroy() {
+    // Reset counter when navigating away from the component
+    CanadaHealthComponent.apiCallCount = 0;
+  }
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
