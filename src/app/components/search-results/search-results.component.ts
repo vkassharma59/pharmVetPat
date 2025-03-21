@@ -42,6 +42,7 @@ export class SearchResultsComponent {
   @Input() allDataSets: any = [];  
   @Input() searchData: any;  
   @Input() CurrentAPIBody: any;
+  showPagination: boolean = true;
 
   paginationRerenderTrigger: any = 0;
   userIsLoggedIn: boolean = false;
@@ -175,6 +176,9 @@ export class SearchResultsComponent {
   onResultTabChange(resultTabData: any) { 
     this.setLoadingState.emit(true);
     this.currentTabData = resultTabData?.currentTabData;
+    
+    // Is main pagination display 
+    this.isPaginationDisplay(this.currentTabData.name);
 
     switch(this.currentTabData.name) {
       case this.resultTabs?.technicalRoutes.name: 
@@ -263,6 +267,42 @@ export class SearchResultsComponent {
         break;
       default:
         this.setLoadingState.emit(false);
+    }
+  }
+
+  private isPaginationDisplay(currentTabName) {
+    const searchThrough = Auth_operations.getActiveformValues().activeForm;
+    switch(searchThrough) {
+      case searchTypes.chemicalStructure:
+        if(currentTabName === this.resultTabs.technicalRoutes.name) {
+          this.showPagination = true;
+        } else {
+          this.showPagination = false;
+        }
+        break;
+      case searchTypes.synthesisSearch:
+        if(currentTabName === this.resultTabs.chemicalDirectory.name) {
+          this.showPagination = true;
+        } else {
+          this.showPagination = false;
+        }
+        break;        
+      case searchTypes.intermediateSearch:
+        if(currentTabName === this.resultTabs.technicalRoutes.name) {
+          this.showPagination = true;
+        } else {
+          this.showPagination = false;
+        }
+        break;
+      case (searchTypes.simpleSearch || searchTypes.advanceSearch):
+        if(currentTabName === this.resultTabs.productInfo.name) {
+          this.showPagination = true;
+        } else {
+          this.showPagination = false;
+        }
+        break;
+      default:
+        console.log('No search type selected');
     }
   }
 
@@ -824,7 +864,6 @@ export class SearchResultsComponent {
   }
 
   onChildPaginationChange(data: any){
-    console.log(data);
     switch(this.currentTabData.name) {
       case this.resultTabs?.technicalRoutes.name: 
           if(data?.ros_data.length > 0) {
