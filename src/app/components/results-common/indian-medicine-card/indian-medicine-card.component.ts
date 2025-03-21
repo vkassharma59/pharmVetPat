@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Auth_operations } from '../../../Utils/SetToken';
 import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from '../../../services/utility-service/utility.service';
@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './indian-medicine-card.component.html',
   styleUrl: './indian-medicine-card.component.css'
 })
-export class IndianMedicineCardComponent {
+export class IndianMedicineCardComponent implements OnInit, OnDestroy {
 
   _data: any = [];
   MoreInfo: boolean = false;
@@ -21,7 +21,6 @@ export class IndianMedicineCardComponent {
   resultTabs: any = {};
 
   static apiCallCount: number = 0; // Global static counter
-
   localCount: number = 0; // Stores the instance-specific count
 
   @Input()
@@ -50,6 +49,18 @@ export class IndianMedicineCardComponent {
   }
 
   constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
+
+  ngOnInit() {
+    // Reset counter only when the component is first loaded
+    if (IndianMedicineCardComponent.apiCallCount === 0) {
+      IndianMedicineCardComponent.apiCallCount = 0;
+    }
+  }
+
+  ngOnDestroy() {
+    // Reset counter when navigating away from the component
+    IndianMedicineCardComponent.apiCallCount = 0;
+  }
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;

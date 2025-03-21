@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { Auth_operations } from '../../../Utils/SetToken';
@@ -13,9 +13,9 @@ import { CommonModule } from '@angular/common';
   templateUrl: './impurity-card.component.html',
   styleUrl: './impurity-card.component.css'
 })
-export class ImpurityCardComponent {
+export class ImpurityCardComponent implements OnInit, OnDestroy {
   
-  private static apiCallCount: number = 0; // ✅ STATIC COUNTER
+  private static apiCallCount: number = 0; // ✅ Global static counter
   _data: any = [];
   MoreInfo: boolean = false;
   searchType: string = 'trrn';
@@ -33,9 +33,9 @@ export class ImpurityCardComponent {
   }
   set data(value) {    
     if (value && Object.keys(value).length > 0) {
-      ImpurityCardComponent.apiCallCount++; // ✅ STATIC COUNTER
-      this.apiCallInstance = ImpurityCardComponent.apiCallCount; // ✅ Instance-specific count
-      console.log(`Total API Calls: ${ImpurityCardComponent.apiCallCount}`);
+      ImpurityCardComponent.apiCallCount++; // ✅ Increment static counter
+      this.apiCallInstance = ImpurityCardComponent.apiCallCount; // ✅ Assign instance count
+      console.log(`API data received ${this.apiCallInstance} times`);
 
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
@@ -51,9 +51,20 @@ export class ImpurityCardComponent {
     }
   }
 
-  constructor(private dialog: MatDialog,
-      private utilityService: UtilityService) {}
-  
+  constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
+
+  ngOnInit() {
+    // ✅ Reset static counter when the component loads initially
+    if (ImpurityCardComponent.apiCallCount === 0) {
+      ImpurityCardComponent.apiCallCount = 0;
+    }
+  }
+
+  ngOnDestroy() {
+    // ✅ Reset counter when navigating away from the component
+    ImpurityCardComponent.apiCallCount = 0;
+  }
+
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
@@ -81,13 +92,13 @@ export class ImpurityCardComponent {
     alert('Item Copied!');
   }
 
-  getImageUrl = (data: any) => {
+  getImageUrl(data: any): string {
     return (
       environment.baseUrl +
       environment.domainNameChemicalDirectoryStructure +
       this.data?.chemical_structure
     );
-  };
+  }
 
   openImageModal(imageUrl: string): void {
     this.dialog.open(ImageModalComponent, {

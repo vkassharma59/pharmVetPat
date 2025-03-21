@@ -1,9 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Auth_operations } from '../../../Utils/SetToken';
 import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { environment } from '../../../../environments/environment';
-import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -13,7 +12,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './japan-pmda.component.html',
   styleUrl: './japan-pmda.component.css'
 })
-export class JapanPMDAComponent {
+export class JapanPMDAComponent implements OnInit, OnDestroy {
 
   _data: any = [];
   MoreInfo: boolean = false;
@@ -21,9 +20,8 @@ export class JapanPMDAComponent {
   japan_approval_column: any = {};
   resultTabs: any = {};
 
-  static apiCallCount: number = 0; // Global static counter
-
-  localCount: number = 0; // Stores the instance-specific count
+  static apiCallCount: number = 0; // Static counter (shared across instances)
+  localCount: number = 0; // Instance-specific count
 
   @Input()
   get data() {  
@@ -31,9 +29,9 @@ export class JapanPMDAComponent {
   }
   set data(value: any) {    
     if (value && Object.keys(value).length > 0) {
-      JapanPMDAComponent.apiCallCount++; // Increment the static counter
+      JapanPMDAComponent.apiCallCount++; // Increment global counter
       this.localCount = JapanPMDAComponent.apiCallCount; // Assign to local instance
-     
+
       console.log(`API data received ${this.localCount} times`);
 
       this.resultTabs = this.utilityService.getAllTabsName();
@@ -51,6 +49,18 @@ export class JapanPMDAComponent {
   }
 
   constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
+
+  ngOnInit() {
+    // Reset static counter only when the component is first loaded
+    if (JapanPMDAComponent.apiCallCount === 0) {
+      JapanPMDAComponent.apiCallCount = 0;
+    }
+  }
+
+  ngOnDestroy() {
+    // Reset counter when navigating away from the component
+    JapanPMDAComponent.apiCallCount = 0;
+  }
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;

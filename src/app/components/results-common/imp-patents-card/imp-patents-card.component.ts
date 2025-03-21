@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Auth_operations } from '../../../Utils/SetToken';
 import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from '../../../services/utility-service/utility.service';
@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './imp-patents-card.component.html',
   styleUrl: './imp-patents-card.component.css'
 })
-export class ImpPatentsCardComponent {
+export class ImpPatentsCardComponent implements OnInit, OnDestroy {
 
   _data: any = [];
   MoreInfo: boolean = false;
@@ -20,38 +20,45 @@ export class ImpPatentsCardComponent {
   imp_patents_column: Record<string, string> = {};
   resultTabs: any = {};
 
-  // API Call Counter (Static for all instances)
-  static apiCallCount: number = 0; 
-  localCount: number = 0; 
+  static apiCallCount: number = 0; // Global static counter
+  localCount: number = 0; // Instance-specific count
+
+  constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
 
   @Input()
-  get data() {  
-    return this._data;  
+  get data() {
+    return this._data;
   }
-  set data(value: any) {    
+  set data(value: any) {
     if (value && Object.keys(value).length > 0) {
-      // Increment Global and Local API call counts
-      ImpPatentsCardComponent.apiCallCount++;
-      this.localCount = ImpPatentsCardComponent.apiCallCount;
+      ImpPatentsCardComponent.apiCallCount++; // Increment static counter
+      this.localCount = ImpPatentsCardComponent.apiCallCount; // Assign instance count
+
       console.log(`API data received ${this.localCount} times`);
 
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
-      
+
       if (column_list[this.resultTabs.impPatents?.name]?.length > 0) {
-        this.imp_patents_column = column_list[this.resultTabs.impPatents.name].reduce(
-          (acc: Record<string, string>, column: any) => {
-            acc[column.value] = column.name;
-            return acc;
-          }, {}
-        );
+        for (let i = 0; i < column_list[this.resultTabs.impPatents.name].length; i++) {
+          this.imp_patents_column[column_list[this.resultTabs.impPatents.name][i].value] =
+            column_list[this.resultTabs.impPatents.name][i].name;
+        }
       }
 
       this._data = value;
     }
   }
 
-  constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
+  ngOnInit() {
+    if (ImpPatentsCardComponent.apiCallCount === 0) {
+      ImpPatentsCardComponent.apiCallCount = 0;
+    }
+  }
+
+  ngOnDestroy() {
+    ImpPatentsCardComponent.apiCallCount = 0;
+  }
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
@@ -70,26 +77,31 @@ export class ImpPatentsCardComponent {
   }
 
   getCompanyLogo(value: any): string {
-    return `${environment.baseUrl}${environment.domainNameCompanyLogo}${value?.company_logo || ''}`;
+    return value?.company_logo ? `${environment.baseUrl}${environment.domainNameCompanyLogo}${value.company_logo}` : '';
   }
 
   getCountryUrl(value: any): string {
-    return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country_of_company || ''}.png`;
+    return value?.country_of_company ? `${environment.baseUrl}${environment.countryNameLogoDomain}${value.country_of_company}.png` : '';
   }
-  
+
   getCompanyWebsite(value: any): string {
     return value ? `https://${value}` : '#';
   }
 
-  handleCopy(text: string): void {
-    navigator.clipboard.writeText(text).then(() => {
-      alert('Item Copied!');
-    }).catch(err => {
-      console.error('Failed to copy text: ', err);
-    });
+  handleCopy(text: string) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    document.body.appendChild(textArea);
+
+    textArea.select();
+    textArea.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+
+    document.body.removeChild(textArea);
+    alert('Item Copied!');
   }
 
   getImageUrl(): string {
-    return `${environment.baseUrl}${environment.domainNameCompanyLogo}${this._data?.company_logo || ''}`;
+    return this._data?.company_logo ? `${environment.baseUrl}${environment.domainNameCompanyLogo}${this._data.company_logo}` : '';
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Auth_operations } from '../../../Utils/SetToken';
 import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from '../../../services/utility-service/utility.service';
@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './europe-approval-card.component.html',
   styleUrl: './europe-approval-card.component.css'
 })
-export class EuropeApprovalCardComponent {
+export class EuropeApprovalCardComponent implements OnInit, OnDestroy {
 
   _data: any = [];
   MoreInfo: boolean = false;
@@ -21,8 +21,7 @@ export class EuropeApprovalCardComponent {
   resultTabs: any = {};
 
   static apiCallCount: number = 0; // Global static counter
-
-  localCount: number = 0; // Stores the instance-specific count
+  localCount: number = 0; // Instance-specific count
 
   @Input()
   get data() {  
@@ -30,9 +29,9 @@ export class EuropeApprovalCardComponent {
   }
   set data(value: any) {    
     if (value && Object.keys(value).length > 0) {
-      EuropeApprovalCardComponent.apiCallCount++; // Increment the static counter
-      this.localCount = EuropeApprovalCardComponent.apiCallCount; // Assign to local instance
-     
+      EuropeApprovalCardComponent.apiCallCount++; // Increment static counter
+      this.localCount = EuropeApprovalCardComponent.apiCallCount; // Assign instance count
+
       console.log(`API data received ${this.localCount} times`);
 
       this.resultTabs = this.utilityService.getAllTabsName();
@@ -50,6 +49,18 @@ export class EuropeApprovalCardComponent {
   }
 
   constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
+
+  ngOnInit() {
+    // Reset counter only when the component is first loaded
+    if (EuropeApprovalCardComponent.apiCallCount === 0) {
+      EuropeApprovalCardComponent.apiCallCount = 0;
+    }
+  }
+
+  ngOnDestroy() {
+    // Reset counter when navigating away from the component
+    EuropeApprovalCardComponent.apiCallCount = 0;
+  }
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
@@ -71,11 +82,11 @@ export class EuropeApprovalCardComponent {
     return `${environment.baseUrl}${environment.domainNameCompanyLogo}${value?.company_logo}`;
   }
 
-  getCountryUrl(value: any) {
+  getCountryUrl(value: any): string {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country_of_company}.png`;
   }
   
-  getCompanyWebsite(value: any) {
+  getCompanyWebsite(value: any): string {
     return `https://${value}`;
   }
 

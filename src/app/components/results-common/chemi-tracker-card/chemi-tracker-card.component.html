@@ -12,27 +12,25 @@
                             *ngIf="data?.chemical_structure && getColumnName('chemical_structure')"
                             class="col-lg-2 col-md-6 col-sm-12"
                         >
-                            <img
-                            *ngIf="data?.chemical_structure"
-                            class="aspect-auto"
-                            [src]="getChemicalImage(data)"
-                            alt="error"
-                            style="
-                                height: 270px;
-                                width: 470px;
-                                padding: 20px 20px;
-                                object-fit: contain;
-                            "
-                            />
-
-                            <div class="ms-4 pom" *ngIf="data?.chemical_structure && getColumnName('chemical_structure')">
-                            <button
-                                class="p-2 bg-[#0032A0] text-white"
-                                (click)="openImageModal(getChemicalImage(data))"
-                            >
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </button>
-                            </div>
+                        <img
+                        *ngIf="data?.chemical_structure"
+                        class="aspect-auto"
+                        [src]="getChemicalImage()"
+                        alt="Chemical Structure"
+                        style="
+                          height: 270px;
+                          width: 470px;
+                          padding: 20px 20px;
+                          object-fit: contain;
+                        "
+                      />
+                      
+                      <div class="ms-4 pom" *ngIf="data?.chemical_structure && getColumnName('chemical_structure')">
+                        <button class="p-2 bg-[#0032A0] text-white" (click)="openImageModal(getChemicalImage())">
+                          <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                      </div>
+                      
                         </div>
                         <div
                             *ngIf="data?.trade_name_s_proprietary_name_s && getColumnName('trade_name_s_proprietary_name_s')"
