@@ -28,7 +28,7 @@
   li.nav-item {
     margin-right: 5px;
     margin-bottom: 5px;
-    white-space: nowrap; 
+    white-space: nowrap;
   }
 
   li.nav-item a.nav-link {
@@ -46,27 +46,30 @@
   @media (max-width: 768px) {
     .tabs-container {
       display: flex;
-      flex-direction: column; 
-      height: 120px; 
-      overflow-y: auto; 
-      -webkit-overflow-scrolling: touch; 
+      flex-direction: column;
+      height: 120px;
+      overflow-y: scroll !important; /* Forces scrollbar */
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* 🔹 Force scrollbar to always appear */
+    .tabs-container {
+      scrollbar-width: thin; /* Firefox */
+      scrollbar-color: #aaa transparent;
     }
 
     .tabs-container::-webkit-scrollbar {
-      width: 4px;
+      width: 6px; /* Adjust thickness */
+      display: block; /* Ensures visibility */
     }
 
     .tabs-container::-webkit-scrollbar-thumb {
-      background: #ccc;
+      background: #aaa; /* Scrollbar color */
       border-radius: 10px;
     }
 
     .tabs-container::-webkit-scrollbar-track {
-      background: transparent;
+      background: #f1f1f1;
     }
   }
-}
-
-
-
-  
+}  

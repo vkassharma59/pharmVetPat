@@ -124,8 +124,8 @@ opacity: 0;
     margin-bottom: 40px;
     padding: 20px;
     height: 530px;
-    margin-left: 60px; 
-    margin-right: 60px;
+    /* margin-left: 60px; 
+    margin-right: 60px; */
 }
 
 
@@ -178,11 +178,6 @@ opacity: 0;
 
 /* Media Query for Mobile Devices */
 @media (max-width: 768px) {
-	.card-box {
-		margin-bottom: 20px;
-		padding: 15px;
-	}
-
 	.btn-primary,
 	.btn-outline-primary,
 	.btn-request-demo {

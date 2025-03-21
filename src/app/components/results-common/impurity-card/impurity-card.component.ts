@@ -14,27 +14,37 @@ import { CommonModule } from '@angular/common';
   styleUrl: './impurity-card.component.css'
 })
 export class ImpurityCardComponent {
-
+  
+  private static apiCallCount: number = 0; // ✅ STATIC COUNTER
   _data: any = [];
   MoreInfo: boolean = false;
-  searchType: string = 'trrn'; // Replace with actual search type
-  keyword: string = ''; // Initialize as empty string
+  searchType: string = 'trrn';
+  keyword: string = '';
   pageNo: number = 1;
 
   impurity_column: any = {};
   resultTabs: any = {};
+
+  apiCallInstance: number = 0; // ✅ Instance-specific count
 
   @Input()
   get data() {  
     return this._data;  
   }
   set data(value) {    
-    this.resultTabs = this.utilityService.getAllTabsName();
-    const column_list = Auth_operations.getColumnList();
-    if(column_list[this.resultTabs.impurity?.name]?.length > 0 && Object.keys(value).length > 0 && value) {
-      for (let i = 0; i < column_list[this.resultTabs.impurity.name].length; i++) {
-        this.impurity_column[column_list[this.resultTabs.impurity.name][i].value] =
-          column_list[this.resultTabs.impurity.name][i].name;
+    if (value && Object.keys(value).length > 0) {
+      ImpurityCardComponent.apiCallCount++; // ✅ STATIC COUNTER
+      this.apiCallInstance = ImpurityCardComponent.apiCallCount; // ✅ Instance-specific count
+      console.log(`Total API Calls: ${ImpurityCardComponent.apiCallCount}`);
+
+      this.resultTabs = this.utilityService.getAllTabsName();
+      const column_list = Auth_operations.getColumnList();
+      
+      if (column_list[this.resultTabs.impurity?.name]?.length > 0) {
+        for (let i = 0; i < column_list[this.resultTabs.impurity.name].length; i++) {
+          this.impurity_column[column_list[this.resultTabs.impurity.name][i].value] =
+            column_list[this.resultTabs.impurity.name][i].name;
+        }
       }
 
       this._data = value;
@@ -61,22 +71,14 @@ export class ImpurityCardComponent {
   }
 
   handleCopy(text: any) {
-    // Create a temporary textarea element
     const textArea = document.createElement('textarea');
     textArea.value = text;
     document.body.appendChild(textArea);
-
-    // Select the text
     textArea.select();
-    textArea.setSelectionRange(0, 99999); // For mobile devices
-
-    // Copy the text inside the textarea
+    textArea.setSelectionRange(0, 99999);
     document.execCommand('copy');
-
-    // Remove the temporary textarea element
     document.body.removeChild(textArea);
     alert('Item Copied!');
-
   }
 
   getImageUrl = (data: any) => {
@@ -88,7 +90,7 @@ export class ImpurityCardComponent {
   };
 
   openImageModal(imageUrl: string): void {
-    const dialogRef = this.dialog.open(ImageModalComponent, {
+    this.dialog.open(ImageModalComponent, {
       width: 'calc(100vw - 5vw)',
       height: '700px',
       panelClass: 'full-screen-modal',
