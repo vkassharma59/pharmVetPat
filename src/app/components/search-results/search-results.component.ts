@@ -16,6 +16,7 @@ import { ColumnListService } from '../../services/columnList/column-list.service
 import { Auth_operations } from '../../Utils/SetToken';
 import { MainSearchService } from '../../services/main-search/main-search.service';
 import { PaginationComponent } from '../../commons/pagination/pagination.component';
+import { ResultTabComponent } from '../../commons/result-tab/result-tab.component';
 
 @Component({
   selector: 'chem-search-results',
@@ -23,8 +24,9 @@ import { PaginationComponent } from '../../commons/pagination/pagination.compone
   imports: [
     LoaderComponent,
     CommonModule,
+    ResultTabComponent,
     RouteResultComponent,
-    PaginationComponent 
+    PaginationComponent
   ],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.css',
@@ -51,6 +53,7 @@ export class SearchResultsComponent {
   resultTabs: any = [];
   currentTabData: any = {};
   childApiBody: any = {};
+  FilterObjectLength = false;
 
   @ViewChild('priviledgeModal') priviledgeModal!: ElementRef;
 
@@ -65,6 +68,10 @@ export class SearchResultsComponent {
 
   ngOnChanges(_changes: any) {
     this.paginationRerenderTrigger = !this.paginationRerenderTrigger;
+    if (this.CurrentAPIBody?.body?.filters) {
+      this.FilterObjectLength =
+        Object.keys(this.CurrentAPIBody?.body?.filters).length !== 0;
+    }
   }
 
   handleUserLoggedIn(loggedIn: boolean) {
