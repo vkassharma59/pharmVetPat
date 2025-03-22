@@ -47,3 +47,31 @@ color: #0032A0;
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  .filter-container {
+    display: flex;
+    flex-wrap: nowrap; /* Ensures all dropdowns stay in one row */
+    gap: 10px; /* Adds spacing between dropdowns */
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px; /* Rounded corners */
+    padding: 10px;
+    overflow-x: auto; /* Enables horizontal scrolling if needed */
+    background-color: white; /* Optional background */
+  }
+
+  .filter-container div {
+    flex: 1; /* Makes each dropdown take equal space */
+    min-width: 120px; /* Prevents dropdowns from shrinking too much */
+  }
+
+  .filter-container select {
+    width: 100%; /* Ensures dropdowns stretch properly */
+    padding: 8px;
+    border: 1px solid #0032A0;
+    border-radius: 5px;
+    background-color: white;
+    font-size: 14px;
+  }
+  
+  
