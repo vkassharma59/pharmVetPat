@@ -1,6 +1,6 @@
 <!-- <pre>{{_data | json}}</pre>  -->
-<div class="card-header text-white " style="font-size: 20px; background-color: #C00C2F;">
-    {{resultTabs?.koreaApproval?.label}} >> <span>SITAGLIPTIN PHOSPHATE</span>
+<div class="card-header text-white " style="font-size: 18px; background-color: #C00C2F;">
+    {{ localCount }}. {{resultTabs?.koreaApproval?.label}} >> {{_data?.product_name}}
 </div>
 
 <div class="card-body">
@@ -89,11 +89,15 @@
                 </div>
 
 
-                <img *ngIf="_data?.company_logo"
+                <!-- <img *ngIf="_data?.company_logo"
                      class="company_logo"
                      [src]="getImageUrl(_data)"
                      alt="error"
-                     style="height: 150px; width: 100%; padding: 20px; object-fit: contain;">
+                     style="height: 150px; width: 100%; padding: 20px; object-fit: contain;"> -->
+
+                     <img src="assets/components/Korea.png" class="image1"
+                     style="height: 100px; width: 120px; padding: 10px;">
+
 
                 <div *ngIf="_data?.content && getColumnName('content')">
                     <h1 class="font-bold">

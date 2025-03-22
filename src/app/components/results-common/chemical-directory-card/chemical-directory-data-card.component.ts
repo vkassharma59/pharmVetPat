@@ -1,8 +1,8 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
 import { environment } from '../../../../environments/environment';
 import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
-import { MatDialog } from '@angular/material/dialog';
 import { Auth_operations } from '../../../Utils/SetToken';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 
@@ -10,91 +10,83 @@ import { UtilityService } from '../../../services/utility-service/utility.servic
   selector: 'chemical-directory-card',
   standalone: true,
   imports: [CommonModule],
-
   templateUrl: './chemical-directory-data-card.component.html',
   styleUrl: './chemical-directory-data-card.component.css',
 })
-export class ChemicalDirectoryDataCardComponent {
-
-  MoreInfo: boolean = false;
-  MoreApplicationInfo: boolean = false;
+export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
+  
+  private static counter = 0; // ✅ Global counter across instances
   _data: any = [];
-  searchType: string = 'trrn'; // Replace with actual search type
-  keyword: string = ''; // Initialize as empty string
-  pageNo: number = 1;
-
   chem_column: any = {};
   resultTabs: any = {};
+  
+  MoreInfo: boolean = false;
+  MoreApplicationInfo: boolean = false;
+  searchType: string = 'trrn';
+  keyword: string = '';
+  pageNo: number = 1;
+  localCount: number; // ✅ Instance-specific counter
 
   @Input() CurrentAPIBody: any;
   @Output() ROSChange: EventEmitter<any> = new EventEmitter<any>();
+
+  constructor(private dialog: MatDialog, private utilityService: UtilityService) {
+    this.localCount = ++ChemicalDirectoryDataCardComponent.counter; // ✅ Assign unique count to each instance
+    console.log(`Instance Created: ${this.localCount}, Total Count: ${ChemicalDirectoryDataCardComponent.counter}`);
+  }
+
+  ngOnInit() {
+    if (ChemicalDirectoryDataCardComponent.counter === 0) {
+      ChemicalDirectoryDataCardComponent.counter = 0;
+    }
+  }
+
+  ngOnDestroy() {
+    ChemicalDirectoryDataCardComponent.counter = 0; // ✅ Reset global counter when component is destroyed
+  }
+
   @Input() 
   get data() {  
     return this._data;  
   }
   set data(value) {    
-    this.resultTabs = this.utilityService.getAllTabsName();
-    const column_list = Auth_operations.getColumnList();
-    if(column_list[this.resultTabs.chemicalDirectory?.name]?.length > 0 && Object.keys(value).length > 0 && value) {
-      for (let i = 0; i < column_list[this.resultTabs.chemicalDirectory.name].length; i++) {
-        this.chem_column[column_list[this.resultTabs.chemicalDirectory.name][i].value] =
-          column_list[this.resultTabs.chemicalDirectory.name][i].name;
+    if (value && Object.keys(value).length > 0) {
+      this.resultTabs = this.utilityService.getAllTabsName();
+      const column_list = Auth_operations.getColumnList();
+      
+      if (column_list[this.resultTabs.chemicalDirectory?.name]?.length > 0) {
+        column_list[this.resultTabs.chemicalDirectory.name].forEach((col: any) => {
+          this.chem_column[col.value] = col.name;
+        });
       }
 
       this._data = value;
     }
   }
 
-  
-  constructor(
-    private dialog: MatDialog,
-    private utilityService: UtilityService
-  ) {}
-
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
 
   getColumnName(value: any) {
-    return this.chem_column[value];
+    return this.chem_column[value] || value;
   }
 
-  handleCopy(text: any) {
-    // Create a temporary textarea element
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    document.body.appendChild(textArea);
-
-    // Select the text
-    textArea.select();
-    textArea.setSelectionRange(0, 99999); // For mobile devices
-
-    // Copy the text inside the textarea
-    document.execCommand('copy');
-
-    // Remove the temporary textarea element
-    document.body.removeChild(textArea);
-    alert('Item Copied!');
+  handleCopy(text: string) {
+    navigator.clipboard.writeText(text).then(() => alert('Item Copied!'));
   }
 
-  handleROSButtonClick(value: any) {
-    if (value === 'ros_search') this.ROSChange.emit('ROS_search');
-    else {
-      this.ROSChange.emit('ROS_filter');
-    }
+  handleROSButtonClick(value: string) {
+    this.ROSChange.emit(value === 'ros_search' ? 'ROS_search' : 'ROS_filter');
   }
 
   getPatentUrl(data: any) {
     return `https://patentscope.wipo.int/search/en/result.jsf?inchikey=${data?.inchikey}`;
   }
 
-  getImageUrl = () => {
-    return (
-      environment.baseUrl +
-      environment.domainNameChemicalDirectoryStructure +
-      this.data?.chemical_structure
-    );
-  };
+  getImageUrl(): string {
+    return `${environment.baseUrl}${environment.domainNameChemicalDirectoryStructure}${this._data?.chemical_structure}`;
+  }
 
   toggleMoreInfo() {
     this.MoreInfo = !this.MoreInfo;
@@ -105,20 +97,11 @@ export class ChemicalDirectoryDataCardComponent {
   }
 
   isDateTimeString(dateString: any) {
-    const date = new Date(dateString);
-    return !isNaN(date.getTime());
+    return !isNaN(new Date(dateString).getTime());
   }
 
   getUpdationDate(data: any) {
-    const isoDate = data;
-    if (this.isDateTimeString(isoDate)) {
-      const date = new Date(isoDate);
-
-      // Extract the date in yyyy-mm-dd format
-      const formattedDate = date.toISOString().split('T')[0];
-
-      return formattedDate;
-    } else return data;
+    return this.isDateTimeString(data) ? new Date(data).toISOString().split('T')[0] : data;
   }
 
   toggleMoreApplicationInfo() {
@@ -126,7 +109,7 @@ export class ChemicalDirectoryDataCardComponent {
   }
 
   openImageModal(imageUrl: string): void {
-    const dialogRef = this.dialog.open(ImageModalComponent, {
+    this.dialog.open(ImageModalComponent, {
       width: 'auto',
       height: 'auto',
       panelClass: 'full-screen-modal',

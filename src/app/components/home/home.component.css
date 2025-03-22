@@ -31,13 +31,19 @@ opacity: 0;
 
 /* ============================== */
 .top_section h1 {
-    font-weight: bold;
     text-align: center;
     font-size: 2.75rem; /* Default size (44px) */
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 5px;
+}
+
+/* ✅ Ensures "Pharm VetPat™" Always Stays on the Same Line */
+.pharm-line {
+    white-space: nowrap; /* Prevent line break */
+    display: inline-flex; /* Keep in a single row */
+    align-items: center; /* Align text properly */
 }
 
 /* Mobile Styles */
@@ -56,11 +62,22 @@ opacity: 0;
         font-size: 1.5rem; /* Further reduce font size on small screens */
         flex-direction: column; /* Stack elements on small screens */
     }
+
+    .pharm-line {
+        display: inline-block; /* Keep "Pharm VetPat™" together */
+    }
+
+    .pharma {
+        display: block; /* Moves "Generic Suite" below */
+        text-align: center;
+    }
+
     .top_section h1 .robotics .trademark {
         font-size: 0.35em;
     }
 }
 
+/* ✅ Text Styling */
 .top_section h1 .chem {
     color: #172B4D;
     font-weight: bold;
@@ -101,13 +118,16 @@ opacity: 0;
 }
 
 .card-box {
-	background: #fff;
-	border-radius: 15px;
-	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-	margin-bottom: 40px;
-	padding: 20px;
-	height: 530px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+    padding: 20px;
+    height: 530px;
+    /* margin-left: 60px; 
+    margin-right: 60px; */
 }
+
 
 .btn-primary,
 .btn-outline-primary {
@@ -158,11 +178,6 @@ opacity: 0;
 
 /* Media Query for Mobile Devices */
 @media (max-width: 768px) {
-	.card-box {
-		margin-bottom: 20px;
-		padding: 15px;
-	}
-
 	.btn-primary,
 	.btn-outline-primary,
 	.btn-request-demo {
@@ -242,6 +257,8 @@ opacity: 0;
 	font-size: 16px;
 	line-height: 24px;
 	color: #172B4D;
+	padding-left: 60px;   
+    padding-right: 60px;
 }
 
 .content-section .col-md-4 {
@@ -291,7 +308,7 @@ opacity: 0;
 /* Three section start here */
 
 .key_featured_design {
-	padding: 55px 0 10px 0;
+	padding: 55px 60px 10px 60px;
 }
 
 .key_featured_design ul {
@@ -352,77 +369,92 @@ a.text-decoration-underline {
 }
 
 /* Accordion Section Wrapper */
-.accordion-section {
-	padding: 20px 0;
-}
-
 .accordion-card {
 	border-top: 1px solid #707070;
 	margin-bottom: 10px;
 	opacity: 1;
-}
-
-.accordion-card .btn-link {
+  }
+  
+  .accordion-card .btn-link {
 	font-weight: 700;
 	color: #007bff;
 	text-decoration: none;
 	font-size: 20px;
-	display: block;
+	display: flex; /* Makes text & icon inline */
+	align-items: center; /* Aligns items vertically */
+	justify-content: space-between; /* Spaces text and icon */
 	width: 100%;
 	text-align: left;
 	position: relative;
-}
-
-.accordion-card .btn-link:before {
-	content: "\f068";
-	position: absolute;
-	right: 0;
-	font-family: 'Font Awesome 5 Pro';
+	padding: 10px 15px; /* Adjust padding */
+  }
+  
+  /* Default: "+" when accordion is closed */
+  .accordion-card .btn-link:after {
+	content: "\f067"; /* Font Awesome plus icon */
+	font-family: "Font Awesome 5 Free"; /* Ensure FontAwesome is loaded */
 	font-size: 16px;
-	font-weight: 400;
-}
-
-.accordion-card .btn-link.collapsed:before {
-	content: "\f067";
-}
-
-.accordion-card .card-header {
+	font-weight: 900;
+	width: 28px; 
+	height: 28px; 
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 2px solid #007bff; /* Circle border */
+	border-radius: 50%; /* Makes it a circle */
+	color: #007bff; /* Icon color */
+	background-color: #fff; /* Background color */
+	transition: 0.3s ease-in-out;
+	margin-left: 10px; /* Space between text and icon */
+  }
+  
+  /* "-" when accordion is open */
+  .accordion-card .btn-link.active:after {
+	content: "\f068"; /* Font Awesome minus icon */
+	background-color: #007bff; /* Background changes */
+	color: #fff; /* White minus sign */
+  }
+  
+  /* Styling for headers */
+  .accordion-card .card-header {
 	padding: 15px 0;
 	margin-bottom: 0;
 	border: none;
 	background: none;
-}
-
-.accordion-card .card-body {
+  }
+  
+  /* Accordion body styling */
+  .accordion-card .card-body {
 	padding: 10px 0px;
 	font-size: 16px;
 	color: #666;
-}
-
-.accordion-card .card-body ul {
+  }
+  
+  .accordion-card .card-body ul {
 	margin: 0;
 	padding-left: 20px;
 	list-style: disc;
-}
-
-.accordion-card .card-body ul li {
+  }
+  
+  .accordion-card .card-body ul li {
 	margin-bottom: 6px;
-}
-
-@media (max-width: 768px) {
-
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
 	.accordion-section {
-		padding: 5px 0;
+	  padding: 5px 0;
 	}
-
+  
 	.accordion-card .btn-link {
-		font-weight: 700;
-		color: #007bff;
-		text-decoration: none;
-		font-size: 16px;
-		display: block;
-		width: 100%;
-		text-align: left;
-		position: relative;
+	  font-size: 16px;
+	  padding: 10px;
 	}
-}
+  
+	.accordion-card .btn-link:after {
+	  width: 24px;
+	  height: 24px;
+	  font-size: 14px;
+	}
+  }
+  

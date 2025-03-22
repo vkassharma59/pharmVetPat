@@ -1,10 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { Auth_operations } from '../../../Utils/SetToken';
 import { environment } from '../../../../environments/environment';
 import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'chem-chemi-tracker-card',
@@ -13,34 +13,42 @@ import { CommonModule } from '@angular/common';
   templateUrl: './chemi-tracker-card.component.html',
   styleUrl: './chemi-tracker-card.component.css'
 })
+export class ChemiTrackerCardComponent implements OnDestroy {
 
-export class ChemiTrackerCardComponent {
-
+  private static counter = 0; // ✅ Static counter across instances
   _data: any = [];
   MoreInfo: boolean = false;
   pageNo: number = 1;
-  chemi_tracker_column: any = {};
+  localCount: number;
+  chemi_tracker_column: Record<string, string> = {};
   resultTabs: any = {};
+
+  constructor(private dialog: MatDialog, private utilityService: UtilityService) {
+    this.localCount = ++ChemiTrackerCardComponent.counter; // ✅ Assign unique count per instance
+    console.log(`Instance Created: ${this.localCount}, Total Count: ${ChemiTrackerCardComponent.counter}`);
+  }
+
+  ngOnDestroy() {
+    ChemiTrackerCardComponent.counter = 0; // ✅ Reset counter on component destruction
+  }
 
   @Input()
   get data() {  
     return this._data;  
   }
   set data(value) {    
-    this.resultTabs = this.utilityService.getAllTabsName();
-    const column_list = Auth_operations.getColumnList();
-    if(column_list[this.resultTabs.chemiTracker?.name]?.length > 0 && Object.keys(value).length > 0 && value) {
-      for (let i = 0; i < column_list[this.resultTabs.chemiTracker.name].length; i++) {
-        this.chemi_tracker_column[column_list[this.resultTabs.chemiTracker.name][i].value] =
-          column_list[this.resultTabs.chemiTracker.name][i].name;
-      }
-
+    if (value && Object.keys(value).length > 0) {
       this._data = value;
+      this.resultTabs = this.utilityService.getAllTabsName();
+      const column_list = Auth_operations.getColumnList();
+
+      if (column_list[this.resultTabs.chemiTracker?.name]?.length > 0) {
+        column_list[this.resultTabs.chemiTracker.name].forEach((col: any) => {
+          this.chemi_tracker_column[col.value] = col.name;
+        });
+      }
     }
   }
-
-  constructor(private dialog: MatDialog,
-      private utilityService: UtilityService) {}
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
@@ -50,11 +58,11 @@ export class ChemiTrackerCardComponent {
     this.MoreInfo = !this.MoreInfo;
   }
 
-  getColumnName(value: any) {
-    return this.chemi_tracker_column[value];
+  getColumnName(value: string) {
+    return this.chemi_tracker_column[value] || value;
   }
 
-  getPubchemId(value: any) {
+  getPubchemId(value: string) {
     return `https://pubchem.ncbi.nlm.nih.gov/#query=${value}`;
   }
 
@@ -62,41 +70,24 @@ export class ChemiTrackerCardComponent {
     return `${environment.baseUrl}${environment.domainNameCompanyLogo}${value?.company_logo}`;
   }
 
-  getCountryUrl(value: any) {
+  getCountryUrl(value: any): string {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country_of_company}.png`;
   }
   
-  getCompanyWebsite(value: any) {
+  getCompanyWebsite(value: string) {
     return `https://${value}`;
   }
 
-  handleCopy(text: any) {
-    // Create a temporary textarea element
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    document.body.appendChild(textArea);
-
-    // Select the text
-    textArea.select();
-    textArea.setSelectionRange(0, 99999); // For mobile devices
-
-    // Copy the text inside the textarea
-    document.execCommand('copy');
-
-    // Remove the temporary textarea element
-    document.body.removeChild(textArea);
+  handleCopy(text: string) {
+    navigator.clipboard.writeText(text).then(() => alert('Item Copied!'));
   }
 
-  getChemicalImage = (data: any) => {
-    return (
-      environment.baseUrl +
-      environment.domainNameChemicalDirectoryStructure +
-      this.data?.chemical_structure
-    );
-  };
+  getChemicalImage(): string {
+    return `${environment.baseUrl}${environment.domainNameChemicalDirectoryStructure}${this._data?.chemical_structure}`;
+  }
 
   openImageModal(imageUrl: string): void {
-    const dialogRef = this.dialog.open(ImageModalComponent, {
+    this.dialog.open(ImageModalComponent, {
       width: 'calc(100vw - 5vw)',
       height: '700px',
       panelClass: 'full-screen-modal',

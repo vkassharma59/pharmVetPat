@@ -1,11 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Auth_operations } from '../../../Utils/SetToken';
 import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { environment } from '../../../../environments/environment';
-import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
 import { CommonModule } from '@angular/common';
-
 
 @Component({
   selector: 'chem-europe-approval-card',
@@ -14,34 +12,55 @@ import { CommonModule } from '@angular/common';
   templateUrl: './europe-approval-card.component.html',
   styleUrl: './europe-approval-card.component.css'
 })
-export class EuropeApprovalCardComponent {
+export class EuropeApprovalCardComponent implements OnInit, OnDestroy {
 
   _data: any = [];
   MoreInfo: boolean = false;
   pageNo: number = 1;
   europe_approval_column: any = {};
   resultTabs: any = {};
-  
+
+  static apiCallCount: number = 0; // Global static counter
+  localCount: number = 0; // Instance-specific count
 
   @Input()
   get data() {  
     return this._data;  
   }
-  set data(value) {    
-    this.resultTabs = this.utilityService.getAllTabsName();
-    const column_list = Auth_operations.getColumnList();
-    if(column_list[this.resultTabs.europeApproval?.name]?.length > 0 && Object.keys(value).length > 0 && value) {
-      for (let i = 0; i < column_list[this.resultTabs.europeApproval.name].length; i++) {
-        this.europe_approval_column[column_list[this.resultTabs.europeApproval.name][i].value] =
-          column_list[this.resultTabs.europeApproval.name][i].name;
+  set data(value: any) {    
+    if (value && Object.keys(value).length > 0) {
+      EuropeApprovalCardComponent.apiCallCount++; // Increment static counter
+      this.localCount = EuropeApprovalCardComponent.apiCallCount; // Assign instance count
+
+      console.log(`API data received ${this.localCount} times`);
+
+      this.resultTabs = this.utilityService.getAllTabsName();
+      const column_list = Auth_operations.getColumnList();
+
+      if (column_list[this.resultTabs.europeApproval?.name]?.length > 0) {
+        for (let i = 0; i < column_list[this.resultTabs.europeApproval.name].length; i++) {
+          this.europe_approval_column[column_list[this.resultTabs.europeApproval.name][i].value] =
+            column_list[this.resultTabs.europeApproval.name][i].name;
+        }
       }
 
       this._data = value;
     }
   }
 
-  constructor(private dialog: MatDialog,
-      private utilityService: UtilityService) {}
+  constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
+
+  ngOnInit() {
+    // Reset counter only when the component is first loaded
+    if (EuropeApprovalCardComponent.apiCallCount === 0) {
+      EuropeApprovalCardComponent.apiCallCount = 0;
+    }
+  }
+
+  ngOnDestroy() {
+    // Reset counter when navigating away from the component
+    EuropeApprovalCardComponent.apiCallCount = 0;
+  }
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
@@ -63,39 +82,32 @@ export class EuropeApprovalCardComponent {
     return `${environment.baseUrl}${environment.domainNameCompanyLogo}${value?.company_logo}`;
   }
 
-  getCountryUrl(value: any) {
+  getCountryUrl(value: any): string {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country_of_company}.png`;
   }
   
-  getCompanyWebsite(value: any) {
+  getCompanyWebsite(value: any): string {
     return `https://${value}`;
   }
 
-
-  handleCopy(text: any) {
-    // Create a temporary textarea element
+  handleCopy(text: string) {
     const textArea = document.createElement('textarea');
     textArea.value = text;
     document.body.appendChild(textArea);
 
-    // Select the text
     textArea.select();
-    textArea.setSelectionRange(0, 99999); // For mobile devices
-
-    // Copy the text inside the textarea
+    textArea.setSelectionRange(0, 99999);
     document.execCommand('copy');
 
-    // Remove the temporary textarea element
     document.body.removeChild(textArea);
+    alert('Item Copied!');
   }
 
-  getImageUrl = (data: any) => {
+  getImageUrl(data: any): string {
     return (
       environment.baseUrl +
-      environment.countryNameLogoDomain2 +
-      this.data?.company_logo
+      environment.domainNameCompanyLogo +
+      this._data?.commentry
     );
-  };
-
-
+  }
 }

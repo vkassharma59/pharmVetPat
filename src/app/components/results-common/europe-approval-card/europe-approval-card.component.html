@@ -1,8 +1,9 @@
 <!-- <pre>{{_data | json}}</pre>  -->
 
-<div class="card-header text-white " style="font-size: 20px; background-color:#003399;">
-    {{resultTabs?.europeApproval?.label}} >>  {{_data?.medicine_name}}
+<div class="card-header text-white " style="font-size: 18px; background-color:#003399;">
+    {{ localCount }}. {{resultTabs?.europeApproval?.label}} >> {{_data?.medicine_name}}
 </div>
+
 
 <div class="card-body">
     <div class="pb-3 mb-3 px-2 rounded-lg">
@@ -72,12 +73,12 @@
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 ">
 
                     <p style="font-size: 20px; padding-bottom: 15px;">
-                        <span style="background-color: #06854B; color: white; padding: 5px 10px; border-radius: 5px; display: inline-block;">
+                        <span style="background-color: #06854B; color: white; padding: 5px 10px; border-radius: 5px; display: inline-block; width:300px ; text-align: center;">
                             {{ _data?.authorisation_status }}
                         </span>
                     </p>
 
-                    <img
+                    <!-- <img
                     *ngIf="data?.company_logo"
                     class="company_logo"
                     [src]="getImageUrl(data)"
@@ -86,7 +87,10 @@
                         height: 150px;
                         width: 180px;       
                         object-fit: contain;"
-                        />
+                        /> -->
+
+                        <img src="assets/components/ema-logo.png" class="image1"
+                style="height: 100px; width: 300px; padding: 10px;">
                     
                 </div>
             </div>
@@ -493,5 +497,5 @@
 </div>
 </div>
 
-<br><br>
+<br>
 
