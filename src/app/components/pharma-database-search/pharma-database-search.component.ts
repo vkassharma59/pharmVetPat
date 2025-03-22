@@ -157,11 +157,10 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   }
 
   getSynthesisSearchSuggestions() {
-    if (this.synthesisSearch.keyword == '') {
+    if (this.synthesisSearch.keyword == '' || this.synthesisSearch.keyword.length < 3) {
       this.synthesisSearch.autosuggestionList = [];
       return;
     }
-    if (this.synthesisSearch.keyword.length < 3) return;
 
     this.mainSearchService
       .getSynthesisSearchSuggestions({keyword: this.synthesisSearch.keyword })
