@@ -16,6 +16,7 @@ import { ColumnListService } from '../../services/columnList/column-list.service
 import { Auth_operations } from '../../Utils/SetToken';
 import { MainSearchService } from '../../services/main-search/main-search.service';
 import { PaginationComponent } from '../../commons/pagination/pagination.component';
+import { ResultTabComponent } from '../../commons/result-tab/result-tab.component';
 
 @Component({
   selector: 'chem-search-results',
@@ -23,8 +24,9 @@ import { PaginationComponent } from '../../commons/pagination/pagination.compone
   imports: [
     LoaderComponent,
     CommonModule,
+    ResultTabComponent,
     RouteResultComponent,
-    PaginationComponent 
+    PaginationComponent
   ],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.css',
@@ -42,7 +44,6 @@ export class SearchResultsComponent {
   @Input() allDataSets: any = [];  
   @Input() searchData: any;  
   @Input() CurrentAPIBody: any;
-  showPagination: boolean = true;
 
   paginationRerenderTrigger: any = 0;
   userIsLoggedIn: boolean = false;
@@ -52,6 +53,7 @@ export class SearchResultsComponent {
   resultTabs: any = [];
   currentTabData: any = {};
   childApiBody: any = {};
+  FilterObjectLength = false;
 
   @ViewChild('priviledgeModal') priviledgeModal!: ElementRef;
 
@@ -66,6 +68,10 @@ export class SearchResultsComponent {
 
   ngOnChanges(_changes: any) {
     this.paginationRerenderTrigger = !this.paginationRerenderTrigger;
+    if (this.CurrentAPIBody?.body?.filters) {
+      this.FilterObjectLength =
+        Object.keys(this.CurrentAPIBody?.body?.filters).length !== 0;
+    }
   }
 
   handleUserLoggedIn(loggedIn: boolean) {
@@ -176,9 +182,6 @@ export class SearchResultsComponent {
   onResultTabChange(resultTabData: any) { 
     this.setLoadingState.emit(true);
     this.currentTabData = resultTabData?.currentTabData;
-    
-    // Is main pagination display 
-    this.isPaginationDisplay(this.currentTabData.name);
 
     switch(this.currentTabData.name) {
       case this.resultTabs?.technicalRoutes.name: 
@@ -267,42 +270,6 @@ export class SearchResultsComponent {
         break;
       default:
         this.setLoadingState.emit(false);
-    }
-  }
-
-  private isPaginationDisplay(currentTabName) {
-    const searchThrough = Auth_operations.getActiveformValues().activeForm;
-    switch(searchThrough) {
-      case searchTypes.chemicalStructure:
-        if(currentTabName === this.resultTabs.technicalRoutes.name) {
-          this.showPagination = true;
-        } else {
-          this.showPagination = false;
-        }
-        break;
-      case searchTypes.synthesisSearch:
-        if(currentTabName === this.resultTabs.chemicalDirectory.name) {
-          this.showPagination = true;
-        } else {
-          this.showPagination = false;
-        }
-        break;        
-      case searchTypes.intermediateSearch:
-        if(currentTabName === this.resultTabs.technicalRoutes.name) {
-          this.showPagination = true;
-        } else {
-          this.showPagination = false;
-        }
-        break;
-      case (searchTypes.simpleSearch || searchTypes.advanceSearch):
-        if(currentTabName === this.resultTabs.productInfo.name) {
-          this.showPagination = true;
-        } else {
-          this.showPagination = false;
-        }
-        break;
-      default:
-        console.log('No search type selected');
     }
   }
 
