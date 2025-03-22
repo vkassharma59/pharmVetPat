@@ -105,6 +105,8 @@ openCloseAccordion(key: string, event?: Event): void {
             this.allDataSets[i][this.resultTabs.productInfo.name][0] =
               this.searchData?.basic_product_data[i];
           }
+        } else {
+          this.allDataSets = [];
         }
         break;
       case this.resultTabs.technicalRoutes.name:
@@ -120,6 +122,8 @@ openCloseAccordion(key: string, event?: Event): void {
             this.allDataSets[i][this.resultTabs.technicalRoutes.name][0] =
               this.searchData?.ros_data[i];
           }
+        } else {
+            this.allDataSets = [];
         }
         break;
       case this.resultTabs.chemicalDirectory.name:
@@ -135,6 +139,8 @@ openCloseAccordion(key: string, event?: Event): void {
             this.allDataSets[i][this.resultTabs.chemicalDirectory.name][0] =
               this.searchData?.chem_dir_data[i];              
           }
+        }  else {
+          this.allDataSets = [];
         }
         break;
     }
