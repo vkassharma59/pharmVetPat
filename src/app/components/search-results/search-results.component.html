@@ -14,7 +14,7 @@
     ></chem-route-results>
   </div>
   <chem-pagination 
-    *ngIf="showPagination && CurrentAPIBody?.count > 25"
+    *ngIf="CurrentAPIBody?.count > 25"
     (showDataResultFunction)="showDataResultFunction.emit($event)"
     [CurrentAPIBody]="CurrentAPIBody"
     [paginationRerenderTrigger]="paginationRerenderTrigger"
