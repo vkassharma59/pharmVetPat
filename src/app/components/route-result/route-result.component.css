@@ -1,0 +1,38 @@
+.info-container {
+    display: flex;
+    flex-direction: column; /* Stack elements by default */
+  }
+  
+  /* Default: PC Layout (≥768px) */
+  @media (min-width: 768px) {
+    .info-container {
+      flex-direction: row; /* Keep everything in a row */
+      justify-content: space-between;
+      align-items: center;
+    }
+  
+    .button-container {
+      display: flex;
+      gap: 10px;
+    }
+  }
+  
+  /* Mobile: Move Buttons Below Info */
+  @media (max-width: 767px) {
+    .info-section {
+      display: block; /* Ensure text stays full width */
+      text-align: left;
+      margin-bottom: 10px;
+    }
+  
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+  
+    .button-container button {
+      width: 100%; /* Make buttons full width */
+    }
+  }
+  

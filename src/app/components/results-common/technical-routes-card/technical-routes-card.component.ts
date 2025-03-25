@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
 import { Auth_operations } from '../../../Utils/SetToken';
@@ -12,13 +12,9 @@ import { UtilityService } from '../../../services/utility-service/utility.servic
   standalone: true,
   imports: [CommonModule],
   templateUrl: './technical-routes-card.component.html',
-  styleUrl: './technical-routes-card.component.css',
+  styleUrls: ['./technical-routes-card.component.css'],
 })
-export class TechnicalRoutesCardComponent {
-  
-  static apiCallCount: number = 0; // Global static counter
-  localCount: number = 0; // Instance-specific counter
-
+export class TechnicalRoutesCardComponent implements OnInit, OnDestroy {
   downloadable_values: string[] = [];
   doc_values: any = [];
   tech_column: any = {};
@@ -27,18 +23,13 @@ export class TechnicalRoutesCardComponent {
 
   @Input() CurrentAPIBody: any;
   @Input() index: any;
-  
+
   @Input()
   get data() {
     return this._data;
   }
   set data(value: any) {
     if (value && Object.keys(value).length > 0) {
-      TechnicalRoutesCardComponent.apiCallCount++; // Increment global counter
-      this.localCount = TechnicalRoutesCardComponent.apiCallCount; // Assign to local instance
-
-      console.log(`API data received ${this.localCount} times`);
-
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
       if (column_list[this.resultTabs.technicalRoutes?.name]?.length > 0) {
@@ -47,7 +38,6 @@ export class TechnicalRoutesCardComponent {
             column_list[this.resultTabs.technicalRoutes.name][i].name;
         }
       }
-
       this._data = value;
     }
   }
@@ -56,6 +46,10 @@ export class TechnicalRoutesCardComponent {
     private dialog: MatDialog,
     private utilityService: UtilityService
   ) {}
+
+  ngOnInit() {}
+
+  ngOnDestroy() {}
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
@@ -89,7 +83,7 @@ export class TechnicalRoutesCardComponent {
     if (this.isDateTimeString(data)) {
       const date = new Date(data);
       return date.toISOString().split('T')[0];
-    } 
+    }
     return data;
   }
 

@@ -16,12 +16,10 @@ export class JapanPMDAComponent implements OnInit, OnDestroy {
 
   _data: any = [];
   MoreInfo: boolean = false;
-  pageNo: number = 1;
   japan_approval_column: any = {};
   resultTabs: any = {};
 
-  static apiCallCount: number = 0; // Static counter (shared across instances)
-  localCount: number = 0; // Instance-specific count
+  @Input() count!: number;  // Receiving API count from parent
 
   @Input()
   get data() {  
@@ -29,19 +27,17 @@ export class JapanPMDAComponent implements OnInit, OnDestroy {
   }
   set data(value: any) {    
     if (value && Object.keys(value).length > 0) {
-      JapanPMDAComponent.apiCallCount++; // Increment global counter
-      this.localCount = JapanPMDAComponent.apiCallCount; // Assign to local instance
-
-      console.log(`API data received ${this.localCount} times`);
-
+      console.log(`API data received for item ${this.count}`);
+      
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
+      const japanApprovalName = this.resultTabs.japanApproval?.name;
 
-      if (column_list[this.resultTabs.japanApproval?.name]?.length > 0) {
-        for (let i = 0; i < column_list[this.resultTabs.japanApproval.name].length; i++) {
-          this.japan_approval_column[column_list[this.resultTabs.japanApproval.name][i].value] =
-            column_list[this.resultTabs.japanApproval.name][i].name;
-        }
+      if (column_list[japanApprovalName]?.length > 0) {
+        this.japan_approval_column = column_list[japanApprovalName].reduce((acc: any, item: any) => {
+          acc[item.value] = item.name;
+          return acc;
+        }, {});
       }
 
       this._data = value;
@@ -50,17 +46,9 @@ export class JapanPMDAComponent implements OnInit, OnDestroy {
 
   constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
 
-  ngOnInit() {
-    // Reset static counter only when the component is first loaded
-    if (JapanPMDAComponent.apiCallCount === 0) {
-      JapanPMDAComponent.apiCallCount = 0;
-    }
-  }
+  ngOnInit() {}
 
-  ngOnDestroy() {
-    // Reset counter when navigating away from the component
-    JapanPMDAComponent.apiCallCount = 0;
-  }
+  ngOnDestroy() {}
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
@@ -71,10 +59,10 @@ export class JapanPMDAComponent implements OnInit, OnDestroy {
   }
 
   getColumnName(value: any) {
-    return this.japan_approval_column[value];
+    return this.japan_approval_column[value] || value;
   }
 
-  getPubchemId(value: any) {
+  getPubchemId(value: any): string {
     return `https://pubchem.ncbi.nlm.nih.gov/#query=${value}`;
   }
 
@@ -82,32 +70,23 @@ export class JapanPMDAComponent implements OnInit, OnDestroy {
     return `${environment.baseUrl}${environment.domainNameCompanyLogo}${value?.company_logo}`;
   }
 
-  getCountryUrl(value: any) {
+  getCountryUrl(value: any): string {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country_of_company}.png`;
   }
   
-  getCompanyWebsite(value: any) {
+  getCompanyWebsite(value: any): string {
     return `https://${value}`;
   }
 
   handleCopy(text: string) {
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    document.body.appendChild(textArea);
-
-    textArea.select();
-    textArea.setSelectionRange(0, 99999);
-    document.execCommand('copy');
-
-    document.body.removeChild(textArea);
-    alert('Item Copied!');
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Item Copied!');
+    }).catch(err => {
+      console.error('Failed to copy: ', err);
+    });
   }
 
-  getImageUrl(data: any): string {
-    return (
-      environment.baseUrl +
-      environment.domainNameCompanyLogo +
-      this._data?.company_logo
-    );
+  getImageUrl(): string {
+    return `${environment.baseUrl}${environment.domainNameCompanyLogo}${this._data?.company_logo}`;
   }
 }
