@@ -14,6 +14,8 @@ import { CommonModule } from '@angular/common';
 })
 export class ImpPatentsCardComponent implements OnInit, OnDestroy {
 
+  @Input() count!: number;
+
   _data: any = [];
   MoreInfo: boolean = false;
   pageNo: number = 1;

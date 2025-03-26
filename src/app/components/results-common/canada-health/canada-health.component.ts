@@ -1,8 +1,9 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Auth_operations } from '../../../Utils/SetToken';
 import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { environment } from '../../../../environments/environment';
+import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -12,7 +13,10 @@ import { CommonModule } from '@angular/common';
   templateUrl: './canada-health.component.html',
   styleUrl: './canada-health.component.css'
 })
-export class CanadaHealthComponent implements OnInit, OnDestroy {
+
+export class CanadaHealthComponent {
+
+  @Input() count!: number;
 
   _data: any = [];
   MoreInfo: boolean = false;
@@ -20,47 +24,25 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
   canada_approval_column: any = {};
   resultTabs: any = {};
 
-  static apiCallCount: number = 0; // Global static counter
-  localCount: number = 0; // Instance-specific count
-
   @Input()
   get data() {  
     return this._data;  
   }
-  set data(value: any) {    
-    if (value && Object.keys(value).length > 0) {
-      CanadaHealthComponent.apiCallCount++; // Increment static counter
-      this.localCount = CanadaHealthComponent.apiCallCount; // Assign instance count
-
-      console.log(`API data received ${this.localCount} times`);
-
-      this.resultTabs = this.utilityService.getAllTabsName();
-      const column_list = Auth_operations.getColumnList();
-
-      if (column_list[this.resultTabs.canadaApproval?.name]?.length > 0) {
-        for (let i = 0; i < column_list[this.resultTabs.canadaApproval.name].length; i++) {
-          this.canada_approval_column[column_list[this.resultTabs.canadaApproval.name][i].value] =
-            column_list[this.resultTabs.canadaApproval.name][i].name;
-        }
+  set data(value) {    
+    this.resultTabs = this.utilityService.getAllTabsName();
+    const column_list = Auth_operations.getColumnList();
+    if(column_list[this.resultTabs.canadaApproval?.name]?.length > 0 && Object.keys(value).length > 0 && value) {
+      for (let i = 0; i < column_list[this.resultTabs.canadaApproval.name].length; i++) {
+        this.canada_approval_column[column_list[this.resultTabs.canadaApproval.name][i].value] =
+          column_list[this.resultTabs.canadaApproval.name][i].name;
       }
 
       this._data = value;
     }
   }
 
-  constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
-
-  ngOnInit() {
-    // Reset counter only when the component is first loaded
-    if (CanadaHealthComponent.apiCallCount === 0) {
-      CanadaHealthComponent.apiCallCount = 0;
-    }
-  }
-
-  ngOnDestroy() {
-    // Reset counter when navigating away from the component
-    CanadaHealthComponent.apiCallCount = 0;
-  }
+  constructor(private dialog: MatDialog,
+      private utilityService: UtilityService) {}
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
@@ -90,24 +72,32 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
     return `https://${value}`;
   }
 
-  handleCopy(text: string) {
+
+  handleCopy(text: any) {
+    // Create a temporary textarea element
     const textArea = document.createElement('textarea');
     textArea.value = text;
     document.body.appendChild(textArea);
 
+    // Select the text
     textArea.select();
-    textArea.setSelectionRange(0, 99999);
+    textArea.setSelectionRange(0, 99999); // For mobile devices
+
+    // Copy the text inside the textarea
     document.execCommand('copy');
 
+    // Remove the temporary textarea element
     document.body.removeChild(textArea);
     alert('Item Copied!');
-  }
 
-  getImageUrl(data: any): string {
+  }
+  getImageUrl = (data: any) => {
     return (
       environment.baseUrl +
       environment.domainNameCompanyLogo +
-      this._data?.commentry
+      this.data?.commentry
     );
-  }
+  };
+
+
 }

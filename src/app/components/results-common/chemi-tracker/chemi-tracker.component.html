@@ -12,7 +12,9 @@
                 </span>
             </div>
         </div>
-        <chem-chemi-tracker-card class="card" [data]="dataItem"></chem-chemi-tracker-card>
+        <chem-chemi-tracker-card class="card" [data]="dataItem" [count]="(((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1)">
+            
+        </chem-chemi-tracker-card>
     </ng-container>
     <app-child-paging
         [currentChildAPIBody]="currentChildAPIBody"

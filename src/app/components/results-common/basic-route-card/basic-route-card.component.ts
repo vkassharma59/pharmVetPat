@@ -21,6 +21,8 @@ import { UtilityService } from '../../../services/utility-service/utility.servic
 })
 export class BasicRouteCardComponent {
 
+  @Input() count!: number;
+
   static apiCallCount: number = 0; // Global static counter
   localCount: number = 0; // Instance-specific counter
 

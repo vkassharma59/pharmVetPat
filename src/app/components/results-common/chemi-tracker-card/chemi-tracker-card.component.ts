@@ -15,6 +15,8 @@ import { ImageModalComponent } from '../../../commons/image-modal/image-modal.co
 })
 export class ChemiTrackerCardComponent implements OnDestroy {
 
+  @Input() count!: number;
+
   private static counter = 0; // ✅ Static counter across instances
   _data: any = [];
   MoreInfo: boolean = false;

@@ -21,6 +21,8 @@ export class TechnicalRoutesCardComponent implements OnInit, OnDestroy {
   resultTabs: any = {};
   _data: any = [];
 
+  @Input() count!: number;
+
   @Input() CurrentAPIBody: any;
   @Input() index: any;
 

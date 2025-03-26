@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { Auth_operations } from '../../../Utils/SetToken';
@@ -13,58 +13,40 @@ import { CommonModule } from '@angular/common';
   templateUrl: './impurity-card.component.html',
   styleUrl: './impurity-card.component.css'
 })
-export class ImpurityCardComponent implements OnInit, OnDestroy {
-  
-  private static apiCallCount: number = 0; // ✅ Global static counter
+export class ImpurityCardComponent {
+
+  @Input() count!: number;
+
   _data: any = [];
   MoreInfo: boolean = false;
-  searchType: string = 'trrn';
-  keyword: string = '';
+  searchType: string = 'trrn'; // Replace with actual search type
+  keyword: string = ''; // Initialize as empty string
   pageNo: number = 1;
 
   impurity_column: any = {};
   resultTabs: any = {};
 
-  apiCallInstance: number = 0; // ✅ Instance-specific count
 
   @Input()
   get data() {  
     return this._data;  
   }
   set data(value) {    
-    if (value && Object.keys(value).length > 0) {
-      ImpurityCardComponent.apiCallCount++; // ✅ Increment static counter
-      this.apiCallInstance = ImpurityCardComponent.apiCallCount; // ✅ Assign instance count
-      console.log(`API data received ${this.apiCallInstance} times`);
-
-      this.resultTabs = this.utilityService.getAllTabsName();
-      const column_list = Auth_operations.getColumnList();
-      
-      if (column_list[this.resultTabs.impurity?.name]?.length > 0) {
-        for (let i = 0; i < column_list[this.resultTabs.impurity.name].length; i++) {
-          this.impurity_column[column_list[this.resultTabs.impurity.name][i].value] =
-            column_list[this.resultTabs.impurity.name][i].name;
-        }
+    this.resultTabs = this.utilityService.getAllTabsName();
+    const column_list = Auth_operations.getColumnList();
+    if(column_list[this.resultTabs.impurity?.name]?.length > 0 && Object.keys(value).length > 0 && value) {
+      for (let i = 0; i < column_list[this.resultTabs.impurity.name].length; i++) {
+        this.impurity_column[column_list[this.resultTabs.impurity.name][i].value] =
+          column_list[this.resultTabs.impurity.name][i].name;
       }
 
       this._data = value;
     }
   }
 
-  constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
-
-  ngOnInit() {
-    // ✅ Reset static counter when the component loads initially
-    if (ImpurityCardComponent.apiCallCount === 0) {
-      ImpurityCardComponent.apiCallCount = 0;
-    }
-  }
-
-  ngOnDestroy() {
-    // ✅ Reset counter when navigating away from the component
-    ImpurityCardComponent.apiCallCount = 0;
-  }
-
+  constructor(private dialog: MatDialog,
+      private utilityService: UtilityService) {}
+  
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
@@ -82,26 +64,32 @@ export class ImpurityCardComponent implements OnInit, OnDestroy {
   }
 
   handleCopy(text: any) {
+    // Create a temporary textarea element
     const textArea = document.createElement('textarea');
     textArea.value = text;
     document.body.appendChild(textArea);
+
+    // Select the text
     textArea.select();
-    textArea.setSelectionRange(0, 99999);
+    textArea.setSelectionRange(0, 99999); // For mobile devices
+
+    // Copy the text inside the textarea
     document.execCommand('copy');
+
+    // Remove the temporary textarea element
     document.body.removeChild(textArea);
-    alert('Item Copied!');
   }
 
-  getImageUrl(data: any): string {
+  getImageUrl = (data: any) => {
     return (
       environment.baseUrl +
       environment.domainNameChemicalDirectoryStructure +
       this.data?.chemical_structure
     );
-  }
+  };
 
   openImageModal(imageUrl: string): void {
-    this.dialog.open(ImageModalComponent, {
+    const dialogRef = this.dialog.open(ImageModalComponent, {
       width: 'calc(100vw - 5vw)',
       height: '700px',
       panelClass: 'full-screen-modal',

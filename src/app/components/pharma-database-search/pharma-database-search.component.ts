@@ -92,22 +92,51 @@ export class pharmaDatabaseSearchComponent implements OnInit {
 
   handleChangeKeyword(searchType = '', index: number = 0) {
     try {
-      this.showSuggestions = true;
       switch(searchType){
         case searchTypes.simpleSearch: 
-          this.getSimpleSearchSuggestions();
+          if (this.simpleSearch.keyword.trim() === '') {
+            this.simpleSearch.autosuggestionList = [];
+            this.showSuggestions = false;
+          } else {
+            this.getSimpleSearchSuggestions();
+            this.showSuggestions = true;
+          }
           break;
         case searchTypes.chemicalStructure:
-          this.getChemicalStructureSuggestions();
+          if (this.chemicalStructure.keyword.trim() === '') {
+            this.chemicalStructure.autosuggestionList = [];
+            this.showSuggestions = false;
+          } else {
+            this.getChemicalStructureSuggestions();
+            this.showSuggestions = true;
+          }
           break;
         case searchTypes.synthesisSearch:
-          this.getSynthesisSearchSuggestions();
+          if (this.synthesisSearch.keyword.trim() === '') {
+            this.synthesisSearch.autosuggestionList = [];
+            this.showSuggestions = false;
+          } else {
+            this.getSynthesisSearchSuggestions();
+            this.showSuggestions = true;
+          }
           break;
         case searchTypes.intermediateSearch:
-          this.getIntermediateSearchSuggestions();
+          if (this.intermediateSearch.keyword.trim() === '') {
+            this.intermediateSearch.autosuggestionList = [];
+            this.showSuggestions = false;
+          } else {
+            this.getIntermediateSearchSuggestions();
+            this.showSuggestions = true;
+          }
           break;
         case searchTypes.advanceSearch:
-          this.getAdvanceSearchSuggestions(index);
+          if (this.advanceSearch.filterInputs[index].keyword.trim() === '') {
+            this.advanceSearch.autosuggestionList[index] = [];
+            this.showSuggestions = false;
+          } else {
+            this.getAdvanceSearchSuggestions(index);
+            this.showSuggestions = true;
+          }
           break;
       }      
     } catch (err) {
@@ -115,7 +144,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       this.showSuggestions = false;
     }
   }
-
   getAdvanceSearchSuggestions(index: number) {
 
     this.advanceSearch.autosuggestionList = [];
@@ -139,32 +167,29 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   }
 
   getIntermediateSearchSuggestions() {
-    if (this.intermediateSearch.keyword == '') {
+    if (this.intermediateSearch.keyword == '' || this.intermediateSearch.keyword.length < 3) {
       this.intermediateSearch.autosuggestionList = [];
       return;
     }
-
-    if (this.intermediateSearch.keyword.length < 3) return;
-
+  
     this.mainSearchService
-    .getChemicalStructureSearchSuggestions({column: this.intermediateSearch.filter ,keyword: this.intermediateSearch.keyword,  })
-    .subscribe({
-      next: (res: any) => {
-        this.intermediateSearch.autosuggestionList = res?.data?.suggestions;
-      },
-      error: (e) => console.error(e),
-    });
+      .getChemicalStructureSearchSuggestions({column: this.intermediateSearch.filter ,keyword: this.intermediateSearch.keyword })
+      .subscribe({
+        next: (res: any) => {
+          this.intermediateSearch.autosuggestionList = res?.data?.suggestions;
+        },
+        error: (e) => console.error(e),
+      });
   }
 
   getSynthesisSearchSuggestions() {
-    if (this.synthesisSearch.keyword == '' || this.synthesisSearch.keyword.length < 3) {
+    if (this.synthesisSearch.keyword.trim() === '' || this.synthesisSearch.keyword.length < 3) {
       this.synthesisSearch.autosuggestionList = [];
       return;
     }
-    // if (this.synthesisSearch.keyword.length < 3) return;
-
+  
     this.mainSearchService
-      .getSynthesisSearchSuggestions({keyword: this.synthesisSearch.keyword })
+      .getSynthesisSearchSuggestions({ keyword: this.synthesisSearch.keyword })
       .subscribe({
         next: (res: any) => {
           this.synthesisSearch.autosuggestionList = res?.data?.suggestions;
@@ -174,14 +199,13 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   }
 
   getSimpleSearchSuggestions() {
-    if (this.simpleSearch.keyword == '') {
+    if (this.simpleSearch.keyword.trim() === '' || this.simpleSearch.keyword.length < 3) {
       this.simpleSearch.autosuggestionList = [];
       return;
     }
-    if (this.simpleSearch.keyword.length < 3) return;
-
+  
     this.mainSearchService
-      .getSimpleSearchSuggestions({keyword: this.simpleSearch.keyword })
+      .getSimpleSearchSuggestions({ keyword: this.simpleSearch.keyword })
       .subscribe({
         next: (res: any) => {
           this.simpleSearch.autosuggestionList = res?.data?.suggestions;
@@ -191,21 +215,24 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   }
 
   getChemicalStructureSuggestions() {
-    if (this.chemicalStructure.keyword == '') {
+    if (this.chemicalStructure.keyword.trim() === '') {
       this.chemicalStructure.autosuggestionList = [];
       return;
     }
-
-    if (this.chemicalStructure.keyword.length < 3) return;
-
+  
+    if (this.chemicalStructure.keyword.length < 3) {
+      this.chemicalStructure.autosuggestionList = [];
+      return;
+    }
+  
     this.mainSearchService
-    .getChemicalStructureSearchSuggestions({column: this.chemicalStructure.filter ,keyword: this.chemicalStructure.keyword,  })
-    .subscribe({
-      next: (res: any) => {
-        this.chemicalStructure.autosuggestionList = res?.data?.suggestions;
-      },
-      error: (e) => console.error(e),
-    });
+      .getChemicalStructureSearchSuggestions({ column: this.chemicalStructure.filter, keyword: this.chemicalStructure.keyword })
+      .subscribe({
+        next: (res: any) => {
+          this.chemicalStructure.autosuggestionList = res?.data?.suggestions;
+        },
+        error: (e) => console.error(e),
+      });
   }
 
   clearInputAndSuggetions(searchType = '') {

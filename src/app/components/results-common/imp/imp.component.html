@@ -12,7 +12,9 @@
               </span>
           </div>
       </div>
-      <chem-imp-patents-card class="card" [data]="dataItem"></chem-imp-patents-card>
+      <chem-imp-patents-card class="card" [data]="dataItem" [count]="(((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1)">
+        
+      </chem-imp-patents-card>
   </ng-container> 
   <app-child-paging
     [currentChildAPIBody]="currentChildAPIBody"

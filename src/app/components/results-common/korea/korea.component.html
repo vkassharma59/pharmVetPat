@@ -12,7 +12,8 @@
                 </span>
             </div>
         </div>
-        <app-korea-orangebook class="card" [data]="dataItem"></app-korea-orangebook>
+        <app-korea-orangebook class="card" [data]="dataItem" [count]="(((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1)">
+        </app-korea-orangebook>
     </ng-container> 
     <app-child-paging
         [currentChildAPIBody]="currentChildAPIBody"

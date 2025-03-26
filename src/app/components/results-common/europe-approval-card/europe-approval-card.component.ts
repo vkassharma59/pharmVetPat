@@ -23,6 +23,8 @@ export class EuropeApprovalCardComponent implements OnInit, OnDestroy {
   static apiCallCount: number = 0; // Global static counter
   localCount: number = 0; // Instance-specific count
 
+  @Input() count!: number;
+
   @Input()
   get data() {  
     return this._data;  

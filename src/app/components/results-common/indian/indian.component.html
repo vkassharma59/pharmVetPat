@@ -12,7 +12,9 @@
               </span>
           </div>
       </div>
-      <app-indian-medicine-card class="card" [data]="dataItem"></app-indian-medicine-card>
+      <app-indian-medicine-card class="card" [data]="dataItem" [count]="(((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1)">
+        
+      </app-indian-medicine-card>
   </ng-container> 
   <app-child-paging
     [currentChildAPIBody]="currentChildAPIBody"
