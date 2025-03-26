@@ -57,9 +57,19 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  openCloseAccordian(key: string) {
-    this.accordionData[key] = !this.accordionData[key];
+  activeAccordion: string | null = null;
+
+openCloseAccordion(key: string, event?: Event): void {
+  this.activeAccordion = this.activeAccordion === key ? null : key;
+
+  // If event exists, toggle 'active' class on clicked button
+  if (event) {
+    const buttons = document.querySelectorAll(".btn-link");
+    buttons.forEach((btn) => btn.classList.remove("active"));
+    (event.target as HTMLElement).classList.add("active");
   }
+}
+
 
   disableRightClick(event: MouseEvent) {
     event.preventDefault();
@@ -95,6 +105,8 @@ export class HomeComponent implements OnInit {
             this.allDataSets[i][this.resultTabs.productInfo.name][0] =
               this.searchData?.basic_product_data[i];
           }
+        } else {
+          this.allDataSets = [];
         }
         break;
       case this.resultTabs.technicalRoutes.name:
@@ -110,6 +122,8 @@ export class HomeComponent implements OnInit {
             this.allDataSets[i][this.resultTabs.technicalRoutes.name][0] =
               this.searchData?.ros_data[i];
           }
+        } else {
+            this.allDataSets = [];
         }
         break;
       case this.resultTabs.chemicalDirectory.name:
@@ -125,6 +139,8 @@ export class HomeComponent implements OnInit {
             this.allDataSets[i][this.resultTabs.chemicalDirectory.name][0] =
               this.searchData?.chem_dir_data[i];              
           }
+        }  else {
+          this.allDataSets = [];
         }
         break;
     }

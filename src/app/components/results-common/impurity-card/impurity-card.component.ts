@@ -15,6 +15,8 @@ import { CommonModule } from '@angular/common';
 })
 export class ImpurityCardComponent {
 
+  @Input() count!: number;
+
   _data: any = [];
   MoreInfo: boolean = false;
   searchType: string = 'trrn'; // Replace with actual search type
@@ -23,6 +25,7 @@ export class ImpurityCardComponent {
 
   impurity_column: any = {};
   resultTabs: any = {};
+
 
   @Input()
   get data() {  
@@ -75,8 +78,6 @@ export class ImpurityCardComponent {
 
     // Remove the temporary textarea element
     document.body.removeChild(textArea);
-    alert('Item Copied!');
-
   }
 
   getImageUrl = (data: any) => {

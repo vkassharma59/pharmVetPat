@@ -34,5 +34,6 @@ export class KoreaComponent {
     constructor(private utilityService: UtilityService) {
       this.resultTabs = this.utilityService.getAllTabsName();
     }
+    
 
 }

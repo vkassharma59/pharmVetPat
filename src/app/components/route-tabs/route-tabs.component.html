@@ -1,6 +1,20 @@
 <!-- Tabs Section -->
-<ul class="nav nav-tabs">
+<!-- <ul class="nav nav-tabs">
     <li class="nav-item" *ngFor="let tab of resultTabValues">
         <a class="nav-link" [ngClass]="{'active': tab.isActive}" href="javascript:void(0)" (click)="handleTabClick(tab)">{{tab.label}}</a>
     </li>
-</ul>
+</ul> -->
+
+<div class="tabs-container">
+    <ul class="nav nav-tabs">
+      <li class="nav-item" *ngFor="let tab of resultTabValues">
+        <a class="nav-link" [ngClass]="{'active': tab.isActive}" href="javascript:void(0)" (click)="handleTabClick(tab)">
+          {{ tab.label }}
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+  
+  
+  

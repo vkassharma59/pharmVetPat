@@ -245,18 +245,22 @@
     position: relative; 
   }
   .suggestions-dropdown {
-    width: 50%; 
+    width: 100%; 
     min-width: 200px;
     max-width: 50%; 
     z-index: 999;
   }
   @media (max-width: 768px) {
     .suggestions-dropdown {
-      width: 50%;
+      width: 90%;
       left: 5%; 
     }
   }
 
-
+@media (min-width: 769px) {
+  .suggestions-dropdown {
+    width: 40%;
+  }
+}
   
   

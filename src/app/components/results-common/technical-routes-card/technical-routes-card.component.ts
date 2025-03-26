@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
 import { Auth_operations } from '../../../Utils/SetToken';
@@ -12,31 +12,34 @@ import { UtilityService } from '../../../services/utility-service/utility.servic
   standalone: true,
   imports: [CommonModule],
   templateUrl: './technical-routes-card.component.html',
-  styleUrl: './technical-routes-card.component.css',
+  styleUrls: ['./technical-routes-card.component.css'],
 })
-export class TechnicalRoutesCardComponent {
-
+export class TechnicalRoutesCardComponent implements OnInit, OnDestroy {
   downloadable_values: string[] = [];
   doc_values: any = [];
   tech_column: any = {};
   resultTabs: any = {};
   _data: any = [];
 
+  @Input() count!: number;
+
   @Input() CurrentAPIBody: any;
   @Input() index: any;
+
   @Input()
   get data() {
     return this._data;
   }
   set data(value: any) {
-    this.resultTabs = this.utilityService.getAllTabsName();
-    const column_list = Auth_operations.getColumnList();
-    if(column_list[this.resultTabs.technicalRoutes?.name]?.length > 0 && Object.keys(value).length > 0 && value) {
-      for (let i = 0; i < column_list[this.resultTabs.technicalRoutes.name].length; i++) {
-        this.tech_column[column_list[this.resultTabs.technicalRoutes.name][i].value] =
-          column_list[this.resultTabs.technicalRoutes.name][i].name;
+    if (value && Object.keys(value).length > 0) {
+      this.resultTabs = this.utilityService.getAllTabsName();
+      const column_list = Auth_operations.getColumnList();
+      if (column_list[this.resultTabs.technicalRoutes?.name]?.length > 0) {
+        for (let i = 0; i < column_list[this.resultTabs.technicalRoutes.name].length; i++) {
+          this.tech_column[column_list[this.resultTabs.technicalRoutes.name][i].value] =
+            column_list[this.resultTabs.technicalRoutes.name][i].name;
+        }
       }
-
       this._data = value;
     }
   }
@@ -45,6 +48,10 @@ export class TechnicalRoutesCardComponent {
     private dialog: MatDialog,
     private utilityService: UtilityService
   ) {}
+
+  ngOnInit() {}
+
+  ngOnDestroy() {}
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
@@ -55,28 +62,18 @@ export class TechnicalRoutesCardComponent {
   }
 
   handleCopy(text: any) {
-    // Create a temporary textarea element
     const textArea = document.createElement('textarea');
     textArea.value = text;
     document.body.appendChild(textArea);
-
-    // Select the text
     textArea.select();
-    textArea.setSelectionRange(0, 99999); // For mobile devices
-
-    // Copy the text inside the textarea
+    textArea.setSelectionRange(0, 99999);
     document.execCommand('copy');
-
-    // Remove the temporary textarea element
     document.body.removeChild(textArea);
     alert('Item Copied!');
   }
 
   getStringLength(value: any) {
-    if (value.length > 800) {
-      return true;
-    }
-    return false;
+    return value.length > 800;
   }
 
   isDateTimeString(dateString: any) {
@@ -85,31 +82,19 @@ export class TechnicalRoutesCardComponent {
   }
 
   getUpdationDate(data: any) {
-    const isoDate = data;
-    if (this.isDateTimeString(isoDate)) {
-      const date = new Date(isoDate);
-
-      // Extract the date in yyyy-mm-dd format
-      const formattedDate = date.toISOString().split('T')[0];
-
-      return formattedDate;
-    } else return data;
+    if (this.isDateTimeString(data)) {
+      const date = new Date(data);
+      return date.toISOString().split('T')[0];
+    }
+    return data;
   }
 
   getImageUrl(props: any): string {
-    return (
-      environment.baseUrl +
-      environment.domainNameRouteOfSynthesis +
-      this.data?.route_of_synthesis
-    );
+    return `${environment.baseUrl}${environment.domainNameRouteOfSynthesis}${this.data?.route_of_synthesis}`;
   }
 
   getImageUrl2(props: any): string {
-    return (
-      environment.baseUrl +
-      environment.domainNameCompanyLogo +
-      this.data?.company_logo
-    );
+    return `${environment.baseUrl}${environment.domainNameCompanyLogo}${this.data?.company_logo}`;
   }
 
   getGooglrPatentUrl(value: any): string {
@@ -121,9 +106,7 @@ export class TechnicalRoutesCardComponent {
   }
 
   getespaceneturl(value: any): string {
-    const URL = environment.domainNameEspacenetUrl;
-    const queryParam = value;
-    return `${URL}${queryParam}A1?q=${queryParam}`;
+    return `${environment.domainNameEspacenetUrl}${value}A1?q=${value}`;
   }
 
   getSplitValues(downloadable_docs: string) {
@@ -141,19 +124,16 @@ export class TechnicalRoutesCardComponent {
   }
 
   OpenViewModal(data: any, title: any) {
-    const dialogRef = this.dialog.open(ChemDiscriptionViewModelComponent, {
+    this.dialog.open(ChemDiscriptionViewModelComponent, {
       width: 'calc(100vw - 50px)',
       height: 'auto',
       panelClass: 'full-screen-modal',
-      data: {
-        dataRecord: data,
-        title: title,
-      },
+      data: { dataRecord: data, title: title },
     });
   }
 
   openImageModal(imageUrl: string): void {
-    const dialogRef = this.dialog.open(ImageModalComponent, {
+    this.dialog.open(ImageModalComponent, {
       width: 'auto',
       height: 'auto',
       panelClass: 'full-screen-modal',

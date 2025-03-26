@@ -1,8 +1,8 @@
 
 <!-- <pre>{{_data | json}}</pre>  -->
 
-<div class="card-header text-white " style="font-size: 20px; background-color: #05519A;">
-    {{ localCount }}. {{resultTabs?.japanApproval?.label}} >> <span>SITAGLIPTIN PHOSPHATE</span>
+<div class="card-header text-white " style="font-size: 18px; background-color: #05519A;">
+    {{ count }}. {{resultTabs?.japanApproval?.label}} >> {{_data?.strength}}
 </div>
 <div class="card-body">
     <div class="pb-3 mb-3 px-2 rounded-lg">
@@ -42,12 +42,17 @@
                     </p>
                 </div>
 
-                <img *ngIf="_data?.company_logo"
-                     class="company_logo"
-                     [src]="getImageUrl(_data)"
-                     alt="error"
-                     style="height: 150px; width: 150px; padding: 10px; object-fit: contain;">
-
+                <img
+                *ngIf="_data?.company_logo"
+                class="company_logo"
+                [src]="getImageUrl()"
+                alt="error"
+                style="
+                  height: 150px;
+                  width: 150px;
+                  padding: 20px 20px;
+                  object-fit: contain;">
+              
                 <!-- ✅ Moved inside the Second Column -->
                 <div *ngIf="_data?.date_of_approval && getColumnName('date_of_approval')">
                     <h1 class="font-bold">
@@ -139,15 +144,16 @@
            </div>
 
            <img
-    *ngIf="data?.company_logo"
-    class="company_logo"
-    [src]="getImageUrl(data)"
-    alt="error"
-    style="
-        height: 200px;
-        width: 200px;
-        padding: 20px 20px;
-        object-fit: contain;">
+  *ngIf="_data?.company_logo"
+  class="company_logo"
+  [src]="getImageUrl()"
+  alt="error"
+  style="
+    height: 200px;
+    width: 200px;
+    padding: 20px 20px;
+    object-fit: contain;">
+
 
 
 
@@ -367,4 +373,4 @@
         </p>
       </div>
 </div> 
-<br><br>
+<br>

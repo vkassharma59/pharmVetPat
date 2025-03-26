@@ -23,6 +23,8 @@ export class ChemicalDirectoryDataCardComponent {
   keyword: string = ''; // Initialize as empty string
   pageNo: number = 1;
 
+  @Input() count!: number;
+
   chem_column: any = {};
   resultTabs: any = {};
 

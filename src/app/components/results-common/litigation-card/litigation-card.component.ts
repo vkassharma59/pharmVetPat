@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Auth_operations } from '../../../Utils/SetToken';
 import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from '../../../services/utility-service/utility.service';
@@ -12,7 +12,9 @@ import { CommonModule } from '@angular/common';
   templateUrl: './litigation-card.component.html',
   styleUrl: './litigation-card.component.css'
 })
-export class LitigationCardComponent {
+export class LitigationCardComponent implements OnInit, OnDestroy {
+
+  @Input() count!: number;
 
   _data: any = [];
   MoreInfo: boolean = false;
@@ -29,8 +31,9 @@ export class LitigationCardComponent {
   }
   set data(value: any) {    
     if (value && Object.keys(value).length > 0) {
-      LitigationCardComponent.apiCallCount++;
-      this.localCount = LitigationCardComponent.apiCallCount;
+      LitigationCardComponent.apiCallCount++; // Increment static counter
+      this.localCount = LitigationCardComponent.apiCallCount; // Assign to local instance
+     
       console.log(`API data received ${this.localCount} times`);
 
       this.resultTabs = this.utilityService.getAllTabsName();
@@ -48,6 +51,18 @@ export class LitigationCardComponent {
   }
 
   constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
+
+  ngOnInit() {
+    // Reset counter only when the component is first loaded
+    if (LitigationCardComponent.apiCallCount === 0) {
+      LitigationCardComponent.apiCallCount = 0;
+    }
+  }
+
+  ngOnDestroy() {
+    // Reset counter when navigating away from the component
+    LitigationCardComponent.apiCallCount = 0;
+  }
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
