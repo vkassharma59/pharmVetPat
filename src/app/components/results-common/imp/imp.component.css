@@ -1,0 +1,43 @@
+/* Container for all dropdowns */
+.dropdown-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Space between dropdowns */
+  justify-content: space-between; /* Even spacing */
+  align-items: center;
+  padding: 10px;
+}
+
+/* Each dropdown box */
+.select-box {
+  flex: 1; /* Equal width distribution */
+  min-width: 200px; /* Ensures minimum width */
+}
+
+/* First dropdown box */
+.first-dropdown {
+  flex-basis: 30px; /* Decrease width to 30px */
+  min-width: 30px; /* Ensure minimum width */
+}
+
+/* Dropdown styling */
+.select-box select {
+  width: 100%; /* Full width */
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
+}
+
+/* Responsive: Stack dropdowns on smaller screens */
+@media (max-width: 768px) {
+  .dropdown-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .first-dropdown {
+    flex-basis: auto; /* Reset the width on smaller screens */
+  }
+}

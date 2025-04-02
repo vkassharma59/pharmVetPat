@@ -1,6 +1,21 @@
-<div class="card-header text-white bg-primary">
-  {{ count }}. {{resultTabs?.chemicalDirectory?.label}} >> {{_data?.chemical_name}}
+<div class="card-header text-white bg-primary" 
+     style="display: flex; align-items: center; justify-content: space-between; padding: 10px;">
+  
+  <!-- Left: Title -->
+  <div>
+    {{ count }}. {{ resultTabs?.chemicalDirectory?.label }} >> {{ _data?.chemical_name }}
+  </div>
+
+  <!-- Right: Total Records & Download Icon -->
+  <div style="display: flex; align-items: center; gap: 10px; margin-left: auto;">
+    <span style="font-size: 16px;">Total Records: <b>1415</b></span>
+    <span class="downloadicon">
+      <i class="fa-solid fa-download" style="color: white; font-size: 16px;"></i>
+    </span>
+  </div>
+
 </div>
+
 <div class="card-body" *ngIf="!isEmptyObject(_data); else noData">
   <div class="pb-3 mb-3 px-2 flex flex-wrap">
     <div class="lg:w-3/4 w-full">

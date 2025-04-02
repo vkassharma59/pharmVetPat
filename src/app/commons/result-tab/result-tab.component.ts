@@ -25,6 +25,8 @@ export class ResultTabComponent {
   @Input() MainDataResultShow: any;
   @Input() CurrentAPIBody: any;
 
+  
+
   raise_query_object: any;
   isDownloadPermit = false;
   isSplitDownload: any = false;

@@ -1,5 +1,8 @@
-<div class="card-header text-white bg-primary">
+<div class="card-header text-white bg-primary" style="display: flex; justify-content: space-between;">
    {{count}}. {{resultTabs?.chemiTracker?.label}} >> <span *ngIf="_data?.chemical_name">{{_data?.chemical_name}}</span>
+
+   <span class="downloadicon"><i class="fa-solid fa-download" style="color: white" ></i></span>
+
 </div>
 <div class="card-body" *ngIf="!isEmptyObject(_data); else noData">
     <div class="row">

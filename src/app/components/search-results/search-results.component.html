@@ -1,6 +1,5 @@
 <app-loader *ngIf="loading"></app-loader>
 
-<ng-container *ngIf="allDataSets.length > 0; else noData">
   <app-result-tab
     (makePdf)="generatePdf.emit($event)"
     [MainDataResultShow]="allDataSets"
@@ -9,7 +8,8 @@
     (priviledgeModal)="openPriviledgeModal($event)"
     (handleLoading)="handleLoadingState($event)"
   ></app-result-tab>
-
+  
+<ng-container *ngIf="allDataSets.length > 0; else noData">
   <div *ngFor="let item of allDataSets; let i = index">    
     <chem-route-results
       (backFunction)="handleBack()"
@@ -42,7 +42,7 @@
 
       <!-- Right Section -->
       <div>
-        <button class="btn btn-outline-success btn-sm me-2">Raise Query</button>
+        <!-- <button class="btn btn-outline-success btn-sm me-2">Raise Query</button> -->
         <button (click)="handleBack()" class="btn btn-success btn-sm">Back to Search</button>
       </div>
     </div>

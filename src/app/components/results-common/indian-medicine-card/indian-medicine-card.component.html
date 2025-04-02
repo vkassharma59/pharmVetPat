@@ -1,7 +1,24 @@
 <!-- <pre>{{_data | json}}</pre>  -->
-<div class="card-header text-white " style="font-size: 18px; background-color: #646262;">
-    {{ count }}. {{resultTabs?.indianMedicine?.label}} >> {{_data?.medicine_name_trade_name}}
+<div class="card-header text-white" 
+     style="font-size: 18px; background-color: #646262; display: flex; align-items: center; justify-content: space-between; padding: 10px;">
+
+    <!-- Left: Title -->
+    <div>
+        {{ count }}. {{ resultTabs?.indianMedicine?.label }} >> {{ _data?.medicine_name_trade_name }}
+    </div>
+
+    <!-- Right: Total Record and Download Icon -->
+    <div style="display: flex; align-items: center; gap: 10px; margin-left: auto;">
+        <p class="totalRecords" style="margin: 0; font-size: 16px;">
+            Total Record: <b>22</b>
+        </p>
+        <span class="downloadicon">
+            <i class="fa-solid fa-download" style="color: white; font-size: 16px;"></i>
+        </span>
+    </div>
+
 </div>
+
 
 <div class="card-body">
     <div class="pb-3 mb-3 px-2 rounded-lg">

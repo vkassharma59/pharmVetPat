@@ -1,6 +1,15 @@
 <!-- <pre>{{_data | json}}</pre>  -->
-<div class="card-header text-white " style="font-size: 18px; background-color:#FF0000;">
+
+<div class="card-header text-white " style="font-size: 18px; background-color:#FF0000; display: flex; justify-content: center;">
+    <div>
     {{ count }}. {{resultTabs?.impPatents?.label}} >> {{_data?.product}}
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px; margin-left: auto;">
+        <span style="font-size: 16px;">Total Records: <b>300</b></span>
+        <span class="downloadicon">
+          <i class="fa-solid fa-download" style="color: white; font-size: 16px;"></i>
+        </span>
+      </div>
 </div>
 
 <div class="card-body">

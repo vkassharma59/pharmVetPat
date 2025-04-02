@@ -1,5 +1,24 @@
-<div class="card-header text-white bg-primary">
+<div class="card-header text-white bg-primary" style="display: flex; justify-content: space-between;">
   {{ count }}. {{resultTabs?.impurity?.label}} >> {{_data?.name}}
+
+  <div class="d-flex align-items-center totalreward gap-3">
+    <span class="downloadicon"><i class="fa-solid fa-download" style="color: white" ></i></span>
+
+    <p class="totalRecords mb-0 me-3">Total Impurity Field: <b>166</b></p>
+    <span class="downloadicon"><i class="fas fa-undo" style="color: white"></i></span>
+
+    <select style="color: black">
+      <option>View All</option>
+      <option>Impurity</option>
+      <option>Impurity</option>
+      <option>Impurity</option>
+      <option>Impurity</option>
+    </select>
+
+    <span class="downloadicon"><i class="fa-solid fa-download" style="color: white" ></i></span>
+
+
+</div>
 </div>
 <div class="card-body" *ngIf="!isEmptyObject(_data); else noData">
     <div>

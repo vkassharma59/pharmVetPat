@@ -18,6 +18,7 @@ import { searchTypes, UtilityService } from '../../services/utility-service/util
 
 export class pharmaDatabaseSearchComponent implements OnInit {
 
+  
   screenColumn = 'Select Filter';
   criteria: string = ''; 
   userAuth: any = {}; 

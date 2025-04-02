@@ -82,6 +82,7 @@
           </div>
         </div>
       </div>
+      
 
       <div class="divider"></div>
 
@@ -285,17 +286,18 @@
             
             <!-- Suggestions Dropdown -->
             <ul
-  *ngIf="synthesisSearch?.autosuggestionList?.length && synthesisSearch.keyword.trim() !== ''"
-  class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto"
->
-  <li
-    *ngFor="let suggestion of synthesisSearch?.autosuggestionList"
-    class="px-4 py-2 cursor-pointer hover:bg-blue-100 transition duration-200"
-    (click)="handleSuggestionClick(suggestion, searchTypes.synthesisSearch)"
-  >
-    {{ suggestion }}
-  </li>
-</ul>
+              *ngIf="synthesisSearch?.autosuggestionList?.length && synthesisSearch.keyword.trim() !== ''"
+              class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto"
+            >
+            
+              <li
+                *ngFor="let suggestion of synthesisSearch?.autosuggestionList"
+                class="px-4 py-2 cursor-pointer hover:bg-blue-100 transition duration-200"
+                (click)="handleSuggestionClick(suggestion, searchTypes.synthesisSearch)"
+              >
+                {{ suggestion }}
+              </li>
+            </ul>
           </div>
           
           <div class="col-md-2 col-6 mb-2 mb-md-0">

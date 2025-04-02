@@ -3,11 +3,11 @@ import { TechnicalRoutesCardComponent } from '../technical-routes-card/technical
 import { CommonModule } from '@angular/common';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
-
+import { ResultTabComponent } from '../../../commons/result-tab/result-tab.component';
 @Component({
   selector: 'chem-technical-route',
   standalone: true,
-  imports: [TechnicalRoutesCardComponent, CommonModule, ChildPagingComponent],
+  imports: [TechnicalRoutesCardComponent,ResultTabComponent, CommonModule, ChildPagingComponent],
   templateUrl: './technical-routes.component.html',
   styleUrl: './technical-routes.component.css'
 })
@@ -30,4 +30,6 @@ export class TechnicalRoutesComponent {
   constructor(private utilityService: UtilityService) {
     this.resultTabs = this.utilityService.getAllTabsName();
   }
+
+
 }

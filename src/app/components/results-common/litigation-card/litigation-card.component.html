@@ -1,8 +1,19 @@
 <!-- <pre>{{_data | json}}</pre>  -->
 
-<div class="card-header text-white " style="font-size: 20px; background-color:#65A521;">
+<div class="card-header text-white" style="font-size: 20px; background-color: #65A521; display: flex; justify-content: space-between;">
     {{ count }}. {{resultTabs?.litigation?.label}} >> {{_data?.active_ingredient_biologics_combination}}
-</div>
+    
+    <div style="display: flex; align-items: center;">
+      <span class="downloadicon"><i class="fa-solid fa-download" style="color: white"></i></span>
+      <div style="color: black; margin-left: 10px;">
+        <select>
+          <option>All Country</option>
+          <option>India</option>
+          <option>USA</option>
+        </select>
+      </div>
+    </div>
+  </div>
 <div class="card-body">
     <div class="pb-3 mb-3 px-2 rounded-lg">
         <p class="text-wrap  whitespace-normal"
