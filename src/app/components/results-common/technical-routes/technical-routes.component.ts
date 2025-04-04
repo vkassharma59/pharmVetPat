@@ -6,7 +6,7 @@ import { ChildPagingComponent } from '../../../commons/child-paging/child-paging
 @Component({
   selector: 'chem-technical-route',
   standalone: true,
-  imports: [TechnicalRoutesCardComponent, CommonModule, ChildPagingComponent],
+  imports: [TechnicalRoutesCardComponent, CommonModule, ChildPagingComponent, ChildResultTabComponent],
   templateUrl: './technical-routes.component.html',
   styleUrl: './technical-routes.component.css'
 })
@@ -15,6 +15,7 @@ export class TechnicalRoutesComponent {
     @Output() handleResultTabData = new EventEmitter<any>();
     @Output() handleSetLoading = new EventEmitter<boolean>();
     @Input() currentChildAPIBody: any;
+    searchThrough: string = '';
 
   resultTabs: any = {};
   _data: any = [];
@@ -28,5 +29,10 @@ export class TechnicalRoutesComponent {
 
   constructor(private utilityService: UtilityService) {
     this.resultTabs = this.utilityService.getAllTabsName();
+    this.searchThrough = Auth_operations.getActiveformValues().activeForm;
+  }
+
+  isEmptyObject(obj: any): boolean {
+    return Object.keys(obj).length === 0;
   }
 }

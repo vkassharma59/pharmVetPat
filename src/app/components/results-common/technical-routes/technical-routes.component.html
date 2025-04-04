@@ -1,3 +1,11 @@
+<ng-container *ngIf="!isEmptyObject(currentChildAPIBody) && searchThrough !== 'synthesis-search'">
+    <chem-child-result-tab
+        [dataItem]="_data"
+        [currentAPIData]="currentChildAPIBody"
+        (handleChangeTabData)="handleResultTabData.emit($event)"
+        (setLoading)="handleSetLoading.emit($event)"
+    ></chem-child-result-tab>
+</ng-container>
 <ng-container *ngIf="_data.length > 0; else noData">
     <ng-container *ngFor="let dataItem of _data; let i = index">
         <div class="py-4">

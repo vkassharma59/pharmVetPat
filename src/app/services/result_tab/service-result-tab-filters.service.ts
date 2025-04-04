@@ -53,6 +53,7 @@ export class ServiceResultTabFiltersService {
       .pipe(catchError(this.handleError));
   }
 
+
   getFilterOptions(props: any): Observable<any> {
     return this.http
       .post<any>(props.api_url, props.body, { headers: this.headers })
@@ -60,14 +61,6 @@ export class ServiceResultTabFiltersService {
   }
 
   private handleError(error: HttpErrorResponse): Observable<any> {
-    // if (error.error instanceof ErrorEvent) {
-    //   console.error('An error occurred:', error.error.message);
-    // } else {
-    //   console.error(
-    //     `Backend returned code ${error.status}, ` + `body was: ${error.error}`
-    //   );
-    // }
-    console.log(error);
     return throwError(error);
   }
 }
