@@ -1,15 +1,15 @@
 <app-loader *ngIf="loading"></app-loader>
 
-<ng-container *ngIf="allDataSets.length > 0; else noData">
-  <app-result-tab
-    (makePdf)="generatePdf.emit($event)"
-    [MainDataResultShow]="allDataSets"
-    [CurrentAPIBody]="CurrentAPIBody"
-    (showDataResultFunction)="showDataResultFunction.emit($event)"
-    (priviledgeModal)="openPriviledgeModal($event)"
-    (handleLoading)="handleLoadingState($event)"
-  ></app-result-tab>
+<app-result-tab
+  (makePdf)="generatePdf.emit($event)"
+  [MainDataResultShow]="allDataSets"
+  [CurrentAPIBody]="CurrentAPIBody"
+  (showDataResultFunction)="showDataResultFunction.emit($event)"
+  (priviledgeModal)="openPriviledgeModal($event)"
+  (handleLoading)="handleLoadingState($event)"
+></app-result-tab>
 
+<ng-container *ngIf="allDataSets.length > 0; else noData">
   <div *ngFor="let item of allDataSets; let i = index">    
     <chem-route-results
       (backFunction)="handleBack()"
