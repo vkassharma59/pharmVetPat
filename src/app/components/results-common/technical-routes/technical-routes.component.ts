@@ -3,7 +3,6 @@ import { TechnicalRoutesCardComponent } from '../technical-routes-card/technical
 import { CommonModule } from '@angular/common';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
-
 @Component({
   selector: 'chem-technical-route',
   standalone: true,

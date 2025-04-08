@@ -10,20 +10,20 @@
 
     <p class="mb-0 me-3">Total Records: <b>200</b></p>
 
-    <div class="d-flex align-items-center flex-wrap">
-      <select class="form-select text-black me-2" style="width: 150px;">
+    <div class="d-flex align-items-center flex-wrap justify-between">
+      <select class="form-select text-black me-2 " style="width: 150px; margin:1rem;">
         <option>All Chapter</option>
         <option>Chapter 29</option>
         <option>Chapter 38</option>   
       </select>
 
-      <select class="form-select text-black me-2" style="width: 150px;">
+      <select class="form-select text-black me-2" style="width: 150px; margin:1rem;">
         <option>All Type</option>
         <option>Export</option>
         <option>Import</option>   
       </select>
 
-      <select class="form-select text-black me-2" style="width: 150px;">
+      <select class="form-select text-black me-2" style="width: 150px; margin:1rem;">
         <option>All Year-Month</option>
         <option>APR--2019</option>
         <option>APR--2020</option>  
@@ -67,16 +67,16 @@
 
       </select>
 
-      <select class="form-select text-black me-2" style="width: 150px;">
+      <select class="form-select text-black me-2" style="width: 150px; margin:1rem;">
         <option>Sorting By</option>
         <option>Oldest</option>
         <option>Newest</option>   
       </select>
     </div>
+    
   </div>
-
-  <div class="d-flex flex-wrap align-items-center justify-content-start mt-2">
-    <select class="form-select text-black me-2" style="width: 150px;">
+  <div class="d-flex flex-wrap align-items-center justify-content-start ">
+    <select class="form-select text-black me-2" style="width: 150px; margin:1rem;">
       <option>All Exporter</option>
       <option>0712029630</option>
       <option>3WAY PHARM(HK) CO LIMITED</option>
@@ -260,7 +260,7 @@
       <option>ZHEJIANG UEASY BUSINESS SERVICE</option>
     </select>
 
-    <select class="form-select text-black me-2" style="width: 150px;">
+    <select class="form-select text-black me-2" style="width: 150px; margin:1rem;">
       <option>All Importer</option>
       <option>1</option>
       <option>2</option>   
@@ -272,32 +272,54 @@
 
 <br><br>
 
-<div class="table-container">
-  <div class="search-container">
+<div style="display:flex; justify-content: space-between;">
+  <div class="search-container " style="margin:1rem; ">
     <button mat-raised-button color="primary" (click)="downloadPDF()">Download PDF</button>
     <button mat-raised-button color="accent" (click)="downloadCSV()">Download CSV</button>
     <button mat-raised-button color="warn" (click)="downloadExcel()">Download Excel</button>
   </div>
-
-  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-    <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell">
-        <div class="header-container">
-          <span>{{ columnHeaders[column] }}</span>
-          <mat-form-field appearance="outline">
-            <input matInput (keyup)="applyColumnFilter(column, $event)" (click)="$event.stopPropagation()" />
-          </mat-form-field>
-        </div>
-      </th>
-      <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-  
-  
-
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </div>
-  
+
+<div class="table-wrapper">
+  <!-- Left Scroll Button -->
+  <button class="scroll-btn left" (click)="scrollTable('left')">‹</button>
+
+  <!-- Scrollable Table Container -->
+  <div class="scroll-container" #tableContainer>
+    <table mat-table [dataSource]="dataSource" matSort class="custom-table">
+
+      <!-- Dynamically create columns -->
+      <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+        
+        <!-- Header Cell -->
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell">
+          <div class="header-content">
+            <span>{{ columnHeaders[column] }}</span>
+            <div class="inputfields">
+              <mat-form-field appearance="outline" *ngIf="filterableColumns.includes(column)">
+                <input matInput (keyup)="applyColumnFilter(column, $event)" (click)="$event.stopPropagation()"/>
+              </mat-form-field>
+            </div>
+            
+          </div>
+        </th>
+
+        <!-- Data Cell -->
+        <td mat-cell *matCellDef="let element">
+          <ng-container [ngSwitch]="column">
+            <img *ngSwitchCase="'flag'" [src]="element[column]" alt="flag" class="flag-img" />
+            <span *ngSwitchDefault>{{ element[column] }}</span>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+    </table>
+  </div>
+
+  <!-- Right Scroll Button -->
+  <button class="scroll-btn right" (click)="scrollTable('right')">›</button>
+</div>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>

@@ -1,244 +1,244 @@
 .container {
-    max-width: 1200px;
-    margin: 30px auto;
-    padding: 0 15px; /* side padding for smaller screens */
-  }
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 0 15px; /* side padding for smaller screens */
+}
 
-  /* Title / Top Section */
-  /* .top_section h1 {
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  .top_section .chem {
-    color: #172b4d;
-    font-weight: bold;
-  }
-  .top_section .robotics {
-    color: #172b4d;
-    font-weight: normal;
-  }
-  .top_section .robotics .trademark {
-    font-size: 0.5em;
-  }
-  .top_section .pharma {
-    color: #366ee7;
-  } */
+/* Title / Top Section */
+/* .top_section h1 {
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.top_section .chem {
+  color: #172b4d;
+  font-weight: bold;
+}
+.top_section .robotics {
+  color: #172b4d;
+  font-weight: normal;
+}
+.top_section .robotics .trademark {
+  font-size: 0.5em;
+}
+.top_section .pharma {
+  color: #366ee7;
+} */
 
-  .top_section {
-    text-align: center;
-    padding: 1rem;
+.top_section {
+  text-align: center;
+  padding: 1rem;
 }
 
 .top_section .heading {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: clamp(1.5rem, 4vw, 2.75rem);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.3rem;
-    align-items: baseline;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: clamp(1.5rem, 4vw, 2.75rem);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.3rem;
+  align-items: baseline;
 }
 
 /* Keep Chem, Robotics, and Pharma Database together on larger screens */
 @media (min-width: 769px) {
-    .heading {
-        flex-wrap: nowrap; /* Prevent wrapping on large screens */
-    }
+  .heading {
+      flex-wrap: nowrap; /* Prevent wrapping on large screens */
+  }
 }
 
 .top_section .chem {
-    color: #172b4d;
-    font-weight: bold;
+  color: #172b4d;
+  font-weight: bold;
 }
 
 .top_section .robotics {
-    color: #172b4d;
-    font-weight: normal;
+  color: #172b4d;
+  font-weight: normal;
 }
 
 .top_section .robotics .trademark {
-    font-size: 0.5em;
+  font-size: 0.5em;
 }
 
 .top_section .pharma {
-    color: #366ee7;
+  color: #366ee7;
 }
 
 
 
-  /* Header Tabs Row */
-  /* .header {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background-color: #fff;
-    border-radius: 20px;
-    width: 600px;
-    height: 40px;
-    margin: 0 auto 30px;
-  }
-  .header button {
-    background-color: #fff;
-    color: #707070;
-    border: none;
-    padding: 8px 11px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-  }
-  .header button.active {
-    background: #0056b3;
-    color: #fff;
-    border-radius: 16px;
-    padding: 4px 10px;
-    font-weight: bold;
-    font-size: 14px;
-} */
-
-.header {
+/* Header Tabs Row */
+/* .header {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   background-color: #fff;
   border-radius: 20px;
-  width: 90%; /* Adjusts width dynamically */
-  max-width: 600px;
-  height: auto;
-  padding: 10px;
+  width: 600px;
+  height: 40px;
   margin: 0 auto 30px;
-  flex-wrap: wrap; /* Allows wrapping for smaller screens */
-  gap: 10px;
 }
-
 .header button {
   background-color: #fff;
   color: #707070;
   border: none;
-  padding: 10px 15px;
+  padding: 8px 11px;
   border-radius: 20px;
   cursor: pointer;
   font-size: 14px;
   font-weight: bold;
-  white-space: nowrap; /* Prevents text from wrapping inside buttons */
 }
-
 .header button.active {
   background: #0056b3;
   color: #fff;
   border-radius: 16px;
-  padding: 8px 14px;
+  padding: 4px 10px;
   font-weight: bold;
   font-size: 14px;
+} */
+
+.header {
+display: flex;
+justify-content: center;
+align-items: center;
+background-color: #fff;
+border-radius: 20px;
+width: 90%; /* Adjusts width dynamically */
+max-width: 600px;
+height: auto;
+padding: 10px;
+margin: 0 auto 30px;
+flex-wrap: wrap; /* Allows wrapping for smaller screens */
+gap: 10px;
+}
+
+.header button {
+background-color: #fff;
+color: #707070;
+border: none;
+padding: 10px 15px;
+border-radius: 20px;
+cursor: pointer;
+font-size: 14px;
+font-weight: bold;
+white-space: nowrap; /* Prevents text from wrapping inside buttons */
+}
+
+.header button.active {
+background: #0056b3;
+color: #fff;
+border-radius: 16px;
+padding: 8px 14px;
+font-weight: bold;
+font-size: 14px;
 }
 
 /* Responsive Styles */
 @media (max-width: 768px) {
-  .header {
-    flex-direction: column; /* Stack buttons on small screens */
-    width: 100%;
-    gap: 8px;
-  }
+.header {
+  flex-direction: column; /* Stack buttons on small screens */
+  width: 100%;
+  gap: 8px;
+}
 
-  .header button {
-    width: 90%; /* Buttons take full width on small screens */
-    text-align: center;
-  }
+.header button {
+  width: 90%; /* Buttons take full width on small screens */
+  text-align: center;
+}
 }
 
 
-  /* Card Box */
-  .card-box {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px 30px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
+/* Card Box */
+.card-box {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-  /* Section Titles / Text */
-  .section-title {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: #0056b3;
-  }
-  .divider {
-    border-top: 1px solid #ddd;
-    margin: 20px 0;
-  }
-  .hidden {
-    display: none;
-  }
+/* Section Titles / Text */
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #0056b3;
+}
+.divider {
+  border-top: 1px solid #ddd;
+  margin: 20px 0;
+}
+.hidden {
+  display: none;
+}
 
-  /* Inputs & Selects: ensure consistent styling */
-  .form-control {
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    line-height: normal;
-    width: 100%;
-    margin: 5px 0;
-    min-height: 40px; /* consistent height with buttons */
-  }
+/* Inputs & Selects: ensure consistent styling */
+.form-control {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  line-height: normal;
+  width: 100%;
+  margin: 5px 0;
+  min-height: 40px; /* consistent height with buttons */
+}
 
-  /* Buttons: consistent size and spacing */
+/* Buttons: consistent size and spacing */
+.btn {
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  min-height: 40px; /* consistent height with inputs */
+  cursor: pointer;
+}
+.btn.btn-outline-primary {
+  border: 1px solid #366ee7;
+  color: #366ee7;
+  background-color: #fff;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  width: 100%;
+}
+.btn.btn-outline-primary:hover,
+.btn.btn-outline-primary:focus {
+  background-color: #366ee7;
+  color: #fff;
+  text-decoration: none;
+}
+.btn.btn-outline-secondary {
+  background-color: #f1f8fe;
+  border: 1px solid #366ee7;
+  color: #366ee7;
+  width: 100%;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.btn.btn-outline-secondary:hover,
+.btn.btn-outline-secondary:focus {
+  background-color: #dceefe;
+  color: #366ee7;
+}
+.btn.btn-success {
+  width: 100%;
+  transition: opacity 0.2s ease;
+}
+.btn.btn-success:hover {
+  opacity: 0.9;
+}
+
+/* Tutorial Buttons Row */
+.tutorial-btn {
+  margin-top: 20px;
+}
+
+/* Responsive Overrides */
+@media (max-width: 768px) {
   .btn {
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500;
     min-height: 40px; /* consistent height with inputs */
     cursor: pointer;
   }
-  .btn.btn-outline-primary {
-    border: 1px solid #366ee7;
-    color: #366ee7;
-    background-color: #fff;
-    transition: background-color 0.2s ease, color 0.2s ease;
-    width: 100%;
-  }
-  .btn.btn-outline-primary:hover,
-  .btn.btn-outline-primary:focus {
-    background-color: #366ee7;
-    color: #fff;
-    text-decoration: none;
-  }
-  .btn.btn-outline-secondary {
-    background-color: #f1f8fe;
-    border: 1px solid #366ee7;
-    color: #366ee7;
-    width: 100%;
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
-  .btn.btn-outline-secondary:hover,
-  .btn.btn-outline-secondary:focus {
-    background-color: #dceefe;
-    color: #366ee7;
-  }
-  .btn.btn-success {
-    width: 100%;
-    transition: opacity 0.2s ease;
-  }
-  .btn.btn-success:hover {
-    opacity: 0.9;
-  }
-
-  /* Tutorial Buttons Row */
-  .tutorial-btn {
-    margin-top: 20px;
-  }
-
-  /* Responsive Overrides */
-  @media (max-width: 768px) {
-    .btn {
-      border-radius: 5px;
-      font-size: 12px;
-      font-weight: 500;
-      min-height: 40px; /* consistent height with inputs */
-      cursor: pointer;
-    }
-  }
+}
 
 
   .col-md-8 {

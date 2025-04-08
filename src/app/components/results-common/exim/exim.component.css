@@ -5,15 +5,21 @@
   gap: 10px;
   margin-bottom: 20px;
 }
-
-/* ✅ Card-style Table */
-.mat-elevation-z8 {
-  padding: 20px;
-  border-radius: 8px;
-  background: #fff;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+mat-mdc-form-field-infix{
+  height: 2rem;
 }
+.inputfields{
+  color: black;
+  margin: 0.9rem;
+  background-color: white;
+  
 
+}
+mat-form-field {
+  color: black;
+  margin: 0.9rem;
+  background-color: white;
+}
 /* ✅ Form Fields (Smaller Input Box) */
 mat-form-field {
   width: 120px; /* Decreased input width */
@@ -31,12 +37,12 @@ mat-form-field {
   width: 100%;
   min-width: 800px;
   border-collapse: collapse;
-  border: 2px solid #8E24AA; /* Purple border */
+  /* border: 2px solid #8E24AA; Purple border */
 }
 
 /* ✅ Table Header */
 .mat-header-cell {
-  background-color: #8B008B !important;
+  /* background-color: #8B008B !important; */
   color: white !important;
   font-weight: bold;
   text-align: center;
@@ -49,18 +55,19 @@ mat-form-field {
   text-align: center;
   padding: 12px;
   font-size: 14px;
-  border-bottom: 1px solid #8E24AA;
+  /* border-bottom: 1px solid #8E24AA; */
   height: 50px; /* Increased row height */
 }
 
-/* ✅ Alternating Row Colors */
-tr:nth-child(even) td {
-  background-color: #E1BEE7; /* Light Pink */
-}
 
-tr:nth-child(odd) td {
-  background-color: #F3E5F5; /* Light Purple */
-}
+/* ✅ Alternating Row Colors */
+/* tr:nth-child(even) td {
+  background-color: #E1BEE7; /* Light Pink 
+}*/
+
+/*tr:nth-child(odd) td {
+  /* background-color: #F3E5F5; Light Purple 
+} */
 
 /* ✅ Hover Effect */
 .mat-table tbody tr:hover td {
@@ -72,19 +79,18 @@ tr:nth-child(odd) td {
 .mat-paginator {
   position: sticky;
   bottom: 0;
-  background: #673AB7; /* Purple */
-  color: white;
+  background: white; 
+  color: black;
   z-index: 10;
 }
 
 /* ✅ Scrollable Table */
 .table-container {
-  width: 100%;
+  overflow-y: auto;
   overflow-x: auto;
   max-height: 500px;
-  border: 1px solid #ccc;
+  margin: 1rem;
 }
-
 /* ✅ Buttons */
 button {
   text-transform: none;
@@ -117,3 +123,127 @@ button[color="warn"] {
   transform: none !important;
 }
 
+/* Table Styling */
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.header-container{
+  background-color: rgb(173, 15, 15); 
+  color: white;
+  font-weight: bold;
+  /* border-bottom: 2px solid white; */
+
+}
+.header-content{
+  display: block;
+  color: white;
+}
+.line{
+  display: inline-block;
+  height: 2px;        /* for vertical line */
+  width: 100%;
+  background-color: white;
+  margin: 0 10px;
+}
+/* Red Header Styling */
+.custom-table thead {
+  background-color: rgb(160, 12, 12); 
+  color: white;
+  font-weight: bold;
+}
+
+/* Header Cells */
+.header-cell {
+  background-color:rgb(155, 10, 10) ; /* Red */
+  color: white;
+  text-align: center;
+  padding: 12px;
+  width: 9rem;
+}
+
+
+/* Alternate Row Colors */
+.table-row:nth-child(odd) {
+  background-color: #ffe6e6; /* Light Red */
+}
+
+.table-row:nth-child(even) {
+  background-color: white;
+}
+/* Borders */
+.custom-table th {
+  border: 1px solid rgb(255, 252, 252); /* Darker Red */
+  padding: 10px;
+  text-align: left;
+  background-color: rgb(153, 17, 17);
+}
+.custom-table td{
+  border: 1px solid rgb(155, 10, 10); /* Darker Red */
+  padding: 10px;
+  text-align: left;
+  background-color: rgb(255, 255, 255);
+}
+/* Hover Effect */
+.table-row:hover {
+  background-color: #ffcccc; /* Light Red Hover */
+}
+.table-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.scroll-container {
+  overflow-x: auto;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.custom-table {
+  min-width: 1000px;
+  border-collapse: collapse;
+}
+
+.header-cell {
+  background: #d42027;
+  color: white;
+  font-weight: bold;
+  border: 1px solid #fff;
+  padding: 8px;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.table-row:nth-child(even) {
+  background-color: #f9f9f9;
+}
+.table-row:nth-child(odd) {
+  background-color: #fff;
+}
+
+.flag-img {
+  width: 40px;
+  height: 30px;
+}
+
+.scroll-btn {
+  background: #d42027;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 24px;
+  z-index: 10;
+}
+
+.scroll-btn.left {
+  margin-right: 5px;
+}
+.scroll-btn.right {
+  margin-left: 5px;
+}

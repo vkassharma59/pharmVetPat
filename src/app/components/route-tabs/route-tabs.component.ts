@@ -7,7 +7,7 @@ import cloneDeep from 'lodash/cloneDeep';
 @Component({
   selector: 'chem-route-tabs',
   standalone: true,
-  imports: [NgFor, NgIf, NgClass],
+  imports: [NgFor, NgClass],
   templateUrl: './route-tabs.component.html',
   styleUrl: './route-tabs.component.scss'
 })

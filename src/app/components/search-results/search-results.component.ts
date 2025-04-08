@@ -44,7 +44,7 @@ export class SearchResultsComponent {
   @Input() allDataSets: any = [];  
   @Input() searchData: any;  
   @Input() CurrentAPIBody: any;
-
+  @Input() entryType: string='';
   paginationRerenderTrigger: any = 0;
   userIsLoggedIn: boolean = false;
   loading = false;
@@ -65,6 +65,7 @@ export class SearchResultsComponent {
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
   }
+  flag:boolean=true;
 
   ngOnChanges(_changes: any) {
     this.paginationRerenderTrigger = !this.paginationRerenderTrigger;

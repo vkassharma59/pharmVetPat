@@ -1,3 +1,9 @@
+import { LoaderComponent } from '../../commons/loader/loader.component';
+import { CommonModule } from '@angular/common';
+import { AppConfigValues } from '../../config/app-config';
+import { ColumnListService } from '../../services/columnList/column-list.service';
+import { MainSearchService } from '../../services/main-search/main-search.service';
+import { PaginationComponent } from '../../commons/pagination/pagination.component';
 import { Component, EventEmitter, Input, input, Output } from '@angular/core';
 import { searchTypes, UtilityService } from '../../services/utility-service/utility.service';
 import { JsonPipe, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
@@ -20,15 +26,14 @@ import { TechnicalRoutesComponent } from '../results-common/technical-routes/tec
 import { ImpurityComponent } from '../results-common/impurity/impurity.component';
 import { ChemiTrackerComponent } from '../results-common/chemi-tracker/chemi-tracker.component';
 import { ChemicalDirectoryComponent } from '../results-common/chemical-directory/chemical-directory.component';
-
+import { ResultTabComponent } from "../../commons/result-tab/result-tab.component";
 @Component({
   selector: 'chem-route-results',
   standalone: true,
-  imports: [NgIf, BasicRouteComponent, TechnicalRoutesComponent, ImpurityComponent, ChemiTrackerComponent, ImpComponent,IndianComponent,ChemicalDirectoryComponent,JapanComponent,CanadaComponent,EuropeApprovalComponent,KoreaComponent,LitigationComponent, UsComponent,SpcdbComponent,EximComponent, RouteTabsComponent,ActivePatentComponent, NgSwitch, NgSwitchCase, NgSwitchDefault, JsonPipe],
+  imports: [NgIf, BasicRouteComponent, TechnicalRoutesComponent, ImpurityComponent, ChemiTrackerComponent, ImpComponent, IndianComponent, ChemicalDirectoryComponent, JapanComponent, CanadaComponent, EuropeApprovalComponent, KoreaComponent, LitigationComponent, UsComponent, SpcdbComponent, EximComponent, RouteTabsComponent, ActivePatentComponent, NgSwitch, NgSwitchCase, NgSwitchDefault, JsonPipe, ResultTabComponent],
   templateUrl: './route-result.component.html',
   styleUrl: './route-result.component.css'
 })
-
 export class RouteResultComponent {
 
   currentTabData: any = {}
@@ -40,12 +45,25 @@ export class RouteResultComponent {
   @Output() backFunction: EventEmitter<any> = new EventEmitter<any>();
   @Output() onResultTabChange: EventEmitter<any> = new EventEmitter<any>();
   @Output() handleChildPaginationSearch: EventEmitter<any> = new EventEmitter<any>();
+  @Output() downloadPdfEvent = new EventEmitter<void>();
+  @Output() showDataResultFunction: EventEmitter<any> = new EventEmitter<any>();
+  @Output() handleLoading: EventEmitter<any> = new EventEmitter<any>();
+  @Output() makePdf: EventEmitter<any> = new EventEmitter<any>();
+  @Output() priviledgeModal: EventEmitter<any> = new EventEmitter<any>();
+  @Input() MainDataResultShow: any;
+  @Input() CurrentAPIBody: any;
+  @Input() entryType: string='';
+  @Output() showResultFunction: EventEmitter<any> = new EventEmitter<any>();
+  @Output() generatePdf: EventEmitter<any> = new EventEmitter<any>();
 
+
+  @Output() setLoadingState: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() allDataSets: any = [];  
+  @Input() searchData: any;  
   @Input() currentChildAPIBody: any;
   @Input() currentApiData: any;
 
   @Input() index: number | undefined;
-  @Input() searchData: any;  
 
   @Input() 
   get dataItem() {
@@ -125,4 +143,5 @@ export class RouteResultComponent {
     this.onResultTabChange.emit(tempObj);
     this.currentTabData = data;
   }
+  
 }

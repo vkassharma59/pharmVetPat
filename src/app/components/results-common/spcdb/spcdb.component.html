@@ -43,35 +43,42 @@
 
 <br><br>
 
-<div class="table-container">
-  <div class="search-container">
+<div style="display:flex; justify-content: space-between;">
+  <div class="search-container " style="margin:1rem; ">
     <button mat-raised-button color="primary" (click)="downloadPDF()">Download PDF</button>
     <button mat-raised-button color="accent" (click)="downloadCSV()">Download CSV</button>
     <button mat-raised-button color="warn" (click)="downloadExcel()">Download Excel</button>
   </div>
-
-  <table mat-table [dataSource]="dataSource" matSort>
-            
-    <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell">
-          <div class="header-container">
-            <span>{{ columnHeaders[column] }}</span>  <!-- Column Name -->
-            <mat-form-field appearance="outline" class="filter-field">
-              <input matInput (keyup)="applyColumnFilter(column, $event)" (click)="$event.stopPropagation()" />
-            </mat-form-field>
-          </div>
-        </th>
-        <td mat-cell *matCellDef="let element" class="data-cell">{{ element[column] }}</td>
-      </ng-container>
-      
-      
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
-  
-  
-
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </div>
+
+<div class="table-container">
+  <div class="table-wrapper">
+    <!-- <button (click)="scrollTable('left')" class="scroll-button">←</button> -->
   
+    <div class="table-scroll" #tableContainer>
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 custom-table" matSort>
+  
+        <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header >
+            <div class="header-content">
+              <div class="header">
+                {{ columnHeaders[column] }}
+              </div>
+              <div class="inputs" style="color: black;">
+                <input matInput (keyup)="applyColumnFilter(column, $event)" />
+              </div>
+            </div>
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  
+    <!-- <button (click)="scrollTable('right')" class="scroll-button">→</button> -->
+  </div>
+</div>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>

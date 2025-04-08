@@ -4,11 +4,11 @@ import { CommonModule } from '@angular/common';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { Auth_operations } from '../../../Utils/SetToken';
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
-
+import { ResultTabComponent } from '../../../commons/result-tab/result-tab.component';
 @Component({
   selector: 'chem-product-info',
   standalone: true,
-  imports: [CommonModule, BasicRouteCardComponent, ChildPagingComponent],
+  imports: [CommonModule, BasicRouteCardComponent, ChildPagingComponent, ResultTabComponent],
   templateUrl: './basic-route.component.html',
   styleUrl: './basic-route.component.css'
 })
