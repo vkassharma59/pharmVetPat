@@ -121,9 +121,9 @@
                   placeholder="Enter your text"
                   [disabled]="!advanceSearch.filterInputs[i].filter"
                   [(ngModel)]="advanceSearch.filterInputs[i].keyword"
-                  [value]="advanceSearch.filterInputs[i].keyword"
                   (input)="handleChangeKeyword(searchTypes.advanceSearch, i)"
                 />
+
 
                 <!-- Suggestions Dropdown -->
                
@@ -179,7 +179,10 @@
       <!-- Tutorial Buttons Row -->
       <div class="row mb-3 align-items-center">
         <div class="col-md-2 col-6 mb-2 mb-md-0">
-          <button class="btn btn-outline-primary w-100" (click)="checkPriviledgeAndHandleSearch(searchTypes.advanceSearch)">Search</button>
+          <button class="btn btn-outline-primary w-100" (click)="checkPriviledgeAndHandleSearch(searchTypes.advanceSearch)"
+          [disabled]="!isSearchEnabled()">
+          Search
+        </button>
         </div>
         <div class="col-md-2 col-6 mb-2 mb-md-0">
           <button class="btn btn-outline-secondary w-100" (click)="clearInputAndSuggetions(searchTypes.advanceSearch)">Reset Filters</button>
@@ -248,7 +251,7 @@
           <div class="col-md-2 col-6 mb-2 mb-md-0">
             <button 
             (click)="checkPriviledgeAndHandleSearch(searchTypes.intermediateSearch)"
-            [disabled]="!intermediateSearch?.keyword?.trim() && intermediateSearch.filter !== ''"
+            [disabled]="!intermediateSearch?.keyword?.trim() "
             class="btn btn-outline-primary w-100">Search</button>
           </div>
           <div class="col-md-2 col-6 mb-2 mb-md-0">
@@ -358,7 +361,7 @@
           <div class="col-md-2 col-6 mb-2 mb-md-0">
             <button 
               (click)="checkPriviledgeAndHandleSearch(searchTypes.chemicalStructure)"
-              [disabled]="!chemicalStructure?.keyword?.trim() && chemicalStructure.filter !== ''"
+              [disabled]="!chemicalStructure?.keyword?.trim()"
               class="btn btn-outline-primary w-100">Search</button>
           </div>
           <div class="col-md-2 col-6 mb-2 mb-md-0">

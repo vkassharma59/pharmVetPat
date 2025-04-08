@@ -83,7 +83,15 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   }
 
   addFilter() {
-    this.advanceSearch.filterInputs.push({ filter: '', keyword: '' });
+    const lastfilter= this.advanceSearch.filterInputs[this.advanceSearch.filterInputs.length -1];
+
+    if(lastfilter && lastfilter.filter && lastfilter.keyword){
+      this.advanceSearch.filterInputs.push({ filter: '', keyword: '' });
+    }
+    else{
+      alert("please fill in the current filter, then add new filter");
+    }
+    
   }
 
   removeFilter(index: number) {
@@ -171,6 +179,16 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         },
         error: (e) => console.error(e),
       });
+  }
+  isSearchEnabled(): boolean {
+    if (!this.advanceSearch.filterInputs.length) return false;
+  
+    return this.advanceSearch.filterInputs.every(
+      input => input.filter && input.keyword?.trim()
+    );
+  }
+  isInputEnabled(): boolean {
+    return !!(this.intermediateSearch.filter && this.intermediateSearch.keyword?.trim());
   }
 
   getSimpleSearchSuggestions() {

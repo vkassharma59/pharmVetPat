@@ -1,3 +1,6 @@
+<div *ngIf="showCustomAlert" class="custom-alert">
+  Copied
+</div>
 <div class="card-header text-white bg-primary">
   {{ localCount }}. {{resultTabs?.productInfo?.label}} >> {{_data?.ACTIVE_INGREDIENT}}
 </div>
@@ -19,7 +22,7 @@
         <p class="mb-2 mb-sm-0 px-3 py-2 w-100 w-sm-auto" style="background-color: #d9dbe4; color: #545454; border-radius: 5px;">
           <strong>Generic Constraining Date (GCD):</strong> 2013-12-31
         </p>
-        <div class="d-flex gap-2 flex-sm-row flex-column w-100 w-sm-auto">
+        <div class="d-flex gap-2 flex-sm-row flex-column w-100 w-sm-auto" style="margin:0 6px;">
           <button class="btn btn-primary w-100 w-sm-auto" [disabled]="!_data?.INCHIKEY">
             <a href="https://patentscope.wipo.int/search/en/result.jsf?inchikey={{_data?.INCHIKEY}}" target="_blank" style="color: white; text-decoration: none;">
               View Updated Patent at Patent Scope (WIPO)
@@ -1792,7 +1795,7 @@
                 ><i class="fas fa-copy"></i
               ></span>
               </h1>
-              <p class="para pt-2 overflow-auto">{{ _data?.LINK_2 }}</p>
+              <a href="{{ _data?.LINK_2 }}" class="para pt-2 overflow-auto">{{ _data?.LINK_2 }}</a>
               <p
                 class="para pt-2 cursor-pointer"
                 (click)="OpenViewModal(_data?.LINK_2, 'LINK-2')"

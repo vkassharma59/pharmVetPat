@@ -76,6 +76,7 @@ export class BasicRouteCardComponent {
     private dialog: MatDialog,
     private utilityService: UtilityService
   ) {}
+  showCustomAlert = false;
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
@@ -104,8 +105,13 @@ export class BasicRouteCardComponent {
 
     // Remove the temporary textarea element
     document.body.removeChild(textArea);
-    alert('Item Copied!');
-  }
+
+    this.showCustomAlert = true;
+
+   setTimeout(() => {
+      this.showCustomAlert = false;
+    }, 2000); // Hide after 2 seconds
+}
 
   getColumnName(value: any) {
     return this.basic_column[value];
