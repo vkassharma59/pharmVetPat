@@ -4,6 +4,8 @@ import { pharmaDatabaseSearchComponent } from '../pharma-database-search/pharma-
 import { SearchResultsComponent } from '../search-results/search-results.component';
 import { LoaderComponent } from '../../commons/loader/loader.component';
 import { UtilityService } from '../../services/utility-service/utility.service';
+import { DemoRequestComponent } from '../demo-request/demo-request.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'chem-home',
@@ -39,7 +41,9 @@ export class HomeComponent implements OnInit {
   @ViewChild('priviledgeModal') priviledgeModal!: ElementRef;
   resultTabs: any = {};
 
-  constructor(private cdr: ChangeDetectorRef,
+  constructor(
+    private dialog: MatDialog,
+    private cdr: ChangeDetectorRef,
     private utilityService: UtilityService
   ) {}
 
@@ -171,5 +175,13 @@ openCloseAccordion(key: string, event?: Event): void {
     modalElement.setAttribute('aria-hidden', 'false');
     modalElement.setAttribute('aria-modal', 'true');
     modalElement.setAttribute('role', 'dialog');
+  }
+
+  requestADemo() {
+    const dialogRef = this.dialog.open(DemoRequestComponent, {
+      width: '800px',
+      height: '800px',
+      panelClass: 'full-screen-modal',
+    });
   }
 }

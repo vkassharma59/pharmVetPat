@@ -7,6 +7,8 @@ import { Auth_operations } from '../../Utils/SetToken';
 import { ColumnListService } from '../../services/columnList/column-list.service';
 import { AppConfigValues } from '../../config/app-config';
 import { searchTypes, UtilityService } from '../../services/utility-service/utility.service';
+import { VideoTutorialComponent } from '../video-tutorial/video-tutorial.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'chem-pharma-database-search',
@@ -50,6 +52,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   activeSearchTab: string = 'api-search'
 
   constructor(
+    private dialog: MatDialog,
     private elementRef: ElementRef,
     private mainSearchService: MainSearchService,
     private userPriviledgeService: UserPriviledgeService,
@@ -695,6 +698,14 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         console.error('Error fetching column list:', e);
         this.setLoadingState.emit(false);
       },
+    });
+  }
+
+  openTutorialModal() {
+    const dialogRef = this.dialog.open(VideoTutorialComponent, {
+      width: '800px',
+      height: '550px',
+      panelClass: 'full-screen-modal',
     });
   }
 }
