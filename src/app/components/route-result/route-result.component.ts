@@ -43,6 +43,7 @@ export class RouteResultComponent {
 
   @Input() currentChildAPIBody: any;
   @Input() currentApiData: any;
+  @Input() CurrentAPIBody: any;
 
   @Input() index: number | undefined;
   @Input() searchData: any;  
@@ -56,7 +57,7 @@ export class RouteResultComponent {
   }
   
   constructor(private utilityService: UtilityService,
-    private userPriviledgeService: UserPriviledgeService
+    private userPriviledgeService: UserPriviledgeService,
   ) {}
 
   ngOnInit() {

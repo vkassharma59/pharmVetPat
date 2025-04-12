@@ -196,5 +196,27 @@ body::-webkit-scrollbar-track {
 sup {
   font-weight: bolder;
 }
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.child-route-count-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  padding: 10px 0;
+}
+
+.child-route-count {
+  display: inline-block;
+  background-color: #d6d0fc;
+  color: #0032a0;
+  border: 2px solid #0032a0;
+  padding: 8px 16px;
+  border-radius: 5px;
+}
+
+.child-route-count-btn {
+  font-weight: 600;
+  font-size: 15px;
+}
+

@@ -1,4 +1,9 @@
 <ng-container *ngIf="_data.length > 0; else noData">
+    <div *ngIf="currentChildAPIBody?.count > 0" class="child-route-count-wrapper">
+        <button class="child-route-count child-route-count-btn">
+            Total Records : {{ currentChildAPIBody?.count }}
+        </button>
+    </div>
     <ng-container *ngFor="let dataItem of _data; let i = index">
         <div class="py-4">
             <div
@@ -21,10 +26,12 @@
     ></app-child-paging>
 </ng-container>
 <ng-template #noData>
-    <div class="card-header text-white bg-primary">
-        {{resultTabs?.chemicalDirectory?.label}}
-    </div>
-    <div class="card-body">
-        <p>No Data found!</p>
+    <div class="card">
+        <div class="card-header text-white bg-primary">
+            {{resultTabs?.chemicalDirectory?.label}}
+        </div>
+        <div class="card-body">
+            <p>No Data found!</p>
+        </div>
     </div>
 </ng-template>
