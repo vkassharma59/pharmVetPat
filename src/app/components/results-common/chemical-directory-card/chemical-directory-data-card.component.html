@@ -1,7 +1,7 @@
-<div class="card-header text-white bg-primary">
+<div class="card-header text-white " style="background-color:#004080;">
   {{ localCount }}. {{resultTabs?.chemicalDirectory?.label}} >> {{_data?.chemical_name}}
 </div>
-<div class="card-body" *ngIf="!isEmptyObject(_data); else noData">
+<div class="card-body" style="background-color:#CCE4FF;" *ngIf="!isEmptyObject(_data); else noData">
   <div class="pb-3 mb-3 px-2 flex flex-wrap">
     <div class="lg:w-3/4 w-full">
       <div class="flex flex-wrap">

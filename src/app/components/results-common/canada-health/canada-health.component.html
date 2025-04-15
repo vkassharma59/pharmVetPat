@@ -1,16 +1,16 @@
 <!-- <pre>{{_data | json}}</pre>  -->
 
-<div class="card-header text-white " style="font-size: 18px; background-color: #FF0000;">
+<div class="card-header text-white " style="font-size: 18px; background-color: 	#0032a0;">
     {{ localCount }}. {{resultTabs?.canadaApproval?.label}}>> {{_data?.product_name}}
   </div>
   
-  <div class="card-body">
+  <div class="card-body" style="background-color: #deefff;">
       <div class="pb-3 mb-3 px-2 rounded-lg">
           <div class="row">
               <!-- First Column -->
               <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
                   <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal"
-                  style="color: red; font-size: 18px; font-weight: bold;">
+                  style="color: #0032a0; font-size: 18px; font-weight: bold;">
                       {{ _data?.product_name}}
                   </p>
   
@@ -19,7 +19,7 @@
                   </p>
                   <br>
   
-                  <a target="_blank" style="background-color: red; color: white; padding: 10px;"
+                  <a target="_blank" style="background-color: #0032a0; color: white; padding: 10px;"
                       [href]="getPubchemId(_data?.product_monograph_veterinary_labelling_pdf_link)">
                      PRODUCT MONOGRAPH/VETERINARY LABELLING(PDF) LINK
                   </a>
@@ -91,7 +91,7 @@
               <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
   
                   <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal"
-                   style="background-color: red; color: white; text-align: center; padding: 8px; border-radius: 5px; font-size: 18px; font-weight: bold; width: 300px;">
+                   style="background-color: #0032a0; color: white; text-align: center; padding: 8px; border-radius: 5px; font-size: 18px; font-weight: bold; width: 300px;">
                    {{ _data?.current_status }}
                   </p>
   
@@ -110,7 +110,7 @@
       <button
         (click)="toggleMoreInfo()"
         class="py-2 px-3 mt-3 mb-3 btnchemical rounded-md btn"
-        style="background-color: #FF0000; color: white;"
+        style="background-color: #0032a0; color: white;"
        
       >
         {{

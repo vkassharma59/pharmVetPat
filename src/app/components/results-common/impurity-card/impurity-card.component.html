@@ -1,7 +1,7 @@
-<div class="card-header text-white bg-primary">
+<div class="card-header text-white" style="background-color: #003366;">
   {{ apiCallInstance }}. {{resultTabs?.impurity?.label}} >> {{_data?.name}}
 </div>
-<div class="card-body" *ngIf="!isEmptyObject(_data); else noData">
+<div class="card-body" style="background-color: #B3D9FF;" *ngIf="!isEmptyObject(_data); else noData">
     <div>
         <div class="row">
           <div class="col-md-12">
