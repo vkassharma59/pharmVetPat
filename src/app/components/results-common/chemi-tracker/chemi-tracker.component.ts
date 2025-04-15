@@ -25,7 +25,8 @@ export class ChemiTrackerComponent {
   formulation_value: any = 'Select TECH.API & FORMULATION';
   countryFilters: any = [];
   foundationsFilters: any = [];
-  
+  isCountryDropdownOpen:boolean=false;
+  isOpen:boolean=false;
   @Input()
   get data() {
     return this._data;
@@ -65,7 +66,14 @@ export class ChemiTrackerComponent {
       },
     });
   }
-
+  handleFilter(){
+    this.isCountryDropdownOpen=!this.isCountryDropdownOpen;
+    console.log(this.isCountryDropdownOpen);
+  }
+  dropdown(){
+    this.isOpen=!this.isOpen;
+    console.log(this.isOpen);
+  }
   handleSelectFilter(filter: any, value: any) {
     this.handleSetLoading.emit(true);
     if (value == '') {
