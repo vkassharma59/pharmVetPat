@@ -1,8 +1,11 @@
 <ng-container *ngIf="_data.length > 0; else noData">
-    <div *ngIf="currentChildAPIBody?.count > 0" class="child-route-count-wrapper">
+    <div *ngIf="currentChildAPIBody?.count > 0" class="child-route-count-wrapper justify-between">
         <button class="child-route-count child-route-count-btn">
             Total Records : {{ currentChildAPIBody?.count }}
         </button>
+        <button type="button" class="btn btn-primary">
+                <i class="fa-solid fa-download"></i>
+            </button>
     </div>
     <ng-container *ngFor="let dataItem of _data; let i = index">
         <div class="py-4">

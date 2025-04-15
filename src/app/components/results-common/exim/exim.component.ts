@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, ChangeDetectorRef, ElementRef, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -12,7 +12,6 @@ import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
-
 @Component({
   selector: 'chem-exim',
   standalone: true,
@@ -26,6 +25,7 @@ import { saveAs } from 'file-saver';
   ],
   templateUrl: './exim.component.html',
   styleUrls: ['./exim.component.css'],
+  encapsulation:ViewEncapsulation.None
 })
 export class EximComponent implements AfterViewInit {
   displayedColumns: string[] = [
@@ -76,7 +76,7 @@ export class EximComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-
+  @ViewChild('tableContainer') tableContainer!: ElementRef;
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit() {
@@ -84,18 +84,35 @@ export class EximComponent implements AfterViewInit {
     this.dataSource.sort = this.sort;
     this.cdr.detectChanges();
   }
-
+  scrollTable(direction: 'left' | 'right') {
+    const container = this.tableContainer.nativeElement as HTMLElement;
+    const scrollAmount = 200;
+  
+    if (direction === 'left') {
+      container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    } else {
+      container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  }
+  
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
     this.dataSource.filter = filterValue;
   }
+  filterableColumns = ['GBRN','COUNTRYOFORIGIN']; // example keys
 
-  applyColumnFilter(column: string, event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    this.dataSource.filterPredicate = (data, filter) => {
-      return (data[column]?.toString().toLowerCase() || '').includes(filter);
-    };
-    this.dataSource.filter = filterValue;
+  // applyColumnFilter(column: string, event: Event) {
+  //   const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+  //   this.dataSource.filterPredicate = (data, filter) => {
+  //     return (data[column]?.toString().toLowerCase() || '').includes(filter);
+  //   };
+  //   this.dataSource.filter = filterValue;
+  // }
+  applyColumnFilter(column: string, event: any) {
+    const value = event.target.value.trim().toLowerCase();
+    this.dataSource.filterPredicate = (data: any, filter: string) =>
+      data[column]?.toString().toLowerCase().includes(filter);
+    this.dataSource.filter = value;
   }
 
   // ✅ Download as PDF

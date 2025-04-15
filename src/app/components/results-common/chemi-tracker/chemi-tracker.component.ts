@@ -31,4 +31,7 @@ export class ChemiTrackerComponent {
   constructor(private utilityService: UtilityService) {
     this.resultTabs = this.utilityService.getAllTabsName();
   }
+  productInfo(){
+    console.log("clicked");
+  }
 }
