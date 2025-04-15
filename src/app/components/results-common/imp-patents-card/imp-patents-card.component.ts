@@ -33,9 +33,6 @@ export class ImpPatentsCardComponent implements OnInit, OnDestroy {
     if (value && Object.keys(value).length > 0) {
       ImpPatentsCardComponent.apiCallCount++; // Increment static counter
       this.localCount = ImpPatentsCardComponent.apiCallCount; // Assign instance count
-
-      console.log(`API data received ${this.localCount} times`);
-
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
 
@@ -98,7 +95,6 @@ export class ImpPatentsCardComponent implements OnInit, OnDestroy {
     document.execCommand('copy');
 
     document.body.removeChild(textArea);
-    alert('Item Copied!');
   }
 
   getImageUrl(): string {

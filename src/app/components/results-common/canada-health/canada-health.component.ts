@@ -100,7 +100,6 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
     document.execCommand('copy');
 
     document.body.removeChild(textArea);
-    alert('Item Copied!');
   }
 
   getImageUrl(data: any): string {

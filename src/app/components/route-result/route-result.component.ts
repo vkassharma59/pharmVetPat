@@ -112,7 +112,8 @@ export class RouteResultComponent {
             searchWithValue = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name][0].gbrn;
           }
           break;
-      case (searchTypes.simpleSearch || searchTypes.advanceSearch):
+      case searchTypes.simpleSearch:
+      case searchTypes.advanceSearch:
         searchWith = 'GBRN';
         searchWithValue = this.dataItem[this.resultTabWithKeys.productInfo.name][0].gbrn;
         break;

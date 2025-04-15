@@ -89,7 +89,6 @@ export class ImpurityCardComponent implements OnInit, OnDestroy {
     textArea.setSelectionRange(0, 99999);
     document.execCommand('copy');
     document.body.removeChild(textArea);
-    alert('Item Copied!');
   }
 
   getImageUrl(data: any): string {
