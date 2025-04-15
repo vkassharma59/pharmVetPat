@@ -3,14 +3,11 @@
         <button class="child-route-count child-route-count-btn">
             Total Records : {{ _currentChildAPIBody?.count }}
         </button>
-
-
         <div class="relative dropdown flex md:justify-between justify-start gap-3">
             <div class="dropdown-container">
                 <button (click)="handleFilter()" class="dropdown-toggle">
                   {{ category_value }}
                 </button>
-              
                 <ul *ngIf="isOpen" class="dropdown-menu">
                   <li (click)="handleSelectFilter('')">View All</li>
                   <li *ngFor="let data of category_filters" (click)="handleSelectFilter(data.value)">
@@ -18,10 +15,9 @@
                   </li>
                 </ul>
               </div>
-              
-                <button type="button" class="btn btn-primary">
-                    <i class="fa-solid fa-download"></i>
-                </button>
+            <button type="button" class="btn btn-primary">
+                <i class="fa-solid fa-download"></i>
+            </button>
         </div>
     </div>
         
