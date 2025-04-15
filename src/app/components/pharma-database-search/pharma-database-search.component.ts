@@ -330,6 +330,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     this.mainSearchService.getAdvanceSearchFilters().subscribe({
       next: (res: any) => {       
         this.advanceSearch.filters = res?.data?.filter_columns;
+        this.advanceSearch.date_columns = res?.data?.date_columns;
       },
       error: (e: any) => {
         console.error('Error:', e);
