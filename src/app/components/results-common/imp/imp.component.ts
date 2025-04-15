@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { environment } from '../../../../environments/environment';
 import { ImpPatentsCardComponent } from '../imp-patents-card/imp-patents-card.component';
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
+import { MainSearchService } from '../../../services/main-search/main-search.service';
 @Component({
   selector: 'chem-imp',
   standalone: true,
@@ -18,10 +19,13 @@ export class ImpComponent {
 
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
-  @Input() currentChildAPIBody: any;
   
   resultTabs: any = {};
   _data: any = [];
+  productValue: string = '';
+  _currentChildAPIBody: any;
+  impPatentApiBody: any;
+
   @Input()
   get data() {
     return this._data;
@@ -30,15 +34,34 @@ export class ImpComponent {
     this._data = value;
   }
 
-  constructor(private utilityService: UtilityService) {
-    this.resultTabs = this.utilityService.getAllTabsName();
+  @Input()
+  get currentChildAPIBody() {
+    return this._currentChildAPIBody;
   }
-  ngOnChanges() {
-   console.log('impPatents received data:', this._data);
- }
- 
-  productInfo(){
-    console.log('clicked');
+  set currentChildAPIBody(value: any) {
+    this._currentChildAPIBody = value;
+    this.impPatentApiBody = { ...value };
+    this.handleFetchFilters();
   }
 
+  constructor(
+    private utilityService: UtilityService,
+    private mainSearchService: MainSearchService) {
+    this.resultTabs = this.utilityService.getAllTabsName();
+  }
+  handleFetchFilters() {
+    this.impPatentApiBody.filter_enable = true;
+    this.mainSearchService.impPatentsSearchSpecific(this.impPatentApiBody).subscribe({
+      next: (res) => {
+        console.log(res?.data);
+        // this.countryFilters = res?.data?.country_of_company;
+        // this.foundationsFilters = res?.data?.dummy_6;
+        this.impPatentApiBody.filter_enable = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.impPatentApiBody.filter_enable = false;
+      },
+    });
+  }
 }

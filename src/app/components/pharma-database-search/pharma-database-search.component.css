@@ -100,16 +100,16 @@
 
 .header {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   background-color: #fff;
-  border-radius: 20px;
-  width: 90%; /* Adjusts width dynamically */
-  max-width: 600px;
+  border-radius: 25px;
+  width: 100%;
+  max-width: 530px;
   height: auto;
-  padding: 10px;
+  padding: 5px 10px;
   margin: 0 auto 30px;
-  flex-wrap: wrap; /* Allows wrapping for smaller screens */
+  flex-wrap: wrap;
   gap: 10px;
 }
 

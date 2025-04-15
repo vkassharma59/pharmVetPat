@@ -1,95 +1,9 @@
 <ng-container *ngIf="_data.length > 0; else noData">
-  <div *ngIf="currentChildAPIBody?.count > 0" class="child-route-count-wrapper justify-between">
+  <div *ngIf="_currentChildAPIBody?.count > 0" class="child-route-count-wrapper justify-between">
     <div>
       <button class="child-route-count child-route-count-btn">
-        Total Records : {{ currentChildAPIBody?.count }}
+        Total Records : {{ _currentChildAPIBody?.count }}
       </button>
-    </div>
-    <div class="justify-between" style="display: flex; justify-content: space-between;">
-      <div class="filters ">
-        <button class="px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0] dropdown-toggle"
-        type="button"
-        id="dropdownMenuButton"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-        (click)="productInfo()">
-          View All Product
-        </button>
-        <ul
-          class="dropdown-menu max-h-40 overflow-y-auto z-30"
-          aria-labelledby="dropdownMenuButton">
-          <li (click)="productInfo()">
-            <a>View All</a>
-          </li>
-          <li (click)="productInfo()">
-            <a>View All</a><!-- if some dynamic content is to be added, perform 2 way binding-->
-          </li>
-        </ul>
-      </div>
-      <div class="filters">
-        <button class="px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0] dropdown-toggle"
-        type="button"
-        id="dropdownMenuButton"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-        (click)="productInfo()">
-          View All Patent
-        </button>
-        <ul
-          class="dropdown-menu max-h-40 overflow-y-auto z-30"
-          aria-labelledby="dropdownMenuButton">
-          <li (click)="productInfo()">
-            <a>View All</a>
-          </li>
-          <li (click)="productInfo()">
-            <a>View All</a><!-- if some dynamic content is to be added, perform 2 way binding-->
-          </li>
-        </ul>
-      </div>
-      <div class="filters">
-        <button class="px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0] dropdown-toggle"
-        type="button"
-        id="dropdownMenuButton"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-        (click)="productInfo()">
-          View All Assignee
-        </button>
-        <ul
-          class="dropdown-menu max-h-40 overflow-y-auto z-30"
-          aria-labelledby="dropdownMenuButton">
-          <li (click)="productInfo()">
-            <a>View All</a>
-          </li>
-          <li (click)="productInfo()">
-            <a>View All</a><!-- if some dynamic content is to be added, perform 2 way binding-->
-          </li>
-        </ul>
-      </div>
-      <div class="filters">
-        <button class="px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0] dropdown-toggle"
-        type="button"
-        id="dropdownMenuButton"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-        (click)="productInfo()">
-          Sorting by application Date
-        </button>
-        <ul
-          class="dropdown-menu max-h-40 overflow-y-auto z-30"
-          aria-labelledby="dropdownMenuButton">
-          <li (click)="productInfo()">
-            <a>View All</a>
-          </li>
-          <li (click)="productInfo()">
-            <a>View All</a><!-- if some dynamic content is to be added, perform 2 way binding-->
-          </li>
-        </ul>
-      </div>
-      <button type="button" class="btn btn-outline-primary">
-        <i class="fa-solid fa-download"></i>
-      </button>
-
     </div>
   </div>
   <ng-container *ngFor="let dataItem of _data; let i = index">
@@ -101,14 +15,14 @@
                   class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-bold h-[37px] flex justify-center items-center"
           >
                   Sub Route
-                  {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
+                  {{ (((_currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
               </span>
           </div>
       </div>
       <chem-imp-patents-card class="card" [data]="dataItem"></chem-imp-patents-card>
   </ng-container> 
   <app-child-paging
-    [currentChildAPIBody]="currentChildAPIBody"
+    [currentChildAPIBody]="_currentChildAPIBody"
     (handleChangeTabData)="handleResultTabData.emit($event)"
     (setLoading)="handleSetLoading.emit($event)"
   ></app-child-paging> 
