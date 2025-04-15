@@ -78,7 +78,7 @@ export class ChemiTrackerCardComponent implements OnDestroy {
     return `https://${value}`;
   }
 
-  handleCopy(text: string) {
+  handleCopy(text: string, el: HTMLElement) {
     navigator.clipboard.writeText(text).then(() => alert('Item Copied!'));
   }
 

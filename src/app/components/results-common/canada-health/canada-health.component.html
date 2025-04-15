@@ -30,8 +30,8 @@
               <h1 class="font-bold"> {{ getColumnName("product_monograph_veterinary_labelling_pdf") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.product_monograph_veterinary_labelling_pdf)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.product_monograph_veterinary_labelling_pdf, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -43,8 +43,8 @@
               <h1 class="font-bold"> {{ getColumnName("date") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.date)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.date, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -61,8 +61,8 @@
                       <h1 class="font-bold"> {{ getColumnName("company") }}
                           <span
                                             class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                            (click)="handleCopy(_data?.company)"
-                                            ><i class="fas fa-copy"></i
+                                            #copyBtn 
+(click)="handleCopy(_data?.company, copyBtn)"                                            ><i class="fas fa-copy"></i
                                           ></span>
                       </h1>
                       <p class="text-wrap max-h-12 whitespace-normal">
@@ -129,8 +129,8 @@
           <h1 class="font-bold"> {{ getColumnName("green_book_registration_number") }}
               <span
                                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                (click)="handleCopy(_data?.green_book_registration_number)"
-                                ><i class="fas fa-copy"></i
+                                #copyBtn 
+(click)="handleCopy(_data?.green_book_registration_number, copyBtn)"                                ><i class="fas fa-copy"></i
                               ></span>
           </h1>
           <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -142,8 +142,8 @@
           <h1 class="font-bold"> {{ getColumnName("product_name") }}
               <span
                                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                (click)="handleCopy(_data?.product_name)"
-                                ><i class="fas fa-copy"></i
+                                #copyBtn 
+(click)="handleCopy(_data?.product_name, copyBtn)"                                ><i class="fas fa-copy"></i
                               ></span>
           </h1>
           <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -155,8 +155,8 @@
           <h1 class="font-bold"> {{ getColumnName("company") }}
               <span
                                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                (click)="handleCopy(_data?.company)"
-                                ><i class="fas fa-copy"></i
+                                #copyBtn 
+(click)="handleCopy(_data?.company, copyBtn)"                                ><i class="fas fa-copy"></i
                               ></span>
           </h1>
           <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -183,8 +183,8 @@
           <h1 class="font-bold"> {{ getColumnName("dosage_forms") }}
               <span
                                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                (click)="handleCopy(_data?.dosage_forms)"
-                                ><i class="fas fa-copy"></i
+                                #copyBtn 
+(click)="handleCopy(_data?.dosage_forms, copyBtn)"                                ><i class="fas fa-copy"></i
                               ></span>
           </h1>
           <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -196,8 +196,8 @@
           <h1 class="font-bold"> {{ getColumnName("schedules") }}
               <span
                                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                (click)="handleCopy(_data?.schedules)"
-                                ><i class="fas fa-copy"></i
+                                #copyBtn 
+(click)="handleCopy(_data?.schedules, copyBtn)"                                ><i class="fas fa-copy"></i
                               ></span>
           </h1>
           <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -209,8 +209,8 @@
           <h1 class="font-bold"> {{ getColumnName("list_of_active_ingredients") }}
               <span
                                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                (click)="handleCopy(_data?.list_of_active_ingredients)"
-                                ><i class="fas fa-copy"></i
+                                #copyBtn 
+(click)="handleCopy(_data?.list_of_active_ingredients, copyBtn)"                                ><i class="fas fa-copy"></i
                               ></span>
           </h1>
           <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -228,8 +228,8 @@
               <h1 class="font-bold"> {{ getColumnName("current_status_date") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.current_status_date)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.current_status_date, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -241,8 +241,8 @@
               <h1 class="font-bold"> {{ getColumnName("ai_name") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.ai_name)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.ai_name, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -254,8 +254,8 @@
               <h1 class="font-bold"> {{ getColumnName("din") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.din)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.din, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -268,8 +268,8 @@
               <h1 class="font-bold"> {{ getColumnName("routes_of_administration") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.routes_of_administration)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.routes_of_administration, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -282,8 +282,8 @@
               <h1 class="font-bold"> {{ getColumnName("active_ingredient_group_aig_number") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.active_ingredient_group_aig_number)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.active_ingredient_group_aig_number, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -296,8 +296,8 @@
               <h1 class="font-bold"> {{ getColumnName("anatomical_therapeutic_chemical_atc") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.anatomical_therapeutic_chemical_atc)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.anatomical_therapeutic_chemical_atc, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -313,8 +313,8 @@
               <h1 class="font-bold"> {{ getColumnName("current_status") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.current_status)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.current_status, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -326,8 +326,8 @@
               <h1 class="font-bold"> {{ getColumnName("class") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.class)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.class, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -339,8 +339,8 @@
               <h1 class="font-bold"> {{ getColumnName("number_of_active_ingredient") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.number_of_active_ingredient)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.number_of_active_ingredient, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -354,8 +354,8 @@
               <h1 class="font-bold"> {{ getColumnName("strength") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.strength)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.strength, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -367,8 +367,8 @@
               <h1 class="font-bold"> {{ getColumnName("product_monograph_veterinary_labelling") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.product_monograph_veterinary_labelling)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.product_monograph_veterinary_labelling, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -380,8 +380,8 @@
               <h1 class="font-bold"> {{ getColumnName("original_market_date_see_footnote1") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.original_market_date_see_footnote1)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.original_market_date_see_footnote1, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -393,8 +393,8 @@
               <h1 class="font-bold"> {{ getColumnName("biosimilar_biologic_drug") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.biosimilar_biologic_drug)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.biosimilar_biologic_drug, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -406,8 +406,8 @@
               <h1 class="font-bold"> {{ getColumnName("american_hospital_formulary_service_ahfs") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.american_hospital_formulary_service_ahfs)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.american_hospital_formulary_service_ahfs, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -419,8 +419,8 @@
               <h1 class="font-bold"> {{ getColumnName("notes") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.notes)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.notes, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -432,8 +432,8 @@
               <h1 class="font-bold"> {{ getColumnName("remarks") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.remarks)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.remarks, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -445,8 +445,8 @@
               <h1 class="font-bold"> {{ getColumnName("information_sources") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.information_sources)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.information_sources, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -458,8 +458,8 @@
               <h1 class="font-bold"> {{ getColumnName("created_at") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.created_at)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.created_at, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
@@ -471,8 +471,8 @@
               <h1 class="font-bold"> {{ getColumnName("id") }}
                   <span
                                     class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    (click)="handleCopy(_data?.id)"
-                                    ><i class="fas fa-copy"></i
+                                    #copyBtn 
+(click)="handleCopy(_data?.id, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
               <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
