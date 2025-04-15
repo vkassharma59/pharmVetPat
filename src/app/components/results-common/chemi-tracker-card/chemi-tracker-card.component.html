@@ -1,7 +1,7 @@
-<div class="card-header text-white bg-primary">
+<div class="card-header text-white" style="background-color: #005B96;">
     {{ localCount }}. {{resultTabs?.chemiTracker?.label}} >> <span *ngIf="_data?.chemical_name">{{_data?.chemical_name}}</span>
 </div>
-<div class="card-body" *ngIf="!isEmptyObject(_data); else noData">
+<div class="card-body" style="background-color: #D6ECFF;" *ngIf="!isEmptyObject(_data); else noData">
     <div class="row">
         <div class="row">
             <div class="col-md-12">

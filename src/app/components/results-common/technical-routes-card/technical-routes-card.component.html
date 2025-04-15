@@ -1,8 +1,8 @@
-<div class="card-header text-white bg-primary">
+<div class="card-header text-white " style="background-color: #005cff ;">
   {{ localCount }}. {{resultTabs?.technicalRoutes?.label}} >> <span *ngIf="_data?.ACTIVE_INGREDIENT">{{_data?.ACTIVE_INGREDIENT}}</span><span *ngIf="_data?.active_ingredient">{{_data?.active_ingredient}}</span>
 </div>
 
-<div class="card-body">
+<div class="card-body" style="background-color:#E6F0FF;">
   <div class="pb-3 mb-3 px-2 rounded-lg" *ngIf="!isEmptyObject(_data); else noData">
     <div class="row">
       <div class="col-md-7">

@@ -48,7 +48,9 @@ export class ImpurityComponent {
      private mainSearchService: MainSearchService) {
     this.resultTabs = this.utilityService.getAllTabsName();
   }
-
+  productInfo(){
+    console.log("clicked");
+  }
   handleFetchFilters() {
     this.ImpurityBody.filter_enable = true;
     this.mainSearchService.impuritySearchSpecific(
@@ -64,10 +66,14 @@ export class ImpurityComponent {
       },
     });
   }
-
-  handleSelectFilter(value: any) {
+  handleFilter(){
+    this.isOpen=!this.isOpen;
+    console.log(this.isOpen);
+  }
+  handleSelectFilter(value: string) {
+    console.log("clicked");
     this.handleSetLoading.emit(true);
-    if (value == '') {
+    if (value === '') {
       delete this.ImpurityBody.filters['category'];
       this.category_value = 'Select Category';
     } else {
@@ -94,4 +100,18 @@ export class ImpurityComponent {
       },
     });
   }
+  // handleFilter() {
+  //   this.isOpen = !this.isOpen;
+  //   console.log('Dropdown toggled:', this.isOpen);
+  // }
+
+  // handleSelectFilter(value: string) {
+  //   this.isOpen = false;
+  //   if (value === '') {
+  //     this.category_value = 'Select Category';
+  //   } else {
+  //     this.category_value = value;
+  //   }
+  //   console.log('Selected:', value);
+  // }
 }

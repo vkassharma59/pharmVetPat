@@ -37,6 +37,8 @@ export class ImpComponent {
    console.log('impPatents received data:', this._data);
  }
  
-
+  productInfo(){
+    console.log('clicked');
+  }
 
 }

@@ -17,7 +17,7 @@ declare var google: any;
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [DropdownModule, NgIf, CommonModule, FormsModule, RouterLink, NgFor],
+  imports: [DropdownModule, NgIf, CommonModule, FormsModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
