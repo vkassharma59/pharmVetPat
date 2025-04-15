@@ -365,6 +365,22 @@
             class="btn btn-outline-secondary w-100">Clear</button>
           </div>
         </div>
+        <div class="row mb-3 align-items-center">
+          <div class="col-md-12 col-12 mb-2 mb-md-0">
+            <h5 class="">
+              Example:
+              <ng-container *ngFor="let example of exampleSearchData; let i = index">
+                <a
+                  style="color: #000000; font-weight: 600;"
+                  href="javascript:void(0)"
+                  (click)="chemicalStructureSearch(example.type, example.value)"
+                >
+                  {{ example.label }}<span *ngIf="i < exampleSearchData.length - 1">, </span>
+                </a>
+              </ng-container>
+            </h5>
+          </div>
+        </div>
       </div>
     </div>
   </div>
