@@ -19,6 +19,7 @@ export class LitigationCardComponent implements OnInit, OnDestroy {
   pageNo: number = 1;
   litigation_column: any = {};
   resultTabs: any = {};
+  copied: boolean = false;
 
   static apiCallCount: number = 0; // Global static counter
   localCount: number = 0; // Stores instance-specific count
@@ -100,7 +101,12 @@ export class LitigationCardComponent implements OnInit, OnDestroy {
     document.execCommand('copy');
 
     document.body.removeChild(textArea);
-    alert('Item Copied!');
+    this.copied = true;
+
+    // Reset to original icon after 1.5s
+    setTimeout(() => {
+      this.copied = false;
+    }, 1500);
   }
 
   getImageUrl(data: any): string {
@@ -110,5 +116,4 @@ export class LitigationCardComponent implements OnInit, OnDestroy {
   getImageUrl1(data: any): string {
     return `${environment.baseUrl}${environment.domainNameCompanyLogo}${this._data?.plaintiff_logo}`;
   }
-
 }

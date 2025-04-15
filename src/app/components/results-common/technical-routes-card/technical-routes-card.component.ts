@@ -73,7 +73,6 @@ export class TechnicalRoutesCardComponent {
     textArea.setSelectionRange(0, 99999);
     document.execCommand('copy');
     document.body.removeChild(textArea);
-    alert('Item Copied!');
   }
 
   getStringLength(value: any) {

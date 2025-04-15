@@ -95,7 +95,6 @@ export class ImpPatentsCardComponent implements OnInit, OnDestroy {
     document.execCommand('copy');
 
     document.body.removeChild(textArea);
-    alert('Item Copied!');
   }
 
   getImageUrl(): string {
