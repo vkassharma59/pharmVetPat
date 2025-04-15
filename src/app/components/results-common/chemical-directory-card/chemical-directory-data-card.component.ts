@@ -5,6 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
 import { Auth_operations } from '../../../Utils/SetToken';
 import { UtilityService } from '../../../services/utility-service/utility.service';
+import { searchTypes } from '../../../services/utility-service/utility.service';
 
 @Component({
   selector: 'chemical-directory-card',
@@ -25,14 +26,16 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
   searchType: string = 'trrn';
   keyword: string = '';
   pageNo: number = 1;
-  localCount: number; // ✅ Instance-specific counter
+  localCount: number;
+  showAppIntermediates: boolean = false;
 
   @Input() CurrentAPIBody: any;
   @Output() ROSChange: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private dialog: MatDialog, private utilityService: UtilityService) {
     this.localCount = ++ChemicalDirectoryDataCardComponent.counter; // ✅ Assign unique count to each instance
-    console.log(`Instance Created: ${this.localCount}, Total Count: ${ChemicalDirectoryDataCardComponent.counter}`);
+    const searchThrough = Auth_operations.getActiveformValues().activeForm;
+    this.showAppIntermediates = (searchThrough === searchTypes.chemicalStructure);
   }
 
   ngOnInit() {
