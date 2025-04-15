@@ -49,7 +49,16 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   resultTabs: any = [];  
   apiUrls = AppConfigValues.appUrls;
   showSuggestions: boolean = false;
-  activeSearchTab: string = 'api-search'
+  activeSearchTab: string = 'api-search';
+  exampleSearchData = [
+    { type: 'smiles_code', value: 'C#C', label: 'C#C' },
+    { type: 'iupac', value: 'acetylene', label: 'acetylene' },
+    { type: 'molecular_formula', value: 'C2H2', label: 'C₂H₂' },
+    { type: 'chemical_name', value: 'ethyne', label: 'ethyne' },
+    { type: 'inchi', value: 'InChI=1S/C2H2/c1-2/h1-2H', label: 'InChI=1S/C2H2/c1-2/h1-2H' },
+    { type: 'inchikey', value: 'HSFWRNGVRCDJHI-UHFFFAOYSA-N', label: 'HSFWRNGVRCDJHI-UHFFFAOYSA-N' },
+    { type: 'cas_rn', value: '74-86-2', label: '74-86-2' }
+  ];
 
   constructor(
     private dialog: MatDialog,
@@ -707,5 +716,11 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       height: '550px',
       panelClass: 'full-screen-modal',
     });
+  }
+
+  chemicalStructureSearch(type: string, value: string) {
+    this.chemicalStructure.keyword = value;
+    this.chemicalStructure.filter = type;
+    this.checkPriviledgeAndHandleSearch(searchTypes.chemicalStructure);
   }
 }
