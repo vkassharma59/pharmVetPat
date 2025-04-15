@@ -90,7 +90,7 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
     return `https://${value}`;
   }
 
-  handleCopy(text: string) {
+  handleCopy(text: string, el: HTMLElement) {
     const textArea = document.createElement('textarea');
     textArea.value = text;
     document.body.appendChild(textArea);
@@ -100,6 +100,20 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
     document.execCommand('copy');
 
     document.body.removeChild(textArea);
+
+  // Step 2: Find the icon inside the clicked span and swap classes
+  const icon = el.querySelector('i');
+
+  if (icon?.classList.contains('fa-copy')) {
+    icon.classList.remove('fa-copy');
+    icon.classList.add('fa-check');
+
+    // Step 3: Revert it back after 1.5 seconds
+    setTimeout(() => {
+      icon.classList.remove('fa-check');
+      icon.classList.add('fa-copy');
+    }, 1500);
+  }
   }
 
   getImageUrl(data: any): string {

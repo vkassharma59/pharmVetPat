@@ -76,7 +76,6 @@ export class BasicRouteCardComponent {
     private dialog: MatDialog,
     private utilityService: UtilityService
   ) {}
-  showCustomAlert = false;
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
@@ -90,7 +89,7 @@ export class BasicRouteCardComponent {
     this.MoreApplicationInfo = !this.MoreApplicationInfo;
   }
 
-  handleCopy(text: any) {
+  handleCopy(text: string, el: HTMLElement) {
     // Create a temporary textarea element
     const textArea = document.createElement('textarea');
     textArea.value = text;
@@ -106,11 +105,18 @@ export class BasicRouteCardComponent {
     // Remove the temporary textarea element
     document.body.removeChild(textArea);
 
-    this.showCustomAlert = true;
+    const icon = el.querySelector('i');
 
-   setTimeout(() => {
-      this.showCustomAlert = false;
-    }, 2000); // Hide after 2 seconds
+    if (icon?.classList.contains('fa-copy')) {
+      icon.classList.remove('fa-copy');
+      icon.classList.add('fa-check');
+
+    // Step 3: Revert it back after 1.5 seconds
+    setTimeout(() => {
+      icon.classList.remove('fa-check');
+      icon.classList.add('fa-copy');
+    }, 1500);
+    }
 }
 
   getColumnName(value: any) {
