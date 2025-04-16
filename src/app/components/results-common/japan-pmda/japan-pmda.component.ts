@@ -32,7 +32,7 @@ export class JapanPMDAComponent implements OnInit, OnDestroy {
       JapanPMDAComponent.apiCallCount++; // Increment global counter
       this.localCount = JapanPMDAComponent.apiCallCount; // Assign to local instance
 
-      console.log(`API data received ${this.localCount} times`);
+      
 
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();

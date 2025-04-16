@@ -33,7 +33,7 @@ export class LitigationCardComponent implements OnInit, OnDestroy {
       LitigationCardComponent.apiCallCount++; // Increment static counter
       this.localCount = LitigationCardComponent.apiCallCount; // Assign to local instance
      
-      console.log(`API data received ${this.localCount} times`);
+      
 
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();

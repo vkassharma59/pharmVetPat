@@ -37,9 +37,6 @@ export class BasicRouteCardComponent {
     if (value && Object.keys(value).length > 0) {
       BasicRouteCardComponent.apiCallCount++; // Increment static counter
       this.localCount = BasicRouteCardComponent.apiCallCount; // Assign to instance
-
-      console.log(`API data received ${this.localCount} times`);
-
       this._data = value;
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();

@@ -32,7 +32,7 @@ export class EuropeApprovalCardComponent implements OnInit, OnDestroy {
       EuropeApprovalCardComponent.apiCallCount++; // Increment static counter
       this.localCount = EuropeApprovalCardComponent.apiCallCount; // Assign instance count
 
-      console.log(`API data received ${this.localCount} times`);
+      
 
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
