@@ -81,21 +81,31 @@ export class ImpurityComponent {
       this.category_value = value;
     }
 
-    this._currentChildAPIBody.body = this.ImpurityBody;
+    this._currentChildAPIBody = {
+      ...this.ImpurityBody,
+      filters: { ...this.ImpurityBody.filters }
+    };    
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
     this.mainSearchService.impuritySearchSpecific(
-      this._currentChildAPIBody?.body
+      this._currentChildAPIBody
     ).subscribe({
       next: (res) => {
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          count: res?.data?.impurity_count
+        };
         this.handleResultTabData.emit(res.data);
         this.handleSetLoading.emit(false);
         window.scrollTo(0, scrollTop);
       },
       error: (err) => {
         console.error(err);
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          filter_enable: false
+        };
         this.handleSetLoading.emit(false);
-        this._currentChildAPIBody.body.filter_enable = false;
         window.scrollTo(0, scrollTop);
       },
     });
