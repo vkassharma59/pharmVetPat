@@ -27,6 +27,7 @@ export class ChemiTrackerComponent {
   foundationsFilters: any = [];
   isCountryDropdownOpen:boolean=false;
   isOpen:boolean=false;
+
   @Input()
   get data() {
     return this._data;
@@ -41,7 +42,7 @@ export class ChemiTrackerComponent {
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
-    this.DMFAPIBody = { ...value };
+    this.DMFAPIBody = JSON.parse(JSON.stringify(value)) || value;
     this.handleFetchFilters();
   }
 
@@ -53,7 +54,6 @@ export class ChemiTrackerComponent {
 
   handleFetchFilters() {
     this.DMFAPIBody.filter_enable = true;
-
     this.mainSearchService.chemiTrackerSearchSpecific(this.DMFAPIBody).subscribe({
       next: (res) => {
         this.countryFilters = res?.data?.country_of_company;
@@ -72,9 +72,11 @@ export class ChemiTrackerComponent {
   dropdown(){
     this.isOpen=!this.isOpen;
   }
+
   handleSelectFilter(filter: any, value: any) {
     this.isCountryDropdownOpen = false;
     this.isOpen= false;
+
     this.handleSetLoading.emit(true);
     if (value == '') {
       if (filter == 'country_of_company') {
@@ -94,21 +96,31 @@ export class ChemiTrackerComponent {
       }
     }
 
-    this._currentChildAPIBody.body = this.DMFAPIBody;
+    this._currentChildAPIBody = {
+      ...this.DMFAPIBody,
+      filters: { ...this.DMFAPIBody.filters }
+    };    
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
     this.mainSearchService.chemiTrackerSearchSpecific(
-      this._currentChildAPIBody?.body
+      this._currentChildAPIBody
     ).subscribe({
       next: (res) => {
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          count: res?.data?.chemi_tracker_count
+        };
+
         this.handleResultTabData.emit(res.data);
         this.handleSetLoading.emit(false);
         window.scrollTo(0, scrollTop);
       },
       error: (err) => {
-        console.error(err);
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          filter_enable: false
+        };
         this.handleSetLoading.emit(false);
-        this._currentChildAPIBody.body.filter_enable = false;
         window.scrollTo(0, scrollTop);
       },
     });
