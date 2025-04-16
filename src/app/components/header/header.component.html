@@ -125,7 +125,7 @@
           >
             <ul
               (mouseenter)="enterDescBox()"
-              (mouseleave)="leaveDescBox()"
+              
               class="header_bottom_center_box1_dropdown_list text_blue_3"
             >
               <li class="header_bottom_center_box1_dropdown_list_item">
@@ -481,9 +481,9 @@
         />
       </div>
     </div>
-    <div class="header_products_left">
-      <div class="header_products_left_box">
-        <div class="header_products_left_box_grid">
+    <div class="header_products_left_box">
+      <div class="header_products_left_box_main">
+        <div [ngClass]="(descDropdown[2]) ? 'visible1': 'showProducts'">
           <div class="header_products_left_box_grid_col">
             <p class="text_black_2">AGROCHEMICAL / PESTICIDE DATABASE</p>
             <ul class="header_products_left_box_grid_col_list text_blue_2">
@@ -943,7 +943,7 @@
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path
+                  <path
                       d="M8.11117 5.99274L2.32601 0.207681C2.19221 0.0737718 2.01359 0 1.82314 0C1.63268 0 1.45406 0.0737718 1.32026 0.207681L0.894224 0.633613C0.616998 0.911155 0.616998 1.36224 0.894224 1.63936L5.75217 6.4973L0.888834 11.3606C0.75503 11.4945 0.681152 11.6731 0.681152 11.8634C0.681152 12.054 0.75503 12.2325 0.888834 12.3665L1.31487 12.7923C1.44878 12.9262 1.62729 13 1.81774 13C2.0082 13 2.18682 12.9262 2.32062 12.7923L8.11117 7.00198C8.2453 6.86764 8.31896 6.68829 8.31854 6.49762C8.31896 6.30622 8.2453 6.12697 8.11117 5.99274Z"
                       fill="#0032A0"
                     />
@@ -1139,7 +1139,7 @@
       </div>
       <div
         (click)="selectedMenu = selectedMenu === 'products' ? '' : 'products'"
-        class="header_menu_list_item text_style_4 "  (click)="dropdown(2)"
+        class="header_menu_list_item text_style_4 "  
       >
         Agro Products
         <div class="header_menu_list_item_icon">
@@ -1162,7 +1162,7 @@
         class="header_menu_list_dropdown"
         
       >
-        <div class="header_menu_list_dropdown_content" [ngClass]="(descDropdown[2])?'visible':'products'">
+        <div class="header_menu_list_dropdown_content" [ngClass]="(descDropdown[2])?'visible1':'showProducts'">
           <div class="header_menu_list_dropdown_content_heading text_white_10">
             AGROCHEMICAL / PESTICIDE DATABASE
           </div>

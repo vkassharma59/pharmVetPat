@@ -68,18 +68,18 @@ export class ChemiTrackerComponent {
   }
   handleFilter(){
     this.isCountryDropdownOpen=!this.isCountryDropdownOpen;
-    console.log(this.isCountryDropdownOpen);
   }
   dropdown(){
     this.isOpen=!this.isOpen;
-    console.log(this.isOpen);
   }
   handleSelectFilter(filter: any, value: any) {
+    this.isCountryDropdownOpen = false;
+    this.isOpen= false;
     this.handleSetLoading.emit(true);
     if (value == '') {
       if (filter == 'country_of_company') {
         delete this.DMFAPIBody.filters['country_of_company'];
-        this.country_value = 'Select Country';
+        this.country_value = 'Select Country';        
       } else {
         delete this.DMFAPIBody.filters['dummy_6'];
         this.formulation_value = 'Select Country';
@@ -87,7 +87,7 @@ export class ChemiTrackerComponent {
     } else {
       if (filter == 'country_of_company') {
         this.DMFAPIBody.filters['country_of_company'] = value;
-        this.country_value = value;
+        this.country_value = value;        
       } else {
         this.DMFAPIBody.filters['dummy_6'] = value;
         this.formulation_value = value;

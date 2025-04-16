@@ -71,7 +71,7 @@ export class ImpurityComponent {
     console.log(this.isOpen);
   }
   handleSelectFilter(value: string) {
-    console.log("clicked");
+    this.isOpen = false;
     this.handleSetLoading.emit(true);
     if (value === '') {
       delete this.ImpurityBody.filters['category'];
@@ -100,18 +100,4 @@ export class ImpurityComponent {
       },
     });
   }
-  // handleFilter() {
-  //   this.isOpen = !this.isOpen;
-  //   console.log('Dropdown toggled:', this.isOpen);
-  // }
-
-  // handleSelectFilter(value: string) {
-  //   this.isOpen = false;
-  //   if (value === '') {
-  //     this.category_value = 'Select Category';
-  //   } else {
-  //     this.category_value = value;
-  //   }
-  //   console.log('Selected:', value);
-  // }
 }
