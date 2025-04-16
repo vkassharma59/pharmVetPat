@@ -6,6 +6,14 @@
 
 }
 
+/* Add to your CSS file or component styles */
+.custom-alert {
+  background-color: #2d7033;
+  color: black;
+  padding: 10px 20px;
+  border: 1px solid #025f11;
+  border-radius: 5px;
+}
 
 .btnchemical{
   background-color:#FACC15 ;

@@ -17,7 +17,7 @@ declare var google: any;
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [DropdownModule, NgIf, CommonModule, FormsModule, RouterLink, NgFor],
+  imports: [DropdownModule, NgIf, CommonModule, FormsModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
@@ -40,7 +40,7 @@ export class HeaderComponent {
   };
   showSecondForm: boolean = false;
   showProducts = false;
-  descDropdown:boolean[]= [false,false];
+  descDropdown:boolean[]= [false,false,false];
   servicesDropdown = false;
   overAgroProducts = false;
   overProductsDropdown = false;

@@ -1,30 +1,74 @@
 <ng-container *ngIf="_data.length > 0; else noData">
+    <div *ngIf="_currentChildAPIBody?.count > 0" class="child-route-count-wrapper justify-between">
+        <button class="child-route-count child-route-count-btn">
+            Total Records : {{ _currentChildAPIBody?.count }}
+        </button>
+
+        <div class="flex flex-wrap w-full md:w-1/2 md:justify-end justify-start gap-3">
+            <div class="dropdown">
+                <button
+                    class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
+                    type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"
+                    (click)="handleFilter()">
+                    {{ country_value }}
+                </button>
+                <ul
+                *ngIf="isCountryDropdownOpen" 
+                class="dropdown-menu max-h-40 overflow-y-auto z-30" aria-labelledby="dropdownMenuButton">
+                    <li (click)="handleSelectFilter('country_of_company', '')">
+                        <a class="dropdown-item">View All</a>
+                    </li>
+                    <li *ngFor="let data of countryFilters"
+                        (click)="handleSelectFilter('country_of_company', data.value)">
+                        <a class="dropdown-item">{{ data?.name }}</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="dropdown">
+                <button
+                    (click)="dropdown()"
+                    class="px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0] dropdown-toggle"
+                    type="button" id="dropdownMenuButton">
+                    {{ formulation_value }}
+                    
+                </button>
+                <ul 
+                    *ngIf="isOpen"
+                    class="dropdown-menu z-30 max-h-40 overflow-y-auto" aria-labelledby="dropdownMenuButton">
+                    <li (click)="handleSelectFilter('dummy_6', '')">
+                        <a class="dropdown-item">View All</a>
+                    </li>
+                    <li *ngFor="let data of foundationsFilters" (click)="handleSelectFilter('dummy_6', data.value)">
+                        <a class="dropdown-item">{{ data?.name }}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <ng-container *ngFor="let dataItem of _data; let i = index">
-        <div class="py-2" *ngIf="false">
-            <div
-              class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]"
-            >
-              <span
-                    class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-bold h-[37px] flex justify-center items-center"
-                >
+        <div class="py-4">
+            <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
+                <span
+                    class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-bold h-[37px] flex justify-center items-center">
                     Sub Route
-                    {{ (currentChildAPIBody?.body?.page_no - 1) * 25 + (i + 1) }}
+                    {{ (((_currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
                 </span>
             </div>
         </div>
-        <chem-chemi-tracker-card [data]="dataItem"></chem-chemi-tracker-card>
+        <chem-chemi-tracker-card class="card" [data]="dataItem"></chem-chemi-tracker-card>
     </ng-container>
-    <app-child-paging
-        [currentChildAPIBody]="currentChildAPIBody"
+    <app-child-paging [currentChildAPIBody]="_currentChildAPIBody"
         (handleChangeTabData)="handleResultTabData.emit($event)"
-        (setLoading)="handleSetLoading.emit($event)"
-    ></app-child-paging>
+        (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
 </ng-container>
 <ng-template #noData>
-    <div class="card-header text-white bg-primary">
-        {{resultTabs?.chemiTracker?.label}}
-    </div>
-    <div class="card-body">
-        <p>No Data found!</p>
+    <div class="card">
+        <div class="card-header text-white bg-primary">
+            {{resultTabs?.chemiTracker?.label}}
+        </div>
+        <div class="card-body">
+            <p>No Data found!</p>
+        </div>
     </div>
 </ng-template>

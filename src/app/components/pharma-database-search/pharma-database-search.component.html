@@ -9,15 +9,10 @@
     </h1>
   </div> -->
   <div class="top_section">
-    <h1 class="heading">
-        <span class="chem">Chem</span>
-        <span class="robotics">Robotics<sup class="trademark">™</sup></span>
-        <span class="pharma">Pharma Database</span>
-    </h1>
-</div>
-
-
-  
+    <div class="pharma-logo">
+      <img src="assets/images/home/PharmVetPat.svg" alt="PharmVetPat" class="img">
+    </div>
+</div> 
 
   <!-- Header with tabs (responsive row) -->
   <div class="header">
@@ -121,11 +116,12 @@
                   placeholder="Enter your text"
                   [disabled]="!advanceSearch.filterInputs[i].filter"
                   [(ngModel)]="advanceSearch.filterInputs[i].keyword"
-                  [value]="advanceSearch.filterInputs[i].keyword"
                   (input)="handleChangeKeyword(searchTypes.advanceSearch, i)"
                 />
 
+
                 <!-- Suggestions Dropdown -->
+               
                 <ul
                   *ngIf="advanceSearch?.autosuggestionList[i]?.length && advanceSearch.filterInputs[i].keyword !== ''"
                   class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto" style="width: 70%">
@@ -156,7 +152,9 @@
             >
             <select class="form-control" [(ngModel)]="advanceSearch.dateType">
               <option value="">Date Type</option>
-              <option value="GENERIC_CONSTRAINING_DATE">GENERIC_CONSTRAINING_DATE</option>
+              <option *ngFor="let filter of advanceSearch.date_columns" [value]="filter.value">
+                {{ filter.name }}
+              </option>
           </select>
           </div>
           <div class="col-md-4 col-12 mb-2 mb-md-0">
@@ -178,14 +176,17 @@
       <!-- Tutorial Buttons Row -->
       <div class="row mb-3 align-items-center">
         <div class="col-md-2 col-6 mb-2 mb-md-0">
-          <button class="btn btn-outline-primary w-100" (click)="checkPriviledgeAndHandleSearch(searchTypes.advanceSearch)">Search</button>
+          <button class="btn btn-outline-primary w-100" (click)="checkPriviledgeAndHandleSearch(searchTypes.advanceSearch)"
+          [disabled]="!isSearchEnabled()">
+          Search
+        </button>
         </div>
         <div class="col-md-2 col-6 mb-2 mb-md-0">
           <button class="btn btn-outline-secondary w-100" (click)="clearInputAndSuggetions(searchTypes.advanceSearch)">Reset Filters</button>
         </div>
         <div class="col-md-6"></div>
         <div class="col-md-2 col-12 d-flex justify-content-md-end">
-          <button class="btn btn-success w-100 w-md-auto">View Tutorial</button>
+          <button class="btn btn-success w-100 w-md-auto" (click)="openTutorialModal()">View Tutorial</button>
         </div>
       </div>
 
@@ -247,7 +248,7 @@
           <div class="col-md-2 col-6 mb-2 mb-md-0">
             <button 
             (click)="checkPriviledgeAndHandleSearch(searchTypes.intermediateSearch)"
-            [disabled]="!intermediateSearch?.keyword?.trim() && intermediateSearch.filter !== ''"
+            [disabled]="!intermediateSearch?.keyword?.trim() "
             class="btn btn-outline-primary w-100">Search</button>
           </div>
           <div class="col-md-2 col-6 mb-2 mb-md-0">
@@ -357,13 +358,29 @@
           <div class="col-md-2 col-6 mb-2 mb-md-0">
             <button 
               (click)="checkPriviledgeAndHandleSearch(searchTypes.chemicalStructure)"
-              [disabled]="!chemicalStructure?.keyword?.trim() && chemicalStructure.filter !== ''"
+              [disabled]="!chemicalStructure?.keyword?.trim()"
               class="btn btn-outline-primary w-100">Search</button>
           </div>
           <div class="col-md-2 col-6 mb-2 mb-md-0">
             <button 
             (click)="clearInputAndSuggetions(searchTypes.chemicalStructure)"
             class="btn btn-outline-secondary w-100">Clear</button>
+          </div>
+        </div>
+        <div class="row mb-3 align-items-center">
+          <div class="col-md-12 col-12 mb-2 mb-md-0">
+            <h5 class="">
+              Example:
+              <ng-container *ngFor="let example of exampleSearchData; let i = index">
+                <a
+                  style="color: #000000; font-weight: 600;"
+                  href="javascript:void(0)"
+                  (click)="chemicalStructureSearch(example.type, example.value)"
+                >
+                  {{ example.label }}<span *ngIf="i < exampleSearchData.length - 1">, </span>
+                </a>
+              </ng-container>
+            </h5>
           </div>
         </div>
       </div>

@@ -21,7 +21,9 @@ import { UtilityService } from '../../../services/utility-service/utility.servic
 })
 export class BasicRouteCardComponent {
 
-  
+  static apiCallCount: number = 0; // Global static counter
+  localCount: number = 0; // Instance-specific counter
+
   resultTabs: any = {};
   processedSynonyms: { number: string; text: string }[] = [];
   basic_column: any = {};
@@ -32,16 +34,22 @@ export class BasicRouteCardComponent {
     return this._data;
   }
   set data(value: any) {
-    this._data = value;
-    this.resultTabs = this.utilityService.getAllTabsName();
-    const column_list = Auth_operations.getColumnList();
-    if(column_list[this.resultTabs.productInfo?.name]?.length > 0 && Object.keys(value).length > 0 &&  value) {
-      for (let i = 0; i < column_list[this.resultTabs.productInfo.name].length; i++) {
-        this.basic_column[column_list[this.resultTabs.productInfo.name][i].value] =
-          column_list[this.resultTabs.productInfo.name][i].name;
-      }
-      this.processSynonyms();
+    if (value && Object.keys(value).length > 0) {
+      BasicRouteCardComponent.apiCallCount++; // Increment static counter
+      this.localCount = BasicRouteCardComponent.apiCallCount; // Assign to instance
+
+      console.log(`API data received ${this.localCount} times`);
+
       this._data = value;
+      this.resultTabs = this.utilityService.getAllTabsName();
+      const column_list = Auth_operations.getColumnList();
+      if (column_list[this.resultTabs.productInfo?.name]?.length > 0) {
+        for (let i = 0; i < column_list[this.resultTabs.productInfo.name].length; i++) {
+          this.basic_column[column_list[this.resultTabs.productInfo.name][i].value] =
+            column_list[this.resultTabs.productInfo.name][i].name;
+        }
+        this.processSynonyms();
+      }
     }
   }
 
@@ -81,7 +89,7 @@ export class BasicRouteCardComponent {
     this.MoreApplicationInfo = !this.MoreApplicationInfo;
   }
 
-  handleCopy(text: any) {
+  handleCopy(text: string, el: HTMLElement) {
     // Create a temporary textarea element
     const textArea = document.createElement('textarea');
     textArea.value = text;
@@ -96,8 +104,20 @@ export class BasicRouteCardComponent {
 
     // Remove the temporary textarea element
     document.body.removeChild(textArea);
-    alert('Item Copied!');
-  }
+
+    const icon = el.querySelector('i');
+
+    if (icon?.classList.contains('fa-copy')) {
+      icon.classList.remove('fa-copy');
+      icon.classList.add('fa-check');
+
+    // Step 3: Revert it back after 1.5 seconds
+    setTimeout(() => {
+      icon.classList.remove('fa-check');
+      icon.classList.add('fa-copy');
+    }, 1500);
+    }
+}
 
   getColumnName(value: any) {
     return this.basic_column[value];
@@ -123,6 +143,7 @@ export class BasicRouteCardComponent {
       return formattedDate;
     } else return data;
   }
+
   processSynonyms() {
     if (this.data?.SYNONYMSCOMMON_NAME) {
       const synonymList = this.data.SYNONYMSCOMMON_NAME.split('\n').map(
@@ -148,19 +169,17 @@ export class BasicRouteCardComponent {
   getPatentUrl(data: any) {
     return `https://patentscope.wipo.int/search/en/result.jsf?inchikey=${data?.INCHIKEY}`;
   }
+
   OpenDescriptionModal() {
-    const dialogRef = this.dialog.open(
-      ChemDiscriptionViewModelComponent,
-      {
-        width: 'calc(100vw - 50px)',
-        height: '400px', // Fixed height
-        panelClass: 'full-screen-modal',
-      }
-    );
+    this.dialog.open(ChemDiscriptionViewModelComponent, {
+      width: 'calc(100vw - 50px)',
+      height: '400px', // Fixed height
+      panelClass: 'full-screen-modal',
+    });
   }
 
   OpenViewModal(data: any, title: any) {
-    const dialogRef = this.dialog.open(ChemDiscriptionViewModelComponent, {
+    this.dialog.open(ChemDiscriptionViewModelComponent, {
       width: 'calc(100vw - 50px)',
       height: 'auto',
       panelClass: 'full-screen-modal',
@@ -170,8 +189,9 @@ export class BasicRouteCardComponent {
       },
     });
   }
+
   openImageModal(imageUrl: string): void {
-    const dialogRef = this.dialog.open(ImageModalComponent, {
+    this.dialog.open(ImageModalComponent, {
       width: 'auto',
       height: 'auto',
       panelClass: 'full-screen-modal',

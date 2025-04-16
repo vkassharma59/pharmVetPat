@@ -5,14 +5,14 @@
       <div class="d-flex align-items-center">
         <h5 class="text-primary mb-0">{{currentTabData?.label}}</h5>
         <span class="divider">&nbsp;|&nbsp;</span>
-        <span class="fw-bold">Total Results: {{searchData?.basic_product_count}}</span>
+        <span class="fw-bold">Total Results: {{CurrentAPIBody?.count}}</span>
         <span class="divider">&nbsp;|&nbsp;</span>
         <span class="fw-bold">Routes: #{{(index) ? index+1 : 1}}</span>
       </div>
 
       <!-- Right Section -->
       <div *ngIf="index==0">
-        <button class="btn btn-outline-success btn-sm me-2">Raise Query</button>
+        <button (click)="OpenQueryModal()" class="btn btn-outline-success btn-sm me-2">Raise Query</button>
         <button (click)="handleBack()" class="btn btn-success btn-sm">Back to Search</button>
       </div>
     </div>
@@ -23,115 +23,115 @@
     ></chem-route-tabs>
 
     <!-- Main Content Section -->
-    <div class="card mt-3" [ngSwitch]="currentTabData?.name">
-      <ng-container *ngSwitchCase="'productInfo'">
+    <div class="mt-3" [ngSwitch]="currentTabData?.name">
+      <ng-container *ngSwitchCase="resultTabWithKeys.productInfo.name">
         <chem-product-info 
           [data]="_dataItem.productInfo"
-          [currentChildAPIBody]="currentChildAPIBody"
+          [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.productInfo.name]"
           (handleSetLoading)="handleSetLoading.emit($event)"
           (handleResultTabData)="handleChildPaginationSearch.emit($event)">
         </chem-product-info>     
       </ng-container>
 
-      <ng-container *ngSwitchCase="'technicalRoutes'">
+      <ng-container *ngSwitchCase="resultTabWithKeys.technicalRoutes.name">
         <chem-technical-route 
           [data]="_dataItem.technicalRoutes"
-          [currentChildAPIBody]="currentChildAPIBody"
+          [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.technicalRoutes.name]"
           (handleSetLoading)="handleSetLoading.emit($event)"
           (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-technical-route>
       </ng-container>
 
-      <ng-container *ngSwitchCase="'chemicalDirectory'">
+      <ng-container *ngSwitchCase="resultTabWithKeys.chemicalDirectory.name">
         <chemical-directory 
           [data]="_dataItem.chemicalDirectory"
-          [currentChildAPIBody]="currentChildAPIBody"
+          [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.chemicalDirectory.name]"
           (handleSetLoading)="handleSetLoading.emit($event)"
           (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chemical-directory>
       </ng-container>
 
-      <ng-container *ngSwitchCase="'impurity'">
+      <ng-container *ngSwitchCase="resultTabWithKeys.impurity.name">
         <chem-impurity 
           [data]="_dataItem.impurity"
-          [currentChildAPIBody]="currentChildAPIBody"
+          [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.impurity.name]"
           (handleSetLoading)="handleSetLoading.emit($event)"
           (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-impurity>
       </ng-container>
 
-      <ng-container *ngSwitchCase="'chemiTracker'">
+      <ng-container *ngSwitchCase="resultTabWithKeys.chemiTracker.name">
         <chem-chemi-tracker 
           [data]="_dataItem.chemiTracker"
-          [currentChildAPIBody]="currentChildAPIBody"
+          [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.chemiTracker.name]"
           (handleSetLoading)="handleSetLoading.emit($event)"
           (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-chemi-tracker>
       </ng-container>
 
-      <ng-container *ngSwitchCase="'europeApproval'">
+      <ng-container *ngSwitchCase="resultTabWithKeys.europeApproval.name">
         <chem-europe-approval 
           [data]="dataItem.europeApproval"
-          [currentChildAPIBody]="currentChildAPIBody"
+          [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.europeApproval.name]"
           (handleSetLoading)="handleSetLoading.emit($event)"
           (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-europe-approval>
       </ng-container>
      
-      <ng-container *ngSwitchCase="'usApproval'">
+      <ng-container *ngSwitchCase="resultTabWithKeys.usApproval.name">
         <chem-us></chem-us>
       </ng-container>
    
-      <ng-container *ngSwitchCase="'canadaApproval'">
+      <ng-container *ngSwitchCase="resultTabWithKeys.canadaApproval.name">
         <chem-canada 
           [data]="dataItem.canadaApproval"
-          [currentChildAPIBody]="currentChildAPIBody"
+          [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.canadaApproval.name]"
           (handleSetLoading)="handleSetLoading.emit($event)"
           (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-canada>
       </ng-container>
      
-      <ng-container *ngSwitchCase="'japanApproval'">
+      <ng-container *ngSwitchCase="resultTabWithKeys.japanApproval.name">
         <chem-japan 
           [data]="dataItem.japanApproval"
-          [currentChildAPIBody]="currentChildAPIBody"
+          [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.japanApproval.name]"
           (handleSetLoading)="handleSetLoading.emit($event)"
           (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-japan>
       </ng-container>
 
 
-      <ng-container *ngSwitchCase="'koreaApproval'">
+      <ng-container *ngSwitchCase="resultTabWithKeys.koreaApproval.name">
         <chem-korea 
           [data]="dataItem.koreaApproval"
-          [currentChildAPIBody]="currentChildAPIBody"
+          [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.koreaApproval.name]"
           (handleSetLoading)="handleSetLoading.emit($event)"
           (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-korea>
       </ng-container>
 
-      <ng-container *ngSwitchCase="'indianMedicine'">
+      <ng-container *ngSwitchCase="resultTabWithKeys.indianMedicine.name">
         <chem-indian 
           [data]="dataItem.indianMedicine"
-          [currentChildAPIBody]="currentChildAPIBody"
+          [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.indianMedicine.name]"
           (handleSetLoading)="handleSetLoading.emit($event)"
           (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-indian>
       </ng-container>
 
-      <ng-container *ngSwitchCase="'litigation'">
+      <ng-container *ngSwitchCase="resultTabWithKeys.litigation.name">
         <chem-litigation 
           [data]="dataItem.litigation"
-          [currentChildAPIBody]="currentChildAPIBody"
+          [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.litigation.name]"
           (handleSetLoading)="handleSetLoading.emit($event)"
           (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-litigation>
       </ng-container>
 
-      <ng-container *ngSwitchCase="'activePatent'">
+      <ng-container *ngSwitchCase="resultTabWithKeys.activePatent.name">
         <chem-active-patent></chem-active-patent>
       </ng-container>
       
 
-      <ng-container *ngSwitchCase="'impPatents'">
+      <ng-container *ngSwitchCase="resultTabWithKeys.impPatents.name">
         <chem-imp 
           [data]="dataItem.impPatents"
-          [currentChildAPIBody]="currentChildAPIBody"
+          [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.impPatents.name]"
           (handleSetLoading)="handleSetLoading.emit($event)"
           (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-imp>
       </ng-container>
 
-      <ng-container *ngSwitchCase="'spcDb'">
+      <ng-container *ngSwitchCase="resultTabWithKeys.spcDb.name">
         <chem-spcdb></chem-spcdb>
       </ng-container>
 
@@ -145,8 +145,10 @@
       </ng-container>
 
       <ng-container *ngSwitchDefault>
-        <div class="card-header text-white bg-primary">Comming Soon..</div>
-        <div class="card-body">We are wokring on this tab, Please come back later.</div>
+        <div class="card"> 
+          <div class="card-header text-white bg-primary">Comming Soon..</div>
+          <div class="card-body">We are wokring on this tab, Please come back later.</div>
+        </div>
       </ng-container>
     </div>
   </div>

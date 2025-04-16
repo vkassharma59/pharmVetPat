@@ -7,6 +7,8 @@ import { Auth_operations } from '../../Utils/SetToken';
 import { ColumnListService } from '../../services/columnList/column-list.service';
 import { AppConfigValues } from '../../config/app-config';
 import { searchTypes, UtilityService } from '../../services/utility-service/utility.service';
+import { VideoTutorialComponent } from '../video-tutorial/video-tutorial.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'chem-pharma-database-search',
@@ -47,9 +49,19 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   resultTabs: any = [];  
   apiUrls = AppConfigValues.appUrls;
   showSuggestions: boolean = false;
-  activeSearchTab: string = 'api-search'
+  activeSearchTab: string = 'api-search';
+  exampleSearchData = [
+    { type: 'smiles_code', value: 'C#C', label: 'C#C' },
+    { type: 'iupac', value: 'acetylene', label: 'acetylene' },
+    { type: 'molecular_formula', value: 'C2H2', label: 'C₂H₂' },
+    { type: 'chemical_name', value: 'ethyne', label: 'ethyne' },
+    { type: 'inchi', value: 'InChI=1S/C2H2/c1-2/h1-2H', label: 'InChI=1S/C2H2/c1-2/h1-2H' },
+    { type: 'inchikey', value: 'HSFWRNGVRCDJHI-UHFFFAOYSA-N', label: 'HSFWRNGVRCDJHI-UHFFFAOYSA-N' },
+    { type: 'cas_rn', value: '74-86-2', label: '74-86-2' }
+  ];
 
   constructor(
+    private dialog: MatDialog,
     private elementRef: ElementRef,
     private mainSearchService: MainSearchService,
     private userPriviledgeService: UserPriviledgeService,
@@ -83,7 +95,15 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   }
 
   addFilter() {
-    this.advanceSearch.filterInputs.push({ filter: '', keyword: '' });
+    const lastfilter= this.advanceSearch.filterInputs[this.advanceSearch.filterInputs.length -1];
+
+    if(lastfilter && lastfilter.filter && lastfilter.keyword){
+      this.advanceSearch.filterInputs.push({ filter: '', keyword: '' });
+    }
+    else{
+      alert("please fill in the current filter, then add new filter");
+    }
+    
   }
 
   removeFilter(index: number) {
@@ -170,6 +190,16 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         },
         error: (e) => console.error(e),
       });
+  }
+  isSearchEnabled(): boolean {
+    if (!this.advanceSearch.filterInputs.length) return false;
+  
+    return this.advanceSearch.filterInputs.every(
+      input => input.filter && input.keyword?.trim()
+    );
+  }
+  isInputEnabled(): boolean {
+    return !!(this.intermediateSearch.filter && this.intermediateSearch.keyword?.trim());
   }
 
   getSimpleSearchSuggestions() {
@@ -299,6 +329,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     this.mainSearchService.getAdvanceSearchFilters().subscribe({
       next: (res: any) => {       
         this.advanceSearch.filters = res?.data?.filter_columns;
+        this.advanceSearch.date_columns = res?.data?.date_columns;
       },
       error: (e: any) => {
         console.error('Error:', e);
@@ -677,5 +708,19 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         this.setLoadingState.emit(false);
       },
     });
+  }
+
+  openTutorialModal() {
+    const dialogRef = this.dialog.open(VideoTutorialComponent, {
+      width: '800px',
+      height: '550px',
+      panelClass: 'full-screen-modal',
+    });
+  }
+
+  chemicalStructureSearch(type: string, value: string) {
+    this.chemicalStructure.keyword = value;
+    this.chemicalStructure.filter = type;
+    this.checkPriviledgeAndHandleSearch(searchTypes.chemicalStructure);
   }
 }

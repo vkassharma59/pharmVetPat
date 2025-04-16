@@ -1,5 +1,14 @@
 <app-loader *ngIf="loading"></app-loader>
 
+<app-result-tab
+  (makePdf)="generatePdf.emit($event)"
+  [MainDataResultShow]="allDataSets"
+  [CurrentAPIBody]="CurrentAPIBody"
+  (showDataResultFunction)="showDataResultFunction.emit($event)"
+  (priviledgeModal)="openPriviledgeModal($event)"
+  (handleLoading)="handleLoadingState($event)"
+></app-result-tab>
+
 <ng-container *ngIf="allDataSets.length > 0; else noData">
   <div *ngFor="let item of allDataSets; let i = index">    
     <chem-route-results
@@ -7,6 +16,7 @@
       [index]="i"
       [dataItem]="item"
       [searchData]="searchData"
+      [CurrentAPIBody]="CurrentAPIBody"
       [currentChildAPIBody]="childApiBody"
       (onResultTabChange)="onResultTabChange($event)"
       (handleSetLoading)="handleLoadingState($event)"
@@ -14,7 +24,7 @@
     ></chem-route-results>
   </div>
   <chem-pagination 
-    *ngIf="showPagination && CurrentAPIBody?.count > 25"
+    *ngIf="CurrentAPIBody?.count > 25"
     (showDataResultFunction)="showDataResultFunction.emit($event)"
     [CurrentAPIBody]="CurrentAPIBody"
     [paginationRerenderTrigger]="paginationRerenderTrigger"

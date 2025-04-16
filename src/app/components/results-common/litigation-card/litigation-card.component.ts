@@ -1,9 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Auth_operations } from '../../../Utils/SetToken';
 import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { environment } from '../../../../environments/environment';
-import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -13,33 +12,56 @@ import { CommonModule } from '@angular/common';
   templateUrl: './litigation-card.component.html',
   styleUrl: './litigation-card.component.css'
 })
-export class LitigationCardComponent {
+export class LitigationCardComponent implements OnInit, OnDestroy {
 
   _data: any = [];
   MoreInfo: boolean = false;
   pageNo: number = 1;
   litigation_column: any = {};
   resultTabs: any = {};
+  copied: boolean = false;
+
+  static apiCallCount: number = 0; // Global static counter
+  localCount: number = 0; // Stores instance-specific count
 
   @Input()
   get data() {  
     return this._data;  
   }
-  set data(value) {    
-    this.resultTabs = this.utilityService.getAllTabsName();
-    const column_list = Auth_operations.getColumnList();
-    if(column_list[this.resultTabs.litigation?.name]?.length > 0 && Object.keys(value).length > 0 && value) {
-      for (let i = 0; i < column_list[this.resultTabs.litigation.name].length; i++) {
-        this.litigation_column[column_list[this.resultTabs.litigation.name][i].value] =
-          column_list[this.resultTabs.litigation.name][i].name;
+  set data(value: any) {    
+    if (value && Object.keys(value).length > 0) {
+      LitigationCardComponent.apiCallCount++; // Increment static counter
+      this.localCount = LitigationCardComponent.apiCallCount; // Assign to local instance
+     
+      console.log(`API data received ${this.localCount} times`);
+
+      this.resultTabs = this.utilityService.getAllTabsName();
+      const column_list = Auth_operations.getColumnList();
+
+      if (column_list[this.resultTabs.litigation?.name]?.length > 0) {
+        for (let i = 0; i < column_list[this.resultTabs.litigation.name].length; i++) {
+          this.litigation_column[column_list[this.resultTabs.litigation.name][i].value] =
+            column_list[this.resultTabs.litigation.name][i].name;
+        }
       }
 
       this._data = value;
     }
   }
 
-  constructor(private dialog: MatDialog,
-      private utilityService: UtilityService) {}
+  constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
+
+  ngOnInit() {
+    // Reset counter only when the component is first loaded
+    if (LitigationCardComponent.apiCallCount === 0) {
+      LitigationCardComponent.apiCallCount = 0;
+    }
+  }
+
+  ngOnDestroy() {
+    // Reset counter when navigating away from the component
+    LitigationCardComponent.apiCallCount = 0;
+  }
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
@@ -61,46 +83,45 @@ export class LitigationCardComponent {
     return `${environment.baseUrl}${environment.domainNameCompanyLogo}${value?.company_logo}`;
   }
 
-  getCountryUrl(value: any) {
+  getCountryUrl(value: any): string {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country_of_company}.png`;
   }
   
-  getCompanyWebsite(value: any) {
+  getCompanyWebsite(value: any): string {
     return `https://${value}`;
   }
 
-
-  handleCopy(text: any) {
-    // Create a temporary textarea element
+  handleCopy(text: string, el: HTMLElement) {
     const textArea = document.createElement('textarea');
     textArea.value = text;
     document.body.appendChild(textArea);
 
-    // Select the text
     textArea.select();
-    textArea.setSelectionRange(0, 99999); // For mobile devices
-
-    // Copy the text inside the textarea
+    textArea.setSelectionRange(0, 99999);
     document.execCommand('copy');
 
-    // Remove the temporary textarea element
     document.body.removeChild(textArea);
+
+  // Step 2: Find the icon inside the clicked span and swap classes
+  const icon = el.querySelector('i');
+
+  if (icon?.classList.contains('fa-copy')) {
+    icon.classList.remove('fa-copy');
+    icon.classList.add('fa-check');
+
+    // Step 3: Revert it back after 1.5 seconds
+    setTimeout(() => {
+      icon.classList.remove('fa-check');
+      icon.classList.add('fa-copy');
+    }, 1500);
+  }
   }
 
-  getImageUrl = (data: any) => {
-    return (
-      environment.baseUrl +
-      environment.domainNameCompanyLogo +
-      this.data?.defendant_logo
-    );
-  };
-  getImageUrl1 = (data: any) => {
-    return (
-      environment.baseUrl +
-      environment.domainNameCompanyLogo +
-      this.data?.plaintiff_logo
-    );
-  };
+  getImageUrl(data: any): string {
+    return `${environment.baseUrl}${environment.domainNameCompanyLogo}${this._data?.defendant_logo}`;
+  }
 
-
+  getImageUrl1(data: any): string {
+    return `${environment.baseUrl}${environment.domainNameCompanyLogo}${this._data?.plaintiff_logo}`;
+  }
 }

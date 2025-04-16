@@ -20,6 +20,8 @@ import { TechnicalRoutesComponent } from '../results-common/technical-routes/tec
 import { ImpurityComponent } from '../results-common/impurity/impurity.component';
 import { ChemiTrackerComponent } from '../results-common/chemi-tracker/chemi-tracker.component';
 import { ChemicalDirectoryComponent } from '../results-common/chemical-directory/chemical-directory.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Chem_Robotics_QueryModalComponent } from '../Chem_Robotics_QueryModal/Chem_Robotics_QueryModal.component';
 
 @Component({
   selector: 'chem-route-results',
@@ -35,6 +37,7 @@ export class RouteResultComponent {
   resultTabs: any = [];
   resultTabWithKeys: any = [];
   _dataItem: any = {};
+  raise_query_object: any;
 
   @Output() handleSetLoading: EventEmitter<any> = new EventEmitter<any>();
   @Output() backFunction: EventEmitter<any> = new EventEmitter<any>();
@@ -43,6 +46,7 @@ export class RouteResultComponent {
 
   @Input() currentChildAPIBody: any;
   @Input() currentApiData: any;
+  @Input() CurrentAPIBody: any;
 
   @Input() index: number | undefined;
   @Input() searchData: any;  
@@ -55,8 +59,10 @@ export class RouteResultComponent {
     this._dataItem = value;
   }
   
-  constructor(private utilityService: UtilityService,
-    private userPriviledgeService: UserPriviledgeService
+  constructor(
+    private dialog: MatDialog,
+    private utilityService: UtilityService,
+    private userPriviledgeService: UserPriviledgeService,
   ) {}
 
   ngOnInit() {
@@ -64,7 +70,8 @@ export class RouteResultComponent {
     this.currentTabData = this.resultTabs.find((tab: any) => tab.isActive);
 
     //
-    this.resultTabWithKeys = this.utilityService.getAllTabsName();        
+    this.resultTabWithKeys = this.utilityService.getAllTabsName(); 
+    this.raise_query_object = this.CurrentAPIBody?.body;       
   }
 
   handleBack() {
@@ -105,7 +112,8 @@ export class RouteResultComponent {
             searchWithValue = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name][0].gbrn;
           }
           break;
-      case (searchTypes.simpleSearch || searchTypes.advanceSearch):
+      case searchTypes.simpleSearch:
+      case searchTypes.advanceSearch:
         searchWith = 'GBRN';
         searchWithValue = this.dataItem[this.resultTabWithKeys.productInfo.name][0].gbrn;
         break;
@@ -124,5 +132,17 @@ export class RouteResultComponent {
 
     this.onResultTabChange.emit(tempObj);
     this.currentTabData = data;
+  }
+
+  OpenQueryModal() {
+    const dialogRef = this.dialog.open(Chem_Robotics_QueryModalComponent, {
+      width: '450px',
+      height: '500px',
+      data: {
+        raise_query_object: this.raise_query_object,
+        handleLoading: this.handleSetLoading,
+      },
+      panelClass: 'full-screen-modal',
+    });
   }
 }

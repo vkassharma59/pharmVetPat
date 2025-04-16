@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 
 export class ChildPagingComponent {
-  @Input() currentChildAPIBody: any;
+  _currentChildAPIBody: any;
   @Input() childPaginationData: any;
   @Output() handleChangeTabData: EventEmitter<any> = new EventEmitter<any>();
   @Output() setLoading: EventEmitter<any> = new EventEmitter<any>();
@@ -19,22 +19,27 @@ export class ChildPagingComponent {
   PageArray = [1, 2, 3, 4, 5];
   count: any = 0;
 
-  constructor(
-    private serviceChildPaginationService: ServiceChildPaginationService
-  ) {}
-
-  ngOnInit(): void {
+  @Input()
+  get currentChildAPIBody() {
+    return this._currentChildAPIBody;
+  }
+  set currentChildAPIBody(value: any) {
+    this._currentChildAPIBody = value;
     this.PageArray = [];
     this.count = 0;
     
-    if (this.currentChildAPIBody?.count) {
-      this.count = this.currentChildAPIBody?.count;
+    if (this._currentChildAPIBody?.count) {
+      this.count = this._currentChildAPIBody?.count;
     } 
 
     for (let i = 1; i <= Math.min(Math.ceil(this.count / 25), 5); i++) {
       this.PageArray.push(i);
     }
   }
+
+  constructor(
+    private serviceChildPaginationService: ServiceChildPaginationService
+  ) {}
 
   handleFirstClick = () => {
     const pageCount = Math.ceil(this.count / 25);
@@ -88,10 +93,10 @@ export class ChildPagingComponent {
 
   handlePageClick = (page: number) => {
     this.setLoading.emit(true);
-    this.currentChildAPIBody.page_no = page;
+    this._currentChildAPIBody.page_no = page;
     this.MainPageNo = page;
     this.serviceChildPaginationService.getNextChildPaginationData(
-      this.currentChildAPIBody
+      this._currentChildAPIBody
     ).subscribe({
       next: (res) => {
         this.handleChangeTabData.emit(res?.data);
@@ -106,13 +111,13 @@ export class ChildPagingComponent {
 
   handleChangeData() {
     this.PageArray = [];
-    if (this.currentChildAPIBody?.count) {
-      this.count = this.currentChildAPIBody?.count;
+    if (this._currentChildAPIBody?.count) {
+      this.count = this._currentChildAPIBody?.count;
     } 
 
     this.PageArray = [];
     const pageCount = Math.ceil(this.count / 25);
-    const currentPageindex = this.currentChildAPIBody?.page_no;
+    const currentPageindex = this._currentChildAPIBody?.page_no;
     const PageSetStartIndex = currentPageindex % 5;
 
     const startIndex =

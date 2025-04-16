@@ -1,0 +1,22 @@
+.btn{
+    /* max-width: 400px !important;; */
+    background-color:#0032A0;
+    margin-top: 5px;
+    position: relative;
+    
+    /* left:15px; */
+}
+
+
+/* input{
+    max-width:400px;
+}
+
+textarea{
+    max-width:400px;
+} */
+
+.no-focus-outline{
+outline: none !important;
+    box-shadow: none !important;
+}

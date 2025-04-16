@@ -4,6 +4,8 @@ import { pharmaDatabaseSearchComponent } from '../pharma-database-search/pharma-
 import { SearchResultsComponent } from '../search-results/search-results.component';
 import { LoaderComponent } from '../../commons/loader/loader.component';
 import { UtilityService } from '../../services/utility-service/utility.service';
+import { DemoRequestComponent } from '../demo-request/demo-request.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'chem-home',
@@ -39,7 +41,9 @@ export class HomeComponent implements OnInit {
   @ViewChild('priviledgeModal') priviledgeModal!: ElementRef;
   resultTabs: any = {};
 
-  constructor(private cdr: ChangeDetectorRef,
+  constructor(
+    private dialog: MatDialog,
+    private cdr: ChangeDetectorRef,
     private utilityService: UtilityService
   ) {}
 
@@ -57,9 +61,19 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  openCloseAccordian(key: string) {
-    this.accordionData[key] = !this.accordionData[key];
+  activeAccordion: string | null = null;
+
+openCloseAccordion(key: string, event?: Event): void {
+  this.activeAccordion = this.activeAccordion === key ? null : key;
+
+  // If event exists, toggle 'active' class on clicked button
+  if (event) {
+    const buttons = document.querySelectorAll(".btn-link");
+    buttons.forEach((btn) => btn.classList.remove("active"));
+    (event.target as HTMLElement).classList.add("active");
   }
+}
+
 
   disableRightClick(event: MouseEvent) {
     event.preventDefault();
@@ -95,6 +109,8 @@ export class HomeComponent implements OnInit {
             this.allDataSets[i][this.resultTabs.productInfo.name][0] =
               this.searchData?.basic_product_data[i];
           }
+        } else {
+          this.allDataSets = [];
         }
         break;
       case this.resultTabs.technicalRoutes.name:
@@ -110,6 +126,8 @@ export class HomeComponent implements OnInit {
             this.allDataSets[i][this.resultTabs.technicalRoutes.name][0] =
               this.searchData?.ros_data[i];
           }
+        } else {
+            this.allDataSets = [];
         }
         break;
       case this.resultTabs.chemicalDirectory.name:
@@ -125,6 +143,8 @@ export class HomeComponent implements OnInit {
             this.allDataSets[i][this.resultTabs.chemicalDirectory.name][0] =
               this.searchData?.chem_dir_data[i];              
           }
+        }  else {
+          this.allDataSets = [];
         }
         break;
     }
@@ -155,5 +175,13 @@ export class HomeComponent implements OnInit {
     modalElement.setAttribute('aria-hidden', 'false');
     modalElement.setAttribute('aria-modal', 'true');
     modalElement.setAttribute('role', 'dialog');
+  }
+
+  requestADemo() {
+    const dialogRef = this.dialog.open(DemoRequestComponent, {
+      width: '800px',
+      height: '800px',
+      panelClass: 'full-screen-modal',
+    });
   }
 }
