@@ -15,7 +15,7 @@ export class MainSearchService {
   private apiUrls = AppConfigValues.appUrls;
   private ip = Auth_operations.getIp();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ export class MainSearchService {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
   });
-  
+
   getSynthesisSearchSuggestions(props: any): Observable<any> {
     const body = props;
     return this.http
@@ -60,7 +60,7 @@ export class MainSearchService {
       .post(this.apiUrls.basicProductInfo.simpleSearchResults, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
-  
+
   getSyntheticSearchResults(props: any): Observable<any> {
     const body = props;
     return this.http
@@ -86,101 +86,101 @@ export class MainSearchService {
     return this.http
       .get(this.apiUrls.chemicalDirectory.structureFilterColumns, { headers: this.headers })
       .pipe(catchError(this.handleError));
-  }  
+  }
 
   getIntermediateSearchFilters(): Observable<any> {
     return this.http
       .get(this.apiUrls.chemicalDirectory.filterColumns, { headers: this.headers })
       .pipe(catchError(this.handleError));
-  }  
+  }
 
   getAdvanceSearchFilters(): Observable<any> {
     return this.http
       .get(this.apiUrls.basicProductInfo.filterColumns, { headers: this.headers })
       .pipe(catchError(this.handleError));
-  }  
+  }
 
   technicalRoutesSearchSpecific(props: any): Observable<any> {
-      const body = props;
-      return this.http
-        .post(this.apiUrls.technicalRoutes.searchSpecific, body, { headers: this.headers })
-        .pipe(catchError(this.handleError));
-  }  
+    const body = props;
+    return this.http
+      .post(this.apiUrls.technicalRoutes.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
 
   basicProductSearchSpecific(props: any): Observable<any> {
-      const body = props;
-      return this.http
-        .post(this.apiUrls.basicProductInfo.searchSpecific, body, { headers: this.headers })
-        .pipe(catchError(this.handleError));
-  }  
+    const body = props;
+    return this.http
+      .post(this.apiUrls.basicProductInfo.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
 
   chemicalDirectorySearchSpecific(props: any): Observable<any> {
-      const body = props;
-      return this.http
-        .post(this.apiUrls.chemicalDirectory.searchSpecific, body, { headers: this.headers })
-        .pipe(catchError(this.handleError));
-  }  
+    const body = props;
+    return this.http
+      .post(this.apiUrls.chemicalDirectory.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
   impuritySearchSpecific(props: any): Observable<any> {
-      const body = props;
-      return this.http
-        .post(this.apiUrls.impurity.searchSpecific, body, { headers: this.headers })
-        .pipe(catchError(this.handleError));
-  }  
+    const body = props;
+    return this.http
+      .post(this.apiUrls.impurity.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
   chemiTrackerSearchSpecific(props: any): Observable<any> {
-      const body = props;
-      return this.http
-        .post(this.apiUrls.chemiTracker.searchSpecific, body, { headers: this.headers })
-        .pipe(catchError(this.handleError));
-  }  
+    const body = props;
+    return this.http
+      .post(this.apiUrls.chemiTracker.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
   canadaApprovalSearchSpecific(props: any): Observable<any> {
     const body = props;
     return this.http
       .post(this.apiUrls.canadaApproval.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
-}  
-   japanApprovalSearchSpecific(props: any): Observable<any> {
+  }
+  japanApprovalSearchSpecific(props: any): Observable<any> {
     const body = props;
-     return this.http
+    return this.http
       .post(this.apiUrls.japanApproval.searchSpecific, body, { headers: this.headers })
-     .pipe(catchError(this.handleError));
-    }  
+      .pipe(catchError(this.handleError));
+  }
 
-    koreaApprovalSearchSpecific(props: any): Observable<any> {
-      const body = props;
-       return this.http
-        .post(this.apiUrls.koreaApproval.searchSpecific, body, { headers: this.headers })
-       .pipe(catchError(this.handleError));
-      }  
+  koreaApprovalSearchSpecific(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.koreaApproval.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
 
-      indianMedicineSearchSpecific(props: any): Observable<any> {
-        const body = props;
-         return this.http
-          .post(this.apiUrls.indianMedicine.searchSpecific, body, { headers: this.headers })
-         .pipe(catchError(this.handleError));
-        }  
+  indianMedicineSearchSpecific(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.indianMedicine.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
 
-        litigationSearchSpecific(props: any): Observable<any> {
-          const body = props;
-           return this.http
-            .post(this.apiUrls.litigation.searchSpecific, body, { headers: this.headers })
-           .pipe(catchError(this.handleError));
-          }  
-          
+  litigationSearchSpecific(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.litigation.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
 
-          impPatentsSearchSpecific(props: any): Observable<any> {
-            const body = props;
-             return this.http
-              .post(this.apiUrls.impPatents.searchSpecific, body, { headers: this.headers })
-             .pipe(catchError(this.handleError));
-            }  
 
-            europeApprovalSearchSpecific(props: any): Observable<any> {
-              const body = props;
-               return this.http
-                .post(this.apiUrls.europeApproval.searchSpecific, body, { headers: this.headers })
-               .pipe(catchError(this.handleError));
-              }  
-  
+  impPatentsSearchSpecific(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.impPatents.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
+
+  europeApprovalSearchSpecific(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.europeApproval.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
+
 
 
   private handleError(error: HttpErrorResponse): Observable<never> {
