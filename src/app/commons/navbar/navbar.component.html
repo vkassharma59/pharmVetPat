@@ -114,7 +114,7 @@
           <h1
             class="text-[14px] leading-[17.07px] font-semibold hover:cursor-pointer relative inline-block transition duration-300"
           >
-            Agro Products<i class="fa-solid fa-caret-down mx-2"></i>
+            Pharma Products<i class="fa-solid fa-caret-down mx-2"></i>
           </h1>
           <div class="h-[4px] w-[24px] rounded-full line"></div>
         </div>
@@ -172,7 +172,7 @@
       <button
         class="w-[162px] h-[40px] font-semibold leading-[17.07px] text-sm bg-[#0032A0] rounded-full text-white"
       >
-        Pharma Database
+        Agro Database
       </button>
 
       <div class="relative" (click)="toggleDropdown($event, 'dropdown5')">
@@ -629,7 +629,7 @@
         id="auth-button"
         class="text-white block text-[13px] leading-[15.85px] font-medium"
         *ngIf="userAuth?.name"
-        (click)="(handleLogout)"
+        (click)="handleLogout()"
         >Logout</span
       >
 
