@@ -9,3 +9,23 @@ p
     width: 100%;
     height: 100%;
 }
+
+p{
+    white-space: pre;
+    text-wrap: wrap;
+}
+
+::-webkit-scrollbar {
+    width: 7px;
+    height:7px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #312e81;
+  }
