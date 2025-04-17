@@ -30,6 +30,9 @@
   <div class="card-box">
     <!-- ========== 1) API / Agrochemical Search ========== -->
     <div id="api-search" class="content-section" *ngIf="activeSearchTab == 'api-search' || activeSearchTab == 'see-all'">
+      <h2 class="section-title" style="font-size: 20px; font-weight: 600;">
+        API or Agrochemical Search
+      </h2>
       <!-- Simple Search -->
       <div class="simple-search">
         <h2 class="section-title">Simple Search</h2>
@@ -186,7 +189,9 @@
         </div>
         <div class="col-md-6"></div>
         <div class="col-md-2 col-12 d-flex justify-content-md-end">
-          <button class="btn btn-success w-100 w-md-auto" (click)="openTutorialModal()">View Tutorial</button>
+          <button class="btn btn-success w-100 w-md-auto" (click)="openTutorialModal()">View Tutorial 
+            <i class="fa-solid fa-circle-play"></i>
+          </button>
         </div>
       </div>
 
