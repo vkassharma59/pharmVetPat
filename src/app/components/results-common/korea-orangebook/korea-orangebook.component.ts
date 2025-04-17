@@ -32,7 +32,7 @@ export class KoreaOrangebookComponent implements OnInit, OnDestroy {
       KoreaOrangebookComponent.apiCallCount++; // Increment static counter
       this.localCount = KoreaOrangebookComponent.apiCallCount; // Assign instance count
      
-      console.log(`API data received ${this.localCount} times`);
+      
 
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();

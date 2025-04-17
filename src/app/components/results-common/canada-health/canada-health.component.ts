@@ -32,7 +32,7 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
       CanadaHealthComponent.apiCallCount++; // Increment static counter
       this.localCount = CanadaHealthComponent.apiCallCount; // Assign instance count
 
-      console.log(`API data received ${this.localCount} times`);
+      
 
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
