@@ -283,7 +283,7 @@
             : 'header_bottom_center_box_text1'
           ]"
           >
-            Agro Products
+            Pharma Products
             <svg
               *ngIf="showProducts || !transparent"
               width="9"
@@ -450,13 +450,17 @@
           <a
             href="https://chemroboticspharma.com?access_key={{ accessKey }}"
             target="_blank"
-            class="header_bottom_center_box_item"
+            class="header_bottom_center_box_item " style="top: 67px;
+            background: #F6C945;
+            border-radius: 5px;
+            opacity: 1;
+            padding: 3px;"
             [ngClass]="
               transparent
                 ? 'header_bottom_center_box_text'
                 : 'header_bottom_center_box_text1'
             "
-            >Pharma Database</a
+            >Agro Database</a
           >
         </div>
         <div class="header_bottom_center_box" style="font-size: 1rem;">
@@ -1141,7 +1145,7 @@
         (click)="selectedMenu = selectedMenu === 'products' ? '' : 'products'"
         class="header_menu_list_item text_style_4 "  
       >
-        Agro Products
+        Pharma Products
         <div class="header_menu_list_item_icon">
           <svg
             width="9"
@@ -1490,9 +1494,9 @@
           href="https://chemroboticspharma.com?access_key={{ accessKey }}"
           target="_blank"
           type="button"
-          class="button_blue_2 rounded-pill text_white_9 flex justify-center items-center"
+          class="button_blue_2 rounded-pill text_white_9 flex justify-center items-center btn btn-warning"
         >
-  Pharma Database
+           Agro Database
         </a>
       </div>
     </div>
