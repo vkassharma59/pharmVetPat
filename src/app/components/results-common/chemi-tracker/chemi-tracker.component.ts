@@ -69,6 +69,7 @@ export class ChemiTrackerComponent {
   handleFilter(){
     this.isCountryDropdownOpen=!this.isCountryDropdownOpen;
   }
+  
   dropdown(){
     this.isOpen=!this.isOpen;
   }
