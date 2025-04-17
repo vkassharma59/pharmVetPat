@@ -25,7 +25,39 @@ export class ImpComponent {
   productValue: string = '';
   _currentChildAPIBody: any;
   impPatentApiBody: any;
+  impPatentFilters: any = {};
 
+  filterConfigs = [
+    {
+      key: 'product',
+      label: 'Select Product',
+      dataKey: 'productFilters',
+      filterType: 'product',
+      dropdownState: false
+    },
+    {
+      key: 'patent_type',
+      label: 'Patent Type',
+      dataKey: 'patentTypeFilers',
+      filterType: 'patent_type',
+      dropdownState: false
+    },
+    {
+      key: 'assignee',
+      label: 'Select Assignee',
+      dataKey: 'assigneeFilters',
+      filterType: 'assignee',
+      dropdownState: false
+    },
+    {
+      key: 'order_by',
+      label: 'Order By',
+      dataKey: 'orderByFilters',
+      filterType: 'order_by',
+      dropdownState: false
+    }
+  ];
+  
   @Input()
   get data() {
     return this._data;
@@ -40,7 +72,7 @@ export class ImpComponent {
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
-    this.impPatentApiBody = { ...value };
+    this.impPatentApiBody = JSON.parse(JSON.stringify(value)) || value;
     this.handleFetchFilters();
   }
 
@@ -49,18 +81,80 @@ export class ImpComponent {
     private mainSearchService: MainSearchService) {
     this.resultTabs = this.utilityService.getAllTabsName();
   }
+
   handleFetchFilters() {
     this.impPatentApiBody.filter_enable = true;
     this.mainSearchService.impPatentsSearchSpecific(this.impPatentApiBody).subscribe({
       next: (res) => {
-        console.log(res?.data);
-        // this.countryFilters = res?.data?.country_of_company;
-        // this.foundationsFilters = res?.data?.dummy_6;
+        this.impPatentFilters.productFilters = res?.data?.product;
+        this.impPatentFilters.orderByFilters = res?.data?.order_by;
+        this.impPatentFilters.patentTypeFilters = res?.data?.patent_type;
+        this.impPatentFilters.assigneeFilters = res?.data?.assignee;
         this.impPatentApiBody.filter_enable = false;
       },
       error: (err) => {
         console.error(err);
         this.impPatentApiBody.filter_enable = false;
+      },
+    });
+  }
+
+  onFilterButtonClick(filterKey: string) {
+    this.filterConfigs = this.filterConfigs.map((item) => {
+      if (item.key === filterKey) {
+        return { ...item, dropdownState: !item.dropdownState };
+      }
+      return item;
+    });
+  }
+
+  setFilterValueToInitial(filterKey: string) {
+    this.filterConfigs = this.filterConfigs.map((item) => {
+      if (item.key === filterKey) {
+        return { ...item, dropdownState: !item.dropdownState };
+      }
+      return item;
+    });
+  }
+  
+
+  handleSelectFilter(filterKey: string, value: any) {
+    this.onFilterButtonClick(filterKey);
+    this.handleSetLoading.emit(true);
+
+    if (value == '') {
+      delete this.impPatentApiBody.filters[filterKey];
+    } else {
+      this.impPatentApiBody.filters[filterKey] = value;
+    }
+  
+    this._currentChildAPIBody = {
+      ...this.impPatentApiBody,
+      filters: { ...this.impPatentApiBody.filters }
+    };    
+    
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  
+    this.mainSearchService.impPatentsSearchSpecific(
+      this._currentChildAPIBody
+    ).subscribe({
+      next: (res) => {
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          count: res?.data?.chemi_tracker_count
+        };
+
+        this.handleResultTabData.emit(res.data);
+        this.handleSetLoading.emit(false);
+        window.scrollTo(0, scrollTop);
+      },
+      error: (err) => {
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          filter_enable: false
+        };
+        this.handleSetLoading.emit(false);
+        window.scrollTo(0, scrollTop);
       },
     });
   }

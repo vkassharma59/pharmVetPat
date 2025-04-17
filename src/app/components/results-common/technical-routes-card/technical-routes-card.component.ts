@@ -37,7 +37,7 @@ export class TechnicalRoutesCardComponent {
       TechnicalRoutesCardComponent.apiCallCount++; // Increment global counter
       this.localCount = TechnicalRoutesCardComponent.apiCallCount; // Assign to local instance
 
-      console.log(`API data received ${this.localCount} times`);
+      
 
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
