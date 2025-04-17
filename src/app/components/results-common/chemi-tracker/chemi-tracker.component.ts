@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
+import { TruncatePipe } from '../../../pipes/truncate.pipe';
 
 @Component({
   selector: 'chem-chemi-tracker',
   standalone: true,
-  imports: [ChemiTrackerCardComponent, CommonModule, ChildPagingComponent],
+  imports: [TruncatePipe, ChemiTrackerCardComponent, CommonModule, ChildPagingComponent],
   templateUrl: './chemi-tracker.component.html',
   styleUrl: './chemi-tracker.component.css'
 })

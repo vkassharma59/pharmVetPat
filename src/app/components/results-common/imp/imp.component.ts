@@ -1,17 +1,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from '../../../services/utility-service/utility.service';
-import { Auth_operations } from '../../../Utils/SetToken';
-import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
 import { CommonModule } from '@angular/common';
-import { environment } from '../../../../environments/environment';
 import { ImpPatentsCardComponent } from '../imp-patents-card/imp-patents-card.component';
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
+import { TruncatePipe } from '../../../pipes/truncate.pipe';
+
 @Component({
   selector: 'chem-imp',
   standalone: true,
-  imports: [CommonModule,ImpPatentsCardComponent, ChildPagingComponent],
+  imports: [TruncatePipe, CommonModule,ImpPatentsCardComponent, ChildPagingComponent],
   templateUrl: './imp.component.html',
   styleUrl: './imp.component.css'
 })
@@ -108,10 +106,27 @@ export class ImpComponent {
     });
   }
 
-  setFilterValueToInitial(filterKey: string) {
+  setFilterLabel(filterKey: string, label: string) {
     this.filterConfigs = this.filterConfigs.map((item) => {
       if (item.key === filterKey) {
-        return { ...item, dropdownState: !item.dropdownState };
+        if(label === '') {
+          switch(filterKey) {
+            case 'product':
+              label = 'Select Product';
+              break;
+            case 'patent_type':
+              label = 'Patent Typ'
+              break;
+            case 'assignee':
+              label = 'Select Assignee'
+              break;
+            case 'order_by':
+              label = 'Order By'
+              break;
+          }
+        }
+
+        return { ...item, label: label };
       }
       return item;
     });
@@ -124,8 +139,11 @@ export class ImpComponent {
 
     if (value == '') {
       delete this.impPatentApiBody.filters[filterKey];
+      const filterLabel = this.filterConfigs.find((item) => item.key === filterKey);
+      this.setFilterLabel(filterKey, '');
     } else {
       this.impPatentApiBody.filters[filterKey] = value;
+      this.setFilterLabel(filterKey, value);
     }
   
     this._currentChildAPIBody = {
@@ -141,7 +159,7 @@ export class ImpComponent {
       next: (res) => {
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
-          count: res?.data?.chemi_tracker_count
+          count: res?.data?.imp_patent_count
         };
 
         this.handleResultTabData.emit(res.data);
