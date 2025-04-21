@@ -1,7 +1,7 @@
-<div class="card-header text-white" style="background-color: #003366;">
+<div class="card-header text-white" style="background-color: #20a8ff;">
   {{ apiCallInstance }}. {{resultTabs?.impurity?.label}} >> {{_data?.name}}
 </div>
-<div class="card-body" style="background-color: #B3D9FF;" *ngIf="!isEmptyObject(_data); else noData">
+<div class="card-body" style="background-color: #F5FBFF;" *ngIf="!isEmptyObject(_data); else noData">
     <div>
         <div class="row">
           <div class="col-md-12">
@@ -20,13 +20,13 @@
                 </div>
       
                 <div class="row">
-                  <div class="col-md-2" *ngIf="_data?.chemical_structure">
+                  <div class="col-md-4" *ngIf="_data?.chemical_structure">
                     <div class="">
                       <img
                         [src]="getImageUrl(_data)"
                         alt="error"
                         class="object-contain"
-                        style="height: 250px; padding: 20px 15px"
+                        style="height: 22rem; padding: 20px 15px; width:22rem;"
                       />
       
                       <button
@@ -39,7 +39,7 @@
                     </div>
                   </div>
       
-                  <div class="col-md-10">
+                  <div class="col-md-7">
                     <div class="row">
                       <div class="col-md-3" *ngIf="_data?.gbrn && getColumnName('gbrn')">
                         <div class="pt-3">

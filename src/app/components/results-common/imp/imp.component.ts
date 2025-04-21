@@ -176,4 +176,61 @@ export class ImpComponent {
       },
     });
   }
+  clear() {
+    // Reset all filter labels to default
+    this.filterConfigs = this.filterConfigs.map(config => {
+      let defaultLabel = '';
+      switch (config.key) {
+        case 'product':
+          defaultLabel = 'Select Product';
+          break;
+        case 'patent_type':
+          defaultLabel = 'Patent Type';
+          break;
+        case 'assignee':
+          defaultLabel = 'Select Assignee';
+          break;
+        case 'order_by':
+          defaultLabel = 'Order By';
+          break;
+      }
+  
+      return {
+        ...config,
+        label: defaultLabel,
+        dropdownState: false
+      };
+    });
+  
+    // Clear filters object
+    this.impPatentApiBody.filters = {};
+  
+    // Reset API body and trigger fresh search (optional)
+    this._currentChildAPIBody = {
+      ...this.impPatentApiBody,
+      filters: {}
+    };
+  
+    this.handleSetLoading.emit(true);
+  
+    this.mainSearchService.impPatentsSearchSpecific(this._currentChildAPIBody).subscribe({
+      next: (res) => {
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          count: res?.data?.imp_patent_count
+        };
+        this.handleResultTabData.emit(res.data);
+        this.handleSetLoading.emit(false);
+      },
+      error: (err) => {
+        console.error(err);
+        this._currentChildAPIBody.filter_enable = false;
+        this.handleSetLoading.emit(false);
+      },
+    });
+  
+    // Scroll to top
+    window.scrollTo(0, 0);
+  }
+  
 }
