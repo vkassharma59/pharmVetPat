@@ -1,5 +1,6 @@
-<div class="card-header text-white " style="background-color:#20a8ff;">
+<div class="card-header text-white " style="background-color:#20a8ff; display:flex; justify-content:space-between;">
   {{ localCount }}. {{resultTabs?.chemicalDirectory?.label}} >> {{_data?.chemical_name}}
+  <button class="btn btn-warning"><i class="fa-solid fa-download"></i></button>
 </div>
 <div class="card-body" style="background-color:#F5FBFF;" *ngIf="!isEmptyObject(_data); else noData">
   <div class="pb-3 mb-3 px-2 flex flex-wrap">
