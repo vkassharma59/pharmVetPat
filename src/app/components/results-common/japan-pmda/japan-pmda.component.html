@@ -1,16 +1,17 @@
 
 <!-- <pre>{{_data | json}}</pre>  -->
 
-<div class="card-header text-white " style="font-size: 18px; background-color: #5196e0;">
+<div class="card-header text-white " style="font-size: 18px; background-color: #20a8ff; display:flex; justify-content: space-between;">
     {{ localCount }}. {{resultTabs?.japanApproval?.label}} >> {{_data?.strength}}
+    <button class="btn btn-warning"><i class="fa-solid fa-download"></i></button>
 </div>
-<div class="card-body" style="background-color: #C5E3FF;">
+<div class="card-body" style="background-color: #F5FBFF;">
     <div class="pb-3 mb-3 px-2 rounded-lg">
         <div class="row ">
             <!-- First Column -->
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 ">
                 <p class="text-wrap break-words whitespace-normal"
-                   style="color: #5196e0; font-size: 25px; font-weight: bold; padding-bottom: 15px;">
+                   style="color: #5196e0; font-size: 20px; font-weight: bold; padding-bottom: 15px;">
                     {{ _data?.strength }}
                 </p>
 

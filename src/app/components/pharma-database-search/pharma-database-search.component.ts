@@ -9,6 +9,7 @@ import { AppConfigValues } from '../../config/app-config';
 import { searchTypes, UtilityService } from '../../services/utility-service/utility.service';
 import { VideoTutorialComponent } from '../video-tutorial/video-tutorial.component';
 import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../../dialog/dialog.component';
 
 @Component({
   selector: 'chem-pharma-database-search',
@@ -100,8 +101,15 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     if(lastfilter && lastfilter.filter && lastfilter.keyword){
       this.advanceSearch.filterInputs.push({ filter: '', keyword: '' });
     }
-    else{
-      alert("please fill in the current filter, then add new filter");
+    else {
+      this.dialog.open(DialogComponent, {
+        data: {
+          title: 'Incomplete Filter',
+          message: 'Please fill in the current filter before adding a new one.'
+        },
+        width: '400px',
+        panelClass: 'custom-dialog'
+      });
     }
     
   }

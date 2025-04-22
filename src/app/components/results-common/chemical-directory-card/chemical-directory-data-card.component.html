@@ -1,7 +1,8 @@
-<div class="card-header text-white " style="background-color:#004080;">
+<div class="card-header text-white " style="background-color:#20a8ff; display:flex; justify-content:space-between;">
   {{ localCount }}. {{resultTabs?.chemicalDirectory?.label}} >> {{_data?.chemical_name}}
+  <button class="btn btn-warning"><i class="fa-solid fa-download"></i></button>
 </div>
-<div class="card-body" style="background-color:#CCE4FF;" *ngIf="!isEmptyObject(_data); else noData">
+<div class="card-body" style="background-color:#F5FBFF;" *ngIf="!isEmptyObject(_data); else noData">
   <div class="pb-3 mb-3 px-2 flex flex-wrap">
     <div class="lg:w-3/4 w-full">
       <div class="flex flex-wrap">
@@ -9,6 +10,7 @@
           <img
             [src]="getImageUrl()"
             class="w-full h-40 aspect-auto object-contain"
+            style="height:22rem; width:22rem;"
           />
           <button
             class="btns flex items-center justify-center p-2"
