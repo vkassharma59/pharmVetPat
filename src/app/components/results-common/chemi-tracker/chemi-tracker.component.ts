@@ -127,4 +127,19 @@ export class ChemiTrackerComponent {
       },
     });
   }
+  clear(){
+    this.country_value='Select Filter';
+    this.formulation_value='Select TECH.API & Formulation';
+
+    if(this.DMFAPIBody?.filters){
+      delete this.DMFAPIBody.filters['country_of_company'];
+      delete this.DMFAPIBody.filters['dummy_6'];
+    }
+    this.handleResultTabData.emit([]);
+    this.handleSetLoading.emit(false);
+
+    window.scrollTo(0,0);
+
+    this.handleSelectFilter;
+  }
 }

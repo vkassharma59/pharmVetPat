@@ -49,4 +49,14 @@
   .dropdown-menu li:hover {
     background-color: #f0f0f0;
   }
+  .clear{
+    border-radius: 50%;
+    font-weight: 700;
+    border: 1px solid #0032A0;
+    color: #0032A0;
+  }
+  .clear:hover{
+    background-color: #ccc;
+    color: #f0f0f0;
+  }
   

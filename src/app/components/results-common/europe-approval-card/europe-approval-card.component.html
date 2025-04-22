@@ -1,17 +1,18 @@
 <!-- <pre>{{_data | json}}</pre>  -->
 
-<div class="card-header text-white " style="font-size: 18px; background-color:#005377 ;">
+<div class="card-header text-white " style="font-size: 18px; display:flex; background-color:#20a8ff ; justify-content: space-between;">
     {{ localCount }}. {{resultTabs?.europeApproval?.label}} >> {{_data?.medicine_name}}
+    <button class="btn btn-warning"><i class="fa-solid fa-download"></i></button>
 </div>
 
 
-<div class="card-body" style="background-color:#A3D1FF;">
+<div class="card-body" style="background-color:#F5FBFF;">
     <div class="pb-3 mb-3 px-2 rounded-lg">
             <div class="row">
 
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 ">
 
-                    <p style="font-size: 30px; padding-bottom: 15px; color:#003399; font-weight: bold;">
+                    <p style="font-size: 14px; padding-bottom: 15px; color:#003399; font-weight: bold;">
                         {{ _data?.medicine_name }}
                     </p>
 

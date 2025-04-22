@@ -1,5 +1,5 @@
 <div class="child-route-count-wrapper flex justify-between items-center w-full">
-    <button class="child-route-count child-route-count-btn">
+    <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
         Total Records : {{ _currentChildAPIBody?.count }}
     </button>
 
@@ -43,6 +43,9 @@
                 </li>
             </ul>
         </div>
+    <button (click)="clear()" class="clear btn btn-outline-primary">
+        <i class="fa-solid fa-rotate"></i>
+    </button>
     </div>
 </div>
 <ng-container *ngIf="_data.length > 0 && _currentChildAPIBody?.count > 0; else noData">
