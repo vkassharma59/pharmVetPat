@@ -81,7 +81,9 @@
     </ng-container>
    
     <ng-container *ngSwitchCase="resultTabWithKeys.usApproval.name">
-      <chem-us></chem-us>
+      <chem-us
+        [data]="dataItem.usApproval"
+      ></chem-us>
     </ng-container>
  
     <ng-container *ngSwitchCase="resultTabWithKeys.canadaApproval.name">

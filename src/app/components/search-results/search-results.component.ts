@@ -269,6 +269,14 @@ export class SearchResultsComponent {
             this.setLoadingState.emit(false);
           }     
         break;
+      // For new tab work
+      case this.resultTabs?.usApproval.name:
+          if(Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.usApproval.name]).length === 0) {
+            this.performUsApprovalSearch(resultTabData);
+          } else {
+            this.setLoadingState.emit(false);
+          }     
+        break;
       default:
         this.setLoadingState.emit(false);
     }
@@ -788,12 +796,12 @@ export class SearchResultsComponent {
   private performEuropeApprovalSearch(resultTabData: any): void {
 
     if(resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
-      this.allDataSets[resultTabData.index][this.resultTabs.europeApproval.name] = {};
+      this.allDataSets[resultTabData.index][this.resultTabs.usApproval.name] = {};
       this.setLoadingState.emit(false);
       return;
     }
 
-    this.childApiBody[this.resultTabs.europeApproval.name] = {
+    this.childApiBody[this.resultTabs.usApproval.name] = {
       api_url: this.apiUrls.europeApproval.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
@@ -815,6 +823,52 @@ export class SearchResultsComponent {
             if(result?.data?.ema_data.length > 0) {
               this.childApiBody[this.resultTabs.europeApproval.name].count = result?.data?.ema_count;
               this.allDataSets[resultTabData.index][this.resultTabs.europeApproval.name] = result?.data?.ema_data;
+            }      
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
+
+  private performUsApprovalSearch(resultTabData: any): void {
+
+    if(resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+      this.allDataSets[resultTabData.index][this.resultTabs.usApproval.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
+
+    this.childApiBody[this.resultTabs.usApproval.name] = {
+      api_url: this.apiUrls.usApproval.searchSpecific,
+      search_type: resultTabData?.searchWith,
+      keyword: resultTabData?.searchWithValue,
+      page_no: 1,
+      filter_enable: false,
+      filters: {},
+      order_by: '',
+      index: resultTabData.index
+    }
+  
+    const tech_API = this.apiUrls.usApproval.columnList;  
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.usApproval.name, response);
+  
+        this.mainSearchService.usApprovalSearchSpecific(this.childApiBody[this.resultTabs.usApproval.name]).subscribe({
+          next: (result: any) => {
+            if(result?.data?.ema_data.length > 0) {
+              this.childApiBody[this.resultTabs.usApproval.name].count = result?.data?.ema_count;
+              this.allDataSets[resultTabData.index][this.resultTabs.usApproval.name] = result?.data?.ema_data;
             }      
             this.setLoadingState.emit(false);
           },
