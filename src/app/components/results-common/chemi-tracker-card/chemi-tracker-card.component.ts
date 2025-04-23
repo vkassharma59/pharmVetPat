@@ -79,7 +79,29 @@ export class ChemiTrackerCardComponent implements OnDestroy {
   }
 
   handleCopy(text: string, el: HTMLElement) {
-    navigator.clipboard.writeText(text).then(() => alert('Item Copied!'));
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    document.body.appendChild(textArea);
+
+    textArea.select();
+    textArea.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+
+    document.body.removeChild(textArea);
+
+  // Step 2: Find the icon inside the clicked span and swap classes
+  const icon = el.querySelector('i');
+
+  if (icon?.classList.contains('fa-copy')) {
+    icon.classList.remove('fa-copy');
+    icon.classList.add('fa-check');
+
+    // Step 3: Revert it back after 1.5 seconds
+    setTimeout(() => {
+      icon.classList.remove('fa-check');
+      icon.classList.add('fa-copy');
+    }, 1500);
+  }
   }
 
   getChemicalImage(): string {

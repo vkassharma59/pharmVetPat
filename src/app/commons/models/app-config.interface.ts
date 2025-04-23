@@ -61,6 +61,10 @@ export interface AppConfig {
       searchSpecific: string;
       columnList: string;
     };
+    usApproval: {
+      searchSpecific: string;
+      columnList: string;
+    };
     indianMedicine: {
       searchSpecific: string;
       columnList: string;

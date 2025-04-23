@@ -1,53 +1,53 @@
-<div class="child-route-count-wrapper flex justify-between items-center w-full">
-    <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
-        Total Records : {{ _currentChildAPIBody?.count }}
-    </button>
+<ng-container *ngIf="_data.length > 0 && _currentChildAPIBody?.count > 0; else noData">
 
-    <div class="flex flex-wrap gap-3">
-        <div class="dropdown">
-            <button
-                class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
-                type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"
-                (click)="handleFilter()">
-                {{ country_value | truncate:20}}
-            </button>
-            <ul
-            *ngIf="isCountryDropdownOpen" 
-            class="dropdown-menu max-h-40 overflow-y-auto z-30" aria-labelledby="dropdownMenuButton">
-                <li (click)="handleSelectFilter('country_of_company', '')">
-                    <a class="dropdown-item">View All</a>
-                </li>
-                <li *ngFor="let data of countryFilters"
-                    (click)="handleSelectFilter('country_of_company', data.value)">
-                    <a class="dropdown-item">{{ data?.name }}</a>
-                </li>
-            </ul>
-        </div>
+    <div class="child-route-count-wrapper flex justify-between items-center w-full">
+        <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
+            Total Records : {{ _currentChildAPIBody?.count }}
+        </button>
 
-        <div class="dropdown">
-            <button
-                (click)="dropdown()"
-                class="px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0] dropdown-toggle"
-                type="button" id="dropdownMenuButton">
-                {{ formulation_value | truncate:20}}
-                
+        <div class="flex flex-wrap gap-3">
+            <div class="dropdown">
+                <button
+                    class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
+                    type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"
+                    (click)="handleFilter()">
+                    {{ country_value | truncate:20}}
+                </button>
+                <ul *ngIf="isCountryDropdownOpen" class="dropdown-menu max-h-40 overflow-y-auto z-30"
+                    aria-labelledby="dropdownMenuButton">
+                    <li (click)="handleSelectFilter('country_of_company', '')">
+                        <a class="dropdown-item">View All</a>
+                    </li>
+                    <li *ngFor="let data of countryFilters"
+                        (click)="handleSelectFilter('country_of_company', data.value)">
+                        <a class="dropdown-item">{{ data?.name }}</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="dropdown">
+                <button (click)="dropdown()"
+                    class="px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0] dropdown-toggle"
+                    type="button" id="dropdownMenuButton">
+                    {{ formulation_value | truncate:20}}
+
+                </button>
+                <ul *ngIf="isOpen" class="dropdown-menu z-30 max-h-40 overflow-y-auto"
+                    aria-labelledby="dropdownMenuButton">
+                    <li (click)="handleSelectFilter('dummy_6', '')">
+                        <a class="dropdown-item">View All</a>
+                    </li>
+                    <li *ngFor="let data of foundationsFilters" (click)="handleSelectFilter('dummy_6', data.value)">
+                        <a class="dropdown-item">{{ data?.name }}</a>
+                    </li>
+                </ul>
+            </div>
+            <button (click)="clear()" class="clear btn btn-outline-primary">
+                <i class="fa-solid fa-rotate"></i>
             </button>
-            <ul 
-                *ngIf="isOpen"
-                class="dropdown-menu z-30 max-h-40 overflow-y-auto" aria-labelledby="dropdownMenuButton">
-                <li (click)="handleSelectFilter('dummy_6', '')">
-                    <a class="dropdown-item">View All</a>
-                </li>
-                <li *ngFor="let data of foundationsFilters" (click)="handleSelectFilter('dummy_6', data.value)">
-                    <a class="dropdown-item">{{ data?.name }}</a>
-                </li>
-            </ul>
         </div>
-    <button (click)="clear()" class="clear btn btn-outline-primary">
-        <i class="fa-solid fa-rotate"></i>
-    </button>
     </div>
-</div>
+</ng-container>
 <ng-container *ngIf="_data.length > 0 && _currentChildAPIBody?.count > 0; else noData">
     <ng-container *ngFor="let dataItem of _data; let i = index">
         <div class="py-4">
