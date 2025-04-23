@@ -1,6 +1,6 @@
 <ng-container *ngIf="_data.length > 0; else noData">
   <div *ngIf="currentChildAPIBody?.count > 0" class="child-route-count-wrapper justify-between">
-    <button class="child-route-count child-route-count-btn">
+    <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
         Total Records : {{ currentChildAPIBody?.count }}
     </button>
   </div>
@@ -28,7 +28,7 @@
 <ng-template #noData>
   <div class="card">
     <div class="card-header text-white bg-primary">
-      {{resultTabs.japanApproval?.label}}
+      {{resultTabs.indianMedicine?.label}}
     </div>
     <div class="card-body">
         <p>No Data found!</p>

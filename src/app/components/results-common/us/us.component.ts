@@ -243,19 +243,26 @@ export class UsComponent {
     this.isPopupOpen20 = false;
   }  
 
-
-  copyText(elementId: string) {
+  copyText(elementId: string, event: Event) {
+    const el = event.currentTarget as HTMLElement;
     const textToCopy = document.getElementById(elementId)?.innerText;
-
+  
     if (textToCopy) {
-      navigator.clipboard.writeText(textToCopy)
-        .then(() => {
-          alert('Text copied to clipboard!');
-        })
-        .catch(err => {
-          console.error('Failed to copy text: ', err);
-        });
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        // el is already the <i> element, no need for querySelector
+        if (el.classList.contains('fa-copy')) {
+          el.classList.remove('fa-copy');
+          el.classList.add('fa-check');
+  
+          setTimeout(() => {
+            el.classList.remove('fa-check');
+            el.classList.add('fa-copy');
+          }, 1500);
+        }
+      }).catch(err => {
+        console.error('Failed to copy text: ', err);
+      });
     }
   }
-  
+      
 }
