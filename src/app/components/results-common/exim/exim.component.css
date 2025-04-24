@@ -248,7 +248,7 @@ mat-header-cell {
   display: flex;
   justify-content: space-between;
   padding: 0 8px;
-  z-index: 5;
+  z-index: 101;
   pointer-events: none; /* Pass clicks except for buttons */
 }
 

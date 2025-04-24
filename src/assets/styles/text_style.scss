@@ -480,3 +480,10 @@
 .font-style-i{
     font-style: italic
 }
+mat-footer-row, td.mat-footer-cell {
+    visibility: visible;
+    height: auto;
+    padding: 8px;
+    background-color: #f9f9f9;
+  }
+  
