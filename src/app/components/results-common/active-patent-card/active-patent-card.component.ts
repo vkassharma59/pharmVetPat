@@ -1,53 +1,64 @@
-import { Component, Input, OnDestroy } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common';
-import { UtilityService } from '../../../services/utility-service/utility.service';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Auth_operations } from '../../../Utils/SetToken';
+import { MatDialog } from '@angular/material/dialog';
+import { UtilityService } from '../../../services/utility-service/utility.service';
 import { environment } from '../../../../environments/environment';
-import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'chem-chemi-tracker-card',
+  selector: 'app-active-patent-card',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './chemi-tracker-card.component.html',
-  styleUrl: './chemi-tracker-card.component.css'
+  templateUrl: './active-patent-card.component.html',
+  styleUrl: './active-patent-card.component.css'
 })
-export class ChemiTrackerCardComponent implements OnDestroy {
-
-  private static counter = 0; // ✅ Static counter across instances
+export class ActivePatentCardComponent {
   _data: any = [];
   MoreInfo: boolean = false;
   pageNo: number = 1;
-  localCount: number;
-  chemi_tracker_column: Record<string, string> = {};
+  activePatent_column: any = {};
   resultTabs: any = {};
 
-  constructor(private dialog: MatDialog, private utilityService: UtilityService) {
-    this.localCount = ++ChemiTrackerCardComponent.counter; // ✅ Assign unique count per instance
-    console.log(`Instance Created: ${this.localCount}, Total Count: ${ChemiTrackerCardComponent.counter}`);
-  }
-
-  ngOnDestroy() {
-    ChemiTrackerCardComponent.counter = 0; // ✅ Reset counter on component destruction
-  }
+  static apiCallCount: number = 0; // Global static counter
+  localCount: number = 0; // Instance-specific count
 
   @Input()
   get data() {  
     return this._data;  
   }
-  set data(value) {    
+  set data(value: any) {    
     if (value && Object.keys(value).length > 0) {
-      this._data = value;
+      ActivePatentCardComponent.apiCallCount++; // Increment static counter
+      this.localCount = ActivePatentCardComponent.apiCallCount; // Assign instance count
+
+      
+
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
 
-      if (column_list[this.resultTabs.chemiTracker?.name]?.length > 0) {
-        column_list[this.resultTabs.chemiTracker.name].forEach((col: any) => {
-          this.chemi_tracker_column[col.value] = col.name;
-        });
+      if (column_list[this.resultTabs.activePatent?.name]?.length > 0) {
+        for (let i = 0; i < column_list[this.resultTabs.activePatent.name].length; i++) {
+          this.activePatent_column[column_list[this.resultTabs.activePatent.name][i].value] =
+            column_list[this.resultTabs.activePatent.name][i].name;
+        }
       }
+
+      this._data = value;
     }
+  }
+
+  constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
+
+  ngOnInit() {
+    // Reset counter only when the component is first loaded
+    if (ActivePatentCardComponent.apiCallCount === 0) {
+      ActivePatentCardComponent.apiCallCount = 0;
+    }
+  }
+
+  ngOnDestroy() {
+    // Reset counter when navigating away from the component
+    ActivePatentCardComponent.apiCallCount = 0;
   }
 
   isEmptyObject(obj: any): boolean {
@@ -58,11 +69,11 @@ export class ChemiTrackerCardComponent implements OnDestroy {
     this.MoreInfo = !this.MoreInfo;
   }
 
-  getColumnName(value: string) {
-    return this.chemi_tracker_column[value] || value;
+  getColumnName(value: any) {
+    return this.activePatent_column[value];
   }
 
-  getPubchemId(value: string) {
+  getPubchemId(value: any) {
     return `https://pubchem.ncbi.nlm.nih.gov/#query=${value}`;
   }
 
@@ -74,7 +85,7 @@ export class ChemiTrackerCardComponent implements OnDestroy {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country_of_company}.png`;
   }
   
-  getCompanyWebsite(value: string) {
+  getCompanyWebsite(value: any): string {
     return `https://${value}`;
   }
 
@@ -104,16 +115,11 @@ export class ChemiTrackerCardComponent implements OnDestroy {
   }
   }
 
-  getChemicalImage(): string {
-    return `${environment.baseUrl}${environment.domainNameChemicalDirectoryStructure}${this._data?.chemical_structure}`;
-  }
-
-  openImageModal(imageUrl: string): void {
-    this.dialog.open(ImageModalComponent, {
-      width: 'calc(100vw - 5vw)',
-      height: '700px',
-      panelClass: 'full-screen-modal',
-      data: { dataImage: imageUrl },
-    });
+  getImageUrl(data: any): string {
+    return (
+      environment.baseUrl +
+      environment.domainNameCompanyLogo +
+      this._data?.commentry
+    );
   }
 }

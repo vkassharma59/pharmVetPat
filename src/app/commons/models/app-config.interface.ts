@@ -61,6 +61,10 @@ export interface AppConfig {
       searchSpecific: string;
       columnList: string;
     };
+    usApproval: {
+      searchSpecific: string;
+      columnList: string;
+    };
     indianMedicine: {
       searchSpecific: string;
       columnList: string;
@@ -70,6 +74,10 @@ export interface AppConfig {
       columnList: string;
     };
     chemiTracker: {
+      searchSpecific: string;
+      columnList: string;
+    };
+    activePatent: {
       searchSpecific: string;
       columnList: string;
     };

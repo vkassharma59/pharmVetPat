@@ -66,6 +66,14 @@ export const AppConfigValues: AppConfig = {
         searchSpecific: `${appUrl.apiUrl}/korea-orange-book/search-specific`,
         columnList: `${appUrl.apiUrl}/korea-orange-book/column-list`,
       },
+      usApproval: {
+        searchSpecific: `${appUrl.apiUrl}/us-approval/search-specific`,
+        columnList: `${appUrl.apiUrl}/us-approval/column-list`,
+      },
+      activePatent: {
+        searchSpecific: `${appUrl.apiUrl}/us-approval/search-specific`,
+        columnList: `${appUrl.apiUrl}/us-approval/column-list`,
+      },
       indianMedicine: {
         searchSpecific: `${appUrl.apiUrl}/indian-medicine/search-specific`,
         columnList: `${appUrl.apiUrl}/indian-medicine/column-list`,

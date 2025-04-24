@@ -99,19 +99,19 @@
 } */
 
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #fff;
-  border-radius: 25px;
-  width: 100%;
-  max-width: 530px;
-  height: auto;
-  padding: 5px 10px;
-  margin: 0 auto 30px;
-  flex-wrap: wrap;
-  gap: 10px;
-}
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+    background-color: #fff;
+    border-radius: 25px;
+    width: 100%;
+    max-width: 538px;
+    height: auto;
+    padding: 5px 10px;
+    margin: 0 auto 30px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
 
 .header button {
   background-color: #fff;
