@@ -299,11 +299,13 @@
     
           <!-- Dynamically render columns -->
           <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header  class="header-cell" style="position: sticky;">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header  class="header-cell" style="position: sticky; background-color: #73d4ff; color:white; border:2px solid white;">
               <div class="header-content">
                 <span>{{ columnHeaders[column] }}</span>
                 <ng-container *ngIf="filterableColumns.includes(column)">
-                  <input matInput placeholder="Filter" (keyup)="applyColumnFilter(column, $event)" />
+                  <input matInput placeholder="Filter" (keyup)="applyColumnFilter(column, $event)" style="margin-top: 8px;
+                  border-radius: 7px;
+                  padding: 5px;" />
                 </ng-container>
               </div>
             </th>
@@ -316,7 +318,7 @@
             </td>
           </ng-container>
     
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns" style="background-color: #def1ff;"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
         </table>
       </div>

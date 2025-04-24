@@ -116,6 +116,8 @@ button[color="warn"] {
 ::ng-deep .mat-sort-header-arrow {
   opacity: 1 !important;  /* Always show sorting icon */
   transform: none !important;
+  background-color: #e02b33;
+  color:white;
 }
 
 .custom-table {
@@ -141,8 +143,10 @@ button[color="warn"] {
 
 .header-content {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+    flex-direction: column;
+    align-items: center;
+    background-color: #73d4ff ;
+    margin: 5px;
 }
 
 .filter-input {
@@ -153,7 +157,7 @@ button[color="warn"] {
 }
 
 .mat-form-field-appearance-fill .mat-form-field-flex {
-  background-color: white;
+  background-color: #def1ff;
 }
 
 .mat-form-field-appearance-fill .mat-form-field-outline {
@@ -170,7 +174,7 @@ button[color="warn"] {
 }
 
 .table-row:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: #def1ff;
 }
 .table-wrapper {
   position: relative;
@@ -179,7 +183,7 @@ button[color="warn"] {
 
 /* Strongest style override for Angular Material header cells */
 :host ::ng-deep .mat-header-cell {
-  background-color: #d32f2f !important;  /* Red background */
+  background-color: #73d4ff !important;  /* Red background */
   color: white !important;
   font-weight: bold;
   border-right: 1px solid #ffffff55;
@@ -187,7 +191,7 @@ button[color="warn"] {
 
 /* Optional: Make input box white inside red header */
 :host ::ng-deep .mat-header-cell input {
-  background-color: white !important;
+  background-color: #73d4ff !important;
   color: black !important;
   border: none;
   border-radius: 4px;
@@ -233,12 +237,14 @@ button[color="warn"] {
   position: sticky;
   top: 0;
   z-index: 2;
-  background-color: #d32f2f !important;
+  background-color: #73d4ff !important;
   color: white;
 }
 
 mat-header-cell {
   position: sticky;
+  background-color: #73d4ff;
+  color:white;
 }
 .header-scroll-buttons {
   position: absolute;
@@ -248,13 +254,13 @@ mat-header-cell {
   display: flex;
   justify-content: space-between;
   padding: 0 8px;
-  z-index: 101;
+  z-index: 5;
   pointer-events: none; /* Pass clicks except for buttons */
 }
 
 .scroll-btn {
   pointer-events: auto;
-  background-color: #d32f2f;
+  background-color: #0084d6;
   color: white;
   border: none;
   border-radius: 50%;
@@ -271,4 +277,7 @@ mat-header-cell {
   overflow-x: auto;
   white-space: nowrap;
   padding: 2rem;
+}
+th{
+  background-color: #73d4ff;
 }
