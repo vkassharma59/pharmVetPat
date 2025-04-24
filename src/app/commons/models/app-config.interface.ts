@@ -77,6 +77,10 @@ export interface AppConfig {
       searchSpecific: string;
       columnList: string;
     };
+    activePatent: {
+      searchSpecific: string;
+      columnList: string;
+    };
     user: {
       privilegeApi: string;
       todayPrivilegeApi: string;
