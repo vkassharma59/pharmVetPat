@@ -74,7 +74,7 @@
 
     <ng-container *ngSwitchCase="resultTabWithKeys.europeApproval.name">
       <chem-europe-approval 
-        [data]="dataItem.europeApproval"
+        [data]="_dataItem.europeApproval"
         [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.europeApproval.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-europe-approval>
@@ -87,7 +87,7 @@
  
     <ng-container *ngSwitchCase="resultTabWithKeys.canadaApproval.name">
       <chem-canada 
-        [data]="dataItem.canadaApproval"
+        [data]="_dataItem.canadaApproval"
         [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.canadaApproval.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-canada>
@@ -95,7 +95,7 @@
    
     <ng-container *ngSwitchCase="resultTabWithKeys.japanApproval.name">
       <chem-japan 
-        [data]="dataItem.japanApproval"
+        [data]="_dataItem.japanApproval"
         [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.japanApproval.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-japan>
@@ -104,7 +104,7 @@
 
     <ng-container *ngSwitchCase="resultTabWithKeys.koreaApproval.name">
       <chem-korea 
-        [data]="dataItem.koreaApproval"
+        [data]="_dataItem.koreaApproval"
         [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.koreaApproval.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-korea>
@@ -112,7 +112,7 @@
 
     <ng-container *ngSwitchCase="resultTabWithKeys.indianMedicine.name">
       <chem-indian 
-        [data]="dataItem.indianMedicine"
+        [data]="_dataItem.indianMedicine"
         [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.indianMedicine.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-indian>
@@ -120,7 +120,7 @@
 
     <ng-container *ngSwitchCase="resultTabWithKeys.litigation.name">
       <chem-litigation 
-        [data]="dataItem.litigation"
+        [data]="_dataItem.litigation"
         [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.litigation.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-litigation>
@@ -133,7 +133,7 @@
 
     <ng-container *ngSwitchCase="resultTabWithKeys.impPatents.name">
       <chem-imp 
-        [data]="dataItem.impPatents"
+        [data]="_dataItem.impPatents"
         [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.impPatents.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-imp>
