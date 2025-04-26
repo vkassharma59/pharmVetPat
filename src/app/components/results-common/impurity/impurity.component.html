@@ -16,7 +16,7 @@
           </div>
     </div>
 </div>
-<ng-container *ngIf="_data.length > 0 && _currentChildAPIBody?.count > 0 else noData">
+<ng-container *ngIf="_data.length > 0; else noData">
     <ng-container *ngFor="let dataItem of _data; let i = index">
         <div class="py-4">
             <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">

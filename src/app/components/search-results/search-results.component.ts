@@ -297,7 +297,7 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[this.resultTabs?.technicalRoutes.name] = {
+    this.childApiBody[resultTabData.index][this.resultTabs?.technicalRoutes.name] = {
       api_url: this.apiUrls.technicalRoutes.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
@@ -315,12 +315,10 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.technicalRoutes.name, response);
 
-        this.mainSearchService.technicalRoutesSearchSpecific(this.childApiBody[this.resultTabs?.technicalRoutes.name]).subscribe({
+        this.mainSearchService.technicalRoutesSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs?.technicalRoutes.name]).subscribe({
           next: (result: any) => {
-            if (result?.data?.ros_data.length > 0) {
-              this.childApiBody[this.resultTabs?.technicalRoutes.name].count = result?.data?.ros_count;
-              this.allDataSets[resultTabData.index][this.resultTabs.technicalRoutes.name] = result?.data?.ros_data;
-            }
+            this.childApiBody[resultTabData.index][this.resultTabs?.technicalRoutes.name].count = result?.data?.ros_count;
+            this.allDataSets[resultTabData.index][this.resultTabs.technicalRoutes.name] = result?.data?.ros_data;
             this.setLoadingState.emit(false);
           },
           error: (e) => {
@@ -344,7 +342,8 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[this.resultTabs.productInfo.name] = {
+    this.childApiBody[resultTabData.index] = {};
+    this.childApiBody[resultTabData.index][this.resultTabs.productInfo.name] = {
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       api_url: this.apiUrls.basicProductInfo.searchSpecific,
@@ -361,12 +360,10 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.productInfo.name, response);
 
-        this.mainSearchService.basicProductSearchSpecific(this.childApiBody[this.resultTabs.productInfo.name]).subscribe({
+        this.mainSearchService.basicProductSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.productInfo.name]).subscribe({
           next: (result: any) => {
-            if (result?.data?.basic_product_data.length > 0) {
-              this.childApiBody[this.resultTabs.productInfo.name].count = result?.data?.basic_product_count;
-              this.allDataSets[resultTabData.index][this.resultTabs.productInfo.name] = result?.data?.basic_product_data;
-            }
+            this.childApiBody[resultTabData.index][this.resultTabs.productInfo.name].count = result?.data?.basic_product_count;
+            this.allDataSets[resultTabData.index][this.resultTabs.productInfo.name] = result?.data?.basic_product_data;
             this.setLoadingState.emit(false);
           },
           error: (e) => {
@@ -390,7 +387,8 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[this.resultTabs.chemicalDirectory.name] = {
+    this.childApiBody[resultTabData.index] = {};
+    this.childApiBody[resultTabData.index][this.resultTabs.chemicalDirectory.name] = {
       api_url: this.apiUrls.chemicalDirectory.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
@@ -407,12 +405,10 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.chemicalDirectory.name, response);
 
-        this.mainSearchService.chemicalDirectorySearchSpecific(this.childApiBody[this.resultTabs.chemicalDirectory.name]).subscribe({
+        this.mainSearchService.chemicalDirectorySearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.chemicalDirectory.name]).subscribe({
           next: (result: any) => {
-            if (result?.data?.chem_dir_data.length > 0) {
-              this.childApiBody[this.resultTabs.chemicalDirectory.name].count = result?.data?.chem_dir_count;
-              this.allDataSets[resultTabData.index][this.resultTabs.chemicalDirectory.name] = result?.data?.chem_dir_data;
-            }
+            this.childApiBody[resultTabData.index][this.resultTabs.chemicalDirectory.name].count = result?.data?.chem_dir_count;
+            this.allDataSets[resultTabData.index][this.resultTabs.chemicalDirectory.name] = result?.data?.chem_dir_data;
             this.setLoadingState.emit(false);
           },
           error: (e) => {
@@ -436,7 +432,8 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[this.resultTabs.impurity.name] = {
+    this.childApiBody[resultTabData.index] = {};
+    this.childApiBody[resultTabData.index][this.resultTabs.impurity.name] = {
       api_url: this.apiUrls.impurity.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
@@ -453,12 +450,10 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.impurity.name, response);
 
-        this.mainSearchService.impuritySearchSpecific(this.childApiBody[this.resultTabs.impurity.name]).subscribe({
+        this.mainSearchService.impuritySearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.impurity.name]).subscribe({
           next: (result: any) => {
-            if (result?.data?.impurity_data.length > 0) {
-              this.childApiBody[this.resultTabs.impurity.name].count = result?.data?.impurity_count;
-              this.allDataSets[resultTabData.index][this.resultTabs.impurity.name] = result?.data?.impurity_data;
-            }
+            this.childApiBody[resultTabData.index][this.resultTabs.impurity.name].count = result?.data?.impurity_count;
+            this.allDataSets[resultTabData.index][this.resultTabs.impurity.name] = result?.data?.impurity_data;
             this.setLoadingState.emit(false);
           },
           error: (e) => {
@@ -482,7 +477,8 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[this.resultTabs.chemiTracker.name] = {
+    this.childApiBody[resultTabData.index] = {};
+    this.childApiBody[resultTabData.index][this.resultTabs.chemiTracker.name] = {
       api_url: this.apiUrls.chemiTracker.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
@@ -499,12 +495,10 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.chemiTracker.name, response);
 
-        this.mainSearchService.chemiTrackerSearchSpecific(this.childApiBody[this.resultTabs.chemiTracker.name]).subscribe({
+        this.mainSearchService.chemiTrackerSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.chemiTracker.name]).subscribe({
           next: (result: any) => {
-            if (result?.data?.chemi_tracker_data.length > 0) {
-              this.childApiBody[this.resultTabs.chemiTracker.name].count = result?.data?.chemi_tracker_count;
-              this.allDataSets[resultTabData.index][this.resultTabs.chemiTracker.name] = result?.data?.chemi_tracker_data;
-            }
+            this.childApiBody[resultTabData.index][this.resultTabs.chemiTracker.name].count = result?.data?.chemi_tracker_count;
+            this.allDataSets[resultTabData.index][this.resultTabs.chemiTracker.name] = result?.data?.chemi_tracker_data;
             this.setLoadingState.emit(false);
           },
           error: (e) => {
@@ -528,7 +522,8 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[this.resultTabs.canadaApproval.name] = {
+    this.childApiBody[resultTabData.index] = {};
+    this.childApiBody[resultTabData.index][this.resultTabs.canadaApproval.name] = {
       api_url: this.apiUrls.canadaApproval.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
@@ -544,13 +539,10 @@ export class SearchResultsComponent {
       next: (res: any) => {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.canadaApproval.name, response);
-        this.mainSearchService.canadaApprovalSearchSpecific(this.childApiBody[this.resultTabs.canadaApproval.name]).subscribe({
+        this.mainSearchService.canadaApprovalSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.canadaApproval.name]).subscribe({
           next: (result: any) => {
-            console.log(result);
-            if (result?.data?.health_canada_data.length > 0) {
-              this.childApiBody[this.resultTabs.canadaApproval.name].count = result?.data?.health_canada_count;
-              this.allDataSets[resultTabData.index][this.resultTabs.canadaApproval.name] = result?.data?.health_canada_data;
-            }
+            this.childApiBody[resultTabData.index][this.resultTabs.canadaApproval.name].count = result?.data?.health_canada_count;
+            this.allDataSets[resultTabData.index][this.resultTabs.canadaApproval.name] = result?.data?.health_canada_data;
             this.setLoadingState.emit(false);
           },
           error: (e) => {
@@ -573,7 +565,8 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[this.resultTabs.japanApproval.name] = {
+    this.childApiBody[resultTabData.index] = {};
+    this.childApiBody[resultTabData.index][this.resultTabs.japanApproval.name] = {
       api_url: this.apiUrls.japanApproval.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
@@ -590,14 +583,10 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.japanApproval.name, response);
 
-        this.mainSearchService.japanApprovalSearchSpecific(this.childApiBody[this.resultTabs.japanApproval.name]).subscribe({
+        this.mainSearchService.japanApprovalSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.japanApproval.name]).subscribe({
           next: (result: any) => {
-            console.log(result);
-
-            if (result?.data?.japan_pmda_data.length > 0) {
-              this.childApiBody[this.resultTabs.japanApproval.name].count = result?.data?.japan_pmda_count;
-              this.allDataSets[resultTabData.index][this.resultTabs.japanApproval.name] = result?.data?.japan_pmda_data;
-            }
+            this.childApiBody[resultTabData.index][this.resultTabs.japanApproval.name].count = result?.data?.japan_pmda_count;
+            this.allDataSets[resultTabData.index][this.resultTabs.japanApproval.name] = result?.data?.japan_pmda_data;
             this.setLoadingState.emit(false);
           },
           error: (e) => {
@@ -620,7 +609,8 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[this.resultTabs.koreaApproval.name] = {
+    this.childApiBody[resultTabData.index] = {};
+    this.childApiBody[resultTabData.index][this.resultTabs.koreaApproval.name] = {
       api_url: this.apiUrls.koreaApproval.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
@@ -637,13 +627,10 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.koreaApproval.name, response);
 
-        this.mainSearchService.koreaApprovalSearchSpecific(this.childApiBody[this.resultTabs.koreaApproval.name]).subscribe({
+        this.mainSearchService.koreaApprovalSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.koreaApproval.name]).subscribe({
           next: (result: any) => {
-            console.log(result);
-            if (result?.data?.korea_orange_book_data.length > 0) {
-              this.childApiBody[this.resultTabs.koreaApproval.name].count = result?.data?.korea_orange_book_count;
-              this.allDataSets[resultTabData.index][this.resultTabs.koreaApproval.name] = result?.data?.korea_orange_book_data;
-            }
+            this.childApiBody[resultTabData.index][this.resultTabs.koreaApproval.name].count = result?.data?.korea_orange_book_count;
+            this.allDataSets[resultTabData.index][this.resultTabs.koreaApproval.name] = result?.data?.korea_orange_book_data;
             this.setLoadingState.emit(false);
           },
           error: (e) => {
@@ -667,7 +654,8 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[this.resultTabs.indianMedicine.name] = {
+    this.childApiBody[resultTabData.index] = {};
+    this.childApiBody[resultTabData.index][this.resultTabs.indianMedicine.name] = {
       api_url: this.apiUrls.indianMedicine.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
@@ -684,13 +672,10 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.indianMedicine.name, response);
 
-        this.mainSearchService.indianMedicineSearchSpecific(this.childApiBody[this.resultTabs.indianMedicine.name]).subscribe({
+        this.mainSearchService.indianMedicineSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.indianMedicine.name]).subscribe({
           next: (result: any) => {
-            console.log(result);
-            if (result?.data?.indian_medicine_data.length > 0) {
-              this.childApiBody[this.resultTabs.indianMedicine.name].count = result?.data?.indian_medicine_count;
-              this.allDataSets[resultTabData.index][this.resultTabs.indianMedicine.name] = result?.data?.indian_medicine_data;
-            }
+            this.childApiBody[resultTabData.index][this.resultTabs.indianMedicine.name].count = result?.data?.indian_medicine_count;
+            this.allDataSets[resultTabData.index][this.resultTabs.indianMedicine.name] = result?.data?.indian_medicine_data;
             this.setLoadingState.emit(false);
           },
           error: (e) => {
@@ -714,7 +699,8 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[this.resultTabs.litigation.name] = {
+    this.childApiBody[resultTabData.index] = {};
+    this.childApiBody[resultTabData.index][this.resultTabs.litigation.name] = {
       api_url: this.apiUrls.litigation.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
@@ -731,13 +717,10 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.litigation.name, response);
 
-        this.mainSearchService.litigationSearchSpecific(this.childApiBody[this.resultTabs.litigation.name]).subscribe({
+        this.mainSearchService.litigationSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.litigation.name]).subscribe({
           next: (result: any) => {
-            console.log(result);
-            if (result?.data?.litigation_data.length > 0) {
-              this.childApiBody[this.resultTabs.litigation.name].count = result?.data?.litigation_count;
-              this.allDataSets[resultTabData.index][this.resultTabs.litigation.name] = result?.data?.litigation_data;
-            }
+            this.childApiBody[resultTabData.index][this.resultTabs.litigation.name].count = result?.data?.litigation_count;
+            this.allDataSets[resultTabData.index][this.resultTabs.litigation.name] = result?.data?.litigation_data;
             this.setLoadingState.emit(false);
           },
           error: (e) => {
@@ -760,8 +743,9 @@ export class SearchResultsComponent {
       this.setLoadingState.emit(false);
       return;
     }
-
-    this.childApiBody[this.resultTabs.impPatents.name] = {
+    
+    this.childApiBody[resultTabData.index] = {};
+    this.childApiBody[resultTabData.index][this.resultTabs.impPatents.name] = {
       api_url: this.apiUrls.impPatents.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
@@ -778,13 +762,10 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.impPatents.name, response);
 
-        this.mainSearchService.impPatentsSearchSpecific(this.childApiBody[this.resultTabs.impPatents.name]).subscribe({
+        this.mainSearchService.impPatentsSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.impPatents.name]).subscribe({
           next: (result: any) => {
-            console.log(result);
-            if (result?.data?.imp_patent_data.length > 0) {
-              this.childApiBody[this.resultTabs.impPatents.name].count = result?.data?.imp_patent_count;
-              this.allDataSets[resultTabData.index][this.resultTabs.impPatents.name] = result?.data?.imp_patent_data;
-            }
+            this.childApiBody[resultTabData.index][this.resultTabs.impPatents.name].count = result?.data?.imp_patent_count;
+            this.allDataSets[resultTabData.index][this.resultTabs.impPatents.name] = result?.data?.imp_patent_data;
             this.setLoadingState.emit(false);
           },
           error: (e) => {
@@ -808,7 +789,8 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[this.resultTabs.usApproval.name] = {
+    this.childApiBody[resultTabData.index] = {};
+    this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name] = {
       api_url: this.apiUrls.europeApproval.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
@@ -825,12 +807,10 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.europeApproval.name, response);
 
-        this.mainSearchService.europeApprovalSearchSpecific(this.childApiBody[this.resultTabs.europeApproval.name]).subscribe({
+        this.mainSearchService.europeApprovalSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.europeApproval.name]).subscribe({
           next: (result: any) => {
-            if (result?.data?.ema_data.length > 0) {
-              this.childApiBody[this.resultTabs.europeApproval.name].count = result?.data?.ema_count;
-              this.allDataSets[resultTabData.index][this.resultTabs.europeApproval.name] = result?.data?.ema_data;
-            }
+            this.childApiBody[resultTabData.index][this.resultTabs.europeApproval.name].count = result?.data?.ema_count;
+            this.allDataSets[resultTabData.index][this.resultTabs.europeApproval.name] = result?.data?.ema_data;
             this.setLoadingState.emit(false);
           },
           error: (e) => {
@@ -854,7 +834,8 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[this.resultTabs.usApproval.name] = {
+    this.childApiBody[resultTabData.index] = {};
+    this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name] = {
       api_url: this.apiUrls.usApproval.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
@@ -871,12 +852,10 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.usApproval.name, response);
 
-        this.mainSearchService.usApprovalSearchSpecific(this.childApiBody[this.resultTabs.usApproval.name]).subscribe({
+        this.mainSearchService.usApprovalSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name]).subscribe({
           next: (result: any) => {
-            if (result?.data?.ema_data.length > 0) {
-              this.childApiBody[this.resultTabs.usApproval.name].count = result?.data?.ema_count;
-              this.allDataSets[resultTabData.index][this.resultTabs.usApproval.name] = result?.data?.ema_data;
-            }
+            this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name].count = result?.data?.ema_count;
+            this.allDataSets[resultTabData.index][this.resultTabs.usApproval] = result?.data?.ema_data;
             this.setLoadingState.emit(false);
           },
           error: (e) => {
@@ -890,9 +869,9 @@ export class SearchResultsComponent {
         this.setLoadingState.emit(false);
       },
     });
-    }
+  }
 
-    private performactivePatentSearch(resultTabData: any): void {
+  private performactivePatentSearch(resultTabData: any): void {
 
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.activePatent.name] = {};
@@ -900,7 +879,8 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[this.resultTabs.activePatent.name] = {
+    this.childApiBody[resultTabData.index] = {};
+    this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name] = {
       api_url: this.apiUrls.activePatent.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
@@ -917,12 +897,10 @@ export class SearchResultsComponent {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.activePatent.name, response);
 
-        this.mainSearchService.activePatentSearchSpecific(this.childApiBody[this.resultTabs.activePatent.name]).subscribe({
+        this.mainSearchService.activePatentSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name]).subscribe({
           next: (result: any) => {
-            if (result?.data?.ema_data.length > 0) {
-              this.childApiBody[this.resultTabs.activePatent.name].count = result?.data?.ema_count;
-              this.allDataSets[resultTabData.index][this.resultTabs.activePatent.name] = result?.data?.ema_data;
-            }
+            this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name].count = result?.data?.ema_count;
+            this.allDataSets[resultTabData.index][this.resultTabs.activePatent.name] = result?.data?.ema_data;
             this.setLoadingState.emit(false);
           },
           error: (e) => {
@@ -938,78 +916,78 @@ export class SearchResultsComponent {
     });
   }
 
-  onChildPaginationChange(data: any) {
+  onChildPaginationChange(data: any, index) {
     switch (this.currentTabData.name) {
       case this.resultTabs?.technicalRoutes.name:
         if (data?.ros_data.length > 0) {
-          this.childApiBody[this.resultTabs?.technicalRoutes.name].count = data?.ros_count;
-          this.allDataSets[this.childApiBody[this.resultTabs?.technicalRoutes.name].index][this.resultTabs.technicalRoutes.name] = data?.ros_data;
+          this.childApiBody[index][this.resultTabs?.technicalRoutes.name].count = data?.ros_count;
+          this.allDataSets[this.childApiBody[index][this.resultTabs?.technicalRoutes.name]][this.resultTabs.technicalRoutes.name] = data?.ros_data;
         }
         break;
       case this.resultTabs?.productInfo.name:
         if (data?.basic_product_data.length > 0) {
-          this.childApiBody[this.resultTabs?.productInfo.name].count = data?.basic_product_count;
-          this.allDataSets[this.childApiBody[this.resultTabs?.productInfo.name].index][this.resultTabs.productInfo.name] = data?.basic_product_data;
+          this.childApiBody[index][this.resultTabs?.productInfo.name].count = data?.basic_product_count;
+          this.allDataSets[this.childApiBody[index][this.resultTabs?.productInfo.name]][this.resultTabs.productInfo.name] = data?.basic_product_data;
         }
         break;
       case this.resultTabs?.chemicalDirectory.name:
         if (data?.chem_dir_data.length > 0) {
-          this.childApiBody[this.resultTabs?.chemicalDirectory.name].count = data?.chem_dir_count;
-          this.allDataSets[this.childApiBody[this.resultTabs?.chemicalDirectory.name].index][this.resultTabs.chemicalDirectory.name] = data?.chem_dir_data;
+          this.childApiBody[index][this.resultTabs?.chemicalDirectory.name].count = data?.chem_dir_count;
+          this.allDataSets[this.childApiBody[index][this.resultTabs?.chemicalDirectory.name]][this.resultTabs.chemicalDirectory.name] = data?.chem_dir_data;
         }
         break;
       case this.resultTabs?.impurity.name:
         if (data?.impurity_data.length > 0) {
-          this.childApiBody[this.resultTabs?.impurity.name].count = data?.impurity_count;
-          this.allDataSets[this.childApiBody[this.resultTabs?.impurity.name].index][this.resultTabs.impurity.name] = data?.impurity_data;
+          this.childApiBody[index][this.resultTabs?.impurity.name].count = data?.impurity_count;
+          this.allDataSets[this.childApiBody[index][this.resultTabs?.impurity.name]][this.resultTabs.impurity.name] = data?.impurity_data;
         }
         break;
       case this.resultTabs?.chemiTracker.name:
         if (data?.chemi_tracker_data.length > 0) {
-          this.childApiBody[this.resultTabs?.chemiTracker.name].count = data?.chemi_tracker_count;
-          this.allDataSets[this.childApiBody[this.resultTabs?.chemiTracker.name].index][this.resultTabs.chemiTracker.name] = data?.chemi_tracker_data;
+          this.childApiBody[index][this.resultTabs?.chemiTracker.name].count = data?.chemi_tracker_count;
+          this.allDataSets[this.childApiBody[index][this.resultTabs?.chemiTracker.name]][this.resultTabs.chemiTracker.name] = data?.chemi_tracker_data;
         }
         break;
       case this.resultTabs?.impPatents.name:
         if (data?.imp_patent_data.length > 0) {
-          this.childApiBody[this.resultTabs?.impPatents.name].count = data?.imp_patent_count;
-          this.allDataSets[this.childApiBody[this.resultTabs?.impPatents.name].index][this.resultTabs.impPatents.name] = data?.imp_patent_data;
+          this.childApiBody[index][this.resultTabs?.impPatents.name].count = data?.imp_patent_count;
+          this.allDataSets[this.childApiBody[index][this.resultTabs?.impPatents.name]][this.resultTabs.impPatents.name] = data?.imp_patent_data;
         }
         break;
       case this.resultTabs?.canadaApproval.name:
         if (data?.health_canada_data.length > 0) {
-          this.childApiBody[this.resultTabs?.canadaApproval.name].count = data?.health_canada_count;
-          this.allDataSets[this.childApiBody[this.resultTabs?.canadaApproval.name].index][this.resultTabs.canadaApproval.name] = data?.health_canada_data;
+          this.childApiBody[index][this.resultTabs?.canadaApproval.name].count = data?.health_canada_count;
+          this.allDataSets[this.childApiBody[index][this.resultTabs?.canadaApproval.name]][this.resultTabs.canadaApproval.name] = data?.health_canada_data;
         }
         break;
       case this.resultTabs?.japanApproval.name:
         if (data?.japan_pmda_data.length > 0) {
-          this.childApiBody[this.resultTabs?.japanApproval.name].count = data?.japan_pmda_count;
-          this.allDataSets[this.childApiBody[this.resultTabs?.japanApproval.name].index][this.resultTabs.japanApproval.name] = data?.japan_pmda_data;
+          this.childApiBody[index][this.resultTabs?.japanApproval.name].count = data?.japan_pmda_count;
+          this.allDataSets[this.childApiBody[index][this.resultTabs?.japanApproval.name]][this.resultTabs.japanApproval.name] = data?.japan_pmda_data;
         }
         break;
       case this.resultTabs?.koreaApproval.name:
         if (data?.korea_orange_book_data.length > 0) {
-          this.childApiBody[this.resultTabs?.koreaApproval.name].count = data?.korea_orange_book_count;
-          this.allDataSets[this.childApiBody[this.resultTabs?.koreaApproval.name].index][this.resultTabs.koreaApproval.name] = data?.korea_orange_book_data;
+          this.childApiBody[index][this.resultTabs?.koreaApproval.name].count = data?.korea_orange_book_count;
+          this.allDataSets[this.childApiBody[index][this.resultTabs?.koreaApproval.name]][this.resultTabs.koreaApproval.name] = data?.korea_orange_book_data;
         }
         break;
       case this.resultTabs?.indianMedicine.name:
         if (data?.indian_medicine_data.length > 0) {
-          this.childApiBody[this.resultTabs?.indianMedicine.name].count = data?.indian_medicine_count;
-          this.allDataSets[this.childApiBody[this.resultTabs?.indianMedicine.name].index][this.resultTabs.indianMedicine.name] = data?.indian_medicine_data;
+          this.childApiBody[index][this.resultTabs?.indianMedicine.name].count = data?.indian_medicine_count;
+          this.allDataSets[this.childApiBody[index][this.resultTabs?.indianMedicine.name]][this.resultTabs.indianMedicine.name] = data?.indian_medicine_data;
         }
         break;
       case this.resultTabs?.litigation.name:
         if (data?.litigation_data.length > 0) {
-          this.childApiBody[this.resultTabs?.litigation.name].count = data?.litigation_count;
-          this.allDataSets[this.childApiBody[this.resultTabs?.litigation.name].index][this.resultTabs.litigation.name] = data?.litigation_data;
+          this.childApiBody[index][this.resultTabs?.litigation.name].count = data?.litigation_count;
+          this.allDataSets[this.childApiBody[index][this.resultTabs?.litigation.name]][this.resultTabs.litigation.name] = data?.litigation_data;
         }
         break;
       case this.resultTabs?.europeApproval.name:
         if (data?.ema_data.length > 0) {
-          this.childApiBody[this.resultTabs?.europeApproval.name].count = data?.ema_count;
-          this.allDataSets[this.childApiBody[this.resultTabs?.europeApproval.name].index][this.resultTabs.europeApproval.name] = data?.ema_data;
+          this.childApiBody[index][this.resultTabs?.europeApproval.name].count = data?.ema_count;
+          this.allDataSets[this.childApiBody[index][this.resultTabs?.europeApproval.name]][this.resultTabs.europeApproval.name] = data?.ema_data;
         }
         break;
       default:
