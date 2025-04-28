@@ -1,26 +1,27 @@
-<div class="child-route-count-wrapper flex justify-between items-center w-full">
-    <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
-        Total Records : {{ _currentChildAPIBody?.count }}
-    </button>
-    <div class="flex flex-wrap gap-3">
-        <div class="dropdown-container">
-            <button (click)="handleFilter()" class="dropdown-toggle">
-              {{ category_value }}
-            </button>
-            <ul *ngIf="isOpen" class="dropdown-menu">
-              <li (click)="handleSelectFilter('')">View All</li>
-              <li *ngFor="let data of category_filters" (click)="handleSelectFilter(data.value)">
-                {{ data.name }}
-              </li>
-            </ul>
-          </div>
+<ng-container *ngIf="_data.length > 0 && _currentChildAPIBody?.count > 0; else noData">
+    <div class="child-route-count-wrapper flex justify-between items-center w-full">
+        <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
+            Total Records : {{ _currentChildAPIBody?.count }}
+        </button>
+        <div class="flex flex-wrap gap-3">
+            <div class="dropdown-container">
+                <button (click)="handleFilter()" class="dropdown-toggle">
+                    {{ category_value }}
+                </button>
+                <ul *ngIf="isOpen" class="dropdown-menu">
+                    <li (click)="handleSelectFilter('')">View All</li>
+                    <li *ngFor="let data of category_filters" (click)="handleSelectFilter(data.value)">
+                        {{ data.name }}
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
-</div>
-<ng-container *ngIf="_data.length > 0 && _currentChildAPIBody?.count > 0 else noData">
-    <ng-container *ngFor="let dataItem of _data; let i = index">
-        <div class="py-4">
-            <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
-                <span
+    <ng-container *ngIf="_data.length > 0 && _currentChildAPIBody?.count > 0 else noData">
+        <ng-container *ngFor="let dataItem of _data; let i = index">
+            <div class="py-4">
+                <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
+                    <span
                     class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-bold h-[37px] flex justify-center items-center">
                     Sub Route
                     {{ (((_currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
@@ -32,9 +33,10 @@
     <app-child-paging [currentChildAPIBody]="currentChildAPIBody"
         (handleChangeTabData)="handleResultTabData.emit($event)"
         (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
+    </ng-container>
 </ng-container>
-<ng-template #noData>
-    <div class="card">
+    <ng-template #noData>
+        <div class="card">
         <div class="card-header text-white bg-primary">
             {{resultTabs?.impurity?.label}}
         </div>

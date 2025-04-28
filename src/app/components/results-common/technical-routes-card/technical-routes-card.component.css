@@ -1,50 +1,65 @@
-p{
-    white-space: pre;
-    text-wrap: wrap;
+p {
+  white-space: pre;
+  text-wrap: wrap;
 }
 
-.tag_title{
+.tag_title {
   font-family: 'Montserrat';
-font-style: normal;
-font-weight: 700;
-font-size: 30px;
-line-height: 49px;
-/* identical to box height */
-text-align: center;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 49px;
+  /* identical to box height */
+  text-align: center;
 
-color: #0032A0;
+  color: #0032A0;
 }
 
 ::-webkit-scrollbar {
-    width: 7px;
-    height:7px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #312e81;
-  }
+  width: 7px;
+  height: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #312e81;
+}
 
 
-  .desc{
-    display: -webkit-box;
-    -webkit-line-clamp: 10;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+.desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 
-  .res{
-    display: -webkit-box;
-    -webkit-line-clamp: 5;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  
+.res {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.head {
+  margin: 10px;
+}
+
+.card-header {
+  background: #020024;
+  background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
+  display: flex;
+  justify-content: space-between;
+}
+/* .card-body{
+  background: #148cc4;
+background: linear-gradient(90deg, rgba(20, 140, 196, 1) 0%, rgba(80, 206, 235, 1) 35%, rgba(221, 237, 237, 1) 100%);
+padding-left: 0;
+} */

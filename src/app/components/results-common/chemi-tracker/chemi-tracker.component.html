@@ -47,12 +47,11 @@
             </button>
         </div>
     </div>
-</ng-container>
-<ng-container *ngIf="_data.length > 0 && _currentChildAPIBody?.count > 0; else noData">
-    <ng-container *ngFor="let dataItem of _data; let i = index">
-        <div class="py-4">
-            <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
-                <span
+    <ng-container *ngIf="_data.length > 0 && _currentChildAPIBody?.count > 0; else noData">
+        <ng-container *ngFor="let dataItem of _data; let i = index">
+            <div class="py-4">
+                <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
+                    <span
                     class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-bold h-[37px] flex justify-center items-center">
                     Sub Route
                     {{ (((_currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
@@ -61,6 +60,7 @@
         </div>
         <chem-chemi-tracker-card class="card" [data]="dataItem"></chem-chemi-tracker-card>
     </ng-container>
+</ng-container>
     <app-child-paging [currentChildAPIBody]="_currentChildAPIBody"
         (handleChangeTabData)="handleResultTabData.emit($event)"
         (setLoading)="handleSetLoading.emit($event)"></app-child-paging>

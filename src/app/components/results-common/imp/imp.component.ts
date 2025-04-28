@@ -102,7 +102,7 @@ export class ImpComponent {
       if (item.key === filterKey) {
         return { ...item, dropdownState: !item.dropdownState };
       }
-      return item;
+      return { ...item, dropdownState: false };
     });
   }
 
