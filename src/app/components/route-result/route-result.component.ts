@@ -55,7 +55,7 @@ export class RouteResultComponent {
   @Output() handleChildPaginationSearch: EventEmitter<any> = new EventEmitter<any>();
   @Output() OpenPriviledgeModal: EventEmitter<any> = new EventEmitter<any>();
 
-  @Input() currentChildAPIBody: any;
+  _currentChildAPIBody: any;
   @Input() currentApiData: any;
   @Input() CurrentAPIBody: any;
   @Input() index: number | undefined;
@@ -67,6 +67,14 @@ export class RouteResultComponent {
   }
   set dataItem(value: any) {
     this._dataItem = value;
+  }
+
+  @Input() 
+  get currentChildAPIBody() {
+    return this._currentChildAPIBody;
+  }
+  set currentChildAPIBody(value: any) {
+    this._currentChildAPIBody = value;
   }
   
   constructor(

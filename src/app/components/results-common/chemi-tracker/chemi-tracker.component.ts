@@ -43,8 +43,10 @@ export class ChemiTrackerComponent {
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
-    this.DMFAPIBody = JSON.parse(JSON.stringify(value)) || value;
-    this.handleFetchFilters();
+    if(value) {
+      this.DMFAPIBody = JSON.parse(JSON.stringify(value)) || value;
+      this.handleFetchFilters();
+    }
   }
 
   constructor(
