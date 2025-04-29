@@ -5,18 +5,18 @@
     <div class="flex flex-wrap gap-3">
         <div class="dropdown-container">
             <button (click)="handleFilter()" class="dropdown-toggle">
-              {{ category_value }}
+                {{ category_value }}
             </button>
             <ul *ngIf="isOpen" class="dropdown-menu">
-              <li (click)="handleSelectFilter('')">View All</li>
-              <li *ngFor="let data of category_filters" (click)="handleSelectFilter(data.value)">
-                {{ data.name }}
-              </li>
+                <li (click)="handleSelectFilter('')">View All</li>
+                <li *ngFor="let data of category_filters" (click)="handleSelectFilter(data.value)">
+                    {{ data.name }}
+                </li>
             </ul>
-          </div>
+        </div>
     </div>
 </div>
-<ng-container *ngIf="_data.length > 0 && _currentChildAPIBody?.count > 0 else noData">
+<ng-container *ngIf="_data.length > 0; else noData">
     <ng-container *ngFor="let dataItem of _data; let i = index">
         <div class="py-4">
             <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
@@ -35,11 +35,11 @@
 </ng-container>
 <ng-template #noData>
     <div class="card">
-        <div class="card-header text-white bg-primary">
-            {{resultTabs?.impurity?.label}}
-        </div>
-        <div class="card-body">
-            <p>No Data found!</p>
-        </div>
+    <div class="card-header text-white bg-primary">
+        {{resultTabs?.impurity?.label}}
     </div>
+    <div class="card-body">
+        <p>No Data found!</p>
+    </div>
+</div>
 </ng-template>

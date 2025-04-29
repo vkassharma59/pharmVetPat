@@ -70,8 +70,10 @@ export class ImpComponent {
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
-    this.impPatentApiBody = JSON.parse(JSON.stringify(value)) || value;
-    this.handleFetchFilters();
+    if(value) {
+      this.impPatentApiBody = JSON.parse(JSON.stringify(value)) || value;
+      this.handleFetchFilters();
+    }
   }
 
   constructor(
@@ -102,7 +104,7 @@ export class ImpComponent {
       if (item.key === filterKey) {
         return { ...item, dropdownState: !item.dropdownState };
       }
-      return item;
+      return { ...item, dropdownState: false };
     });
   }
 

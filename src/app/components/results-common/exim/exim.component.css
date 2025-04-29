@@ -97,17 +97,17 @@ button {
 
 /* ✅ Button Colors */
 button[color="primary"] {
-  background-color: #DC143C;
+  background-color: #07a2f0;
   color: white;
 }
 
 button[color="accent"] {
-  background-color: #DC143C;
+  background-color: #07a2f0;
   color: white;
 }
 
 button[color="warn"] {
-  background-color: #DC143C;
+  background-color: #07a2f0;
   color: white;
 }
 
@@ -174,11 +174,7 @@ button[color="warn"] {
 }
 
 .table-row:nth-child(even) {
-  background-color: #def1ff;
-}
-.table-wrapper {
-  position: relative;
-  overflow: hidden;
+  background-color: #eff9ff;
 }
 
 /* Strongest style override for Angular Material header cells */
@@ -224,7 +220,7 @@ button[color="warn"] {
 }
 .table-wrapper {
   position: relative;
-  height: 500px;  
+  height: 427px;  
   overflow: hidden;
 }
 
