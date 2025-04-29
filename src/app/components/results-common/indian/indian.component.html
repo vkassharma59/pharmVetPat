@@ -1,5 +1,5 @@
 <ng-container *ngIf="_data.length > 0; else noData">
-  <div *ngIf="currentChildAPIBody\?\.count" class="child-route-count-wrapper justify-between">
+  <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper justify-between">
     <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
         Total Records : {{ currentChildAPIBody?.count }}
     </button>
