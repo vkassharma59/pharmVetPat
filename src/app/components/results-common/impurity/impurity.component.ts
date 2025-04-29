@@ -39,8 +39,10 @@ export class ImpurityComponent {
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
-    this.ImpurityBody = JSON.parse(JSON.stringify(this._currentChildAPIBody)) || this._currentChildAPIBody;
-    this.handleFetchFilters();
+    if(value) {
+      this.ImpurityBody = JSON.parse(JSON.stringify(this._currentChildAPIBody)) || this._currentChildAPIBody;
+      this.handleFetchFilters();
+    }
   }
 
   constructor(

@@ -17,10 +17,10 @@
       [dataItem]="item"
       [searchData]="searchData"
       [CurrentAPIBody]="CurrentAPIBody"
-      [currentChildAPIBody]="childApiBody"
+      [currentChildAPIBody]="childApiBody[i]"
       (onResultTabChange)="onResultTabChange($event)"
       (handleSetLoading)="handleLoadingState($event)"
-      (handleChildPaginationSearch)="onChildPaginationChange($event)"
+      (handleChildPaginationSearch)="onChildPaginationChange($event, i)"
     ></chem-route-results>
   </div>
   <chem-pagination 

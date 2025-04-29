@@ -34,7 +34,7 @@
     <ng-container *ngSwitchCase="resultTabWithKeys.productInfo.name">
       <chem-product-info 
         [data]="_dataItem.productInfo"
-        [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.productInfo.name]"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.productInfo.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)">
       </chem-product-info>     
@@ -43,7 +43,7 @@
     <ng-container *ngSwitchCase="resultTabWithKeys.technicalRoutes.name">
       <chem-technical-route 
         [data]="_dataItem.technicalRoutes"
-        [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.technicalRoutes.name]"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.technicalRoutes.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-technical-route>
     </ng-container>
@@ -51,7 +51,7 @@
     <ng-container *ngSwitchCase="resultTabWithKeys.chemicalDirectory.name">
       <chemical-directory 
         [data]="_dataItem.chemicalDirectory"
-        [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.chemicalDirectory.name]"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.chemicalDirectory.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chemical-directory>
     </ng-container>
@@ -59,23 +59,24 @@
     <ng-container *ngSwitchCase="resultTabWithKeys.impurity.name">
       <chem-impurity 
         [data]="_dataItem.impurity"
-        [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.impurity.name]"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.impurity.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-impurity>
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.chemiTracker.name">
+      <pre>{{_currentChildAPIBody | json}}</pre>
       <chem-chemi-tracker 
         [data]="_dataItem.chemiTracker"
-        [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.chemiTracker.name]"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.chemiTracker.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-chemi-tracker>
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.europeApproval.name">
       <chem-europe-approval 
-        [data]="dataItem.europeApproval"
-        [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.europeApproval.name]"
+        [data]="_dataItem.europeApproval"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.europeApproval.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-europe-approval>
     </ng-container>
@@ -87,16 +88,16 @@
  
     <ng-container *ngSwitchCase="resultTabWithKeys.canadaApproval.name">
       <chem-canada 
-        [data]="dataItem.canadaApproval"
-        [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.canadaApproval.name]"
+        [data]="_dataItem.canadaApproval"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.canadaApproval.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-canada>
     </ng-container>
    
     <ng-container *ngSwitchCase="resultTabWithKeys.japanApproval.name">
       <chem-japan 
-        [data]="dataItem.japanApproval"
-        [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.japanApproval.name]"
+        [data]="_dataItem.japanApproval"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.japanApproval.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-japan>
     </ng-container>
@@ -104,24 +105,24 @@
 
     <ng-container *ngSwitchCase="resultTabWithKeys.koreaApproval.name">
       <chem-korea 
-        [data]="dataItem.koreaApproval"
-        [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.koreaApproval.name]"
+        [data]="_dataItem.koreaApproval"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.koreaApproval.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-korea>
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.indianMedicine.name">
       <chem-indian 
-        [data]="dataItem.indianMedicine"
-        [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.indianMedicine.name]"
+        [data]="_dataItem.indianMedicine"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.indianMedicine.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-indian>
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.litigation.name">
       <chem-litigation 
-        [data]="dataItem.litigation"
-        [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.litigation.name]"
+        [data]="_dataItem.litigation"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.litigation.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-litigation>
     </ng-container>
@@ -133,8 +134,8 @@
 
     <ng-container *ngSwitchCase="resultTabWithKeys.impPatents.name">
       <chem-imp 
-        [data]="dataItem.impPatents"
-        [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.impPatents.name]"
+        [data]="_dataItem.impPatents"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.impPatents.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-imp>
     </ng-container>

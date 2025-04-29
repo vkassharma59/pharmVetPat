@@ -70,8 +70,10 @@ export class ImpComponent {
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
-    this.impPatentApiBody = JSON.parse(JSON.stringify(value)) || value;
-    this.handleFetchFilters();
+    if(value) {
+      this.impPatentApiBody = JSON.parse(JSON.stringify(value)) || value;
+      this.handleFetchFilters();
+    }
   }
 
   constructor(
