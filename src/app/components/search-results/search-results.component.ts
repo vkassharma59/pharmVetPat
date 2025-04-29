@@ -297,6 +297,12 @@ export class SearchResultsComponent {
       return;
     }
 
+    if(this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index][this.resultTabs.technicalRoutes.name] = {};
+    } else {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
     this.childApiBody[resultTabData.index][this.resultTabs?.technicalRoutes.name] = {
       api_url: this.apiUrls.technicalRoutes.searchSpecific,
       search_type: resultTabData?.searchWith,
@@ -342,7 +348,12 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[resultTabData.index] = {};
+    if(this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index][this.resultTabs.productInfo.name] = {};
+    } else {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
     this.childApiBody[resultTabData.index][this.resultTabs.productInfo.name] = {
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
@@ -387,7 +398,12 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[resultTabData.index] = {};
+    if(this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index][this.resultTabs.chemicalDirectory.name] = {};
+    } else {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
     this.childApiBody[resultTabData.index][this.resultTabs.chemicalDirectory.name] = {
       api_url: this.apiUrls.chemicalDirectory.searchSpecific,
       search_type: resultTabData?.searchWith,
@@ -432,7 +448,12 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[resultTabData.index] = {};
+    if(this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index][this.resultTabs.impurity.name] = {};
+    } else {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
     this.childApiBody[resultTabData.index][this.resultTabs.impurity.name] = {
       api_url: this.apiUrls.impurity.searchSpecific,
       search_type: resultTabData?.searchWith,
@@ -477,7 +498,12 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[resultTabData.index] = {};
+    if(this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index][this.resultTabs.chemiTracker.name] = {};
+    } else {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
     this.childApiBody[resultTabData.index][this.resultTabs.chemiTracker.name] = {
       api_url: this.apiUrls.chemiTracker.searchSpecific,
       search_type: resultTabData?.searchWith,
@@ -522,7 +548,12 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[resultTabData.index] = {};
+    if(this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index][this.resultTabs.canadaApproval.name] = {};
+    } else {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
     this.childApiBody[resultTabData.index][this.resultTabs.canadaApproval.name] = {
       api_url: this.apiUrls.canadaApproval.searchSpecific,
       search_type: resultTabData?.searchWith,
@@ -565,7 +596,12 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[resultTabData.index] = {};
+    if(this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index][this.resultTabs.japanApproval.name] = {};
+    } else {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
     this.childApiBody[resultTabData.index][this.resultTabs.japanApproval.name] = {
       api_url: this.apiUrls.japanApproval.searchSpecific,
       search_type: resultTabData?.searchWith,
@@ -609,7 +645,12 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[resultTabData.index] = {};
+    if(this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index][this.resultTabs.koreaApproval.name] = {};
+    } else {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
     this.childApiBody[resultTabData.index][this.resultTabs.koreaApproval.name] = {
       api_url: this.apiUrls.koreaApproval.searchSpecific,
       search_type: resultTabData?.searchWith,
@@ -654,7 +695,12 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[resultTabData.index] = {};
+    if(this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index][this.resultTabs.indianMedicine.name] = {};
+    } else {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
     this.childApiBody[resultTabData.index][this.resultTabs.indianMedicine.name] = {
       api_url: this.apiUrls.indianMedicine.searchSpecific,
       search_type: resultTabData?.searchWith,
@@ -699,7 +745,12 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[resultTabData.index] = {};
+    if(this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index][this.resultTabs.litigation.name] = {};
+    } else {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
     this.childApiBody[resultTabData.index][this.resultTabs.litigation.name] = {
       api_url: this.apiUrls.litigation.searchSpecific,
       search_type: resultTabData?.searchWith,
@@ -744,7 +795,12 @@ export class SearchResultsComponent {
       return;
     }
     
-    this.childApiBody[resultTabData.index] = {};
+    if(this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index][this.resultTabs.impPatents.name] = {};
+    } else {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
     this.childApiBody[resultTabData.index][this.resultTabs.impPatents.name] = {
       api_url: this.apiUrls.impPatents.searchSpecific,
       search_type: resultTabData?.searchWith,
@@ -789,8 +845,13 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[resultTabData.index] = {};
-    this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name] = {
+    if(this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index][this.resultTabs.europeApproval.name] = {};
+    } else {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
+    this.childApiBody[resultTabData.index][this.resultTabs.europeApproval.name] = {
       api_url: this.apiUrls.europeApproval.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
@@ -834,7 +895,12 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[resultTabData.index] = {};
+    if(this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name] = {};
+    } else {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
     this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name] = {
       api_url: this.apiUrls.usApproval.searchSpecific,
       search_type: resultTabData?.searchWith,
@@ -879,7 +945,12 @@ export class SearchResultsComponent {
       return;
     }
 
-    this.childApiBody[resultTabData.index] = {};
+    if(this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name] = {};
+    } else {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
     this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name] = {
       api_url: this.apiUrls.activePatent.searchSpecific,
       search_type: resultTabData?.searchWith,

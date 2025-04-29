@@ -24,8 +24,7 @@ export class RouteTabsComponent {
 
   ngOnInit() {
     if(this.resultTabs) {
-      this.resultTabValues = JSON.parse(JSON.stringify(this.resultTabs));
-      
+      this.resultTabValues = JSON.parse(JSON.stringify(this.resultTabs));      
     }
   }
 
