@@ -1,6 +1,8 @@
-<div class="card-header text-white" style="background-color: #20a8ff; display:flex; justify-content: space-between;">
+<div class="card-header text-white" >
+  <div style="padding-top:7px; justify-content:space-between; display:flex;">
   {{ apiCallInstance }}. {{resultTabs?.impurity?.label}} >> {{_data?.name}}
   <button class="btn btn-warning"><i class="fa-solid fa-download"></i></button>
+  </div>
 </div>
 <div class="card-body" style="background-color: #F5FBFF;" *ngIf="!isEmptyObject(_data); else noData">
     <div>
@@ -17,7 +19,7 @@
 (click)="handleCopy(_data?.gbrn, copyBtn)"                      ><i class="fas fa-copy"></i
                     ></span>
                   </h1> -->
-                  <h1 class="pt-2 font-bold">{{ _data?.name }}</h1>
+                  <h1 class="pt-2 font-bold" style="color:#312e81;">{{ _data?.name }}</h1>
                 </div>
       
                 <div class="row">
@@ -44,7 +46,7 @@
                     <div class="row">
                       <div class="col-md-3" *ngIf="_data?.gbrn && getColumnName('gbrn')">
                         <div class="pt-3">
-                          <h1 class="font-bold">
+                          <h1 class="font-bold" style="color:#312e81;">
                             {{ getColumnName("gbrn") }}
                             <span
                               class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -61,7 +63,7 @@
                       </div>
                       <div class="col-md-3" *ngIf="_data?.cas_rn && getColumnName('cas_rn')">
                         <div class="pt-4">
-                          <h1 class="font-bold">
+                          <h1 class="font-bold" style="color:#312e81;">
                             {{ getColumnName("cas_rn") }}
       
                             <span
@@ -75,7 +77,7 @@
                       </div>
                       <div class="col-md-3" *ngIf="_data?.pubchem_id && getColumnName('pubchem_id')">
                         <div class="pt-4">
-                          <h1 class="font-bold">{{ getColumnName("pubchem_id") }}
+                          <h1 class="font-bold" style="color:#312e81;">{{ getColumnName("pubchem_id") }}
                             <span
                               class="mx-1 hover:cursor-pointer text-[#0032A0]"
                               #copyBtn 
@@ -92,7 +94,7 @@
       
                       <div class="col-md-3" *ngIf="_data?.impurity_name && getColumnName('impurity_name')">
                         <div class="pt-4">
-                          <h1 class="font-bold">
+                          <h1 class="font-bold" style="color:#312e81;">
                             {{ getColumnName("impurity_name") }}
                             <span
                               class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -105,7 +107,7 @@
                       </div>
                       <div class="col-md-3" *ngIf="_data?.category && getColumnName('category')">
                         <div class="pt-4">
-                          <h1 class="font-bold">{{ getColumnName("category") }}
+                          <h1 class="font-bold" style="color:#312e81;">{{ getColumnName("category") }}
                             <span
                             class="mx-1 hover:cursor-pointer text-[#0032A0]"
                             #copyBtn 
@@ -117,7 +119,7 @@
                       </div>
                       <div class="col-md-3" *ngIf="_data?.chemical_class && getColumnName('chemical_class')">
                         <div class="pt-4">
-                          <h1 class="font-bold">
+                          <h1 class="font-bold" style="color:#312e81;">
                             {{ getColumnName("chemical_class") }}
                             <span
                               class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -131,7 +133,7 @@
       
                       <div class="col-md-3" *ngIf="_data?.molecular_formula && getColumnName('molecular_formula')">
                         <div class="pt-4">
-                          <h1 class="font-bold">
+                          <h1 class="font-bold" style="color:#312e81;">
                             {{ getColumnName("molecular_formula") }}
                             <span
                               class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -144,7 +146,7 @@
                       </div>
                       <div class="col-md-3" *ngIf="_data?.formula_weight && getColumnName('formula_weight')">
                         <div class="pt-4">
-                          <h1 class="font-bold">
+                          <h1 class="font-bold" style="color:#312e81;">
                             {{ getColumnName("formula_weight") }}
                             <span
                               class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -158,7 +160,7 @@
       
                       <div class="col-md-3" *ngIf="_data?.iupac && getColumnName('iupac')">
                         <div class="pt-2">
-                          <h1 class="font-bold">
+                          <h1 class="font-bold" style="color:#312e81;">
                             {{ getColumnName("iupac") }}
                             <span
                               class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -173,7 +175,7 @@
                       </div>
                       <div class="col-md-3" *ngIf="_data?.chemical_name && getColumnName('chemical_name')">
                         <div class="pt-2">
-                          <h1 class="font-bold">
+                          <h1 class="font-bold" style="color:#312e81;">
                             {{ getColumnName("chemical_name") }}
                             <span
                               class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -232,7 +234,7 @@
                 <div
                   class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
                 >
-                  <h1 class="p-2 font-bold">{{ getColumnName("chemical_name") }}:
+                  <h1 class="p-2 font-bold" style="color:#312e81;">{{ getColumnName("chemical_name") }}:
                     <span
                               class="mx-1 hover:cursor-pointer text-[#0032A0]"
                               #copyBtn 

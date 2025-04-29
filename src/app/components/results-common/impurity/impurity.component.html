@@ -1,19 +1,21 @@
-<div class="child-route-count-wrapper flex justify-between items-center w-full">
-    <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
-        Total Records : {{ _currentChildAPIBody?.count }}
-    </button>
-    <div class="flex flex-wrap gap-3">
-        <div class="dropdown-container">
-            <button (click)="handleFilter()" class="dropdown-toggle">
-              {{ category_value }}
-            </button>
-            <ul *ngIf="isOpen" class="dropdown-menu">
-              <li (click)="handleSelectFilter('')">View All</li>
-              <li *ngFor="let data of category_filters" (click)="handleSelectFilter(data.value)">
-                {{ data.name }}
-              </li>
-            </ul>
-          </div>
+<ng-container *ngIf="_data.length > 0 && _currentChildAPIBody?.count > 0; else noData">
+    <div class="child-route-count-wrapper flex justify-between items-center w-full">
+        <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
+            Total Records : {{ _currentChildAPIBody?.count }}
+        </button>
+        <div class="flex flex-wrap gap-3">
+            <div class="dropdown-container">
+                <button (click)="handleFilter()" class="dropdown-toggle">
+                    {{ category_value }}
+                </button>
+                <ul *ngIf="isOpen" class="dropdown-menu">
+                    <li (click)="handleSelectFilter('')">View All</li>
+                    <li *ngFor="let data of category_filters" (click)="handleSelectFilter(data.value)">
+                        {{ data.name }}
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 <ng-container *ngIf="_data.length > 0; else noData">
@@ -32,9 +34,10 @@
     <app-child-paging [currentChildAPIBody]="currentChildAPIBody"
         (handleChangeTabData)="handleResultTabData.emit($event)"
         (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
+    </ng-container>
 </ng-container>
-<ng-template #noData>
-    <div class="card">
+    <ng-template #noData>
+        <div class="card">
         <div class="card-header text-white bg-primary">
             {{resultTabs?.impurity?.label}}
         </div>

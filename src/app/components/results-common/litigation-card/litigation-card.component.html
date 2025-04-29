@@ -1,5 +1,8 @@
-<div class="card-header text-white " style="font-size: 20px; background-color:#65A521;">
-    {{ localCount }}. {{resultTabs?.litigation?.label}} >> {{_data?.active_ingredient_biologics_combination}}
+<!-- <pre>{{_data | json}}</pre>  -->
+
+<div class="card-header text-white ">
+    <div style="padding-top:7px; justify-content:space-between; display:flex;">
+    {{ localCount }}. {{resultTabs?.litigation?.label}} >> {{_data?.active_ingredient_biologics_combination}}</div>
 </div>
 <div class="card-body">
     <div class="pb-3 mb-3 px-2 rounded-lg">

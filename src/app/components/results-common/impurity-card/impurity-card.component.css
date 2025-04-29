@@ -17,3 +17,9 @@ p{
   ::-webkit-scrollbar-thumb {
     background: #312e81;
   }
+  .card-header {
+    background: #020024;
+    background: linear-gradient(90deg, rgb(55, 52, 114) 0%, rgb(15, 15, 184) 35%, rgba(0, 212, 255, 1) 100%);
+    justify-content: space-between;
+    padding-top: 7px;
+  }

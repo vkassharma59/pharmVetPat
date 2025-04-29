@@ -34,6 +34,7 @@
     font-weight: bold;
     font-size: 15px;
     padding-top: 15px;
+    color:#312e81;
   }
 
   .image1
@@ -90,5 +91,9 @@
   .hover\:cursor-pointer:hover {
     color: #0056b3; /* Change icon color on hover */
   }
-  
+  .card-header {
+    background: #020024;
+    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
+    justify-content: space-between;
+  }
   
