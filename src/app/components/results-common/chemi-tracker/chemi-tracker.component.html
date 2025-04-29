@@ -58,7 +58,6 @@
         </div>
         <chem-chemi-tracker-card class="card" [data]="dataItem"></chem-chemi-tracker-card>
     </ng-container>
-</ng-container>
     <app-child-paging [currentChildAPIBody]="_currentChildAPIBody"
         (handleChangeTabData)="handleResultTabData.emit($event)"
         (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
