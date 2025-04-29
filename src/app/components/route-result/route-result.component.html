@@ -65,7 +65,6 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.chemiTracker.name">
-      <pre>{{_currentChildAPIBody | json}}</pre>
       <chem-chemi-tracker 
         [data]="_dataItem.chemiTracker"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.chemiTracker.name]"
