@@ -1,53 +1,49 @@
-<div class="child-route-count-wrapper flex justify-between items-center w-full">
-  <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
-    Total Records : {{ currentChildAPIBody?.count }}
-  </button>
-  <div class="flex flex-wrap gap-3">
-    <div class="dropdown" *ngFor="let configData of filterConfigs">
-        <button
-            class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
-            type="button" id="configData.key" data-bs-toggle="dropdown" aria-expanded="false"
-            (click)="onFilterButtonClick(configData.key)">
-            {{configData.label | truncate:20 }}
+<ng-container *ngIf="_data.length > 0 && _currentChildAPIBody?.count > 0; else noData">
+
+  <div class="child-route-count-wrapper flex justify-between items-center w-full">
+    <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
+      Total Records : {{ currentChildAPIBody?.count }}
+    </button>
+    <div class="flex flex-wrap gap-3">
+      <div class="dropdown" *ngFor="let configData of filterConfigs">
+        <button class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
+          type="button" id="configData.key" data-bs-toggle="dropdown" aria-expanded="false"
+          (click)="onFilterButtonClick(configData.key)">
+          {{configData.label | truncate:20 }}
         </button>
-        <ul
-        *ngIf="configData.dropdownState"
-        class="dropdown-menu max-h-40 overflow-y-auto z-30" aria-labelledby="configData.key">
-            <li (click)="handleSelectFilter(configData.key, '')">
-                <a class="dropdown-item">View All</a>
-            </li>
-            <li *ngFor="let data of impPatentFilters[configData.dataKey]"
-                (click)="handleSelectFilter(configData.key, data.value)">
-                <a class="dropdown-item">{{ data?.name }}</a>
-            </li>
+        <ul *ngIf="configData.dropdownState" class="dropdown-menu max-h-40 overflow-y-auto z-30"
+          aria-labelledby="configData.key">
+          <li (click)="handleSelectFilter(configData.key, '')">
+            <a class="dropdown-item">View All</a>
+          </li>
+          <li *ngFor="let data of impPatentFilters[configData.dataKey]"
+            (click)="handleSelectFilter(configData.key, data.value)">
+            <a class="dropdown-item">{{ data?.name }}</a>
+          </li>
         </ul>
+      </div>
+      <button (click)="clear()" class="clear btn btn-outline-primary">
+        <i class="fa-solid fa-rotate"></i>
+      </button>
     </div>
-    <button (click)="clear()" class="clear btn btn-outline-primary">
-      <i class="fa-solid fa-rotate"></i>
-  </button>
   </div>
 </div>
 <ng-container *ngIf="_data.length > 0; else noData">
   <ng-container *ngFor="let dataItem of _data; let i = index">
       <div class="py-4">
-          <div
-            class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]"
-          >
-            <span
-                  class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-bold h-[37px] flex justify-center items-center"
-          >
-                  Sub Route
-                  {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
-              </span>
-          </div>
+        <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
+          <span
+            class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-bold h-[37px] flex justify-center items-center">
+            Sub Route
+            {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
+          </span>
+        </div>
       </div>
       <chem-imp-patents-card class="card" [data]="dataItem"></chem-imp-patents-card>
-  </ng-container> 
-  <app-child-paging
-    [currentChildAPIBody]="currentChildAPIBody"
-    (handleChangeTabData)="handleResultTabData.emit($event)"
-    (setLoading)="handleSetLoading.emit($event)"
-  ></app-child-paging> 
+    </ng-container>
+  </ng-container>
+  <app-child-paging [currentChildAPIBody]="currentChildAPIBody" (handleChangeTabData)="handleResultTabData.emit($event)"
+    (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
 </ng-container>
 <ng-template #noData>
   <div class="card">
@@ -55,7 +51,7 @@
       {{resultTabs.impPatents?.label}}
     </div>
     <div class="card-body">
-        <p>No Data found!</p>
+      <p>No Data found!</p>
     </div>
   </div>
 </ng-template>

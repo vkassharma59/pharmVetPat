@@ -1,7 +1,9 @@
 <!-- <pre>{{_data | json}}</pre>  -->
-<div class="card-header text-white " style="font-size: 18px; background-color:#20a8ff; display:flex; justify-content:space-between;">
+<div class="card-header text-white ">
+    <div style="padding-top:7px; justify-content:space-between;display:flex;">
     {{ localCount }}. {{resultTabs?.impPatents?.label}} >> {{_data?.product}}
     <button class="btn btn-warning"><i class="fa-solid fa-download"></i></button>
+</div>
 </div>
 
 <div class="card-body" style="background-color: #F5FBFF;">
@@ -16,7 +18,7 @@
                 <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 ">
 
                     <div *ngIf="_data?.product && getColumnName('product')">
-                        <h1 class="font-bold">
+                        <h1 class="font-bold" style="color:#312e81;">
                             {{ getColumnName("product") }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -32,7 +34,7 @@
 
 
                     <div *ngIf="_data?.gbrn && getColumnName('gbrn')">
-                        <h1 class="font-bold">
+                        <h1 class="font-bold" style="color:#312e81;">
                             {{ getColumnName("gbrn") }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -46,7 +48,7 @@
                     </div>
                     
                      <div *ngIf="_data?.ob_spc_patents && getColumnName('ob_spc_patents')">
-                        <h1 class="font-bold">
+                        <h1 class="font-bold" style="color:#312e81;">
                             {{ getColumnName("ob_spc_patents") }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -64,7 +66,7 @@
                 <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 ">
 
                     <div *ngIf="_data?.patent_publication_number && getColumnName('patent_publication_number')">
-                        <h1 class="font-bold">
+                        <h1 class="font-bold" style="color:#312e81;">
                             {{ getColumnName("patent_publication_number") }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -78,7 +80,7 @@
                     </div>
 
                     <div *ngIf="_data?.publication_date && getColumnName('publication_date')">
-                        <h1 class="font-bold">
+                        <h1 class="font-bold" style="color:#312e81;">
                             {{ getColumnName("publication_date") }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -96,7 +98,7 @@
                 <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 ">
 
                     <div *ngIf="_data?.application_number && getColumnName('application_number')">
-                        <h1 class="font-bold">
+                        <h1 class="font-bold" style="color:#312e81;">
                             {{ getColumnName("application_number") }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -109,7 +111,7 @@
                         </p>
                     </div>
                     <div *ngIf="_data?.application_date && getColumnName('application_date')">
-                        <h1 class="font-bold">
+                        <h1 class="font-bold" style="color:#312e81;">
                             {{ getColumnName("application_date") }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -122,7 +124,7 @@
                         </p>
                     </div>
                     <div *ngIf="_data?.estimated_expiry && getColumnName('estimated_expiry')">
-                        <h1 class="font-bold">
+                        <h1 class="font-bold" style="color:#312e81;">
                             {{ getColumnName("estimated_expiry") }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -140,7 +142,7 @@
                 <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 ">
 
                     <div *ngIf="_data?.assignee && getColumnName('assignee')">
-                        <h1 class="font-bold">
+                        <h1 class="font-bold" style="color:#312e81;">
                             {{ getColumnName("assignee") }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -153,7 +155,7 @@
                         </p>
                     </div>
                     <div *ngIf="_data?.patent_type && getColumnName('patent_type')">
-                        <h1 class="font-bold">
+                        <h1 class="font-bold" style="color:#312e81;">
                             {{ getColumnName("patent_type") }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -192,7 +194,7 @@
     <div class="row">
 
         <div *ngIf="_data?.patent_family && getColumnName('patent_family')">
-            <h1 class="font-bold"> {{ getColumnName("patent_family") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("patent_family") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -205,7 +207,7 @@
            </div>
 
         <div *ngIf="_data?.ipc && getColumnName('ipc')">
-            <h1 class="font-bold"> {{ getColumnName("ipc") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("ipc") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -218,7 +220,7 @@
            </div>
 
            <div *ngIf="_data?.inventors && getColumnName('inventors')">
-            <h1 class="font-bold"> {{ getColumnName("inventors") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("inventors") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -231,7 +233,7 @@
            </div>
 
            <div *ngIf="_data?.abstract && getColumnName('abstract')">
-            <h1 class="font-bold"> {{ getColumnName("abstract") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("abstract") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -244,7 +246,7 @@
            </div>
 
            <div *ngIf="_data?.claims && getColumnName('claims')">
-            <h1 class="font-bold"> {{ getColumnName("claims") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("claims") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -257,7 +259,7 @@
            </div>
 
            <div *ngIf="_data?.crln_litigation && getColumnName('crln_litigation')">
-            <h1 class="font-bold"> {{ getColumnName("crln_litigation") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("crln_litigation") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -270,7 +272,7 @@
            </div>
 
            <div *ngIf="_data?.cbrn_gapd && getColumnName('cbrn_gapd')">
-            <h1 class="font-bold"> {{ getColumnName("cbrn_gapd") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("cbrn_gapd") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -283,7 +285,7 @@
            </div>
 
            <div *ngIf="_data?.cprn_qp && getColumnName('cprn_qp')">
-            <h1 class="font-bold"> {{ getColumnName("cprn_qp") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("cprn_qp") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -296,7 +298,7 @@
            </div>
 
            <div *ngIf="_data?.trrn && getColumnName('trrn')">
-            <h1 class="font-bold"> {{ getColumnName("trrn") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("trrn") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -309,7 +311,7 @@
            </div>
 
            <div *ngIf="_data?.patent_kind_codes && getColumnName('patent_kind_codes')">
-            <h1 class="font-bold"> {{ getColumnName("patent_kind_codes") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("patent_kind_codes") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -322,7 +324,7 @@
            </div>
 
            <div *ngIf="_data?.parent_patent_publication_number && getColumnName('parent_patent_publication_number')">
-            <h1 class="font-bold"> {{ getColumnName("parent_patent_publication_number") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("parent_patent_publication_number") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -335,7 +337,7 @@
            </div>
 
            <div *ngIf="_data?.patent_family && getColumnName('patent_family')">
-            <h1 class="font-bold"> {{ getColumnName("patent_family") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("patent_family") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -348,7 +350,7 @@
            </div>
 
            <div *ngIf="_data?.indian_patent_equivalents && getColumnName('indian_patent_equivalents')">
-            <h1 class="font-bold"> {{ getColumnName("indian_patent_equivalents") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("indian_patent_equivalents") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -361,7 +363,7 @@
            </div>
 
            <div *ngIf="_data?.title && getColumnName('title')">
-            <h1 class="font-bold"> {{ getColumnName("title") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("title") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -374,7 +376,7 @@
            </div>
 
            <div *ngIf="_data?.description && getColumnName('description')">
-            <h1 class="font-bold"> {{ getColumnName("description") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("description") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -387,7 +389,7 @@
            </div>
 
            <div *ngIf="_data?.priority_numbers && getColumnName('priority_numbers')">
-            <h1 class="font-bold"> {{ getColumnName("priority_numbers") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("priority_numbers") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -400,7 +402,7 @@
            </div>
 
            <div *ngIf="_data?.earliest_priority_date_epd && getColumnName('earliest_priority_date_epd')">
-            <h1 class="font-bold"> {{ getColumnName("earliest_priority_date_epd") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("earliest_priority_date_epd") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -413,7 +415,7 @@
            </div>
 
            <div *ngIf="_data?.country && getColumnName('country')">
-            <h1 class="font-bold"> {{ getColumnName("country") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("country") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -426,7 +428,7 @@
            </div>
 
            <div *ngIf="_data?.language && getColumnName('language')">
-            <h1 class="font-bold"> {{ getColumnName("language") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("language") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -439,7 +441,7 @@
            </div>
 
            <div *ngIf="_data?.patent_status && getColumnName('patent_status')">
-            <h1 class="font-bold"> {{ getColumnName("patent_status") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("patent_status") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -452,7 +454,7 @@
            </div>
 
            <div *ngIf="_data?.patent_family_status && getColumnName('patent_family_status')">
-            <h1 class="font-bold"> {{ getColumnName("patent_family_status") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("patent_family_status") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -465,7 +467,7 @@
            </div>
 
            <div *ngIf="_data?.patent_family_live_dead && getColumnName('patent_family_live_dead')">
-            <h1 class="font-bold"> {{ getColumnName("patent_family_live_dead") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("patent_family_live_dead") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -478,7 +480,7 @@
            </div>
 
            <div *ngIf="_data?.designate_states_ds && getColumnName('designate_states_ds')">
-            <h1 class="font-bold"> {{ getColumnName("designate_states_ds") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("designate_states_ds") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -491,7 +493,7 @@
            </div>
 
            <div *ngIf="_data?.keywords && getColumnName('keywords')">
-            <h1 class="font-bold"> {{ getColumnName("keywords") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("keywords") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -504,7 +506,7 @@
            </div>
 
            <div *ngIf="_data?.patent_designated_states_ds && getColumnName('patent_designated_states_ds')">
-            <h1 class="font-bold"> {{ getColumnName("patent_designated_states_ds") }}
+            <h1 class="font-bold"style="color:#312e81;"> {{ getColumnName("patent_designated_states_ds") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -517,7 +519,7 @@
            </div>
 
            <div *ngIf="_data?.field_of_invention && getColumnName('field_of_invention')">
-            <h1 class="font-bold"> {{ getColumnName("field_of_invention") }}
+            <h1 class="font-bold"style="color:#312e81;"> {{ getColumnName("field_of_invention") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -530,7 +532,7 @@
            </div>
 
            <div *ngIf="_data?.technology && getColumnName('technology')">
-            <h1 class="font-bold"> {{ getColumnName("technology") }}
+            <h1 class="font-bold"style="color:#312e81;"> {{ getColumnName("technology") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -543,7 +545,7 @@
            </div>
 
            <div *ngIf="_data?.chemical_class && getColumnName('chemical_class')">
-            <h1 class="font-bold"> {{ getColumnName("chemical_class") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("chemical_class") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -556,7 +558,7 @@
            </div>
 
            <div *ngIf="_data?.indication && getColumnName('indication')">
-            <h1 class="font-bold"> {{ getColumnName("indication") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("indication") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -569,7 +571,7 @@
            </div>
 
            <div *ngIf="_data?.mechanism_of_action_moa && getColumnName('mechanism_of_action_moa')">
-            <h1 class="font-bold"> {{ getColumnName("mechanism_of_action_moa") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("mechanism_of_action_moa") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -582,7 +584,7 @@
            </div>
 
            <div *ngIf="_data?.litigation_opposition_filed && getColumnName('litigation_opposition_filed')">
-            <h1 class="font-bold"> {{ getColumnName("litigation_opposition_filed") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("litigation_opposition_filed") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -595,7 +597,7 @@
            </div>
 
            <div *ngIf="_data?.legal_status && getColumnName('legal_status')">
-            <h1 class="font-bold"> {{ getColumnName("legal_status") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("legal_status") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -608,7 +610,7 @@
            </div>
 
            <div *ngIf="_data?.generic_launch_general_commentary && getColumnName('generic_launch_general_commentary')">
-            <h1 class="font-bold"> {{ getColumnName("generic_launch_general_commentary") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("generic_launch_general_commentary") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -621,7 +623,7 @@
            </div>
 
            <div *ngIf="_data?.documents && getColumnName('documents')">
-            <h1 class="font-bold"> {{ getColumnName("documents") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("documents") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -634,7 +636,7 @@
            </div>
 
            <div *ngIf="_data?.updation_date && getColumnName('updation_date')">
-            <h1 class="font-bold"> {{ getColumnName("updation_date") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("updation_date") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -647,7 +649,7 @@
            </div>
 
            <div *ngIf="_data?.references && getColumnName('references')">
-            <h1 class="font-bold"> {{ getColumnName("references") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("references") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -660,7 +662,7 @@
            </div>
 
            <div *ngIf="_data?.remarks && getColumnName('remarks')">
-            <h1 class="font-bold"> {{ getColumnName("remarks") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("remarks") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -673,7 +675,7 @@
            </div>
 
            <div *ngIf="_data?.notes && getColumnName('notes')">
-            <h1 class="font-bold"> {{ getColumnName("notes") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("notes") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -699,7 +701,7 @@
            </div>
 
            <div *ngIf="_data?.miscellaneous && getColumnName('miscellaneous')">
-            <h1 class="font-bold"> {{ getColumnName("miscellaneous") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("miscellaneous") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -712,7 +714,7 @@
            </div>
 
            <div *ngIf="_data?.dcouments && getColumnName('dcouments')">
-            <h1 class="font-bold"> {{ getColumnName("dcouments") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("dcouments") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -725,7 +727,7 @@
            </div>
 
            <div *ngIf="_data?.created_at && getColumnName('created_at')">
-            <h1 class="font-bold"> {{ getColumnName("created_at") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("created_at") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -738,7 +740,7 @@
            </div>
 
            <div *ngIf="_data?.id && getColumnName('id')">
-            <h1 class="font-bold"> {{ getColumnName("id") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("id") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -751,7 +753,7 @@
            </div>
 
            <div *ngIf="_data?.dummy_1 && getColumnName('dummy_1')">
-            <h1 class="font-bold"> {{ getColumnName("dummy_1") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("dummy_1") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -764,7 +766,7 @@
            </div>
 
            <div *ngIf="_data?.dummy_2 && getColumnName('dummy_2')">
-            <h1 class="font-bold"> {{ getColumnName("dummy_2") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("dummy_2") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -777,7 +779,7 @@
            </div>
 
            <div *ngIf="_data?.dummy_3 && getColumnName('dummy_3')">
-            <h1 class="font-bold"> {{ getColumnName("dummy_3") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("dummy_3") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -790,7 +792,7 @@
            </div>
 
            <div *ngIf="_data?.dummy_4 && getColumnName('dummy_4')">
-            <h1 class="font-bold"> {{ getColumnName("dummy_4") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("dummy_4") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -803,7 +805,7 @@
            </div>
 
            <div *ngIf="_data?.dummy_5 && getColumnName('dummy_5')">
-            <h1 class="font-bold"> {{ getColumnName("dummy_5") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("dummy_5") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -816,7 +818,7 @@
            </div>
 
            <div *ngIf="_data?.dummy_6 && getColumnName('dummy_6')">
-            <h1 class="font-bold"> {{ getColumnName("dummy_6") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("dummy_6") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -829,7 +831,7 @@
            </div>
 
            <div *ngIf="_data?.dummy_7 && getColumnName('dummy_7')">
-            <h1 class="font-bold"> {{ getColumnName("dummy_7") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("dummy_7") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -842,7 +844,7 @@
            </div>
 
            <div *ngIf="_data?.dummy_8 && getColumnName('dummy_8')">
-            <h1 class="font-bold"> {{ getColumnName("dummy_8") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("dummy_8") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -855,7 +857,7 @@
            </div>
 
            <div *ngIf="_data?.dummy_9 && getColumnName('dummy_9')">
-            <h1 class="font-bold"> {{ getColumnName("dummy_9") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("dummy_9") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -868,7 +870,7 @@
            </div>
 
            <div *ngIf="_data?.dummy_10 && getColumnName('dummy_10')">
-            <h1 class="font-bold"> {{ getColumnName("dummy_10") }}
+            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("dummy_10") }}
                 <span
                                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
