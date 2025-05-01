@@ -72,7 +72,7 @@
           </div>
 
           <div class="col-md-2 col-6 mb-2 mb-md-0">
-            <button class="btn btn-outline-primary" 
+            <button class="btn btn-outline-primary search" 
             (click)="checkPriviledgeAndHandleSearch(searchTypes.simpleSearch)"
             [disabled]="!simpleSearch?.keyword?.trim()">Search</button>
           </div>
@@ -127,7 +127,7 @@
                
                 <ul
                   *ngIf="advanceSearch?.autosuggestionList[i]?.length && advanceSearch.filterInputs[i].keyword !== ''"
-                  class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto" style="width: 70%">
+                  class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto" style="width: 55%">
                   <li
                     *ngFor="let suggestion of advanceSearch?.autosuggestionList[i]"
                     class="px-4 py-2 cursor-pointer hover:bg-blue-100"
@@ -179,7 +179,7 @@
       <!-- Tutorial Buttons Row -->
       <div class="row mb-3 align-items-center">
         <div class="col-md-2 col-6 mb-2 mb-md-0">
-          <button class="btn btn-outline-primary w-100" (click)="checkPriviledgeAndHandleSearch(searchTypes.advanceSearch)"
+          <button class="btn btn-outline-primary search w-100" (click)="checkPriviledgeAndHandleSearch(searchTypes.advanceSearch)"
           [disabled]="!isSearchEnabled()">
           Search
         </button>
@@ -254,7 +254,7 @@
             <button 
             (click)="checkPriviledgeAndHandleSearch(searchTypes.intermediateSearch)"
             [disabled]="!intermediateSearch?.keyword?.trim() "
-            class="btn btn-outline-primary w-100">Search</button>
+            class="btn btn-outline-primary search w-100">Search</button>
           </div>
           <div class="col-md-2 col-6 mb-2 mb-md-0">
             <button 
@@ -304,7 +304,7 @@
             <button 
             (click)="checkPriviledgeAndHandleSearch(searchTypes.synthesisSearch)"
             [disabled]="!synthesisSearch?.keyword?.trim()"
-            class="btn btn-outline-primary w-100">Search</button>
+            class="btn btn-outline-primary search w-100">Search</button>
           </div>
           <div class="col-md-2 col-6 mb-2 mb-md-0">
             <button (click)="clearInputAndSuggetions(searchTypes.synthesisSearch)" class="btn btn-outline-secondary w-100">Clear</button>
@@ -364,7 +364,7 @@
             <button 
               (click)="checkPriviledgeAndHandleSearch(searchTypes.chemicalStructure)"
               [disabled]="!chemicalStructure?.keyword?.trim()"
-              class="btn btn-outline-primary w-100">Search</button>
+              class="btn btn-outline-primary search w-100">Search</button>
           </div>
           <div class="col-md-2 col-6 mb-2 mb-md-0">
             <button 
