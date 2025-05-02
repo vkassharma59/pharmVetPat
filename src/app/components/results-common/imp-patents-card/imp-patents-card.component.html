@@ -11,7 +11,7 @@
             <div class="row">
 
                 <p class="text-wrap  whitespace-normal"
-                style="color: #1351cc; font-size: 25px; font-weight: bold; padding-bottom: 15px;">
+                style="color: #1351cc; font-size: 20px; font-weight: bold; padding-bottom: 15px;">
                  {{ _data?.product }}
                 </p>
 
@@ -20,7 +20,7 @@
                     <div *ngIf="_data?.product && getColumnName('product')">
                         <h1 class="font-bold" style="color:#312e81;">
                             {{ getColumnName("product") }}
-                            <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" 
                                   #copyBtn 
 (click)="handleCopy(_data?.product, copyBtn)">
                                 <i class="fas fa-copy"></i>
@@ -179,7 +179,8 @@
     <button
       (click)="toggleMoreInfo()"
       class="py-2 px-3 mt-3 mb-3 btnchemical rounded-md btn"
-      
+      style="background:linear-gradient(to right, #efb303,#fff087); color: black;"
+
       
     >
       {{

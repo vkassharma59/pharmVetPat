@@ -1,8 +1,11 @@
 p{
     white-space: pre;
     text-wrap: wrap;
+    font-size: 14px;
 }
-
+h1{
+  font-size: 14px;
+}
 ::-webkit-scrollbar {
     width: 7px;
     height:7px;
