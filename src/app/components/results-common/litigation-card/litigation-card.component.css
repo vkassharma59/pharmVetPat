@@ -1,40 +1,41 @@
-
-p
-{
-    padding-bottom: 15px;
+h1 {
+  font-size: 14px;
+  color:#312e81
 }
-h
-{
-    font-size: 15px;
-    padding-bottom: 10px;
+h {
+  font-size: 15px;
+  padding-bottom: 10px;
 }
 :host {
-    display: block;
-    background-color:#CFE9B4;
-    width: 100%;
-    height: 100%;
+  display: block;
+  background-color: #eef9e3;
+  width: 100%;
+  height: 100%;
 }
-p{
-    white-space: pre;
-    text-wrap: wrap;
+p {
+  white-space: pre;
+  text-wrap: wrap;
+  padding-bottom: 15px;
+  font-size: 14px;
 }
 
 ::-webkit-scrollbar {
-    width: 7px;
-    height:7px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #312e81;
-  }
-  .card-header {
-    background: #020024;
-    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
-    justify-content: space-between;
-  }
+  width: 7px;
+  height: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #312e81;
+}
+
+.card-header {
+  background: #020024;
+  background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
+  justify-content: space-between;
+}

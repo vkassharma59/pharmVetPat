@@ -12,7 +12,7 @@
               <!-- First Column -->
               <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
                   <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal"
-                  style="color: #0032a0; font-size: 18px; font-weight: bold;">
+                  style="color: #0032a0; font-size: 17px; font-weight: bold;">
                       {{ _data?.product_name}}
                   </p>
   
@@ -82,7 +82,9 @@
                   style="
                       height: 220px;
                       width: 220px;
-                      padding: 10px 10px;
+                      padding: 10px ;
+                      padding-left:0;
+                      
                       object-fit: contain;
                   "
                   />
@@ -93,7 +95,7 @@
               <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
   
                   <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal"
-                   style="background-color: #0032a0; color: white; text-align: center; padding: 8px; border-radius: 5px; font-size: 18px; font-weight: bold; width: 300px;">
+                   style="background:linear-gradient(to right, #0032a0, #76caff); color: white; text-align: center; padding: 8px; border-radius: 5px; font-size: 17px; width: 300px;">
                    {{ _data?.current_status }}
                   </p>
   
@@ -112,7 +114,8 @@
       <button
         (click)="toggleMoreInfo()"
         class="py-2 px-3 mt-3 mb-3 btnchemical rounded-md btn"
-       
+        style="background:linear-gradient(to right, #efb303,#fff087); color: black;"
+
       >
         {{
           MoreInfo
@@ -161,7 +164,7 @@
 (click)="handleCopy(_data?.company, copyBtn)"                                ><i class="fas fa-copy"></i
                               ></span>
           </h1>
-          <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+          <p class="text-wrap max-h-16 overflow-y-auto break-words whitespace-normal">
               {{ _data?.company }}
           </p>
       </div>
@@ -215,7 +218,7 @@
 (click)="handleCopy(_data?.list_of_active_ingredients, copyBtn)"                                ><i class="fas fa-copy"></i
                               ></span>
           </h1>
-          <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+          <p class="text-wrap max-h-16 overflow-y-auto break-words whitespace-normal">
               {{ _data?.list_of_active_ingredients }}
           </p>
       </div>
@@ -412,7 +415,7 @@
 (click)="handleCopy(_data?.american_hospital_formulary_service_ahfs, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+              <p class="text-wrap max-h-16 overflow-y-auto break-words whitespace-normal">
                   {{ _data?.american_hospital_formulary_service_ahfs }}
               </p>
           </div>

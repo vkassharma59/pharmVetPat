@@ -154,7 +154,7 @@
               </p>
             </div>
           </div>
-          <div *ngIf="_data?.EC_NO && getColumnName('EC_NO')" class="col-md-3">
+          <div *ngIf="_data?.EC_NO && getColumnName('EC_NO')" class="col-md-3 mt-2">
             <div class="pt-3">
               <h1 class="font-bold" style="color:#312e81;">{{ getColumnName("EC_NO") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -260,7 +260,7 @@
             </div>
           </div>
           <div *ngIf="_data?.NAME_OF_GENERIC_CHEM_CLASS && getColumnName('NAME_OF_GENERIC_CHEM_CLASS')"
-            class="col-md-3 mt-2">
+            class="col-md-3 ">
             <div class="pt-3">
               <h1 class="font-bold" style="color:#312e81;">
                 {{ getColumnName("NAME_OF_GENERIC_CHEM_CLASS") }}
@@ -325,7 +325,7 @@
               </p>
             </div>
           </div>
-          <div *ngIf="_data?.SMILES_CODE && getColumnName('SMILES_CODE')" class="col-md-3 mt-2">
+          <div *ngIf="_data?.SMILES_CODE && getColumnName('SMILES_CODE')" class="col-md-3 ">
             <div class="pt-3">
               <h1 class="font-bold" style="color:#312e81;">
                 {{ getColumnName("SMILES_CODE") }}
@@ -349,7 +349,7 @@
             </div>
           </div>
 
-          <div *ngIf="_data?.INCHIKEY && getColumnName('INCHIKEY')" class="col-md-3">
+          <div *ngIf="_data?.INCHIKEY && getColumnName('INCHIKEY')" class="col-md-3 mt-2">
             <div class="pt-3">
               <h1 class="font-bold"  style="color:#312e81;"mt-2>
                 {{ getColumnName("INCHIKEY") }}
@@ -446,15 +446,16 @@
               </div>
             </div>
           </div>
-          <p class="para pt-2 cursor-pointer" (click)="
-              OpenViewModal(_data?.SYNONYMSCOMMON_NAME, 'SYNONYMS/COMMON NAME')
-            ">
+          <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
+              OpenViewModal(_data?.SYNONYMSCOMMON_NAME, 'SYNONYMS/COMMON NAME')">
             View More
           </p>
         </div>
 
         <div class="flex justify-center">
-          <button (click)="toggleMoreApplicationInfo()" class="py-2 px-3 mt-3 btnchemical rounded-md">
+          <button (click)="toggleMoreApplicationInfo()" class="py-2 px-3 mt-3 btnchemical rounded-md"
+          style="background:linear-gradient(to right, #efb303,#fff087); color: black;"
+          >
             {{
             MoreApplicationInfo
             ? "Less Information"
@@ -474,7 +475,8 @@
               <div class="h-28 overflow-y-auto overflow-x-hidden">
                 <p class="pt-2 text-justify">{{ _data?.DESCRIPTION }}</p>
               </div>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.DESCRIPTION, 'DESCRIPTION')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff"
+              (click)="OpenViewModal(_data?.DESCRIPTION, 'DESCRIPTION')">
                 View More
               </p>
             </div>
@@ -490,7 +492,7 @@
               <p class="pt-2 text-justify max-h-28 overflow-y-auto">
                 {{ _data?.TRADE_NAMEPROPRIETARY_NAME }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.TRADE_NAMEPROPRIETARY_NAME,
                     'TRADE NAME /PROPRIETARY NAME'
@@ -512,7 +514,7 @@
               <p class="pt-2 text-justify max-h-28 overflow-y-auto">
                 {{ _data?.SUMMARY_PHYSICOCHEM_PROP_COMP }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.SUMMARY_PHYSICOCHEM_PROP_COMP,
                     'SUMMARY PHYSICOCHEMICAL PROPERTITIES(COMPUTED)'
@@ -534,7 +536,7 @@
               <p class="pt-2 text-justify max-h-28 overflow-y-auto">
                 {{ _data?.SUMMARY_PHYSICOCHEM_PROP_EXPERI }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.SUMMARY_PHYSICOCHEM_PROP_EXPERI,
                     'SUMMARY PHYSICOCHEMICAL PROPERTITIES(EXPERIMENT)'
@@ -554,7 +556,7 @@
               <p class="pt-2 text-justify max-h-28 overflow-y-auto">
                 {{ _data?.HIST_DEV_LICN_COMM }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.HIST_DEV_LICN_COMM,
                     'HISTORY/DEVELOPMENT/LICENCING/COMMERCIALISATION'
@@ -574,7 +576,7 @@
               <div class="h-28 overflow-y-auto overflow-x-hidden">
                 <p class="pt-2 text-justify">{{ _data?.INVENT_INFO }}</p>
               </div>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.INVENT_INFO,
                     'INVENT INFO(COMPOUND PATENT/1ST DISCLOSURE)'
@@ -591,7 +593,7 @@
                   (click)="handleCopy(_data?.NOTES, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <p class="text-justify">{{ _data?.NOTES }}</p>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.NOTES, 'NOTES')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="OpenViewModal(_data?.NOTES, 'NOTES')">
                 View More
               </p>
             </div>
@@ -608,7 +610,7 @@
               <p class="text-justify">
                 {{ _data?.LITIGATION_OPP_IPR_MH_REEXAM }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.LITIGATION_OPP_IPR_MH_REEXAM,
                     'LITIGATION / OPPOSITION / INTER PARTIES REVIEW / MARKSMAN HEARING / REEXAMINATION'
@@ -631,7 +633,7 @@
               <p class="text-justify">
                 {{ _data?.EXCLUSIVITY_NEW_CHEMICAL_ENTITY }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.EXCLUSIVITY_NEW_CHEMICAL_ENTITY,
                     'EXCLUSIVITY: NEW CHEMICAL ENTITY (NCE) / NEW BIOLOGICAL ENTITY (NBE) / 505(B)(2) NEW DRUG APPLICATION (NDA)'
@@ -653,7 +655,7 @@
               <p class="text-justify">
                 {{ _data?.ORPHAN_DRUG_EXCLUSIVITY_ODE }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.ORPHAN_DRUG_EXCLUSIVITY_ODE,
                     'ORPHAN DRUG EXCLUSIVITY (ODE)'
@@ -676,7 +678,7 @@
               <p class="text-justify">
                 {{ _data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE,
                     'PEDIATRIC DRUG EXCLUSIVITY (PDE)'
@@ -697,7 +699,7 @@
               <p class="text-justify">
                 {{ _data?.NCE_MINUS_OR_QIDP_MINUS }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.NCE_MINUS_OR_QIDP_MINUS,
                     'NCE MINUS 1 (N-1 DATE) / OR QIDP MINUS-1 (QIDP-1 DATE)'
@@ -718,7 +720,7 @@
               <p class="text-justify">
                 {{ _data?.EUROPE_EXCLUSIVITY }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
                   OpenViewModal(_data?.EUROPE_EXCLUSIVITY, 'EUROPE EXCLUSIVITY')
                 ">
                 View More
@@ -736,7 +738,7 @@
               <p class="text-justify">
                 {{ _data?.CANADA_EXCLUSIVITY }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
                   OpenViewModal(_data?.CANADA_EXCLUSIVITY, 'CANADA EXCLUSIVITY')
                 ">
                 View More
@@ -755,7 +757,7 @@
               <p class="text-justify">
                 {{ _data?.OTHER_COUNTRIES_EXCLUSIVITIES }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.OTHER_COUNTRIES_EXCLUSIVITIES,
                     'OTHER COUNTRIES EXCLUSIVITY'
@@ -776,7 +778,7 @@
               <p class="text-justify">
                 {{ _data?.COMMENTRY }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.COMMENTRY, 'COMMENTRY')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="OpenViewModal(_data?.COMMENTRY, 'COMMENTRY')">
                 View More
               </p>
             </div>
@@ -792,7 +794,7 @@
               <p class="text-justify">
                 {{ _data?.REMARKS }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.REMARKS, 'REMARKS')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="OpenViewModal(_data?.REMARKS, 'REMARKS')">
                 View More
               </p>
             </div>
@@ -808,7 +810,7 @@
               <p class="text-justify">
                 {{ _data?.LITERATURE }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.LITERATURE, 'LITERATURE')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="OpenViewModal(_data?.LITERATURE, 'LITERATURE')">
                 View More
               </p>
             </div>
@@ -824,7 +826,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.INFORMATION_SOURCES }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.INFORMATION_SOURCES,
                     'INFORMATION_SOURCES'
@@ -845,7 +847,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.PDF_MULTIPLE_PDF }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
                   OpenViewModal(_data?.PDF_MULTIPLE_PDF, 'PDF MULTIPLE PDF')
                 ">
                 View More
@@ -863,7 +865,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.ORANGE_BOOK_PATENTS }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.ORANGE_BOOK_PATENTS,
                     'ORANGE BOOK PATENTS'
@@ -884,7 +886,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.USDMF_HOLDER }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.USDMF_HOLDER, 'USDMF HOLDER')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="OpenViewModal(_data?.USDMF_HOLDER, 'USDMF HOLDER')">
                 View More
               </p>
             </div>
@@ -900,7 +902,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.EP_DMF_HOLDER }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.EP_DMF_HOLDER, 'EP DMF HOLDER')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="OpenViewModal(_data?.EP_DMF_HOLDER, 'EP DMF HOLDER')">
                 View More
               </p>
             </div>
@@ -916,7 +918,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.OTHER_DMF_HOLDER }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
                   OpenViewModal(_data?.OTHER_DMF_HOLDER, 'OTHER DMF HOLDER')
                 ">
                 View More
@@ -934,7 +936,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.PRODUCT_CLASSIFICATION }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.PRODUCT_CLASSIFICATION,
                     'PRODUCT_CLASSIFICATION'
@@ -955,7 +957,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.PRODUCT_TYPE }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.PRODUCT_TYPE, 'PRODUCT TYPE')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="OpenViewModal(_data?.PRODUCT_TYPE, 'PRODUCT TYPE')">
                 View More
               </p>
             </div>
@@ -971,7 +973,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.PESTICIDE_TYPE }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.PESTICIDE_TYPE, 'PESTICIDE TYPE')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="OpenViewModal(_data?.PESTICIDE_TYPE, 'PESTICIDE TYPE')">
                 View More
               </p>
             </div>
@@ -987,7 +989,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.RELEATED_COMPOUNDS_AIS }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.RELEATED_COMPOUNDS_AIS,
                     'RELEATED COMPOUNDS AIS'
@@ -1008,7 +1010,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.SUBSTANCE_ORIGIN }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
                   OpenViewModal(_data?.SUBSTANCE_ORIGIN, 'SUBSTANCE ORIGIN')
                 ">
                 View More
@@ -1026,7 +1028,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.LAUNCH_STATUS }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.LAUNCH_STATUS, 'LAUNCH STATUS')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="OpenViewModal(_data?.LAUNCH_STATUS, 'LAUNCH STATUS')">
                 View More
               </p>
             </div>
@@ -1042,7 +1044,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.ISO_STATUS }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.ISO_STATUS, 'ISO STATUS')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="OpenViewModal(_data?.ISO_STATUS, 'ISO STATUS')">
                 View More
               </p>
             </div>
@@ -1058,7 +1060,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.US_EPA_CHEMICAL_CODE }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.US_EPA_CHEMICAL_CODE,
                     'US EPA CHEMICAL CODE'
@@ -1079,7 +1081,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.UN_NUMBER }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.UN_NUMBER, 'UN NUMBER')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  (click)="OpenViewModal(_data?.UN_NUMBER, 'UN NUMBER')">
                 View More
               </p>
             </div>
@@ -1095,7 +1097,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.STRAIN_NO }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.STRAIN_NO, 'STRAIN NO')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  (click)="OpenViewModal(_data?.STRAIN_NO, 'STRAIN NO')">
                 View More
               </p>
             </div>
@@ -1114,7 +1116,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.GOOGLEPATENTHYPERLINKOFPATENTINVENTINFO }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  (click)="
                   OpenViewModal(
                     _data?.GOOGLEPATENTHYPERLINKOFPATENTINVENTINFO,
                     'GOOGLEPATENTHYPERLINKOFPATENT(INVENTINFO)'
@@ -1135,7 +1137,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.INVENT_INFO2 }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.INVENT_INFO2, 'INVENT INFO2')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  (click)="OpenViewModal(_data?.INVENT_INFO2, 'INVENT INFO2')">
                 View More
               </p>
             </div>
@@ -1151,7 +1153,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.INVENT_INFO3 }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.INVENT_INFO3, 'INVENT INFO3')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  (click)="OpenViewModal(_data?.INVENT_INFO3, 'INVENT INFO3')">
                 View More
               </p>
             </div>
@@ -1167,7 +1169,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.year_wise_iso }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.year_wise_iso, 'year wise iso')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  (click)="OpenViewModal(_data?.year_wise_iso, 'year wise iso')">
                 View More
               </p>
             </div>
@@ -1184,7 +1186,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.company_registration_number }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  (click)="
                   OpenViewModal(
                     _data?.company_registration_number,
                     'company registration number'
@@ -1205,7 +1207,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.developmental_code }}
               </p>
-              <p class="para pt-2 cursor-pointer" (click)="
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  (click)="
                   OpenViewModal(_data?.developmental_code, 'developmental code')
                 ">
                 View More
@@ -1371,7 +1373,7 @@
 
           <div *ngIf="_data?.dummy_13 && getColumnName('dummy_13')" class="col-md-12">
             <div class="pt-3 mt-3">
-              <h1 class="font-bold" style="color:#312e81;" style="color:#312e81;">
+              <h1 class="font-bold" style="color:#312e81;">
                 {{ getColumnName("dummy_13") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.dummy_13, copyBtn)"><i class="fas fa-copy"></i></span>
@@ -1384,7 +1386,7 @@
 
           <div *ngIf="_data?.dummy_14 && getColumnName('dummy_14')" class="col-md-12">
             <div class="pt-3 mt-3">
-              <h1 class="font-bold" style="color:#312e81;" style="color:#312e81;">
+              <h1 class="font-bold" style="color:#312e81;">
                 {{ getColumnName("dummy_14") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.dummy_14, copyBtn)"><i class="fas fa-copy"></i></span>
@@ -1397,36 +1399,36 @@
 
           <div *ngIf="_data?.LINK_1 && getColumnName('LINK_1')" class="col-md-12">
             <div class="pt-4">
-              <h1 class="font-bold" style="color:#312e81;" style="color:#312e81;">{{ getColumnName("LINK_1") }}:
+              <h1 class="font-bold" style="color:#312e81;">{{ getColumnName("LINK_1") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.LINK_1, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify overflow-auto">{{ _data?.LINK_1 }}</p>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.LINK_1, 'LINK-1')">
+              <p class="text-justify overflow-auto" style="color:#2f45ff">{{ _data?.LINK_1 }}</p>
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  (click)="OpenViewModal(_data?.LINK_1, 'LINK-1')">
                 View More
               </p>
             </div>
           </div>
           <div *ngIf="_data?.LINK_2 && getColumnName('LINK_2')" class="col-md-12">
             <div class="pt-4 pb-3">
-              <h1 class="font-bold" style="color:#312e81;" style="color:#312e81;">{{ getColumnName("LINK_2") }}:
+              <h1 class="font-bold" style="color:#312e81;">{{ getColumnName("LINK_2") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.LINK_2, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <a href="{{ _data?.LINK_2 }}" class="para pt-2 overflow-auto">{{ _data?.LINK_2 }}</a>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.LINK_2, 'LINK-2')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  (click)="OpenViewModal(_data?.LINK_2, 'LINK-2')">
                 View More
               </p>
             </div>
           </div>
           <div *ngIf="_data?.LINK_3 && getColumnName('LINK_3')" class="col-md-12">
             <div class="pt-4">
-              <h1 class="font-bold" style="color:#312e81;" style="color:#312e81;">{{ getColumnName("LINK_3") }}:
+              <h1 class="font-bold" style="color:#312e81;">{{ getColumnName("LINK_3") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.LINK_3, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <p class="text-justify overflow-auto">{{ _data?.LINK_3 }}</p>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.LINK_3, 'LINK-3')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  (click)="OpenViewModal(_data?.LINK_3, 'LINK-3')">
                 View More
               </p>
             </div>
@@ -1434,36 +1436,36 @@
 
           <div class="col-md-12">
             <div *ngIf="_data?.LINK_4 && getColumnName('LINK_4')" class="pt-4">
-              <h1 class="font-bold" style="color:#312e81;" style="color:#312e81;">{{ getColumnName("LINK_4") }}:
+              <h1 class="font-bold" style="color:#312e81;">{{ getColumnName("LINK_4") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.LINK_4, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <p class="text-justify overflow-auto">{{ _data?.LINK_4 }}</p>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.LINK_4, 'LINK-4')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  (click)="OpenViewModal(_data?.LINK_4, 'LINK-4')">
                 View More
               </p>
             </div>
           </div>
           <div class="col-md-12">
             <div *ngIf="_data?.LINK_5 && getColumnName('LINK_5')" class="pt-4">
-              <h1 class="font-bold" style="color:#312e81;" style="color:#312e81;">{{ getColumnName("LINK_5") }}:
-                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+              <h1 class="font-bold" style="color:#312e81;">{{ getColumnName("LINK_5") }}:
+                <span class="mx-1 hover:cursor-pointer text-[#0033a0]" #copyBtn
                   (click)="handleCopy(_data?.LINK_5, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <p class="text-justify overflow-auto">{{ _data?.LINK_5 }}</p>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.LINK_5, 'LINK-5')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"  (click)="OpenViewModal(_data?.LINK_5, 'LINK-5')">
                 View More
               </p>
             </div>
           </div>
           <div class="col-md-12">
             <div *ngIf="_data?.LINK_6 && getColumnName('LINK_6')" class="pt-4">
-              <h1 class="font-bold" style="color:#312e81;" style="color:#312e81;">{{ getColumnName("LINK_6") }}:
+              <h1 class="font-bold"  style="color:#312e81;">{{ getColumnName("LINK_6") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.LINK_6, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <p class="text-justify overflow-auto">{{ _data?.LINK_6 }}</p>
-              <p class="para pt-2 cursor-pointer" (click)="OpenViewModal(_data?.LINK_6, 'LINK-6')">
+              <p class="para pt-2 cursor-pointer"  style="color:#2f45ff"  (click)="OpenViewModal(_data?.LINK_6, 'LINK-6')">
                 View More
               </p>
             </div>

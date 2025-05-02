@@ -1,8 +1,4 @@
 
-p
-{
-    padding-bottom: 20px;
-}
 :host {
     display: block;
     background-color:#f8faff;
@@ -13,8 +9,12 @@ p
 p{
     white-space: pre;
     text-wrap: wrap;
+    padding-bottom: 20px;
+    font-weight: 14px;
 }
-
+h1{
+  font-size: 14px;
+}
 ::-webkit-scrollbar {
     width: 7px;
     height:7px;

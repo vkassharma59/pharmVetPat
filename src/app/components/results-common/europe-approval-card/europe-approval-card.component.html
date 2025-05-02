@@ -13,11 +13,11 @@
 
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 ">
 
-                    <p style="font-size: 14px; padding-bottom: 15px; color:#003399; font-weight: bold;">
+                    <p style="font-size: 15px; padding-bottom: 15px; color:#003399; font-weight: bold;">
                         {{ _data?.medicine_name }}
                     </p>
 
-                    <p style="font-size: 20px; padding-bottom: 15px;">
+                    <p style="font-size: 17px; padding-bottom: 15px;">
                         {{ _data?.active_substance }}
                     </p>
 
@@ -59,7 +59,7 @@
                     />
 
                     <div *ngIf="_data?.marketing_authorisation_date && getColumnName('marketing_authorisation_date')">
-                        <h1 class="font-bold">
+                        <h1 class="font-bold"  >
                             {{ getColumnName("marketing_authorisation_date") }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
@@ -76,8 +76,8 @@
 
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 ">
 
-                    <p style="font-size: 20px; padding-bottom: 15px;">
-                        <span style="background-color: #06854B; color: white; padding: 5px 10px; border-radius: 5px; display: inline-block; width:300px ; text-align: center;">
+                    <p style="font-size: 17px; padding-bottom: 15px;">
+                        <span style="background:linear-gradient(to right, #0b5c39, #78fdbf); color: white; padding: 5px 10px; border-radius: 5px; display: inline-block; width:300px ; text-align: center;">
                             {{ _data?.authorisation_status }}
                         </span>
                     </p>
@@ -103,7 +103,8 @@
     <button
       (click)="toggleMoreInfo()"
       class="py-2 px-3 mt-3 mb-3 btnchemical rounded-md btn"
-     
+      style="background:linear-gradient(to right, #efb303,#fff087); color: black;"
+
     >
       {{
         MoreInfo

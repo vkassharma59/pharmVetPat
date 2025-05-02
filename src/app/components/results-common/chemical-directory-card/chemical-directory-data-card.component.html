@@ -262,6 +262,8 @@
     <button
       (click)="toggleMoreApplicationInfo()"
       class="py-2 px-3 mt-3 mb-3 btnchemical rounded-md"
+      style="background:linear-gradient(to right, #efb303,#fff087); color: black;"
+
     >
       {{
         MoreApplicationInfo
@@ -274,12 +276,12 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-          <h1 class="h1class">Description</h1>
+          <h1 class="h1class" style="color: #312e81" >Description</h1>
           <div
             *ngIf="_data.chemical_name"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("chemical_name") }}
               <span
                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -294,7 +296,7 @@
             *ngIf="_data.description"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("description") }}:
               <span
                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -308,7 +310,7 @@
             *ngIf="_data.field_of_application"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("field_of_application") }}:
               <span
                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -323,7 +325,7 @@
             *ngIf="_data.indication"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("indication") }}:
               <span
                   class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -340,7 +342,7 @@
             *ngIf="_data?.iupac"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("iupac") }}:
               <span
               class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -354,7 +356,7 @@
             *ngIf="_data?.inchi"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("inchi") }}:
               <span
               class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -368,7 +370,7 @@
             *ngIf="_data?.inchikey"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("inchikey") }}:
               <span
               class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -382,7 +384,7 @@
             *ngIf="_data.canonical_smiles"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("canonical_smiles") }}:
               <span
               class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -397,7 +399,7 @@
             *ngIf="_data.molecular_formula"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("molecular_formula") }}:
               <span
               class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -425,7 +427,7 @@
             *ngIf="_data?.ec_no"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("ec_no") }}:
               <span
                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -440,7 +442,7 @@
             *ngIf="_data?.un_number"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("un_number") }}:
               <span
                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -455,7 +457,7 @@
             *ngIf="_data?.unii"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("unii") }}:
               <span
                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -470,7 +472,7 @@
             *ngIf="_data?.dsstox_substance_id"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("dsstox_substance_id") }}:
               <span
                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -485,7 +487,7 @@
             *ngIf="_data?.substance_origin"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("substance_origin") }}
               <span
                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -500,7 +502,7 @@
             *ngIf="_data?.originator"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("originator") }}
               <span
                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -515,7 +517,7 @@
             *ngIf="_data?.originator_logo"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("originator_logo") }}
               <span
                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -530,7 +532,7 @@
             *ngIf="_data?.year_of_discovery"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("year_of_discovery") }}
               <span
                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -545,7 +547,7 @@
             *ngIf="_data?.launch_year"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("launch_year") }}
               <span
                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -560,7 +562,7 @@
             *ngIf="_data?.launch_status"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("launch_status") }}
               <span
                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -575,7 +577,7 @@
             *ngIf="_data?.year_wise_off_patent_molecule"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("year_wise_off_patent_molecule") }}
               <span
                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -590,7 +592,7 @@
             *ngIf="_data?.trade_name_proprietary_name"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("trade_name_proprietary_name") }}
               <span
                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -605,7 +607,7 @@
             *ngIf="_data?.related_compounds"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("related_compounds") }}
               <span
                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -620,7 +622,7 @@
             *ngIf="_data?.other_codes"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("other_codes") }}:
               <span
                 class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -635,7 +637,7 @@
             *ngIf="_data?.chemical_class"
             class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
           >
-            <h2 class="p-2 font-semibold uppercase">
+            <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("chemical_class") }}:
               <span
                 class="mx-1 hover:cursor-pointer text-[#0032A0]"

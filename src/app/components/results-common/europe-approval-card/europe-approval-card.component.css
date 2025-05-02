@@ -1,7 +1,3 @@
-p
-{
-    padding-bottom: 20px;
-}
 :host {
     display: block;
     background-color:#F5FBFF;
@@ -10,13 +6,20 @@ p
 }
 h1
 {
-  font-size: 17px;
+  font-size: 14px;
+  color:#312e81;
+}
+.custom-card-body {
+  background-color: #fff; /* अपनी पसंद का रंग चुनें */
+  padding: 1rem;
+  border-radius: 0.5rem;
 }
 p{
+  padding-bottom: 20px;
   white-space: pre;
   text-wrap: wrap;
+  font-size: 14px;
 }
-
 ::-webkit-scrollbar {
   width: 7px;
   height:7px;

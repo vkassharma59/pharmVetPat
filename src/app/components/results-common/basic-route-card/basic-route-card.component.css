@@ -28,7 +28,12 @@
 }
 p{
     white-space: pre;
-    text-wrap: wrap;
+    text-wrap: wrap; 
+     font-size: 14px;
+
+}
+h1 {
+  font-size: 14px; /* Adjust to your desired size */
 }
 
 ::-webkit-scrollbar {
