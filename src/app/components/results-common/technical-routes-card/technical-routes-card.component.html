@@ -309,7 +309,7 @@
 
       <div class="row">
         <div *ngIf="_data?.description && getColumnName('description')" class="col-md-12">
-          <h2 class="mt-3 font-bold uppercase" style="color:#312e81;">
+          <h2 class="mt-3 font-bold uppercase pt-2" style="color:#312e81;">
             {{ getColumnName("description") }}
             <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
               (click)="handleCopy(_data?.description, copyBtn)"><i class="fas fa-copy"></i></span>
@@ -348,7 +348,7 @@
         </div>
 
         <div class="col-md-12" *ngIf="_data?.reactants_cas_rn && getColumnName('reactants_cas_rn')">
-          <h2 class="font-bold uppercase" style="color:#312e81;">
+          <h2 class="font-bold uppercase pt-2" style="color:#312e81;">
             {{ getColumnName("reactants_cas_rn") }}
             <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
               (click)="handleCopy(_data?.reactants_cas_rn, copyBtn)"><i class="fas fa-copy"></i></span>

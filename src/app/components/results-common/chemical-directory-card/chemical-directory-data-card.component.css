@@ -1,7 +1,13 @@
 .btnchemical{
     background-color:#FACC15 ;
 }
-
+h2 {
+  font-size: 14px;
+  color: #312e81
+}
+h1{
+  font-size: 14px;
+}
 
 ::-webkit-scrollbar {
   width: 7px;
@@ -25,11 +31,13 @@
 p{
   white-space: pre;
   text-wrap: wrap;
+  font-size: 14px;
 }
 
 .h1class{
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 17px;
+    color: #312e81;
+    font-weight: 600;
 }
 .trrn-gbrn-container {
   max-width: 300px;

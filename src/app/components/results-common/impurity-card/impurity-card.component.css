@@ -1,8 +1,17 @@
 p{
     white-space: pre;
     text-wrap: wrap;
+    font-size: 14px; /* Adjust to your desired size */
 }
+h1{
+  font-size: 14px; /* Adjust to your desired size */
 
+}
+h2{
+  color:#312e81;
+  font-size: 14px;
+  padding-bottom: 0px;
+}
 ::-webkit-scrollbar {
     width: 7px;
     height:7px;

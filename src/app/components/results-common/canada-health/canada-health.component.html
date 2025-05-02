@@ -82,7 +82,9 @@
                   style="
                       height: 220px;
                       width: 220px;
-                      padding: 10px 10px;
+                      padding: 10px ;
+                      padding-left:0;
+                      
                       object-fit: contain;
                   "
                   />
@@ -93,10 +95,8 @@
               <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
   
                   <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal"
-                   style="background: #8dcbf7;
-                   background: linear-gradient(192deg, rgba(141, 203, 247, 1) 6%, rgba(85, 170, 231, 1) 53%, rgba(35, 130, 247, 1) 87%);
-                   color:#fff; color: white; text-align: center; padding: 8px; border-radius: 5px; font-size: 18px; font-weight: bold; width: 300px;">
-                   {{ _data?.current_status }}
+                  style="background:linear-gradient(to right, #0032a0, #76caff); color: white; text-align: center; padding: 8px; border-radius: 5px; font-size: 17px; width: 300px;">
+                  {{ _data?.current_status }}
                   </p>
   
                   <img src="assets/components/canada.png" class="image1">
@@ -114,7 +114,8 @@
       <button
         (click)="toggleMoreInfo()"
         class="py-2 px-3 mt-3 mb-3 btnchemical rounded-md btn"
-       
+        style="background:linear-gradient(to right, #efb303,#fff087); color: black;"
+
       >
         {{
           MoreInfo
@@ -163,7 +164,7 @@
 (click)="handleCopy(_data?.company, copyBtn)"                                ><i class="fas fa-copy"></i
                               ></span>
           </h1>
-          <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+          <p class="text-wrap max-h-16 overflow-y-auto break-words whitespace-normal">
               {{ _data?.company }}
           </p>
       </div>
@@ -217,7 +218,7 @@
 (click)="handleCopy(_data?.list_of_active_ingredients, copyBtn)"                                ><i class="fas fa-copy"></i
                               ></span>
           </h1>
-          <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+          <p class="text-wrap max-h-16 overflow-y-auto break-words whitespace-normal">
               {{ _data?.list_of_active_ingredients }}
           </p>
       </div>
@@ -414,7 +415,7 @@
 (click)="handleCopy(_data?.american_hospital_formulary_service_ahfs, copyBtn)"                                    ><i class="fas fa-copy"></i
                                   ></span>
               </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+              <p class="text-wrap max-h-16 overflow-y-auto break-words whitespace-normal">
                   {{ _data?.american_hospital_formulary_service_ahfs }}
               </p>
           </div>

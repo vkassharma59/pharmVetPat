@@ -2,8 +2,12 @@
 p
 {
     padding-bottom: 15px;
+    font-size: 14px;
 }
-
+h1
+{
+  font-size: 14px;
+}
 :host {
     display: block;
     background-color:#F5FBFF;
