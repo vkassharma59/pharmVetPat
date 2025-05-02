@@ -126,14 +126,19 @@
 }
 
 .header button.active {
-  background: #0056b3;
+  background: #8dcbf7;
+background: linear-gradient(192deg, rgb(131, 164, 236) 0%, rgb(79, 154, 240) 50%, rgba(0, 58, 219, 1) 100%);
   color: #fff;
   border-radius: 16px;
   padding: 8px 14px;
   font-weight: bold;
   font-size: 14px;
 }
-
+.search:hover{
+  background: #8dcbf7;
+background: linear-gradient(192deg, rgba(141, 203, 247, 1) 6%, rgba(85, 170, 231, 1) 53%, rgba(35, 130, 247, 1) 87%);
+color:#fff;
+}
 /* Responsive Styles */
 @media (max-width: 768px) {
   .header {
@@ -171,6 +176,16 @@
   }
   .hidden {
     display: none;
+  }
+  .btn-success{
+    border:2px solid rgba(179, 34, 34, 1);
+    background-color: #fff;
+    color: rgba(179, 34, 34, 1);
+  }
+  .btn-success:hover{
+    background: #f28888;
+background: linear-gradient(192deg, rgb(253, 139, 139) 6%, rgb(212, 58, 58) 53%, rgb(156, 18, 18) 87%);
+color:#fff;
   }
 
   /* Inputs & Selects: ensure consistent styling */
