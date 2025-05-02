@@ -3,7 +3,7 @@
     Total Records : 200
   </button>
 
-  <div class="d-flex align-items-center flex-wrap">
+  <!-- <div class="d-flex align-items-center flex-wrap">
     <select class="form-select text-black me-2" style="width: 150px;">
       <option>All Chapter</option>
       <option>Chapter 29</option>
@@ -65,9 +65,9 @@
       <option>Oldest</option>
       <option>Newest</option>
     </select>
-  </div>
+  </div> -->
 </div>
-<div class="d-flex flex-wrap align-items-center justify-content-start mt-2">
+<!-- <div class="d-flex flex-wrap align-items-center justify-content-start mt-2">
   <select class="form-select text-black me-2" style="width: 150px;">
     <option>All Exporter</option>
     <option>0712029630</option>
@@ -257,8 +257,9 @@
     <option>1</option>
     <option>2</option>
   </select>
-</div>
-<div class="card-header text-white fs-5" style="background-color: #20a8ff; padding: 10px;">
+</div> -->
+<div class="card-header text-white fs-5" style="  background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
+ padding: 10px;">
   <div class="d-flex flex-wrap align-items-center justify-content-between">
 
     <div class="d-flex align-items-center me-3">
@@ -276,13 +277,16 @@
 
 <div class="table-container">
   <div class="search-container">
-    <button mat-raised-button color="primary" (click)="downloadPDF()">Download PDF
+    <button mat-raised-button  style="background: linear-gradient(192deg, rgb(131, 164, 236) 0%, rgb(79, 154, 240) 50%, rgba(0, 58, 219, 1) 100%);
+color:#fff" (click)="downloadPDF()">Download PDF
       <i class="fa-solid fa-download"></i>
     </button>
-    <button mat-raised-button color="accent" (click)="downloadCSV()">Download CSV
+    <button mat-raised-button style="background: linear-gradient(192deg, rgb(131, 164, 236) 0%, rgb(79, 154, 240) 50%, rgba(0, 58, 219, 1) 100%);
+color:#fff" (click)="downloadCSV()">Download CSV
       <i class="fa-solid fa-download"></i>
     </button>
-    <button mat-raised-button color="warn" (click)="downloadExcel()">Download Excel
+    <button mat-raised-button style="background: linear-gradient(192deg, rgb(131, 164, 236) 0%, rgb(79, 154, 240) 50%, rgba(0, 58, 219, 1) 100%);
+color:#fff" (click)="downloadExcel()">Download Excel
       <i class="fa-solid fa-download"></i>
     </button>
   </div>

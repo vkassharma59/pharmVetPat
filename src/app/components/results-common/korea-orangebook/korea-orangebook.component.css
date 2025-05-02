@@ -25,9 +25,9 @@ p
 }
 
 .custom-link {
-    background: #9dd1eb;
-background: linear-gradient(60deg, rgba(157, 209, 235, 1) 0%, rgba(89, 193, 235, 1) 53%, rgba(3, 109, 171, 1) 100%); /* Darker red */
-    color: white;
+    
+    background: #4ebbf2;
+    background: linear-gradient(60deg, rgba(78, 187, 242, 1) 0%, rgba(29, 154, 204, 1) 34%, rgba(3, 109, 171, 1) 100%);    color: white;
     padding: 12px 20px; /* More padding for better visibility */
     text-decoration: none;
     font-weight: bold;
@@ -38,8 +38,9 @@ background: linear-gradient(60deg, rgba(157, 209, 235, 1) 0%, rgba(89, 193, 235,
 
 .custom-link:hover {
     background: #8dcbf7;
-background: linear-gradient(192deg, rgba(141, 203, 247, 1) 6%, rgba(85, 170, 231, 1) 53%, rgba(35, 130, 247, 1) 87%);
-color:#fff;
+    background: #4ebbf2;
+    background: linear-gradient(284deg, rgba(78, 187, 242, 1) 0%, rgba(29, 154, 204, 1) 34%, rgba(3, 109, 171, 1) 100%);
+    color:#fff;
 }
 .card-header {
     background: #020024;
