@@ -30,8 +30,7 @@ h1{
 }
 
 .custom-link {
-    /* background: linear-gradient(90deg, #0032a0 0%, #40c9e5 100%);color: white; */
-   background-color:  #0b8bdb; /* Darker red */
+    background-color: #0b8bdb; /* Darker red */
     color: white;
     padding: 12px 20px; /* More padding for better visibility */
     text-decoration: none;
@@ -43,10 +42,12 @@ h1{
 }
 
 .custom-link:hover {
-    background-color: #75001A; /* Darker red on hover */
+    background: #8dcbf7;
+background: linear-gradient(192deg, rgba(141, 203, 247, 1) 6%, rgba(85, 170, 231, 1) 53%, rgba(35, 130, 247, 1) 87%);
+color:#fff;
 }
 .card-header {
     background: #020024;
-    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
+    background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
     justify-content: space-between;
   }
