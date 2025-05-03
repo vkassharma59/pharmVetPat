@@ -99,6 +99,19 @@ toggleDropdown(column: string, event: MouseEvent) {
   this.openFilter[column] = !this.openFilter[column];
 }
 
+openDropdown: { [key: string]: boolean } = {};
+@HostListener('document:click', ['$event'])
+onDocumentClick(event: MouseEvent): void {
+  const target = event.target as HTMLElement;
+
+  const clickedInsideFilter = target.closest('.filter-container');
+  if (!clickedInsideFilter) {
+    // Click was outside the filter dropdowns
+    Object.keys(this.openDropdown).forEach(key => this.openDropdown[key] = false);
+  }
+}
+
+
 @HostListener('document:click')
 closeDropdowns() {
   this.openFilter = {}; // close all dropdowns
@@ -113,12 +126,34 @@ closeDropdowns() {
       container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   }
+  filters: { [key: string]: string } = {};
 
+  clearFilter(column: string, input: HTMLInputElement) {
+    input.value = ''; // Clear input box visually
+    this.filters[column] = ''; // Clear tracking object if you use one
+    this.applyAllFilters(); // Reset the data table
+  }
+  // applyColumnFilter(column: string, value: string) {
+  //   this.filters[column] = value.trim().toLowerCase();
+  //   this.applyAllFilters();
+  // }
+  
+  applyAllFilters() {
+    this.dataSource.filterPredicate = (data, filter) =>
+      Object.keys(this.filters).every(key =>
+        data[key]?.toString().toLowerCase().includes(this.filters[key])
+      );
+    this.dataSource.filter = Math.random().toString(); // Forces filter refresh
+  }
+  
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
     this.dataSource.filter = filterValue;
   }
-  filterableColumns = ['GBRN', 'COUNTRYOFORIGIN']; // example keys
+  filterableColumns = [ 'GBRN', 'PRODUCTNAME', 'APIAGROCHEMICALINTERMEDIATE',
+    'ITEMDESCRIPTION', 'COUNTRYOFORIGIN', 'CHAPTER', 'RITCCODE', 'HSCODE',
+    'TYPE', 'YEARMONTH', 'PORTOFLOADING', 'PORTCODE', 'PORTOFDISCHARGE',
+    'SBILLNO', 'SBILLDATE', 'EXPORTER']; // example keys
 
   // applyColumnFilter(column: string, event: Event) {
   //   const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
@@ -132,6 +167,7 @@ closeDropdowns() {
     this.dataSource.filterPredicate = (data: any, filter: string) =>
       data[column]?.toString().toLowerCase().includes(filter);
     this.dataSource.filter = value;
+    
   }
 
   // ✅ Download as PDF

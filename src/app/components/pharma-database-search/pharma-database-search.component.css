@@ -125,7 +125,7 @@
   white-space: nowrap; /* Prevents text from wrapping inside buttons */
 }
 
-.header button.active {
+.header button.active  {
   background: #8dcbf7;
 background: linear-gradient(192deg, rgb(131, 164, 236) 0%, rgb(79, 154, 240) 50%, rgba(0, 58, 219, 1) 100%);
   color: #fff;
@@ -135,6 +135,11 @@ background: linear-gradient(192deg, rgb(131, 164, 236) 0%, rgb(79, 154, 240) 50%
   font-size: 14px;
 }
 .search:hover{
+  background: #8dcbf7;
+background: linear-gradient(192deg, rgba(141, 203, 247, 1) 6%, rgba(85, 170, 231, 1) 53%, rgba(35, 130, 247, 1) 87%);
+color:#fff;
+}
+.search:active{
   background: #8dcbf7;
 background: linear-gradient(192deg, rgba(141, 203, 247, 1) 6%, rgba(85, 170, 231, 1) 53%, rgba(35, 130, 247, 1) 87%);
 color:#fff;
