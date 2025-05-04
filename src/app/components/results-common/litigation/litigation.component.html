@@ -9,15 +9,16 @@
             <div
               class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]"
             >
-              <span
-                    class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-bold h-[37px] flex justify-center items-center"
-            >
-                    Sub Route
-                    {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
-                </span>
+            <span
+            class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-normal h-[37px] flex justify-center items-center"
+          >
+            Sub Route
+            {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
+          </span>
+          
             </div>
         </div>
-        <app-litigation-card class="card" [data]="dataItem"></app-litigation-card>
+        <app-litigation-card class="card" style="background-color: #f7fcf2;" [data]="dataItem"></app-litigation-card>
     </ng-container>
     <app-child-paging
       [currentChildAPIBody]="currentChildAPIBody"

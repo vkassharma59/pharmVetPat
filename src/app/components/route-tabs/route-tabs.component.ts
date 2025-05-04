@@ -12,6 +12,7 @@ import cloneDeep from 'lodash/cloneDeep';
   styleUrl: './route-tabs.component.scss'
 })
 
+
 export class RouteTabsComponent {
 
   resultTabValues: any = [];
@@ -24,7 +25,8 @@ export class RouteTabsComponent {
 
   ngOnInit() {
     if(this.resultTabs) {
-      this.resultTabValues = JSON.parse(JSON.stringify(this.resultTabs));      
+      this.resultTabValues = JSON.parse(JSON.stringify(this.resultTabs));
+      
     }
   }
 

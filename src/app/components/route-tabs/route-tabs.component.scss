@@ -36,6 +36,7 @@
     background: #F6F5F8;
     border-radius: 4px;
     font-size: 12px;
+    border-radius: 18px;
   }
 
   .nav-item a.nav-link.active {
@@ -43,6 +44,10 @@
 background: linear-gradient(192deg, rgb(132, 204, 255) 6%, rgb(71, 150, 207) 53%, rgb(19, 122, 248) 87%);
 color:#fff;
     color: #fff;
+  }
+  .nav-link{
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+
   }
 
   @media (max-width: 768px) {
