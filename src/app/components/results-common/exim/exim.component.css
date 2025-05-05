@@ -112,6 +112,60 @@ button[color="warn"] {
 }
 
 
+.mat-sort-header-arrow {
+  display: none !important;
+}
+.dropdown-item{
+  position: absolute;
+    top: 133%;
+    left: 2px;
+    z-index: 3;
+    background-color: white;
+    border: 1px solid #ccc;
+    min-width: 200px;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: block;
+    overflow-x: auto;
+    max-height: 400px;
+    color: black;
+    border-radius: 18px;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+
+}
+.dropdown-item:hover{
+  position: absolute;
+    top: 133%;
+    left: 2px;
+    z-index: 3;
+    background-color: white;
+    border: 1px solid #ccc;
+    min-width: 200px;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: block;
+    overflow-x: auto;
+    max-height: 400px;
+    color: black;
+    border-radius: 18px;
+}
+.dropdown-item li:hover{
+  
+    background-color: rgb(191, 222, 228);
+    
+}
+.dropdown-item li{
+  font-size: 18px;
+  margin-bottom: 8px;
+  z-index: 5;
+  align-items: center;
+  text-align: left;
+  padding: 6px 24px;
+}
 
 ::ng-deep .mat-sort-header-arrow {
   opacity: 1 !important;  /* Always show sorting icon */
@@ -256,7 +310,8 @@ mat-header-cell {
 
 .scroll-btn {
   pointer-events: auto;
-  background-color: #0084d6;
+  background: #4ebbf2;
+background: linear-gradient(284deg, rgba(78, 187, 242, 1) 0%, rgba(29, 154, 204, 1) 25%, rgba(3, 109, 171, 1) 100%);
   color: white;
   border: none;
   border-radius: 50%;

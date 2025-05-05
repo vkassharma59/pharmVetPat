@@ -545,6 +545,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       page_no: 1
     };
   
+  
     const tech_API = this.apiUrls.basicProductInfo.columnList;  
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {

@@ -1,12 +1,18 @@
 p
 {
     padding-bottom: 15px;
+    font-size: 14px; /* Adjust to your desired size */
+
 }
 h
 {
     font-size: 15px;
     padding-bottom: 10px;
 }
+h1 {
+  font-size: 14px; /* Adjust to your desired size */
+}
+
 :host {
     display: block;
     background-color:#F5FBFF;

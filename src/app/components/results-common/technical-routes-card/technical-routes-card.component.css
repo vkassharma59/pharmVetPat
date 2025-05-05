@@ -1,8 +1,14 @@
 p {
   white-space: pre;
   text-wrap: wrap;
+  font-size: 14px;
 }
-
+h1{
+  font-size: 14px;
+}
+h2{
+  font-size: 14px;
+}
 .tag_title {
   font-family: 'Montserrat';
   font-style: normal;

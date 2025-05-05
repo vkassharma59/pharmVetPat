@@ -3,7 +3,7 @@
     Total Records : 200
   </button>
 
-  <div class="d-flex align-items-center flex-wrap">
+  <!-- <div class="d-flex align-items-center flex-wrap">
     <select class="form-select text-black me-2" style="width: 150px;">
       <option>All Chapter</option>
       <option>Chapter 29</option>
@@ -65,9 +65,9 @@
       <option>Oldest</option>
       <option>Newest</option>
     </select>
-  </div>
+  </div> -->
 </div>
-<div class="d-flex flex-wrap align-items-center justify-content-start mt-2">
+<!-- <div class="d-flex flex-wrap align-items-center justify-content-start mt-2">
   <select class="form-select text-black me-2" style="width: 150px;">
     <option>All Exporter</option>
     <option>0712029630</option>
@@ -257,8 +257,9 @@
     <option>1</option>
     <option>2</option>
   </select>
-</div>
-<div class="card-header text-white fs-5" style="background-color: #20a8ff; padding: 10px;">
+</div> -->
+<div class="card-header text-white fs-5" style="  background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
+ padding: 10px;">
   <div class="d-flex flex-wrap align-items-center justify-content-between">
 
     <div class="d-flex align-items-center me-3">
@@ -276,13 +277,16 @@
 
 <div class="table-container">
   <div class="search-container">
-    <button mat-raised-button color="primary" (click)="downloadPDF()">Download PDF
+    <button mat-raised-button style="background: linear-gradient(192deg, rgb(131, 164, 236) 0%, rgb(79, 154, 240) 50%, rgba(0, 58, 219, 1) 100%);
+color:#fff" (click)="downloadPDF()">Download PDF
       <i class="fa-solid fa-download"></i>
     </button>
-    <button mat-raised-button color="accent" (click)="downloadCSV()">Download CSV
+    <button mat-raised-button style="background: linear-gradient(192deg, rgb(131, 164, 236) 0%, rgb(79, 154, 240) 50%, rgba(0, 58, 219, 1) 100%);
+color:#fff" (click)="downloadCSV()">Download CSV
       <i class="fa-solid fa-download"></i>
     </button>
-    <button mat-raised-button color="warn" (click)="downloadExcel()">Download Excel
+    <button mat-raised-button style="background: linear-gradient(192deg, rgb(131, 164, 236) 0%, rgb(79, 154, 240) 50%, rgba(0, 58, 219, 1) 100%);
+color:#fff" (click)="downloadExcel()">Download Excel
       <i class="fa-solid fa-download"></i>
     </button>
   </div>
@@ -301,16 +305,43 @@
 
           <!-- Dynamically render columns -->
           <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell"
-              style="position: sticky; background-color: #73d4ff; color:white; border:2px solid white;">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="{{column}}" class="header-cell"
+              style="position: sticky; background-color: #73d4ff; color:white; border:2px solid white;overflow:visible">
+
               <div class="header-content">
-                <span>{{ columnHeaders[column] }}</span>
+                <div class="d-flex align-items-center">
+                  <span>{{ columnHeaders[column] }}</span>
+                  <i class="fa-solid" [ngClass]="{
+         'fa-sort-up': activeSort === column && sortDirection === 'asc',
+         'fa-sort-down': activeSort === column && sortDirection === 'desc',
+         'fa-sort': activeSort !== column
+       }" style="margin-left: 8px;"></i>
+                </div>
                 <ng-container *ngIf="filterableColumns.includes(column)">
                   <div style="display:flex; align-items: center; font-size: 14px; justify-content: space-between;">
-                    <input matInput placeholder="Filter" (keyup)="applyColumnFilter(column, $event)" style="margin-top: 8px;
+                    <input #filterInput matInput placeholder="Filter" (keyup)="applyColumnFilter(column, $event)" style="margin-top: 8px;
                   border-radius: 7px;
-                  padding: 5px;" />
-                    <i class="fa-solid fa-filter" style="margin-left: 12px;"></i>
+                  padding: 5px;
+                  color:black;" />
+                    <div style="position: relative; display: flex; overflow:visible;">
+
+                      <button (click)="toggleDropdown(column, $event)">
+                        <i class="fa-solid fa-filter"></i>
+                      </button>
+                      <div class="filter_container">
+                        <button (click)="clearFilter(column, filterInput); $event.stopPropagation()"
+                          style="margin-left: 8px;">
+                          <i class="fa-solid fa-filter-circle-xmark"></i>
+                        </button>
+                        <div *ngIf="openFilter[column]" class="dropdown-item" #dropdownRef>
+                          <ul>
+                            <li
+                              *ngFor="let option of ['Starts with','Contains','Not Contains','Ends With','Equals','Not Equals']"
+                              class="list">{{ option }}</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </ng-container>
               </div>
