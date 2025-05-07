@@ -35,6 +35,7 @@ export class EuropeApprovalCardComponent implements OnInit, OnDestroy {
       
 
       this.resultTabs = this.utilityService.getAllTabsName();
+      console.log("result",this.resultTabs);
       const column_list = Auth_operations.getColumnList();
 
       if (column_list[this.resultTabs.europeApproval?.name]?.length > 0) {
@@ -43,8 +44,9 @@ export class EuropeApprovalCardComponent implements OnInit, OnDestroy {
             column_list[this.resultTabs.europeApproval.name][i].name;
         }
       }
-
+      
       this._data = value;
+      console.log("data",this._data);
     }
   }
 

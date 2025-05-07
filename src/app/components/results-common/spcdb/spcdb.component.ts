@@ -12,17 +12,18 @@ import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import { SpcdbCardComponent } from '../spcdb-card/spcdb-card.component';
 @Component({
   selector: 'chem-spcdb',
   standalone: true,
   imports: [
-     CommonModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatFormFieldModule,
-        MatInputModule
-  ],
+    CommonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatFormFieldModule,
+    MatInputModule,SpcdbCardComponent
+],
   templateUrl: './spcdb.component.html',
   styleUrl: './spcdb.component.css'
 })

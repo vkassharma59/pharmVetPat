@@ -131,6 +131,7 @@
     </ng-container>
     
 
+
     <ng-container *ngSwitchCase="resultTabWithKeys.impPatents.name">
       <chem-imp 
         [data]="_dataItem.impPatents"
@@ -140,9 +141,18 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.spcDb.name">
-      <chem-spcdb></chem-spcdb>
+      <chem-spcdb
+      (handleSetLoading)="handleSetLoading.emit($event)"
+      (handleResultTabData)="handleChildPaginationSearch.emit($event)">></chem-spcdb>
     </ng-container>
 
+    <ng-container *ngSwitchCase="resultTabWithKeys.scientificDocs.name">
+      <app-scientific-docs
+      [data]="_dataItem.scientificDocs"
+      [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.scientificDocs.name]"
+      (handleSetLoading)="handleSetLoading.emit($event)"
+      (handleResultTabData)="handleChildPaginationSearch.emit($event)">></app-scientific-docs>
+    </ng-container>
 
     <ng-container *ngSwitchCase="'US'">
       <!-- <chem-us-approval></chem-us-approval> -->

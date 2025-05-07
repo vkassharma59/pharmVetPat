@@ -17,7 +17,7 @@ import { Auth_operations } from '../../Utils/SetToken';
 import { MainSearchService } from '../../services/main-search/main-search.service';
 import { PaginationComponent } from '../../commons/pagination/pagination.component';
 import { ResultTabComponent } from '../../commons/result-tab/result-tab.component';
-
+import { MatPaginator } from '@angular/material/paginator';
 @Component({
   selector: 'chem-search-results',
   standalone: true,
@@ -26,7 +26,8 @@ import { ResultTabComponent } from '../../commons/result-tab/result-tab.componen
     CommonModule,
     ResultTabComponent,
     RouteResultComponent,
-    PaginationComponent
+    PaginationComponent,
+    MatPaginator
   ],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.css',
@@ -280,6 +281,13 @@ export class SearchResultsComponent {
       case this.resultTabs?.activePatent.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.activePatent.name]).length === 0) {
           this.performactivePatentSearch(resultTabData);
+        } else {
+          this.setLoadingState.emit(false);
+        }
+        break;
+        case this.resultTabs?.scientificDocs.name:
+        if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.scientificDocs.name]).length === 0) {
+          this.scientificDocsSearch(resultTabData);
         } else {
           this.setLoadingState.emit(false);
         }
@@ -937,6 +945,93 @@ export class SearchResultsComponent {
     });
   }
 
+  private scientificDocsSearch(resultTabData: any): void {
+
+    console.log('Search Input:', resultTabData);
+  
+    if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+      console.log('Empty search parameters, skipping search.');
+      this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = {};
+         
+     this.setLoadingState.emit(false);
+      return;
+    }
+  
+    if (this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name] = {};
+    } else {
+      this.childApiBody[resultTabData.index] = {};
+    }
+  
+    this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name] = {
+        api_url: this.apiUrls.scientificDocs.searchSpecific,
+        search_type: resultTabData?.searchWith,
+        keyword:  ["272",
+    "287"],
+        // [resultTabData?.searchWithValue], // wrap in array to match API
+         // Additional fields required by API
+        draw: 1,
+        start: 0,
+        length: 10,
+        order: [
+          {
+            column: 0,
+            dir: 'asc'
+          }
+        ],
+        search: {
+          value: "AGROCHEMICAL"
+        },
+        columns: [
+          {
+            data: 'field_of_document',
+            searchable: 'true',
+            search: {
+              value: "AGROCHEMICAL"
+              // resultTabData?.searchWithValue
+            }
+          }
+        ]
+      
+      
+    };
+  
+    console.log('Request Body:', this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]);
+  
+    const tech_API = this.apiUrls.scientificDocs.columnList;
+    console.log('Calling Column List API:', tech_API);
+    //coloum list api response
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        
+        const response = res?.data?.columns;
+        console.log('Column List API Response:', response);
+        Auth_operations.setColumnList(this.resultTabs.scientificDocs.name, response);
+  
+        console.log('Calling Main Search API with:', this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]); 
+  
+        this.mainSearchService.scientificDocsSpecific(this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]).subscribe({
+          next: (result: any) => {
+            console.log('Search API Result:', result);
+             this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name].count = result?.data?.recordsTotal;
+            // console.log('ema_count',result?.data?.ema_count);
+            this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = result.data;
+            console.log('ema_data',result?.data.data);
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
+  
   private performactivePatentSearch(resultTabData: any): void {
 
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
@@ -986,7 +1081,6 @@ export class SearchResultsComponent {
       },
     });
   }
-
   onChildPaginationChange(data: any, index) {
     switch (this.currentTabData.name) {
       case this.resultTabs?.technicalRoutes.name:
