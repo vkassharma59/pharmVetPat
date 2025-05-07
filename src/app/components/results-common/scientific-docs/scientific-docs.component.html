@@ -1,0 +1,46 @@
+<ng-container>
+
+    <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper justify-between">
+        <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
+            Total Records : {{_data.recordsTotal}}
+        </button>
+    </div>
+    <div class="card-header text-white fs-5" style="  background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
+ padding: 10px;">
+  <div class="d-flex flex-wrap align-items-center justify-content-between">
+
+    <div class="d-flex align-items-center me-3">
+      <i class="fa-solid fa-flask me-2"></i>
+      <span>AgroPharm XIM DB >> SITAGLIPTIN PHOSPHATE</span>
+    </div>
+  </div>
+
+
+
+</div>
+    
+<div *ngIf="_data.length; else noData">
+    <app-scientific-docs-card
+      *ngFor="let doc of data; let i = index"
+      [data]="doc"
+      class="mb-4"
+    ></app-scientific-docs-card>
+  </div>          
+    <app-child-paging
+        [currentChildAPIBody]="currentChildAPIBody"
+        (handleChangeTabData)="handleResultTabData.emit($event)"
+        (setLoading)="handleSetLoading.emit($event)"
+    ></app-child-paging>
+  </ng-container>
+  <ng-template #noData>
+    <div class="card">
+        <div class="card-header text-white bg-primary">
+            {{resultTabs.europeApproval?.label}}
+        </div>
+        <div class="card-body">
+            <p>No Data found!</p>
+        </div>
+    </div>
+  </ng-template>
+  
+
