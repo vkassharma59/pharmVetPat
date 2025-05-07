@@ -193,6 +193,12 @@ export class MainSearchService {
       .post(this.apiUrls.activePatent.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
+  scientificDocsSpecific(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.scientificDocs.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.log(error);
