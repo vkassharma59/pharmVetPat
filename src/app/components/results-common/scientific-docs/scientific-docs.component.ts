@@ -1,23 +1,16 @@
-import { Component } from '@angular/core';
-import { EventEmitter, Input, Output } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, EventEmitter, Input, Output, OnChanges } from '@angular/core';
 import { UtilityService } from '../../../services/utility-service/utility.service';
-import { Auth_operations } from '../../../Utils/SetToken';
-import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
 import { CommonModule } from '@angular/common';
-import { environment } from '../../../../environments/environment';
-import { ScientificDocsCardComponent } from '../scientific-docs-card/scientific-docs-card.component';
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component'; 
-
+import { ScientificDocsCardComponent } from '../scientific-docs-card/scientific-docs-card.component';
 @Component({
   selector: 'app-scientific-docs',
   standalone: true,
-  imports: [ChildPagingComponent,CommonModule,ScientificDocsCardComponent],
+  imports: [ChildPagingComponent, CommonModule,ScientificDocsCardComponent],
   templateUrl: './scientific-docs.component.html',
-  styleUrl: './scientific-docs.component.css'
+  styleUrls: ['./scientific-docs.component.css']
 })
-export class ScientificDocsComponent {
-
+export class ScientificDocsComponent implements OnChanges {
 
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
@@ -25,20 +18,23 @@ export class ScientificDocsComponent {
   
   resultTabs: any = {};
   _data: any = [];
-  value:string []=['hwlllo ','byeeee','ghr jao']
+  
   @Input()
   get data() {
-    console.log(this.data);
     return this._data;
   }
+
   set data(value: any) {
     this._data = value;
+    // Emit the data when it is set
+    this.handleResultTabData.emit(this._data);
   }
-  
+
   constructor(private utilityService: UtilityService) {
     this.resultTabs = this.utilityService.getAllTabsName();
   }
+
   ngOnChanges() {
-   console.log('scientificDocs received data:', this._data);
- } 
+    console.log('scientificDocs received data:--------------------', this._data);
+  }
 }

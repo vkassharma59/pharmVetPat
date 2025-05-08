@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
 
 const RESULT_TABS = [
   { name: 'productInfo', label: 'Product Info', isActive: true },
@@ -32,7 +36,7 @@ export class UtilityService {
 
   private tabsSubject = new BehaviorSubject(RESULT_TABS);
   tabs$ = this.tabsSubject.asObservable();
-
+  constructor(private http: HttpClient) {}
   setActiveTab(tabName: string): void {
     const updatedTabs = this.tabsSubject.getValue().map(tab => ({
       ...tab,
@@ -70,6 +74,11 @@ export class UtilityService {
         return acc;
       }, {})
     );
+  }
+
+  getSomeData(): Observable<any[]> {
+    const apiUrl = environment.apiUrl; // replace with actual URL
+    return this.http.get<any[]>(apiUrl);
   }
 }
 
