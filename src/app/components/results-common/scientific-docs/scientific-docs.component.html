@@ -19,12 +19,9 @@
 
 </div>
     
-<div *ngIf="_data.length; else noData">
-    <app-scientific-docs-card
-      *ngFor="let doc of data; let i = index"
-      [data]="doc"
-      class="mb-4"
-    ></app-scientific-docs-card>
+<div >
+  <app-scientific-docs-card [columnDefs]="_data"></app-scientific-docs-card>
+
   </div>          
     <app-child-paging
         [currentChildAPIBody]="currentChildAPIBody"

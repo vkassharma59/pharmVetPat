@@ -1015,8 +1015,8 @@ export class SearchResultsComponent {
             console.log('Search API Result:', result);
              this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name].count = result?.data?.recordsTotal;
             // console.log('ema_count',result?.data?.ema_count);
-            this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = result.data;
-            console.log('ema_data',result?.data.data);
+            this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = response;
+            console.log('ema_data',response);
             this.setLoadingState.emit(false);
           },
           error: (e) => {
