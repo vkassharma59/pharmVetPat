@@ -22,19 +22,22 @@ import { ChemiTrackerComponent } from '../results-common/chemi-tracker/chemi-tra
 import { ChemicalDirectoryComponent } from '../results-common/chemical-directory/chemical-directory.component';
 import { FormsModule } from '@angular/forms';
 import { AppConfigValues } from '../../config/app-config';
-import { ServiceResultTabFiltersService } from '../../services/result_tab/service-result-tab-filters.service'; 
+import { ServiceResultTabFiltersService } from '../../services/result_tab/service-result-tab-filters.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Chem_Robotics_QueryModalComponent } from '../Chem_Robotics_QueryModal/Chem_Robotics_QueryModal.component';
+import { ScientificDocsComponent } from '../results-common/scientific-docs/scientific-docs.component';
 
 @Component({
   selector: 'chem-route-results',
   standalone: true,
-  imports: [FormsModule, NgFor, NgIf, BasicRouteComponent, TechnicalRoutesComponent, ImpurityComponent, ChemiTrackerComponent, ImpComponent,IndianComponent,ChemicalDirectoryComponent,JapanComponent,CanadaComponent,EuropeApprovalComponent,KoreaComponent,LitigationComponent, UsComponent,SpcdbComponent,EximComponent, RouteTabsComponent,ActivePatentComponent, NgSwitch, NgSwitchCase, NgSwitchDefault, JsonPipe],
+  imports: [FormsModule, NgFor, NgIf, BasicRouteComponent, TechnicalRoutesComponent, ImpurityComponent, ChemiTrackerComponent, ImpComponent, IndianComponent, ChemicalDirectoryComponent, JapanComponent, CanadaComponent, EuropeApprovalComponent, KoreaComponent, LitigationComponent, UsComponent, SpcdbComponent, EximComponent, RouteTabsComponent, ActivePatentComponent, NgSwitch, NgSwitchCase, NgSwitchDefault, ScientificDocsComponent],
   templateUrl: './route-result.component.html',
   styleUrl: './route-result.component.css'
 })
 
 export class RouteResultComponent {
+
+  public scientificDocsPayload: any[] = [];
 
   currentTabData: any = {}
   resultTabs: any = [];
@@ -59,9 +62,9 @@ export class RouteResultComponent {
   @Input() currentApiData: any;
   @Input() CurrentAPIBody: any;
   @Input() index: number | undefined;
-  @Input() searchData: any;  
+  @Input() searchData: any;
 
-  @Input() 
+  @Input()
   get dataItem() {
     return this._dataItem;
   }
@@ -69,14 +72,14 @@ export class RouteResultComponent {
     this._dataItem = value;
   }
 
-  @Input() 
+  @Input()
   get currentChildAPIBody() {
     return this._currentChildAPIBody;
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
   }
-  
+
   constructor(
     private dialog: MatDialog,
     private serviceResultTabFiltersService: ServiceResultTabFiltersService,
@@ -91,8 +94,8 @@ export class RouteResultComponent {
     this.currentTabData = this.resultTabs.find((tab: any) => tab.isActive);
 
     //
-    this.resultTabWithKeys = this.utilityService.getAllTabsName(); 
-    this.raise_query_object = this.CurrentAPIBody?.body;       
+    this.resultTabWithKeys = this.utilityService.getAllTabsName();
+    this.raise_query_object = this.CurrentAPIBody?.body;
 
     this.resultTabs.forEach(tab => {
       this.SingleDownloadCheckbox[tab.name] = false;
@@ -112,15 +115,15 @@ export class RouteResultComponent {
     this.backFunction.emit(false);
   }
 
-  handleCurrentTab(data: any) { 
+  handleCurrentTab(data: any) {
     const searchThrough = Auth_operations.getActiveformValues().activeForm;
 
     let searchWith = '';
     let searchWithValue;
 
-    switch(searchThrough) {
+    switch (searchThrough) {
       case searchTypes.chemicalStructure:
-        if(data.name === this.resultTabWithKeys.technicalRoutes.name) {
+        if (data.name === this.resultTabWithKeys.technicalRoutes.name) {
           searchWith = 'TRRN';
           searchWithValue = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name][0].trrn;
         } else {
@@ -129,23 +132,23 @@ export class RouteResultComponent {
         }
         break;
       case searchTypes.synthesisSearch:
-        if(data.name === this.resultTabWithKeys.chemicalDirectory.name) {
+        if (data.name === this.resultTabWithKeys.chemicalDirectory.name) {
           searchWith = 'TRRN';
           searchWithValue = this.dataItem[this.resultTabWithKeys.technicalRoutes.name][0].trrn;
         } else {
           searchWith = 'GBRN';
           searchWithValue = this.dataItem[this.resultTabWithKeys.technicalRoutes.name][0].gbrn;
         }
-        break;        
+        break;
       case searchTypes.intermediateSearch:
-          if(data.name === this.resultTabWithKeys.technicalRoutes.name) {
-            searchWith = 'TRRN';
-            searchWithValue = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name][0].trrn;
-          } else {
-            searchWith = 'GBRN';
-            searchWithValue = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name][0].gbrn;
-          }
-          break;
+        if (data.name === this.resultTabWithKeys.technicalRoutes.name) {
+          searchWith = 'TRRN';
+          searchWithValue = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name][0].trrn;
+        } else {
+          searchWith = 'GBRN';
+          searchWithValue = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name][0].gbrn;
+        }
+        break;
       case searchTypes.simpleSearch:
       case searchTypes.advanceSearch:
         searchWith = 'GBRN';
@@ -154,8 +157,8 @@ export class RouteResultComponent {
       default:
         console.log('No search type selected');
     }
-    
-    const tempObj = 
+
+    const tempObj =
     {
       currentTabData: data,
       index: this.index,
@@ -185,7 +188,7 @@ export class RouteResultComponent {
     const selectedCount = Object.values(this.SingleDownloadCheckbox).filter(
       (checked) => checked
     ).length;
-    return selectedCount >= 3; 
+    return selectedCount >= 3;
   }
 
   handleGeneratePDF() {
@@ -238,7 +241,7 @@ export class RouteResultComponent {
                   todays_limit = res.data;
                   if (
                     priviledge_data?.technicalroutesmongo?.DailyDownloadLimit -
-                      todays_limit?.downloadCount <= 0
+                    todays_limit?.downloadCount <= 0
                   ) {
                     this.handleSetLoading.emit(false);
                     this.OpenPriviledgeModal.emit(
@@ -249,13 +252,13 @@ export class RouteResultComponent {
                   }
                   if (
                     priviledge_data?.technicalroutesmongo?.DailyDownloadLimit -
-                      todays_limit?.downloadCount >
+                    todays_limit?.downloadCount >
                     0
                   ) {
 
                     let id: any = '';
                     const searchThrough = Auth_operations.getActiveformValues().activeForm;
-                    switch(searchThrough) {
+                    switch (searchThrough) {
                       case searchTypes.chemicalStructure:
                       case searchTypes.intermediateSearch:
                         id = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name][0]._id;
@@ -300,7 +303,7 @@ export class RouteResultComponent {
                           body: body_main,
                         };
                       }
-                      
+
                       try {
                         this.serviceResultTabFiltersService.getGeneratePDF(
                           API_MAIN

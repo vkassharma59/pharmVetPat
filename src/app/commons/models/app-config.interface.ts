@@ -81,6 +81,10 @@ export interface AppConfig {
       searchSpecific: string;
       columnList: string;
     };
+    scientificDocs: {
+      searchSpecific: string;
+      columnList: string;
+    };
     user: {
       privilegeApi: string;
       todayPrivilegeApi: string;

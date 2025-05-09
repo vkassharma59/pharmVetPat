@@ -1,0 +1,35 @@
+.card {
+  padding: 1rem;
+}
+
+.scroll-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.5rem;
+}
+
+.table-container {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+table {
+  min-width: 1000px;
+}
+
+.filter-input {
+  display: flex;
+  align-items: center;
+  margin-top: 0.25rem;
+
+  input {
+    width: 100%;
+    margin-right: 0.5rem;
+  }
+}
+
+.export-buttons {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+}

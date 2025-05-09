@@ -86,6 +86,10 @@ export const AppConfigValues: AppConfig = {
         searchSpecific: `${appUrl.apiUrl}/chemi-tracker/search-specific`,
         columnList: `${appUrl.apiUrl}/chemi-tracker/column-list`,
       },
+      scientificDocs: {
+        searchSpecific: `${appUrl.apiUrl}/scientific-docs/search-specific`,
+        columnList: `${appUrl.apiUrl}/scientific-docs/column-list`,
+      },
       user: {
         privilegeApi: `${appUrl.apiUrl}/user-info`,
         todayPrivilegeApi: `${appUrl.apiUrl}/user-today-history`,
