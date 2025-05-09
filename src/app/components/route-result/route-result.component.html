@@ -12,90 +12,75 @@
 
     <!-- Right Section -->
     <div>
-      <button 
-        *ngIf="isDownloadPermit && isSplitDownload"
-        data-bs-toggle="modal"
-        title="Download Single Route"
-        data-bs-target="#download_btn"
-        class="btn btn-outline-primary btn-sm me-2"
-        ><i class="fas fa-download"></i> Download Single Route</button>
-      <button *ngIf="index==0" (click)="OpenQueryModal()" class="btn btn-outline-primary btn-sm me-2">Raise Query</button>
+      <button *ngIf="isDownloadPermit && isSplitDownload" data-bs-toggle="modal" title="Download Single Route"
+        data-bs-target="#download_btn" class="btn btn-outline-primary btn-sm me-2"><i class="fas fa-download"></i>
+        Download Single Route</button>
+      <button *ngIf="index==0" (click)="OpenQueryModal()" class="btn btn-outline-primary btn-sm me-2">Raise
+        Query</button>
       <button *ngIf="index==0" (click)="handleBack()" class="btn btn-outline-primary btn-sm">Back to Search</button>
     </div>
   </div>
 
-  <chem-route-tabs
-    (handleCurrentTab)="handleCurrentTab($event)"
-    [resultTabs]="resultTabs"
-  ></chem-route-tabs>
+  <chem-route-tabs (handleCurrentTab)="handleCurrentTab($event)" [resultTabs]="resultTabs"></chem-route-tabs>
 
   <!-- Main Content Section -->
   <div class="mt-3" [ngSwitch]="currentTabData?.name">
     <ng-container *ngSwitchCase="resultTabWithKeys.productInfo.name">
-      <chem-product-info 
-        [data]="_dataItem.productInfo"
+      <chem-product-info [data]="_dataItem.productInfo"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.productInfo.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)">
-      </chem-product-info>     
+      </chem-product-info>
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.technicalRoutes.name">
-      <chem-technical-route 
-        [data]="_dataItem.technicalRoutes"
+      <chem-technical-route [data]="_dataItem.technicalRoutes"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.technicalRoutes.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-technical-route>
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.chemicalDirectory.name">
-      <chemical-directory 
-        [data]="_dataItem.chemicalDirectory"
+      <chemical-directory [data]="_dataItem.chemicalDirectory"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.chemicalDirectory.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chemical-directory>
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.impurity.name">
-      <chem-impurity 
-        [data]="_dataItem.impurity"
+      <chem-impurity [data]="_dataItem.impurity"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.impurity.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-impurity>
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.chemiTracker.name">
-      <chem-chemi-tracker 
-        [data]="_dataItem.chemiTracker"
+      <chem-chemi-tracker [data]="_dataItem.chemiTracker"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.chemiTracker.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-chemi-tracker>
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.europeApproval.name">
-      <chem-europe-approval 
-        [data]="_dataItem.europeApproval"
+      <chem-europe-approval [data]="_dataItem.europeApproval"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.europeApproval.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-europe-approval>
     </ng-container>
-   
+
     <ng-container *ngSwitchCase="resultTabWithKeys.usApproval.name">
-      <chem-us
-      ></chem-us>
+      <chem-us></chem-us>
     </ng-container>
- 
+
     <ng-container *ngSwitchCase="resultTabWithKeys.canadaApproval.name">
-      <chem-canada 
-        [data]="_dataItem.canadaApproval"
+      <chem-canada [data]="_dataItem.canadaApproval"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.canadaApproval.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-canada>
     </ng-container>
-   
+
     <ng-container *ngSwitchCase="resultTabWithKeys.japanApproval.name">
-      <chem-japan 
-        [data]="_dataItem.japanApproval"
+      <chem-japan [data]="_dataItem.japanApproval"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.japanApproval.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-japan>
@@ -103,24 +88,21 @@
 
 
     <ng-container *ngSwitchCase="resultTabWithKeys.koreaApproval.name">
-      <chem-korea 
-        [data]="_dataItem.koreaApproval"
+      <chem-korea [data]="_dataItem.koreaApproval"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.koreaApproval.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-korea>
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.indianMedicine.name">
-      <chem-indian 
-        [data]="_dataItem.indianMedicine"
+      <chem-indian [data]="_dataItem.indianMedicine"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.indianMedicine.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-indian>
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.litigation.name">
-      <chem-litigation 
-        [data]="_dataItem.litigation"
+      <chem-litigation [data]="_dataItem.litigation"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.litigation.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-litigation>
@@ -129,29 +111,33 @@
     <ng-container *ngSwitchCase="resultTabWithKeys.activePatent.name">
       <chem-active-patent></chem-active-patent>
     </ng-container>
-    
+
 
 
     <ng-container *ngSwitchCase="resultTabWithKeys.impPatents.name">
-      <chem-imp 
-        [data]="_dataItem.impPatents"
+      <chem-imp [data]="_dataItem.impPatents"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.impPatents.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-imp>
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.spcDb.name">
-      <chem-spcdb
-      (handleSetLoading)="handleSetLoading.emit($event)"
-      (handleResultTabData)="handleChildPaginationSearch.emit($event)">></chem-spcdb>
+      <chem-spcdb (handleSetLoading)="handleSetLoading.emit($event)"
+        (handleResultTabData)="handleChildPaginationSearch.emit($event)">></chem-spcdb>
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.scientificDocs.name">
-      <app-scientific-docs
+      <!-- <app-scientific-docs
       [data]="_dataItem.scientificDocs"
       [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.scientificDocs.name]"
       (handleSetLoading)="handleSetLoading.emit($event)"
-      (handleResultTabData)="handleChildPaginationSearch.emit($event)">></app-scientific-docs>
+      (handleResultTabData)="handleChildPaginationSearch.emit($event)">></app-scientific-docs> -->
+      <app-scientific-docs [data]="_dataItem.scientificDocs"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.scientificDocs.name]"
+        (handleSetLoading)="handleSetLoading.emit($event)"
+        (handleResultTabData)="handleChildPaginationSearch.emit($event)">
+      </app-scientific-docs>
+
     </ng-container>
 
     <ng-container *ngSwitchCase="'US'">
@@ -163,7 +149,7 @@
     </ng-container>
 
     <ng-container *ngSwitchDefault>
-      <div class="card"> 
+      <div class="card">
         <div class="card-header text-white bg-primary">Comming Soon..</div>
         <div class="card-body">We are wokring on this tab, Please come back later.</div>
       </div>
@@ -172,81 +158,56 @@
 </div>
 
 <!-- Download Modal -->
-<div
-#downloadBtnModal
-class="modal fade bg_4"
-id="download_btn"
-tabindex="-1"
-aria-labelledby="download_btn"
-aria-hidden="true"
->
-<div class="modal-dialog modal-dialog-centered modal-xl">
-  <div class="modal-content bg_1 px-4">
-    <!-- Modal Header -->
-    <div class="flex justify-between items-center p-3 border-b">
-      <h1 class="text-lg font-bold">PharmVetPat Platform</h1>
-      <button data-bs-dismiss="modal" class="text-lg font-bold text-black">
-        X
-      </button>
-    </div>
-    <!-- Modal Body -->
-    <div class="p-3">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        <label class="flex items-center" *ngFor="let tab of resultTabs">
-          <input
-            type="checkbox"
-            [(ngModel)]="SingleDownloadCheckbox[tab.name]"
-            [disabled]="isDisabled() && !SingleDownloadCheckbox[tab.name]"
-            class="form-checkbox text-blue-600 h-5 w-5"
-          />
-          <span class="ml-2 text-gray-700">{{ tab.label }}</span>
-        </label>
+<div #downloadBtnModal class="modal fade bg_4" id="download_btn" tabindex="-1" aria-labelledby="download_btn"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content bg_1 px-4">
+      <!-- Modal Header -->
+      <div class="flex justify-between items-center p-3 border-b">
+        <h1 class="text-lg font-bold">PharmVetPat Platform</h1>
+        <button data-bs-dismiss="modal" class="text-lg font-bold text-black">
+          X
+        </button>
       </div>
-      <h1 class="text-red-600 pt-2 text-sm text-left">
-        Choose any 3 vertical report to download
-      </h1>
-    </div>
-    <!-- Modal Footer -->
-    <div class="p-3 border-t">
-      <div class="flex justify-end gap-2">
-        <button
-          data-bs-dismiss="modal"
-          class="px-3 py-2 bg-red-500 rounded-md text-white font-bold"
-        >
-          Close
-        </button>
-        <button
-          *ngIf="!generatePDFloader"
-          [disabled]="generatePDFloader"
-          (click)="handleGeneratePDF()"
-          class="px-3 py-2 bg-green-500 rounded-md text-white font-bold"
-        >
-          Generate
-        </button>
-        <button
-          *ngIf="generatePDFloader"
-          class="px-3 py-2 bg-green-500 rounded-md text-white font-bold flex items-center gap-2"
-        >
-          <svg
-            aria-hidden="true"
-            class="w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-white"
-            viewBox="0 0 100 101"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-              fill="currentColor"
-            />
-            <path
-              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-              fill="currentFill"
-            />
-          </svg>
-          Generating....
-        </button>
+      <!-- Modal Body -->
+      <div class="p-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <label class="flex items-center" *ngFor="let tab of resultTabs">
+            <input type="checkbox" [(ngModel)]="SingleDownloadCheckbox[tab.name]"
+              [disabled]="isDisabled() && !SingleDownloadCheckbox[tab.name]"
+              class="form-checkbox text-blue-600 h-5 w-5" />
+            <span class="ml-2 text-gray-700">{{ tab.label }}</span>
+          </label>
+        </div>
+        <h1 class="text-red-600 pt-2 text-sm text-left">
+          Choose any 3 vertical report to download
+        </h1>
+      </div>
+      <!-- Modal Footer -->
+      <div class="p-3 border-t">
+        <div class="flex justify-end gap-2">
+          <button data-bs-dismiss="modal" class="px-3 py-2 bg-red-500 rounded-md text-white font-bold">
+            Close
+          </button>
+          <button *ngIf="!generatePDFloader" [disabled]="generatePDFloader" (click)="handleGeneratePDF()"
+            class="px-3 py-2 bg-green-500 rounded-md text-white font-bold">
+            Generate
+          </button>
+          <button *ngIf="generatePDFloader"
+            class="px-3 py-2 bg-green-500 rounded-md text-white font-bold flex items-center gap-2">
+            <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-white"
+              viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                fill="currentColor" />
+              <path
+                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                fill="currentFill" />
+            </svg>
+            Generating....
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </div>

@@ -165,7 +165,17 @@ export class MainSearchService {
       .post(this.apiUrls.litigation.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
-
+  scientific_docsSearchSpecific(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.scientific_docs.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
+  getScientificDocsColumnList(): Observable<any> {
+    return this.http
+      .get(this.apiUrls.scientificDocs.columnList, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
 
   impPatentsSearchSpecific(props: any): Observable<any> {
     const body = props;
