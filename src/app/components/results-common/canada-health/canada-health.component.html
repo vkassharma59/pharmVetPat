@@ -1,494 +1,416 @@
 <!-- <pre>{{_data | json}}</pre>  -->
 
-<div class="card-header text-white " >
+<div class="card-header text-white ">
     <div style="padding-top:7px; justify-content:space-between; display:flex;">
-    {{ localCount }}. {{resultTabs?.canadaApproval?.label}}>> {{_data?.product_name}}
-    <button class="btn btn-warning"><i class="fa-solid fa-download"></i></button></div>
-  </div>
-  
-  <div class="card-body" style="background-color: #F5FBFF;">
-      <div class="pb-3 mb-3 px-2 rounded-lg">
-          <div class="row">
-              <!-- First Column -->
-              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                  <!-- <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal"
-                  style="color: #0032a0; font-size: 18px; font-weight: bold;">
-                      {{ _data?.product_name}}
-                  </p> -->
-  
-                  <p class="" style="font-size: 14px;">
-                      {{ _data?.list_of_active_ingredients}}
-                  </p>
-                  <br>
-  
-                  <a target="_blank" style="background-color: #0032a0; color: white; padding: 3px;"
-                      [href]="getPubchemId(_data?.product_monograph_veterinary_labelling_pdf_link)">
-                     PRODUCT MONOGRAPH/VETERINARY LABELLING(PDF) LINK
-                  </a>
-                  <br><br>
-  
-                  
-          <div *ngIf="_data?.product_monograph_veterinary_labelling_pdf && getColumnName('product_monograph_veterinary_labelling_pdf')">
-              <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("product_monograph_veterinary_labelling_pdf") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.product_monograph_veterinary_labelling_pdf, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.product_monograph_veterinary_labelling_pdf }}
-              </p>
-          </div>
-  
-          <div *ngIf="_data?.date && getColumnName('date')">
-              <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("date") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.date, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.date }}
-              </p>
-          </div>
-  
-                 
-              </div>
-  
-              <!-- Second Column -->
-              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                  <div *ngIf="_data?.company && getColumnName('company')">
-                      <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("company") }}
-                          <span
-                                            class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                            #copyBtn 
-(click)="handleCopy(_data?.company, copyBtn)"                                            ><i class="fas fa-copy"></i
-                                          ></span>
-                      </h1>
-                      <p class="text-wrap max-h-12 whitespace-normal">
-                          {{ _data?.company }}
-                      </p>
-                  </div>
-  
-  
-  
-                  <img
-                  *ngIf="data?.commentry"
-                  class="commentry"
-                  [src]="getImageUrl(data)"
-                  alt="error"
-                  style="
+        {{ localCount }}. {{resultTabs?.canadaApproval?.label}}>> {{_data?.product_name}}
+        <button class="btn btn-warning"><i class="fa-solid fa-download"></i></button>
+    </div>
+</div>
+
+<div class="card-body" style="background-color: #F5FBFF;">
+    <div class="pb-3 mb-3 px-2 rounded-lg">
+        <div class="row">
+            <!-- First Column -->
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal"
+                    style="color: #0032a0; font-size: 17px; font-weight: bold;">
+                    {{ _data?.product_name}}
+                </p>
+
+                <p class="" style="font-size: 14px;">
+                    {{ _data?.list_of_active_ingredients}}
+                </p>
+                <br>
+
+                <a target="_blank" style="background-color: #0032a0; color: white; padding: 3px;"
+                    [href]="getPubchemId(_data?.product_monograph_veterinary_labelling_pdf_link)">
+                    PRODUCT MONOGRAPH/VETERINARY LABELLING(PDF) LINK
+                </a>
+                <br><br>
+
+
+                <div
+                    *ngIf="_data?.product_monograph_veterinary_labelling_pdf && getColumnName('product_monograph_veterinary_labelling_pdf')">
+                    <h1 class="font-bold" style="color:#312e81;"> {{
+                        getColumnName("product_monograph_veterinary_labelling_pdf") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                            (click)="handleCopy(_data?.product_monograph_veterinary_labelling_pdf, copyBtn)"><i
+                                class="fas fa-copy"></i></span>
+                    </h1>
+                    <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                        {{ _data?.product_monograph_veterinary_labelling_pdf }}
+                    </p>
+                </div>
+
+                <div *ngIf="_data?.date && getColumnName('date')">
+                    <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("date") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                            (click)="handleCopy(_data?.date, copyBtn)"><i class="fas fa-copy"></i></span>
+                    </h1>
+                    <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                        {{ _data?.date }}
+                    </p>
+                </div>
+
+
+            </div>
+
+            <!-- Second Column -->
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                <div *ngIf="_data?.company && getColumnName('company')">
+                    <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("company") }}
+                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                            (click)="handleCopy(_data?.company, copyBtn)"><i class="fas fa-copy"></i></span>
+                    </h1>
+                    <p class="text-wrap max-h-12 whitespace-normal">
+                        {{ _data?.company }}
+                    </p>
+                </div>
+
+
+
+                <img *ngIf="data?.commentry" class="commentry" [src]="getImageUrl(data)" alt="error" style="
                       height: 220px;
                       width: 220px;
                       padding: 10px ;
                       padding-left:0;
                       
                       object-fit: contain;
-                  "
-                  />
-  
-              </div>
-  
-              <!-- Third Column -->
-              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-  
-                  <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal"
-                  style="background:linear-gradient(to right, #0032a0, #76caff); color: white; text-align: center; padding: 8px; border-radius: 5px; font-size: 17px; width: 300px;">
-                  {{ _data?.current_status }}
-                  </p>
-  
-                  <img src="assets/components/canada.png" class="image1">
-  
-  
-                  
-              </div>
-          </div>
-      </div>
-  </div>
-  
-  
-  
-     <div class="flex justify-center" style="background-color: #F5FBFF;">
-      <button
-        (click)="toggleMoreInfo()"
-        class="py-2 px-3 mt-3 mb-3 btnchemical rounded-md btn"
-        style="background:linear-gradient(to right, #efb303,#fff087); color: black;"
+                  " />
 
-      >
-        {{
-          MoreInfo
-            ? "Less Information"
-            : "More Information"
-        }}
-      </button>
+            </div>
+
+            <!-- Third Column -->
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal"
+                    style="background:linear-gradient(to right, #0032a0, #76caff); color: white; text-align: center; padding: 8px; border-radius: 5px; font-size: 17px; width: 300px;">
+                    {{ _data?.current_status }}
+                </p>
+
+                <img src="assets/components/canada.png" class="image1">
+
+
+
+            </div>
+        </div>
     </div>
-  <div class="card-body" *ngIf="MoreInfo" style="border: 2px solid black; border-radius: 8px; padding: 10px; margin-top: 10px;">
-     <div class="row">
-  
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-  
-  
-          <div *ngIf="_data?.green_book_registration_number && getColumnName('green_book_registration_number')">
-          <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("green_book_registration_number") }}
-              <span
-                                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                #copyBtn 
-(click)="handleCopy(_data?.green_book_registration_number, copyBtn)"                                ><i class="fas fa-copy"></i
-                              ></span>
-          </h1>
-          <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-              {{ _data?.green_book_registration_number }}
-          </p>
-         </div>
-  
-      <div *ngIf="_data?.product_name && getColumnName('product_name')">
-          <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("product_name") }}
-              <span
-                                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                #copyBtn 
-(click)="handleCopy(_data?.product_name, copyBtn)"                                ><i class="fas fa-copy"></i
-                              ></span>
-          </h1>
-          <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-              {{ _data?.product_name }}
-          </p>
-      </div>
-  
-      <div *ngIf="_data?.company && getColumnName('company')">
-          <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("company") }}
-              <span
-                                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                #copyBtn 
-(click)="handleCopy(_data?.company, copyBtn)"                                ><i class="fas fa-copy"></i
-                              ></span>
-          </h1>
-          <p class="text-wrap max-h-16 overflow-y-auto break-words whitespace-normal">
-              {{ _data?.company }}
-          </p>
-      </div>
-  
-     
-              <img
-              *ngIf="data?.commentry"
-              class="commentry"
-              [src]="getImageUrl(data)"
-              alt="error"
-              style="
+</div>
+
+
+
+<div class="flex justify-center" style="background-color: #F5FBFF;">
+    <button (click)="toggleMoreInfo()" class="py-2 px-3 mt-3 mb-3 btnchemical rounded-md btn"
+        style="background:linear-gradient(to right, #efb303,#fff087); color: black;">
+        {{
+        MoreInfo
+        ? "Less Information"
+        : "More Information"
+        }}
+    </button>
+</div>
+<div class="card-body" *ngIf="MoreInfo"
+    style="border: 2px solid black; border-radius: 8px; padding: 10px; margin-top: 10px;">
+    <div class="row">
+
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+
+            <div *ngIf="_data?.green_book_registration_number && getColumnName('green_book_registration_number')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("green_book_registration_number") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.green_book_registration_number, copyBtn)"><i
+                            class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.green_book_registration_number }}
+                </p>
+            </div>
+
+            <div *ngIf="_data?.product_name && getColumnName('product_name')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("product_name") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.product_name, copyBtn)"><i class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.product_name }}
+                </p>
+            </div>
+
+            <div *ngIf="_data?.company && getColumnName('company')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("company") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.company, copyBtn)"><i class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-16 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.company }}
+                </p>
+            </div>
+
+
+            <img *ngIf="data?.commentry" class="commentry" [src]="getImageUrl(data)" alt="error" style="
                   height: 250px;
                   width: 250px;
                   padding: 20px 20px;
                   object-fit: contain;
-              "
-              />
-           
-  
-      <div *ngIf="_data?.dosage_forms && getColumnName('dosage_forms')">
-          <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("dosage_forms") }}
-              <span
-                                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                #copyBtn 
-(click)="handleCopy(_data?.dosage_forms, copyBtn)"                                ><i class="fas fa-copy"></i
-                              ></span>
-          </h1>
-          <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-              {{ _data?.dosage_forms }}
-          </p>
-      </div>
-  
-      <div *ngIf="_data?.schedules && getColumnName('schedules')">
-          <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("schedules") }}
-              <span
-                                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                #copyBtn 
-(click)="handleCopy(_data?.schedules, copyBtn)"                                ><i class="fas fa-copy"></i
-                              ></span>
-          </h1>
-          <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-              {{ _data?.schedules }}
-          </p>
-      </div>
-         
-      <div *ngIf="_data?.list_of_active_ingredients && getColumnName('list_of_active_ingredients')">
-          <h1 class="font-bold"style="color:#312e81;"> {{ getColumnName("list_of_active_ingredients") }}
-              <span
-                                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                #copyBtn 
-(click)="handleCopy(_data?.list_of_active_ingredients, copyBtn)"                                ><i class="fas fa-copy"></i
-                              ></span>
-          </h1>
-          <p class="text-wrap max-h-16 overflow-y-auto break-words whitespace-normal">
-              {{ _data?.list_of_active_ingredients }}
-          </p>
-      </div>
-  
-         
-      </div>
-  
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-  
-  
-          <div *ngIf="_data?.current_status_date && getColumnName('current_status_date')">
-              <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("current_status_date") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.current_status_date, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.current_status_date }}
-              </p>
-          </div>
-       
-          <div *ngIf="_data?.ai_name && getColumnName('ai_name')">
-              <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("ai_name") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.ai_name, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.ai_name }}
-              </p>
-          </div>
-  
-          <div *ngIf="_data?.din && getColumnName('din')">
-              <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("din") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.din, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.din }}
-              </p>
-          </div>
-        
-  
-          <div *ngIf="_data?.routes_of_administration && getColumnName('routes_of_administration')">
-              <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("routes_of_administration") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.routes_of_administration, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.routes_of_administration }}
-              </p>
-          </div>
-         
-  
-          <div *ngIf="_data?.active_ingredient_group_aig_number && getColumnName('active_ingredient_group_aig_number')">
-              <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("active_ingredient_group_aig_number") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.active_ingredient_group_aig_number, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.active_ingredient_group_aig_number }}
-              </p>
-          </div>
-       
-  
-          <div *ngIf="_data?.anatomical_therapeutic_chemical_atc && getColumnName('anatomical_therapeutic_chemical_atc')">
-              <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("anatomical_therapeutic_chemical_atc") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.anatomical_therapeutic_chemical_atc, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.anatomical_therapeutic_chemical_atc }}
-              </p>
-          </div>
-  
-      </div>
-  
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-  
-          <div *ngIf="_data?.current_status && getColumnName('current_status')">
-              <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("current_status") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.current_status, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.current_status }}
-              </p>
-          </div>
-  
-          <div *ngIf="_data?.class && getColumnName('class')">
-              <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("class") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.class, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.class }}
-              </p>
-          </div>
-  
-          <div *ngIf="_data?.number_of_active_ingredient && getColumnName('number_of_active_ingredient')">
-              <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("number_of_active_ingredient") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.number_of_active_ingredient, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.number_of_active_ingredient }}
-              </p>
-          </div>
-  
-        
-  
-          <div *ngIf="_data?.strength && getColumnName('strength')">
-              <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("strength") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.strength, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.strength }}
-              </p>
-          </div>
-          
-          <div *ngIf="_data?.product_monograph_veterinary_labelling && getColumnName('product_monograph_veterinary_labelling')">
-              <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("product_monograph_veterinary_labelling") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.product_monograph_veterinary_labelling, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.product_monograph_veterinary_labelling }}
-              </p>
-          </div>
-  
-          <div *ngIf="_data?.original_market_date_see_footnote1 && getColumnName('original_market_date_see_footnote1')">
-              <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("original_market_date_see_footnote1") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.original_market_date_see_footnote1, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.original_market_date_see_footnote1 }}
-              </p>
-          </div>
-  
-          <div *ngIf="_data?.biosimilar_biologic_drug && getColumnName('biosimilar_biologic_drug')">
-              <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("biosimilar_biologic_drug") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.biosimilar_biologic_drug, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.biosimilar_biologic_drug }}
-              </p>
-          </div>
-  
-          <div *ngIf="_data?.american_hospital_formulary_service_ahfs && getColumnName('american_hospital_formulary_service_ahfs')">
-              <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("american_hospital_formulary_service_ahfs") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.american_hospital_formulary_service_ahfs, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-16 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.american_hospital_formulary_service_ahfs }}
-              </p>
-          </div>
-  
-          <div *ngIf="_data?.notes && getColumnName('notes')">
-              <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("notes") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.notes, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.notes }}
-              </p>
-          </div>
-  
-          <div *ngIf="_data?.remarks && getColumnName('remarks')">
-              <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("remarks") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.remarks, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.remarks }}
-              </p>
-          </div>
-  
-          <div *ngIf="_data?.information_sources && getColumnName('information_sources')">
-              <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("information_sources") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.information_sources, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.information_sources }}
-              </p>
-          </div>
-  
-          <div *ngIf="_data?.created_at && getColumnName('created_at')">
-              <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("created_at") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.created_at, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.created_at }}
-              </p>
-          </div>
-  
-          <div *ngIf="_data?.id && getColumnName('id')">
-              <h1 class="font-bold"style="color:#312e81;"> {{ getColumnName("id") }}
-                  <span
-                                    class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                                    #copyBtn 
-(click)="handleCopy(_data?.id, copyBtn)"                                    ><i class="fas fa-copy"></i
-                                  ></span>
-              </h1>
-              <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-                  {{ _data?.id }}
-              </p>
-          </div>
-  
-       
-      </div>
-   
-      </div>
-   
-  </div>
-  <br>
+              " />
+
+
+            <div *ngIf="_data?.dosage_forms && getColumnName('dosage_forms')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("dosage_forms") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.dosage_forms, copyBtn)"><i class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.dosage_forms }}
+                </p>
+            </div>
+
+            <div *ngIf="_data?.schedules && getColumnName('schedules')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("schedules") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.schedules, copyBtn)"><i class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.schedules }}
+                </p>
+            </div>
+
+            <div *ngIf="_data?.list_of_active_ingredients && getColumnName('list_of_active_ingredients')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("list_of_active_ingredients") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.list_of_active_ingredients, copyBtn)"><i
+                            class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-16 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.list_of_active_ingredients }}
+                </p>
+            </div>
+
+
+        </div>
+
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+
+            <div *ngIf="_data?.current_status_date && getColumnName('current_status_date')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("current_status_date") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.current_status_date, copyBtn)"><i class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.current_status_date }}
+                </p>
+            </div>
+
+            <div *ngIf="_data?.ai_name && getColumnName('ai_name')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("ai_name") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.ai_name, copyBtn)"><i class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.ai_name }}
+                </p>
+            </div>
+
+            <div *ngIf="_data?.din && getColumnName('din')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("din") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.din, copyBtn)"><i class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.din }}
+                </p>
+            </div>
+
+
+            <div *ngIf="_data?.routes_of_administration && getColumnName('routes_of_administration')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("routes_of_administration") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.routes_of_administration, copyBtn)"><i
+                            class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.routes_of_administration }}
+                </p>
+            </div>
+
+
+            <div
+                *ngIf="_data?.active_ingredient_group_aig_number && getColumnName('active_ingredient_group_aig_number')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("active_ingredient_group_aig_number") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.active_ingredient_group_aig_number, copyBtn)"><i
+                            class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.active_ingredient_group_aig_number }}
+                </p>
+            </div>
+
+
+            <div
+                *ngIf="_data?.anatomical_therapeutic_chemical_atc && getColumnName('anatomical_therapeutic_chemical_atc')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("anatomical_therapeutic_chemical_atc") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.anatomical_therapeutic_chemical_atc, copyBtn)"><i
+                            class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.anatomical_therapeutic_chemical_atc }}
+                </p>
+            </div>
+
+        </div>
+
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+            <div *ngIf="_data?.current_status && getColumnName('current_status')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("current_status") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.current_status, copyBtn)"><i class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.current_status }}
+                </p>
+            </div>
+
+            <div *ngIf="_data?.class && getColumnName('class')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("class") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.class, copyBtn)"><i class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.class }}
+                </p>
+            </div>
+
+            <div *ngIf="_data?.number_of_active_ingredient && getColumnName('number_of_active_ingredient')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("number_of_active_ingredient") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.number_of_active_ingredient, copyBtn)"><i
+                            class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.number_of_active_ingredient }}
+                </p>
+            </div>
+
+
+
+            <div *ngIf="_data?.strength && getColumnName('strength')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("strength") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.strength, copyBtn)"><i class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.strength }}
+                </p>
+            </div>
+
+            <div
+                *ngIf="_data?.product_monograph_veterinary_labelling && getColumnName('product_monograph_veterinary_labelling')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("product_monograph_veterinary_labelling")
+                    }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.product_monograph_veterinary_labelling, copyBtn)"><i
+                            class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.product_monograph_veterinary_labelling }}
+                </p>
+            </div>
+
+            <div
+                *ngIf="_data?.original_market_date_see_footnote1 && getColumnName('original_market_date_see_footnote1')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("original_market_date_see_footnote1") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.original_market_date_see_footnote1, copyBtn)"><i
+                            class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.original_market_date_see_footnote1 }}
+                </p>
+            </div>
+
+            <div *ngIf="_data?.biosimilar_biologic_drug && getColumnName('biosimilar_biologic_drug')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("biosimilar_biologic_drug") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.biosimilar_biologic_drug, copyBtn)"><i
+                            class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.biosimilar_biologic_drug }}
+                </p>
+            </div>
+
+            <div
+                *ngIf="_data?.american_hospital_formulary_service_ahfs && getColumnName('american_hospital_formulary_service_ahfs')">
+                <h1 class="font-bold" style="color:#312e81;"> {{
+                    getColumnName("american_hospital_formulary_service_ahfs") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.american_hospital_formulary_service_ahfs, copyBtn)"><i
+                            class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-16 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.american_hospital_formulary_service_ahfs }}
+                </p>
+            </div>
+
+            <div *ngIf="_data?.notes && getColumnName('notes')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("notes") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.notes, copyBtn)"><i class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.notes }}
+                </p>
+            </div>
+
+            <div *ngIf="_data?.remarks && getColumnName('remarks')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("remarks") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.remarks, copyBtn)"><i class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.remarks }}
+                </p>
+            </div>
+
+            <div *ngIf="_data?.information_sources && getColumnName('information_sources')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("information_sources") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.information_sources, copyBtn)"><i class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.information_sources }}
+                </p>
+            </div>
+
+            <div *ngIf="_data?.created_at && getColumnName('created_at')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("created_at") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.created_at, copyBtn)"><i class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.created_at }}
+                </p>
+            </div>
+
+            <div *ngIf="_data?.id && getColumnName('id')">
+                <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("id") }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.id, copyBtn)"><i class="fas fa-copy"></i></span>
+                </h1>
+                <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
+                    {{ _data?.id }}
+                </p>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+<br>
