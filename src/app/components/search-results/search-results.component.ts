@@ -945,93 +945,168 @@ export class SearchResultsComponent {
     });
   }
 
-  private scientificDocsSearch(resultTabData: any): void {
+// private scientificDocsSearch(resultTabData: any): void {
 
-    console.log('Search Input:', resultTabData);
+//     console.log('Search Input:', resultTabData);
   
-    if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
-      console.log('Empty search parameters, skipping search.');
-      this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = {};
+//     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+//       console.log('Empty search parameters, skipping search.');
+//       this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = {};
          
-     this.setLoadingState.emit(false);
-      return;
-    }
+//      this.setLoadingState.emit(false);
+//       return;
+//     }
   
-    if (this.childApiBody?.[resultTabData.index]) {
-      this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name] = {};
-    } else {
-      this.childApiBody[resultTabData.index] = {};
-    }
+//     if (this.childApiBody?.[resultTabData.index]) {
+//       this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name] = {};
+//     } else {
+//       this.childApiBody[resultTabData.index] = {};
+//     }
   
-    this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name] = {
-        api_url: this.apiUrls.scientificDocs.searchSpecific,
-        search_type: resultTabData?.searchWith,
-        keyword:  ["272",
-    "287"],
-        // [resultTabData?.searchWithValue], // wrap in array to match API
-         // Additional fields required by API
-        draw: 1,
-        start: 0,
-        length: 10,
-        order: [
-          {
-            column: 0,
-            dir: 'asc'
-          }
-        ],
-        search: {
-          value: "AGROCHEMICAL"
-        },
-        columns: [
-          {
-            data: 'field_of_document',
-            searchable: 'true',
-            search: {
-              value: "AGROCHEMICAL"
-              // resultTabData?.searchWithValue
-            }
-          }
-        ]
+//     this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name] = {
+//         api_url: this.apiUrls.scientificDocs.searchSpecific,
+//         search_type: resultTabData?.searchWith,
+//         keyword:  ["272",
+//     "287"],
+//         // [resultTabData?.searchWithValue], // wrap in array to match API
+//          // Additional fields required by API
+//         draw: 1,
+//         start: 0,
+//         length: 10,
+//         order: [
+//           {
+//             column: 0,
+//             dir: 'asc'
+//           }
+//         ],
+//         search: {
+//           value: "AGROCHEMICAL"
+//         },
+//         columns: [
+//           {
+//             data: 'field_of_document',
+//             searchable: 'true',
+//             search: {
+//               value: "AGROCHEMICAL"
+//               // resultTabData?.searchWithValue
+//             }
+//           }
+//         ]
       
       
-    };
+//     };
   
-    console.log('Request Body:', this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]);
+//     console.log('Request Body:', this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]);
   
-    const tech_API = this.apiUrls.scientificDocs.columnList;
-    console.log('Calling Column List API:', tech_API);
-    //coloum list api response
-    this.columnListService.getColumnList(tech_API).subscribe({
-      next: (res: any) => {
+//     const tech_API = this.apiUrls.scientificDocs.columnList;
+//     console.log('Calling Column List API:', tech_API);
+//     //coloum list api response
+//     this.columnListService.getColumnList(tech_API).subscribe({
+//       next: (res: any) => {
         
-        const response = res?.data?.columns;
-        console.log('Column List API Response:', response);
-        Auth_operations.setColumnList(this.resultTabs.scientificDocs.name, response);
+//         const response = res?.data?.columns;
+//         console.log('Column List API Response:', response);
+//         Auth_operations.setColumnList(this.resultTabs.scientificDocs.name, response);
   
-        console.log('Calling Main Search API with:', this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]); 
+//         console.log('Calling Main Search API with:', this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]); 
   
-        this.mainSearchService.scientificDocsSpecific(this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]).subscribe({
-          next: (result: any) => {
-            console.log('Search API Result:', result);
-             this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name].count = result?.data?.recordsTotal;
-            // console.log('ema_count',result?.data?.ema_count);
-            this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = result.data;
-            console.log('ema_data',result?.data.data);
-            this.setLoadingState.emit(false);
-          },
-          error: (e) => {
-            console.error('Error during main search:', e);
-            this.setLoadingState.emit(false);
-          },
-        });
-      },
-      error: (e) => {
-        console.error('Error fetching column list:', e);
-        this.setLoadingState.emit(false);
-      },
-    });
+//         this.mainSearchService.scientificDocsSpecific(this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]).subscribe({
+//           next: (result: any) => {
+//             console.log('Search API Result:', result);
+//              this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name].count = result?.data?.recordsTotal;
+//             // console.log('ema_count',result?.data?.ema_count);
+//             this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = response;
+//             console.log('ema_data',response);
+//             this.setLoadingState.emit(false);
+//           },
+//           error: (e) => {
+//             console.error('Error during main search:', e);
+//             this.setLoadingState.emit(false);
+//           },
+//         });
+//       },
+//       error: (e) => {
+//         console.error('Error fetching column list:', e);
+//         this.setLoadingState.emit(false);
+//       },
+//     });
+//     }
+private scientificDocsSearch(resultTabData: any): void {
+  console.log('Search Input:', resultTabData);
+
+  if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+    console.log('Empty search parameters, skipping search.');
+    this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = {};
+    this.setLoadingState.emit(false);
+    return;
   }
-  
+
+  if (!this.childApiBody[resultTabData.index]) {
+    this.childApiBody[resultTabData.index] = {};
+  }
+
+  // Step 1: Prepare API body
+  this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name] = {
+    api_url: this.apiUrls.scientificDocs.searchSpecific,
+    search_type: resultTabData?.searchWith,
+    keyword: ["272", "287"],
+    draw: 1,
+    start: 0,
+    length: 10,
+    order: [{ column: 0, dir: 'asc' }],
+    search: { value: "AGROCHEMICAL" },
+    columns: [{
+      data: 'field_of_document',
+      searchable: 'true',
+      search: { value: "AGROCHEMICAL" }
+    }]
+  };
+
+  console.log('Request Body:', this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]);
+
+  // Step 2: Fetch Column List First
+  this.columnListService.getColumnList(this.apiUrls.scientificDocs.columnList).subscribe({
+    next: (res: any) => {
+      const columnList = res?.data?.columns || [];
+
+      console.log('Column List API Response:', columnList);
+
+      // Step 3: Save column list locally
+      Auth_operations.setColumnList(this.resultTabs.scientificDocs.name, columnList);
+
+      // ✅ SAVE to pass to component
+      this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = {
+        columns: columnList,  // <- for <app-scientific-docs-card>
+        rows: []              // <- we’ll fill this after searchSpecific
+      };
+
+      // Step 4: Call main search API
+      this.mainSearchService.scientificDocsSpecific(this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]).subscribe({
+        next: (result: any) => {
+          console.log('Search API Result:', result);
+
+          const dataRows = result?.data?.data || [];
+
+          // ✅ Append search result (rows) to saved structure
+          this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name].rows = dataRows;
+
+          this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name].count = result?.data?.recordsTotal;
+
+          this.setLoadingState.emit(false);
+        },
+        error: (e) => {
+          console.error('Error during main search:', e);
+          this.setLoadingState.emit(false);
+        },
+      });
+    },
+    error: (e) => {
+      console.error('Error fetching column list:', e);
+      this.setLoadingState.emit(false);
+    },
+  });
+}
+
   private performactivePatentSearch(resultTabData: any): void {
 
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {

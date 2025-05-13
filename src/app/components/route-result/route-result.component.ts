@@ -37,6 +37,8 @@ import { ScientificDocsComponent } from '../results-common/scientific-docs/scien
 
 export class RouteResultComponent {
 
+  public scientificDocsPayload: any[] = [];
+
   currentTabData: any = {}
   resultTabs: any = [];
   resultTabWithKeys: any = [];
