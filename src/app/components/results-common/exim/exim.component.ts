@@ -162,13 +162,35 @@ closeDropdowns() {
   //   };
   //   this.dataSource.filter = filterValue;
   // }
-  applyColumnFilter(column: string, event: any) {
-    const value = event.target.value.trim().toLowerCase();
-    this.dataSource.filterPredicate = (data: any, filter: string) =>
-      data[column]?.toString().toLowerCase().includes(filter);
-    this.dataSource.filter = value;
+  // applyColumnFilter(column: string, event: any) {
+  //   const value = event.target.value.trim().toLowerCase();
+  //   this.dataSource.filterPredicate = (data: any, filter: string) =>
+  //     data[column]?.toString().toLowerCase().includes(filter);
+  //   this.dataSource.filter = value;
     
-  }
+  // }
+  applyColumnFilter(column: string, event: any) {
+  const value = event.target.value.trim().toLowerCase();
+
+  // Debugging: log the column and value
+  console.log('Filtering Column:', column);
+  console.log('Input Value:', value);
+
+  // Set filter logic
+  this.dataSource.filterPredicate = (data: any, filter: string) => {
+    const columnValue = data[column]?.toString().toLowerCase();
+    console.log(`Row data:`, data);
+    console.log(`Column Value: "${columnValue}", Filter: "${filter}"`);
+    return columnValue.includes(filter);
+  };
+
+  // Apply the filter to dataSource
+  this.dataSource.filter = value;
+
+  // Debugging: confirm filter is set
+  console.log('Applied filter:', this.dataSource.filter);
+}
+
 
   // ✅ Download as PDF
   downloadPDF() {
