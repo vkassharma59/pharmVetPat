@@ -165,17 +165,17 @@ export class MainSearchService {
       .post(this.apiUrls.litigation.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
-  gppdDbSearchSpecific(props: any): Observable<any> {
-    const body = props;
-    return this.http
-      .post(this.apiUrls.spcDb.searchSpecific, body, { headers: this.headers })
-      .pipe(catchError(this.handleError));
-  }
-  getgppdDbColumnList(): Observable<any> {
-    return this.http
-      .get(this.apiUrls.spcDb.columnList, { headers: this.headers })
-      .pipe(catchError(this.handleError));
-  }
+  // gppdDbSearchSpecific(props: any): Observable<any> {
+  //   const body = props;
+  //   return this.http
+  //     .post(this.apiUrls.spcDb.searchSpecific, body, { headers: this.headers })
+  //     .pipe(catchError(this.handleError));
+  // }
+  // getgppdDbColumnList(): Observable<any> {
+  //   return this.http
+  //     .get(this.apiUrls.spcDb.columnList, { headers: this.headers })
+  //     .pipe(catchError(this.handleError));
+  // }
   scientific_docsSearchSpecific(props: any): Observable<any> {
     const body = props;
     return this.http
