@@ -10,6 +10,7 @@ import { saveAs } from 'file-saver';
 import { Sort } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { ScientificDocsComponent } from '../scientific-docs/scientific-docs.component';
 
 @Component({
   selector: 'app-scientific-docs-card',
@@ -38,64 +39,39 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   constructor(private cdr: ChangeDetectorRef) { }
 
-  // ngOnChanges(): void {
-  //   if (this.columnDefs) {
-  //     this.displayedColumns = this.columnDefs.map(col => col.value);
-  //     this.columnHeaders = this.columnDefs.reduce((acc, col) => {
-  //       acc[col.value] = col.label;
-  //       if (col.filterable) this.filterableColumns.push(col.value);
-  //       return acc;
-  //     }, {} as any);
-  //   }
+ngOnChanges(): void {
+  console.log('columnDefs:', this.columnDefs);
+ // Reset counter only when the component is first loaded
+   
+  if (this.columnDefs && this.columnDefs.length > 0) {
+    this.displayedColumns = [];
+    this.columnHeaders = {};
+    this.filterableColumns = [];
 
-  //   if (this.rowData) {
-  //     this.dataSource = new MatTableDataSource(this.rowData);
-  //   }
-  // }
+    // Check which columns have at least one non-empty value
+    for (const col of this.columnDefs) {
+      const colValue = col.value;
 
-  //  ngOnChanges(): void {
-  //   console.log('columnDefs:', this.columnDefs); // 👈 Check incoming value
+      const hasData = this.rowData?.some(row =>
+        row[colValue] !== null && row[colValue] !== undefined && row[colValue] !== ''
+      );
 
-  //   if (this.columnDefs && this.columnDefs.length > 0) {
-  //     this.displayedColumns = this.columnDefs.map(col => col.value);
-  //     this.columnHeaders = {};
-  //     this.filterableColumns = [];
-
-  //     this.columnDefs.forEach(col => {
-  //       this.columnHeaders[col.value] = col.label;
-  //     if (col.filterable == true || col.filterable == 'true') {
-  //         this.filterableColumns.push(col.value);
-  //         console.log('Filterable Columns------------------:',this.filterableColumns);
-  //       }
-  //     });
-  //     console.log('Filterable Columns:', this.filterableColumns);
-  //     console.log('Filterable Column Labels:', this.filterableColumns.map(col => this.columnHeaders[col]));
-  //   }
-
-  //   if (this.rowData) {
-  //     this.dataSource.data = this.rowData;
-  //   }
-  // }
-
-  ngOnChanges(): void {
-    console.log('columnDefs:', this.columnDefs);
-
-    if (this.columnDefs && this.columnDefs.length > 0) {
-      this.displayedColumns = this.columnDefs.map(col => col.value);
-      this.columnHeaders = {};
-      this.filterableColumns = [];
-
-      this.columnDefs.forEach(col => {
-        this.columnHeaders[col.value] = col.label;
-        this.filterableColumns.push(col.value);
-        console.log('✅ Added filterable column:', col.value);
-      });
-      console.log('✅ Final Filterable Columns:', this.filterableColumns);
-    }
-    if (this.rowData) {
-      this.dataSource.data = this.rowData;
+      if (hasData) {
+        this.displayedColumns.push(colValue); // ✅ Only include columns with at least one value
+        this.columnHeaders[colValue] = col.label;
+        this.filterableColumns.push(colValue);
+        console.log('✅ Showing column:', colValue);
+      } else {
+        console.log('🚫 Hiding column (empty data):', colValue);
+      }
     }
   }
+
+  if (this.rowData) {
+    this.dataSource.data = this.rowData;
+  }
+}
+
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -108,23 +84,6 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
     this.activeSort = sort.active;
     this.sortDirection = sort.direction;
   }
-
-  // applyColumnFilter(column: string, event: any): void {
-  //   const value = event.target.value?.trim().toLowerCase();
-  //   this.dataSource.filterPredicate = (data, filter) =>
-  //     data[column]?.toLowerCase().includes(filter);
-  //   this.dataSource.filter = value;
-  // }
-
-  // toggleDropdown(column: string, event: MouseEvent ): void {
-  //   event.stopPropagation();
-  //   this.openFilter[column] = !this.openFilter[column];
-  // }
-
-  // clearFilter(column: string, input: HTMLInputElement): void {
-  //   input.value = '';
-  //   this.applyColumnFilter(column, { target: { value: '' } });
-  // }
 
   scrollTable(direction: 'left' | 'right'): void {
     const container = document.querySelector('.scroll-container');
@@ -143,30 +102,21 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
     this.openFilter[column] = !this.openFilter[column];
   }
 
+  applyColumnFilter(column: string, event: any) {
+    const value = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    console.log('Filter value:', value);
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      const rowData = Object.values(data)
+        .map(v => v?.toString().toLowerCase())
+        .join(' '); // join all fields in one string
 
-  // applyColumnFilter(column: string, event: KeyboardEvent) {
-  //   const value = (event.target as HTMLInputElement).value.trim().toLowerCase();
-  //   this.dataSource.filterPredicate = (data: any, filter: string) => {
-  //     return data[column]?.toString().toLowerCase().includes(filter);
-  //   };
-  //   this.dataSource.filter = value;
-  // }
-applyColumnFilter(column: string, event: any) {
-  const value = (event.target as HTMLInputElement).value.trim().toLowerCase();
-  console.log('Filter value:', value);
-  this.dataSource.filterPredicate = (data: any, filter: string) => {
-    const rowData = Object.values(data)
-      .map(v => v?.toString().toLowerCase())
-      .join(' '); // join all fields in one string
+      console.log('Row data string for filter:', rowData);
+      return rowData.includes(filter);
+    };
+    this.dataSource.filter = value;
 
-    console.log('Row data string for filter:', rowData);
-    return rowData.includes(filter);
-  };
-  this.dataSource.filter = value;
-
-  console.log('Applied filter to dataSource:', this.dataSource.filter);
-}
-
+    console.log('Applied filter to dataSource:', this.dataSource.filter);
+  }
 
   clearFilter(column: string, input: HTMLInputElement) {
     input.value = '';
@@ -174,10 +124,6 @@ applyColumnFilter(column: string, event: any) {
     this.openFilter[column] = false;
   }
 
-  // selectFilterCondition(column: string, condition: string) {
-  //   console.log('Selected filter condition:', condition, 'for column:', column);
-  //   // You can apply condition logic here later
-  // }
   selectFilterOption(column: string, option: string): void {
     console.log(`Filter option for ${column}:`, option);
     this.openFilter[column] = false; // Close dropdown after selection
