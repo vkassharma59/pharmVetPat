@@ -73,7 +73,11 @@ export interface AppConfig {
       searchSpecific: string;
       columnList: string;
     };
-    scientific_docs:{
+       scientific_docs:{
+      searchSpecific: string;
+      columnList: string;
+    }
+     spcDb:{
       searchSpecific: string;
       columnList: string;
     }

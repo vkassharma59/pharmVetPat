@@ -1,5 +1,3 @@
-<!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
-
 <div class="table-container">
   <div class="search-container">
     <button mat-raised-button style="background: linear-gradient(192deg, rgb(131, 164, 236) 0%, rgb(79, 154, 240) 50%, rgba(0, 58, 219, 1) 100%);
@@ -27,28 +25,23 @@ color:#fff" (click)="downloadExcel()">Download Excel
       <!-- Scrollable Table Container -->
       <div class="scroll-container" #tableContainer>
         <table mat-table [dataSource]="dataSource" matSort class="custom-table">
-
           <!-- Dynamically render columns -->
-
-
           <ng-container *ngFor="let column of columnDefs" [matColumnDef]="column.value">
             <!-- Header cell with sort and filter -->
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell"
-              style="position: sticky; background-color: #73d4ff; color:white; border:2px solid white;overflow:visible">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="header-cell  text-white"
+              style="position: sticky; background-color:#3886d8; border:2px solid white;overflow:visible">
 
               <div class="header-content">
                 <div class="d-flex align-items-center">
-                  <span>{{ column.name }}</span>
-                  <!-- <i class="fa-solid" [ngClass]="{
-         'fa-sort-up': activeSort === column && sortDirection === 'asc',
-         'fa-sort-down': activeSort === column && sortDirection === 'desc',
-         'fa-sort': activeSort !== column
-       }" style="margin-left: 8px;"></i> -->
-                  <i class="fa-solid" [ngClass]="{
+                  <span style="font-size: 18;font-weight: 400;">{{ column.name }}</span>
+          <i class="fa-solid" 
+                  [ngClass]="{
      'fa-sort-up': activeSort === column.name && sortDirection === 'asc',
      'fa-sort-down': activeSort === column.name && sortDirection === 'desc',
      'fa-sort': activeSort !== column.name
-   }" style="margin-left: 8px;"></i>
+
+   }"
+    style="margin-left: 8px;"></i>
 
                 </div>
                 <ng-container *ngIf="filterableColumns.includes(column.value)">
@@ -86,7 +79,11 @@ color:#fff" (click)="downloadExcel()">Download Excel
             <td mat-cell *matCellDef="let element">
               <ng-container [ngSwitch]="column.value">
                 <img *ngSwitchCase="'flag'" [src]="element[column.value]" alt="flag" class="flag-img" />
-                <span *ngSwitchDefault>{{ element[column.value] }}</span>
+                <span *ngSwitchDefault>
+                   <div class="scrollable-text">
+                    {{ element[column.value] }}
+                  </div>
+                  </span>
               </ng-container>
             </td>
           </ng-container>
