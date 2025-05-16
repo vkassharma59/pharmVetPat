@@ -29,7 +29,7 @@ color:#fff" (click)="downloadExcel()">Download Excel
           <ng-container *ngFor="let column of columnDefs" [matColumnDef]="column.value">
             <!-- Header cell with sort and filter -->
             <th mat-header-cell *matHeaderCellDef  mat-sort-header class="header-cell  text-white"
-              style="position: sticky; background-color:#3886d8; border:2px solid white;overflow:visible">
+              style="position: sticky; background-color:#3886d8; border:2px solid white;overflow:visible;padding-top: 8px;padding-bottom: 5px;">
 
               <div class="header-content">
                 <div class="d-flex align-items-center">
@@ -46,7 +46,7 @@ color:#fff" (click)="downloadExcel()">Download Excel
                 </div>
                 <ng-container *ngIf="filterableColumns.includes(column.value)">
                   <div style="display:flex; align-items: center; font-size: 14px; justify-content: space-between;">
-                    <input #filterInput matInput placeholder="Filter" (keyup)="applyColumnFilter(column, $event)" style="margin-top: 8px;
+                    <input #filterInput matInput placeholder="Filter" (keyup)="applyColumnFilter(column, $event)" style="margin-top: 5px;
                   border-radius: 7px;
                   padding: 5px;
                   color:black;" />

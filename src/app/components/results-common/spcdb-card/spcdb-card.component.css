@@ -209,7 +209,7 @@ button[color="warn"] {
   display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #73d4ff ;
+    background-color:#3886d8;
     margin: 5px;
 }
 
@@ -366,4 +366,3 @@ margin: 10px;
 .scrollable-text::-webkit-scrollbar-track {
   background: #f1f1f1e7;
 }
-

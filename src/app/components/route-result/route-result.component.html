@@ -121,13 +121,12 @@
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-imp>
     </ng-container>
 
-    <ng-container *ngSwitchCase="resultTabWithKeys.gppdDb.name">
-      <app-gppd-db>
-      <!-- [data]="_dataItem.gppdDb"
-        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.gppdDb.name]"
+     <ng-container *ngSwitchCase="resultTabWithKeys.gppdDb.name">
+      <app-gppd-db [data]="_dataItem.gppdDb"
+       [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.gppdDb.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
-        (handleResultTabData)="handleChildPaginationSearch.emit($event)" -->
-        </app-gppd-db>
+        (handleResultTabData)="handleChildPaginationSearch.emit($event)">
+      </app-gppd-db>
     </ng-container>
     
     <ng-container *ngSwitchCase="resultTabWithKeys.spcDb.name">
