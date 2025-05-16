@@ -284,17 +284,24 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
-        break;      
-        case this.resultTabs?.scientificDocs.name:
+        break;
+      case this.resultTabs?.scientificDocs.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.scientificDocs.name]).length === 0) {
           this.scientificDocsSearch(resultTabData);
         } else {
           this.setLoadingState.emit(false);
         }
         break;
-        case this.resultTabs?.spcDb.name:
+      case this.resultTabs?.spcDb.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.spcDb.name]).length === 0) {
           this.spcDbSearch(resultTabData);
+        } else {
+          this.setLoadingState.emit(false);
+        }
+        break;
+      case this.resultTabs?.gppdDb.name:
+        if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.gppdDb.name]).length === 0) {
+          this.gppdDbSearch(resultTabData);
         } else {
           this.setLoadingState.emit(false);
         }
@@ -312,7 +319,7 @@ export class SearchResultsComponent {
       return;
     }
 
-    if(this.childApiBody?.[resultTabData.index]) {
+    if (this.childApiBody?.[resultTabData.index]) {
       this.childApiBody[resultTabData.index][this.resultTabs.technicalRoutes.name] = {};
     } else {
       this.childApiBody[resultTabData.index] = {};
@@ -363,7 +370,7 @@ export class SearchResultsComponent {
       return;
     }
 
-    if(this.childApiBody?.[resultTabData.index]) {
+    if (this.childApiBody?.[resultTabData.index]) {
       this.childApiBody[resultTabData.index][this.resultTabs.productInfo.name] = {};
     } else {
       this.childApiBody[resultTabData.index] = {};
@@ -413,7 +420,7 @@ export class SearchResultsComponent {
       return;
     }
 
-    if(this.childApiBody?.[resultTabData.index]) {
+    if (this.childApiBody?.[resultTabData.index]) {
       this.childApiBody[resultTabData.index][this.resultTabs.chemicalDirectory.name] = {};
     } else {
       this.childApiBody[resultTabData.index] = {};
@@ -463,7 +470,7 @@ export class SearchResultsComponent {
       return;
     }
 
-    if(this.childApiBody?.[resultTabData.index]) {
+    if (this.childApiBody?.[resultTabData.index]) {
       this.childApiBody[resultTabData.index][this.resultTabs.impurity.name] = {};
     } else {
       this.childApiBody[resultTabData.index] = {};
@@ -513,7 +520,7 @@ export class SearchResultsComponent {
       return;
     }
 
-    if(this.childApiBody?.[resultTabData.index]) {
+    if (this.childApiBody?.[resultTabData.index]) {
       this.childApiBody[resultTabData.index][this.resultTabs.chemiTracker.name] = {};
     } else {
       this.childApiBody[resultTabData.index] = {};
@@ -563,7 +570,7 @@ export class SearchResultsComponent {
       return;
     }
 
-    if(this.childApiBody?.[resultTabData.index]) {
+    if (this.childApiBody?.[resultTabData.index]) {
       this.childApiBody[resultTabData.index][this.resultTabs.canadaApproval.name] = {};
     } else {
       this.childApiBody[resultTabData.index] = {};
@@ -611,7 +618,7 @@ export class SearchResultsComponent {
       return;
     }
 
-    if(this.childApiBody?.[resultTabData.index]) {
+    if (this.childApiBody?.[resultTabData.index]) {
       this.childApiBody[resultTabData.index][this.resultTabs.japanApproval.name] = {};
     } else {
       this.childApiBody[resultTabData.index] = {};
@@ -660,7 +667,7 @@ export class SearchResultsComponent {
       return;
     }
 
-    if(this.childApiBody?.[resultTabData.index]) {
+    if (this.childApiBody?.[resultTabData.index]) {
       this.childApiBody[resultTabData.index][this.resultTabs.koreaApproval.name] = {};
     } else {
       this.childApiBody[resultTabData.index] = {};
@@ -710,7 +717,7 @@ export class SearchResultsComponent {
       return;
     }
 
-    if(this.childApiBody?.[resultTabData.index]) {
+    if (this.childApiBody?.[resultTabData.index]) {
       this.childApiBody[resultTabData.index][this.resultTabs.indianMedicine.name] = {};
     } else {
       this.childApiBody[resultTabData.index] = {};
@@ -760,7 +767,7 @@ export class SearchResultsComponent {
       return;
     }
 
-    if(this.childApiBody?.[resultTabData.index]) {
+    if (this.childApiBody?.[resultTabData.index]) {
       this.childApiBody[resultTabData.index][this.resultTabs.litigation.name] = {};
     } else {
       this.childApiBody[resultTabData.index] = {};
@@ -809,8 +816,8 @@ export class SearchResultsComponent {
       this.setLoadingState.emit(false);
       return;
     }
-    
-    if(this.childApiBody?.[resultTabData.index]) {
+
+    if (this.childApiBody?.[resultTabData.index]) {
       this.childApiBody[resultTabData.index][this.resultTabs.impPatents.name] = {};
     } else {
       this.childApiBody[resultTabData.index] = {};
@@ -860,7 +867,7 @@ export class SearchResultsComponent {
       return;
     }
 
-    if(this.childApiBody?.[resultTabData.index]) {
+    if (this.childApiBody?.[resultTabData.index]) {
       this.childApiBody[resultTabData.index][this.resultTabs.europeApproval.name] = {};
     } else {
       this.childApiBody[resultTabData.index] = {};
@@ -910,7 +917,7 @@ export class SearchResultsComponent {
       return;
     }
 
-    if(this.childApiBody?.[resultTabData.index]) {
+    if (this.childApiBody?.[resultTabData.index]) {
       this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name] = {};
     } else {
       this.childApiBody[resultTabData.index] = {};
@@ -951,315 +958,234 @@ export class SearchResultsComponent {
       },
     });
   }
-// private gppdDbSearch(resultTabData: any): void {
-//   console.log('Search Input:', resultTabData);
-//   if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
-//     console.log('--------Empty spcdb search parameters, skipping search.');
-//     this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name] = {};
-//     this.setLoadingState.emit(false);
-//     return;
-//   }
 
-//   if (!this.childApiBody[resultTabData.index]) {
-//     this.childApiBody[resultTabData.index] = {};
-//   }
+  private scientificDocsSearch(resultTabData: any): void {
+    console.log('Search Input:', resultTabData);
 
-//   // Step 1: Prepare API body
-//   this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name] = {
-//     api_url: this.apiUrls.gppdDb.searchSpecific,
-//     search_type: resultTabData?.searchWith,
-//     keyword: ["10239",
-//     "19677",
-//     "10403"],
-//     draw: 1,
-//     start: 0,
-//     length: 10,
-//     order: [{ column: 0, dir: 'asc' }],
-//     search: { value: "Belgium" },
-//     columns: [{
-//       data: 'country',
-//       searchable: 'true',
-//       search: { value: "Belgium" }
-//     }]
-//   };
-
-//   console.log('Request Body spcdb:', this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name]);
-
-//   // Step 2: Fetch Column List First
-//   this.columnListService.getColumnList(this.apiUrls.gppdDb.columnList).subscribe({
-//     next: (res: any) => {
-//       const columnList = res?.data?.columns || [];
-
-//       console.log('Column List API Response:', columnList);
-
-//       // Step 3: Save column list locally
-//       Auth_operations.setColumnList(this.resultTabs.gppdDb.name, columnList);
-
-//       // ✅ SAVE to pass to component
-//       this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name] = {
-//         columns: columnList,  // <- for <app-scientific-docs-card>
-//         rows: []              // <- we’ll fill this after searchSpecific
-//       };
-
-//       // Step 4: Call main search API
-//       this.mainSearchService.gppdDbSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name]).subscribe({
-//         next: (result: any) => {
-//           console.log('Search API Result:', result);
-//           const dataRows = result?.data?.data || [];
-
-//           // ✅ Append search result (rows) to saved structure
-//           this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name].rows = dataRows;
-//           this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name].count = result?.data?.recordsTotal;
-//           this.setLoadingState.emit(false);
-//         },
-//         error: (e) => {
-//           console.error('Error during main search:', e);
-//           this.setLoadingState.emit(false);
-//         },
-//       });
-//     },
-//     error: (e) => {
-//       console.error('Error fetching column list:', e);
-//       this.setLoadingState.emit(false);
-//     },
-//   });
-// }
-// private scientificDocsSearch(resultTabData: any): void {
-
-//     console.log('Search Input:', resultTabData);
-  
-//     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
-//       console.log('Empty search parameters, skipping search.');
-//       this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = {};
-         
-//      this.setLoadingState.emit(false);
-//       return;
-//     }
-  
-//     if (this.childApiBody?.[resultTabData.index]) {
-//       this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name] = {};
-//     } else {
-//       this.childApiBody[resultTabData.index] = {};
-//     }
-  
-//     this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name] = {
-//         api_url: this.apiUrls.scientificDocs.searchSpecific,
-//         search_type: resultTabData?.searchWith,
-//         keyword:  ["272",
-//     "287"],
-//         // [resultTabData?.searchWithValue], // wrap in array to match API
-//          // Additional fields required by API
-//         draw: 1,
-//         start: 0,
-//         length: 10,
-//         order: [
-//           {
-//             column: 0,
-//             dir: 'asc'
-//           }
-//         ],
-//         search: {
-//           value: "AGROCHEMICAL"
-//         },
-//         columns: [
-//           {
-//             data: 'field_of_document',
-//             searchable: 'true',
-//             search: {
-//               value: "AGROCHEMICAL"
-//               // resultTabData?.searchWithValue
-//             }
-//           }
-//         ]
-      
-      
-//     };
-  
-//     console.log('Request Body:', this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]);
-  
-//     const tech_API = this.apiUrls.scientificDocs.columnList;
-//     console.log('Calling Column List API:', tech_API);
-//     //coloum list api response
-//     this.columnListService.getColumnList(tech_API).subscribe({
-//       next: (res: any) => {
-        
-//         const response = res?.data?.columns;
-//         console.log('Column List API Response:', response);
-//         Auth_operations.setColumnList(this.resultTabs.scientificDocs.name, response);
-  
-//         console.log('Calling Main Search API with:', this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]); 
-  
-//         this.mainSearchService.scientificDocsSpecific(this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]).subscribe({
-//           next: (result: any) => {
-//             console.log('Search API Result:', result);
-//              this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name].count = result?.data?.recordsTotal;
-//             // console.log('ema_count',result?.data?.ema_count);
-//             this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = response;
-//             console.log('ema_data',response);
-//             this.setLoadingState.emit(false);
-//           },
-//           error: (e) => {
-//             console.error('Error during main search:', e);
-//             this.setLoadingState.emit(false);
-//           },
-//         });
-//       },
-//       error: (e) => {
-//         console.error('Error fetching column list:', e);
-//         this.setLoadingState.emit(false);
-//       },
-//     });
-//     }
-private scientificDocsSearch(resultTabData: any): void {
-  console.log('Search Input:', resultTabData);
-
-  if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
-    console.log('Empty   search parameters, skipping search.');
-    this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = {};
-    this.setLoadingState.emit(false);
-    return;
-  }
-
-  if (!this.childApiBody[resultTabData.index]) {
-    this.childApiBody[resultTabData.index] = {};
-  }
-
-  // Step 1: Prepare API body
-  this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name] = {
-    api_url: this.apiUrls.scientificDocs.searchSpecific,
-    search_type: resultTabData?.searchWith,
-    keyword: ["272", "287"],
-    draw: 1,
-    start: 0,
-    length: 20,
-    order: [{ column: 0, dir: 'asc' }],
-    search: { value: "AGROCHEMICAL" },
-    columns: [{
-      data: 'field_of_document',
-      searchable: 'true',
-      search: { value: "AGROCHEMICAL" }
-    }]
-  };
-
-  console.log('Request Body:', this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]);
-
-  // Step 2: Fetch Column List First
-  this.columnListService.getColumnList(this.apiUrls.scientificDocs.columnList).subscribe({
-    next: (res: any) => {
-      const columnList = res?.data?.columns || [];
-
-      console.log('Column List API Response:', columnList);
-
-      // Step 3: Save column list locally
-      Auth_operations.setColumnList(this.resultTabs.scientificDocs.name, columnList);
-
-      // ✅ SAVE to pass to component
-      this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = {
-        columns: columnList,  // <- for <app-scientific-docs-card>
-        rows: []              // <- we’ll fill this after searchSpecific
-      };
-
-      // Step 4: Call main search API
-      this.mainSearchService.scientificDocsSpecific(this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]).subscribe({
-        next: (result: any) => {
-          console.log('Search API Result:', result);
-
-          const dataRows = result?.data?.data || [];
-
-          // ✅ Append search result (rows) to saved structure
-          this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name].rows = dataRows;
-
-          this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name].count = result?.data?.recordsTotal;
-
-          this.setLoadingState.emit(false);
-        },
-        error: (e) => {
-          console.error('Error during main search:', e);
-          this.setLoadingState.emit(false);
-        },
-      });
-    },
-    error: (e) => {
-      console.error('Error fetching column list:', e);
+    if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+      console.log('Empty   search parameters, skipping search.');
+      this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = {};
       this.setLoadingState.emit(false);
-    },
-  });
-}
-private spcDbSearch(resultTabData: any): void {
-  console.log('Search Input:', resultTabData);
-  if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
-    console.log('--------Empty spcdb search parameters, skipping search.');
-    this.allDataSets[resultTabData.index][this.resultTabs.spcDb.name] = {};
-    this.setLoadingState.emit(false);
-    return;
+      return;
+    }
+
+    if (!this.childApiBody[resultTabData.index]) {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
+    // Step 1: Prepare API body
+    this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name] = {
+      api_url: this.apiUrls.scientificDocs.searchSpecific,
+      search_type: resultTabData?.searchWith,
+      keyword: ["272", "287"],
+      draw: 1,
+      start: 0,
+      length: 20,
+      order: [{ column: 0, dir: 'asc' }],
+      search: { value: "AGROCHEMICAL" },
+      columns: [{
+        data: 'field_of_document',
+        searchable: 'true',
+        search: { value: "AGROCHEMICAL" }
+      }]
+    };
+
+    console.log('Request Body:', this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]);
+
+    // Step 2: Fetch Column List First
+    this.columnListService.getColumnList(this.apiUrls.scientificDocs.columnList).subscribe({
+      next: (res: any) => {
+        const columnList = res?.data?.columns || [];
+
+        console.log('Column List API Response:', columnList);
+
+        // Step 3: Save column list locally
+        Auth_operations.setColumnList(this.resultTabs.scientificDocs.name, columnList);
+
+        // ✅ SAVE to pass to component
+        this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = {
+          columns: columnList,  // <- for <app-scientific-docs-card>
+          rows: []              // <- we’ll fill this after searchSpecific
+        };
+
+        // Step 4: Call main search API
+        this.mainSearchService.scientificDocsSpecific(this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]).subscribe({
+          next: (result: any) => {
+            console.log('Search API Result:', result);
+
+            const dataRows = result?.data?.data || [];
+
+            // ✅ Append search result (rows) to saved structure
+            this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name].rows = dataRows;
+
+            this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name].count = result?.data?.recordsTotal;
+
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
   }
-
-  if (!this.childApiBody[resultTabData.index]) {
-    this.childApiBody[resultTabData.index] = {};
-  }
-
-  // Step 1: Prepare API body
-  this.childApiBody[resultTabData.index][this.resultTabs.spcDb.name] = {
-    api_url: this.apiUrls.spcDb.searchSpecific,
-    search_type: resultTabData?.searchWith,
-    keyword: ["10239",
-    "19677",
-    "10403"],
-    draw: 1,
-    start: 0,
-    length: 10,
-    order: [{ column: 0, dir: 'asc' }],
-    search: { value: "Belgium" },
-    columns: [{
-      data: 'country',
-      searchable: 'true',
-      search: { value: "Belgium" }
-    }]
-  };
-
-  console.log('Request Body spcdb:', this.childApiBody[resultTabData.index][this.resultTabs.spcDb.name]);
-
-  // Step 2: Fetch Column List First
-  this.columnListService.getColumnList(this.apiUrls.spcDb.columnList).subscribe({
-    next: (res: any) => {
-      const columnList = res?.data?.columns || [];
-
-      console.log('Column List API Response:', columnList);
-
-      // Step 3: Save column list locally
-      Auth_operations.setColumnList(this.resultTabs.spcDb.name, columnList);
-
-      // ✅ SAVE to pass to component
-      this.allDataSets[resultTabData.index][this.resultTabs.spcDb.name] = {
-        columns: columnList,  // <- for <app-scientific-docs-card>
-        rows: []              // <- we’ll fill this after searchSpecific
-      };
-
-      // Step 4: Call main search API
-      this.mainSearchService.spcdbSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.spcDb.name]).subscribe({
-        next: (result: any) => {
-          console.log('Search API Result:', result);
-
-          const dataRows = result?.data?.data || [];
-
-          // ✅ Append search result (rows) to saved structure
-          this.allDataSets[resultTabData.index][this.resultTabs.spcDb.name].rows = dataRows;
-          this.childApiBody[resultTabData.index][this.resultTabs.spcDb.name].count = result?.data?.recordsTotal;
-          this.setLoadingState.emit(false);
-        },
-        error: (e) => {
-          console.error('Error during main search:', e);
-          this.setLoadingState.emit(false);
-        },
-      });
-    },
-    error: (e) => {
-      console.error('Error fetching column list:', e);
+  private spcDbSearch(resultTabData: any): void {
+    console.log('Search Input:', resultTabData);
+    if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+      console.log('--------Empty spcdb search parameters, skipping search.');
+      this.allDataSets[resultTabData.index][this.resultTabs.spcDb.name] = {};
       this.setLoadingState.emit(false);
-    },
-  });
-}
+      return;
+    }
 
+    if (!this.childApiBody[resultTabData.index]) {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
+    // Step 1: Prepare API body
+    this.childApiBody[resultTabData.index][this.resultTabs.spcDb.name] = {
+      api_url: this.apiUrls.spcDb.searchSpecific,
+      search_type: resultTabData?.searchWith,
+      keyword: ["10239",
+        "19677",
+        "10403"],
+      draw: 1,
+      start: 0,
+      length: 10,
+      order: [{ column: 0, dir: 'asc' }],
+      search: { value: "Belgium" },
+      columns: [{
+        data: 'country',
+        searchable: 'true',
+        search: { value: "Belgium" }
+      }]
+    };
+
+    console.log('Request Body spcdb:', this.childApiBody[resultTabData.index][this.resultTabs.spcDb.name]);
+
+    // Step 2: Fetch Column List First
+    this.columnListService.getColumnList(this.apiUrls.spcDb.columnList).subscribe({
+      next: (res: any) => {
+        const columnList = res?.data?.columns || [];
+
+        console.log('Column List API Response:', columnList);
+
+        // Step 3: Save column list locally
+        Auth_operations.setColumnList(this.resultTabs.spcDb.name, columnList);
+
+        // ✅ SAVE to pass to component
+        this.allDataSets[resultTabData.index][this.resultTabs.spcDb.name] = {
+          columns: columnList,  // <- for <app-scientific-docs-card>
+          rows: []              // <- we’ll fill this after searchSpecific
+        };
+
+        // Step 4: Call main search API
+        this.mainSearchService.spcdbSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.spcDb.name]).subscribe({
+          next: (result: any) => {
+            console.log('Search API Result:', result);
+
+            const dataRows = result?.data?.data || [];
+
+            // ✅ Append search result (rows) to saved structure
+            this.allDataSets[resultTabData.index][this.resultTabs.spcDb.name].rows = dataRows;
+            this.childApiBody[resultTabData.index][this.resultTabs.spcDb.name].count = result?.data?.recordsTotal;
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
+
+  private gppdDbSearch(resultTabData: any, pageNo: number = 1): void {
+    console.log('Search Input:', resultTabData);
+    const pageSize = 10;
+    const start = (pageNo - 1) * pageSize;
+
+    if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+      console.log('--------Empty spcdb search parameters, skipping search.');
+      this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
+
+    if (!this.childApiBody[resultTabData.index]) {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
+    // Step 1: Prepare API body
+    this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name] = {
+      api_url: this.apiUrls.gppdDb.searchSpecific,
+      search_type: resultTabData?.searchWith,
+      keyword7: resultTabData?.searchWithValue,
+      keyword: ["18419",
+        "11267"],
+      draw: 1,
+      start: start,
+      length: 100,
+      order: [{ column: 0, dir: 'asc' }],
+      search: { value: "BRAZIL" },
+      columns: [{
+        data: 'country',
+        searchable: 'true',
+        search: { value: "BRAZIL" }
+      }]
+    };
+
+    console.log('Request Body spcdb:', this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name]);
+
+    // Step 2: Fetch Column List First
+    this.columnListService.getColumnList(this.apiUrls.gppdDb.columnList).subscribe({
+      next: (res: any) => {
+        const columnList = res?.data?.columns || [];
+
+        console.log('Column List API Response:', columnList);
+
+        // Step 3: Save column list locally
+        Auth_operations.setColumnList(this.resultTabs.gppdDb.name, columnList);
+
+        // ✅ SAVE to pass to component
+        this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name] = {
+          columns: columnList,  // <- for <app-scientific-docs-card>
+          rows: []              // <- we’ll fill this after searchSpecific
+        };
+
+        // Step 4: Call main search API
+        this.mainSearchService.gppdDbSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name]).subscribe({
+          next: (result: any) => {
+            console.log('Search API Result:', result);
+
+            const dataRows = result?.data?.data || [];
+
+            // ✅ Append search result (rows) to saved structure
+            this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name].rows = dataRows;
+            this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name].count = result?.data?.recordsTotal;
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
   private performactivePatentSearch(resultTabData: any): void {
 
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
@@ -1268,7 +1194,7 @@ private spcDbSearch(resultTabData: any): void {
       return;
     }
 
-    if(this.childApiBody?.[resultTabData.index]) {
+    if (this.childApiBody?.[resultTabData.index]) {
       this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name] = {};
     } else {
       this.childApiBody[resultTabData.index] = {};

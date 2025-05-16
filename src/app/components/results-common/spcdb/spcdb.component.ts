@@ -1,4 +1,3 @@
-
 import {
   Component,
   EventEmitter,
@@ -9,7 +8,6 @@ import {
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { CommonModule } from '@angular/common';
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
-import { ScientificDocsCardComponent } from '../scientific-docs-card/scientific-docs-card.component';
 import { SpcdbCardComponent } from '../spcdb-card/spcdb-card.component';
 
 @Component({

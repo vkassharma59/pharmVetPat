@@ -82,14 +82,13 @@ export const AppConfigValues: AppConfig = {
         searchSpecific: `${appUrl.apiUrl}/litigation/search-specific`,
         columnList: `${appUrl.apiUrl}/litigation/column-list`,
       },
-     
-      scientific_docs: {
-        searchSpecific: `${appUrl.apiUrl}/scientific-docs/column-list`,
-        columnList: `${appUrl.apiUrl}/scientific-docs/column-list`,
-      },
       spcDb: {
         searchSpecific: `${appUrl.apiUrl}/spc/search-specific`,
         columnList: `${appUrl.apiUrl}/spc/column-list`,
+      },
+      gppdDb: {
+        searchSpecific: `${appUrl.apiUrl}/gppd/search-specific`,
+        columnList: `${appUrl.apiUrl}/gppd/column-list`,
       },
       chemiTracker: {
         searchSpecific: `${appUrl.apiUrl}/chemi-tracker/search-specific`,
