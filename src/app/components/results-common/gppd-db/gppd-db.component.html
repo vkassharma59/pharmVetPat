@@ -1,4 +1,4 @@
-<ng-container *ngIf="_data?.rows?.length > 0; else noData">
+<ng-container  *ngIf="_data?.rows?.length > 0; else noData">
     <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper justify-between">
         <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
             Total Records : {{currentChildAPIBody?.count }}
@@ -10,7 +10,7 @@
 
     <div class="d-flex align-items-center me-3">
       <i class="fa-solid fa-flask me-2"></i>
-      <span>AgroPharm Scientific Docs >> SITAGLIPTIN PHOSPHATE</span>
+      <span>AgroPharm Spc DB >> SITAGLIPTIN PHOSPHATE</span>
     </div>
   </div>
 
@@ -19,10 +19,10 @@
 </div>
    
 <div >
-  <app-scientific-docs-card
+  <app-gppd-db-card
   [columnDefs]="_data?.columns"
   [rowData]="_data?.rows">
-</app-scientific-docs-card>
+</app-gppd-db-card>
  </div>          
     <app-child-paging
         [currentChildAPIBody]="currentChildAPIBody"
@@ -33,7 +33,7 @@
   <ng-template #noData>
     <div class="card">
         <div class="card-header text-white bg-primary">
-            {{resultTabs.scientificDocs?.label}}
+            {{resultTabs.gppdDb?.label}}
         </div>
         <div class="card-body">
             <p>No Data found!</p>

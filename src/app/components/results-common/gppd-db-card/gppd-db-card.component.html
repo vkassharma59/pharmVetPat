@@ -28,20 +28,18 @@ color:#fff" (click)="downloadExcel()">Download Excel
           <!-- Dynamically render columns -->
           <ng-container *ngFor="let column of columnDefs" [matColumnDef]="column.value">
             <!-- Header cell with sort and filter -->
-            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="header-cell  text-white"
-              style="position: sticky; background-color:#3886d8; border:2px solid white;overflow:visible;padding-top: 8px;padding-bottom: 5px;">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell"
+              style="position: sticky; background-color: #3886d8; color:white; border:2px solid white;overflow:visible; padding-top: 8px;padding-bottom: 5px;" >
 
               <div class="header-content">
                 <div class="d-flex align-items-center">
-                  <span style="font-size: 18;font-weight: 400;">{{ column.name }}</span>
-          <i class="fa-solid" 
-                  [ngClass]="{
+                  <span>{{ column.name }}</span>
+                  <i class="fa-solid" [ngClass]="{
      'fa-sort-up': activeSort === column.name && sortDirection === 'asc',
      'fa-sort-down': activeSort === column.name && sortDirection === 'desc',
      'fa-sort': activeSort !== column.name
 
-   }"
-    style="margin-left: 8px;"></i>
+   }" style="margin-left: 8px;"></i>
 
                 </div>
                 <ng-container *ngIf="filterableColumns.includes(column.value)">
@@ -80,10 +78,10 @@ color:#fff" (click)="downloadExcel()">Download Excel
               <ng-container [ngSwitch]="column.value">
                 <img *ngSwitchCase="'flag'" [src]="element[column.value]" alt="flag" class="flag-img" />
                 <span *ngSwitchDefault>
-                   <div class="scrollable-text">
+                  <div class="scrollable-text">
                     {{ element[column.value] }}
                   </div>
-                  </span>
+                </span>
               </ng-container>
             </td>
           </ng-container>
@@ -98,4 +96,6 @@ color:#fff" (click)="downloadExcel()">Download Excel
     </div>
   </div>
 </div>
-<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+<mat-paginator 
+[pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+></mat-paginator>

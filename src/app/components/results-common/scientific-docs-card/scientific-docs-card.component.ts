@@ -10,16 +10,17 @@ import { saveAs } from 'file-saver';
 import { Sort } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { ScientificDocsComponent } from '../scientific-docs/scientific-docs.component';
 
 @Component({
   selector: 'app-scientific-docs-card',
   standalone: true,
   imports: [CommonModule,
-     MatTableModule,
-     MatSortModule, 
-     MatInputModule,
-     MatFormFieldModule,
-     MatPaginatorModule],
+    MatTableModule,
+    MatSortModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatPaginatorModule],
   templateUrl: './scientific-docs-card.component.html',
   styleUrl: './scientific-docs-card.component.css'
 })
@@ -38,37 +39,38 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   constructor(private cdr: ChangeDetectorRef) { }
 
-  // ngOnChanges(): void {
-  //   if (this.columnDefs) {
-  //     this.displayedColumns = this.columnDefs.map(col => col.value);
-  //     this.columnHeaders = this.columnDefs.reduce((acc, col) => {
-  //       acc[col.value] = col.label;
-  //       if (col.filterable) this.filterableColumns.push(col.value);
-  //       return acc;
-  //     }, {} as any);
-  //   }
+ngOnChanges(): void {
+  console.log('columnDefs:', this.columnDefs);
+ // Reset counter only when the component is first loaded
+   
+  if (this.columnDefs && this.columnDefs.length > 0) {
+    this.displayedColumns = [];
+    this.columnHeaders = {};
+    this.filterableColumns = [];
 
-  //   if (this.rowData) {
-  //     this.dataSource = new MatTableDataSource(this.rowData);
-  //   }
-  // }
-  ngOnChanges(): void {
-    if (this.columnDefs) {
-      this.displayedColumns = this.columnDefs.map(col => col.value);
-      this.columnHeaders = {};
-      this.filterableColumns = [];
-  
-      this.columnDefs.forEach(col => {
-        this.columnHeaders[col.value] = col.label;
-        if (col.filterable) this.filterableColumns.push(col.value);
-      });
-    }
-  
-    if (this.rowData) {
-      this.dataSource.data = this.rowData;  // ✅ Keep same dataSource instance
+    // Check which columns have at least one non-empty value
+    for (const col of this.columnDefs) {
+      const colValue = col.value;
+
+      const hasData = this.rowData?.some(row =>
+        row[colValue] !== null && row[colValue] !== undefined && row[colValue] !== ''
+      );
+
+      if (hasData) {
+        this.displayedColumns.push(colValue); // ✅ Only include columns with at least one value
+        this.columnHeaders[colValue] = col.label;
+        this.filterableColumns.push(colValue);
+        console.log('✅ Showing column:', colValue);
+      } else {
+        console.log('🚫 Hiding column (empty data):', colValue);
+      }
     }
   }
-  
+
+  if (this.rowData) {
+    this.dataSource.data = this.rowData;
+  }
+}
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
@@ -81,24 +83,7 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
   sortChange(sort: Sort) {
     this.activeSort = sort.active;
     this.sortDirection = sort.direction;
-}
-
-  // applyColumnFilter(column: string, event: any): void {
-  //   const value = event.target.value?.trim().toLowerCase();
-  //   this.dataSource.filterPredicate = (data, filter) =>
-  //     data[column]?.toLowerCase().includes(filter);
-  //   this.dataSource.filter = value;
-  // }
-
-  // toggleDropdown(column: string, event: MouseEvent ): void {
-  //   event.stopPropagation();
-  //   this.openFilter[column] = !this.openFilter[column];
-  // }
-
-  // clearFilter(column: string, input: HTMLInputElement): void {
-  //   input.value = '';
-  //   this.applyColumnFilter(column, { target: { value: '' } });
-  // }
+  }
 
   scrollTable(direction: 'left' | 'right'): void {
     const container = document.querySelector('.scroll-container');
@@ -107,29 +92,42 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
     }
   }
 
-toggleDropdown(column: string, event: MouseEvent) {
-  event.stopPropagation();
-  this.openFilter[column] = !this.openFilter[column];
-}
+  filterOptions: string[] = ['Starts with', 'Contains', 'Not Contains', 'Ends With', 'Equals', 'Not Equals'];
 
-applyColumnFilter(column: string, event: KeyboardEvent) {
-  const value = (event.target as HTMLInputElement).value.trim().toLowerCase();
-  this.dataSource.filterPredicate = (data: any, filter: string) => {
-    return data[column]?.toString().toLowerCase().includes(filter);
-  };
-  this.dataSource.filter = value;
-}
+  toggleDropdown(column: any, event: MouseEvent): void {
+    event.stopPropagation();
+    console.log(this.openFilter);
+    console.log('Dropdown open for column:', column, '->', this.openFilter[column]);
 
-clearFilter(column: string, input: HTMLInputElement) {
-  input.value = '';
-  this.dataSource.filter = '';
-  this.openFilter[column] = false;
-}
+    this.openFilter[column] = !this.openFilter[column];
+  }
 
-selectFilterCondition(column: string, condition: string) {
-  console.log('Selected filter condition:', condition, 'for column:', column);
-  // You can apply condition logic here later
-}
+  applyColumnFilter(column: string, event: any) {
+    const value = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    console.log('Filter value:', value);
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      const rowData = Object.values(data)
+        .map(v => v?.toString().toLowerCase())
+        .join(' '); // join all fields in one string
+
+      console.log('Row data string for filter:', rowData);
+      return rowData.includes(filter);
+    };
+    this.dataSource.filter = value;
+
+    console.log('Applied filter to dataSource:', this.dataSource.filter);
+  }
+
+  clearFilter(column: string, input: HTMLInputElement) {
+    input.value = '';
+    this.dataSource.filter = '';
+    this.openFilter[column] = false;
+  }
+
+  selectFilterOption(column: string, option: string): void {
+    console.log(`Filter option for ${column}:`, option);
+    this.openFilter[column] = false; // Close dropdown after selection
+  }
 
   downloadPDF() {
     const doc = new jsPDF();

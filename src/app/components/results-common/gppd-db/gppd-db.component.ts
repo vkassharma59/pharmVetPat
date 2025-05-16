@@ -1,24 +1,20 @@
-import {
-  Component,
-  EventEmitter,
+import { Component, EventEmitter,
   Input,
   Output,
-  OnChanges
-} from '@angular/core';
-import { UtilityService } from '../../../services/utility-service/utility.service';
-import { CommonModule } from '@angular/common';
+  OnChanges } from '@angular/core';
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
-import { SpcdbCardComponent } from '../spcdb-card/spcdb-card.component';
+import { CommonModule } from '@angular/common';
+import { GppdDbCardComponent } from '../gppd-db-card/gppd-db-card.component';
+import { UtilityService } from '../../../services/utility-service/utility.service';
 
 @Component({
-  selector: 'chem-spcdb',
+  selector: 'app-gppd-db',
   standalone: true,
-  imports: [ChildPagingComponent, CommonModule, SpcdbCardComponent],
-  templateUrl: './spcdb.component.html',
-  styleUrl: './spcdb.component.css'
+   imports: [ChildPagingComponent, CommonModule, GppdDbCardComponent],
+  templateUrl: './gppd-db.component.html',
+  styleUrl: './gppd-db.component.css'
 })
-export class SpcdbComponent implements OnChanges {
-
+export class GppdDbComponent {
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
   @Input() currentChildAPIBody: any;
@@ -43,5 +39,9 @@ export class SpcdbComponent implements OnChanges {
 
   ngOnChanges() {
     console.log('scientificDocs received data:', this._data);
+    console.log('currentChildAPIBody:', this.currentChildAPIBody);
+
   }
 }
+
+

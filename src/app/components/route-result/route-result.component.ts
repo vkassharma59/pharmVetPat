@@ -26,11 +26,16 @@ import { ServiceResultTabFiltersService } from '../../services/result_tab/servic
 import { MatDialog } from '@angular/material/dialog';
 import { Chem_Robotics_QueryModalComponent } from '../Chem_Robotics_QueryModal/Chem_Robotics_QueryModal.component';
 import { ScientificDocsComponent } from '../results-common/scientific-docs/scientific-docs.component';
+import { GppdDbComponent } from '../results-common/gppd-db/gppd-db.component';
 
 @Component({
   selector: 'chem-route-results',
   standalone: true,
-  imports: [FormsModule, NgFor, NgIf, BasicRouteComponent, TechnicalRoutesComponent, ImpurityComponent, ChemiTrackerComponent, ImpComponent, IndianComponent, ChemicalDirectoryComponent, JapanComponent, CanadaComponent, EuropeApprovalComponent, KoreaComponent, LitigationComponent, UsComponent, SpcdbComponent, EximComponent, RouteTabsComponent, ActivePatentComponent, NgSwitch, NgSwitchCase, NgSwitchDefault, ScientificDocsComponent],
+  imports: [FormsModule, NgFor, NgIf, BasicRouteComponent, TechnicalRoutesComponent,
+     ImpurityComponent, ChemiTrackerComponent, ImpComponent, IndianComponent, ChemicalDirectoryComponent, 
+     JapanComponent, CanadaComponent, EuropeApprovalComponent, KoreaComponent, LitigationComponent,
+      UsComponent, SpcdbComponent, EximComponent, RouteTabsComponent, ActivePatentComponent,
+       NgSwitch, NgSwitchCase, NgSwitchDefault, ScientificDocsComponent,GppdDbComponent],
   templateUrl: './route-result.component.html',
   styleUrl: './route-result.component.css'
 })
