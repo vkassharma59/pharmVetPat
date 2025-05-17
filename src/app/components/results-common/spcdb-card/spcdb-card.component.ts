@@ -39,7 +39,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
   constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnChanges(): void {
-    console.log('columnDefs:', this.columnDefs);
+//console.log('columnDefs:', this.columnDefs);
     // Reset counter only when the component is first loaded
 
     if (this.columnDefs && this.columnDefs.length > 0) {
@@ -59,9 +59,9 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
           this.displayedColumns.push(colValue); // ✅ Only include columns with at least one value
           this.columnHeaders[colValue] = col.label;
           this.filterableColumns.push(colValue);
-          console.log('✅ Showing column:', colValue);
+          
         } else {
-          console.log('🚫 Hiding column (empty data):', colValue);
+//console.log('🚫 Hiding column (empty data):', colValue);
         }
       }
     }
@@ -95,26 +95,26 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
 
   toggleDropdown(column: any, event: MouseEvent): void {
     event.stopPropagation();
-    console.log(this.openFilter);
-    console.log('Dropdown open for column:', column, '->', this.openFilter[column]);
+   // console.log(this.openFilter);
+  //  console.log('Dropdown open for column:', column, '->', this.openFilter[column]);
 
     this.openFilter[column] = !this.openFilter[column];
   }
 
   applyColumnFilter(column: string, event: any) {
     const value = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    console.log('Filter value:', value);
+  //  console.log('Filter value:', value);
     this.dataSource.filterPredicate = (data: any, filter: string) => {
       const rowData = Object.values(data)
         .map(v => v?.toString().toLowerCase())
         .join(' '); // join all fields in one string
 
-      console.log('Row data string for filter:', rowData);
+//console.log('Row data string for filter:', rowData);
       return rowData.includes(filter);
     };
     this.dataSource.filter = value;
 
-    console.log('Applied filter to dataSource:', this.dataSource.filter);
+   // console.log('Applied filter to dataSource:', this.dataSource.filter);
   }
 
   clearFilter(column: string, input: HTMLInputElement) {
@@ -124,7 +124,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
   }
 
   selectFilterOption(column: string, option: string): void {
-    console.log(`Filter option for ${column}:`, option);
+//console.log(`Filter option for ${column}:`, option);
     this.openFilter[column] = false; // Close dropdown after selection
   }
 
