@@ -910,7 +910,6 @@ export class SearchResultsComponent {
   }
 
   private performUsApprovalSearch(resultTabData: any): void {
-
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.usApproval.name] = {};
       this.setLoadingState.emit(false);
@@ -959,9 +958,10 @@ export class SearchResultsComponent {
     });
   }
 
-  private scientificDocsSearch(resultTabData: any): void {
+  private scientificDocsSearch(resultTabData: any, pageNo: number =1,columnFilters: any[] = []): void {
     console.log('Search Input:', resultTabData);
-
+    const pageSize = 10;
+    const start = (pageNo - 1) * pageSize;
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       console.log('Empty   search parameters, skipping search.');
       this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = {};
@@ -977,17 +977,19 @@ export class SearchResultsComponent {
     this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name] = {
       api_url: this.apiUrls.scientificDocs.searchSpecific,
       search_type: resultTabData?.searchWith,
-      keyword: ["272", "287"],
+      keyword: [resultTabData?.searchWithValue],
       draw: 1,
-      start: 0,
-      length: 20,
-      order: [{ column: 0, dir: 'asc' }],
-      search: { value: "AGROCHEMICAL" },
-      columns: [{
-        data: 'field_of_document',
-        searchable: 'true',
-        search: { value: "AGROCHEMICAL" }
-      }]
+      start: start,
+      length: pageSize,
+      columns: columnFilters  // ✅ inject filters here
+
+      // order: [{ column: 0, dir: 'asc' }],
+      // search: { value: "AGROCHEMICAL" },
+      // columns: [{
+      //   data: 'field_of_document',
+      //   searchable: 'true',
+      //   search: { value: "AGROCHEMICAL" }
+      // }]
     };
 
     console.log('Request Body:', this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]);
@@ -1038,6 +1040,10 @@ export class SearchResultsComponent {
     console.log('Search Input:', resultTabData);
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       console.log('--------Empty spcdb search parameters, skipping search.');
+      if (!this.allDataSets[resultTabData.index]) {
+        this.allDataSets[resultTabData.index] = {};
+      }
+
       this.allDataSets[resultTabData.index][this.resultTabs.spcDb.name] = {};
       this.setLoadingState.emit(false);
       return;
@@ -1056,7 +1062,7 @@ export class SearchResultsComponent {
         "10403"],
       draw: 1,
       start: 0,
-      length: 10,
+      length: 25,
       order: [{ column: 0, dir: 'asc' }],
       search: { value: "Belgium" },
       columns: [{
@@ -1078,6 +1084,9 @@ export class SearchResultsComponent {
         // Step 3: Save column list locally
         Auth_operations.setColumnList(this.resultTabs.spcDb.name, columnList);
 
+        if (!this.allDataSets[resultTabData.index]) {
+          this.allDataSets[resultTabData.index] = {};
+        }
         // ✅ SAVE to pass to component
         this.allDataSets[resultTabData.index][this.resultTabs.spcDb.name] = {
           columns: columnList,  // <- for <app-scientific-docs-card>
@@ -1129,7 +1138,6 @@ export class SearchResultsComponent {
     this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name] = {
       api_url: this.apiUrls.gppdDb.searchSpecific,
       search_type: resultTabData?.searchWith,
-      keyword7: resultTabData?.searchWithValue,
       keyword: ["18419",
         "11267"],
       draw: 1,
@@ -1309,6 +1317,7 @@ export class SearchResultsComponent {
           this.allDataSets[this.childApiBody[index][this.resultTabs?.europeApproval.name]][this.resultTabs.europeApproval.name] = data?.ema_data;
         }
         break;
+
       default:
         this.setLoadingState.emit(false);
     }
