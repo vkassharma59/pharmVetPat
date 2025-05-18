@@ -4,41 +4,30 @@
             Total Records : {{currentChildAPIBody?.count }}
         </button>
     </div>
-   <div class="card-header text-white fs-5" style="  background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
+    <div class="card-header text-white fs-5" style="  background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
  padding: 10px;">
-  <div class="d-flex flex-wrap align-items-center justify-content-between">
+    <div class="d-flex flex-wrap align-items-center justify-content-between">
 
-    <div class="d-flex align-items-center me-3">
-      <i class="fa-solid fa-flask me-2"></i>
-      <span>AgroPharm Spc DB >> SITAGLIPTIN PHOSPHATE</span>
+      <div class="d-flex align-items-center me-3">
+        <i class="fa-solid fa-flask me-2"></i>
+        <span>AgroPharm Spc DB >> SITAGLIPTIN PHOSPHATE</span>
+      </div>
     </div>
   </div>
-
-
-
-</div>
-   
-<div >
-  <app-spcdb-card
-  [columnDefs]="_data?.columns"
-  [rowData]="_data?.rows">
-</app-spcdb-card>
- </div>          
-    <app-child-paging
-        [currentChildAPIBody]="currentChildAPIBody"
-        (handleChangeTabData)="handleResultTabData.emit($event)"
-        (setLoading)="handleSetLoading.emit($event)"
-    ></app-child-paging>
-  </ng-container>
-  <ng-template #noData>
-    <div class="card">
-        <div class="card-header text-white bg-primary">
-            {{resultTabs.spcDb?.label}}
-        </div>
-        <div class="card-body">
-            <p>No Data found!</p>
-        </div>
-    </div>
-  </ng-template>
-  
-
+  <div >
+    <app-spcdb-card
+      [columnDefs]="_data?.columns"
+      [rowData]="_data?.rows">
+    </app-spcdb-card>
+  </div>
+</ng-container>
+<ng-template #noData>
+  <div class="card">
+      <div class="card-header text-white bg-primary">
+          {{resultTabs.spcDb?.label}}
+      </div>
+      <div class="card-body">
+          <p>No Data found!</p>
+      </div>
+  </div>
+</ng-template>

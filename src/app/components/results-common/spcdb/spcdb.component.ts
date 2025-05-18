@@ -26,7 +26,6 @@ export class SpcdbComponent implements OnChanges {
   @Input()
   set data(value: any) {
     this._data = value;
-    // Emit only rows to parent if needed
     this.handleResultTabData.emit(this._data?.rows || []);
   }
 

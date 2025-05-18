@@ -1039,6 +1039,73 @@ export class SearchResultsComponent {
   private spcDbSearch(resultTabData: any): void {
     console.log('Search Input:', resultTabData);
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+      this.allDataSets[resultTabData.index][this.resultTabs.spcDb.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
+
+    if (this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index][this.resultTabs.spcDb.name] = {};
+    } else {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
+    // Step 1: Prepare API body
+    this.childApiBody[resultTabData.index][this.resultTabs.spcDb.name] = {
+      api_url: this.apiUrls.spcDb.searchSpecific,
+      keyword: resultTabData?.searchWithValue,
+      draw: 1,
+      start: 0,
+      length: 25
+      // order: [{ column: 0, dir: 'asc' }],
+      // search: { value: resultTabData?.searchWith }
+    };
+
+    console.log('Request Body spcdb:', this.childApiBody[resultTabData.index][this.resultTabs.spcDb.name]);
+
+    // Step 2: Fetch Column List First
+    this.columnListService.getColumnList(this.apiUrls.spcDb.columnList).subscribe({
+      next: (res: any) => {
+        const columnList = res?.data?.columns || [];
+        Auth_operations.setColumnList(this.resultTabs.spcDb.name, columnList);
+
+        if (!this.allDataSets[resultTabData.index]) {
+          this.allDataSets[resultTabData.index] = {};
+        }
+        // ✅ SAVE to pass to component
+        this.allDataSets[resultTabData.index][this.resultTabs.spcDb.name] = {
+          columns: columnList,  // <- for <app-scientific-docs-card>
+          rows: []              // <- we’ll fill this after searchSpecific
+        };
+
+        // Step 4: Call main search API
+        this.mainSearchService.spcdbSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.spcDb.name]).subscribe({
+          next: (result: any) => {
+            console.log('Search API Result:', result);
+
+            const dataRows = result?.data?.data || [];
+
+            // ✅ Append search result (rows) to saved structure
+            this.allDataSets[resultTabData.index][this.resultTabs.spcDb.name].rows = dataRows;
+            this.childApiBody[resultTabData.index][this.resultTabs.spcDb.name].count = result?.data?.recordsTotal;
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
+
+  private spcDbSearchTemp(resultTabData: any): void {
+    console.log('Search Input:', resultTabData);
+    if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       console.log('--------Empty spcdb search parameters, skipping search.');
       if (!this.allDataSets[resultTabData.index]) {
         this.allDataSets[resultTabData.index] = {};

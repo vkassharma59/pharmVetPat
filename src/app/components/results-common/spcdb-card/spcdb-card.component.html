@@ -35,12 +35,10 @@ color:#fff" (click)="downloadExcel()">Download Excel
                 <div class="d-flex align-items-center">
                   <span>{{ column.name }}</span>
                   <i class="fa-solid" [ngClass]="{
-     'fa-sort-up': activeSort === column.name && sortDirection === 'asc',
-     'fa-sort-down': activeSort === column.name && sortDirection === 'desc',
-     'fa-sort': activeSort !== column.name
-
-   }" style="margin-left: 8px;"></i>
-
+                    'fa-sort-up': activeSort === column.name && sortDirection === 'asc',
+                    'fa-sort-down': activeSort === column.name && sortDirection === 'desc',
+                    'fa-sort': activeSort !== column.name
+                  }" style="margin-left: 8px;"></i>
                 </div>
                 <ng-container *ngIf="filterableColumns.includes(column.value)">
                   <div style="display:flex; align-items: center; font-size: 14px; justify-content: space-between;">
@@ -72,21 +70,17 @@ color:#fff" (click)="downloadExcel()">Download Excel
               </div>
             </th>
 
-
-
             <td mat-cell *matCellDef="let element">
               <ng-container [ngSwitch]="column.value">
                 <img *ngSwitchCase="'flag'" [src]="element[column.value]" alt="flag" class="flag-img" />
                 <span *ngSwitchDefault>
                   <div class="scrollable-text">
-                    {{ element[column.value] }}
+                    {{element[column.value]}}
                   </div>
                 </span>
               </ng-container>
             </td>
           </ng-container>
-
-
           <tr mat-header-row *matHeaderRowDef="displayedColumns" style="background-color: #def1ff;"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
         </table>
