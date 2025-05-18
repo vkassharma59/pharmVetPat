@@ -11,6 +11,7 @@ import { Sort } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SpcdbComponent } from '../spcdb/spcdb.component';
+
 @Component({
   selector: 'app-spcdb-card',
   standalone: true,
@@ -23,6 +24,7 @@ import { SpcdbComponent } from '../spcdb/spcdb.component';
   templateUrl: './spcdb-card.component.html',
   styleUrl: './spcdb-card.component.css'
 })
+
 export class SpcdbCardComponent implements OnChanges, AfterViewInit {
   @Input() columnDefs: any[] = [];
   @Input() rowData: any[] = [];
@@ -30,7 +32,9 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
   displayedColumns: string[] = [];
   columnHeaders: { [key: string]: string } = {};
   filterableColumns: string[] = [];
-  openFilter: { [key: string]: boolean } = {};
+  openFilter: { [key: string]: boolean } = {};    
+  activeSort: string = '';
+  sortDirection: 'asc' | 'desc' | '' = '';
 
   dataSource = new MatTableDataSource<any>([]);
 
@@ -39,7 +43,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
   constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnChanges(): void {
-//console.log('columnDefs:', this.columnDefs);
+    //console.log('columnDefs:', this.columnDefs);
     // Reset counter only when the component is first loaded
 
     if (this.columnDefs && this.columnDefs.length > 0) {
@@ -61,7 +65,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
           this.filterableColumns.push(colValue);
           
         } else {
-//console.log('🚫 Hiding column (empty data):', colValue);
+          //console.log('🚫 Hiding column (empty data):', colValue);
         }
       }
     }
@@ -77,8 +81,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
     this.cdr.detectChanges();
 
   }
-  activeSort: string = '';
-  sortDirection: 'asc' | 'desc' | '' = '';
+
   sortChange(sort: Sort) {
     this.activeSort = sort.active;
     this.sortDirection = sort.direction;
@@ -170,6 +173,5 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
     const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const data = new Blob([excelBuffer], { type: 'application/octet-stream' });
     saveAs(data, 'ExportedData.xlsx');
-
   }
 }
