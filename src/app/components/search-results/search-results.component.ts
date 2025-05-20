@@ -958,9 +958,9 @@ export class SearchResultsComponent {
     });
   }
 
-  private scientificDocsSearch(resultTabData: any, pageNo: number =1,columnFilters: any[] = []): void {
+  private scientificDocsSearch(resultTabData: any, pageNo: number = 1, columnFilters: any[] = []): void {
     console.log('Search Input:', resultTabData);
-    const pageSize = 10;
+    const pageSize = 25;
     const start = (pageNo - 1) * pageSize;
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       console.log('Empty   search parameters, skipping search.');
@@ -982,14 +982,6 @@ export class SearchResultsComponent {
       start: start,
       length: pageSize,
       columns: columnFilters  // ✅ inject filters here
-
-      // order: [{ column: 0, dir: 'asc' }],
-      // search: { value: "AGROCHEMICAL" },
-      // columns: [{
-      //   data: 'field_of_document',
-      //   searchable: 'true',
-      //   search: { value: "AGROCHEMICAL" }
-      // }]
     };
 
     console.log('Request Body:', this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]);
@@ -1184,83 +1176,164 @@ export class SearchResultsComponent {
       },
     });
   }
+private gppdDbSearch(resultTabData: any, pageNo: number = 1): void {
+  console.log('Search Input:', resultTabData);
+  const pageSize = 10;
+  const start = (pageNo - 1) * pageSize;
 
-  private gppdDbSearch(resultTabData: any, pageNo: number = 1): void {
-    console.log('Search Input:', resultTabData);
-    const pageSize = 10;
-    const start = (pageNo - 1) * pageSize;
-
-    if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
-      console.log('--------Empty spcdb search parameters, skipping search.');
-      this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name] = {};
-      this.setLoadingState.emit(false);
-      return;
-    }
-
-    if (!this.childApiBody[resultTabData.index]) {
-      this.childApiBody[resultTabData.index] = {};
-    }
-
-    // Step 1: Prepare API body
-    this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name] = {
-      api_url: this.apiUrls.gppdDb.searchSpecific,
-      search_type: resultTabData?.searchWith,
-      keyword: ["18419",
-        "11267"],
-      draw: 1,
-      start: start,
-      length: 100,
-      order: [{ column: 0, dir: 'asc' }],
-      search: { value: "BRAZIL" },
-      columns: [{
-        data: 'country',
-        searchable: 'true',
-        search: { value: "BRAZIL" }
-      }]
-    };
-
-    console.log('Request Body spcdb:', this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name]);
-
-    // Step 2: Fetch Column List First
-    this.columnListService.getColumnList(this.apiUrls.gppdDb.columnList).subscribe({
-      next: (res: any) => {
-        const columnList = res?.data?.columns || [];
-
-        console.log('Column List API Response:', columnList);
-
-        // Step 3: Save column list locally
-        Auth_operations.setColumnList(this.resultTabs.gppdDb.name, columnList);
-
-        // ✅ SAVE to pass to component
-        this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name] = {
-          columns: columnList,  // <- for <app-scientific-docs-card>
-          rows: []              // <- we’ll fill this after searchSpecific
-        };
-
-        // Step 4: Call main search API
-        this.mainSearchService.gppdDbSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name]).subscribe({
-          next: (result: any) => {
-            console.log('Search API Result:', result);
-
-            const dataRows = result?.data?.data || [];
-
-            // ✅ Append search result (rows) to saved structure
-            this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name].rows = dataRows;
-            this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name].count = result?.data?.recordsTotal;
-            this.setLoadingState.emit(false);
-          },
-          error: (e) => {
-            console.error('Error during main search:', e);
-            this.setLoadingState.emit(false);
-          },
-        });
-      },
-      error: (e) => {
-        console.error('Error fetching column list:', e);
-        this.setLoadingState.emit(false);
-      },
-    });
+  // 🛑 Skip empty search
+  if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+    console.log('--------Empty gppdDb search parameters, skipping search.');
+    this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name] = {};
+    this.setLoadingState.emit(false);
+    return;
   }
+
+  // ✅ Init API body structure
+  if (!this.childApiBody[resultTabData.index]) {
+    this.childApiBody[resultTabData.index] = {};
+  }
+
+  // ✅ Start forming API body
+  const apiBody: any = {
+    api_url: this.apiUrls.gppdDb.searchSpecific,
+    draw: 1,
+    start: start,
+    length: pageSize
+  };
+
+  // ✅ Case 1: Keyword-based search (initial search)
+  if (resultTabData?.searchWith && resultTabData?.searchWithValue) {
+    apiBody.search_type = resultTabData.searchWith;
+    apiBody.keyword = Array.isArray(resultTabData.searchWithValue)
+      ? resultTabData.searchWithValue
+      : [resultTabData.searchWithValue];
+  }
+
+  // ✅ Case 2: Filter-based search
+  if (resultTabData.columns && Array.isArray(resultTabData.columns)) {
+    apiBody.columns = resultTabData.columns;
+  }
+
+  // ✅ Case 3: Order-based search
+  if (resultTabData.order && Array.isArray(resultTabData.order)) {
+    apiBody.order = resultTabData.order;
+  }
+
+  // Save body for this tab/index
+  this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name] = apiBody;
+
+  console.log('Request Body gppdDb:', apiBody);
+
+  // ✅ Fetch Column List First
+  this.columnListService.getColumnList(this.apiUrls.gppdDb.columnList).subscribe({
+    next: (res: any) => {
+      const columnList = res?.data?.columns || [];
+      console.log('Column List API Response:', columnList);
+
+      // Save column list
+      Auth_operations.setColumnList(this.resultTabs.gppdDb.name, columnList);
+
+      // Prepare data structure for UI
+      this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name] = {
+        columns: columnList,
+        rows: []
+      };
+
+      // ✅ Call Main Search API
+      this.mainSearchService.gppdDbSearchSpecific(apiBody).subscribe({
+        next: (result: any) => {
+          console.log('Search API Result:', result);
+
+          const dataRows = result?.data?.data || [];
+
+          this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name].rows = dataRows;
+          this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name].count = result?.data?.recordsTotal;
+
+          this.setLoadingState.emit(false);
+        },
+        error: (e) => {
+          console.error('Error during main search:', e);
+          this.setLoadingState.emit(false);
+        },
+      });
+    },
+    error: (e) => {
+      console.error('Error fetching column list:', e);
+      this.setLoadingState.emit(false);
+    },
+  });
+}
+
+  // private gppdDbSearch(resultTabData: any, pageNo: number = 1): void {
+  //   console.log('Search Input:', resultTabData);
+  //   const pageSize = 10;
+  //   const start = (pageNo - 1) * pageSize;
+  //   if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+  //     console.log('--------Empty spcdb search parameters, skipping search.');
+  //     this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name] = {};
+  //     this.setLoadingState.emit(false);
+  //     return;
+  //   }
+
+  //   if (!this.childApiBody[resultTabData.index]) {
+  //     this.childApiBody[resultTabData.index] = {};
+  //   }
+
+  //   // Step 1: Prepare API body
+  //   this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name] = {
+  //     api_url: this.apiUrls.gppdDb.searchSpecific,
+  //     search_type: resultTabData?.searchWith,
+  //     keyword: [resultTabData?.searchWithValue],
+  //     draw: 1,
+  //     start: start,
+  //     length: pageSize,
+
+  //   };
+
+  //   console.log('Request Body spcdb:', this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name]);
+
+  //   // Step 2: Fetch Column List First
+  //   this.columnListService.getColumnList(this.apiUrls.gppdDb.columnList).subscribe({
+  //     next: (res: any) => {
+  //       const columnList = res?.data?.columns || [];
+
+  //       console.log('Column List API Response:', columnList);
+
+  //       // Step 3: Save column list locally
+  //       Auth_operations.setColumnList(this.resultTabs.gppdDb.name, columnList);
+
+  //       // ✅ SAVE to pass to component
+  //       this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name] = {
+  //         columns: columnList,  // <- for <app-scientific-docs-card>
+  //         rows: []              // <- we’ll fill this after searchSpecific
+  //       };
+
+  //       // Step 4: Call main search API
+  //       this.mainSearchService.gppdDbSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name]).subscribe({
+  //         next: (result: any) => {
+  //           console.log('Search API Result:', result);
+
+  //           const dataRows = result?.data?.data || [];
+
+  //           // ✅ Append search result (rows) to saved structure
+  //           this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name].rows = dataRows;
+  //           this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name].count = result?.data?.recordsTotal;
+
+  //           this.setLoadingState.emit(false);
+  //         },
+  //         error: (e) => {
+  //           console.error('Error during main search:', e);
+  //           this.setLoadingState.emit(false);
+  //         },
+  //       });
+  //     },
+  //     error: (e) => {
+  //       console.error('Error fetching column list:', e);
+  //       this.setLoadingState.emit(false);
+  //     },
+  //   });
+  // }
   private performactivePatentSearch(resultTabData: any): void {
 
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
@@ -1384,6 +1457,17 @@ export class SearchResultsComponent {
           this.allDataSets[this.childApiBody[index][this.resultTabs?.europeApproval.name]][this.resultTabs.europeApproval.name] = data?.ema_data;
         }
         break;
+
+      case this.resultTabs?.gppdDb.name:
+        if (data?.data?.length > 0) {
+          this.childApiBody[index][this.resultTabs?.gppdDb.name].count = data?.count;
+          this.allDataSets[index][this.resultTabs.gppdDb.name] = {
+            columns: this.allDataSets[index][this.resultTabs.gppdDb.name]?.columns || [],
+            rows: data?.data
+          };
+        }
+        break;
+
 
       default:
         this.setLoadingState.emit(false);

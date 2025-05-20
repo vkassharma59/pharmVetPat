@@ -166,6 +166,7 @@ export class MainSearchService {
       .pipe(catchError(this.handleError));
   }
   gppdDbSearchSpecific(props: any): Observable<any> {
+    console.log("hellooooooooooooooooooooooooooooooooo",props)
     const body = props;
     return this.http
       .post(this.apiUrls.gppdDb.searchSpecific, body, { headers: this.headers })
