@@ -29,7 +29,7 @@ color:#fff" (click)="downloadExcel()">Download Excel
           <ng-container *ngFor="let column of columnDefs" [matColumnDef]="column.value">
             <!-- Header cell with sort and filter -->
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell"
-              style="position: sticky; background-color: #3886d8; color:white; border:2px solid white;overflow:visible; padding-top: 8px;padding-bottom: 5px;" >
+              style="position: sticky; background-color: #3886d8; color:white; border:2px solid white;overflow:visible; padding-top: 8px;padding-bottom: 5px;">
 
               <div class="header-content">
                 <div class="d-flex align-items-center">
@@ -96,6 +96,4 @@ color:#fff" (click)="downloadExcel()">Download Excel
     </div>
   </div>
 </div>
-<mat-paginator 
-[pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
-></mat-paginator>
+<mat-paginator [pageSizeOptions]="[10, 25, 50,100]" showFirstLastButtons></mat-paginator>

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, OnChanges, ViewChild, AfterViewInit, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -13,7 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 @Component({
   selector: 'app-gppd-db-card',
   standalone: true,
-   imports: [CommonModule,
+  imports: [CommonModule,
     MatTableModule,
     MatSortModule,
     MatInputModule,
@@ -22,10 +22,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   templateUrl: './gppd-db-card.component.html',
   styleUrl: './gppd-db-card.component.css'
 })
-export class GppdDbCardComponent implements OnChanges, AfterViewInit{
-
+export class GppdDbCardComponent implements OnChanges, AfterViewInit {
+  @Output() filterApplied = new EventEmitter<any>();
   @Input() columnDefs: any[] = [];
   @Input() rowData: any[] = [];
+   @Input() data: any;
+  @Input() resultTabIndex: number = 0; // 👈 Parent se bhejna hoga index
 
   displayedColumns: string[] = [];
   columnHeaders: { [key: string]: string } = {};
@@ -39,7 +41,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit{
   constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnChanges(): void {
-   // console.log('columnDefs:', this.columnDefs);
+    // console.log('columnDefs:', this.columnDefs);
     // Reset counter only when the component is first loaded
 
     if (this.columnDefs && this.columnDefs.length > 0) {
@@ -59,7 +61,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit{
           this.displayedColumns.push(colValue); // ✅ Only include columns with at least one value
           this.columnHeaders[colValue] = col.label;
           this.filterableColumns.push(colValue);
-//console.log('✅ Showing column:', colValue);
+          //console.log('✅ Showing column:', colValue);
         } else {
           // console.log('🚫 Hiding column (empty data):', colValue);
         }
@@ -95,27 +97,52 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit{
 
   toggleDropdown(column: any, event: MouseEvent): void {
     event.stopPropagation();
-//console.log(this.openFilter);
-   // console.log('Dropdown open for column:', column, '->', this.openFilter[column]);
+    //console.log(this.openFilter);
+    // console.log('Dropdown open for column:', column, '->', this.openFilter[column]);
 
     this.openFilter[column] = !this.openFilter[column];
   }
 
-  applyColumnFilter(column: string, event: any) {
-    const value = (event.target as HTMLInputElement).value.trim().toLowerCase();
-//console.log('Filter value:', value);
-    this.dataSource.filterPredicate = (data: any, filter: string) => {
-      const rowData = Object.values(data)
-        .map(v => v?.toString().toLowerCase())
-        .join(' '); // join all fields in one string
+  // applyColumnFilter(column: string, event: any) {
+  //   const value = (event.target as HTMLInputElement).value.trim().toLowerCase();
+  //   console.log('Filter value:', value);
+  //   this.dataSource.filterPredicate = (data: any, filter: string) => {
+  //     const rowData = Object.values(data)
+  //       .map(v => v?.toString().toLowerCase())
+  //       .join(' '); // join all fields in one string
 
-//console.log('Row data string for filter:', rowData);
-      return rowData.includes(filter);
+  //     console.log('Row data string for filter:', column);
+  //     return rowData.includes(filter);
+  //   };
+  //   this.dataSource.filter = value;
+
+  //    console.log('Applied filter to dataSource:', this.dataSource.filter);
+  // }
+
+
+
+  applyColumnFilter(column:{ name: string; value: string}, event: any) {
+    const value = (event.target as HTMLInputElement).value.trim().toUpperCase();
+    const filterColumnBody = [
+      {
+        data:column.value,
+        searchable: 'true',
+        search: {
+          value: value
+        }
+      }
+    ];
+
+    const resultTabData = {
+      index: this.resultTabIndex, // 👈 Index jo API ke liye chahiye
+      columns: filterColumnBody
     };
-    this.dataSource.filter = value;
 
-   // console.log('Applied filter to dataSource:', this.dataSource.filter);
+    this.filterApplied.emit(resultTabData);
   }
+
+
+
 
   clearFilter(column: string, input: HTMLInputElement) {
     input.value = '';
@@ -124,7 +151,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit{
   }
 
   selectFilterOption(column: string, option: string): void {
-  //  console.log(`Filter option for ${column}:`, option);
+    //  console.log(`Filter option for ${column}:`, option);
     this.openFilter[column] = false; // Close dropdown after selection
   }
 
