@@ -97,10 +97,8 @@ export class GppdDbComponent {
 console.log("resulttabData",resultTabData)
   const updatedBody = {
     ...this.currentChildAPIBody,
-    column: {
-      ...resultTabData
-    },
-    page: pageNo
+     ...resultTabData
+    
   };
 
   // API call

@@ -121,12 +121,11 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
 
 
 
-  applyColumnFilter(column: string, event: any) {
+  applyColumnFilter(column:{ name: string; value: string}, event: any) {
     const value = (event.target as HTMLInputElement).value.trim().toUpperCase();
-
     const filterColumnBody = [
       {
-        data: column,
+        data:column.value,
         searchable: 'true',
         search: {
           value: value
