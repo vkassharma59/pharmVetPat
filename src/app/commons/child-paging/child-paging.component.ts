@@ -24,13 +24,17 @@ export class ChildPagingComponent {
     return this._currentChildAPIBody;
   }
   set currentChildAPIBody(value: any) {
+    console.log("🔄 currentChildAPIBody set to:", value); // Log here
+
     this._currentChildAPIBody = value;
     this.PageArray = [];
     this.count = 0;
-    
+
+
     if (this._currentChildAPIBody?.count) {
+      console.log("🔄 current:", this.count = this._currentChildAPIBody?.count); // Log here
       this.count = this._currentChildAPIBody?.count;
-    } 
+    }
 
     for (let i = 1; i <= Math.min(Math.ceil(this.count / 25), 5); i++) {
       this.PageArray.push(i);
@@ -39,7 +43,7 @@ export class ChildPagingComponent {
 
   constructor(
     private serviceChildPaginationService: ServiceChildPaginationService
-  ) {}
+  ) { }
 
   handleFirstClick = () => {
     const pageCount = Math.ceil(this.count / 25);
@@ -91,29 +95,62 @@ export class ChildPagingComponent {
     this.handlePageClick(this.MainPageNo);
   };
 
+  // handlePageClick = (page: number) => {
+  //   this.setLoading.emit(true);
+  //   this._currentChildAPIBody.page_no = page;
+  //   this.MainPageNo = page;
+  //   this.serviceChildPaginationService.getNextChildPaginationData(
+  //     this._currentChildAPIBody
+  //   ).subscribe({
+  //     next: (res) => {
+  //       this.handleChangeTabData.emit(res?.data);
+  //       console.log("body uri-------------------- resposne ",res.data)
+  //       this.setLoading.emit(false);
+  //     },
+  //     error: (e) => {
+  //       console.error(e);
+  //       this.setLoading.emit(false);
+  //     },
+  //   });
+  // };
   handlePageClick = (page: number) => {
     this.setLoading.emit(true);
     this._currentChildAPIBody.page_no = page;
+
+    // Set dynamic 'start' based on (page_no - 1) * length
+    const pageSize = this._currentChildAPIBody.length || 25; // fallback 25
+    this._currentChildAPIBody.start = (page - 1) * pageSize;
+
     this.MainPageNo = page;
+
+    console.log("📦 Request Body before API Call:", this._currentChildAPIBody.count);
+
     this.serviceChildPaginationService.getNextChildPaginationData(
       this._currentChildAPIBody
     ).subscribe({
       next: (res) => {
-        this.handleChangeTabData.emit(res?.data);
+        console.log("✅ API Response:", res?.data);
+        this.handleChangeTabData.emit(res?.data);  
+        console.log("📦 Response count:", res.count);
+        // If count is in response, update it
+      
+        if (res?.count) {
+          this.count = res.count;
+        }
+
         this.setLoading.emit(false);
       },
       error: (e) => {
-        console.error(e);
+        console.error("❌ API Error:", e);
         this.setLoading.emit(false);
       },
     });
   };
-
   handleChangeData() {
     this.PageArray = [];
     if (this._currentChildAPIBody?.count) {
       this.count = this._currentChildAPIBody?.count;
-    } 
+    }
 
     this.PageArray = [];
     const pageCount = Math.ceil(this.count / 25);
@@ -131,6 +168,7 @@ export class ChildPagingComponent {
   }
 
   ngOnChanges(): void {
+    console.log("🛠 ngOnChanges called, currentChildAPIBody:", this._currentChildAPIBody);
     this.handleChangeData();
   }
 }

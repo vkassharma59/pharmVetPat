@@ -1,7 +1,7 @@
 <ng-container  *ngIf="_data?.rows?.length > 0; else noData">
     <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper justify-between">
         <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
-            Total Records : {{currentChildAPIBody?.count }}
+            Total Records : {{currentChildAPIBody?.count}}
         </button>
     </div>
    <div class="card-header text-white fs-5" style="  background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
@@ -10,7 +10,7 @@
 
     <div class="d-flex align-items-center me-3">
       <i class="fa-solid fa-flask me-2"></i>
-      <span>AgroPharm Spc DB >> SITAGLIPTIN PHOSPHATE</span>
+      <span>AgroPharm gppd DB >> SITAGLIPTIN PHOSPHATE</span>
     </div>
   </div>
 
@@ -21,7 +21,8 @@
 <div >
   <app-gppd-db-card
   [columnDefs]="_data?.columns"
-  [rowData]="_data?.rows">
+  [rowData]="_data?.rows"
+  (filterApplied)="handleFilterApplied($event)">
 </app-gppd-db-card>
  </div>          
     <app-child-paging
