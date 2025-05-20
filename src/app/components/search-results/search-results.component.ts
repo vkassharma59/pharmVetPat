@@ -1176,94 +1176,92 @@ export class SearchResultsComponent {
       },
     });
   }
-private gppdDbSearch(resultTabData: any, pageNo: number = 1): void {
-  console.log('Search Input:', resultTabData);
-  const pageSize = 10;
-  const start = (pageNo - 1) * pageSize;
+  private gppdDbSearch(resultTabData: any,): void {
+    console.log('Search Input:', resultTabData);
+    const pageSize = 10;
 
-  // 🛑 Skip empty search
-  if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
-    console.log('--------Empty gppdDb search parameters, skipping search.');
-    this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name] = {};
-    this.setLoadingState.emit(false);
-    return;
-  }
-
-  // ✅ Init API body structure
-  if (!this.childApiBody[resultTabData.index]) {
-    this.childApiBody[resultTabData.index] = {};
-  }
-
-  // ✅ Start forming API body
-  const apiBody: any = {
-    api_url: this.apiUrls.gppdDb.searchSpecific,
-    draw: 1,
-    start: start,
-    length: pageSize
-  };
-
-  // ✅ Case 1: Keyword-based search (initial search)
-  if (resultTabData?.searchWith && resultTabData?.searchWithValue) {
-    apiBody.search_type = resultTabData.searchWith;
-    apiBody.keyword = Array.isArray(resultTabData.searchWithValue)
-      ? resultTabData.searchWithValue
-      : [resultTabData.searchWithValue];
-  }
-
-  // ✅ Case 2: Filter-based search
-  if (resultTabData.columns && Array.isArray(resultTabData.columns)) {
-    apiBody.columns = resultTabData.columns;
-  }
-
-  // ✅ Case 3: Order-based search
-  if (resultTabData.order && Array.isArray(resultTabData.order)) {
-    apiBody.order = resultTabData.order;
-  }
-
-  // Save body for this tab/index
-  this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name] = apiBody;
-
-  console.log('Request Body gppdDb:', apiBody);
-
-  // ✅ Fetch Column List First
-  this.columnListService.getColumnList(this.apiUrls.gppdDb.columnList).subscribe({
-    next: (res: any) => {
-      const columnList = res?.data?.columns || [];
-      console.log('Column List API Response:', columnList);
-
-      // Save column list
-      Auth_operations.setColumnList(this.resultTabs.gppdDb.name, columnList);
-
-      // Prepare data structure for UI
-      this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name] = {
-        columns: columnList,
-        rows: []
-      };
-
-      // ✅ Call Main Search API
-      this.mainSearchService.gppdDbSearchSpecific(apiBody).subscribe({
-        next: (result: any) => {
-          console.log('Search API Result:', result);
-
-          const dataRows = result?.data?.data || [];
-
-          this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name].rows = dataRows;
-          this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name].count = result?.data?.recordsTotal;
-
-          this.setLoadingState.emit(false);
-        },
-        error: (e) => {
-          console.error('Error during main search:', e);
-          this.setLoadingState.emit(false);
-        },
-      });
-    },
-    error: (e) => {
-      console.error('Error fetching column list:', e);
+    const page_no = 1
+    // 🛑 Skip empty search
+    if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+      console.log('--------Empty gppdDb search parameters, skipping search.');
+      this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name] = {};
       this.setLoadingState.emit(false);
-    },
-  });
-}
+      return;
+    }
+
+    // ✅ Init API body structure
+    if (!this.childApiBody[resultTabData.index]) {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
+    // ✅ Start forming API body
+    const apiBody: any = {
+      api_url: this.apiUrls.gppdDb.searchSpecific,
+      draw: 1,
+      page_no: 1,
+      start: (page_no - 1) * pageSize,
+      length: pageSize
+    };
+
+    // ✅ Case 1: Keyword-based search (initial search)
+    if (resultTabData?.searchWith && resultTabData?.searchWithValue) {
+      apiBody.search_type = resultTabData.searchWith;
+      apiBody.keyword = Array.isArray(resultTabData.searchWithValue)
+        ? resultTabData.searchWithValue
+        : [resultTabData.searchWithValue];
+    }
+
+    // ✅ Case 2: Filter-based search
+    if (resultTabData.columns && Array.isArray(resultTabData.columns)) {
+      apiBody.columns = resultTabData.columns;
+    }
+
+    // ✅ Case 3: Order-based search
+    if (resultTabData.order && Array.isArray(resultTabData.order)) {
+      apiBody.order = resultTabData.order;
+    }
+
+    // Save body for this tab/index
+    this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name] = apiBody;
+
+    console.log('Request Body gppdDb:', apiBody);
+
+    // ✅ Fetch Column List First
+    this.columnListService.getColumnList(this.apiUrls.gppdDb.columnList).subscribe({
+      next: (res: any) => {
+        const columnList = res?.data?.columns || [];
+        console.log('Column List API Response:', columnList);
+
+        // Save column list
+        Auth_operations.setColumnList(this.resultTabs.gppdDb.name, columnList);
+
+        // Prepare data structure for UI
+        this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name] = {
+          columns: columnList,
+          rows: []
+        };
+
+        // ✅ Call Main Search API
+        this.mainSearchService.gppdDbSearchSpecific(apiBody).subscribe({
+          next: (result: any) => {
+            console.log('Search API Result:', result);
+            const dataRows = result?.data?.data || [];
+            this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name].rows = dataRows;
+            this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name].count = result?.data?.recordsTotal;
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
 
   // private gppdDbSearch(resultTabData: any, pageNo: number = 1): void {
   //   console.log('Search Input:', resultTabData);
