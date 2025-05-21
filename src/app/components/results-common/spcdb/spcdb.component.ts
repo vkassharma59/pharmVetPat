@@ -45,7 +45,7 @@ export class SpcdbComponent implements OnChanges {
     this._currentChildAPIBody = value;
   }
 
-  resultTabs: any = {};  
+  resultTabs: any = {};
 
   constructor(private utilityService: UtilityService,
     private mainSearchService: MainSearchService
@@ -55,30 +55,37 @@ export class SpcdbComponent implements OnChanges {
 
   ngOnChanges() {
     console.log('scientificDocs received data:', this._data);
+    this.handleResultTabData.emit(this.currentChildAPIBody);
   }
 
-  onDataFetchRequest(payload: any) {
- 
-    // Deep clone to avoid mutating original
-    const requestBody = {
-      ...this._currentChildAPIBody,
-      ...payload
-    };
-  
-    this.handleSetLoading.emit(true);
-  
-    this.mainSearchService.spcdbSearchSpecific(requestBody).subscribe({
-      next: (result: any) => {
-        console.log('Search API Result:', result);
-        this._data.rows = result?.data?.data || [];
-        this.searchByTable = true;
-      },
-      error: (err) => {
-        console.error('API Error:', err);
-      },
-      complete: () => {
-        this.handleSetLoading.emit(false);
-      }
-    });
-  }
+//   onDataFetchRequest(payload: any) {
+//  console.log('Pagination triggered with payload:', payload); // 🧪 Confirm this prints
+//     // Deep clone to avoid mutating original
+//     const requestBody = {
+//       ...this._currentChildAPIBody,
+//       ...payload
+//     };
+
+//     this.handleSetLoading.emit(true);
+
+//     this.mainSearchService.spcdbSearchSpecific(requestBody).subscribe({
+//       next: (result: any) => {
+//         console.log('Search API Result:---------------', result);
+//         this._data.rows = result?.data?.data || [];
+//          this._data.columns = result?.data?.columns || [];
+//         this._currentChildAPIBody.count = result?.data?.recordsFiltered ?? result?.data?.recordsTotal;
+//         this.searchByTable = true;
+//          this.handleResultTabData.emit(this._data.data);
+//         this.handleSetLoading.emit(false);
+//       },
+//       error: (err) => {
+//         console.error('API Error:', err);
+//       },
+//       complete: () => {
+//         this.handleSetLoading.emit(false);
+//       }
+//     });
+//   }
+
+
 }

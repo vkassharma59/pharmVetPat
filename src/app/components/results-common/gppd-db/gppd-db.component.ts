@@ -63,7 +63,8 @@ export class GppdDbComponent {
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
   @Input() currentChildAPIBody: any;
-
+  _currentChildAPIBody: any;
+  searchByTable: boolean = false;
   @Input()
   set data(value: any) {
     this._data = value;
@@ -77,7 +78,8 @@ export class GppdDbComponent {
   resultTabs: any = {};
   _data: any = { columns: [], rows: [] };
 
-  constructor(private utilityService: UtilityService, private mainSearchService: MainSearchService) {
+  constructor(private utilityService: UtilityService, 
+    private mainSearchService: MainSearchService) {
     this.resultTabs = this.utilityService.getAllTabsName();
   }
 
@@ -119,6 +121,34 @@ console.log("resulttabData",resultTabData)
     }
   });
 }
+  onDataFetchRequest(payload: any) {
+ console.log('Pagination triggered with payload:', payload); // 🧪 Confirm this prints
+    // Deep clone to avoid mutating original
+    const requestBody = {
+      ...this._currentChildAPIBody,
+      ...payload
+    };
+
+    this.handleSetLoading.emit(true);
+
+    this.mainSearchService.spcdbSearchSpecific(requestBody).subscribe({
+      next: (result: any) => {
+        console.log('Search API Result:---------------', result);
+        this._data.rows = result?.data?.data || [];
+         this._data.columns = result?.data?.columns || [];
+        this._currentChildAPIBody.count = result?.data?.recordsFiltered ?? result?.data?.recordsTotal;
+        this.searchByTable = true;
+         this.handleResultTabData.emit(this._data.data);
+        this.handleSetLoading.emit(false);
+      },
+      error: (err) => {
+        console.error('API Error:', err);
+      },
+      complete: () => {
+        this.handleSetLoading.emit(false);
+      }
+    });
+  }
 
 }
 
