@@ -71,6 +71,7 @@ export class SpcdbComponent implements OnChanges {
       next: (result: any) => {
         console.log('Search API Result:', result);
         this._data.rows = result?.data?.data || [];
+        this._currentChildAPIBody.count = result?.data?.recordsFiltered ?? result?.data?.recordsTotal;
         this.searchByTable = true;
       },
       error: (err) => {
