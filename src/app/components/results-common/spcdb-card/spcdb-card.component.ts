@@ -36,7 +36,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
   displayedColumns: string[] = [];
   columnHeaders: { [key: string]: string } = {};
   filterableColumns: string[] = [];
-  openFilter: { [key: string]: boolean } = {};    
+  openFilter: { [key: string]: boolean } = {};
   activeSort: string = '';
   sortDirection: 'asc' | 'desc' | '' = '';
 
@@ -73,7 +73,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
         if (hasData) {
           this.displayedColumns.push(colValue); // ✅ Only include columns with at least one value
           this.columnHeaders[colValue] = col.label;
-          this.filterableColumns.push(colValue);          
+          this.filterableColumns.push(colValue);
         } else {
           //console.log('🚫 Hiding column (empty data):', colValue);
         }
@@ -88,9 +88,11 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+    this.paginator.page.subscribe(() => this.fetchData());
+
     this.cdr.detectChanges();
   }
-  
+
   scrollTable(direction: 'left' | 'right'): void {
     const container = document.querySelector('.scroll-container');
     if (container) {
@@ -101,20 +103,20 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
   searchInColumn(column: any, filterInput: HTMLInputElement, event: MouseEvent): void {
     event.stopPropagation(); // prevent sort from triggering
 
-    if(filterInput.value.trim() === '') {
+    if (filterInput.value.trim() === '') {
       this.clearFilter(column.value, filterInput);
       return;
     }
 
     const searchValue = filterInput.value.trim();
     const columnKey = column.value;
-  
+
     if (searchValue) {
       this.columnsSearch[columnKey] = searchValue;
     } else {
       delete this.columnsSearch[columnKey];
     }
-  
+
     this.fetchData();
   }
 
@@ -132,7 +134,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
 
   onCustomSort(column: string) {
     const existing = this.multiSortOrder.find(s => s.column === column);
-  
+
     if (existing) {
       // Toggle direction
       existing.dir = existing.dir === 'desc' ? 'asc' : 'desc';
@@ -140,11 +142,11 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       // Add new column with default 'desc'
       this.multiSortOrder.push({ column, dir: 'desc' });
     }
-  
+
     this.fetchData(); // Call API with updated sort order
   }
-  
-  
+
+
   fetchData() {
 
     const searchColumns = Object.entries(this.columnsSearch)
@@ -154,19 +156,25 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
         searchable: true,
         search: { value: value.trim() }
       }));
-  
+
     const order = this.multiSortOrder.length > 0
       ? this.multiSortOrder.map(s => ({
-          column: s.column,
-          dir: s.dir
-        }))
+        column: s.column,
+        dir: s.dir
+      }))
       : null;
-  
+
     const globalSearch = this.globalSearchValue && this.globalSearchValue.trim() !== ''
       ? { value: this.globalSearchValue.trim() }
       : null;
-  
-    const payload: any = {};
+    const start = this.paginator ? this.paginator.pageIndex * this.paginator.pageSize : 0;
+    const pageno = this.paginator ? this.paginator.pageIndex + 1 : 1;
+
+    const payload: any = {
+      start,
+      pageno
+    };
+    // const payload: any = {};
     if (searchColumns.length > 0) payload.columns = searchColumns;
     if (order) payload.order = order;
     if (globalSearch) payload.search = globalSearch;

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, OnChanges, ViewChild, AfterViewInit, EventEmitter, ChangeDetectorRef, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -11,11 +11,13 @@ import { Sort } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ScientificDocsComponent } from '../scientific-docs/scientific-docs.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-scientific-docs-card',
   standalone: true,
   imports: [CommonModule,
+    FormsModule,
     MatTableModule,
     MatSortModule,
     MatInputModule,
@@ -25,6 +27,9 @@ import { ScientificDocsComponent } from '../scientific-docs/scientific-docs.comp
   styleUrl: './scientific-docs-card.component.css'
 })
 export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
+
+
+  @Output() dataFetchRequest = new EventEmitter<any>();
   @Input() columnDefs: any[] = [];
   @Input() rowData: any[] = [];
 
@@ -32,57 +37,59 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
   columnHeaders: { [key: string]: string } = {};
   filterableColumns: string[] = [];
   openFilter: { [key: string]: boolean } = {};
+  activeSort: string = '';
+  sortDirection: 'asc' | 'desc' | '' = '';
+
+  columnsSearch: { [key: string]: string } = {};
+  multiSortOrder: { column: string, dir: 'asc' | 'desc' }[] = [];
+  globalSearchValue: string = '';
 
   dataSource = new MatTableDataSource<any>([]);
-
-  @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort!: MatSort;
+
+  searchText: string = '';
+  searchColumn: string | undefined;
+
   constructor(private cdr: ChangeDetectorRef) { }
 
-ngOnChanges(): void {
-  console.log('columnDefs:', this.columnDefs);
- // Reset counter only when the component is first loaded
-   
-  if (this.columnDefs && this.columnDefs.length > 0) {
-    this.displayedColumns = [];
-    this.columnHeaders = {};
-    this.filterableColumns = [];
+  ngOnChanges(): void {
+    //console.log('columnDefs:', this.columnDefs);
+    // Reset counter only when the component is first loaded
 
-    // Check which columns have at least one non-empty value
-    for (const col of this.columnDefs) {
-      const colValue = col.value;
+    if (this.columnDefs && this.columnDefs.length > 0) {
+      this.displayedColumns = [];
+      this.columnHeaders = {};
+      this.filterableColumns = [];
 
-      const hasData = this.rowData?.some(row =>
-        row[colValue] !== null && row[colValue] !== undefined && row[colValue] !== ''
-      );
+      // Check which columns have at least one non-empty value
+      for (const col of this.columnDefs) {
+        const colValue = col.value;
 
-      if (hasData) {
-        this.displayedColumns.push(colValue); // ✅ Only include columns with at least one value
-        this.columnHeaders[colValue] = col.label;
-        this.filterableColumns.push(colValue);
-        console.log('✅ Showing column:', colValue);
-      } else {
-        console.log('🚫 Hiding column (empty data):', colValue);
+        const hasData = this.rowData?.some(row =>
+          row[colValue] !== null && row[colValue] !== undefined && row[colValue] !== ''
+        );
+
+        if (hasData) {
+          this.displayedColumns.push(colValue); // ✅ Only include columns with at least one value
+          this.columnHeaders[colValue] = col.label;
+          this.filterableColumns.push(colValue);
+        } else {
+          //console.log('🚫 Hiding column (empty data):', colValue);
+        }
       }
     }
-  }
 
-  if (this.rowData) {
-    this.dataSource.data = this.rowData;
+    if (this.rowData) {
+      this.dataSource.data = this.rowData;
+    }
   }
-}
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+   this.paginator.page.subscribe(() => this.fetchData());
     this.cdr.detectChanges();
-
-  }
-  activeSort: string = '';
-  sortDirection: 'asc' | 'desc' | '' = '';
-  sortChange(sort: Sort) {
-    this.activeSort = sort.active;
-    this.sortDirection = sort.direction;
   }
 
   scrollTable(direction: 'left' | 'right'): void {
@@ -92,41 +99,92 @@ ngOnChanges(): void {
     }
   }
 
-  filterOptions: string[] = ['Starts with', 'Contains', 'Not Contains', 'Ends With', 'Equals', 'Not Equals'];
+ searchInColumn(column: any, filterInput: HTMLInputElement, event: MouseEvent): void {
+    event.stopPropagation(); // prevent sort from triggering
 
-  toggleDropdown(column: any, event: MouseEvent): void {
-    event.stopPropagation();
-    console.log(this.openFilter);
-    console.log('Dropdown open for column:', column, '->', this.openFilter[column]);
+    if(filterInput.value.trim() === '') {
+      this.clearFilter(column.value, filterInput);
+      return;
+    }
 
-    this.openFilter[column] = !this.openFilter[column];
-  }
-
-  applyColumnFilter(column: string, event: any) {
-    const value = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    console.log('Filter value:', value);
-    this.dataSource.filterPredicate = (data: any, filter: string) => {
-      const rowData = Object.values(data)
-        .map(v => v?.toString().toLowerCase())
-        .join(' '); // join all fields in one string
-
-      console.log('Row data string for filter:', rowData);
-      return rowData.includes(filter);
-    };
-    this.dataSource.filter = value;
-
-    console.log('Applied filter to dataSource:', this.dataSource.filter);
+    const searchValue = filterInput.value.trim();
+    const columnKey = column.value;
+  
+    if (searchValue) {
+      this.columnsSearch[columnKey] = searchValue;
+    } else {
+      delete this.columnsSearch[columnKey];
+    }
+  
+    this.fetchData();
   }
 
   clearFilter(column: string, input: HTMLInputElement) {
     input.value = '';
-    this.dataSource.filter = '';
-    this.openFilter[column] = false;
+    delete this.columnsSearch[column];
+    this.fetchData();
   }
 
-  selectFilterOption(column: string, option: string): void {
-    console.log(`Filter option for ${column}:`, option);
-    this.openFilter[column] = false; // Close dropdown after selection
+  getSortIcon(column: string): string {
+    const sort = this.multiSortOrder.find(s => s.column === column);
+    if (!sort) return 'fa-sort';
+    return sort.dir === 'asc' ? 'fa-sort-up' : 'fa-sort-down';
+  }
+
+  onCustomSort(column: string) {
+    const existing = this.multiSortOrder.find(s => s.column === column);
+
+    if (existing) {
+      // Toggle direction
+      existing.dir = existing.dir === 'desc' ? 'asc' : 'desc';
+    } else {
+      // Add new column with default 'desc'
+      this.multiSortOrder.push({ column, dir: 'desc' });
+    }
+
+    this.fetchData(); // Call API with updated sort order
+  }
+
+
+  fetchData() {
+
+    const searchColumns = Object.entries(this.columnsSearch)
+      .filter(([_, value]) => value && value.trim() !== '')
+      .map(([key, value]) => ({
+        data: key,
+        searchable: true,
+        search: { value: value.trim() }
+      }));
+
+    const order = this.multiSortOrder.length > 0
+      ? this.multiSortOrder.map(s => ({
+        column: s.column,
+        dir: s.dir
+      }))
+      : null;
+
+    const globalSearch = this.globalSearchValue && this.globalSearchValue.trim() !== ''
+      ? { value: this.globalSearchValue.trim() }
+      : null;
+    const start = this.paginator ? this.paginator.pageIndex * this.paginator.pageSize : 0;
+    const pageno = this.paginator ? this.paginator.pageIndex + 1 : 1;
+
+    const payload: any = {
+      start,
+      pageno
+    };
+    if (searchColumns.length > 0) payload.columns = searchColumns;
+    if (order) payload.order = order;
+    if (globalSearch) payload.search = globalSearch;
+
+    this.dataFetchRequest.emit(payload);
+  }
+
+  resetToDefault() {
+    this.multiSortOrder = [];
+    this.columnsSearch = {};
+    this.globalSearchValue = '';
+    this.fetchData();
   }
 
   downloadPDF() {
@@ -141,6 +199,7 @@ ngOnChanges(): void {
 
     doc.save('ExportedData.pdf');
   }
+
 
   // ✅ Download as CSV
   downloadCSV() {
@@ -171,6 +230,5 @@ ngOnChanges(): void {
     const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const data = new Blob([excelBuffer], { type: 'application/octet-stream' });
     saveAs(data, 'ExportedData.xlsx');
-
   }
 }

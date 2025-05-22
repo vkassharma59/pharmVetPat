@@ -189,6 +189,7 @@ export class MainSearchService {
       .pipe(catchError(this.handleError));
   }
   spcdbSearchSpecific(props: any): Observable<any> {
+     console.log("hellooooooooooooooooooooooooooooooooo",props)
     const body = props;
     return this.http
       .post(this.apiUrls.spcDb.searchSpecific, body, { headers: this.headers })
