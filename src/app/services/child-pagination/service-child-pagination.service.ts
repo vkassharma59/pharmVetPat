@@ -20,6 +20,8 @@ export class ServiceChildPaginationService {
   constructor(private http: HttpClient) {}
   getNextChildPaginationData(body: any): Observable<any> {
       console.log("📤 Service call with body:", body);
-    return this.http.post<any>(body.api_url,body, { headers: this.headers });
+      console.log("🔎 body.body.count:", body.body?.count);
+    return this.http.post<any>(body.api_url, body, { headers: this.headers });
+
   }
 }
