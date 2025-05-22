@@ -1,69 +1,62 @@
 import { Component, Input, OnChanges, ViewChild, AfterViewInit, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
-import { Sort } from '@angular/material/sort';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-gppd-db-card',
   standalone: true,
-  imports: [CommonModule,
-    MatTableModule,
-    MatSortModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatPaginatorModule],
+  imports: [CommonModule, FormsModule, MatTableModule, MatSortModule, MatInputModule, MatFormFieldModule, MatPaginatorModule],
   templateUrl: './gppd-db-card.component.html',
   styleUrl: './gppd-db-card.component.css'
 })
 export class GppdDbCardComponent implements OnChanges, AfterViewInit {
   @Output() filterApplied = new EventEmitter<any>();
+  @Output() dataFetchRequest = new EventEmitter<any>();
   @Input() columnDefs: any[] = [];
   @Input() rowData: any[] = [];
-   @Input() data: any;
-  @Input() resultTabIndex: number = 0; // 👈 Parent se bhejna hoga index
+  @Input() resultTabIndex: number = 0;
 
   displayedColumns: string[] = [];
   columnHeaders: { [key: string]: string } = {};
   filterableColumns: string[] = [];
   openFilter: { [key: string]: boolean } = {};
+  columnsSearch: { [key: string]: string } = {};
+  globalSearchValue: string = '';
+  multiSortOrder: { column: string, dir: 'asc' | 'desc' }[] = [];
+
+  activeSort: string = '';
+  sortDirection: 'asc' | 'desc' | '' = '';
 
   dataSource = new MatTableDataSource<any>([]);
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnChanges(): void {
-    // console.log('columnDefs:', this.columnDefs);
-    // Reset counter only when the component is first loaded
-
-    if (this.columnDefs && this.columnDefs.length > 0) {
+    if (this.columnDefs?.length) {
       this.displayedColumns = [];
       this.columnHeaders = {};
       this.filterableColumns = [];
 
-      // Check which columns have at least one non-empty value
       for (const col of this.columnDefs) {
         const colValue = col.value;
-
-        const hasData = this.rowData?.some(row =>
-          row[colValue] !== null && row[colValue] !== undefined && row[colValue] !== ''
-        );
+        const hasData = this.rowData?.some(row => row[colValue] != null && row[colValue] !== '');
 
         if (hasData) {
-          this.displayedColumns.push(colValue); // ✅ Only include columns with at least one value
+          this.displayedColumns.push(colValue);
           this.columnHeaders[colValue] = col.label;
           this.filterableColumns.push(colValue);
-          //console.log('✅ Showing column:', colValue);
-        } else {
-          // console.log('🚫 Hiding column (empty data):', colValue);
         }
       }
     }
@@ -77,14 +70,28 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.cdr.detectChanges();
+  }
+  getSortIcon(column: string): string {
+    const sort = this.multiSortOrder.find(s => s.column === column);
+    if (!sort) return 'fa-sort';
+    return sort.dir === 'asc' ? 'fa-sort-up' : 'fa-sort-down';
+  }
 
+  onCustomSort(column: string) {
+    const existing = this.multiSortOrder.find(s => s.column === column);
+
+    if (existing) {
+      // Toggle direction
+      existing.dir = existing.dir === 'desc' ? 'asc' : 'desc';
+    } else {
+      // Add new column with default 'desc'
+      this.multiSortOrder.push({ column, dir: 'desc' });
+    }
+
+    this.fetchData(); // Call API with updated sort order
   }
-  activeSort: string = '';
-  sortDirection: 'asc' | 'desc' | '' = '';
-  sortChange(sort: Sort) {
-    this.activeSort = sort.active;
-    this.sortDirection = sort.direction;
-  }
+
+
 
   scrollTable(direction: 'left' | 'right'): void {
     const container = document.querySelector('.scroll-container');
@@ -93,67 +100,69 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     }
   }
 
-  filterOptions: string[] = ['Starts with', 'Contains', 'Not Contains', 'Ends With', 'Equals', 'Not Equals'];
 
-  toggleDropdown(column: any, event: MouseEvent): void {
-    event.stopPropagation();
-    //console.log(this.openFilter);
-    // console.log('Dropdown open for column:', column, '->', this.openFilter[column]);
+  searchInColumn(column: any, filterInput: HTMLInputElement, event: MouseEvent): void {
+    event.stopPropagation(); // prevent sort from triggering
 
-    this.openFilter[column] = !this.openFilter[column];
+    if (filterInput.value.trim() === '') {
+      this.clearFilter(column.value, filterInput);
+      return;
+    }
+
+    const searchValue = filterInput.value.trim();
+    const columnKey = column.value;
+
+    if (searchValue) {
+      this.columnsSearch[columnKey] = searchValue;
+    } else {
+      delete this.columnsSearch[columnKey];
+    }
+
+    this.fetchData();
   }
-
-  // applyColumnFilter(column: string, event: any) {
-  //   const value = (event.target as HTMLInputElement).value.trim().toLowerCase();
-  //   console.log('Filter value:', value);
-  //   this.dataSource.filterPredicate = (data: any, filter: string) => {
-  //     const rowData = Object.values(data)
-  //       .map(v => v?.toString().toLowerCase())
-  //       .join(' '); // join all fields in one string
-
-  //     console.log('Row data string for filter:', column);
-  //     return rowData.includes(filter);
-  //   };
-  //   this.dataSource.filter = value;
-
-  //    console.log('Applied filter to dataSource:', this.dataSource.filter);
-  // }
-
-
-
-  applyColumnFilter(column:{ name: string; value: string}, event: any) {
-    const value = (event.target as HTMLInputElement).value.trim().toUpperCase();
-    const filterColumnBody = [
-      {
-        data:column.value,
-        searchable: 'true',
-        search: {
-          value: value
-        }
-      }
-    ];
-
-    const resultTabData = {
-      index: this.resultTabIndex, // 👈 Index jo API ke liye chahiye
-      columns: filterColumnBody
-    };
-
-    this.filterApplied.emit(resultTabData);
-  }
-
-
-
-
   clearFilter(column: string, input: HTMLInputElement) {
     input.value = '';
-    this.dataSource.filter = '';
-    this.openFilter[column] = false;
+    delete this.columnsSearch[column];
+    this.fetchData();
   }
 
-  selectFilterOption(column: string, option: string): void {
-    //  console.log(`Filter option for ${column}:`, option);
-    this.openFilter[column] = false; // Close dropdown after selection
+
+  fetchData() {
+
+    const searchColumns = Object.entries(this.columnsSearch)
+      .filter(([_, value]) => value && value.trim() !== '')
+      .map(([key, value]) => ({
+        data: key,
+        searchable: true,
+        search: { value: value.trim() }
+      }));
+
+    const order = this.multiSortOrder.length > 0
+      ? this.multiSortOrder.map(s => ({
+        column: s.column,
+        dir: s.dir
+      }))
+      : null;
+
+    const globalSearch = this.globalSearchValue && this.globalSearchValue.trim() !== ''
+      ? { value: this.globalSearchValue.trim() }
+      : null;
+
+    const payload: any = {};
+    if (searchColumns.length > 0) payload.columns = searchColumns;
+    if (order) payload.order = order;
+    if (globalSearch) payload.search = globalSearch;
+
+    this.dataFetchRequest.emit(payload);
   }
+
+  resetToDefault() {
+    this.multiSortOrder = [];
+    this.columnsSearch = {};
+    this.globalSearchValue = '';
+    this.fetchData();
+  }
+
 
   downloadPDF() {
     const doc = new jsPDF();
@@ -197,6 +206,6 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const data = new Blob([excelBuffer], { type: 'application/octet-stream' });
     saveAs(data, 'ExportedData.xlsx');
-
   }
 }
+

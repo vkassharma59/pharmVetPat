@@ -22,7 +22,8 @@
   <app-gppd-db-card
   [columnDefs]="_data?.columns"
   [rowData]="_data?.rows"
-  (filterApplied)="handleFilterApplied($event)">
+  (dataFetchRequest)="onDataFetchRequest($event)"
+  >
 </app-gppd-db-card>
  </div>          
     <app-child-paging

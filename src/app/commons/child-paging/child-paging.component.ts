@@ -130,6 +130,8 @@ export class ChildPagingComponent {
     ).subscribe({
       next: (res) => {
         console.log("✅ API Response:", res?.data);
+      this._currentChildAPIBody.count = res?.data?.recordsFiltered ?? res?.data?.recordsTotal;
+
         this.handleChangeTabData.emit(res?.data);  
         console.log("📦 Response count:", res.count);
         // If count is in response, update it
@@ -141,11 +143,14 @@ export class ChildPagingComponent {
         this.setLoading.emit(false);
       },
       error: (e) => {
-        console.error("❌ API Error:", e);
+        console.error("❌ API Error:000000000000000000", e);
         this.setLoading.emit(false);
       },
     });
   };
+
+
+
   handleChangeData() {
     this.PageArray = [];
     if (this._currentChildAPIBody?.count) {
@@ -168,7 +173,7 @@ export class ChildPagingComponent {
   }
 
   ngOnChanges(): void {
-    console.log("🛠 ngOnChanges called, currentChildAPIBody:", this._currentChildAPIBody);
+    console.log("🛠 ngOnChangescalled, currentChildAPIBody:", this._currentChildAPIBody);
     this.handleChangeData();
   }
 }

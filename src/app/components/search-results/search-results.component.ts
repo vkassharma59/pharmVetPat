@@ -958,10 +958,10 @@ export class SearchResultsComponent {
     });
   }
 
-  private scientificDocsSearch(resultTabData: any, pageNo: number = 1, columnFilters: any[] = []): void {
+  private scientificDocsSearch(resultTabData: any, ): void {
     console.log('Search Input:', resultTabData);
-    const pageSize = 25;
-    const start = (pageNo - 1) * pageSize;
+   const pageSize = 25;
+    const page_no = 1
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       console.log('Empty   search parameters, skipping search.');
       this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = {};
@@ -979,9 +979,9 @@ export class SearchResultsComponent {
       search_type: resultTabData?.searchWith,
       keyword: [resultTabData?.searchWithValue],
       draw: 1,
-      start: start,
-      length: pageSize,
-      columns: columnFilters  // ✅ inject filters here
+      page_no: 1,
+      start: (page_no - 1) * pageSize,
+      length: pageSize      
     };
 
     console.log('Request Body:', this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]);
@@ -1030,6 +1030,8 @@ export class SearchResultsComponent {
   }
   private spcDbSearch(resultTabData: any): void {
     console.log('Search Input:', resultTabData);
+    const pageSize = 25;
+    const page_no = 1
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.spcDb.name] = {};
       this.setLoadingState.emit(false);
@@ -1047,8 +1049,9 @@ export class SearchResultsComponent {
       api_url: this.apiUrls.spcDb.searchSpecific,
       keyword: resultTabData?.searchWithValue,
       draw: 1,
-      start: 0,
-      length: 25
+      page_no: 1,
+      start: (page_no - 1) * pageSize,
+      length: pageSize
     };
 
     console.log('Request Body spcdb:', this.childApiBody[resultTabData.index][this.resultTabs.spcDb.name]);
@@ -1096,7 +1099,6 @@ export class SearchResultsComponent {
   private gppdDbSearch(resultTabData: any,): void {
     console.log('Search Input:', resultTabData);
     const pageSize = 10;
-
     const page_no = 1
     // 🛑 Skip empty search
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
