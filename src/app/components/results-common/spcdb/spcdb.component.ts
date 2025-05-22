@@ -45,7 +45,7 @@ export class SpcdbComponent implements OnChanges {
     this._currentChildAPIBody = value;
   }
 
-  resultTabs: any = {};  
+  resultTabs: any = {};
 
   constructor(private utilityService: UtilityService,
     private mainSearchService: MainSearchService
@@ -55,24 +55,28 @@ export class SpcdbComponent implements OnChanges {
 
   ngOnChanges() {
     console.log('scientificDocs received data:', this._data);
+    this.handleResultTabData.emit(this._data);
   }
 
   onDataFetchRequest(payload: any) {
- 
     // Deep clone to avoid mutating original
     const requestBody = {
       ...this._currentChildAPIBody,
       ...payload
     };
-  
+    console.log('Paginated with payload:', payload); // 🧪 Confirm this prints
+    console.log('Pagination triggered with payload:', requestBody); // 🧪 Confirm this prints
     this.handleSetLoading.emit(true);
-  
     this.mainSearchService.spcdbSearchSpecific(requestBody).subscribe({
       next: (result: any) => {
-        console.log('Search API Result:', result);
+        console.log('Search API Result:---------------', result);
         this._data.rows = result?.data?.data || [];
         this._currentChildAPIBody.count = result?.data?.recordsFiltered ?? result?.data?.recordsTotal;
         this.searchByTable = true;
+        this.handleResultTabData.emit(this._data.rows);
+        // this.handleResultTabData.emit(this._data.data);
+
+        this.handleSetLoading.emit(false);
       },
       error: (err) => {
         console.error('API Error:', err);
@@ -82,4 +86,6 @@ export class SpcdbComponent implements OnChanges {
       }
     });
   }
+
+
 }

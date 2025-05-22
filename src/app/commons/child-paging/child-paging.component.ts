@@ -116,36 +116,34 @@ export class ChildPagingComponent {
   handlePageClick = (page: number) => {
     this.setLoading.emit(true);
     this._currentChildAPIBody.page_no = page;
-
     // Set dynamic 'start' based on (page_no - 1) * length
     const pageSize = this._currentChildAPIBody.length || 25; // fallback 25
     this._currentChildAPIBody.start = (page - 1) * pageSize;
-
     this.MainPageNo = page;
-
-    console.log("📦 Request Body before API Call:", this._currentChildAPIBody.count);
-
+    // console.log("📦 Request Body before API Call:", this._currentChildAPIBody);
     this.serviceChildPaginationService.getNextChildPaginationData(
       this._currentChildAPIBody
     ).subscribe({
       next: (res) => {
         console.log("✅ API Response:", res?.data);
-        this.handleChangeTabData.emit(res?.data);  
-        console.log("📦 Response count:", res.count);
-        // If count is in response, update it
-      
-        if (res?.count) {
-          this.count = res.count;
-        }
+        this._currentChildAPIBody.count = res?.data?.recordsFiltered ?? res?.data?.recordsTotal;
+        console.log("📤 Emitting handleChangeTabData with:", res?.data);
+          this.handleChangeTabData.emit(this._currentChildAPIBody);
+
+        // this.handleChangeTabData.emit(this._currentChildAPIBody);
+        //   if (res?.count) {
+        //   this.count = res.count;
+        // }
 
         this.setLoading.emit(false);
       },
       error: (e) => {
-        console.error("❌ API Error:", e);
+        console.error("❌ API Error:000000000000000000", e);
         this.setLoading.emit(false);
       },
     });
   };
+
   handleChangeData() {
     this.PageArray = [];
     if (this._currentChildAPIBody?.count) {
@@ -168,7 +166,7 @@ export class ChildPagingComponent {
   }
 
   ngOnChanges(): void {
-    console.log("🛠 ngOnChanges called, currentChildAPIBody:", this._currentChildAPIBody);
+    console.log("🛠 ngOnChangescalled, currentChildAPIBody:", this._currentChildAPIBody);
     this.handleChangeData();
   }
 }
