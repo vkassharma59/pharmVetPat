@@ -21,12 +21,14 @@
 <div >
   <app-scientific-docs-card
   [columnDefs]="_data?.columns"
-  [rowData]="_data?.rows">
+  [rowData]="_data?.rows"
+    (dataFetchRequest)="onDataFetchRequest($event)"
+  >
 </app-scientific-docs-card>
  </div>          
     <app-child-paging
         [currentChildAPIBody]="currentChildAPIBody"
-        (handleChangeTabData)="handleResultTabData.emit($event)"
+         (handleChangeTabData)="onDataFetchRequest($event)"
         (setLoading)="handleSetLoading.emit($event)"
     ></app-child-paging>
   </ng-container>
