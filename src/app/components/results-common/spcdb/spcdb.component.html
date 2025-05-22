@@ -1,4 +1,4 @@
-<ng-container  *ngIf="_data?.rows?.length > 0; else noData">
+<ng-container  *ngIf="_data?.rows?.length > 0 || searchByTable; else noData">
     <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper justify-between">
         <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
             Total Records : {{currentChildAPIBody?.count }}
@@ -17,7 +17,8 @@
   <div >
     <app-spcdb-card
       [columnDefs]="_data?.columns"
-      [rowData]="_data?.rows">
+      [rowData]="_data?.rows"
+      (dataFetchRequest)="onDataFetchRequest($event)">
     </app-spcdb-card>
   </div>
 </ng-container>
