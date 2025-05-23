@@ -26,11 +26,11 @@
   >
 </app-scientific-docs-card>
  </div>          
-    <app-child-paging
+    <app-child-pagning-table
         [currentChildAPIBody]="currentChildAPIBody"
          (handleChangeTabData)="onDataFetchRequest($event)"
         (setLoading)="handleSetLoading.emit($event)"
-    ></app-child-paging>
+    ></app-child-pagning-table>
   </ng-container>
   <ng-template #noData>
     <div class="card">

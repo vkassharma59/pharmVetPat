@@ -7,14 +7,14 @@ import {
 } from '@angular/core';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { CommonModule } from '@angular/common';
-import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
 import { SpcdbCardComponent } from '../spcdb-card/spcdb-card.component';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
+import { ChildPagningTableComponent } from '../../../commons/child-pagning-table/child-pagning-table.component';
 
 @Component({
   selector: 'chem-spcdb',
   standalone: true,
-  imports: [ChildPagingComponent, CommonModule, SpcdbCardComponent],
+  imports: [ChildPagningTableComponent, CommonModule, SpcdbCardComponent],
   templateUrl: './spcdb.component.html',
   styleUrl: './spcdb.component.css'
 })
@@ -23,6 +23,7 @@ export class SpcdbComponent implements OnChanges {
   _data: any = { columns: [], rows: [] }; // expected structure
   _currentChildAPIBody: any;
   searchByTable: boolean = false;
+  isFilterApplied: boolean = false; // agar filter lagana hai to true karenge
 
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();

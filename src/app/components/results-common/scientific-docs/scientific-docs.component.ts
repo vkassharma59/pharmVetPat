@@ -7,13 +7,13 @@ import {
 } from '@angular/core';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { CommonModule } from '@angular/common';
-import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
 import { ScientificDocsCardComponent } from '../scientific-docs-card/scientific-docs-card.component';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
+import { ChildPagningTableComponent } from '../../../commons/child-pagning-table/child-pagning-table.component';
 @Component({
   selector: 'app-scientific-docs',
   standalone: true,
-  imports: [ChildPagingComponent, CommonModule, ScientificDocsCardComponent],
+  imports: [ChildPagningTableComponent, CommonModule, ScientificDocsCardComponent],
   templateUrl: './scientific-docs.component.html',
   styleUrls: ['./scientific-docs.component.css']
 })
