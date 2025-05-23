@@ -7,14 +7,14 @@ import {
 } from '@angular/core';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { CommonModule } from '@angular/common';
-import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { GppdDbCardComponent } from '../gppd-db-card/gppd-db-card.component';
+import { ChildPagningTableComponent } from '../../../commons/child-pagning-table/child-pagning-table.component';
 
 @Component({
   selector: 'app-gppd-db',
   standalone: true,
-  imports: [ChildPagingComponent, CommonModule, GppdDbCardComponent],
+  imports: [ChildPagningTableComponent, CommonModule, GppdDbCardComponent],
    templateUrl: './gppd-db.component.html',
   styleUrl: './gppd-db.component.css'
 })
