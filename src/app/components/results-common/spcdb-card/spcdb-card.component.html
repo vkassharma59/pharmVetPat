@@ -14,14 +14,10 @@
         Download Excel <i class="fa-solid fa-download"></i>
       </button>
     </div>
-  
+
     <div style="display: flex; align-items: center; gap: 8px;">
-      <input
-        type="text"
-        placeholder="Search..."
-        [(ngModel)]="globalSearchValue"
-        style="padding: 6px 10px; border-radius: 5px; border: 1px solid #ccc;"
-      />
+      <input type="text" placeholder="Search..." [(ngModel)]="globalSearchValue"
+        style="padding: 6px 10px; border-radius: 5px; border: 1px solid #ccc;" />
       <button mat-raised-button style="background: linear-gradient(192deg, rgb(131, 164, 236) 0%, rgb(79, 154, 240) 50%, rgba(0, 58, 219, 1) 100%);
       color:#fff" (click)="fetchData()">
         Search
@@ -33,7 +29,7 @@
       </button>
     </div>
   </div>
-  
+
 
   <div class="table-wrapper">
     <!-- Header-Top Scroll Buttons -->
@@ -45,34 +41,28 @@
 
       <!-- Scrollable Table Container -->
       <div class="scroll-container" #tableContainer>
-        <table mat-table
-            [dataSource]="dataSource"
-            matSort class="custom-table">
-          <!-- Dynamically render columns --> 
-          <ng-container *ngFor="let column of columnDefs" [matColumnDef]="column.value">
+        <table mat-table [dataSource]="dataSource" matSort class="custom-table">
+          <!-- Dynamically render columns -->
+          <ng-container *ngFor="let column of columnDefs; let i = index" [matColumnDef]="column.value">
             <!-- Header cell with sort and filter -->
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell"
               (click)="onCustomSort(column.value)"
               style="position: sticky; background-color:#3886d8; color:white; border:2px solid white;overflow:visible;padding-top: 8px;padding-bottom: 5px;">
 
               <div class="header-content">
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center" (click)="toggleSort(i)" style="cursor: pointer;">
                   <span>{{ column.name }}</span>
-                  <i class="fa-solid" [ngClass]="getSortIcon(column.value)" style="margin-left: 8px;"></i>
+                  <i class="fa-solid" [ngClass]="getSortIcon(i)"
+                    style="margin-left: 8px;"></i>
                 </div>
                 <ng-container *ngIf="filterableColumns.includes(column.value)">
                   <div style="display:flex; align-items: center; font-size: 14px; justify-content: space-between;">
-                    <input 
-                      #filterInput 
-                      matInput 
-                      placeholder="Filter" 
-                      (click)="$event.stopPropagation()"                      
-                      style="margin-top: 5px;
+                    <input #filterInput matInput placeholder="Filter" (click)="$event.stopPropagation()" style="margin-top: 5px;
                             border-radius: 7px;
                             padding: 5px;
                             color:black;" />
 
-                      <!-- (keyup)="applyColumnFilter(column, $event)"  -->
+                    <!-- (keyup)="applyColumnFilter(column, $event)"  -->
 
                     <div style="position: relative; display: flex; overflow:visible;">
 
@@ -118,4 +108,5 @@
     </div>
   </div>
 </div>
+
 <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->

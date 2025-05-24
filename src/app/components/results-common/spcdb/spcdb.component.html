@@ -19,8 +19,11 @@
       (dataFetchRequest)="onDataFetchRequest($event)">
     </app-spcdb-card>
   </div>
-  <app-child-paging [currentChildAPIBody]="currentChildAPIBody" (handleChangeTabData)="onDataFetchRequest($event)"
-    (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
+  <app-child-pagning-table
+  [currentChildAPIBody]="currentChildAPIBody"
+   [isFilterApplied]="isFilterApplied"
+   (handleChangeTabData)="onDataFetchRequest($event)"
+    (setLoading)="handleSetLoading.emit($event)"></app-child-pagning-table>
 
 </ng-container>
 <ng-template #noData>
