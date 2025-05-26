@@ -82,6 +82,7 @@ export class ScientificDocsComponent implements OnChanges {
       },
       error: (err) => {
         console.error('API Error:', err);
+          this.handleSetLoading.emit(false);
       },
       complete: () => {
         this.handleSetLoading.emit(false);
