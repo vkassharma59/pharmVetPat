@@ -41,7 +41,8 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
   sortDirection: 'asc' | 'desc' | '' = '';
 
   columnsSearch: { [key: string]: string } = {};
-  multiSortOrder: { column: string, dir: 'asc' | 'desc' }[] = [];
+  multiSortOrder: { column: number, dir: 'asc' | 'desc' }[] = [];
+
   globalSearchValue: string = '';
 
   dataSource = new MatTableDataSource<any>([]);
@@ -125,16 +126,8 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
     delete this.columnsSearch[column];
     this.fetchData();
   }
-
-  getSortIcon(column: string): string {
-    const sort = this.multiSortOrder.find(s => s.column === column);
-    if (!sort) return 'fa-sort';
-    return sort.dir === 'asc' ? 'fa-sort-up' : 'fa-sort-down';
-  }
-
-  onCustomSort(column: string) {
+  onCustomSort(column: number) {
     const existing = this.multiSortOrder.find(s => s.column === column);
-
     if (existing) {
       // Toggle direction
       existing.dir = existing.dir === 'desc' ? 'asc' : 'desc';
@@ -146,27 +139,71 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
     this.fetchData(); // Call API with updated sort order
   }
 
+  toggleSort(index: number): void {
+    const existingSort = this.multiSortOrder.find(s => s.column === index);
+    let newDir: 'asc' | 'desc' = 'asc';
+
+    if (existingSort) {
+      newDir = existingSort.dir === 'asc' ? 'desc' : 'asc';
+      this.multiSortOrder = this.multiSortOrder.filter(s => s.column !== index);
+    }
+
+    this.multiSortOrder.push({ column: index, dir: newDir });
+    this.fetchData();
+  }
+
+
+  getSortIcon(index: number): string {
+    const column = this.displayedColumns[index];
+    const sort = this.multiSortOrder.find(s => s.column === index);
+    if (!sort) return 'fa-sort';
+    return sort.dir === 'asc' ? 'fa-sort-up' : 'fa-sort-down';
+  }
+
+
 
   fetchData() {
-
-    const searchColumns = Object.entries(this.columnsSearch)
-      .filter(([_, value]) => value && value.trim() !== '')
-      .map(([key, value]) => ({
-        data: key,
-        searchable: true,
-        search: { value: value.trim() }
-      }));
-
-    const order = this.multiSortOrder.length > 0
-      ? this.multiSortOrder.map(s => ({
-        column: s.column,
-        dir: s.dir
+    const isGlobalSearch = this.globalSearchValue && this.globalSearchValue.trim() !== '';
+    // Add columns for global search: all displayedColumns with searchable: true
+    const allColumns = isGlobalSearch
+      ? this.displayedColumns.map(col => ({
+        data: col,
+        searchable: true
       }))
-      : null;
+      : undefined;
 
-    const globalSearch = this.globalSearchValue && this.globalSearchValue.trim() !== ''
+    // Add only filtered columns for column search
+    const searchColumns = !isGlobalSearch
+      ? Object.entries(this.columnsSearch)
+        .filter(([_, value]) => value && value.trim() !== '')
+        .map(([key, value]) => ({
+          data: key,
+          searchable: true,
+          search: { value: value.trim() }
+        }))
+      : [];
+    const order = this.multiSortOrder.length > 0
+      ? this.multiSortOrder
+        .filter(s => typeof s.column === 'number')
+        .map(s => {
+          console.log('Sorting index:', s.column, 'direction:', s.dir);
+          return {
+            column: s.column,
+            dir: s.dir
+          };
+        })
+      : null;
+    // const order = this.multiSortOrder.length > 0
+    //   ? this.multiSortOrder.map(s => ({
+    //     column: s.column,
+    //     dir: s.dir
+    //   }))
+    //   : null;
+
+    const globalSearch = isGlobalSearch
       ? { value: this.globalSearchValue.trim() }
       : null;
+
     const start = this.paginator ? this.paginator.pageIndex * this.paginator.pageSize : 0;
     const pageno = this.paginator ? this.paginator.pageIndex + 1 : 1;
 
@@ -174,11 +211,14 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       start,
       pageno
     };
-    // const payload: any = {};
-    if (searchColumns.length > 0) payload.columns = searchColumns;
-    if (order) payload.order = order;
-    if (globalSearch) payload.search = globalSearch;
 
+    if (isGlobalSearch && allColumns) {
+      payload.columns = allColumns;
+      payload.search = globalSearch;
+    } else if (searchColumns.length > 0) {
+      payload.columns = searchColumns;
+    }
+    if (order) payload.order = order;
     this.dataFetchRequest.emit(payload);
   }
 
