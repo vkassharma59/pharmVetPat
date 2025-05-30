@@ -166,8 +166,7 @@ export class MainSearchService {
       .pipe(catchError(this.handleError));
   }
   gppdDbSearchSpecific(props: any): Observable<any> {
-    console.log("hellooooooooooooooooooooooooooooooooo",props)
-    const body = props;
+       const body = props;
     return this.http
       .post(this.apiUrls.gppdDb.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
@@ -189,8 +188,7 @@ export class MainSearchService {
       .pipe(catchError(this.handleError));
   }
   spcdbSearchSpecific(props: any): Observable<any> {
-     console.log("hellooooooooooooooooooooooooooooooooo",props)
-    const body = props;
+      const body = props;
     return this.http
       .post(this.apiUrls.spcDb.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
@@ -225,6 +223,22 @@ export class MainSearchService {
     const body = props;
     return this.http
       .post(this.apiUrls.activePatent.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
+   getactivePatentColumnList(): Observable<any> {
+    return this.http
+      .get(this.apiUrls.activePatent.columnList, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
+   NonPatentSearchSpecific(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.nonPatentLandscape.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
+   getNonPatentColumnList(): Observable<any> {
+    return this.http
+      .get(this.apiUrls.nonPatentLandscape.columnList, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
   scientificDocsSpecific(props: any): Observable<any> {

@@ -7,18 +7,18 @@ import {
 } from '@angular/core';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { CommonModule } from '@angular/common';
-import { SpcdbCardComponent } from '../spcdb-card/spcdb-card.component';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { ChildPagningTableComponent } from '../../../commons/child-pagning-table/child-pagning-table.component';
+import { NonPatentCardComponent } from '../non-patent-card/non-patent-card.component';
 
 @Component({
-  selector: 'chem-spcdb',
+  selector: 'app-non-patent',
   standalone: true,
-  imports: [ChildPagningTableComponent, CommonModule, SpcdbCardComponent],
-  templateUrl: './spcdb.component.html',
-  styleUrl: './spcdb.component.css'
+  imports: [ChildPagningTableComponent, CommonModule, NonPatentCardComponent],
+  templateUrl: './non-patent.component.html',
+  styleUrl: './non-patent.component.css'
 })
-export class SpcdbComponent implements OnChanges {
+export class NonPatentComponent implements OnChanges {
 
   _data: any = { columns: [], rows: [] }; // expected structure
   _currentChildAPIBody: any;
@@ -67,7 +67,7 @@ export class SpcdbComponent implements OnChanges {
 
   onDataFetchRequest(payload: any) {
     this.isFilterApplied = !!(payload?.search || payload?.columns);
-
+    console.log('scientificDocs received data:', payload);
     const requestBody = {
       ...this._currentChildAPIBody,
       ...payload
@@ -75,7 +75,7 @@ export class SpcdbComponent implements OnChanges {
 
     this.handleSetLoading.emit(true);
 
-    this.mainSearchService.spcdbSearchSpecific(requestBody).subscribe({
+    this.mainSearchService.NonPatentSearchSpecific(requestBody).subscribe({
       next: (result: any) => {
         this._data.rows = result?.data?.data || [];
         this.count = result?.data?.recordsFiltered ?? result?.data?.recordsTotal;
@@ -94,7 +94,6 @@ export class SpcdbComponent implements OnChanges {
       }
     });
   }
-
 
 
 }

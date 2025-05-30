@@ -16,7 +16,7 @@ import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 @Component({
-  selector: 'app-gppd-db-card',
+  selector: 'app-non-patent-card',
   standalone: true,
   imports: [CommonModule,
     FormsModule,
@@ -25,12 +25,12 @@ import { MainSearchService } from '../../../services/main-search/main-search.ser
     MatInputModule,
     MatFormFieldModule,
     MatPaginatorModule],
-  templateUrl: './gppd-db-card.component.html',
-  styleUrl: './gppd-db-card.component.css'
-
+  templateUrl: './non-patent-card.component.html',
+  styleUrl: './non-patent-card.component.css'
 })
-export class GppdDbCardComponent implements OnChanges, AfterViewInit {
 
+
+export class NonPatentCardComponent implements OnChanges, AfterViewInit {
   @Output() dataFetchRequest = new EventEmitter<any>();
   @Input() columnDefs: any[] = [];
   @Input() rowData: any[] = [];
@@ -38,7 +38,6 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     data?: any[]; // Replace `any` with your actual data type
   };
   _currentChildAPIBody: any;
-
   displayedColumns: string[] = [];
   columnHeaders: { [key: string]: string } = {};
   filterableColumns: string[] = [];
@@ -48,27 +47,30 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
 
   columnsSearch: { [key: string]: string } = {};
   multiSortOrder: { column: number, dir: 'asc' | 'desc' }[] = [];
+
   globalSearchValue: string = '';
-   get pageSize(): number {
+
+  get pageSize(): number {
     return this._currentChildAPIBody?.length || 25;
   }
- @Input()
+  dataSource = new MatTableDataSource<any>([]);
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort!: MatSort;
+  @Input()
   get currentChildAPIBody() {
     return this._currentChildAPIBody;
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
   }
-  dataSource = new MatTableDataSource<any>([]);
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort, { static: false }) sort!: MatSort;
 
   searchText: string = '';
   searchColumn: string | undefined;
 
   constructor(private cdr: ChangeDetectorRef,
-     private mainSearchService: MainSearchService
-  ) { }
+    private mainSearchService: MainSearchService) { }
+
+
 
   ngOnChanges(): void {
     //console.log('columnDefs:', this.columnDefs);
@@ -142,8 +144,20 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     delete this.columnsSearch[column];
     this.fetchData();
   }
+  onCustomSort(column: number) {
+    const existing = this.multiSortOrder.find(s => s.column === column);
+    if (existing) {
+      // Toggle direction
+      existing.dir = existing.dir === 'desc' ? 'asc' : 'desc';
+    } else {
+      // Add new column with default 'desc'
+      this.multiSortOrder.push({ column, dir: 'desc' });
+    }
 
-   toggleSort(index: number): void {
+    this.fetchData(); // Call API with updated sort order
+  }
+
+  toggleSort(index: number): void {
     const existingSort = this.multiSortOrder.find(s => s.column === index);
     let newDir: 'asc' | 'desc' = 'asc';
 
@@ -164,23 +178,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     return sort.dir === 'asc' ? 'fa-sort-up' : 'fa-sort-down';
   }
 
-
-  onCustomSort(column: number) {
-    const existing = this.multiSortOrder.find(s => s.column === column);
-
-    if (existing) {
-      // Toggle direction
-      existing.dir = existing.dir === 'desc' ? 'asc' : 'desc';
-    } else {
-      // Add new column with default 'desc'
-      this.multiSortOrder.push({ column, dir: 'desc' });
-    }
-
-    this.fetchData(); // Call API with updated sort order
-  }
-
-
- fetchData() {
+  fetchData() {
     const isGlobalSearch = this.globalSearchValue && this.globalSearchValue.trim() !== '';
     // Add columns for global search: all displayedColumns with searchable: true
     const allColumns = isGlobalSearch
@@ -246,7 +244,10 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     this.globalSearchValue = '';
     this.fetchData();
   }
- getAllDataFromApi(): Observable<any[]> {
+
+ 
+
+  getAllDataFromApi(): Observable<any[]> {
     const requestBody = {
       ...this._currentChildAPIBody,
       start: 0,
@@ -254,48 +255,50 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     };
     console.log('📦  response body:', requestBody);
     return this.mainSearchService.NonPatentSearchSpecific(requestBody).pipe(
-      tap((result: GppdDbCardComponent) => {
+      tap((result: NonPatentCardComponent) => {
         console.log('📦 Full API response:', result);
       }),
-      map((result: GppdDbCardComponent) => result?.data?.data || []),
+      map((result: NonPatentCardComponent) => result?.data?.data || []),
       catchError(error => {
         console.error('❌ Error fetching all data:', error);
         return of([]); // Return an empty array on error
       })
     );
   }
-  // ✅ Download as PDF
-  downloadPDF(): void {
-    this.getAllDataFromApi().subscribe(data => {
-      const exportData = data.map(row => {
-        return this.displayedColumns.map(col => row[col] !== undefined ? row[col] : '');
-      });
 
-      const colHeaders = this.displayedColumns;
-      const doc = new jsPDF();
-      autoTable(doc, {
-        head: [colHeaders],
-        body: exportData,
-      });
-      doc.save('ExportedData.pdf');
+ // ✅ Download as PDF
+ downloadPDF(): void {
+  this.getAllDataFromApi().subscribe(data => {
+    const exportData = data.map(row => {
+      return this.displayedColumns.map(col => row[col] !== undefined ? row[col] : '');
     });
-  }
+
+    const colHeaders = this.displayedColumns;
+    const doc = new jsPDF();
+    autoTable(doc, {
+      head: [colHeaders],
+      body: exportData,
+    });
+    doc.save('ExportedData.pdf');
+  });
+}
+
   // ✅ Download as CSV
-  downloadCSV(): void {
-    this.getAllDataFromApi().subscribe(data => {
-      let csvContent = this.displayedColumns.join(',') + '\n';
+ downloadCSV(): void {
+  this.getAllDataFromApi().subscribe(data => {
+    let csvContent = this.displayedColumns.join(',') + '\n';
 
-      data.forEach(row => {
-        const rowData = this.displayedColumns.map(col => row[col] !== undefined ? row[col] : '');
-        csvContent += rowData.join(',') + '\n';
-      });
-
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      saveAs(blob, 'ExportedData.csv');
+    data.forEach(row => {
+      const rowData = this.displayedColumns.map(col => row[col] !== undefined ? row[col] : '');
+      csvContent += rowData.join(',') + '\n';
     });
-  }
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, 'ExportedData.csv');
+  });
+}
   // ✅ Download as Excel
-  downloadExcel(): void {
+ downloadExcel(): void {
     this.getAllDataFromApi().subscribe(data => {
       const exportData = data.map(row => {
         const formatted: any = {};
@@ -317,7 +320,5 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
       saveAs(blob, 'ExportedData.xlsx');
     });
   }
- 
+
 }
-
-

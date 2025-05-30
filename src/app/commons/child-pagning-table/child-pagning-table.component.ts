@@ -171,7 +171,7 @@
 //       },
 //     });
 //   };
- 
+
 //   handleChangeData() {
 //     if (this._currentChildAPIBody?.count) {
 //       this.count = this._currentChildAPIBody.count;
@@ -255,7 +255,7 @@ export class ChildPagningTableComponent implements OnChanges {
 
   constructor(
     private serviceChildPaginationService: ServiceChildPaginationService
-  ) {}
+  ) { }
 
   get pageSize(): number {
     return this._currentChildAPIBody?.length || 25;
@@ -282,9 +282,21 @@ export class ChildPagningTableComponent implements OnChanges {
   handleChangeData() {
     this.count = this._currentChildAPIBody?.count || 0;
 
+    // if (this.isFilterApplied) {
+    //   this.PageArray = []; // Optionally show only current page
+    // }
     if (this.isFilterApplied) {
-      this.PageArray = []; // Optionally show only current page
-    } else {
+      const currentPage = this._currentChildAPIBody?.page_no || 1;
+      const total = this.totalPages;
+
+      this.PageArray = [];
+      const startIndex = Math.floor((currentPage - 1) / 5) * 5 + 1;
+
+      for (let i = startIndex; i <= Math.min(total, startIndex + 4); i++) {
+        this.PageArray.push(i);
+      }
+    }
+    else {
       const total = this.totalPages;
       const currentPage = this._currentChildAPIBody?.page_no || 1;
       const startIndex = Math.floor((currentPage - 1) / 5) * 5 + 1;
@@ -311,6 +323,7 @@ export class ChildPagningTableComponent implements OnChanges {
     this.MainPageNo = total;
     this.handlePageClick(this.MainPageNo);
   };
+
 
   handleNextclick = () => {
     if (this.MainPageNo >= this.totalPages) return;

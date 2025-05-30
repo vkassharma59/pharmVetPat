@@ -73,11 +73,11 @@ export interface AppConfig {
       searchSpecific: string;
       columnList: string;
     };
-    spcDb:{
+    spcDb: {
       searchSpecific: string;
       columnList: string;
     }
-    gppdDb:{
+    gppdDb: {
       searchSpecific: string;
       columnList: string;
     }
@@ -89,6 +89,10 @@ export interface AppConfig {
       searchSpecific: string;
       columnList: string;
     };
+    nonPatentLandscape: {
+      searchSpecific: string;
+      columnList: string;
+    },
     scientificDocs: {
       searchSpecific: string;
       columnList: string;
@@ -109,4 +113,3 @@ export interface AppConfig {
     };
   }
 }
-  

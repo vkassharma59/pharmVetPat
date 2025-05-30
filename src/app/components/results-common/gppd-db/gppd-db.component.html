@@ -16,7 +16,9 @@
   </div>
   <div>
     <app-gppd-db-card [columnDefs]="_data?.columns" [rowData]="_data?.rows"
-      (dataFetchRequest)="onDataFetchRequest($event)">
+      (dataFetchRequest)="onDataFetchRequest($event)"
+       [currentChildAPIBody]="_currentChildAPIBody"
+      >
     </app-gppd-db-card>
   </div>
   <app-child-pagning-table [currentChildAPIBody]="currentChildAPIBody" (handleChangeTabData)="onDataFetchRequest($event)"
