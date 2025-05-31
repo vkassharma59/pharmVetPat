@@ -1098,7 +1098,7 @@ export class SearchResultsComponent {
     });
   }
 
-  private gppdDbSearch(resultTabData: any,): void {
+  private gppdDbSearcht(resultTabData: any,): void {
     console.log('Search Input:', resultTabData);
     const pageSize = 10;
     const page_no = 1
@@ -1167,6 +1167,70 @@ export class SearchResultsComponent {
           next: (result: any) => {
             console.log('Search API Result:', result);
             const dataRows = result?.data?.data || [];
+            this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name].rows = dataRows;
+            this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name].count = result?.data?.recordsTotal;
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
+   private gppdDbSearch(resultTabData: any): void {
+    console.log('Search Input:', resultTabData);
+    const pageSize = 25;
+    const page_no = 1
+    if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+      this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
+
+    if (this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name] = {};
+    } else {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
+    // Step 1: Prepare API body
+    this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name] = {
+      api_url: this.apiUrls.gppdDb.searchSpecific,
+      keyword: resultTabData?.searchWithValue,
+      draw: 1,
+      page_no: 1,
+      start: (page_no - 1) * pageSize,
+      length: pageSize
+    };
+    console.log('Request Body activePatent:', this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name]);
+    // Step 2: Fetch Column List First
+    this.columnListService.getColumnList(this.apiUrls.gppdDb.columnList).subscribe({
+      next: (res: any) => {
+        const columnList = res?.data?.columns || [];
+        Auth_operations.setColumnList(this.resultTabs.gppdDb.name, columnList);
+        console.log('get colum list activePatent:', columnList);
+
+        if (!this.allDataSets[resultTabData.index]) {
+          this.allDataSets[resultTabData.index] = {};
+        }
+        // ✅ SAVE to pass to component
+        this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name] = {
+          columns: columnList,  // <- for <app-scientific-docs-card>
+          rows: []              // <- we’ll fill this after searchSpecific
+        };
+        // Step 4: Call main search API
+        this.mainSearchService.gppdDbSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name]).subscribe({
+          next: (result: any) => {
+            console.log('Search API Result:', result);
+            const dataRows = result?.data?.data || [];
+
+            // ✅ Append search result (rows) to saved structure
             this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name].rows = dataRows;
             this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name].count = result?.data?.recordsTotal;
             this.setLoadingState.emit(false);

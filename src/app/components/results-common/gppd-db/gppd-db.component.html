@@ -17,11 +17,13 @@
   <div>
     <app-gppd-db-card [columnDefs]="_data?.columns" [rowData]="_data?.rows"
       (dataFetchRequest)="onDataFetchRequest($event)"
-       [currentChildAPIBody]="_currentChildAPIBody"
+        [currentChildAPIBody]="_currentChildAPIBody" 
       >
     </app-gppd-db-card>
-  </div>
-  <app-child-pagning-table [currentChildAPIBody]="currentChildAPIBody" (handleChangeTabData)="onDataFetchRequest($event)"
+    </div>
+  <app-child-pagning-table [currentChildAPIBody]="currentChildAPIBody"
+   [isFilterApplied]="isFilterApplied"
+   (handleChangeTabData)="onDataFetchRequest($event)"
     (setLoading)="handleSetLoading.emit($event)"></app-child-pagning-table>
 
 </ng-container>
