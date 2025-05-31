@@ -27,6 +27,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Chem_Robotics_QueryModalComponent } from '../Chem_Robotics_QueryModal/Chem_Robotics_QueryModal.component';
 import { ScientificDocsComponent } from '../results-common/scientific-docs/scientific-docs.component';
 import { GppdDbComponent } from '../results-common/gppd-db/gppd-db.component';
+import { NonPatentComponent } from '../results-common/non-patent/non-patent.component';
 
 @Component({
   selector: 'chem-route-results',
@@ -35,7 +36,7 @@ import { GppdDbComponent } from '../results-common/gppd-db/gppd-db.component';
      ImpurityComponent, ChemiTrackerComponent, ImpComponent, IndianComponent, ChemicalDirectoryComponent, 
      JapanComponent, CanadaComponent, EuropeApprovalComponent, KoreaComponent, LitigationComponent,
       UsComponent, SpcdbComponent, EximComponent, RouteTabsComponent, ActivePatentComponent,
-       NgSwitch, NgSwitchCase, NgSwitchDefault, ScientificDocsComponent,GppdDbComponent],
+       NgSwitch, NgSwitchCase, NgSwitchDefault, ScientificDocsComponent,GppdDbComponent,NonPatentComponent],
   templateUrl: './route-result.component.html',
   styleUrl: './route-result.component.css'
 })

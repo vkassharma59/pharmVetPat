@@ -8,19 +8,19 @@ import {
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { CommonModule } from '@angular/common';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
-import { GppdDbCardComponent } from '../gppd-db-card/gppd-db-card.component';
 import { ChildPagningTableComponent } from '../../../commons/child-pagning-table/child-pagning-table.component';
+import { NonPatentCardComponent } from '../non-patent-card/non-patent-card.component';
 
 @Component({
-  selector: 'app-gppd-db',
+  selector: 'app-non-patent',
   standalone: true,
-  imports: [ChildPagningTableComponent, CommonModule, GppdDbCardComponent],
-   templateUrl: './gppd-db.component.html',
-  styleUrl: './gppd-db.component.css'
+  imports: [ChildPagningTableComponent, CommonModule, NonPatentCardComponent],
+  templateUrl: './non-patent.component.html',
+  styleUrl: './non-patent.component.css'
 })
-export class  GppdDbComponent  implements OnChanges {
+export class NonPatentComponent implements OnChanges {
 
- _data: any = { columns: [], rows: [] }; // expected structure
+  _data: any = { columns: [], rows: [] }; // expected structure
   _currentChildAPIBody: any;
   searchByTable: boolean = false;
   isFilterApplied: boolean = false; // agar filter lagana hai to true karenge
@@ -65,7 +65,7 @@ export class  GppdDbComponent  implements OnChanges {
     this.handleResultTabData.emit(this._data);
   }
 
- onDataFetchRequest(payload: any) {
+  onDataFetchRequest(payload: any) {
     this.isFilterApplied = !!(payload?.search || payload?.columns);
     console.log('scientificDocs received data:', payload);
     const requestBody = {
@@ -75,7 +75,7 @@ export class  GppdDbComponent  implements OnChanges {
 
     this.handleSetLoading.emit(true);
 
-    this.mainSearchService.gppdDbSearchSpecific(requestBody).subscribe({
+    this.mainSearchService.NonPatentSearchSpecific(requestBody).subscribe({
       next: (result: any) => {
         this._data.rows = result?.data?.data || [];
         this.count = result?.data?.recordsFiltered ?? result?.data?.recordsTotal;

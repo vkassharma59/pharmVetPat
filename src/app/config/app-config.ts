@@ -71,8 +71,12 @@ export const AppConfigValues: AppConfig = {
         columnList: `${appUrl.apiUrl}/us-approval/column-list`,
       },
       activePatent: {
-        searchSpecific: `${appUrl.apiUrl}/us-approval/search-specific`,
-        columnList: `${appUrl.apiUrl}/us-approval/column-list`,
+        searchSpecific: `${appUrl.apiUrl}/active-patent/search-specific`,
+        columnList: `${appUrl.apiUrl}/active-patent/column-list`,
+      },
+      nonPatentLandscape: {
+        searchSpecific: `${appUrl.apiUrl}/non-patent/search-specific`,
+        columnList: `${appUrl.apiUrl}/non-patent/column-list`,
       },
       indianMedicine: {
         searchSpecific: `${appUrl.apiUrl}/indian-medicine/search-specific`,

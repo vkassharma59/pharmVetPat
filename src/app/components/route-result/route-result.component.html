@@ -109,11 +109,17 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.activePatent.name">
-      <chem-active-patent></chem-active-patent>
+      <chem-active-patent [data]="_dataItem.activePatent"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.activePatent.name]"
+        (handleSetLoading)="handleSetLoading.emit($event)"
+        (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-active-patent>
     </ng-container>
-
-
-
+    <ng-container *ngSwitchCase="resultTabWithKeys.nonPatentLandscape.name">
+      <app-non-patent [data]="_dataItem.nonPatentLandscape"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.nonPatentLandscape.name]"
+        (handleSetLoading)="handleSetLoading.emit($event)"
+        (handleResultTabData)="handleChildPaginationSearch.emit($event)"></app-non-patent>
+    </ng-container>
     <ng-container *ngSwitchCase="resultTabWithKeys.impPatents.name">
       <chem-imp [data]="_dataItem.impPatents"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.impPatents.name]"
@@ -121,14 +127,14 @@
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-imp>
     </ng-container>
 
-     <ng-container *ngSwitchCase="resultTabWithKeys.gppdDb.name">
+    <ng-container *ngSwitchCase="resultTabWithKeys.gppdDb.name">
       <app-gppd-db [data]="_dataItem.gppdDb"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.gppdDb.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)">
       </app-gppd-db>
     </ng-container>
-    
+
     <ng-container *ngSwitchCase="resultTabWithKeys.spcDb.name">
       <chem-spcdb [data]="_dataItem.spcDb" [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.spcDb.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"

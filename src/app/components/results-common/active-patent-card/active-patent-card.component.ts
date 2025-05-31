@@ -1,125 +1,320 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { Auth_operations } from '../../../Utils/SetToken';
-import { MatDialog } from '@angular/material/dialog';
-import { UtilityService } from '../../../services/utility-service/utility.service';
-import { environment } from '../../../../environments/environment';
+import { Component, Input, OnChanges, ViewChild, AfterViewInit, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
+import { Sort } from '@angular/material/sort';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { SpcdbComponent } from '../spcdb/spcdb.component';
+import { FormsModule } from '@angular/forms';
+import { Observable, of } from 'rxjs';
+import { map, catchError, tap } from 'rxjs/operators';
+import { MainSearchService } from '../../../services/main-search/main-search.service';
 @Component({
   selector: 'app-active-patent-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,
+    FormsModule,
+    MatTableModule,
+    MatSortModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatPaginatorModule],
   templateUrl: './active-patent-card.component.html',
   styleUrl: './active-patent-card.component.css'
 })
-export class ActivePatentCardComponent {
-  _data: any = [];
-  MoreInfo: boolean = false;
-  pageNo: number = 1;
-  activePatent_column: any = {};
-  resultTabs: any = {};
+export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
+  @Output() dataFetchRequest = new EventEmitter<any>();
+  @Input() columnDefs: any[] = [];
+  @Input() rowData: any[] = [];
+  data?: {
+    data?: any[]; // Replace `any` with your actual data type
+  };
+  _currentChildAPIBody: any;
+  displayedColumns: string[] = [];
+  columnHeaders: { [key: string]: string } = {};
+  filterableColumns: string[] = [];
+  openFilter: { [key: string]: boolean } = {};
+  activeSort: string = '';
+  sortDirection: 'asc' | 'desc' | '' = '';
 
-  static apiCallCount: number = 0; // Global static counter
-  localCount: number = 0; // Instance-specific count
+  columnsSearch: { [key: string]: string } = {};
+  multiSortOrder: { column: number, dir: 'asc' | 'desc' }[] = [];
 
-  @Input()
-  get data() {  
-    return this._data;  
+  get pageSize(): number {
+    return this._currentChildAPIBody?.length || 25;
   }
-  set data(value: any) {    
-    if (value && Object.keys(value).length > 0) {
-      ActivePatentCardComponent.apiCallCount++; // Increment static counter
-      this.localCount = ActivePatentCardComponent.apiCallCount; // Assign instance count
+  globalSearchValue: string = '';
+  @Input()
+  get currentChildAPIBody() {
+    return this._currentChildAPIBody;
+  }
+  set currentChildAPIBody(value: any) {
+    this._currentChildAPIBody = value;
+  }
 
-      
+  dataSource = new MatTableDataSource<any>([]);
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort!: MatSort;
 
-      this.resultTabs = this.utilityService.getAllTabsName();
-      const column_list = Auth_operations.getColumnList();
+  searchText: string = '';
+  searchColumn: string | undefined;
 
-      if (column_list[this.resultTabs.activePatent?.name]?.length > 0) {
-        for (let i = 0; i < column_list[this.resultTabs.activePatent.name].length; i++) {
-          this.activePatent_column[column_list[this.resultTabs.activePatent.name][i].value] =
-            column_list[this.resultTabs.activePatent.name][i].name;
+  constructor(private cdr: ChangeDetectorRef,
+    private mainSearchService: MainSearchService
+  ) { }
+
+  ngOnChanges(): void {
+    //console.log('columnDefs:', this.columnDefs);
+    // Reset counter only when the component is first loaded
+
+    if (this.columnDefs && this.columnDefs.length > 0) {
+      this.displayedColumns = [];
+      this.columnHeaders = {};
+      this.filterableColumns = [];
+
+      // Check which columns have at least one non-empty value
+      for (const col of this.columnDefs) {
+        const colValue = col.value;
+
+        const hasData = this.rowData?.some(row =>
+          row[colValue] !== null && row[colValue] !== undefined && row[colValue] !== ''
+        );
+
+        if (hasData) {
+          this.displayedColumns.push(colValue); // ✅ Only include columns with at least one value
+          this.columnHeaders[colValue] = col.label;
+          this.filterableColumns.push(colValue);
+        } else {
+          //console.log('🚫 Hiding column (empty data):', colValue);
         }
       }
+    }
 
-      this._data = value;
+    if (this.rowData) {
+      this.dataSource.data = this.rowData;
     }
   }
 
-  constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.paginator.page.subscribe(() => this.fetchData());
 
-  ngOnInit() {
-    // Reset counter only when the component is first loaded
-    if (ActivePatentCardComponent.apiCallCount === 0) {
-      ActivePatentCardComponent.apiCallCount = 0;
+    this.cdr.detectChanges();
+  }
+
+  scrollTable(direction: 'left' | 'right'): void {
+    const container = document.querySelector('.scroll-container');
+    if (container) {
+      container.scrollBy({ left: direction === 'left' ? -150 : 150, behavior: 'smooth' });
     }
   }
 
-  ngOnDestroy() {
-    // Reset counter when navigating away from the component
-    ActivePatentCardComponent.apiCallCount = 0;
+  searchInColumn(column: any, filterInput: HTMLInputElement, event: MouseEvent): void {
+    event.stopPropagation(); // prevent sort from triggering
+
+    if (filterInput.value.trim() === '') {
+      this.clearFilter(column.value, filterInput);
+      return;
+    }
+
+    const searchValue = filterInput.value.trim();
+    const columnKey = column.value;
+
+    if (searchValue) {
+      this.columnsSearch[columnKey] = searchValue;
+    } else {
+      delete this.columnsSearch[columnKey];
+    }
+
+    this.fetchData();
   }
 
-  isEmptyObject(obj: any): boolean {
-    return Object.keys(obj).length === 0;
+  clearFilter(column: string, input: HTMLInputElement) {
+    input.value = '';
+    delete this.columnsSearch[column];
+    this.fetchData();
   }
-  
-  toggleMoreInfo() {
-    this.MoreInfo = !this.MoreInfo;
-  }
+  onCustomSort(column: number) {
+    const existing = this.multiSortOrder.find(s => s.column === column);
+    if (existing) {
+      // Toggle direction
+      existing.dir = existing.dir === 'desc' ? 'asc' : 'desc';
+    } else {
+      // Add new column with default 'desc'
+      this.multiSortOrder.push({ column, dir: 'desc' });
+    }
 
-  getColumnName(value: any) {
-    return this.activePatent_column[value];
-  }
-
-  getPubchemId(value: any) {
-    return `https://pubchem.ncbi.nlm.nih.gov/#query=${value}`;
-  }
-
-  getCompanyLogo(value: any): string {
-    return `${environment.baseUrl}${environment.domainNameCompanyLogo}${value?.company_logo}`;
+    this.fetchData(); // Call API with updated sort order
   }
 
-  getCountryUrl(value: any): string {
-    return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country_of_company}.png`;
-  }
-  
-  getCompanyWebsite(value: any): string {
-    return `https://${value}`;
-  }
+  toggleSort(index: number): void {
+    const existingSort = this.multiSortOrder.find(s => s.column === index);
+    let newDir: 'asc' | 'desc' = 'asc';
 
-  handleCopy(text: string, el: HTMLElement) {
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    document.body.appendChild(textArea);
+    if (existingSort) {
+      newDir = existingSort.dir === 'asc' ? 'desc' : 'asc';
+      this.multiSortOrder = this.multiSortOrder.filter(s => s.column !== index);
+    }
 
-    textArea.select();
-    textArea.setSelectionRange(0, 99999);
-    document.execCommand('copy');
-
-    document.body.removeChild(textArea);
-
-  // Step 2: Find the icon inside the clicked span and swap classes
-  const icon = el.querySelector('i');
-
-  if (icon?.classList.contains('fa-copy')) {
-    icon.classList.remove('fa-copy');
-    icon.classList.add('fa-check');
-
-    // Step 3: Revert it back after 1.5 seconds
-    setTimeout(() => {
-      icon.classList.remove('fa-check');
-      icon.classList.add('fa-copy');
-    }, 1500);
-  }
+    this.multiSortOrder.push({ column: index, dir: newDir });
+    this.fetchData();
   }
 
-  getImageUrl(data: any): string {
-    return (
-      environment.baseUrl +
-      environment.domainNameCompanyLogo +
-      this._data?.commentry
+
+  getSortIcon(index: number): string {
+    const column = this.displayedColumns[index];
+    const sort = this.multiSortOrder.find(s => s.column === index);
+    if (!sort) return 'fa-sort';
+    return sort.dir === 'asc' ? 'fa-sort-up' : 'fa-sort-down';
+  }
+
+
+
+  fetchData() {
+    const isGlobalSearch = this.globalSearchValue && this.globalSearchValue.trim() !== '';
+    // Add columns for global search: all displayedColumns with searchable: true
+    const allColumns = isGlobalSearch
+      ? this.displayedColumns.map(col => ({
+        data: col,
+        searchable: true
+      }))
+      : undefined;
+
+    // Add only filtered columns for column search
+    const searchColumns = !isGlobalSearch
+      ? Object.entries(this.columnsSearch)
+        .filter(([_, value]) => value && value.trim() !== '')
+        .map(([key, value]) => ({
+          data: key,
+          searchable: true,
+          search: { value: value.trim() }
+        }))
+      : [];
+    const order = this.multiSortOrder.length > 0
+      ? this.multiSortOrder
+        .filter(s => typeof s.column === 'number')
+        .map(s => {
+          console.log('Sorting index:', s.column, 'direction:', s.dir);
+          return {
+            column: s.column,
+            dir: s.dir
+          };
+        })
+      : null;
+    // const order = this.multiSortOrder.length > 0
+    //   ? this.multiSortOrder.map(s => ({
+    //     column: s.column,
+    //     dir: s.dir
+    //   }))
+    //   : null;
+
+    const globalSearch = isGlobalSearch
+      ? { value: this.globalSearchValue.trim() }
+      : null;
+
+    const start = this.paginator ? this.paginator.pageIndex * this.paginator.pageSize : 0;
+    const pageno = this.paginator ? this.paginator.pageIndex + 1 : 1;
+
+    const payload: any = {
+      start,
+      pageno
+    };
+
+    if (isGlobalSearch && allColumns) {
+      payload.columns = allColumns;
+      payload.search = globalSearch;
+    } else if (searchColumns.length > 0) {
+      payload.columns = searchColumns;
+    }
+    if (order) payload.order = order;
+    this.dataFetchRequest.emit(payload);
+  }
+
+  resetToDefault() {
+    this.multiSortOrder = [];
+    this.columnsSearch = {};
+    this.globalSearchValue = '';
+    this.fetchData();
+  }
+ getAllDataFromApi(): Observable<any[]> {
+    const requestBody = {
+      ...this._currentChildAPIBody,
+      start: 0,
+      length: this._currentChildAPIBody?.count || 1000,
+    };
+    console.log('📦  response body:', requestBody);
+    return this.mainSearchService.NonPatentSearchSpecific(requestBody).pipe(
+      tap((result: ActivePatentCardComponent) => {
+        console.log('📦 Full API response:', result);
+      }),
+      map((result:ActivePatentCardComponent) => result?.data?.data || []),
+      catchError(error => {
+        console.error('❌ Error fetching all data:', error);
+        return of([]); // Return an empty array on error
+      })
     );
   }
+
+ // ✅ Download as PDF
+ downloadPDF(): void {
+  this.getAllDataFromApi().subscribe(data => {
+    const exportData = data.map(row => {
+      return this.displayedColumns.map(col => row[col] !== undefined ? row[col] : '');
+    });
+
+    const colHeaders = this.displayedColumns;
+    const doc = new jsPDF();
+    autoTable(doc, {
+      head: [colHeaders],
+      body: exportData,
+    });
+    doc.save('ExportedData.pdf');
+  });
+}
+
+  // ✅ Download as CSV
+ downloadCSV(): void {
+  this.getAllDataFromApi().subscribe(data => {
+    let csvContent = this.displayedColumns.join(',') + '\n';
+
+    data.forEach(row => {
+      const rowData = this.displayedColumns.map(col => row[col] !== undefined ? row[col] : '');
+      csvContent += rowData.join(',') + '\n';
+    });
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, 'ExportedData.csv');
+  });
+}
+  // ✅ Download as Excel
+ downloadExcel(): void {
+    this.getAllDataFromApi().subscribe(data => {
+      const exportData = data.map(row => {
+        const formatted: any = {};
+        this.displayedColumns.forEach(col => {
+          formatted[col] = row[col] !== undefined ? row[col] : '';
+        });
+        return formatted;
+      });
+
+      const worksheet = XLSX.utils.json_to_sheet(exportData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Exported Data');
+
+      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+      const blob = new Blob([excelBuffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      });
+
+      saveAs(blob, 'ExportedData.xlsx');
+    });
+  }
+
 }
