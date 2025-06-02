@@ -7,16 +7,15 @@ import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
-import { Sort } from '@angular/material/sort';
+import { ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { SpcdbComponent } from '../spcdb/spcdb.component';
 import { FormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 @Component({
-  selector: 'app-non-patent-card',
+    selector: 'app-non-patent-card',
   standalone: true,
   imports: [CommonModule,
     FormsModule,
@@ -25,12 +24,11 @@ import { MainSearchService } from '../../../services/main-search/main-search.ser
     MatInputModule,
     MatFormFieldModule,
     MatPaginatorModule],
-  templateUrl: './non-patent-card.component.html',
+   templateUrl: './non-patent-card.component.html',
   styleUrl: './non-patent-card.component.css'
 })
-
-
 export class NonPatentCardComponent implements OnChanges, AfterViewInit {
+
   @Output() dataFetchRequest = new EventEmitter<any>();
   @Input() columnDefs: any[] = [];
   @Input() rowData: any[] = [];
@@ -49,13 +47,14 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
   multiSortOrder: { column: number, dir: 'asc' | 'desc' }[] = [];
 
   globalSearchValue: string = '';
-
   get pageSize(): number {
     return this._currentChildAPIBody?.length || 25;
   }
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
+@ViewChildren('filterInput') filterInputs!: QueryList<ElementRef<HTMLInputElement>>;
+
   @Input()
   get currentChildAPIBody() {
     return this._currentChildAPIBody;
@@ -63,14 +62,12 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
   }
-
   searchText: string = '';
   searchColumn: string | undefined;
 
   constructor(private cdr: ChangeDetectorRef,
-    private mainSearchService: MainSearchService) { }
-
-
+    private mainSearchService: MainSearchService
+  ) { }
 
   ngOnChanges(): void {
     //console.log('columnDefs:', this.columnDefs);
@@ -98,12 +95,10 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
         }
       }
     }
-
     if (this.rowData) {
       this.dataSource.data = this.rowData;
     }
   }
-
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -170,7 +165,6 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
     this.fetchData();
   }
 
-
   getSortIcon(index: number): string {
     const column = this.displayedColumns[index];
     const sort = this.multiSortOrder.find(s => s.column === index);
@@ -227,7 +221,7 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
       start,
       pageno
     };
-
+    console.log("payload data ", payload)
     if (isGlobalSearch && allColumns) {
       payload.columns = allColumns;
       payload.search = globalSearch;
@@ -242,11 +236,10 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
     this.multiSortOrder = [];
     this.columnsSearch = {};
     this.globalSearchValue = '';
+    // Clear all input boxes in DOM (filters)
+    this.filterInputs.forEach(inputRef => inputRef.nativeElement.value = '');
     this.fetchData();
   }
-
- 
-
   getAllDataFromApi(): Observable<any[]> {
     const requestBody = {
       ...this._currentChildAPIBody,
@@ -266,39 +259,39 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
     );
   }
 
- // ✅ Download as PDF
- downloadPDF(): void {
-  this.getAllDataFromApi().subscribe(data => {
-    const exportData = data.map(row => {
-      return this.displayedColumns.map(col => row[col] !== undefined ? row[col] : '');
-    });
+  // ✅ Download as PDF
+  downloadPDF(): void {
+    this.getAllDataFromApi().subscribe(data => {
+      const exportData = data.map(row => {
+        return this.displayedColumns.map(col => row[col] !== undefined ? row[col] : '');
+      });
 
-    const colHeaders = this.displayedColumns;
-    const doc = new jsPDF();
-    autoTable(doc, {
-      head: [colHeaders],
-      body: exportData,
+      const colHeaders = this.displayedColumns;
+      const doc = new jsPDF();
+      autoTable(doc, {
+        head: [colHeaders],
+        body: exportData,
+      });
+      doc.save('ExportedData.pdf');
     });
-    doc.save('ExportedData.pdf');
-  });
-}
+  }
 
   // ✅ Download as CSV
- downloadCSV(): void {
-  this.getAllDataFromApi().subscribe(data => {
-    let csvContent = this.displayedColumns.join(',') + '\n';
+  downloadCSV(): void {
+    this.getAllDataFromApi().subscribe(data => {
+      let csvContent = this.displayedColumns.join(',') + '\n';
 
-    data.forEach(row => {
-      const rowData = this.displayedColumns.map(col => row[col] !== undefined ? row[col] : '');
-      csvContent += rowData.join(',') + '\n';
+      data.forEach(row => {
+        const rowData = this.displayedColumns.map(col => row[col] !== undefined ? row[col] : '');
+        csvContent += rowData.join(',') + '\n';
+      });
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      saveAs(blob, 'ExportedData.csv');
     });
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    saveAs(blob, 'ExportedData.csv');
-  });
-}
+  }
   // ✅ Download as Excel
- downloadExcel(): void {
+  downloadExcel(): void {
     this.getAllDataFromApi().subscribe(data => {
       const exportData = data.map(row => {
         const formatted: any = {};
@@ -320,5 +313,4 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
       saveAs(blob, 'ExportedData.xlsx');
     });
   }
-
 }

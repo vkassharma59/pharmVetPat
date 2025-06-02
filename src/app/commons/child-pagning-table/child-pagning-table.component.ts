@@ -248,6 +248,7 @@ export class ChildPagningTableComponent implements OnChanges {
     return this._currentChildAPIBody;
   }
   set currentChildAPIBody(value: ChildAPIBody) {
+     console.log("childodyApi",value)
     this._currentChildAPIBody = value;
     this.count = value?.count || 0;
     this.updateInitialPageArray();
@@ -381,41 +382,30 @@ export class ChildPagningTableComponent implements OnChanges {
 
     this.handlePageClick(this.MainPageNo);
   };
-handlePageClick1 = (page: number) => {
+  handlePageClick1 = (page: number) => {
   this.setLoading.emit(true);
 
-  console.log("➡️ handlePageClick1 called");
-  console.log("🔢 Going to Page:", page);
-  console.log("📦 Existing API Body Before Update:", this._currentChildAPIBody);
-
-  // ✅ Preserve filters (search/status/etc), update only pagination
+  // ✅ Update pagination, preserve filters
   this._currentChildAPIBody = {
     ...this._currentChildAPIBody,
-    
     page_no: page,
     start: (page - 1) * this.pageSize
   };
 
   this.MainPageNo = page;
 
-  console.log("📨 Final API Body to Send:", this._currentChildAPIBody);
-
   this.serviceChildPaginationService.getNextChildPaginationData(
     this._currentChildAPIBody
   ).subscribe({
     next: (res) => {
-      console.log("✅ API Response:", res);
-
-      this._currentChildAPIBody = {
-        ...this._currentChildAPIBody,
-        count: res?.data?.recordsFiltered ?? res?.data?.recordsTotal
-      };
-
+      this._currentChildAPIBody.count = res?.data?.recordsFiltered ?? res?.data?.recordsTotal;
       this.count = this._currentChildAPIBody.count ?? 0;
-      console.log("🔁 Updated Count:", this.count);
 
       this.handleChangeData();
+
+      // ✅ Send updated API body with filters and page info
       this.handleChangeTabData.emit(this._currentChildAPIBody);
+
       this.setLoading.emit(false);
     },
     error: (e) => {
@@ -424,6 +414,50 @@ handlePageClick1 = (page: number) => {
     }
   });
 };
+
+// handlePageClick1 = (page: number) => {
+//   this.setLoading.emit(true);
+
+//   console.log("➡️ handlePageClick1 called");
+//   console.log("🔢 Going to Page:", page);
+//   console.log("📦 Existing API Body Before Update:", this._currentChildAPIBody);
+
+//   // ✅ Preserve filters (search/status/etc), update only pagination
+//   this._currentChildAPIBody = {
+//     ...this._currentChildAPIBody,
+    
+//     page_no: page,
+//     start: (page - 1) * this.pageSize
+//   };
+
+//   this.MainPageNo = page;
+
+//   console.log("📨 Final API Body to Send:", this._currentChildAPIBody);
+
+//   this.serviceChildPaginationService.getNextChildPaginationData(
+//     this._currentChildAPIBody
+//   ).subscribe({
+//     next: (res) => {
+//       console.log("✅ API Response:", res);
+
+//       this._currentChildAPIBody = {
+//         ...this._currentChildAPIBody,
+//         count: res?.data?.recordsFiltered ?? res?.data?.recordsTotal
+//       };
+
+//       this.count = this._currentChildAPIBody.count ?? 0;
+//       console.log("🔁 Updated Count:", this.count);
+
+//       this.handleChangeData();
+//       this.handleChangeTabData.emit(this._currentChildAPIBody);
+//       this.setLoading.emit(false);
+//     },
+//     error: (e) => {
+//       console.error("❌ API Error:", e);
+//       this.setLoading.emit(false);
+//     }
+//   });
+// };
 
 
   handlePageClick = (page: number) => {

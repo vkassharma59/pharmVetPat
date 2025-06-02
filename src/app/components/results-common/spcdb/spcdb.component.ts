@@ -19,7 +19,6 @@ import { ChildPagningTableComponent } from '../../../commons/child-pagning-table
   styleUrl: './spcdb.component.css'
 })
 export class SpcdbComponent implements OnChanges {
-
   _data: any = { columns: [], rows: [] }; // expected structure
   _currentChildAPIBody: any;
   searchByTable: boolean = false;
@@ -30,7 +29,6 @@ export class SpcdbComponent implements OnChanges {
   get pageSize(): number {
     return this._currentChildAPIBody?.length || 25;
   }
-
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
 
@@ -51,9 +49,7 @@ export class SpcdbComponent implements OnChanges {
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
   }
-
   resultTabs: any = {};
-
   constructor(private utilityService: UtilityService,
     private mainSearchService: MainSearchService
   ) {
@@ -67,12 +63,20 @@ export class SpcdbComponent implements OnChanges {
 
   onDataFetchRequest(payload: any) {
     this.isFilterApplied = !!(payload?.search || payload?.columns);
+  
+    // Remove stale filters from _currentChildAPIBody if they are not in payload
+    if (!('columns' in payload)) {
+      delete this._currentChildAPIBody.columns;
+    }
 
+    if (!('search' in payload)) {
+      delete this._currentChildAPIBody.search;
+    }
     const requestBody = {
       ...this._currentChildAPIBody,
       ...payload
     };
-
+   this._currentChildAPIBody = requestBody;
     this.handleSetLoading.emit(true);
 
     this.mainSearchService.spcdbSearchSpecific(requestBody).subscribe({

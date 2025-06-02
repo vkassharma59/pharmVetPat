@@ -7,7 +7,7 @@ import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
-import { Sort } from '@angular/material/sort';
+import { ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
@@ -54,6 +54,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
+@ViewChildren('filterInput') filterInputs!: QueryList<ElementRef<HTMLInputElement>>;
 
   @Input()
   get currentChildAPIBody() {
@@ -165,15 +166,12 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
     this.fetchData();
   }
 
-
   getSortIcon(index: number): string {
     const column = this.displayedColumns[index];
     const sort = this.multiSortOrder.find(s => s.column === index);
     if (!sort) return 'fa-sort';
     return sort.dir === 'asc' ? 'fa-sort-up' : 'fa-sort-down';
   }
-
-
 
   fetchData() {
     const isGlobalSearch = this.globalSearchValue && this.globalSearchValue.trim() !== '';
@@ -224,7 +222,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       start,
       pageno
     };
-
+    console.log("payload data ", payload)
     if (isGlobalSearch && allColumns) {
       payload.columns = allColumns;
       payload.search = globalSearch;
@@ -239,79 +237,52 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
     this.multiSortOrder = [];
     this.columnsSearch = {};
     this.globalSearchValue = '';
+    // Clear all input boxes in DOM (filters)
+    this.filterInputs.forEach(inputRef => inputRef.nativeElement.value = '');
     this.fetchData();
   }
-  getAllDataFromApi(): Observable<any[]> {
-    const requestBody = {
-      ...this._currentChildAPIBody,
-      start: 0,
-      length: this._currentChildAPIBody?.count || 1000,
-    };
-    console.log('📦  response body:', requestBody);
-    return this.mainSearchService.NonPatentSearchSpecific(requestBody).pipe(
-      tap((result: SpcdbCardComponent) => {
-        console.log('📦 Full API response:', result);
-      }),
-      map((result: SpcdbCardComponent) => result?.data?.data || []),
-      catchError(error => {
-        console.error('❌ Error fetching all data:', error);
-        return of([]); // Return an empty array on error
-      })
-    );
-  }
+  downloadPDF() {
+    const doc = new jsPDF();
+    const colHeaders = this.displayedColumns.map(col => this.columnHeaders[col]);
+    const rowData = this.dataSource.filteredData.map(row => this.displayedColumns.map(col => row[col]));
 
-  // ✅ Download as PDF
-  downloadPDF(): void {
-    this.getAllDataFromApi().subscribe(data => {
-      const exportData = data.map(row => {
-        return this.displayedColumns.map(col => row[col] !== undefined ? row[col] : '');
-      });
-
-      const colHeaders = this.displayedColumns;
-      const doc = new jsPDF();
-      autoTable(doc, {
-        head: [colHeaders],
-        body: exportData,
-      });
-      doc.save('ExportedData.pdf');
+    autoTable(doc, {
+      head: [colHeaders],
+      body: rowData
     });
+
+    doc.save('ExportedData.pdf');
   }
+
 
   // ✅ Download as CSV
-  downloadCSV(): void {
-    this.getAllDataFromApi().subscribe(data => {
-      let csvContent = this.displayedColumns.join(',') + '\n';
-
-      data.forEach(row => {
-        const rowData = this.displayedColumns.map(col => row[col] !== undefined ? row[col] : '');
-        csvContent += rowData.join(',') + '\n';
-      });
-
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      saveAs(blob, 'ExportedData.csv');
+  downloadCSV() {
+    let csvContent = this.displayedColumns.map(col => this.columnHeaders[col]).join(',') + '\n';
+    this.dataSource.filteredData.forEach(row => {
+      const rowData = this.displayedColumns.map(col => row[col]);
+      csvContent += rowData.join(',') + '\n';
     });
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, 'ExportedData.csv');
   }
+
   // ✅ Download as Excel
-  downloadExcel(): void {
-    this.getAllDataFromApi().subscribe(data => {
-      const exportData = data.map(row => {
-        const formatted: any = {};
-        this.displayedColumns.forEach(col => {
-          formatted[col] = row[col] !== undefined ? row[col] : '';
-        });
-        return formatted;
+  downloadExcel() {
+    const exportData = this.dataSource.filteredData.map(row => {
+      const formatted: any = {};
+      this.displayedColumns.forEach(col => {
+        formatted[this.columnHeaders[col]] = row[col];
       });
-
-      const worksheet = XLSX.utils.json_to_sheet(exportData);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, 'Exported Data');
-
-      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-      const blob = new Blob([excelBuffer], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      });
-
-      saveAs(blob, 'ExportedData.xlsx');
+      return formatted;
     });
+
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Exported Data');
+
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const data = new Blob([excelBuffer], { type: 'application/octet-stream' });
+    saveAs(data, 'ExportedData.xlsx');
   }
 }

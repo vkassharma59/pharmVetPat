@@ -67,12 +67,19 @@ export class NonPatentComponent implements OnChanges {
 
   onDataFetchRequest(payload: any) {
     this.isFilterApplied = !!(payload?.search || payload?.columns);
-    console.log('scientificDocs received data:', payload);
+    // Remove stale filters from _currentChildAPIBody if they are not in payload
+    if (!('columns' in payload)) {
+      delete this._currentChildAPIBody.columns;
+    }
+    if (!('search' in payload)) {
+      delete this._currentChildAPIBody.search;
+    }
     const requestBody = {
       ...this._currentChildAPIBody,
       ...payload
     };
 
+    this._currentChildAPIBody = requestBody;
     this.handleSetLoading.emit(true);
 
     this.mainSearchService.NonPatentSearchSpecific(requestBody).subscribe({
