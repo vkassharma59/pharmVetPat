@@ -7,18 +7,19 @@ import {
 } from '@angular/core';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { CommonModule } from '@angular/common';
-import { SpcdbCardComponent } from '../spcdb-card/spcdb-card.component';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { ChildPagningTableComponent } from '../../../commons/child-pagning-table/child-pagning-table.component';
+import { NonPatentCardComponent } from '../non-patent-card/non-patent-card.component';
 
 @Component({
-  selector: 'chem-spcdb',
+  selector: 'app-non-patent',
   standalone: true,
-  imports: [ChildPagningTableComponent, CommonModule, SpcdbCardComponent],
-  templateUrl: './spcdb.component.html',
-  styleUrl: './spcdb.component.css'
+  imports: [ChildPagningTableComponent, CommonModule, NonPatentCardComponent],
+  templateUrl: './non-patent.component.html',
+  styleUrl: './non-patent.component.css'
 })
-export class SpcdbComponent implements OnChanges {
+export class NonPatentComponent implements OnChanges {
+
   _data: any = { columns: [], rows: [] }; // expected structure
   _currentChildAPIBody: any;
   searchByTable: boolean = false;
@@ -29,6 +30,7 @@ export class SpcdbComponent implements OnChanges {
   get pageSize(): number {
     return this._currentChildAPIBody?.length || 25;
   }
+
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
 
@@ -49,7 +51,9 @@ export class SpcdbComponent implements OnChanges {
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
   }
+
   resultTabs: any = {};
+
   constructor(private utilityService: UtilityService,
     private mainSearchService: MainSearchService
   ) {
@@ -63,12 +67,10 @@ export class SpcdbComponent implements OnChanges {
 
   onDataFetchRequest(payload: any) {
     this.isFilterApplied = !!(payload?.search || payload?.columns);
-  
     // Remove stale filters from _currentChildAPIBody if they are not in payload
     if (!('columns' in payload)) {
       delete this._currentChildAPIBody.columns;
     }
-
     if (!('search' in payload)) {
       delete this._currentChildAPIBody.search;
     }
@@ -76,10 +78,11 @@ export class SpcdbComponent implements OnChanges {
       ...this._currentChildAPIBody,
       ...payload
     };
-   this._currentChildAPIBody = requestBody;
+
+    this._currentChildAPIBody = requestBody;
     this.handleSetLoading.emit(true);
 
-    this.mainSearchService.spcdbSearchSpecific(requestBody).subscribe({
+    this.mainSearchService.NonPatentSearchSpecific(requestBody).subscribe({
       next: (result: any) => {
         this._data.rows = result?.data?.data || [];
         this.count = result?.data?.recordsFiltered ?? result?.data?.recordsTotal;
@@ -98,7 +101,6 @@ export class SpcdbComponent implements OnChanges {
       }
     });
   }
-
 
 
 }

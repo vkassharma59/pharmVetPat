@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, ViewChild, AfterViewInit, EventEmitter, ChangeDetectorRef, Output } from '@angular/core';
+import { Component, Input, OnChanges, ViewChild, AfterViewInit, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -7,12 +7,13 @@ import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
-import { Sort } from '@angular/material/sort';
+import { ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ScientificDocsComponent } from '../scientific-docs/scientific-docs.component';
 import { FormsModule } from '@angular/forms';
-
+import { Observable, of } from 'rxjs';
+import { map, catchError, tap } from 'rxjs/operators';
+import { MainSearchService } from '../../../services/main-search/main-search.service';
 @Component({
   selector: 'app-scientific-docs-card',
   standalone: true,
@@ -23,16 +24,19 @@ import { FormsModule } from '@angular/forms';
     MatInputModule,
     MatFormFieldModule,
     MatPaginatorModule],
-  templateUrl: './scientific-docs-card.component.html',
+   templateUrl: './scientific-docs-card.component.html',
   styleUrl: './scientific-docs-card.component.css'
 })
-export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
 
+export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
 
   @Output() dataFetchRequest = new EventEmitter<any>();
   @Input() columnDefs: any[] = [];
   @Input() rowData: any[] = [];
-
+  data?: {
+    data?: any[]; // Replace `any` with your actual data type
+  };
+  _currentChildAPIBody: any;
   displayedColumns: string[] = [];
   columnHeaders: { [key: string]: string } = {};
   filterableColumns: string[] = [];
@@ -42,16 +46,29 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
 
   columnsSearch: { [key: string]: string } = {};
   multiSortOrder: { column: number, dir: 'asc' | 'desc' }[] = [];
-  globalSearchValue: string = '';
 
+  globalSearchValue: string = '';
+  get pageSize(): number {
+    return this._currentChildAPIBody?.length || 25;
+  }
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
+@ViewChildren('filterInput') filterInputs!: QueryList<ElementRef<HTMLInputElement>>;
 
+  @Input()
+  get currentChildAPIBody() {
+    return this._currentChildAPIBody;
+  }
+  set currentChildAPIBody(value: any) {
+    this._currentChildAPIBody = value;
+  }
   searchText: string = '';
   searchColumn: string | undefined;
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor(private cdr: ChangeDetectorRef,
+    private mainSearchService: MainSearchService
+  ) { }
 
   ngOnChanges(): void {
     //console.log('columnDefs:', this.columnDefs);
@@ -79,16 +96,15 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
         }
       }
     }
-
     if (this.rowData) {
       this.dataSource.data = this.rowData;
     }
   }
-
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-   this.paginator.page.subscribe(() => this.fetchData());
+    this.paginator.page.subscribe(() => this.fetchData());
+
     this.cdr.detectChanges();
   }
 
@@ -99,23 +115,23 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
     }
   }
 
- searchInColumn(column: any, filterInput: HTMLInputElement, event: MouseEvent): void {
+  searchInColumn(column: any, filterInput: HTMLInputElement, event: MouseEvent): void {
     event.stopPropagation(); // prevent sort from triggering
 
-    if(filterInput.value.trim() === '') {
+    if (filterInput.value.trim() === '') {
       this.clearFilter(column.value, filterInput);
       return;
     }
 
     const searchValue = filterInput.value.trim();
     const columnKey = column.value;
-  
+
     if (searchValue) {
       this.columnsSearch[columnKey] = searchValue;
     } else {
       delete this.columnsSearch[columnKey];
     }
-  
+
     this.fetchData();
   }
 
@@ -124,8 +140,19 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
     delete this.columnsSearch[column];
     this.fetchData();
   }
+  onCustomSort(column: number) {
+    const existing = this.multiSortOrder.find(s => s.column === column);
+    if (existing) {
+      // Toggle direction
+      existing.dir = existing.dir === 'desc' ? 'asc' : 'desc';
+    } else {
+      // Add new column with default 'desc'
+      this.multiSortOrder.push({ column, dir: 'desc' });
+    }
 
- 
+    this.fetchData(); // Call API with updated sort order
+  }
+
   toggleSort(index: number): void {
     const existingSort = this.multiSortOrder.find(s => s.column === index);
     let newDir: 'asc' | 'desc' = 'asc';
@@ -139,29 +166,12 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
     this.fetchData();
   }
 
-
   getSortIcon(index: number): string {
     const column = this.displayedColumns[index];
     const sort = this.multiSortOrder.find(s => s.column === index);
     if (!sort) return 'fa-sort';
     return sort.dir === 'asc' ? 'fa-sort-up' : 'fa-sort-down';
   }
-
-
-  onCustomSort(column: number) {
-    const existing = this.multiSortOrder.find(s => s.column === column);
-
-    if (existing) {
-      // Toggle direction
-      existing.dir = existing.dir === 'desc' ? 'asc' : 'desc';
-    } else {
-      // Add new column with default 'desc'
-      this.multiSortOrder.push({ column, dir: 'desc' });
-    }
-
-    this.fetchData(); // Call API with updated sort order
-  }
-
 
   fetchData() {
     const isGlobalSearch = this.globalSearchValue && this.globalSearchValue.trim() !== '';
@@ -212,7 +222,7 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
       start,
       pageno
     };
-
+    console.log("payload data ", payload)
     if (isGlobalSearch && allColumns) {
       payload.columns = allColumns;
       payload.search = globalSearch;
@@ -227,51 +237,81 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
     this.multiSortOrder = [];
     this.columnsSearch = {};
     this.globalSearchValue = '';
+    // Clear all input boxes in DOM (filters)
+    this.filterInputs.forEach(inputRef => inputRef.nativeElement.value = '');
     this.fetchData();
   }
-
-  downloadPDF() {
-    const doc = new jsPDF();
-    const colHeaders = this.displayedColumns.map(col => this.columnHeaders[col]);
-    const rowData = this.dataSource.filteredData.map(row => this.displayedColumns.map(col => row[col]));
-
-    autoTable(doc, {
-      head: [colHeaders],
-      body: rowData
-    });
-
-    doc.save('ExportedData.pdf');
+  getAllDataFromApi(): Observable<any[]> {
+    const requestBody = {
+      ...this._currentChildAPIBody,
+      start: 0,
+      length: this._currentChildAPIBody?.count || 1000,
+    };
+    console.log('📦  response body:', requestBody);
+    return this.mainSearchService.NonPatentSearchSpecific(requestBody).pipe(
+      tap((result: ScientificDocsCardComponent) => {
+        console.log('📦 Full API response:', result);
+      }),
+      map((result: ScientificDocsCardComponent) => result?.data?.data || []),
+      catchError(error => {
+        console.error('❌ Error fetching all data:', error);
+        return of([]); // Return an empty array on error
+      })
+    );
   }
 
+  // ✅ Download as PDF
+  downloadPDF(): void {
+    this.getAllDataFromApi().subscribe(data => {
+      const exportData = data.map(row => {
+        return this.displayedColumns.map(col => row[col] !== undefined ? row[col] : '');
+      });
+
+      const colHeaders = this.displayedColumns;
+      const doc = new jsPDF();
+      autoTable(doc, {
+        head: [colHeaders],
+        body: exportData,
+      });
+      doc.save('ExportedData.pdf');
+    });
+  }
 
   // ✅ Download as CSV
-  downloadCSV() {
-    let csvContent = this.displayedColumns.map(col => this.columnHeaders[col]).join(',') + '\n';
-    this.dataSource.filteredData.forEach(row => {
-      const rowData = this.displayedColumns.map(col => row[col]);
-      csvContent += rowData.join(',') + '\n';
-    });
+  downloadCSV(): void {
+    this.getAllDataFromApi().subscribe(data => {
+      let csvContent = this.displayedColumns.join(',') + '\n';
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    saveAs(blob, 'ExportedData.csv');
-  }
-
-  // ✅ Download as Excel
-  downloadExcel() {
-    const exportData = this.dataSource.filteredData.map(row => {
-      const formatted: any = {};
-      this.displayedColumns.forEach(col => {
-        formatted[this.columnHeaders[col]] = row[col];
+      data.forEach(row => {
+        const rowData = this.displayedColumns.map(col => row[col] !== undefined ? row[col] : '');
+        csvContent += rowData.join(',') + '\n';
       });
-      return formatted;
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      saveAs(blob, 'ExportedData.csv');
     });
+  }
+  // ✅ Download as Excel
+  downloadExcel(): void {
+    this.getAllDataFromApi().subscribe(data => {
+      const exportData = data.map(row => {
+        const formatted: any = {};
+        this.displayedColumns.forEach(col => {
+          formatted[col] = row[col] !== undefined ? row[col] : '';
+        });
+        return formatted;
+      });
 
-    const worksheet = XLSX.utils.json_to_sheet(exportData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Exported Data');
+      const worksheet = XLSX.utils.json_to_sheet(exportData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Exported Data');
 
-    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    const data = new Blob([excelBuffer], { type: 'application/octet-stream' });
-    saveAs(data, 'ExportedData.xlsx');
+      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+      const blob = new Blob([excelBuffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      });
+
+      saveAs(blob, 'ExportedData.xlsx');
+    });
   }
 }

@@ -356,6 +356,7 @@ margin: 10px;
 }
 .scrollable-text::-webkit-scrollbar {
   width: 4px;
+  height: 0px;
 }
 .scrollable-text::-webkit-scrollbar-thumb {
   border-radius: 2px;
