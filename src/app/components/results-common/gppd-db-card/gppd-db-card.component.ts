@@ -7,13 +7,13 @@ import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import { ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
-
 @Component({
    selector: 'app-gppd-db-card',
    standalone: true,
@@ -26,10 +26,11 @@ import { MainSearchService } from '../../../services/main-search/main-search.ser
     MatPaginatorModule],
   templateUrl: './gppd-db-card.component.html',
   styleUrl: './gppd-db-card.component.css'
+
 })
 
-
 export class GppdDbCardComponent implements OnChanges, AfterViewInit {
+
   @Output() dataFetchRequest = new EventEmitter<any>();
   @Input() columnDefs: any[] = [];
   @Input() rowData: any[] = [];
@@ -48,13 +49,14 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
   multiSortOrder: { column: number, dir: 'asc' | 'desc' }[] = [];
 
   globalSearchValue: string = '';
-
   get pageSize(): number {
     return this._currentChildAPIBody?.length || 25;
   }
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
+@ViewChildren('filterInput') filterInputs!: QueryList<ElementRef<HTMLInputElement>>;
+
   @Input()
   get currentChildAPIBody() {
     return this._currentChildAPIBody;
@@ -62,14 +64,12 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
   }
-
   searchText: string = '';
   searchColumn: string | undefined;
 
   constructor(private cdr: ChangeDetectorRef,
-    private mainSearchService: MainSearchService) { }
-
-
+    private mainSearchService: MainSearchService
+  ) { }
 
   ngOnChanges(): void {
     //console.log('columnDefs:', this.columnDefs);
@@ -97,12 +97,10 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
         }
       }
     }
-
     if (this.rowData) {
       this.dataSource.data = this.rowData;
     }
   }
-
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -169,7 +167,6 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     this.fetchData();
   }
 
-
   getSortIcon(index: number): string {
     const column = this.displayedColumns[index];
     const sort = this.multiSortOrder.find(s => s.column === index);
@@ -226,7 +223,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
       start,
       pageno
     };
-
+    console.log("payload data ", payload)
     if (isGlobalSearch && allColumns) {
       payload.columns = allColumns;
       payload.search = globalSearch;
@@ -241,83 +238,52 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     this.multiSortOrder = [];
     this.columnsSearch = {};
     this.globalSearchValue = '';
+    // Clear all input boxes in DOM (filters)
+    this.filterInputs.forEach(inputRef => inputRef.nativeElement.value = '');
     this.fetchData();
   }
-
- 
-
-  getAllDataFromApi(): Observable<any[]> {
-    const requestBody = {
-      ...this._currentChildAPIBody,
-      start: 0,
-      length: this._currentChildAPIBody?.count || 1000,
-    };
-    console.log('📦  response body:', requestBody);
-    return this.mainSearchService.NonPatentSearchSpecific(requestBody).pipe(
-      tap((result: GppdDbCardComponent) => {
-        console.log('📦 Full API response:', result);
-      }),
-      map((result: GppdDbCardComponent) => result?.data?.data || []),
-      catchError(error => {
-        console.error('❌ Error fetching all data:', error);
-        return of([]); // Return an empty array on error
-      })
-    );
-  }
-
- // ✅ Download as PDF
- downloadPDF(): void {
-  this.getAllDataFromApi().subscribe(data => {
-    const exportData = data.map(row => {
-      return this.displayedColumns.map(col => row[col] !== undefined ? row[col] : '');
-    });
-
-    const colHeaders = this.displayedColumns;
+  downloadPDF() {
     const doc = new jsPDF();
+    const colHeaders = this.displayedColumns.map(col => this.columnHeaders[col]);
+    const rowData = this.dataSource.filteredData.map(row => this.displayedColumns.map(col => row[col]));
+
     autoTable(doc, {
       head: [colHeaders],
-      body: exportData,
+      body: rowData
     });
+
     doc.save('ExportedData.pdf');
-  });
-}
+  }
+
 
   // ✅ Download as CSV
- downloadCSV(): void {
-  this.getAllDataFromApi().subscribe(data => {
-    let csvContent = this.displayedColumns.join(',') + '\n';
-
-    data.forEach(row => {
-      const rowData = this.displayedColumns.map(col => row[col] !== undefined ? row[col] : '');
+  downloadCSV() {
+    let csvContent = this.displayedColumns.map(col => this.columnHeaders[col]).join(',') + '\n';
+    this.dataSource.filteredData.forEach(row => {
+      const rowData = this.displayedColumns.map(col => row[col]);
       csvContent += rowData.join(',') + '\n';
     });
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     saveAs(blob, 'ExportedData.csv');
-  });
-}
-  // ✅ Download as Excel
- downloadExcel(): void {
-    this.getAllDataFromApi().subscribe(data => {
-      const exportData = data.map(row => {
-        const formatted: any = {};
-        this.displayedColumns.forEach(col => {
-          formatted[col] = row[col] !== undefined ? row[col] : '';
-        });
-        return formatted;
-      });
-
-      const worksheet = XLSX.utils.json_to_sheet(exportData);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, 'Exported Data');
-
-      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-      const blob = new Blob([excelBuffer], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      });
-
-      saveAs(blob, 'ExportedData.xlsx');
-    });
   }
 
+  // ✅ Download as Excel
+  downloadExcel() {
+    const exportData = this.dataSource.filteredData.map(row => {
+      const formatted: any = {};
+      this.displayedColumns.forEach(col => {
+        formatted[this.columnHeaders[col]] = row[col];
+      });
+      return formatted;
+    });
+
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Exported Data');
+
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const data = new Blob([excelBuffer], { type: 'application/octet-stream' });
+    saveAs(data, 'ExportedData.xlsx');
+  }
 }

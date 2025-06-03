@@ -67,7 +67,12 @@ get pageSize(): number {
 
   onDataFetchRequest(payload: any) {
   this.isFilterApplied = !!(payload?.search || payload?.columns);
-
+ if (!('columns' in payload)) {
+      delete this._currentChildAPIBody.columns;
+    }
+    if (!('search' in payload)) {
+      delete this._currentChildAPIBody.search;
+    }
   const requestBody = {
     ...this._currentChildAPIBody,
     ...payload

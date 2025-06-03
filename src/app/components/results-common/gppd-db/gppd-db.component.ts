@@ -68,6 +68,12 @@ export class  GppdDbComponent  implements OnChanges {
  onDataFetchRequest(payload: any) {
     this.isFilterApplied = !!(payload?.search || payload?.columns);
     console.log('scientificDocs received data:', payload);
+     if (!('columns' in payload)) {
+      delete this._currentChildAPIBody.columns;
+    }
+    if (!('search' in payload)) {
+      delete this._currentChildAPIBody.search;
+    }
     const requestBody = {
       ...this._currentChildAPIBody,
       ...payload
