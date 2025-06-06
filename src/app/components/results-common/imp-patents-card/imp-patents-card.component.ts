@@ -27,7 +27,9 @@ export class ImpPatentsCardComponent implements OnInit, OnDestroy {
 
   @Input()
   get data() {
+    console.log("adasygcfsv|",this._data)
     return this._data;
+    
   }
   set data(value: any) {
     if (value && Object.keys(value).length > 0) {

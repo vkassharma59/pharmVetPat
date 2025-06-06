@@ -103,6 +103,8 @@ export class ChildPagingComponent {
       this._currentChildAPIBody
     ).subscribe({
       next: (res) => {
+         console.log("✅ API Response:", res?.data);
+        this.handleChangeData(); // Refresh page array if count changed
         this.handleChangeTabData.emit(res?.data);
         console.log("body uri-------------------- resposne ",res.data)
         this.setLoading.emit(false);

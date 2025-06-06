@@ -51,6 +51,7 @@ export class IndianMedicineCardComponent implements OnInit, OnDestroy {
   constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
 
   ngOnInit() {
+    console.log("-----------------dvdfbmol",this._data)
     // Reset counter only when the component is first loaded
     if (IndianMedicineCardComponent.apiCallCount === 0) {
       IndianMedicineCardComponent.apiCallCount = 0;
