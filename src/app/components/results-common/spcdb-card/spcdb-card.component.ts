@@ -43,7 +43,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
   openFilter: { [key: string]: boolean } = {};
   activeSort: string = '';
   sortDirection: 'asc' | 'desc' | '' = '';
-
+  noMatchingData: boolean = false;
   columnsSearch: { [key: string]: string } = {};
   multiSortOrder: { column: number, dir: 'asc' | 'desc' }[] = [];
 
@@ -54,7 +54,9 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
-@ViewChildren('filterInput') filterInputs!: QueryList<ElementRef<HTMLInputElement>>;
+  @ViewChildren('filterInput') filterInputs!: QueryList<ElementRef<HTMLInputElement>>;
+
+
 
   @Input()
   get currentChildAPIBody() {
@@ -98,6 +100,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
     }
     if (this.rowData) {
       this.dataSource.data = this.rowData;
+      this.noMatchingData = this.rowData.length === 0;
     }
   }
   ngAfterViewInit(): void {
@@ -231,6 +234,11 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
     }
     if (order) payload.order = order;
     this.dataFetchRequest.emit(payload);
+    // Simulate check until API updates data
+    setTimeout(() => {
+      const currentData = this.dataSource.filteredData || [];
+      this.noMatchingData = currentData.length === 0;
+    }, 300);
   }
 
   resetToDefault() {

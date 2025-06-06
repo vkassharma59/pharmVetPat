@@ -70,7 +70,7 @@
                             {{ getColumnName("patent_publication_number") }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
-(click)="handleCopy(_data?.patent_publication_number, copyBtn)">
+                            (click)="handleCopy(_data?.patent_publication_number, copyBtn)">
                                 <i class="fas fa-copy"></i>
                             </span>
                         </h1>
@@ -84,7 +84,7 @@
                             {{ getColumnName("publication_date") }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                   #copyBtn 
-(click)="handleCopy(_data?.publication_date, copyBtn)">
+                            (click)="handleCopy(_data?.publication_date, copyBtn)">
                                 <i class="fas fa-copy"></i>
                             </span>
                         </h1>

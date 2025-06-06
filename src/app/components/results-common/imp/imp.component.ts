@@ -62,6 +62,7 @@ export class ImpComponent {
   }
   set data(value: any) {
     this._data = value;
+    console.log("======adasygcfsv|",this._data)
   }
 
   @Input()

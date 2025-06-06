@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './impurity-card.component.css'
 })
 export class ImpurityCardComponent implements OnInit, OnDestroy {
-  
+
   private static apiCallCount: number = 0; // ✅ Global static counter
   _data: any = [];
   MoreInfo: boolean = false;
@@ -28,10 +28,10 @@ export class ImpurityCardComponent implements OnInit, OnDestroy {
   apiCallInstance: number = 0; // ✅ Instance-specific count
 
   @Input()
-  get data() {  
-    return this._data;  
+  get data() {
+    return this._data;
   }
-  set data(value) {    
+  set data(value) {
     if (value && Object.keys(value).length > 0) {
       ImpurityCardComponent.apiCallCount++; // ✅ Increment static counter
       this.apiCallInstance = ImpurityCardComponent.apiCallCount; // ✅ Assign instance count
@@ -39,21 +39,22 @@ export class ImpurityCardComponent implements OnInit, OnDestroy {
 
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
-      
+
       if (column_list[this.resultTabs.impurity?.name]?.length > 0) {
         for (let i = 0; i < column_list[this.resultTabs.impurity.name].length; i++) {
           this.impurity_column[column_list[this.resultTabs.impurity.name][i].value] =
             column_list[this.resultTabs.impurity.name][i].name;
         }
       }
-
+    
       this._data = value;
     }
   }
 
-  constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
+  constructor(private dialog: MatDialog, private utilityService: UtilityService) { }
 
   ngOnInit() {
+      console.log("-----------------", this._data)
     // ✅ Reset static counter when the component loads initially
     if (ImpurityCardComponent.apiCallCount === 0) {
       ImpurityCardComponent.apiCallCount = 0;
@@ -90,19 +91,19 @@ export class ImpurityCardComponent implements OnInit, OnDestroy {
     document.execCommand('copy');
     document.body.removeChild(textArea);
 
-  // Step 2: Find the icon inside the clicked span and swap classes
-  const icon = el.querySelector('i');
+    // Step 2: Find the icon inside the clicked span and swap classes
+    const icon = el.querySelector('i');
 
-  if (icon?.classList.contains('fa-copy')) {
-    icon.classList.remove('fa-copy');
-    icon.classList.add('fa-check');
+    if (icon?.classList.contains('fa-copy')) {
+      icon.classList.remove('fa-copy');
+      icon.classList.add('fa-check');
 
-    // Step 3: Revert it back after 1.5 seconds
-    setTimeout(() => {
-      icon.classList.remove('fa-check');
-      icon.classList.add('fa-copy');
-    }, 1500);
-  }
+      // Step 3: Revert it back after 1.5 seconds
+      setTimeout(() => {
+        icon.classList.remove('fa-check');
+        icon.classList.add('fa-copy');
+      }, 1500);
+    }
   }
 
   getImageUrl(data: any): string {

@@ -1438,10 +1438,10 @@ export class SearchResultsComponent {
           this.allDataSets[this.childApiBody[index][this.resultTabs?.productInfo.name]][this.resultTabs.productInfo.name] = data?.basic_product_data;
         }
         break;
-      case this.resultTabs?.chemicalDirectory.name:
+      case this.resultTabs?.chemicalDirectory.label:
         if (data?.chem_dir_data.length > 0) {
-          this.childApiBody[index][this.resultTabs?.chemicalDirectory.name].count = data?.chem_dir_count;
-          this.allDataSets[this.childApiBody[index][this.resultTabs?.chemicalDirectory.name]][this.resultTabs.chemicalDirectory.name] = data?.chem_dir_data;
+          this.childApiBody[index][this.resultTabs?.chemicalDirectory.label].count = data?.chem_dir_count;
+          this.allDataSets[this.childApiBody[index][this.resultTabs?.chemicalDirectory.label]][this.resultTabs.chemicalDirectory.name] = data?.chem_dir_data;
         }
         break;
       case this.resultTabs?.impurity.name:
@@ -1499,18 +1499,7 @@ export class SearchResultsComponent {
         }
         break;
 
-      case this.resultTabs?.gppdDb.name:
-        if (data?.data?.length > 0) {
-          this.childApiBody[index][this.resultTabs?.gppdDb.name].count = data?.count;
-          this.allDataSets[index][this.resultTabs.gppdDb.name] = {
-            columns: this.allDataSets[index][this.resultTabs.gppdDb.name]?.columns || [],
-            rows: data?.data
-          };
-        }
-        break;
-
-
-      default:
+         default:
         this.setLoadingState.emit(false);
     }
   }
