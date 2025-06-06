@@ -52,8 +52,7 @@
               <div class="header-content">
                 <div class="d-flex align-items-center" (click)="toggleSort(i)" style="cursor: pointer;">
                   <span>{{ column.name }}</span>
-                  <i class="fa-solid" [ngClass]="getSortIcon(i)"
-                    style="margin-left: 8px;"></i>
+                  <i class="fa-solid" [ngClass]="getSortIcon(i)" style="margin-left: 8px;"></i>
                 </div>
                 <ng-container *ngIf="filterableColumns.includes(column.value)">
                   <div style="display:flex; align-items: center; font-size: 14px; justify-content: space-between;">
@@ -101,7 +100,17 @@
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="displayedColumns" style="background-color: #def1ff;"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+          <!-- <tr *ngIf="dataSource.filteredData.length === 0">
+            <td [attr.colspan]="displayedColumns.length" style="text-align: center; padding: 16px;">
+              🔍 No matching records found.
+            </td>
+          </tr> -->
         </table>
+        <!-- Message for no data -->
+        <div *ngIf="noMatchingData" style="text-align:center; padding: 20px; font-weight: 500;">
+          🔍 No matching records found
+        </div>
+
       </div>
 
       <!-- Paginator -->

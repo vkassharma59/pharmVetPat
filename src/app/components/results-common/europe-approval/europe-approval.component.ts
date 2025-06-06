@@ -29,6 +29,7 @@ export class EuropeApprovalComponent {
   }
   set data(value: any) {
     this._data = value;
+     this.handleResultTabData.emit(this._data || []);
   }
 
   constructor(private utilityService: UtilityService) {
@@ -36,6 +37,12 @@ export class EuropeApprovalComponent {
   }
   ngOnChanges() {
    console.log('europeApproval received data:', this._data);
+   this.handleResultTabData.emit(this._data);
  }
- 
+//  updateDataFromPagination(newData: any) {
+//   this._data = newData; // or this.data = newData; if you want setter to trigger
+//   this.handleResultTabData.emit(newData);
+//   console.log("✅ Updated data from pagination:", newData);
+// }
+
 }

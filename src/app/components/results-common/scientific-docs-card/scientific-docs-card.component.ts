@@ -24,7 +24,7 @@ import { MainSearchService } from '../../../services/main-search/main-search.ser
     MatInputModule,
     MatFormFieldModule,
     MatPaginatorModule],
-   templateUrl: './scientific-docs-card.component.html',
+  templateUrl: './scientific-docs-card.component.html',
   styleUrl: './scientific-docs-card.component.css'
 })
 
@@ -54,7 +54,7 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
-@ViewChildren('filterInput') filterInputs!: QueryList<ElementRef<HTMLInputElement>>;
+  @ViewChildren('filterInput') filterInputs!: QueryList<ElementRef<HTMLInputElement>>;
 
   @Input()
   get currentChildAPIBody() {
@@ -204,14 +204,7 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
           };
         })
       : null;
-    // const order = this.multiSortOrder.length > 0
-    //   ? this.multiSortOrder.map(s => ({
-    //     column: s.column,
-    //     dir: s.dir
-    //   }))
-    //   : null;
-
-    const globalSearch = isGlobalSearch
+       const globalSearch = isGlobalSearch
       ? { value: this.globalSearchValue.trim() }
       : null;
 
@@ -241,77 +234,44 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
     this.filterInputs.forEach(inputRef => inputRef.nativeElement.value = '');
     this.fetchData();
   }
-  getAllDataFromApi(): Observable<any[]> {
-    const requestBody = {
-      ...this._currentChildAPIBody,
-      start: 0,
-      length: this._currentChildAPIBody?.count || 1000,
-    };
-    console.log('📦  response body:', requestBody);
-    return this.mainSearchService.NonPatentSearchSpecific(requestBody).pipe(
-      tap((result: ScientificDocsCardComponent) => {
-        console.log('📦 Full API response:', result);
-      }),
-      map((result: ScientificDocsCardComponent) => result?.data?.data || []),
-      catchError(error => {
-        console.error('❌ Error fetching all data:', error);
-        return of([]); // Return an empty array on error
-      })
-    );
-  }
-
   // ✅ Download as PDF
-  downloadPDF(): void {
-    this.getAllDataFromApi().subscribe(data => {
-      const exportData = data.map(row => {
-        return this.displayedColumns.map(col => row[col] !== undefined ? row[col] : '');
-      });
+  downloadPDF() {
+    const doc = new jsPDF();
+    const colHeaders = this.displayedColumns.map(col => this.columnHeaders[col]);
+    const rowData = this.dataSource.filteredData.map(row => this.displayedColumns.map(col => row[col]));
 
-      const colHeaders = this.displayedColumns;
-      const doc = new jsPDF();
-      autoTable(doc, {
-        head: [colHeaders],
-        body: exportData,
-      });
-      doc.save('ExportedData.pdf');
+    autoTable(doc, {
+      head: [colHeaders],
+      body: rowData
     });
+    doc.save('ExportedData.pdf');
   }
-
   // ✅ Download as CSV
-  downloadCSV(): void {
-    this.getAllDataFromApi().subscribe(data => {
-      let csvContent = this.displayedColumns.join(',') + '\n';
-
-      data.forEach(row => {
-        const rowData = this.displayedColumns.map(col => row[col] !== undefined ? row[col] : '');
-        csvContent += rowData.join(',') + '\n';
-      });
-
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      saveAs(blob, 'ExportedData.csv');
+  downloadCSV() {
+    let csvContent = this.displayedColumns.map(col => this.columnHeaders[col]).join(',') + '\n';
+    this.dataSource.filteredData.forEach(row => {
+      const rowData = this.displayedColumns.map(col => row[col]);
+      csvContent += rowData.join(',') + '\n';
     });
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, 'ExportedData.csv');
   }
   // ✅ Download as Excel
-  downloadExcel(): void {
-    this.getAllDataFromApi().subscribe(data => {
-      const exportData = data.map(row => {
-        const formatted: any = {};
-        this.displayedColumns.forEach(col => {
-          formatted[col] = row[col] !== undefined ? row[col] : '';
-        });
-        return formatted;
+  downloadExcel() {
+    const exportData = this.dataSource.filteredData.map(row => {
+      const formatted: any = {};
+      this.displayedColumns.forEach(col => {
+        formatted[this.columnHeaders[col]] = row[col];
       });
-
-      const worksheet = XLSX.utils.json_to_sheet(exportData);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, 'Exported Data');
-
-      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-      const blob = new Blob([excelBuffer], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      });
-
-      saveAs(blob, 'ExportedData.xlsx');
+      return formatted;
     });
+
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Exported Data');
+
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const data = new Blob([excelBuffer], { type: 'application/octet-stream' });
+    saveAs(data, 'ExportedData.xlsx');
   }
 }
