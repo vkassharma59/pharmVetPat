@@ -63,6 +63,7 @@ export class RouteResultComponent {
   @Output() onResultTabChange: EventEmitter<any> = new EventEmitter<any>();
   @Output() handleChildPaginationSearch: EventEmitter<any> = new EventEmitter<any>();
   @Output() OpenPriviledgeModal: EventEmitter<any> = new EventEmitter<any>();
+  @Output() resetPagination: EventEmitter<any> = new EventEmitter<any>();
 
   _currentChildAPIBody: any;
   @Input() currentApiData: any;
@@ -75,6 +76,7 @@ export class RouteResultComponent {
     return this._dataItem;
   }
   set dataItem(value: any) {
+    console.log(value);
     this._dataItem = value;
   }
 
