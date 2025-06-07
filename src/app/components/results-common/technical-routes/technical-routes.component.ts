@@ -16,6 +16,7 @@ import { Auth_operations } from '../../../Utils/SetToken';
 export class TechnicalRoutesComponent {
 
     @Output() handleResultTabData = new EventEmitter<any>();
+    @Output() resetPagination = new EventEmitter<any>();
     @Output() handleSetLoading = new EventEmitter<boolean>();
     @Input() currentChildAPIBody: any;
     searchThrough: string = '';

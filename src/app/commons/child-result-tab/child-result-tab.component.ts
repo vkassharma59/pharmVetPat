@@ -19,6 +19,7 @@ export class ChildResultTabComponent {
   _currentAPIData: any;
 
   @Output() handleChangeTabData: EventEmitter<any> = new EventEmitter();
+  @Output() resetPagination: EventEmitter<any> = new EventEmitter();
   @Output() setLoading: EventEmitter<any> = new EventEmitter();
   @Input() dataItem: any;
   @Input()
@@ -237,8 +238,8 @@ export class ChildResultTabComponent {
     ).subscribe({
       next: (res) => {
         this.handleChangeTabData.emit(res?.data);
-
         this.setLoading.emit(false);
+        this.resetPagination.emit(true);
       },
       error: (e) => {
         console.error(e);
@@ -359,8 +360,8 @@ export class ChildResultTabComponent {
     ).subscribe({
       next: (res) => {
         this.handleChangeTabData.emit(res?.data);
-
         this.setLoading.emit(false);
+        this.resetPagination.emit(true);
       },
       error: (e) => {
         console.error(e);

@@ -3,6 +3,7 @@
         *ngIf="currentChildAPIBody && !isEmptyObject(currentChildAPIBody) && searchThrough !== 'synthesis-search'">
         <chem-child-result-tab [dataItem]="_data" [currentAPIData]="currentChildAPIBody"
             (handleChangeTabData)="handleResultTabData.emit($event)"
+            (resetPagination)="resetPagination.emit($event)"
             (setLoading)="handleSetLoading.emit($event)"></chem-child-result-tab>
     </ng-container>
     <ng-container *ngIf="_data.length > 0; else noData">
@@ -23,8 +24,10 @@
             </div>
             <chem-technical-route-card class="card" [data]="dataItem"></chem-technical-route-card>
         </ng-container>
-        <app-child-paging [currentChildAPIBody]="currentChildAPIBody"
-            (handleChangeTabData)="handleResultTabData.emit($event)"
+        <app-child-paging 
+            *ngIf="currentChildAPIBody?.count > 25"
+            [currentChildAPIBody]="currentChildAPIBody"
+            (handleChangeTabData)="handleResultTabData.emit($event)"            
             (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
     </ng-container>
 </ng-container>
