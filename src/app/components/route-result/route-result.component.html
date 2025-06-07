@@ -73,6 +73,10 @@
       <chem-us></chem-us>
     </ng-container>
 
+    <ng-container *ngSwitchCase="resultTabWithKeys.veterinaryUsApproval.name">
+      <app-veterinary-us-approval></app-veterinary-us-approval>
+    </ng-container>
+
     <ng-container *ngSwitchCase="resultTabWithKeys.canadaApproval.name">
       <chem-canada [data]="_dataItem.canadaApproval"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.canadaApproval.name]"

@@ -276,7 +276,7 @@ button[color="warn"] {
   pointer-events: none; /* Allow clicks to pass through unless on button */
 }
 .scroll-btn.left {
-  left: 8px;
+  left: 0px;
 }
 
 .scroll-btn.right {
@@ -313,7 +313,7 @@ mat-header-cell {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 0 8px;
+  /* padding: 0 8px; */
   z-index: 5;
   pointer-events: none; /* Pass clicks except for buttons */
 }
@@ -337,7 +337,7 @@ background: linear-gradient(284deg, rgba(78, 187, 242, 1) 0%, rgba(29, 154, 204,
 .scroll-container {
   overflow-x: auto;
   white-space: nowrap;
-  padding: 2rem;
+  /* padding: 2rem; */
 }
 th{
   background-color: #73d4ff;

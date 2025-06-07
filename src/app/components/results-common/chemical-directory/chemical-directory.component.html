@@ -14,10 +14,11 @@
                 </span>
             </div>
         </div>
-        <chemical-directory-card class="card" [data]="dataItem"></chemical-directory-card>
+        <chemical-directory-card class="card" [data]="dataItem"
+        ></chemical-directory-card>
     </ng-container>
     <app-child-paging [currentChildAPIBody]="currentChildAPIBody"
-        (handleChangeTabData)="handleResultTabData.emit($event)"
+        (handleChangeTabData)="updateDataFromPagination($event)"
         (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
 </ng-container>
 <ng-template #noData>
