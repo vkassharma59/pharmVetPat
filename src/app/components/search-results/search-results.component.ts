@@ -278,7 +278,14 @@ export class SearchResultsComponent {
           this.setLoadingState.emit(false);
         }
         break;
-      case this.resultTabs?.activePatent.name:
+         case this.resultTabs?.veterinaryUsApproval.name:
+        if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.veterinaryUsApproval.name]).length === 0) {
+          this.performveterinaryUsApprovalSearch(resultTabData);
+        } else {
+          this.setLoadingState.emit(false);
+        }
+        break;
+         case this.resultTabs?.activePatent.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.activePatent.name]).length === 0) {
           this.performactivePatentSearch(resultTabData);
         } else {
@@ -964,7 +971,54 @@ export class SearchResultsComponent {
       },
     });
   }
+   private performveterinaryUsApprovalSearch(resultTabData: any): void {
+    if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+      this.allDataSets[resultTabData.index][this.resultTabs.veterinaryUsApproval.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
 
+    if (this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index][this.resultTabs.veterinaryUsApproval.name] = {};
+    } else {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
+    this.childApiBody[resultTabData.index][this.resultTabs.veterinaryUsApproval.name] = {
+      api_url: this.apiUrls.veterinaryUsApproval.searchSpecific,
+      search_type: resultTabData?.searchWith,
+      keyword: resultTabData?.searchWithValue,
+      page_no: 1,
+      filter_enable: false,
+      filters: {},
+      order_by: '',
+      index: resultTabData.index
+    }
+
+    const tech_API = this.apiUrls.veterinaryUsApproval.columnList;
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.veterinaryUsApproval.name, response);
+
+        this.mainSearchService.veterinaryusApprovalSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.veterinaryUsApproval.name]).subscribe({
+          next: (result: any) => {
+            this.childApiBody[resultTabData.index][this.resultTabs.veterinaryUsApproval.name].count = result?.data?.ema_count;
+            this.allDataSets[resultTabData.index][this.resultTabs.veterinaryUsApproval] = result?.data?.ema_data;
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
   private scientificDocsSearch(resultTabData: any,): void {
     console.log('Search Input:', resultTabData);
     const pageSize = 25;

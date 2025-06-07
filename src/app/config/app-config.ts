@@ -70,6 +70,10 @@ export const AppConfigValues: AppConfig = {
         searchSpecific: `${appUrl.apiUrl}/us-approval/search-specific`,
         columnList: `${appUrl.apiUrl}/us-approval/column-list`,
       },
+      veterinaryUsApproval: {
+        searchSpecific: `${appUrl.apiUrl}/us-approval/search-specific`,
+        columnList: `${appUrl.apiUrl}/us-approval/column-list`,
+      },
       activePatent: {
         searchSpecific: `${appUrl.apiUrl}/active-patent/search-specific`,
         columnList: `${appUrl.apiUrl}/active-patent/column-list`,

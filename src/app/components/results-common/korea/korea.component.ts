@@ -20,6 +20,7 @@ export class KoreaComponent {
     @Output() handleResultTabData = new EventEmitter<any>();
     @Output() handleSetLoading = new EventEmitter<boolean>();
     @Input() currentChildAPIBody: any;
+  searchThrough: string = '';
 
  resultTabs: any = {};
     _data: any = [];
@@ -33,6 +34,10 @@ export class KoreaComponent {
   
     constructor(private utilityService: UtilityService) {
       this.resultTabs = this.utilityService.getAllTabsName();
+    this.searchThrough = Auth_operations.getActiveformValues().activeForm;
     }
 
+     isEmptyObject(obj: any): boolean {
+    return Object.keys(obj).length === 0;
+  }
 }

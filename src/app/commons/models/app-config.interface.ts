@@ -85,7 +85,11 @@ export interface AppConfig {
       searchSpecific: string;
       columnList: string;
     };
-    activePatent: {
+   veterinaryUsApproval: {
+     searchSpecific: string;
+    columnList: string;
+    };
+      activePatent: {
       searchSpecific: string;
       columnList: string;
     };

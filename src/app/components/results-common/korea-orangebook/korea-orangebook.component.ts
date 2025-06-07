@@ -50,6 +50,7 @@ export class KoreaOrangebookComponent implements OnInit, OnDestroy {
 
   constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
 
+
   ngOnInit() {
     // Reset counter only when the component is first loaded
     if (KoreaOrangebookComponent.apiCallCount === 0) {
