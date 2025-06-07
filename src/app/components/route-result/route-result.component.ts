@@ -29,14 +29,16 @@ import { ScientificDocsComponent } from '../results-common/scientific-docs/scien
 import { GppdDbComponent } from '../results-common/gppd-db/gppd-db.component';
 import { NonPatentComponent } from '../results-common/non-patent/non-patent.component';
 
+import { VeterinaryUsApprovalComponent } from "../results-common/veterinary-us-approval/veterinary-us-approval.component";
+
 @Component({
   selector: 'chem-route-results',
   standalone: true,
   imports: [FormsModule, NgFor, NgIf, BasicRouteComponent, TechnicalRoutesComponent,
-     ImpurityComponent, ChemiTrackerComponent, ImpComponent, IndianComponent, ChemicalDirectoryComponent, 
-     JapanComponent, CanadaComponent, EuropeApprovalComponent, KoreaComponent, LitigationComponent,
-      UsComponent, SpcdbComponent, EximComponent, RouteTabsComponent, ActivePatentComponent,
-       NgSwitch, NgSwitchCase, NgSwitchDefault, ScientificDocsComponent,GppdDbComponent,NonPatentComponent],
+    ImpurityComponent, ChemiTrackerComponent, ImpComponent, IndianComponent, ChemicalDirectoryComponent,
+    JapanComponent, CanadaComponent, EuropeApprovalComponent, KoreaComponent, LitigationComponent,
+    UsComponent, SpcdbComponent, EximComponent, RouteTabsComponent, ActivePatentComponent,
+    NgSwitch, NgSwitchCase, NgSwitchDefault, ScientificDocsComponent, GppdDbComponent, NonPatentComponent, VeterinaryUsApprovalComponent],
   templateUrl: './route-result.component.html',
   styleUrl: './route-result.component.css'
 })
@@ -63,6 +65,7 @@ export class RouteResultComponent {
   @Output() onResultTabChange: EventEmitter<any> = new EventEmitter<any>();
   @Output() handleChildPaginationSearch: EventEmitter<any> = new EventEmitter<any>();
   @Output() OpenPriviledgeModal: EventEmitter<any> = new EventEmitter<any>();
+  @Output() resetPagination: EventEmitter<any> = new EventEmitter<any>();
 
   _currentChildAPIBody: any;
   @Input() currentApiData: any;
@@ -75,6 +78,7 @@ export class RouteResultComponent {
     return this._dataItem;
   }
   set dataItem(value: any) {
+    console.log(value);
     this._dataItem = value;
   }
 

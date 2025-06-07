@@ -1,0 +1,164 @@
+
+<div class="card shadow-sm rounded-lg overflow-hidden" style="background-color: #e0f6d5;">
+<div class="card-header text-white ">
+    <div style="padding-top:7px; justify-content:space-between; display:flex;">
+        {{ localCount }}. {{resultTabs?.litigation?.label}} >> {{_data?.active_ingredient_biologics_combination}}</div>
+</div>
+<div class="card-body" style="background-color: #f7fcf2;">
+    <div class="pb-3 mb-3 px-2 rounded-lg">
+        <p class="text-wrap  whitespace-normal"
+            style="color:#0032a0; font-size: 17px; font-weight:600; padding-bottom: 15px;">
+            {{ _data?.active_ingredient_biologics_combination }}
+        </p>
+
+  <!-- Body -->
+  <div class="card-body p-4">
+    <!-- Main Title -->
+    <p class="text-[#0032a0] text-xl font-semibold pb-3">
+      {{ _data?.active_ingredient_biologics_combination }}
+    </p>
+
+    <!-- Responsive Info Grid -->
+    <div class="row text-sm text-[#003f1a]">
+      <!-- GBRN -->
+      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
+        <div *ngIf="_data?.gbrn && getColumnName('gbrn')">
+          <h6 class="font-semibold uppercase">
+            {{ getColumnName("gbrn") }}
+            <span class="ms-1 cursor-pointer text-[#0032A0]" #copyBtn
+            (click)="handleCopy(_data?.gbrn, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="break-words">{{ _data?.gbrn }}</p>
+        </div>
+      </div>
+
+      <!-- Application Number & Defendants -->
+      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
+        <div *ngIf="_data?.patent_numbers && getColumnName('patent_numbers')">
+          <h6 class="font-semibold uppercase">
+            {{ getColumnName("patent_numbers") }}
+            <span class="ms-1 cursor-pointer text-[#0032A0]" #copyBtn
+             (click)="handleCopy(_data?.patent_numbers, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="break-words">{{ _data?.patent_numbers }}</p>
+        </div>
+
+        <div *ngIf="_data?.defendants && getColumnName('defendants')">
+          <h6 class="font-semibold uppercase mt-2">
+            {{ getColumnName("defendants") }}
+            <span class="ms-1 cursor-pointer text-[#0032A0]" #copyBtn
+            (click)="handleCopy(_data?.defendants, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="break-words">{{ _data?.defendants }}</p>
+        </div>
+      </div>
+
+      <!-- Country -->
+      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
+        <div *ngIf="_data?.country && getColumnName('country')">
+          <h6 class="font-semibold uppercase">
+            {{ getColumnName("country") }}
+            <span class="ms-1 cursor-pointer text-[#0032A0]" #copyBtn
+             (click)="handleCopy(_data?.country, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="break-words">{{ _data?.country }}</p>
+        </div>
+      </div>
+
+      <!-- Defendant Representative -->
+      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
+        <div *ngIf="_data?.defendants_representative && getColumnName('defendants_representative')">
+          <h6 class="font-semibold uppercase">
+            {{ getColumnName("defendants_representative") }}
+            <span class="ms-1 cursor-pointer text-[#0032A0]" #copyBtn
+             (click)="handleCopy(_data?.defendants_representative, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="break-words max-h-24 overflow-y-auto">{{ _data?.defendants_representative }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+   
+     
+    <!-- Responsive Info Grid -->
+    <div class="row text-sm text-[#003f1a]">
+      <!-- GBRN -->
+      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
+        <div *ngIf="_data?.gbrn && getColumnName('gbrn')">
+          <h6 class="font-semibold uppercase">
+            {{ getColumnName("gbrn") }}
+            <span class="ms-1 cursor-pointer text-[#0032A0]" #copyBtn
+            (click)="handleCopy(_data?.gbrn, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="break-words">{{ _data?.gbrn }}</p>
+        </div>
+      </div>
+
+      <!-- Application Number & Defendants -->
+      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
+        <div *ngIf="_data?.patent_numbers && getColumnName('patent_numbers')">
+          <h6 class="font-semibold uppercase">
+            {{ getColumnName("patent_numbers") }}
+            <span class="ms-1 cursor-pointer text-[#0032A0]" #copyBtn
+             (click)="handleCopy(_data?.patent_numbers, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="break-words">{{ _data?.patent_numbers }}</p>
+        </div>
+
+        <div *ngIf="_data?.defendants && getColumnName('defendants')">
+          <h6 class="font-semibold uppercase mt-2">
+            {{ getColumnName("defendants") }}
+            <span class="ms-1 cursor-pointer text-[#0032A0]" #copyBtn
+            (click)="handleCopy(_data?.defendants, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="break-words">{{ _data?.defendants }}</p>
+        </div>
+      </div>
+
+      <!-- Country -->
+      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
+        <div *ngIf="_data?.country && getColumnName('country')">
+          <h6 class="font-semibold uppercase">
+            {{ getColumnName("country") }}
+            <span class="ms-1 cursor-pointer text-[#0032A0]" #copyBtn
+             (click)="handleCopy(_data?.country, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="break-words">{{ _data?.country }}</p>
+        </div>
+      </div>
+
+      <!-- Defendant Representative -->
+      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
+        <div *ngIf="_data?.defendants_representative && getColumnName('defendants_representative')">
+          <h6 class="font-semibold uppercase">
+            {{ getColumnName("defendants_representative") }}
+            <span class="ms-1 cursor-pointer text-[#0032A0]" #copyBtn
+             (click)="handleCopy(_data?.defendants_representative, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="break-words max-h-24 overflow-y-auto">{{ _data?.defendants_representative }}</p>
+        </div>
+      </div>
+   
+  </div>
+</div>
+</div>

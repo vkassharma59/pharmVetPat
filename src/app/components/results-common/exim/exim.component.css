@@ -3,7 +3,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 /* ✅ Card-style Table */
@@ -12,6 +13,14 @@
   border-radius: 8px;
   background: #fff;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+::ng-deep .mat-sort-header-arrow,
+::ng-deep .mat-sort-header-arrow .mat-sort-header-stem,
+::ng-deep .mat-sort-header-arrow .mat-sort-header-indicator {
+  display: none !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 /* ✅ Form Fields (Smaller Input Box) */
@@ -82,6 +91,7 @@ tr:nth-child(odd) td {
   width: 100%;
   /* overflow-x: auto; */
   max-height: 500px;
+  margin-top: 10px;
   border: 1px solid #ccc;
 }
 
@@ -199,7 +209,7 @@ button[color="warn"] {
   display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #73d4ff ;
+    background-color:#3886d8;
     margin: 5px;
 }
 
@@ -266,7 +276,7 @@ button[color="warn"] {
   pointer-events: none; /* Allow clicks to pass through unless on button */
 }
 .scroll-btn.left {
-  left: 8px;
+  left: 0px;
 }
 
 .scroll-btn.right {
@@ -303,7 +313,7 @@ mat-header-cell {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 0 8px;
+  /* padding: 0 8px; */
   z-index: 5;
   pointer-events: none; /* Pass clicks except for buttons */
 }
@@ -327,8 +337,33 @@ background: linear-gradient(284deg, rgba(78, 187, 242, 1) 0%, rgba(29, 154, 204,
 .scroll-container {
   overflow-x: auto;
   white-space: nowrap;
-  padding: 2rem;
+  /* padding: 2rem; */
 }
 th{
   background-color: #73d4ff;
+}
+.scrollable-text {
+  max-height: 4.5em; /* Approx. 3 lines */
+  overflow-y: auto;
+  display: -webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  white-space: normal;
+  line-height: 1.5em;
+margin: 10px;
+  padding-right: 8px; /* for scrollbar space */
+}
+.scrollable-text::-webkit-scrollbar {
+  width: 4px;
+  height: 0px;
+}
+.scrollable-text::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background: #312e81;
+
+}
+/* Track */
+.scrollable-text::-webkit-scrollbar-track {
+  background: #f1f1f1e7;
 }

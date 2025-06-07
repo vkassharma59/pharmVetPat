@@ -36,7 +36,8 @@
     <ng-container *ngSwitchCase="resultTabWithKeys.technicalRoutes.name">
       <chem-technical-route [data]="_dataItem.technicalRoutes"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.technicalRoutes.name]"
-        (handleSetLoading)="handleSetLoading.emit($event)"
+        (handleSetLoading)="handleSetLoading.emit($event)" 
+        (resetPagination)="resetPagination.emit($event)" 
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-technical-route>
     </ng-container>
 
@@ -70,6 +71,10 @@
 
     <ng-container *ngSwitchCase="resultTabWithKeys.usApproval.name">
       <chem-us></chem-us>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="resultTabWithKeys.veterinaryUsApproval.name">
+      <app-veterinary-us-approval></app-veterinary-us-approval>
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.canadaApproval.name">

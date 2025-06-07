@@ -37,7 +37,7 @@ export class ChemicalDirectoryComponent implements OnChanges {
     this.handleResultTabData.emit(this._data);
   }
     updateDataFromPagination(newData: any) {
-  this._data = newData; // or this.data = newData; if you want setter to trigger
+  this._data = newData.chem_dir_data; // or this.data = newData; if you want setter to trigger
   this.handleResultTabData.emit(newData);
   console.log("✅ Updated data from pagination:", newData);
 }

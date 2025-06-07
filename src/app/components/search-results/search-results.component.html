@@ -20,6 +20,7 @@
       [currentChildAPIBody]="childApiBody[i]"
       (onResultTabChange)="onResultTabChange($event)"
       (handleSetLoading)="handleLoadingState($event)"
+      (resetPagination)="resetPagination($event, i)"
       (handleChildPaginationSearch)="onChildPaginationChange($event, i)"
     ></chem-route-results>
   </div>

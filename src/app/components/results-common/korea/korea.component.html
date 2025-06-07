@@ -20,6 +20,7 @@
         <app-korea-orangebook class="card" [data]="dataItem"></app-korea-orangebook>
     </ng-container> 
     <app-child-paging
+      *ngIf="currentChildAPIBody?.count > 25"
         [currentChildAPIBody]="currentChildAPIBody"
         (handleChangeTabData)="handleResultTabData.emit($event)"
         (setLoading)="handleSetLoading.emit($event)"
