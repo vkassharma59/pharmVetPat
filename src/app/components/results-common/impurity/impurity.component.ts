@@ -4,6 +4,7 @@ import { ImpurityCardComponent } from '../impurity-card/impurity-card.component'
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
+import { Auth_operations } from '../../../Utils/SetToken';
 
 @Component({
   selector: 'chem-impurity',
@@ -16,7 +17,7 @@ import { ChildPagingComponent } from '../../../commons/child-paging/child-paging
 export class ImpurityComponent {
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
-
+  searchThrough: string = '';
   resultTabs: any = {};
   isOpen: boolean = false;
   _data: any = [];
@@ -39,18 +40,19 @@ export class ImpurityComponent {
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
-    if(value) {
+    if (value) {
       this.ImpurityBody = JSON.parse(JSON.stringify(this._currentChildAPIBody)) || this._currentChildAPIBody;
       this.handleFetchFilters();
     }
   }
 
   constructor(
-     private utilityService: UtilityService,
-     private mainSearchService: MainSearchService) {
+    private utilityService: UtilityService,
+    private mainSearchService: MainSearchService) {
     this.resultTabs = this.utilityService.getAllTabsName();
+    this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
-  productInfo(){
+  productInfo() {
     console.log("clicked");
   }
   handleFetchFilters() {
@@ -68,10 +70,48 @@ export class ImpurityComponent {
       },
     });
   }
-  handleFilter(){
-    this.isOpen=!this.isOpen;
+  handleFilter() {
+    this.isOpen = !this.isOpen;
     console.log(this.isOpen);
   }
+  clear() {
+  this.handleSetLoading.emit(true);
+  this.category_value = 'Select Category';
+  this.isOpen = false;
+
+  // Remove the category filter
+  if (this.ImpurityBody.filters?.category) {
+    delete this.ImpurityBody.filters['category'];
+  }
+
+  this._currentChildAPIBody = {
+    ...this.ImpurityBody,
+    filters: { ...this.ImpurityBody.filters }
+  };
+
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+  this.mainSearchService.impuritySearchSpecific(this._currentChildAPIBody).subscribe({
+    next: (res) => {
+      this._currentChildAPIBody = {
+        ...this._currentChildAPIBody,
+        count: res?.data?.impurity_count
+      };
+      this.handleResultTabData.emit(res.data);
+      this.handleSetLoading.emit(false);
+      window.scrollTo(0, scrollTop);
+    },
+    error: (err) => {
+      console.error(err);
+      this._currentChildAPIBody = {
+        ...this._currentChildAPIBody,
+        filter_enable: false
+      };
+      this.handleSetLoading.emit(false);
+      window.scrollTo(0, scrollTop);
+    },
+  });
+}
   handleSelectFilter(value: string) {
     this.isOpen = false;
     this.handleSetLoading.emit(true);
@@ -86,7 +126,7 @@ export class ImpurityComponent {
     this._currentChildAPIBody = {
       ...this.ImpurityBody,
       filters: { ...this.ImpurityBody.filters }
-    };    
+    };
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
     this.mainSearchService.impuritySearchSpecific(
@@ -113,3 +153,5 @@ export class ImpurityComponent {
     });
   }
 }
+
+

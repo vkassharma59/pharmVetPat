@@ -20,6 +20,7 @@ export class IndianComponent {
   @Output() handleSetLoading = new EventEmitter<boolean>();
   @Input() currentChildAPIBody: any;
      resultTabs: any = {};
+     searchThrough: string = '';
      _data: any = [];
      @Input()
      get data() {
@@ -31,6 +32,7 @@ export class IndianComponent {
    
      constructor(private utilityService: UtilityService) {
        this.resultTabs = this.utilityService.getAllTabsName();
+       this.searchThrough = Auth_operations.getActiveformValues().activeForm;
      }
      ngOnChanges() {
       console.log('JapanComponent received data:', this._data);

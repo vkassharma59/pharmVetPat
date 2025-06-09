@@ -19,7 +19,7 @@
         </div>
         <chem-europe-approval-card class="card" [data]="dataItem"></chem-europe-approval-card>
     </ng-container>  
-    <app-child-paging
+    <app-child-paging *ngIf="currentChildAPIBody?.count > 25"
         [currentChildAPIBody]="currentChildAPIBody"
         (handleChangeTabData)="handleResultTabData.emit($event)"
         (setLoading)="handleSetLoading.emit($event)"

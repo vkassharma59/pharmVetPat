@@ -16,26 +16,28 @@ import { ChildPagingComponent } from '../../../commons/child-paging/child-paging
   styleUrl: './japan.component.css'
 })
 export class JapanComponent {
-    
+
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
   @Input() currentChildAPIBody: any;
+  searchThrough: string = '';
 
-   resultTabs: any = {};
-   _data: any = [];
-   @Input()
-   get data() {
-     return this._data;
-   }
-   set data(value: any) {
-     this._data = value;
-   }
- 
-   constructor(private utilityService: UtilityService) {
-     this.resultTabs = this.utilityService.getAllTabsName();
-   }
-   ngOnChanges() {
+  resultTabs: any = {};
+  _data: any = [];
+  @Input()
+  get data() {
+    return this._data;
+  }
+  set data(value: any) {
+    this._data = value;
+  }
+
+  constructor(private utilityService: UtilityService) {
+    this.resultTabs = this.utilityService.getAllTabsName();
+    this.searchThrough = Auth_operations.getActiveformValues().activeForm;
+  }
+  ngOnChanges() {
     console.log('JapanComponent received data:', this._data);
   }
-  
+
 }
