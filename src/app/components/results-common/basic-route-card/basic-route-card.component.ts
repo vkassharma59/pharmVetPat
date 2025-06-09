@@ -77,6 +77,17 @@ export class BasicRouteCardComponent {
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
+  ngOnInit() {
+    // Reset counter only when the component is first loaded
+    if (BasicRouteCardComponent.apiCallCount === 0) {
+      BasicRouteCardComponent.apiCallCount = 0;
+    }
+  }
+
+  ngOnDestroy() {
+    // Reset counter when navigating away from the component
+    BasicRouteCardComponent.apiCallCount = 0;
+  }
 
   getInventorLogo(data: any) {
     return `${environment.baseUrl}${environment.domainNameCompanyLogo}${data?.INVENTOR_LOGO}`;

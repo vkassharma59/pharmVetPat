@@ -11,30 +11,33 @@ import { ChildPagingComponent } from '../../../commons/child-paging/child-paging
 @Component({
   selector: 'chem-litigation',
   standalone: true,
-  imports: [CommonModule,LitigationCardComponent,ChildPagingComponent],
+  imports: [CommonModule, LitigationCardComponent, ChildPagingComponent],
   templateUrl: './litigation.component.html',
   styleUrl: './litigation.component.css'
 })
 export class LitigationComponent {
 
-    @Output() handleResultTabData = new EventEmitter<any>();
-    @Output() handleSetLoading = new EventEmitter<boolean>();
-    @Input() currentChildAPIBody: any;
+  @Output() handleResultTabData = new EventEmitter<any>();
+  @Output() handleSetLoading = new EventEmitter<boolean>();
+  @Input() currentChildAPIBody: any;
+  searchThrough: string = '';
 
   resultTabs: any = {};
-     _data: any = [];
-     @Input()
-     get data() {
-       return this._data;
-     }
-     set data(value: any) {
-       this._data = value;
-     }
-   
-     constructor(private utilityService: UtilityService) {
-       this.resultTabs = this.utilityService.getAllTabsName();
-     }
-     ngOnChanges() {
-      console.log('JapanComponent received data:', this._data);
-    }
+  _data: any = [];
+  @Input()
+  get data() {
+    return this._data;
+  }
+  set data(value: any) {
+    this._data = value;
+  }
+
+  constructor(private utilityService: UtilityService) {
+    this.resultTabs = this.utilityService.getAllTabsName();
+    this.searchThrough = Auth_operations.getActiveformValues().activeForm;
+
+  }
+  ngOnChanges() {
+    console.log('JapanComponent received data:', this._data);
+  }
 }

@@ -1,24 +1,127 @@
-.card-header {
-  background: linear-gradient(to right, #d8f4bd, #c0edab);
-  font-size: 17px;
-  color: #005e1c;
-}
+/* 
 
 .card-body {
   background-color: #f7fcf2;
 }
 
 h6 {
-  color: #1f2937;
-  font-size: 13px;
-  font-weight: 600;
+  color:black;
+  font-size: 15px;
+  font-weight: bold;
 }
+.subtitle{color:black;
+  font-size: 14px;
+  font-weight:500;}
+th {
+color:white;
+  font-size: 14px;
+  font-weight: bold;
+}
+td{color:black;
+  font-size: 14px;
+  font-weight:500;}
+h4 {
+  color:black;
+  font-size: 14px;
+  font-weight: bold;
+}
+h5 {
+  color:black;
+  font-size: 14px;
+  font-weight: bold;
+}
+/* CSS */
+.custom-thead-blue {
+  background-color: #0032a0;
+  color: white;
+}
+
 .card-header {
     background: #020024;
     background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
     justify-content: space-between;
   }
+
+  
 p {
   font-size: 14px;
   color: #1b1b1b;
 }
+.custom-table-green thead {
+  background-color: #0056b3; /* dark green like screenshot */
+  color: white;
+}
+
+.custom-table-green tbody {
+  background-color:#0056b3; /* light green like background */
+}
+
+.custom-table-green th,
+.custom-table-green td {
+  vertical-align: middle;
+  text-align: left;
+  white-space: nowrap;
+} */
+.card-body {
+  background-color: #f7fcf2;
+}
+
+h6, h5, h4 {
+  color: black;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.subtitle {
+  color: black;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+th {
+  color: white !important;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #0056b3 !important;
+}
+
+td {
+  color: black;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+p {
+  font-size: 14px;
+  color: #1b1b1b;
+}
+
+.card-header {
+  background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
+  justify-content: space-between;
+}
+
+.custom-table-green thead th {
+  background-color: #0056b3 !important; /* ✅ Header stays blue */
+  color: white !important;
+  padding: 10px;
+  font-size: 14px;
+   border-bottom: 2px solid #000000; /* or your desired border color */
+}
+
+table.custom-table-green tbody tr {
+  background-color: #f8faff !important; /* ✅ Force body rows white */
+  color: black !important;  
+           
+ 
+}
+
+
+table.custom-table-green tbody td {
+  background-color: #f8faff !important; /* ✅ Also override on <td> if needed */
+  color: black !important;
+    padding: 10px !important;
+  font-size: 14px !important;
+   border-bottom: none !important; 
+}
+

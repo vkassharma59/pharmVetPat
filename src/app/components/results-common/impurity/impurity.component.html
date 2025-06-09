@@ -3,10 +3,14 @@
         Total Records : {{ _currentChildAPIBody?.count }}
     </button>
     <div class="flex flex-wrap gap-3">
+         <button (click)="clear()" class="clear btn btn-outline-primary" style="margin-right: 3px;">
+                <i class="fa-solid fa-rotate"></i>
+            </button>
         <div class="dropdown-container">
             <button (click)="handleFilter()" class="dropdown-toggle">
                 {{ category_value }}
             </button>
+           
             <ul *ngIf="isOpen" class="dropdown-menu">
                 <li (click)="handleSelectFilter('')">View All</li>
                 <li *ngFor="let data of category_filters" (click)="handleSelectFilter(data.value)">
@@ -29,17 +33,17 @@
         </div>
         <chem-impurity-card class="card" [data]="dataItem"></chem-impurity-card>
     </ng-container>
-    <app-child-paging [currentChildAPIBody]="currentChildAPIBody"
+    <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"
         (handleChangeTabData)="handleResultTabData.emit($event)"
         (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
 </ng-container>
 <ng-template #noData>
     <div class="card">
-    <div class="card-header text-white bg-primary">
-        {{resultTabs?.impurity?.label}}
+        <div class="card-header text-white bg-primary">
+            {{resultTabs?.impurity?.label}}
+        </div>
+        <div class="card-body">
+            <p>No Data found!</p>
+        </div>
     </div>
-    <div class="card-body">
-        <p>No Data found!</p>
-    </div>
-</div>
 </ng-template>

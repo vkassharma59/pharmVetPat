@@ -19,7 +19,7 @@ export class BasicRouteComponent {
   count: number = 0;
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
-
+  searchThrough: string = '';
   @Input() currentChildAPIBody: any;
   @Input()
   get data() {
@@ -31,5 +31,6 @@ export class BasicRouteComponent {
 
   constructor(private utilityService: UtilityService) {
     this.resultTabs = this.utilityService.getAllTabsName();
+    this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
 }

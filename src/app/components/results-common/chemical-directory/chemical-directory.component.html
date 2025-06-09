@@ -17,7 +17,8 @@
         <chemical-directory-card class="card" [data]="dataItem"
         ></chemical-directory-card>
     </ng-container>
-    <app-child-paging [currentChildAPIBody]="currentChildAPIBody"
+    <app-child-paging *ngIf="currentChildAPIBody?.count > 25"
+     [currentChildAPIBody]="currentChildAPIBody"
         (handleChangeTabData)="updateDataFromPagination($event)"
         (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
 </ng-container>

@@ -19,7 +19,7 @@
       </div>
       <app-indian-medicine-card class="card" [data]="dataItem"></app-indian-medicine-card>
   </ng-container> 
-  <app-child-paging
+  <app-child-paging *ngIf="currentChildAPIBody?.count > 25"
     [currentChildAPIBody]="currentChildAPIBody"
     (handleChangeTabData)="handleResultTabData.emit($event)"
     (setLoading)="handleSetLoading.emit($event)"
