@@ -24,15 +24,15 @@ export class IndianMedicineCardComponent implements OnInit, OnDestroy {
   localCount: number = 0; // Stores the instance-specific count
 
   @Input()
-  get data() {  
-    return this._data;  
+  get data() {
+    return this._data;
   }
-  set data(value: any) {    
+  set data(value: any) {
     if (value && Object.keys(value).length > 0) {
       IndianMedicineCardComponent.apiCallCount++; // Increment the static counter
       this.localCount = IndianMedicineCardComponent.apiCallCount; // Assign to local instance
-     
-      
+
+
 
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
@@ -48,10 +48,10 @@ export class IndianMedicineCardComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
+  constructor(private dialog: MatDialog, private utilityService: UtilityService) { }
 
   ngOnInit() {
-    console.log("-----------------dvdfbmol",this._data)
+    console.log("-----------------dvdfbmol", this._data)
     // Reset counter only when the component is first loaded
     if (IndianMedicineCardComponent.apiCallCount === 0) {
       IndianMedicineCardComponent.apiCallCount = 0;
@@ -66,7 +66,7 @@ export class IndianMedicineCardComponent implements OnInit, OnDestroy {
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
-  
+
   toggleMoreInfo() {
     this.MoreInfo = !this.MoreInfo;
   }
@@ -94,20 +94,26 @@ export class IndianMedicineCardComponent implements OnInit, OnDestroy {
 
     document.body.removeChild(textArea);
 
-  // Step 2: Find the icon inside the clicked span and swap classes
-  const icon = el.querySelector('i');
+    // Step 2: Find the icon inside the clicked span and swap classes
+    const icon = el.querySelector('i');
 
-  if (icon?.classList.contains('fa-copy')) {
-    icon.classList.remove('fa-copy');
-    icon.classList.add('fa-check');
+    if (icon?.classList.contains('fa-copy')) {
+      icon.classList.remove('fa-copy');
+      icon.classList.add('fa-check');
 
-    // Step 3: Revert it back after 1.5 seconds
-    setTimeout(() => {
-      icon.classList.remove('fa-check');
-      icon.classList.add('fa-copy');
-    }, 1500);
+      // Step 3: Revert it back after 1.5 seconds
+      setTimeout(() => {
+        icon.classList.remove('fa-check');
+        icon.classList.add('fa-copy');
+      }, 1500);
+    }
   }
-  }
+ onImgError(event: Event) {
+  const imgElement = event.target as HTMLImageElement;
+  imgElement.src = 'assets/components/noimg.png';
+}
+
+
 
   getImageUrl(data: any): string {
     return (

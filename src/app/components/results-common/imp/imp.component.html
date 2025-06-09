@@ -38,7 +38,8 @@
       </div>
       <chem-imp-patents-card class="card" [data]="dataItem"></chem-imp-patents-card>
     </ng-container>
-  <app-child-paging [currentChildAPIBody]="currentChildAPIBody" (handleChangeTabData)="handleResultTabData.emit($event)"
+  <app-child-paging *ngIf="currentChildAPIBody?.count > 25"
+  [currentChildAPIBody]="currentChildAPIBody" (handleChangeTabData)="handleResultTabData.emit($event)"
     (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
 </ng-container>
 <ng-template #noData>

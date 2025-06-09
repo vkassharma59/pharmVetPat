@@ -5,8 +5,7 @@
 
     <div class="flex flex-wrap gap-3">
         <div class="dropdown">
-            <button
-                class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
+            <button class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
                 type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"
                 (click)="handleFilter()">
                 {{ country_value | truncate:20}}
@@ -16,8 +15,7 @@
                 <li (click)="handleSelectFilter('country_of_company', '')">
                     <a class="dropdown-item">View All</a>
                 </li>
-                <li *ngFor="let data of countryFilters"
-                    (click)="handleSelectFilter('country_of_company', data.value)">
+                <li *ngFor="let data of countryFilters" (click)="handleSelectFilter('country_of_company', data.value)">
                     <a class="dropdown-item">{{ data?.name }}</a>
                 </li>
             </ul>
@@ -30,8 +28,7 @@
                 {{ formulation_value | truncate:20}}
 
             </button>
-            <ul *ngIf="isOpen" class="dropdown-menu z-30 max-h-40 overflow-y-auto"
-                aria-labelledby="dropdownMenuButton">
+            <ul *ngIf="isOpen" class="dropdown-menu z-30 max-h-40 overflow-y-auto" aria-labelledby="dropdownMenuButton">
                 <li (click)="handleSelectFilter('dummy_6', '')">
                     <a class="dropdown-item">View All</a>
                 </li>
@@ -58,7 +55,7 @@
         </div>
         <chem-chemi-tracker-card class="card" [data]="dataItem"></chem-chemi-tracker-card>
     </ng-container>
-    <app-child-paging [currentChildAPIBody]="_currentChildAPIBody"
+    <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="_currentChildAPIBody"
         (handleChangeTabData)="handleResultTabData.emit($event)"
         (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
 </ng-container>

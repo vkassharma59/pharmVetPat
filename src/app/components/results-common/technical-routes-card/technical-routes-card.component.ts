@@ -60,7 +60,17 @@ export class TechnicalRoutesCardComponent {
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
+ ngOnInit() {
+    // Reset counter only when the component is first loaded
+    if (TechnicalRoutesCardComponent.apiCallCount === 0) {
+      TechnicalRoutesCardComponent.apiCallCount = 0;
+    }
+  }
 
+  ngOnDestroy() {
+    // Reset counter when navigating away from the component
+    TechnicalRoutesCardComponent.apiCallCount = 0;
+  }
   getColumnName(value: any) {
     return this.tech_column[value];
   }

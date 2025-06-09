@@ -1,39 +1,34 @@
 <ng-container *ngIf="_data.length > 0; else noData">
-    <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper">
-      <button class="child-route-count child-route-count-btn">
-          Total Records : {{ currentChildAPIBody?.count }}
-      </button>
+  <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper">
+    <button class="child-route-count child-route-count-btn">
+      Total Records : {{ currentChildAPIBody?.count }}
+    </button>
+  </div>
+  <ng-container *ngFor="let dataItem of _data; let i = index">
+    <div class="py-4">
+      <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
+        <span
+          class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-normal h-[37px] flex justify-center items-center">
+          Sub Route
+          {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
+        </span>
+
+      </div>
     </div>
-    <ng-container *ngFor="let dataItem of _data; let i = index">
-        <div class="py-4">
-            <div
-              class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]"
-            >
-            <span
-            class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-normal h-[37px] flex justify-center items-center"
-          >
-            Sub Route
-            {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
-          </span>
-          
-            </div>
-        </div>
-        <app-litigation-card class="card" style="background-color: #f7fcf2;" [data]="dataItem"></app-litigation-card>
-    </ng-container>
-    <app-child-paging
-      [currentChildAPIBody]="currentChildAPIBody"
-      (handleChangeTabData)="handleResultTabData.emit($event)"
-      (setLoading)="handleSetLoading.emit($event)"
-  ></app-child-paging>  
+    <app-litigation-card class="card" style="background-color: #f7fcf2;" [data]="dataItem"
+    ></app-litigation-card>
   </ng-container>
-  <ng-template #noData>
-    <div class="card">
-      <div class="card-header text-white bg-primary">
-          {{resultTabs.litigation?.label}}
-      </div>
-      <div class="card-body">
-          <p>No Data found!</p>
-      </div>
+  <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"
+    (handleChangeTabData)="handleResultTabData.emit($event)"
+    (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
+</ng-container>
+<ng-template #noData>
+  <div class="card">
+    <div class="card-header text-white bg-primary">
+      {{resultTabs.litigation?.label}}
     </div>
-  </ng-template>
-  
+    <div class="card-body">
+      <p>No Data found!</p>
+    </div>
+  </div>
+</ng-template>

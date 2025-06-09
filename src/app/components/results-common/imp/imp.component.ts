@@ -5,6 +5,7 @@ import { ImpPatentsCardComponent } from '../imp-patents-card/imp-patents-card.co
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
+import { Auth_operations } from '../../../Utils/SetToken';
 
 @Component({
   selector: 'chem-imp',
@@ -17,7 +18,7 @@ export class ImpComponent {
 
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
-  
+   searchThrough: string = '';
   resultTabs: any = {};
   _data: any = [];
   productValue: string = '';
@@ -81,6 +82,7 @@ export class ImpComponent {
     private utilityService: UtilityService,
     private mainSearchService: MainSearchService) {
     this.resultTabs = this.utilityService.getAllTabsName();
+    this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
 
   handleFetchFilters() {

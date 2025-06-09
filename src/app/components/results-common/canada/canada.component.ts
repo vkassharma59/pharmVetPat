@@ -20,7 +20,7 @@ export class CanadaComponent {
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
   @Input() currentChildAPIBody: any;
-
+  searchThrough: string = '';
   resultTabs: any = {};
   _data: any = [];
   @Input()
@@ -33,5 +33,7 @@ export class CanadaComponent {
 
   constructor(private utilityService: UtilityService) {
     this.resultTabs = this.utilityService.getAllTabsName();
+    this.searchThrough = Auth_operations.getActiveformValues().activeForm;
+
   }
 }

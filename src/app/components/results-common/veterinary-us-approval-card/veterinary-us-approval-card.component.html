@@ -1,164 +1,334 @@
-
-<div class="card shadow-sm rounded-lg overflow-hidden" style="background-color: #e0f6d5;">
-<div class="card-header text-white ">
-    <div style="padding-top:7px; justify-content:space-between; display:flex;">
-        {{ localCount }}. {{resultTabs?.litigation?.label}} >> {{_data?.active_ingredient_biologics_combination}}</div>
+<div class="bg-success text-white p-3 fw-500 mb-2 mt-2 card-header" style="background-color:#0032a0;">
+  ChemRobotics™ Green Book &gt;&gt; ACEPROMAZINE MALEATE
 </div>
-<div class="card-body" style="background-color: #f7fcf2;">
-    <div class="pb-3 mb-3 px-2 rounded-lg">
-        <p class="text-wrap  whitespace-normal"
-            style="color:#0032a0; font-size: 17px; font-weight:600; padding-bottom: 15px;">
-            {{ _data?.active_ingredient_biologics_combination }}
-        </p>
+<div class="container-fluid p-3 " style="background-color:#f8faff;">
+  <!-- Breadcrumb -->
 
-  <!-- Body -->
-  <div class="card-body p-4">
-    <!-- Main Title -->
-    <p class="text-[#0032a0] text-xl font-semibold pb-3">
-      {{ _data?.active_ingredient_biologics_combination }}
-    </p>
 
-    <!-- Responsive Info Grid -->
-    <div class="row text-sm text-[#003f1a]">
-      <!-- GBRN -->
-      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
-        <div *ngIf="_data?.gbrn && getColumnName('gbrn')">
-          <h6 class="font-semibold uppercase">
-            {{ getColumnName("gbrn") }}
-            <span class="ms-1 cursor-pointer text-[#0032A0]" #copyBtn
-            (click)="handleCopy(_data?.gbrn, copyBtn)">
-              <i class="fas fa-copy"></i>
-            </span>
-          </h6>
-          <p class="break-words">{{ _data?.gbrn }}</p>
-        </div>
+  <!-- Title Section -->
+  <div class="mb-3">
+    <h4 class="text-primary mb-1">1. ACEPROMAZINE MALEATE</h4>
+    <h5 class="text-dark">PROMACE® INJECTABLE</h5>
+  </div>
+
+  <!-- Info Grid -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-3 col-sm-6">
+      <div class="h-100">
+        <h6>GBRN</h6>
+        <div class="subtitle">16208</div>
       </div>
-
-      <!-- Application Number & Defendants -->
-      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
-        <div *ngIf="_data?.patent_numbers && getColumnName('patent_numbers')">
-          <h6 class="font-semibold uppercase">
-            {{ getColumnName("patent_numbers") }}
-            <span class="ms-1 cursor-pointer text-[#0032A0]" #copyBtn
-             (click)="handleCopy(_data?.patent_numbers, copyBtn)">
-              <i class="fas fa-copy"></i>
-            </span>
-          </h6>
-          <p class="break-words">{{ _data?.patent_numbers }}</p>
-        </div>
-
-        <div *ngIf="_data?.defendants && getColumnName('defendants')">
-          <h6 class="font-semibold uppercase mt-2">
-            {{ getColumnName("defendants") }}
-            <span class="ms-1 cursor-pointer text-[#0032A0]" #copyBtn
-            (click)="handleCopy(_data?.defendants, copyBtn)">
-              <i class="fas fa-copy"></i>
-            </span>
-          </h6>
-          <p class="break-words">{{ _data?.defendants }}</p>
-        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="h-100">
+        <h6>Application Number</h6>
+        <div class="subtitle">015-030</div>
       </div>
-
-      <!-- Country -->
-      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
-        <div *ngIf="_data?.country && getColumnName('country')">
-          <h6 class="font-semibold uppercase">
-            {{ getColumnName("country") }}
-            <span class="ms-1 cursor-pointer text-[#0032A0]" #copyBtn
-             (click)="handleCopy(_data?.country, copyBtn)">
-              <i class="fas fa-copy"></i>
-            </span>
-          </h6>
-          <p class="break-words">{{ _data?.country }}</p>
-        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="h-100">
+        <h6>Active Ingredients</h6>
+        <div class="subtitle">ACEPROMAZINE MALEATE</div>
       </div>
-
-      <!-- Defendant Representative -->
-      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
-        <div *ngIf="_data?.defendants_representative && getColumnName('defendants_representative')">
-          <h6 class="font-semibold uppercase">
-            {{ getColumnName("defendants_representative") }}
-            <span class="ms-1 cursor-pointer text-[#0032A0]" #copyBtn
-             (click)="handleCopy(_data?.defendants_representative, copyBtn)">
-              <i class="fas fa-copy"></i>
-            </span>
-          </h6>
-          <p class="break-words max-h-24 overflow-y-auto">{{ _data?.defendants_representative }}</p>
-        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="h-100">
+        <h6>Trade Name</h6>
+        <div class="subtitle">PROMACE® INJECTABLE</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="h-100">
+        <h6>Ingredient</h6>
+        <div class="subtitle">ACEPROMAZINE MALEATE</div>
       </div>
     </div>
   </div>
-   
-     
-    <!-- Responsive Info Grid -->
-    <div class="row text-sm text-[#003f1a]">
-      <!-- GBRN -->
-      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
-        <div *ngIf="_data?.gbrn && getColumnName('gbrn')">
-          <h6 class="font-semibold uppercase">
-            {{ getColumnName("gbrn") }}
-            <span class="ms-1 cursor-pointer text-[#0032A0]" #copyBtn
-            (click)="handleCopy(_data?.gbrn, copyBtn)">
-              <i class="fas fa-copy"></i>
-            </span>
-          </h6>
-          <p class="break-words">{{ _data?.gbrn }}</p>
-        </div>
-      </div>
 
-      <!-- Application Number & Defendants -->
-      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
-        <div *ngIf="_data?.patent_numbers && getColumnName('patent_numbers')">
-          <h6 class="font-semibold uppercase">
-            {{ getColumnName("patent_numbers") }}
-            <span class="ms-1 cursor-pointer text-[#0032A0]" #copyBtn
-             (click)="handleCopy(_data?.patent_numbers, copyBtn)">
-              <i class="fas fa-copy"></i>
-            </span>
-          </h6>
-          <p class="break-words">{{ _data?.patent_numbers }}</p>
-        </div>
-
-        <div *ngIf="_data?.defendants && getColumnName('defendants')">
-          <h6 class="font-semibold uppercase mt-2">
-            {{ getColumnName("defendants") }}
-            <span class="ms-1 cursor-pointer text-[#0032A0]" #copyBtn
-            (click)="handleCopy(_data?.defendants, copyBtn)">
-              <i class="fas fa-copy"></i>
-            </span>
-          </h6>
-          <p class="break-words">{{ _data?.defendants }}</p>
-        </div>
-      </div>
-
-      <!-- Country -->
-      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
-        <div *ngIf="_data?.country && getColumnName('country')">
-          <h6 class="font-semibold uppercase">
-            {{ getColumnName("country") }}
-            <span class="ms-1 cursor-pointer text-[#0032A0]" #copyBtn
-             (click)="handleCopy(_data?.country, copyBtn)">
-              <i class="fas fa-copy"></i>
-            </span>
-          </h6>
-          <p class="break-words">{{ _data?.country }}</p>
-        </div>
-      </div>
-
-      <!-- Defendant Representative -->
-      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
-        <div *ngIf="_data?.defendants_representative && getColumnName('defendants_representative')">
-          <h6 class="font-semibold uppercase">
-            {{ getColumnName("defendants_representative") }}
-            <span class="ms-1 cursor-pointer text-[#0032A0]" #copyBtn
-             (click)="handleCopy(_data?.defendants_representative, copyBtn)">
-              <i class="fas fa-copy"></i>
-            </span>
-          </h6>
-          <p class="break-words max-h-24 overflow-y-auto">{{ _data?.defendants_representative }}</p>
-        </div>
-      </div>
-   
+  <!-- Section: NADA ANADA -->
+  <div class="mb-4">
+    <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">NADA ANADA:</h5>
+    <div class="table-responsive">
+      <table class="table table-sm custom-table-green">
+        <thead>
+          <tr>
+            <th>Application No.</th>
+            <th>Trade Name</th>
+            <th>Sponsor Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>015-030</td>
+            <td>PROMACE® INJECTABLE</td>
+            <td>BOEHRINGER INGELHEIM ANIMAL HEALTH USA INC.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
+
+
+  <!-- Section: Patent Information -->
+  <div class="mb-4">
+    <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Patent Information:</h5>
+    <div class="table-responsive">
+      <table class="table table-sm custom-table-green">
+        <thead>
+          <tr>
+            <th>Applicant No.</th>
+            <th>Trade Name</th>
+            <th>Patent</th>
+            <th>Expiration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="custom-row-bg">
+            <td colspan="4" class=" text-muted ">No Patent Info Data Found!</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section: Exclusivity Periods -->
+  <div class="mb-4">
+    <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Exclusivity Periods:</h5>
+    <div class="table-responsive">
+      <table class="table table-sm custom-table-green">
+        <thead>
+          <tr>
+            <th>Application No.</th>
+            <th>Trade Name</th>
+            <th>Period</th>
+            <th>Expiration</th>
+            <th>Green Book</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="5" class="text-left text-muted c">No Exclusivity Periods Data Found!</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section: Notice of Hearing -->
+  <div class="mb-4">
+    <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Notice of Hearing:</h5>
+    <div class="table-responsive">
+      <table class="table table-sm custom-table-green">
+        <thead>
+          <tr>
+            <th>Application No.</th>
+            <th>Trade Name</th>
+            <th>Sponsor Name</th>
+            <th>Publication Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="4" class="text-left text-muted ">No Exclusivity Periods Data Found!</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section: Voluntary Withdrawal -->
+  <div class="mb-4">
+    <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Voluntary Withdrawal:</h5>
+    <div class="table-responsive">
+      <table class="table table-sm custom-table-green">
+        <thead>
+          <tr>
+            <th>Application No.</th>
+            <th>Date Withdrawn</th>
+            <th>Ingredients</th>
+            <th>Sponsor When Withdrawn</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="4" class="text-left text-muted ">No Voluntary Withdrawal Data Found!</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Custom Blue Divider Line -->
+  <div style="
+  height: 8px;
+  background-color: #0056b3;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+"></div>
+
 </div>
+<div class="container-fluid p-3 mb-2" style="background-color:#f8faff;">
+  <!-- Title Section -->
+  <div class="mb-3">
+    <h4 class="text-primary mb-1">1. ACEPROMAZINE MALEATE</h4>
+    <h5 class="text-dark">PROMACE® INJECTABLE</h5>
+  </div>
+
+  <!-- Info Grid -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-3 col-sm-6">
+      <div class="h-100">
+        <h6>GBRN</h6>
+        <div class="subtitle">16208</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="h-100">
+        <h6>Application Number</h6>
+        <div class="subtitle">015-030</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="h-100">
+        <h6>Active Ingredients</h6>
+        <div class="subtitle">ACEPROMAZINE MALEATE</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="h-100">
+        <h6>Trade Name</h6>
+        <div class="subtitle">PROMACE® INJECTABLE</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="h-100">
+        <h6>Ingredient</h6>
+        <div class="subtitle">ACEPROMAZINE MALEATE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: NADA ANADA -->
+  <div class="mb-4">
+    <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">NADA ANADA:</h5>
+    <div class="table-responsive">
+      <table class="table table-sm custom-table-green">
+        <thead>
+          <tr>
+            <th>Application No.</th>
+            <th>Trade Name</th>
+            <th>Sponsor Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>015-030</td>
+            <td>PROMACE® INJECTABLE</td>
+            <td>BOEHRINGER INGELHEIM ANIMAL HEALTH USA INC.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- Section: Patent Information -->
+  <div class="mb-4">
+    <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Patent Information:</h5>
+    <div class="table-responsive">
+      <table class="table table-sm custom-table-green">
+        <thead>
+          <tr>
+            <th>Applicant No.</th>
+            <th>Trade Name</th>
+            <th>Patent</th>
+            <th>Expiration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="custom-row-bg">
+            <td colspan="4" class=" text-muted ">No Patent Info Data Found!</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section: Exclusivity Periods -->
+  <div class="mb-4">
+    <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Exclusivity Periods:</h5>
+    <div class="table-responsive">
+      <table class="table table-sm custom-table-green">
+        <thead>
+          <tr>
+            <th>Application No.</th>
+            <th>Trade Name</th>
+            <th>Period</th>
+            <th>Expiration</th>
+            <th>Green Book</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="5" class="text-left text-muted c">No Exclusivity Periods Data Found!</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section: Notice of Hearing -->
+  <div class="mb-4">
+    <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Notice of Hearing:</h5>
+    <div class="table-responsive">
+      <table class="table table-sm custom-table-green">
+        <thead>
+          <tr>
+            <th>Application No.</th>
+            <th>Trade Name</th>
+            <th>Sponsor Name</th>
+            <th>Publication Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="4" class="text-left text-muted ">No Exclusivity Periods Data Found!</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section: Voluntary Withdrawal -->
+  <div class="mb-4">
+    <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Voluntary Withdrawal:</h5>
+    <div class="table-responsive">
+      <table class="table table-sm custom-table-green">
+        <thead>
+          <tr>
+            <th>Application No.</th>
+            <th>Date Withdrawn</th>
+            <th>Ingredients</th>
+            <th>Sponsor When Withdrawn</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="4" class="text-left text-muted ">No Voluntary Withdrawal Data Found!</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Custom Blue Divider Line -->
+  <div style="
+  height: 8px;
+  background-color: #0056b3;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+"></div>
+
 </div>
