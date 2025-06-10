@@ -101,6 +101,10 @@ export interface AppConfig {
       searchSpecific: string;
       columnList: string;
     };
+    eximData: {
+      searchSpecific: string;
+      columnList: string;
+    },
     user: {
       privilegeApi: string;
       todayPrivilegeApi: string;
