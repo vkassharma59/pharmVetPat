@@ -106,6 +106,10 @@ export const AppConfigValues: AppConfig = {
         searchSpecific: `${appUrl.apiUrl}/scientific-docs/search-specific`,
         columnList: `${appUrl.apiUrl}/scientific-docs/column-list`,
       },
+      eximData: {
+        searchSpecific: `${appUrl.apiUrl}/ximm/search-specific`,
+        columnList: `${appUrl.apiUrl}/ximm/column-list`,
+      },
       user: {
         privilegeApi: `${appUrl.apiUrl}/user-info`,
         todayPrivilegeApi: `${appUrl.apiUrl}/user-today-history`,

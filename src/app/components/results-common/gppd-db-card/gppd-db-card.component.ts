@@ -47,7 +47,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
 
   columnsSearch: { [key: string]: string } = {};
   multiSortOrder: { column: number, dir: 'asc' | 'desc' }[] = [];
-
+ noMatchingData: boolean = false;
   globalSearchValue: string = '';
   get pageSize(): number {
     return this._currentChildAPIBody?.length || 25;
@@ -99,6 +99,8 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     }
     if (this.rowData) {
       this.dataSource.data = this.rowData;
+      this.noMatchingData = this.rowData.length === 0;
+
     }
   }
   ngAfterViewInit(): void {
@@ -232,6 +234,10 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     }
     if (order) payload.order = order;
     this.dataFetchRequest.emit(payload);
+     setTimeout(() => {
+      const currentData = this.dataSource.filteredData || [];
+      this.noMatchingData = currentData.length === 0;
+    }, 300);
   }
 
   resetToDefault() {

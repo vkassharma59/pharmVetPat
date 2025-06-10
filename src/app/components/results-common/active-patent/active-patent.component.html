@@ -1,13 +1,3 @@
-<ng-template #noData>
-  <div class="card">
-    <div class="card-header text-white bg-primary">
-      {{resultTabs.activePatent?.label}}
-    </div>
-    <div class="card-body">
-      <p>No Data found!</p>
-    </div>
-  </div>
-</ng-template>
 <ng-container *ngIf="_data?.rows?.length > 0 || searchByTable; else noData">
   <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper justify-between">
     <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
