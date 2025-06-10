@@ -176,7 +176,7 @@ export class MainSearchService {
       .get(this.apiUrls.gppdDb.columnList, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
-  scientific_docsSearchSpecific(props: any): Observable<any> {
+    scientificDocsSpecific(props: any): Observable<any> {
     const body = props;
     return this.http
       .post(this.apiUrls.scientificDocs.searchSpecific, body, { headers: this.headers })
@@ -247,12 +247,18 @@ export class MainSearchService {
       .get(this.apiUrls.nonPatentLandscape.columnList, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
-  scientificDocsSpecific(props: any): Observable<any> {
+   EximDataSearchSpecific(props: any): Observable<any> {
     const body = props;
     return this.http
-      .post(this.apiUrls.scientificDocs.searchSpecific, body, { headers: this.headers })
+      .post(this.apiUrls.eximData.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
+   getEximDataColumnList(): Observable<any> {
+    return this.http
+      .get(this.apiUrls.eximData.columnList, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
+ 
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.log(error);

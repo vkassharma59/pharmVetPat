@@ -43,8 +43,7 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
   openFilter: { [key: string]: boolean } = {};
   activeSort: string = '';
   sortDirection: 'asc' | 'desc' | '' = '';
-
-  columnsSearch: { [key: string]: string } = {};
+ noMatchingData: boolean = false;  columnsSearch: { [key: string]: string } = {};
   multiSortOrder: { column: number, dir: 'asc' | 'desc' }[] = [];
 
   globalSearchValue: string = '';
@@ -98,6 +97,8 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
     }
     if (this.rowData) {
       this.dataSource.data = this.rowData;
+       this.noMatchingData = this.rowData.length === 0;
+    
     }
   }
   ngAfterViewInit(): void {
@@ -231,6 +232,10 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
     }
     if (order) payload.order = order;
     this.dataFetchRequest.emit(payload);
+     setTimeout(() => {
+       const currentData = this.dataSource.filteredData || [];
+      this.noMatchingData = currentData.length === 0;
+    }, 300);
   }
 
   resetToDefault() {

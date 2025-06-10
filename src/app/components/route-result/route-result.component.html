@@ -155,13 +155,16 @@
       </app-scientific-docs>
 
     </ng-container>
+     <ng-container *ngSwitchCase="resultTabWithKeys.eximData.name">
+      <chem-exim [data]="_dataItem.eximData"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.eximData.name]"
+        (handleSetLoading)="handleSetLoading.emit($event)"
+        (handleResultTabData)="handleChildPaginationSearch.emit($event)">
+      </chem-exim>
+    </ng-container>
 
     <ng-container *ngSwitchCase="'US'">
       <!-- <chem-us-approval></chem-us-approval> -->
-    </ng-container>
-
-    <ng-container *ngSwitchCase="'eximData'">
-      <chem-exim></chem-exim>
     </ng-container>
 
     <ng-container *ngSwitchDefault>

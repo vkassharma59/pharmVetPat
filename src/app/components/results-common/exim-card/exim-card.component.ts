@@ -15,7 +15,7 @@ import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 @Component({
-   selector: 'app-scientific-docs-card',
+  selector: 'app-exim-card',
   standalone: true,
   imports: [CommonModule,
     FormsModule,
@@ -24,11 +24,11 @@ import { MainSearchService } from '../../../services/main-search/main-search.ser
     MatInputModule,
     MatFormFieldModule,
     MatPaginatorModule],
-  templateUrl: './scientific-docs-card.component.html',
-  styleUrl: './scientific-docs-card.component.css'
+   templateUrl: './exim-card.component.html',
+  styleUrl: './exim-card.component.css'
 })
 
-export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
+export class EximCardComponent implements OnChanges, AfterViewInit {
 
   @Output() dataFetchRequest = new EventEmitter<any>();
   @Input() columnDefs: any[] = [];
