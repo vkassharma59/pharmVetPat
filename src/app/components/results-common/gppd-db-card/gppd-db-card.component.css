@@ -120,6 +120,9 @@ button[color="warn"] {
   background-color: #07a2f0;
   color: white;
 }
+.filter{
+  width: 70%;
+}
 
 
 .mat-sort-header-arrow {

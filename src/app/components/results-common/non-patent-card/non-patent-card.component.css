@@ -168,6 +168,9 @@ button[color="warn"] {
     background-color: rgb(191, 222, 228);
     
 }
+.filter{
+  width: 70%;
+}
 .dropdown-item li{
   font-size: 18px;
   margin-bottom: 8px;
@@ -343,16 +346,16 @@ th{
   background-color: #73d4ff;
 }
 .scrollable-text {
-  max-height: 4.5em; /* Approx. 3 lines */
-  overflow-y: auto;
-  display: -webkit-box;
-  -webkit-line-clamp:3;
-  -webkit-box-orient: vertical;
-  text-overflow: ellipsis;
-  white-space: normal;
-  line-height: 1.5em;
-margin: 10px;
-  padding-right: 8px; /* for scrollbar space */
+  max-height: 4.5em;
+    overflow-y: auto;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    white-space: normal;
+    line-height: 1.5em;
+    /* margin: 10px; */
+    /* padding-right: 8px; /* for scrollbar space */
 }
 .scrollable-text::-webkit-scrollbar {
   width: 4px;
