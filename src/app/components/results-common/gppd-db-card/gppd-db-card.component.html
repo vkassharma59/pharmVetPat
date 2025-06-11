@@ -102,6 +102,9 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns" style="background-color: #def1ff;"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
         </table>
+         <div *ngIf="noMatchingData" style="text-align:center; padding: 20px; font-weight: 500;">
+          🔍 No matching records found
+        </div>
       </div>
 
       <!-- Paginator -->
