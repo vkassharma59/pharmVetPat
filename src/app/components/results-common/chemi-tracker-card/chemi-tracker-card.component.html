@@ -13,7 +13,7 @@
                             <div *ngIf="data?.chemical_structure && getColumnName('chemical_structure')"
                                 class="col-lg-2 col-md-8 col-sm-12">
                                 <img *ngIf="data?.chemical_structure" class="aspect-auto" [src]="getChemicalImage()"
-                                    alt="Chemical Structure" style="
+                         alt="Chemical Structure" style="
                           height: 270px;
                           width: 470px;
                           padding: 20px 20px;
@@ -200,7 +200,8 @@
                                                         class="fas fa-copy"></i></span>
                                             </h1>
                                             <div *ngIf="data?.company_logo">
-                                                <img [src]="getCompanyLogo(data)" alt="error" class="object-contain"
+                                                <img [src]="getCompanyLogo(data)"  (error)="onImgError($event)"
+                                                    alt="error" class="object-contain"
                                                     style="height: 75px" />
                                             </div>
                                         </div>
@@ -233,7 +234,8 @@
                                             </p>
                                         </div>
                                         <div *ngIf="data?.country_of_company" class="">
-                                            <img [src]="getCountryUrl(data)" class="ps-3" alt="error" style="
+                                            <img [src]="getCountryUrl(data)"  (error)="onImgError($event)"
+                                            class="ps-3" alt="error" style="
                                     width: 100px;
                                     object-fit: contain;
                                     margin-bottom: 12px;

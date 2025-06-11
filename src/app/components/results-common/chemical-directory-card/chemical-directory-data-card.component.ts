@@ -124,6 +124,10 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
   isDateTimeString(dateString: any) {
     return !isNaN(new Date(dateString).getTime());
   }
+ onImgError(event: Event) {
+  const imgElement = event.target as HTMLImageElement;
+  imgElement.src = 'assets/components/noimg.png';
+}
 
   getUpdationDate(data: any) {
     return this.isDateTimeString(data) ? new Date(data).toISOString().split('T')[0] : data;

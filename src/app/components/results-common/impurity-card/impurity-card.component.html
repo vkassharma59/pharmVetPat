@@ -28,6 +28,7 @@
                       <img
                         [src]="getImageUrl(_data)"
                         alt="error"
+                         (error)="onImgError($event)"
                         class="object-contain"
                         style="height: 22rem; padding: 20px 15px; width:22rem;"
                       />
