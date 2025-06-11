@@ -14,6 +14,8 @@ import { FormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 @Component({
   selector: 'app-spcdb-card',
   standalone: true,
@@ -23,7 +25,8 @@ import { MainSearchService } from '../../../services/main-search/main-search.ser
     MatSortModule,
     MatInputModule,
     MatFormFieldModule,
-    MatPaginatorModule],
+    MatPaginatorModule,
+  MatTooltipModule],
   templateUrl: './spcdb-card.component.html',
   styleUrl: './spcdb-card.component.css'
 })

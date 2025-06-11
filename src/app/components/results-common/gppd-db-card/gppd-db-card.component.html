@@ -1,3 +1,4 @@
+
 <div class="table-container">
   <div class="search-container" style="display: flex; justify-content: space-between; align-items: center;">
     <div>
@@ -47,31 +48,35 @@
             <!-- Header cell with sort and filter -->
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell"
               (click)="onCustomSort(column.value)"
-              style="position: sticky; background-color:#3886d8; color:white; border:2px solid white;overflow:visible;padding-top: 8px;padding-bottom: 5px;">
+              style="position: sticky; background-color:#3886d8; color:white; border:2px solid white;overflow:visible;">
 
               <div class="header-content">
                 <div class="d-flex align-items-center" (click)="toggleSort(i)" style="cursor: pointer;">
                   <span>{{ column.name }}</span>
-                  <i class="fa-solid" [ngClass]="getSortIcon(i)"
-                    style="margin-left: 8px;"></i>
+                  <i class="fa-solid" [ngClass]="getSortIcon(i)" style="margin-left: 8px;"></i>
                 </div>
                 <ng-container *ngIf="filterableColumns.includes(column.value)">
-                  <div style="display:flex; align-items: center; font-size: 14px; justify-content: space-between;">
+                  <div class="filter" style="display: flex;
+    align-items: center;
+    font-size: 14px;
+    width: 180px;">
                     <input #filterInput matInput placeholder="Filter" (click)="$event.stopPropagation()" style="margin-top: 5px;
-                            border-radius: 7px;
-                            padding: 5px;
-                            color:black;" />
+    border-radius: 7px;
+    padding: 3px;
+    color: black;
+    width: 100px;" />
 
                     <!-- (keyup)="applyColumnFilter(column, $event)"  -->
 
-                    <div style="position: relative; display: flex; overflow:visible;">
+                    <div style="position: relative; display: flex; overflow:visible; padding:0; width:58px">
 
-                      <button (click)="searchInColumn(column, filterInput, $event);">
+                      <button class="filterIcon" (click)="searchInColumn(column, filterInput, $event);">
                         <i class="fa-solid fa-filter"></i>
                       </button>
                       <div class="filter_container">
-                        <button (click)="clearFilter(column.value, filterInput); $event.stopPropagation()"
-                          style="margin-left: 8px;">
+                        <button class="filterIcon"
+                          (click)="clearFilter(column.value, filterInput); $event.stopPropagation()"
+                          >
                           <i class="fa-solid fa-filter-circle-xmark"></i>
                         </button>
                         <div *ngIf="openFilter[column.value] && false" class="dropdown-item" #dropdownRef>
@@ -102,7 +107,7 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns" style="background-color: #def1ff;"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
         </table>
-         <div *ngIf="noMatchingData" style="text-align:center; padding: 20px; font-weight: 500;">
+        <div *ngIf="noMatchingData" style="text-align:center; padding: 20px; font-weight: 500;">
           🔍 No matching records found
         </div>
       </div>

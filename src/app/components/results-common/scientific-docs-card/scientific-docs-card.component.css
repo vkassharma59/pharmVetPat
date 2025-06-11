@@ -168,6 +168,9 @@ button[color="warn"] {
     background-color: rgb(191, 222, 228);
     
 }
+.filter{
+  width:70px;
+}
 .dropdown-item li{
   font-size: 18px;
   margin-bottom: 8px;
