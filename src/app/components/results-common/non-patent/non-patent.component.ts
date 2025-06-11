@@ -78,7 +78,8 @@ export class NonPatentComponent implements OnChanges {
       ...this._currentChildAPIBody,
       ...payload
     };
-
+console.log("dsjfdbdf bn",requestBody)
+console.log("request body dsjfdbdf bn",requestBody)
     this._currentChildAPIBody = requestBody;
     this.handleSetLoading.emit(true);
 

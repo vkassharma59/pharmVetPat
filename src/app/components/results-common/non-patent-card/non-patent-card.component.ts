@@ -563,36 +563,44 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
     this.globalSearchValue = '';
     // Clear all input boxes in DOM (filters)
     this.filterInputs.forEach(inputRef => inputRef.nativeElement.value = '');
+
     this.fetchData();
   }
-  getAllDataFromApi(): Observable<any[]> {
-    const requestBody = {
-      ...this._currentChildAPIBody,
-      start: 0,
-      length: this._currentChildAPIBody?.count || 1000,
-    };
-    console.log('📦  response body:', requestBody);
-    return this.mainSearchService.NonPatentSearchSpecific(requestBody).pipe(
-      tap((result: NonPatentCardComponent) => {
-        console.log('📦 Full API response:', result);
-      }),
-      map((result: NonPatentCardComponent) => result?.data?.data || []),
-      catchError(error => {
-        console.error('❌ Error fetching all data:', error);
-        return of([]); // Return an empty array on error
-      })
-    );
-  }
+// 1️⃣ Get all data with large count
+getAllDataFromApi(): Observable<any[]> {
+  const requestBody = {
+    ...this._currentChildAPIBody,
+    start: 0,
+    length: this._currentChildAPIBody?.count > 0 ? this._currentChildAPIBody.count : 100000
+  };
+  console.log('📦 Request body:', requestBody);
+
+  return this.mainSearchService.NonPatentSearchSpecific(requestBody).pipe(
+    tap(result => console.log('📦 Full API response:', result)),
+    map(result => result?.data?.data || []),
+    catchError(error => {
+      console.error('❌ Error fetching all data:', error);
+      return of([]);
+    })
+  );
+}
+
+// 2️⃣ Download PDF
 downloadPDF(): void {
   this.getAllDataFromApi().subscribe(data => {
     const exportData = data.map(row => {
-      return this.displayedColumns.map(col => row[col] !== undefined ? String(row[col]) : '');
+      return this.displayedColumns.map(col => {
+        const value = row[col];
+        return value !== undefined
+          ? typeof value === 'object' ? JSON.stringify(value) : String(value)
+          : '';
+      });
     });
 
     const colHeaders = this.displayedColumns.map(col => this.toTitleCase(col));
 
     const doc = new jsPDF({
-      orientation: 'landscape', // More space for wide tables
+      orientation: 'landscape',
       unit: 'pt',
       format: 'A4'
     });
@@ -614,11 +622,6 @@ downloadPDF(): void {
       },
       bodyStyles: {
         valign: 'top'
-      },
-      columnStyles: {
-        // Example: fixed width for specific column index
-        // 0: {cellWidth: 80}, 
-        // 2: {cellWidth: 120}
       }
     });
 
@@ -626,59 +629,63 @@ downloadPDF(): void {
   });
 }
 
-// Optional helper to capitalize column names
-toTitleCase(str: string): string {
-  return str.replace(/_/g, ' ')
-            .replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+// 3️⃣ Download CSV
+downloadCSV(): void {
+  this.getAllDataFromApi().subscribe(data => {
+    let csvContent = this.displayedColumns.join(',') + '\n';
+
+    data.forEach(row => {
+      const rowData = this.displayedColumns.map(col => {
+        let cell = row[col] !== undefined
+          ? typeof row[col] === 'object' ? JSON.stringify(row[col]) : row[col]
+          : '';
+        cell = String(cell).replace(/"/g, '""');
+        if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
+          cell = `"${cell}"`;
+        }
+        return cell;
+      });
+      csvContent += rowData.join(',') + '\n';
+    });
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, 'ExportedData.csv');
+  });
 }
 
-
-  downloadCSV(): void {
-    this.getAllDataFromApi().subscribe(data => {
-      let csvContent = this.displayedColumns.join(',') + '\n';
-
-      data.forEach(row => {
-        const rowData = this.displayedColumns.map(col => {
-          let cell = row[col] !== undefined ? row[col] : '';
-          // Escape quotes and wrap in quotes if necessary
-          cell = String(cell).replace(/"/g, '""');
-          if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
-            cell = `"${cell}"`;
-          }
-          return cell;
-        });
-        csvContent += rowData.join(',') + '\n';
+// 4️⃣ Download Excel
+downloadExcel(): void {
+  this.getAllDataFromApi().subscribe(data => {
+    const exportData = data.map(row => {
+      const formatted: any = {};
+      this.displayedColumns.forEach(col => {
+        const value = row[col];
+        formatted[col] = value !== undefined
+          ? typeof value === 'object' ? JSON.stringify(value) : value
+          : '';
       });
-
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      saveAs(blob, 'ExportedData.csv');
+      return formatted;
     });
-  }
 
-  // ✅ Download as Excel
-  downloadExcel(): void {
-    this.getAllDataFromApi().subscribe(data => {
-      const exportData = data.map(row => {
-        const formatted: any = {};
-        this.displayedColumns.forEach(col => {
-          formatted[col] = row[col] !== undefined ? row[col] : '';
-        });
-        return formatted;
-      });
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    worksheet["!cols"] = this.displayedColumns.map(() => ({ wch: 30 }));
 
-      const worksheet = XLSX.utils.json_to_sheet(exportData);
-      // Set custom widths for each column (in characters)
-      worksheet["!cols"] = this.displayedColumns.map(() => ({ wch: 30 })); // 30 char width per column
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Exported Data');
 
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, 'Exported Data');
-
-      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-      const blob = new Blob([excelBuffer], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      });
-
-      saveAs(blob, 'ExportedData.xlsx');
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([excelBuffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     });
-  }
+
+    saveAs(blob, 'ExportedData.xlsx');
+  });
+}
+
+// ✅ Optional: Capitalize headers
+toTitleCase(str: string): string {
+  return str.replace(/_/g, ' ')
+            .replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+}
+
 }
