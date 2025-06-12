@@ -4,7 +4,8 @@ import {
   Input,
   Output,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  NgModule
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ServiceChildPaginationService } from '../../services/child-pagination/service-child-pagination.service';
@@ -39,6 +40,7 @@ export class ChildPagningTableComponent implements OnChanges {
 
   @Input()
   get currentChildAPIBody(): ChildAPIBody {
+      console.log("🔄 currentChildAPIBody set to:", this._currentChildAPIBody); // Log here
     return this._currentChildAPIBody;
   }
   set currentChildAPIBody(value: ChildAPIBody) {
