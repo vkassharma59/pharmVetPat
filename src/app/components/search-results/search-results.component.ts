@@ -285,6 +285,14 @@ export class SearchResultsComponent {
           this.setLoadingState.emit(false);
         }
         break;
+         case this.resultTabs?.veterinaryUsApproval.name:
+        if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.veterinaryUsApproval.name]).length === 0) {
+          this.performveterinaryUsApprovalSearch(resultTabData);
+        } else {
+          this.setLoadingState.emit(false);
+        }
+        break;
+         case this.resultTabs?.activePatent.name:
          case this.resultTabs?.activePatent.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.activePatent.name]).length === 0) {
           this.performactivePatentSearch(resultTabData);
@@ -1026,6 +1034,7 @@ export class SearchResultsComponent {
       },
     });
   }
+  
   private scientificDocsSearch(resultTabData: any,): void {
     console.log('Search Input:', resultTabData);
     const pageSize = 25;
