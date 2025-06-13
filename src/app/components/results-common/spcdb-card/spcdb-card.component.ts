@@ -243,14 +243,12 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       this.noMatchingData = currentData.length === 0;
     }, 300);
   }
-
   resetToDefault() {
     this.multiSortOrder = [];
     this.columnsSearch = {};
     this.globalSearchValue = '';
     // Clear all input boxes in DOM (filters)
     this.filterInputs.forEach(inputRef => inputRef.nativeElement.value = '');
-
     this.fetchData();
   }
   getAllDataFromApi(): Observable<any[]> {
@@ -313,14 +311,11 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       doc.save('ExportedData.pdf');
     });
   }
-
   // Optional helper to capitalize column names
   toTitleCase(str: string): string {
     return str.replace(/_/g, ' ')
       .replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
   }
-
-
   downloadCSV(): void {
     this.getAllDataFromApi().subscribe(data => {
       let csvContent = this.displayedColumns.join(',') + '\n';
@@ -342,7 +337,6 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       saveAs(blob, 'ExportedData.csv');
     });
   }
-
   // ✅ Download as Excel
   downloadExcel(): void {
     this.getAllDataFromApi().subscribe(data => {
