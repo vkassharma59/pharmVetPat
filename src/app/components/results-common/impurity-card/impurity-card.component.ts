@@ -113,7 +113,10 @@ export class ImpurityCardComponent implements OnInit, OnDestroy {
       this.data?.chemical_structure
     );
   }
-
+ onImgError(event: Event) {
+  const imgElement = event.target as HTMLImageElement;
+  imgElement.src = 'assets/components/noimg.png';
+}
   openImageModal(imageUrl: string): void {
     this.dialog.open(ImageModalComponent, {
       width: 'calc(100vw - 5vw)',

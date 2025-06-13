@@ -98,4 +98,15 @@ p{
     background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
     
   }
+    
+.clear{
+  border-radius: 50%;
+  font-weight: 700;
+  border: 1px solid #0032A0;
+  color: #0032A0;
+}
+.clear:hover{
+  background-color: #ccc;
+  color: #f0f0f0;
+}
   

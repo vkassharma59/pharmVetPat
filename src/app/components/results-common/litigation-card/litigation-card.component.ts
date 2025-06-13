@@ -74,6 +74,11 @@ export class LitigationCardComponent implements OnInit, OnDestroy {
   getColumnName(value: any) {
     return this.litigation_column[value];
   }
+onImgError(event: Event) {
+  const imgElement = event.target as HTMLImageElement;
+  imgElement.src = 'assets/components/noimg.png';
+}
+
 
   getPubchemId(value: any) {
     return `https://pubchem.ncbi.nlm.nih.gov/#query=${value}`;

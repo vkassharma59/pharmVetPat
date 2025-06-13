@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { KsmComponent } from './ksm.component';
+import { EximCardComponent } from './exim-card.component';
 
-describe('KsmComponent', () => {
-  let component: KsmComponent;
-  let fixture: ComponentFixture<KsmComponent>;
+describe('EximCardComponent', () => {
+  let component: EximCardComponent;
+  let fixture: ComponentFixture<EximCardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [KsmComponent]
+      imports: [EximCardComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(KsmComponent);
+    fixture = TestBed.createComponent(EximCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

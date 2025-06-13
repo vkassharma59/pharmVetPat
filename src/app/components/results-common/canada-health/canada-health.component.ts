@@ -24,15 +24,15 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
   localCount: number = 0; // Instance-specific count
 
   @Input()
-  get data() {  
-    return this._data;  
+  get data() {
+    return this._data;
   }
-  set data(value: any) {    
+  set data(value: any) {
     if (value && Object.keys(value).length > 0) {
       CanadaHealthComponent.apiCallCount++; // Increment static counter
       this.localCount = CanadaHealthComponent.apiCallCount; // Assign instance count
 
-      
+
 
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
@@ -48,7 +48,7 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
+  constructor(private dialog: MatDialog, private utilityService: UtilityService) { }
 
   ngOnInit() {
     // Reset counter only when the component is first loaded
@@ -65,9 +65,13 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
-  
+
   toggleMoreInfo() {
     this.MoreInfo = !this.MoreInfo;
+  }
+  onImgError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = 'assets/components/noimg.png';
   }
 
   getColumnName(value: any) {
@@ -85,7 +89,7 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
   getCountryUrl(value: any) {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country_of_company}.png`;
   }
-  
+
   getCompanyWebsite(value: any) {
     return `https://${value}`;
   }
@@ -101,19 +105,19 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
 
     document.body.removeChild(textArea);
 
-  // Step 2: Find the icon inside the clicked span and swap classes
-  const icon = el.querySelector('i');
+    // Step 2: Find the icon inside the clicked span and swap classes
+    const icon = el.querySelector('i');
 
-  if (icon?.classList.contains('fa-copy')) {
-    icon.classList.remove('fa-copy');
-    icon.classList.add('fa-check');
+    if (icon?.classList.contains('fa-copy')) {
+      icon.classList.remove('fa-copy');
+      icon.classList.add('fa-check');
 
-    // Step 3: Revert it back after 1.5 seconds
-    setTimeout(() => {
-      icon.classList.remove('fa-check');
-      icon.classList.add('fa-copy');
-    }, 1500);
-  }
+      // Step 3: Revert it back after 1.5 seconds
+      setTimeout(() => {
+        icon.classList.remove('fa-check');
+        icon.classList.add('fa-copy');
+      }, 1500);
+    }
   }
 
   getImageUrl(data: any): string {

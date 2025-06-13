@@ -21,7 +21,9 @@ export class ChildPagingComponent {
 
   @Input()
   get currentChildAPIBody() {
+   
     return this._currentChildAPIBody;
+   
   }
   set currentChildAPIBody(value: any) {
     console.log("🔄 currentChildAPIBody set to:", value); // Log here

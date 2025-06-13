@@ -148,4 +148,5 @@ export class ChemiTrackerComponent {
 
     this.handleSelectFilter;
   }
+  
 }
