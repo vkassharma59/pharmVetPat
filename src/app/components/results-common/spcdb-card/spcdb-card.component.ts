@@ -27,7 +27,9 @@ import { AppConfigValues } from '../../../config/app-config';
     MatInputModule,
     MatFormFieldModule,
     MatPaginatorModule,
-],
+
+  ],
+
   templateUrl: './spcdb-card.component.html',
   styleUrl: './spcdb-card.component.css'
 })
