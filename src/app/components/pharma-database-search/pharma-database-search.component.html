@@ -1,5 +1,5 @@
- <!-- New Design -->
- <div class="container">
+<!-- New Design -->
+<div class="container">
   <!-- Title / Top Section -->
   <!-- <div class="top_section text-center py-3">
     <h1 class="h1-—-inter-—-44pt">
@@ -12,24 +12,26 @@
     <div class="pharma-logo">
       <img src="assets/images/home/PharmVetPat.svg" alt="PharmVetPat" class="img">
     </div>
-</div> 
+  </div>
 
   <!-- Header with tabs (responsive row) -->
   <div class="header">
     <button (click)="showContent('api-search')" [ngClass]="(activeSearchTab == 'api-search') ? 'active' : ''">
       API or Agrochemical Search
     </button>
-    <button (click)="showContent('intermediate-search')" [ngClass]="(activeSearchTab == 'intermediate-search') ? 'active' : ''">
+    <button (click)="showContent('intermediate-search')"
+      [ngClass]="(activeSearchTab == 'intermediate-search') ? 'active' : ''">
       Intermediate / KSM Search
     </button>
     <button (click)="showContent('see-all')" [ngClass]="(activeSearchTab == 'see-all') ? 'active' : ''">
       See all
     </button>
   </div>
-  
+
   <div class="card-box">
     <!-- ========== 1) API / Agrochemical Search ========== -->
-    <div id="api-search" class="content-section" *ngIf="activeSearchTab == 'api-search' || activeSearchTab == 'see-all'">
+    <div id="api-search" class="content-section"
+      *ngIf="activeSearchTab == 'api-search' || activeSearchTab == 'see-all'">
       <h2 class="section-title" style="font-size: 20px; font-weight: 600;">
         API or Agrochemical Search
       </h2>
@@ -41,43 +43,34 @@
             <label for="textSearch" class="form-label">Text Search</label>
           </div>
           <div class="col-md-8 col-12 mb-2 mb-md-0">
-            <input
-              #simpleSearchkeywordInput
-              type="text"
-              placeholder="Please enter your text"
-              class="form-control"
-              (input)="handleChangeKeyword(searchTypes.simpleSearch)"
-              [value]="simpleSearch.keyword"
-              [(ngModel)]="simpleSearch.keyword"
-            />
+            <input #simpleSearchkeywordInput type="text" placeholder="Please enter your text" class="form-control"
+              (input)="handleChangeKeyword(searchTypes.simpleSearch)" [value]="simpleSearch.keyword"
+              [(ngModel)]="simpleSearch.keyword" />
 
             <!-- Suggestions Dropdown -->
             <!-- <ul
             *ngIf="simpleSearch?.autosuggestionList?.length"
             class="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto"
             > -->
-            <ul
-               *ngIf="simpleSearch?.autosuggestionList?.length"
-                class="absolute z-10 left-0 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto suggestions-dropdown"
-               >
+            <ul *ngIf="simpleSearch?.autosuggestionList?.length"
+              class="absolute z-10 left-0 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto suggestions-dropdown">
 
-              <li
-                *ngFor="let suggestion of simpleSearch?.autosuggestionList"
+              <li *ngFor="let suggestion of simpleSearch?.autosuggestionList"
                 class="px-4 py-2 cursor-pointer hover:bg-blue-100"
-                (click)="handleSuggestionClick(suggestion, searchTypes.simpleSearch)"
-              >
+                (click)="handleSuggestionClick(suggestion, searchTypes.simpleSearch)">
                 {{ suggestion }}
               </li>
             </ul>
           </div>
 
           <div class="col-md-2 col-6 mb-2 mb-md-0">
-            <button class="btn btn-outline-primary search" 
-            (click)="checkPriviledgeAndHandleSearch(searchTypes.simpleSearch)"
-            [disabled]="!simpleSearch?.keyword?.trim()">Search</button>
+            <button class="btn btn-outline-primary search"
+              (click)="checkPriviledgeAndHandleSearch(searchTypes.simpleSearch)"
+              [disabled]="!simpleSearch?.keyword?.trim()">Search</button>
           </div>
           <div class="col-md-2 col-6 mb-2 mb-md-0">
-            <button class="btn btn-outline-secondary" (click)="clearInputAndSuggetions(searchTypes.simpleSearch)">Clear</button>
+            <button class="btn btn-outline-secondary"
+              (click)="clearInputAndSuggetions(searchTypes.simpleSearch)">Clear</button>
           </div>
         </div>
       </div>
@@ -97,9 +90,7 @@
             <label for="seeAllText1" class="form-label">Then:</label>
           </div>
           <div class="col-md-4 col-12 mb-2 mb-md-0">
-            <label for="seeAllAdditional1" class="form-label"
-              >Add more filter (Optional):</label
-            >
+            <label for="seeAllAdditional1" class="form-label">Add more filter (Optional):</label>
           </div>
 
           <ng-container *ngIf="advanceSearch?.filterInputs?.length">
@@ -113,26 +104,19 @@
                 </select>
               </div>
               <div class="col-md-4 col-12 mb-2 mb-md-0">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter your text"
-                  [disabled]="!advanceSearch.filterInputs[i].filter"
-                  [(ngModel)]="advanceSearch.filterInputs[i].keyword"
-                  (input)="handleChangeKeyword(searchTypes.advanceSearch, i)"
-                />
+                <input type="text" class="form-control" placeholder="Enter your text"
+                  [disabled]="!advanceSearch.filterInputs[i].filter" [(ngModel)]="advanceSearch.filterInputs[i].keyword"
+                  (input)="handleChangeKeyword(searchTypes.advanceSearch, i)" />
 
 
                 <!-- Suggestions Dropdown -->
-               
-                <ul
-                  *ngIf="advanceSearch?.autosuggestionList[i]?.length && advanceSearch.filterInputs[i].keyword !== ''"
-                  class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto" style="width: 55%">
-                  <li
-                    *ngFor="let suggestion of advanceSearch?.autosuggestionList[i]"
+
+                <ul *ngIf="advanceSearch?.autosuggestionList[i]?.length && advanceSearch.filterInputs[i].keyword !== ''"
+                  class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto"
+                  style="width: 55%">
+                  <li *ngFor="let suggestion of advanceSearch?.autosuggestionList[i]"
                     class="px-4 py-2 cursor-pointer hover:bg-blue-100"
-                    (click)="handleSuggestionClick(suggestion, searchTypes.advanceSearch, i)"
-                  >
+                    (click)="handleSuggestionClick(suggestion, searchTypes.advanceSearch, i)">
                     {{suggestion}}
                   </li>
                 </ul>
@@ -141,7 +125,8 @@
                 <button (click)="addFilter()" class="btn btn-outline-secondary w-100">Add another filter +</button>
               </div>
               <div class="col-md-2 col-6 mb-2 mb-md-0">
-                <button *ngIf="i > 0" (click)="removeFilter(i)" class="btn btn-outline-secondary w-100">Remove filter -</button>
+                <button *ngIf="i > 0" (click)="removeFilter(i)" class="btn btn-outline-secondary w-100">Remove filter
+                  -</button>
               </div>
             </ng-container>
           </ng-container>
@@ -150,55 +135,163 @@
         <!-- Data Type + Date Range -->
         <div class="row mb-3 align-items-center">
           <div class="col-md-4 col-12 mb-2 mb-md-0">
-            <label for="seeAllDataType" class="form-label"
-              >Select Data Type (Optional):</label
-            >
+            <label for="seeAllDataType" class="form-label">Select Data Type (Optional):</label>
             <select class="form-control" [(ngModel)]="advanceSearch.dateType">
               <option value="">Date Type</option>
               <option *ngFor="let filter of advanceSearch.date_columns" [value]="filter.value">
                 {{ filter.name }}
               </option>
-          </select>
+            </select>
           </div>
           <div class="col-md-4 col-12 mb-2 mb-md-0">
-            <label for="seeAllStartDate" class="form-label"
-              >Select Start Date (Optional):</label
-            >
+            <label for="seeAllStartDate" class="form-label">Select Start Date (Optional):</label>
             <input type="date" [(ngModel)]="advanceSearch.startDate" class="form-control" id="seeAllStartDate" />
           </div>
           <div class="col-md-4 col-12 mb-2 mb-md-0">
-            <label for="seeAllEndDate" class="form-label"
-              >Select End Date (Optional):</label
-            >
+            <label for="seeAllEndDate" class="form-label">Select End Date (Optional):</label>
             <input [(ngModel)]="advanceSearch.endDate" type="date" class="form-control" id="seeAllEndDate" />
           </div>
         </div>
       </div>
       <!-- End Advanced Search -->
+      <!-- Additional Filters Row in One Line (4 Columns) -->
+      <div class="row mb-3 align-items-center">
+        <!-- Development Stage -->
+        <!-- <div class="col-md-3 col-12 mb-2 mb-md-0 dev-stage-container">
+          <label class="form-label">Select Development Stage</label>
+          
+          <div class="position-relative">
+            <input type="text"   class="form-control" placeholder="Select Development Stage"
+              [(ngModel)]="advanceSearch.keyword" [value]="advanceSearch.keyword"
+               (focus)="openDevStageDropdown()"
+              (input)="handleChangeKeyword(searchTypes.advanceSearch)" />
+
+            <div *ngIf="showDevStageDropdown"
+              class="position-absolute bg-white border border-gray-300 rounded shadow p-2 z-10"
+              style="width: 100%; max-height: 250px; overflow-y: auto">
+              <input type="text" class="form-control mb-2" placeholder="Search" 
+              [(ngModel)]="intermediateSearch.keyword" [value]="intermediateSearch.keyword"
+                (input)="handleChangeKeyword(searchTypes.advanceSearch)" />
+              <div *ngFor="let stage of filteredDevStages" class="px-2 py-1 hover:bg-light cursor-pointer"
+                (click)="selectDevStage(stage)">
+                {{ stage }}
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- Development Stage -->
+        <div class="col-md-3 col-12 mb-2 mb-md-0 dev-stage-container">
+          <label class="form-label">Select Development Stage</label>
+
+          <div class="position-relative">
+            <input type="text" class="form-control" placeholder="Select Development Stage"
+              [(ngModel)]="advanceSearch.devStage" (focus)="showDevStageDropdown = true"
+              (input)="handleChangeKeywordDL('DEVELOPMENT_STAGE')" />
+
+            <div *ngIf="showDevStageDropdown"
+              class="position-absolute bg-white border border-gray-300 rounded shadow p-2 z-10"
+              style="width: 100%; max-height: 250px; overflow-y: auto">
+
+              <input type="text" class="form-control mb-2" placeholder="Search" [(ngModel)]="advanceSearch.devStage"
+                (input)="handleChangeKeywordDL('DEVELOPMENT_STAGE')" />
+
+              <div *ngFor="let stage of filteredDevStages" class="px-2 py-1 hover:bg-light cursor-pointer"
+                (click)="selectDevStage(stage)">
+                {{ stage }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Innovator Originator -->
+        <div class="col-md-3 col-12 mb-2 mb-md-0 innovator-container">
+          <label class="form-label">Select Innovator Originator</label>
+
+          <div class="position-relative">
+            <input type="text" class="form-control" placeholder="Select Innovator Originator"
+              [(ngModel)]="advanceSearch.innovator" (focus)="showInnovatorDropdown = true"
+              (input)="handleChangeKeywordDL('INNOVATOR_ORIGINATOR')" />
+
+            <div *ngIf="showInnovatorDropdown"
+              class="position-absolute bg-white border border-gray-300 rounded shadow p-2 z-10"
+              style="width: 100%; max-height: 250px; overflow-y: auto">
+
+              <input type="text" class="form-control mb-2" placeholder="Search" [(ngModel)]="advanceSearch.innovator"
+                (input)="handleChangeKeywordDL('INNOVATOR_ORIGINATOR')" />
+
+              <div *ngFor="let innovator of filteredInnovators" class="px-2 py-1 hover:bg-light cursor-pointer"
+                (click)="selectInnovator(innovator)">
+                {{ innovator }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Innovator Originator -->
+        <!-- <div class="col-md-3 col-12 mb-2 mb-md-0 innovator-container">
+          <label class="form-label">Select Innovator Originator</label>
+          <div class="position-relative">
+            <input type="text" class="form-control" placeholder="Select Innovator Originator"
+              [(ngModel)]="advanceSearch.innovatorOriginator"
+              (focus)="showInnovatorDropdown = true; filteredInnovators = innovators"
+              (input)="handleInnovatorChange()" />
+
+            <div *ngIf="showInnovatorDropdown"
+              class="position-absolute bg-white border border-gray-300 rounded shadow p-2 z-10"
+              style="width: 100%; max-height: 250px; overflow-y: auto">
+              <input type="text" class="form-control mb-2" placeholder="Search" [(ngModel)]="innovatorSearch"
+                (input)="handleInnovatorChange()" />
+              <div *ngFor="let innovator of filteredInnovators" class="px-2 py-1 hover:bg-light cursor-pointer"
+                (click)="selectInnovator(innovator)">
+                {{ innovator }}
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- Start Sales -->
+        <div class="col-md-3 col-12 mb-2 mb-md-0">
+          <label for="startSales" class="form-label">Start Range Sales ($M)</label>
+          <input type="number" class="form-control" id="startSales" placeholder="Start Range"
+            [(ngModel)]="advanceSearch.startSales" min="0" />
+        </div>
+
+        <!-- End Sales -->
+        <div class="col-md-3 col-12 mb-2 mb-md-0">
+          <label for="endSales" class="form-label">End Range Sales ($M)</label>
+          <input type="number" class="form-control" id="endSales" placeholder="End Range"
+            [(ngModel)]="advanceSearch.endSales" min="0" />
+        </div>
+      </div>
+
+
 
       <!-- Tutorial Buttons Row -->
       <div class="row mb-3 align-items-center">
         <div class="col-md-2 col-6 mb-2 mb-md-0">
-          <button class="btn btn-outline-primary search w-100" (click)="checkPriviledgeAndHandleSearch(searchTypes.advanceSearch)"
-          [disabled]="!isSearchEnabled()">
-          Search
-        </button>
+          <button class="btn btn-outline-primary search w-100"
+            (click)="checkPriviledgeAndHandleSearch(searchTypes.advanceSearch)" [disabled]="!isSearchEnabled()">
+            Search
+          </button>
         </div>
         <div class="col-md-2 col-6 mb-2 mb-md-0">
-          <button class="btn btn-outline-secondary w-100" (click)="clearInputAndSuggetions(searchTypes.advanceSearch)">Reset Filters</button>
+          <button class="btn btn-outline-secondary w-100"
+            (click)="clearInputAndSuggetions(searchTypes.advanceSearch)">Reset Filters</button>
         </div>
         <div class="col-md-6"></div>
         <div class="col-md-2 col-12 d-flex justify-content-md-end">
-          <button class="btn btn-success w-100 w-md-auto" (click)="openTutorialModal()">View Tutorial 
+          <button class="btn btn-success w-100 w-md-auto" (click)="openTutorialModal()">View Tutorial
             <i class="fa-solid fa-circle-play"></i>
           </button>
         </div>
       </div>
 
       <div class="divider"></div>
-    </div> 
-    
-    <div id="api-search" class="content-section" *ngIf="activeSearchTab == 'intermediate-search' || activeSearchTab == 'see-all'">
+    </div>
+
+    <div id="api-search" class="content-section"
+      *ngIf="activeSearchTab == 'intermediate-search' || activeSearchTab == 'see-all'">
       <!-- Part B: Intermediate / KSM Search -->
       <h2 class="section-title" style="font-size: 20px; font-weight: 600;">
         Intermediate / KSM Search
@@ -208,17 +301,13 @@
         <h4 class="section-title">Intermediate Application Search</h4>
         <div class="row mb-3 align-items-center">
           <div class="col-md-4 col-12 mb-2 mb-md-0">
-            <label for="intFilterDropdownSeeAll" class="form-label"
-              >Select a Filter:</label
-            >
+            <label for="intFilterDropdownSeeAll" class="form-label">Select a Filter:</label>
           </div>
           <div class="col-md-8 col-12">
             <label for="intTextSearchSeeAll" class="form-label">Then:</label>
           </div>
           <div class="col-md-4 col-12 mb-2 mb-md-0">
-            <select
-              [(ngModel)]="intermediateSearch.filter"
-              class="form-control">
+            <select [(ngModel)]="intermediateSearch.filter" class="form-control">
               <option value="">Please pick one</option>
               <option *ngFor="let filter of intermediateSearch.filters" [value]="filter.value">
                 {{ filter.name }}
@@ -226,39 +315,28 @@
             </select>
           </div>
           <div class="col-md-4 col-12 mb-2 mb-md-0">
-            <input
-              #intermediateSearchKeywordInput
-              type="text"
-              placeholder="Please enter your text"
-              class="form-control"
-              [(ngModel)]="intermediateSearch.keyword"
-              [value]="intermediateSearch.keyword"
-              (input)="handleChangeKeyword(searchTypes.intermediateSearch)"
-            />
-            
+            <input #intermediateSearchKeywordInput type="text" placeholder="Please enter your text" class="form-control"
+              [(ngModel)]="intermediateSearch.keyword" [value]="intermediateSearch.keyword"
+              (input)="handleChangeKeyword(searchTypes.intermediateSearch)" />
+
             <!-- Suggestions Dropdown -->
-            <ul
-              *ngIf="intermediateSearch?.autosuggestionList?.length"
-              class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto" style="width: 70%"
-              >
-                <li
-                  *ngFor="let suggestion of intermediateSearch?.autosuggestionList"
-                  class="px-4 py-2 cursor-pointer hover:bg-blue-100"
-                  (click)="handleSuggestionClick(suggestion, searchTypes.intermediateSearch)"
-                >
-                  {{ suggestion }}
-                </li>
-              </ul>
+            <ul *ngIf="intermediateSearch?.autosuggestionList?.length"
+              class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto"
+              style="width: 70%">
+              <li *ngFor="let suggestion of intermediateSearch?.autosuggestionList"
+                class="px-4 py-2 cursor-pointer hover:bg-blue-100"
+                (click)="handleSuggestionClick(suggestion, searchTypes.intermediateSearch)">
+                {{ suggestion }}
+              </li>
+            </ul>
           </div>
           <div class="col-md-2 col-6 mb-2 mb-md-0">
-            <button 
-            (click)="checkPriviledgeAndHandleSearch(searchTypes.intermediateSearch)"
-            [disabled]="!intermediateSearch?.keyword?.trim() "
-            class="btn btn-outline-primary search w-100">Search</button>
+            <button (click)="checkPriviledgeAndHandleSearch(searchTypes.intermediateSearch)"
+              [disabled]="!intermediateSearch?.keyword?.trim() "
+              class="btn btn-outline-primary search w-100">Search</button>
           </div>
           <div class="col-md-2 col-6 mb-2 mb-md-0">
-            <button 
-              (click)="clearInputAndSuggetions(searchTypes.intermediateSearch)"
+            <button (click)="clearInputAndSuggetions(searchTypes.intermediateSearch)"
               class="btn btn-outline-secondary w-100">Clear</button>
           </div>
         </div>
@@ -271,43 +349,33 @@
         <h2 class="section-title">OR Synthesis Search</h2>
         <div class="row mb-3 align-items-center">
           <div class="col-md-12">
-            <label for="casChemTextSeeAll" class="form-label"
-              >Enter CAS RN or Chemical Name:</label
-            >
+            <label for="casChemTextSeeAll" class="form-label">Enter CAS RN or Chemical Name:</label>
           </div>
           <div class="col-md-8 col-12 mb-2 mb-md-0">
-            <input
-              #synthesisSearchkeywordInput
-              type="text"
-              placeholder="Please enter your text"
-              class="form-control"
-              (input)="handleChangeKeyword(searchTypes.synthesisSearch)"
-              [value]="synthesisSearch.keyword"
-              [(ngModel)]="synthesisSearch.keyword"
-            />
-            
+            <input #synthesisSearchkeywordInput type="text" placeholder="Please enter your text" class="form-control"
+              (input)="handleChangeKeyword(searchTypes.synthesisSearch)" [value]="synthesisSearch.keyword"
+              [(ngModel)]="synthesisSearch.keyword" />
+
             <!-- Suggestions Dropdown -->
-              <ul
-                *ngIf="synthesisSearch?.autosuggestionList?.length"
-                class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto" style="width: 70%">
-              <li
-                *ngFor="let suggestion of synthesisSearch?.autosuggestionList"
+            <ul *ngIf="synthesisSearch?.autosuggestionList?.length"
+              class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto"
+              style="width: 70%">
+              <li *ngFor="let suggestion of synthesisSearch?.autosuggestionList"
                 class="px-4 py-2 cursor-pointer hover:bg-blue-100"
-                (click)="handleSuggestionClick(suggestion, searchTypes.synthesisSearch)"
-              >
+                (click)="handleSuggestionClick(suggestion, searchTypes.synthesisSearch)">
                 {{ suggestion }}
               </li>
             </ul>
           </div>
-          
+
           <div class="col-md-2 col-6 mb-2 mb-md-0">
-            <button 
-            (click)="checkPriviledgeAndHandleSearch(searchTypes.synthesisSearch)"
-            [disabled]="!synthesisSearch?.keyword?.trim()"
-            class="btn btn-outline-primary search w-100">Search</button>
+            <button (click)="checkPriviledgeAndHandleSearch(searchTypes.synthesisSearch)"
+              [disabled]="!synthesisSearch?.keyword?.trim()"
+              class="btn btn-outline-primary search w-100">Search</button>
           </div>
           <div class="col-md-2 col-6 mb-2 mb-md-0">
-            <button (click)="clearInputAndSuggetions(searchTypes.synthesisSearch)" class="btn btn-outline-secondary w-100">Clear</button>
+            <button (click)="clearInputAndSuggetions(searchTypes.synthesisSearch)"
+              class="btn btn-outline-secondary w-100">Clear</button>
           </div>
         </div>
       </div>
@@ -319,9 +387,7 @@
         <h2 class="section-title">OR Chemical Structure - Identifier Search</h2>
         <div class="row mb-3 align-items-center">
           <div class="col-md-4 col-12 mb-2 mb-md-0">
-            <label for="structFilterSeeAll" class="form-label"
-              >Select a Filter:</label
-            >
+            <label for="structFilterSeeAll" class="form-label">Select a Filter:</label>
           </div>
           <div class="col-md-8 col-12">
             <label for="structTextSeeAll" class="form-label">Then:</label>
@@ -335,41 +401,30 @@
             </select>
           </div>
           <div class="col-md-4 col-12 mb-2 mb-md-0">
-            <input
-              #chemicalStructureKeywordInput
-              type="text"
-              placeholder="Please enter your text"
-              class="form-control"
-              [(ngModel)]="chemicalStructure.keyword"
-              [value]="chemicalStructure.keyword"
-              (input)="handleChangeKeyword(searchTypes.chemicalStructure)"
-            />
+            <input #chemicalStructureKeywordInput type="text" placeholder="Please enter your text" class="form-control"
+              [(ngModel)]="chemicalStructure.keyword" [value]="chemicalStructure.keyword"
+              (input)="handleChangeKeyword(searchTypes.chemicalStructure)" />
 
             <!-- Suggestions Dropdown -->
-            <ul
-              *ngIf="chemicalStructure?.autosuggestionList?.length"
-              class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto" style="width: 70%"
-            >
-              <li
-                *ngFor="let suggestion of chemicalStructure?.autosuggestionList"
+            <ul *ngIf="chemicalStructure?.autosuggestionList?.length"
+              class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto"
+              style="width: 70%">
+              <li *ngFor="let suggestion of chemicalStructure?.autosuggestionList"
                 class="px-4 py-2 cursor-pointer hover:bg-blue-100"
-                (click)="handleSuggestionClick(suggestion, searchTypes.chemicalStructure)"
-              >
+                (click)="handleSuggestionClick(suggestion, searchTypes.chemicalStructure)">
                 {{ suggestion }}
               </li>
             </ul>
           </div>
 
           <div class="col-md-2 col-6 mb-2 mb-md-0">
-            <button 
-              (click)="checkPriviledgeAndHandleSearch(searchTypes.chemicalStructure)"
+            <button (click)="checkPriviledgeAndHandleSearch(searchTypes.chemicalStructure)"
               [disabled]="!chemicalStructure?.keyword?.trim()"
               class="btn btn-outline-primary search w-100">Search</button>
           </div>
           <div class="col-md-2 col-6 mb-2 mb-md-0">
-            <button 
-            (click)="clearInputAndSuggetions(searchTypes.chemicalStructure)"
-            class="btn btn-outline-secondary w-100">Clear</button>
+            <button (click)="clearInputAndSuggetions(searchTypes.chemicalStructure)"
+              class="btn btn-outline-secondary w-100">Clear</button>
           </div>
         </div>
         <div class="row mb-3 align-items-center">
@@ -377,11 +432,8 @@
             <h5 class="">
               Example:
               <ng-container *ngFor="let example of exampleSearchData; let i = index">
-                <a
-                  style="color: #000000; font-weight: 600;"
-                  href="javascript:void(0)"
-                  (click)="chemicalStructureSearch(example.type, example.value)"
-                >
+                <a style="color: #000000; font-weight: 600;" href="javascript:void(0)"
+                  (click)="chemicalStructureSearch(example.type, example.value)">
                   {{ example.label }}<span *ngIf="i < exampleSearchData.length - 1">, </span>
                 </a>
               </ng-container>

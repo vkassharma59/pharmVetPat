@@ -1,105 +1,79 @@
-<div class="card-header text-white " >
+<div class="card-header text-white ">
   <div style="padding-top:7px; justify-content:space-between;display:flex;">
     {{ localCount }}. {{resultTabs?.chemicalDirectory?.label}} >> {{_data?.chemical_name}}
     <button class="btn btn-warning"><i class="fa-solid fa-download"></i></button>
   </div>
 </div>
 <div class="card-body" style="background-color:#F5FBFF;" *ngIf="!isEmptyObject(_data); else noData">
-  <div class=" mb-3 flex flex-wrap">
+  <div class=" mb-2 flex flex-wrap">
     <div class=" w-full">
       <div class="flex flex-wrap">
-        <div class="lg:w-1/3  my-2" *ngIf="_data?.chemical_structure">
-          <img
-            [src]="getImageUrl()"
-            class="w-full h-40 aspect-auto"
-            style="height:24rem; width:24rem;"
-          />
-          <button
-            class="btns flex items-center justify-center p-2"
-            style="background-color: #312e81; color: white"
-            (click)="openImageModal(getImageUrl())"
-          >
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
-        </div>
-
-        <div class="px-3" style="margin-left:6rem;width:44rem;">
-          <a
-            [href]="getPatentUrl(_data)"
-            target="_blank"
-            class="uppercase text-white rounded-md bg-[#0032A0] py-2 px-3 text-sm text-center"
-          >
-            Click me - for updated Pantent At Patent scope(wipo)
-          </a>
-          <div
-            class="p-3 bg-[#F8FAFF] border-2 border-gray-300 rounded-md my-3 text-sm text-[#0032A0] uppercase font-semibold"
-          >
-            USER CAN REFINE THE PATENT DATA WITH ADDITION OF "SEARCH TERM" IN
-            SCRIPT e.g. ALL (PHARMACEUTICAL) AND PA(PFIZER) AND ALL: (POLYMORPH)
-            AND ALL (PARTICLE) AND ALL: (PROCESS)
+        <div class="lg:w-3/4 flex flex-wrap">
+          <div class="lg:w-1/3  my-2" *ngIf="_data?.chemical_structure">
+            <img [src]="getImageUrl()" (error)="onImgError($event)" alt="error" class="w-full h-40 aspect-auto"
+              style="height:24rem; width:24rem;" />
+            <button class="btns flex items-center justify-center p-2" style="background-color: #312e81; color: white"
+              (click)="openImageModal(getImageUrl())">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
           </div>
-        </div>
-      </div>
 
-      <div class="container">
+          <div class="px-3" style="margin-left:2rem;width:34rem;">
+            <a [href]="getPatentUrl(_data)" target="_blank"
+              class="uppercase text-white rounded-md bg-[#0032A0] py-2 px-3 text-sm text-center">
+              Click me - for updated Pantent At Patent scope(wipo)
+            </a>
+            <div
+              class="p-3 bg-[#F8FAFF] border-2 border-gray-300 rounded-md my-3 text-sm text-[#0032A0] uppercase font-semibold">
+              USER CAN REFINE THE PATENT DATA WITH ADDITION OF "SEARCH TERM" IN
+              SCRIPT e.g. ALL (PHARMACEUTICAL) AND PA(PFIZER) AND ALL: (POLYMORPH)
+              AND ALL (PARTICLE) AND ALL: (PROCESS)
+            </div>
+          </div>
+          <div class="container">
         <div class="row">
           <div *ngIf="_data.trrn" class="col-md-3">
             <div class="my-4">
-              <h1 class="font-bold ps-4"style="color:#312e81;" >
+              <h1 class="font-bold ps-4" style="color:#312e81;">
                 {{ getColumnName("trrn") }}
-                <span
-                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  #copyBtn 
-(click)="handleCopy(_data?.trrn, copyBtn)"                  ><i class="fas fa-copy"></i
-                ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.trrn, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p
-                class="ps-4 text-wrap max-w-96 max-h-8 overflow-auto break-words whitespace-normal"
-              >
+              <p class="ps-4 text-wrap max-w-96 max-h-8 overflow-auto break-words whitespace-normal">
                 {{ _data?.trrn }}
               </p>
             </div>
           </div>
           <div *ngIf="_data.gbrn" class="col-md-3">
             <div class="my-4">
-              <h1 class="font-bold ps-4"style="color:#312e81;" >
+              <h1 class="font-bold ps-4" style="color:#312e81;">
                 {{ getColumnName("gbrn") }}
-                <span
-                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  #copyBtn 
-(click)="handleCopy(_data?.gbrn, copyBtn)"                  ><i class="fas fa-copy"></i
-                ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.gbrn, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p
-                class="ps-4 text-wrap max-w-96 max-h-8 overflow-auto break-words whitespace-normal"
-              >
+              <p class="ps-4 text-wrap max-w-96 max-h-8 overflow-auto break-words whitespace-normal">
                 {{ _data?.gbrn }}
               </p>
             </div>
           </div>
           <div *ngIf="_data?.cas_rn" class="col-md-3">
             <div class="my-4">
-              <h1 class="font-bold ps-4"style="color:#312e81;" >
+              <h1 class="font-bold ps-4" style="color:#312e81;">
                 {{ getColumnName("cas_rn") }}
-                <span
-                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  #copyBtn 
-(click)="handleCopy(_data?.cas_rn, copyBtn)"                  ><i class="fas fa-copy"></i
-                ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.cas_rn, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <h1 class="ps-4 text-wrap max-w-96 max-h-8 overflow-auto break-words whitespace-normal">{{ _data?.cas_rn }}</h1>
+              <h1 class="ps-4 text-wrap max-w-96 max-h-8 overflow-auto break-words whitespace-normal">{{ _data?.cas_rn
+                }}</h1>
             </div>
           </div>
 
           <div *ngIf="_data?.field_of_application" class="col-md-3 col-lg-2">
             <div class="my-4">
-              <h1 class="font-bold ps-4"style="color:#312e81;" >
+              <h1 class="font-bold ps-4" style="color:#312e81;">
                 {{ getColumnName("field_of_application") }}
-                <span
-                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  #copyBtn 
-(click)="handleCopy(_data?.field_of_application, copyBtn)"                  ><i class="fas fa-copy"></i
-                ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.field_of_application, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <h1 class="ps-4 overflow-auto">
                 {{ _data?.field_of_application }}
@@ -109,13 +83,10 @@
 
           <div *ngIf="_data?.indication" class="col-md-3 col-lg-2">
             <div class="my-4">
-              <h1 class="font-bold ps-4"style="color:#312e81;" >
+              <h1 class="font-bold ps-4" style="color:#312e81;">
                 {{ getColumnName("indication") }}
-                <span
-                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  #copyBtn 
-(click)="handleCopy(_data?.indication, copyBtn)"                  ><i class="fas fa-copy"></i
-                ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.indication, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <h1 class="ps-4 max-h-20 overflow-y-auto">
                 {{ _data?.indication }}
@@ -125,13 +96,10 @@
 
           <div *ngIf="_data?.cas_name" class="col-md-3 col-lg-2">
             <div class="my-4">
-              <h1 class="font-bold ps-4"style="color:#312e81;" >
+              <h1 class="font-bold ps-4" style="color:#312e81;">
                 {{ getColumnName("cas_name") }}
-                <span
-                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  #copyBtn 
-(click)="handleCopy(_data?.cas_name, copyBtn)"                  ><i class="fas fa-copy"></i
-                ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.cas_name, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <h1 class="ps-4 overflow-auto">
                 {{ _data?.cas_name }}
@@ -141,39 +109,30 @@
 
           <div *ngIf="_data?.molecular_formula" class="col-md-3">
             <div class="my-4">
-              <h1 class="font-bold ps-4"style="color:#312e81;" >
+              <h1 class="font-bold ps-4" style="color:#312e81;">
                 {{ getColumnName("molecular_formula")
-                }}<span
-                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  #copyBtn 
-(click)="handleCopy(_data?.molecular_formula, copyBtn)"                  ><i class="fas fa-copy"></i
-                ></span>
+                }}<span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.molecular_formula, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <h1 class="ps-4 overflow-auto">{{ _data?.molecular_formula }}</h1>
             </div>
           </div>
           <div *ngIf="_data?.molecular_weight" class="col-md-3">
             <div class="my-4">
-              <h1 class="font-bold ps-4"style="color:#312e81;" >
+              <h1 class="font-bold ps-4" style="color:#312e81;">
                 {{ getColumnName("molecular_weight")
-                }}<span
-                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  #copyBtn 
-(click)="handleCopy(_data?.molecular_weight, copyBtn)"                  ><i class="fas fa-copy"></i
-                ></span>
+                }}<span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.molecular_weight, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <h1 class="ps-4 overflow-auto">{{ _data?.molecular_weight }}</h1>
             </div>
           </div>
           <div *ngIf="_data?.iupac" class="col-md-3">
             <div class="my-4">
-              <h1 class="font-bold ps-4"style="color:#312e81;" >
+              <h1 class="font-bold ps-4" style="color:#312e81;">
                 {{ getColumnName("iupac") }}
-                <span
-                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  #copyBtn 
-(click)="handleCopy(_data?.iupac, copyBtn)"                  ><i class="fas fa-copy"></i
-                ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.iupac, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <h1 class="ps-4 overflow-auto">{{ _data?.iupac }}</h1>
             </div>
@@ -181,13 +140,10 @@
 
           <div *ngIf="_data?.smiles_code" class="col-md-3">
             <div class="my-4">
-              <h1 class="font-bold ps-4"style="color:#312e81;" >
+              <h1 class="font-bold ps-4" style="color:#312e81;">
                 {{ getColumnName("smiles_code")
-                }}<span
-                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  #copyBtn 
-(click)="handleCopy(_data?.smiles_code, copyBtn)"                  ><i class="fas fa-copy"></i
-                ></span>
+                }}<span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.smiles_code, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <div class="w-full overflow-x-auto max-h-20">
                 <h1 class="ps-4">{{ _data?.smiles_code }}</h1>
@@ -196,79 +152,69 @@
           </div>
           <div *ngIf="_data.inchikey" class="col-md-3">
             <div class="my-4">
-              <h1 class="font-bold ps-4"style="color:#312e81;" >
+              <h1 class="font-bold ps-4" style="color:#312e81;">
                 {{ getColumnName("inchikey") }}
-                <span
-                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  #copyBtn 
-(click)="handleCopy(_data?.inchikey, copyBtn)"                  ><i class="fas fa-copy"></i
-                ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.inchikey, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <p class="ps-4 overflow-auto">{{ _data?.inchikey }}</p>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div *ngIf="showAppIntermediates" class="lg:w-1/4 w-full lg:border-l-2 lg:border-gray-300 p-3">
-      <h1 class="font-bold" style="color:#312e81;">APPL ICATION OF INTERMEDIATES</h1>
-      <p class="text-sm text-red-500 py-2">
-        Note: These disclosed applications also include applications of some raw
-        materials, which are used in the mabtractuning or searched intermediate
-        / KAM/Raw materials. For details refer routes.
-      </p>
-      <div class="p-2 px-3 border-2 border-gray-300 rounded-md bg-yellow-200">
-        <div class="flex justify-between py-1">
-          <span class="max-w-48">RETRIEVED RESULT:</span>
-          <h1 class="font-semibold">{{ _data?.special_count?.TRRN_Total }}</h1>
         </div>
-        <div class="flex justify-between py-1">
-          <span class="max-w-48">AGROCHEMICAL ROS:</span>
-          <h1 class="font-semibold">{{ _data?.special_count?.agroTotal }}</h1>
+        <div *ngIf="showAppIntermediates" class="lg:w-1/4 w-full lg:border-l-2 lg:border-gray-300 p-3">
+          <h1 class="font-bold" style="color:#312e81;">APPL ICATION OF INTERMEDIATES</h1>
+          <p class="text-sm text-red-500 py-2">
+            Note: These disclosed applications also include applications of some raw
+            materials, which are used in the mabtractuning or searched intermediate
+            / KAM/Raw materials. For details refer routes.
+          </p>
+          <div class="p-2 px-3 border-2 border-gray-300 rounded-md bg-yellow-200">
+            <div class="flex justify-between py-1">
+              <span class="max-w-48">RETRIEVED RESULT:</span>
+              <h1 class="font-semibold">{{ _data?.special_count?.TRRN_Total }}</h1>
+            </div>
+            <div class="flex justify-between py-1">
+              <span class="max-w-48">AGROCHEMICAL ROS:</span>
+              <h1 class="font-semibold">{{ _data?.special_count?.agroTotal }}</h1>
+            </div>
+            <div class="flex justify-between py-1">
+              <span class="max-w-48">PHARMACEUTICAL ROS:</span>
+              <h1 class="font-semibold">{{ _data?.special_count?.pharmaTotal }}</h1>
+            </div>
+            <div class="flex justify-between py-1">
+              <span class="max-w-48">OTHER APPLICATION E.G. COSMETIC & DYE, PAINT, SPECIALLY CHEMICALS
+                ETC.</span>
+              <h1 class="font-semibold">{{ _data?.special_count?.otherTotal }}</h1>
+            </div>
+            <button class="py-1 text-center rounded-sm bg-[#FFCD04] w-full my-3">
+              Total:<span class="font-bold" style="color:#312e81;">{{ _data?.special_count?.total }}</span>
+            </button>
+          </div>
+          <div class="py-3 flex flex-wrap gap-3">
+            <button class="py-1 px-2 bg-[#FFCD04] rounded-md" (click)="handleROSButtonClick('ros_search')">
+              To View the Detailed ROS
+              <i class="fa-solid fa-square-up-right m-2"></i>
+            </button>
+            <button class="py-1 px-2 bg-[#FFCD04] rounded-md" (click)="handleROSButtonClick('ros_filter')">
+              To View KSM ROS <i class="fa-solid fa-square-up-right m-2"></i>
+            </button>
+          </div>
         </div>
-        <div class="flex justify-between py-1">
-          <span class="max-w-48">PHARMACEUTICAL ROS:</span>
-          <h1 class="font-semibold">{{ _data?.special_count?.pharmaTotal }}</h1>
-        </div>
-        <div class="flex justify-between py-1">
-          <span class="max-w-48"
-            >OTHER APPLICATION E.G. COSMETIC & DYE, PAINT, SPECIALLY CHEMICALS
-            ETC.</span
-          >
-          <h1 class="font-semibold">{{ _data?.special_count?.otherTotal }}</h1>
-        </div>
-        <button class="py-1 text-center rounded-sm bg-[#FFCD04] w-full my-3">
-          Total:<span class="font-bold" style="color:#312e81;">{{ _data?.special_count?.total }}</span>
-        </button>
       </div>
-      <div class="py-3 flex flex-wrap gap-3">
-        <button
-          class="py-1 px-2 bg-[#FFCD04] rounded-md"
-          (click)="handleROSButtonClick('ros_search')"
-        >
-          To View the Detailed ROS
-          <i class="fa-solid fa-square-up-right m-2"></i>
-        </button>
-        <button
-          class="py-1 px-2 bg-[#FFCD04] rounded-md"
-          (click)="handleROSButtonClick('ros_filter')"
-        >
-          To View KSM ROS <i class="fa-solid fa-square-up-right m-2"></i>
-        </button>
-      </div>
+
+      
     </div>
+
   </div>
   <div class="flex justify-center">
-    <button
-      (click)="toggleMoreApplicationInfo()"
-      class="py-2 px-3 mt-3 mb-3 btnchemical rounded-md"
-      style="background:linear-gradient(to right, #efb303,#fff087); color: black;"
-
-    >
+    <button (click)="toggleMoreApplicationInfo()" class="py-2 px-3 mt-3 mb-3 btnchemical rounded-md"
+      style="background:linear-gradient(to right, #efb303,#fff087); color: black;">
       {{
-        MoreApplicationInfo
-          ? "Less Information"
-          : "More Information"
+      MoreApplicationInfo
+      ? "Less Information"
+      : "More Information"
       }}
     </button>
   </div>
@@ -276,483 +222,293 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-          <h1 class="h1class" style="color: #312e81" >Description</h1>
-          <div
-            *ngIf="_data.chemical_name"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <h1 class="h1class" style="color: #312e81">Description</h1>
+          <div *ngIf="_data.chemical_name" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("chemical_name") }}
-              <span
-                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  #copyBtn 
-(click)="handleCopy(_data?.chemical_name, copyBtn)"                  ><i class="fas fa-copy"></i
-                ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.chemical_name, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2 overflow-auto">{{ _data.chemical_name }}</p>
           </div>
 
-          <div
-            *ngIf="_data.description"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.description" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("description") }}:
-              <span
-                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  #copyBtn 
-(click)="handleCopy(_data?.chemical_name, copyBtn)"                  ><i class="fas fa-copy"></i
-                ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.chemical_name, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2 overflow-auto">{{ _data.description }}</p>
           </div>
-          <div
-            *ngIf="_data.field_of_application"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.field_of_application" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("field_of_application") }}:
-              <span
-                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  #copyBtn 
-(click)="handleCopy(_data?.field_of_application, copyBtn)"                  ><i class="fas fa-copy"></i
-                ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.field_of_application, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2 overflow-auto">{{ _data.field_of_application }}</p>
           </div>
 
-          <div
-            *ngIf="_data.indication"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.indication" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("indication") }}:
-              <span
-                  class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                  #copyBtn 
-(click)="handleCopy(_data?.indication, copyBtn)"                  ><i class="fas fa-copy"></i
-                ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.indication, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2 overflow-auto">{{ _data.indication }}</p>
           </div>
         </div>
         <div class="col-md-12">
           <h1 class="h1class">Name and Identifers:</h1>
-          <div
-            *ngIf="_data?.iupac"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.iupac" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("iupac") }}:
-              <span
-              class="mx-1 hover:cursor-pointer text-[#0032A0]"
-              #copyBtn 
-(click)="handleCopy(_data?.iupac, copyBtn)"              ><i class="fas fa-copy"></i
-            ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.iupac, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2 overflow-auto">{{ _data?.iupac }}</p>
           </div>
-          <div
-            *ngIf="_data?.inchi"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.inchi" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("inchi") }}:
-              <span
-              class="mx-1 hover:cursor-pointer text-[#0032A0]"
-              #copyBtn 
-(click)="handleCopy(_data?.inchi, copyBtn)"              ><i class="fas fa-copy"></i
-            ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.inchi, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2 overflow-auto">{{ _data?.inchi }}</p>
           </div>
-          <div
-            *ngIf="_data?.inchikey"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.inchikey" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("inchikey") }}:
-              <span
-              class="mx-1 hover:cursor-pointer text-[#0032A0]"
-              #copyBtn 
-(click)="handleCopy(_data?.inchikey, copyBtn)"              ><i class="fas fa-copy"></i
-            ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.inchikey, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2 overflow-auto">{{ _data?.inchikey }}</p>
           </div>
-          <div
-            *ngIf="_data.canonical_smiles"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.canonical_smiles" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("canonical_smiles") }}:
-              <span
-              class="mx-1 hover:cursor-pointer text-[#0032A0]"
-              #copyBtn 
-(click)="handleCopy(_data?.canonical_smiles, copyBtn)"              ><i class="fas fa-copy"></i
-            ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.canonical_smiles, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2 overflow-auto">{{ _data.canonical_smiles }}</p>
           </div>
 
-          <div
-            *ngIf="_data.molecular_formula"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.molecular_formula" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("molecular_formula") }}:
-              <span
-              class="mx-1 hover:cursor-pointer text-[#0032A0]"
-              #copyBtn 
-(click)="handleCopy(_data?.molecular_formula, copyBtn)"              ><i class="fas fa-copy"></i
-            ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.molecular_formula, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2 overflow-auto">{{ _data.molecular_formula }}</p>
           </div>
-          <div
-            *ngIf="_data?.cas_rn"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.cas_rn" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("cas_rn") }}:
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.cas_rn, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.cas_rn, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2 overflow-auto">{{ _data?.cas_rn }}</p>
           </div>
-          <div
-            *ngIf="_data?.ec_no"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.ec_no" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("ec_no") }}:
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.ec_no, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.ec_no, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2">{{ _data?.ec_no }}</p>
           </div>
 
-          <div
-            *ngIf="_data?.un_number"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.un_number" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("un_number") }}:
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.un_number, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.un_number, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2">{{ _data?.un_number }}</p>
           </div>
 
-          <div
-            *ngIf="_data?.unii"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.unii" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("unii") }}:
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.unii, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.unii, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2">{{ _data?.unii }}</p>
           </div>
 
-          <div
-            *ngIf="_data?.dsstox_substance_id"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.dsstox_substance_id" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("dsstox_substance_id") }}:
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.dsstox_substance_id, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.dsstox_substance_id, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2">{{ _data?.dsstox_substance_id }}</p>
           </div>
 
-          <div
-            *ngIf="_data?.substance_origin"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.substance_origin" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("substance_origin") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.substance_origin, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.substance_origin, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2">{{ _data?.substance_origin }}</p>
           </div>
 
-          <div
-            *ngIf="_data?.originator"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.originator" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("originator") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.originator, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.originator, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2">{{ _data?.originator }}</p>
           </div>
 
-          <div
-            *ngIf="_data?.originator_logo"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.originator_logo" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("originator_logo") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.originator_logo, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.originator_logo, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2">{{ _data?.originator_logo }}</p>
           </div>
 
-          <div
-            *ngIf="_data?.year_of_discovery"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.year_of_discovery" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("year_of_discovery") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.year_of_discovery, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.year_of_discovery, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2">{{ _data?.year_of_discovery }}</p>
           </div>
 
-          <div
-            *ngIf="_data?.launch_year"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.launch_year" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("launch_year") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.launch_year, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.launch_year, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2">{{ _data?.launch_year }}</p>
           </div>
 
-          <div
-            *ngIf="_data?.launch_status"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.launch_status" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("launch_status") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.launch_status, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.launch_status, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2">{{ _data?.launch_status }}</p>
           </div>
 
-          <div
-            *ngIf="_data?.year_wise_off_patent_molecule"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.year_wise_off_patent_molecule"
+            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("year_wise_off_patent_molecule") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.year_wise_off_patent_molecule, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.year_wise_off_patent_molecule, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2">{{ _data?.year_wise_off_patent_molecule }}</p>
           </div>
 
-          <div
-            *ngIf="_data?.trade_name_proprietary_name"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.trade_name_proprietary_name" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("trade_name_proprietary_name") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.trade_name_proprietary_name, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.trade_name_proprietary_name, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2">{{ _data?.trade_name_proprietary_name }}</p>
           </div>
 
-          <div
-            *ngIf="_data?.related_compounds"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.related_compounds" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("related_compounds") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.related_compounds, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.related_compounds, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2">{{ _data?.related_compounds }}</p>
           </div>
 
-          <div
-            *ngIf="_data?.other_codes"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.other_codes" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("other_codes") }}:
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.other_codes, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.other_codes, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2">{{ _data?.other_codes }}</p>
           </div>
 
-          <div
-            *ngIf="_data?.chemical_class"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.chemical_class" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 pb-0 font-semibold uppercase">
               {{ getColumnName("chemical_class") }}:
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.chemical_class, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.chemical_class, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2">{{ _data?.chemical_class }}</p>
           </div>
-          <div
-            *ngIf="_data?.synonyms_common_name"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.synonyms_common_name" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("synonyms_common_name") }}:
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.synonyms_common_name, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.synonyms_common_name, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2">{{ _data?.synonyms_common_name }}</p>
             </div>
           </div>
-          <div
-            *ngIf="_data?.pubchem_id"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data?.pubchem_id" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("pubchem_id") }}:
-              <span
-              class="mx-1 hover:cursor-pointer text-[#0032A0]"
-              #copyBtn 
-(click)="handleCopy(_data?.pubchem_id, copyBtn)"              ><i class="fas fa-copy"></i
-            ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.pubchem_id, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <p class="p-2">
               <a [href]="getPubchemId(_data?.pubchem_id)">{{
                 _data?.pubchem_id
-              }}</a>
+                }}</a>
             </p>
           </div>
 
           <h1 class="h1class py-2">Chemical and Physical Properties:</h1>
-          <div
-            class="text-xs md:text-sm p-2 border-2 border-gray-100 bg-[#F8FAFF] rounded-md"
-          >
-            <div
-              *ngIf="_data.molecular_formula"
-              class="flex justify-start gap-4"
-            >
+          <div class="text-xs md:text-sm p-2 border-2 border-gray-100 bg-[#F8FAFF] rounded-md">
+            <div *ngIf="_data.molecular_formula" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("molecular_formula") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.molecular_formula, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.molecular_formula, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">{{ _data.molecular_formula }}</p>
             </div>
             <div *ngIf="_data.molecular_weight" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("molecular_weight") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.molecular_weight, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.molecular_weight, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">{{ _data.molecular_weight }}</p>
             </div>
-            <div
-              *ngIf="_data.hydrogen_bond_donor_count"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.hydrogen_bond_donor_count" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("hydrogen_bond_donor_count") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.hydrogen_bond_donor_count, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.hydrogen_bond_donor_count, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">{{ _data.hydrogen_bond_donor_count }}</p>
             </div>
 
-            <div
-              *ngIf="_data.hydrogen_bond_acceptor_count"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.hydrogen_bond_acceptor_count" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("hydrogen_bond_acceptor_count") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.hydrogen_bond_donor_count, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.hydrogen_bond_donor_count, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.hydrogen_bond_acceptor_count }}
               </p>
             </div>
-            <div
-              *ngIf="_data.rotatable_bond_count"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.rotatable_bond_count" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("rotatable_bond_count") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.rotatable_bond_count, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.rotatable_bond_count, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.rotatable_bond_count }}
@@ -761,44 +517,30 @@
             <div *ngIf="_data.exact_mass" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("exact_mass") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.exact_mass, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.exact_mass, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.exact_mass }}
               </p>
             </div>
-            <div
-              *ngIf="_data.monoisotopic_mass"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.monoisotopic_mass" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("monoisotopic_mass") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.monoisotopic_mass, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.monoisotopic_mass, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.monoisotopic_mass }}
               </p>
             </div>
 
-            <div
-              *ngIf="_data.topological_polar_surface_area"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.topological_polar_surface_area" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("topological_polar_surface_area") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.topological_polar_surface_area, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.topological_polar_surface_area, copyBtn)"><i
+                    class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.topological_polar_surface_area }}
@@ -808,113 +550,78 @@
             <div *ngIf="_data.heavy_atom_count" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("heavy_atom_count") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.heavy_atom_count, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.heavy_atom_count, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.heavy_atom_count }}
               </p>
             </div>
 
-            <div
-              *ngIf="_data.isotope_atom_count"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.isotope_atom_count" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("isotope_atom_count") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.isotope_atom_count, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.isotope_atom_count, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.isotope_atom_count }}
               </p>
             </div>
 
-            <div
-              *ngIf="_data.defined_atom_stereocenter_count"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.defined_atom_stereocenter_count" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("defined_atom_stereocenter_count") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.defined_atom_stereocenter_count, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.defined_atom_stereocenter_count, copyBtn)"><i
+                    class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.defined_atom_stereocenter_count }}
               </p>
             </div>
 
-            <div
-              *ngIf="_data.undefined_atom_stereocenter_count"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.undefined_atom_stereocenter_count" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("undefined_atom_stereocenter_count") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.undefined_atom_stereocenter_count, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.undefined_atom_stereocenter_count, copyBtn)"><i
+                    class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.undefined_atom_stereocenter_count }}
               </p>
             </div>
 
-            <div
-              *ngIf="_data.defined_bond_stereocenter_count"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.defined_bond_stereocenter_count" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("defined_bond_stereocenter_count") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.defined_bond_stereocenter_count, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.defined_bond_stereocenter_count, copyBtn)"><i
+                    class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.defined_bond_stereocenter_count }}
               </p>
             </div>
 
-            <div
-              *ngIf="_data.undefined_bond_stereocenter_count"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.undefined_bond_stereocenter_count" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("undefined_bond_stereocenter_count") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.undefined_bond_stereocenter_count, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.undefined_bond_stereocenter_count, copyBtn)"><i
+                    class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.undefined_bond_stereocenter_count }}
               </p>
             </div>
 
-            <div
-              *ngIf="_data.covalently_bonded_unit_count"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.covalently_bonded_unit_count" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("covalently_bonded_unit_count") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.covalently_bonded_unit_count, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.covalently_bonded_unit_count, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.covalently_bonded_unit_count }}
@@ -924,11 +631,8 @@
             <div *ngIf="_data.complexity" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("complexity") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.complexity, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.complexity, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.complexity }}
@@ -938,11 +642,8 @@
             <div *ngIf="_data.cskf" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("cskf") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.cskf, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.cskf, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.cskf }}
@@ -952,21 +653,15 @@
             <div *ngIf="_data.logp_computed" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("logp_computed") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.logp_computed, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.logp_computed, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.logp_computed }}
               </p>
             </div>
 
-            <div
-              *ngIf="_data.compound_is_canonicalized"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.compound_is_canonicalized" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("compound_is_canonicalized") }}:
               </h2>
@@ -978,28 +673,20 @@
             <div *ngIf="_data.formal_charge" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("formal_charge") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.formal_charge, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.formal_charge, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.formal_charge }}
               </p>
             </div>
 
-            <div
-              *ngIf="_data.summary_physicochemical_properties"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.summary_physicochemical_properties" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("summary_physicochemical_properties") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.summary_physicochemical_properties, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.summary_physicochemical_properties, copyBtn)"><i
+                    class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.summary_physicochemical_properties }}
@@ -1009,28 +696,19 @@
             <div *ngIf="_data.isomerism" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("isomerism") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.isomerism, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.isomerism, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.isomerism }}
               </p>
             </div>
 
-            <div
-              *ngIf="_data.physical_description"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.physical_description" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("physical_description") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.physical_description, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.physical_description, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.physical_description }}
@@ -1040,11 +718,8 @@
             <div *ngIf="_data.polymorphism" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("polymorphism") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.polymorphism, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.polymorphism, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.polymorphism }}
@@ -1054,11 +729,8 @@
             <div *ngIf="_data.melting_point" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("melting_point") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.melting_point, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.melting_point, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.melting_point }}
@@ -1068,11 +740,8 @@
             <div *ngIf="_data.boiling_point" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("boiling_point") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.boiling_point, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.boiling_point, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.boiling_point }}
@@ -1082,11 +751,8 @@
             <div *ngIf="_data.color_form" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("color_form") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.color_form, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.color_form, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.color_form }}
@@ -1096,11 +762,8 @@
             <div *ngIf="_data.decomposition" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("decomposition") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.decomposition, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.decomposition, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.decomposition }}
@@ -1110,11 +773,8 @@
             <div *ngIf="_data.corrosivity" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("corrosivity") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.corrosivity, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.corrosivity, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.corrosivity }}
@@ -1124,45 +784,30 @@
             <div *ngIf="_data.refractive_index" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("refractive_index") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.refractive_index, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.refractive_index, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.refractive_index }}
               </p>
             </div>
 
-            <div
-              *ngIf="_data.kovats_retention_index"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.kovats_retention_index" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("kovats_retention_index") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.kovats_retention_index, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.kovats_retention_index, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.kovats_retention_index }}
               </p>
             </div>
 
-            <div
-              *ngIf="_data.degradation_point"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.degradation_point" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("degradation_point") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.degradation_point, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.degradation_point, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.degradation_point }}
@@ -1172,11 +817,8 @@
             <div *ngIf="_data.flashpoint" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("flashpoint") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.flashpoint, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.flashpoint, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.flashpoint }}
@@ -1186,11 +828,8 @@
             <div *ngIf="_data.freezing_point" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("freezing_point") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.freezing_point, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.freezing_point, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.freezing_point }}
@@ -1200,45 +839,30 @@
             <div *ngIf="_data.sublimation" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("sublimation") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.sublimation, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.sublimation, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.sublimation }}
               </p>
             </div>
 
-            <div
-              *ngIf="_data.agueous_solubility"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.agueous_solubility" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("agueous_solubility") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.agueous_solubility, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.agueous_solubility, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.agueous_solubility }}
               </p>
             </div>
 
-            <div
-              *ngIf="_data.solubility_in_organic_solvent"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.solubility_in_organic_solvent" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("solubility_in_organic_solvent") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.solubility_in_organic_solvent, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.solubility_in_organic_solvent, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.solubility_in_organic_solvent }}
@@ -1248,28 +872,19 @@
             <div *ngIf="_data.density" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("density") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.density, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.density, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.density }}
               </p>
             </div>
 
-            <div
-              *ngIf="_data.bulk_density_specific_gravity"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.bulk_density_specific_gravity" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("bulk_density_specific_gravity") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.bulk_density_specific_gravity, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.bulk_density_specific_gravity, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.bulk_density_specific_gravity }}
@@ -1279,11 +894,8 @@
             <div *ngIf="_data.vapour_pressure" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("vapour_pressure") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.vapour_pressure, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.vapour_pressure, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.vapour_pressure }}
@@ -1293,11 +905,8 @@
             <div *ngIf="_data.logp" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("logp") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.logp, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.logp, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.logp }}
@@ -1307,11 +916,8 @@
             <div *ngIf="_data.stability" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("stability") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.stability, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.stability, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.stability }}
@@ -1321,45 +927,30 @@
             <div *ngIf="_data.ph" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("ph") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.ph, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.ph, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.ph }}
               </p>
             </div>
 
-            <div
-              *ngIf="_data.dissociation_constants"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.dissociation_constants" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("dissociation_constants") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.dissociation_constants, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.dissociation_constants, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.dissociation_constants }}
               </p>
             </div>
 
-            <div
-              *ngIf="_data.henrys_law_constant"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.henrys_law_constant" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("henrys_law_constant") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.henrys_law_constant, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.henrys_law_constant, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.henrys_law_constant }}
@@ -1369,45 +960,30 @@
             <div *ngIf="_data.application_rate" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("application_rate") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.application_rate, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.application_rate, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.application_rate }}
               </p>
             </div>
 
-            <div
-              *ngIf="_data.maximum_uv_vis_absorption"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.maximum_uv_vis_absorption" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("maximum_uv_vis_absorption") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.maximum_uv_vis_absorption, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.maximum_uv_vis_absorption, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.maximum_uv_vis_absorption }}
               </p>
             </div>
 
-            <div
-              *ngIf="_data.maximum_uv_vis_absorption"
-              class="flex justify-start gap-4"
-            >
+            <div *ngIf="_data.maximum_uv_vis_absorption" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("maximum_uv_vis_absorption") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.maximum_uv_vis_absorption, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.maximum_uv_vis_absorption, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.maximum_uv_vis_absorption }}
@@ -1417,198 +993,130 @@
             <div *ngIf="_data.surface_tension" class="flex justify-start gap-4">
               <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                 {{ getColumnName("surface_tension") }}:
-                <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.surface_tension, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.surface_tension, copyBtn)"><i class="fas fa-copy"></i></span>
               </h2>
               <p class="p-2 word-break">
                 {{ _data.surface_tension }}
               </p>
             </div>
           </div>
-          <div
-            *ngIf="_data.trrn"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.trrn" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("trrn") }}:
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.trrn, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.trrn, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">{{ _data.trrn }}</p>
             </div>
           </div>
 
-          <div
-            *ngIf="_data.us_epa_chemical_code"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.us_epa_chemical_code" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("us_epa_chemical_code") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.us_epa_chemical_code, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.us_epa_chemical_code, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">{{ _data.us_epa_chemical_code }}</p>
             </div>
           </div>
 
-          <div
-            *ngIf="_data.commentry"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.commentry" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("commentry") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.commentry, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.commentry, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">{{ _data.commentry }}</p>
             </div>
           </div>
 
-          <div
-            *ngIf="_data.notes"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.notes" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("notes") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.notes, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.notes, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">{{ _data.notes }}</p>
             </div>
           </div>
 
-          <div
-            *ngIf="_data.remarks"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.remarks" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("remarks") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.remarks, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.remarks, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">{{ _data.remarks }}</p>
             </div>
           </div>
 
-          <div
-            *ngIf="_data.literature"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.literature" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("literature") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.literature, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.literature, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">{{ _data.literature }}</p>
             </div>
           </div>
 
-          <div
-            *ngIf="_data.information_sources"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.information_sources" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("information_sources") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.information_sources, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.information_sources, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">{{ _data.information_sources }}</p>
             </div>
           </div>
 
-          <div
-            *ngIf="_data.pdf_multiple_pdf"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.pdf_multiple_pdf" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("pdf_multiple_pdf") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.pdf_multiple_pdf, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.pdf_multiple_pdf, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">{{ _data.pdf_multiple_pdf }}</p>
             </div>
           </div>
 
-          <div
-            *ngIf="_data.strain_no"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.strain_no" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("strain_no") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.strain_no, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.strain_no, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">{{ _data.strain_no }}</p>
             </div>
           </div>
 
-          <div
-            *ngIf="_data.summary_invent_info"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.summary_invent_info" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("summary_invent_info") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.summary_invent_info, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.summary_invent_info, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">{{ _data.summary_invent_info }}</p>
             </div>
           </div>
 
-          <div
-            *ngIf="_data.compound_patent_1st_disclosure"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.compound_patent_1st_disclosure"
+            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("compound_patent_1st_disclosure") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.compound_patent_1st_disclosure, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.compound_patent_1st_disclosure, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">
@@ -1617,17 +1125,11 @@
             </div>
           </div>
 
-          <div
-            *ngIf="_data.google_patent_hyper_link"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.google_patent_hyper_link" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("google_patent_hyper_link") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.google_patent_hyper_link, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.google_patent_hyper_link, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">
@@ -1636,24 +1138,17 @@
             </div>
           </div>
 
-          <div
-            *ngIf="_data.history_development_licencing_commercialisation"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.history_development_licencing_commercialisation"
+            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{
-                getColumnName("history_development_licencing_commercialisation")
+              getColumnName("history_development_licencing_commercialisation")
               }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn
-                (click)="
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="
                   handleCopy(
                     _data?.history_development_licencing_commercialisation, copyBtn
                   )
-                "
-                ><i class="fas fa-copy"></i
-              ></span>
+                "><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">
@@ -1662,17 +1157,11 @@
             </div>
           </div>
 
-          <div
-            *ngIf="_data.non_patent"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.non_patent" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("non_patent") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.non_patent, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.non_patent, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">
@@ -1681,17 +1170,11 @@
             </div>
           </div>
 
-          <div
-            *ngIf="_data.gcd"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.gcd" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("gcd") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.gcd, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.gcd, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">
@@ -1700,17 +1183,11 @@
             </div>
           </div>
 
-          <div
-            *ngIf="_data.summary_phsyi_chem"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.summary_phsyi_chem" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("summary_phsyi_chem") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.summary_phsyi_chem, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.summary_phsyi_chem, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">
@@ -1719,17 +1196,11 @@
             </div>
           </div>
 
-          <div
-            *ngIf="_data.dummy_2"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.dummy_2" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("dummy_2") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.dummy_2, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.dummy_2, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">
@@ -1738,17 +1209,11 @@
             </div>
           </div>
 
-          <div
-            *ngIf="_data.dummy_3"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.dummy_3" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("dummy_3") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.dummy_3, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.dummy_3, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">
@@ -1757,17 +1222,11 @@
             </div>
           </div>
 
-          <div
-            *ngIf="_data.dummy_4"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.dummy_4" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("dummy_4") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.dummy_4, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.dummy_4, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">
@@ -1776,17 +1235,11 @@
             </div>
           </div>
 
-          <div
-            *ngIf="_data.dummy_5"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.dummy_5" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("dummy_5") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.dummy_5, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.dummy_5, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">
@@ -1795,17 +1248,11 @@
             </div>
           </div>
 
-          <div
-            *ngIf="_data.dummy_6"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.dummy_6" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("dummy_6") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.dummy_6, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.dummy_6, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">
@@ -1814,17 +1261,11 @@
             </div>
           </div>
 
-          <div
-            *ngIf="_data.dummy_7"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.dummy_7" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("dummy_7") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.dummy_7, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.dummy_7, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">
@@ -1833,17 +1274,11 @@
             </div>
           </div>
 
-          <div
-            *ngIf="_data.dummy_8"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.dummy_8" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("dummy_8") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.dummy_8, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.dummy_8, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">
@@ -1852,17 +1287,11 @@
             </div>
           </div>
 
-          <div
-            *ngIf="_data.dummy_9"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.dummy_9" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("dummy_9") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.dummy_9, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.dummy_9, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">
@@ -1871,17 +1300,11 @@
             </div>
           </div>
 
-          <div
-            *ngIf="_data.dummy_10"
-            class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]"
-          >
+          <div *ngIf="_data.dummy_10" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
             <h2 class="p-2 font-semibold">
               {{ getColumnName("dummy_10") }}
-              <span
-                class="mx-1 hover:cursor-pointer text-[#0032A0]"
-                #copyBtn 
-(click)="handleCopy(_data?.dummy_10, copyBtn)"                ><i class="fas fa-copy"></i
-              ></span>
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.dummy_10, copyBtn)"><i class="fas fa-copy"></i></span>
             </h2>
             <div class="max-h-20 overflow-y-auto">
               <p class="p-2 word-break">

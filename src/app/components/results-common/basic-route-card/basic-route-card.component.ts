@@ -173,7 +173,10 @@ export class BasicRouteCardComponent {
       this.data?.CHEMICAL_STRUCTURE
     );
   };
-
+ onImgError(event: Event) {
+  const imgElement = event.target as HTMLImageElement;
+  imgElement.src = 'assets/components/noimg.png';
+}
   getPatentUrl(data: any) {
     return `https://patentscope.wipo.int/search/en/result.jsf?inchikey=${data?.INCHIKEY}`;
   }

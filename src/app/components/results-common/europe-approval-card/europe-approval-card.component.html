@@ -51,7 +51,8 @@
                 *ngIf="data?.company_logo"
                 class="company_logo"
                 [src]="getCompanyLogo(data)"
-                alt="error"
+                 (error)="onImgError($event)"
+                 alt="error"
                 style="
                     height: 150px;
                     width: 180px;       
@@ -462,6 +463,7 @@
                *ngIf="data?.company_logo"
                class="company_logo"
                [src]="getCompanyLogo(data)"
+                (error)="onImgError($event)"
                alt="error"
                style="
                    height: 150px;

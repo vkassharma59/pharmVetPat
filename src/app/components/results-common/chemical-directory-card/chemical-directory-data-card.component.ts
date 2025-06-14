@@ -6,6 +6,8 @@ import { ImageModalComponent } from '../../../commons/image-modal/image-modal.co
 import { Auth_operations } from '../../../Utils/SetToken';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { searchTypes } from '../../../services/utility-service/utility.service';
+import { MainSearchService } from '../../../services/main-search/main-search.service';
+import { ColumnListService } from '../../../services/columnList/column-list.service';
 
 @Component({
   selector: 'chemical-directory-card',
@@ -15,12 +17,12 @@ import { searchTypes } from '../../../services/utility-service/utility.service';
   styleUrl: './chemical-directory-data-card.component.css',
 })
 export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
-  
+
   private static counter = 0; // ✅ Global counter across instances
   _data: any = [];
   chem_column: any = {};
   resultTabs: any = {};
-  
+
   MoreInfo: boolean = false;
   MoreApplicationInfo: boolean = false;
   searchType: string = 'trrn';
@@ -31,8 +33,12 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
 
   @Input() CurrentAPIBody: any;
   @Output() ROSChange: EventEmitter<any> = new EventEmitter<any>();
+ @Output() setLoadingState: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private dialog: MatDialog, private utilityService: UtilityService) {
+  constructor(private dialog: MatDialog, private utilityService: UtilityService,
+       private columnListService: ColumnListService,
+          private mainSearchService: MainSearchService,
+  ) {
     this.localCount = ++ChemicalDirectoryDataCardComponent.counter; // ✅ Assign unique count to each instance
     const searchThrough = Auth_operations.getActiveformValues().activeForm;
     this.showAppIntermediates = (searchThrough === searchTypes.chemicalStructure);
@@ -48,15 +54,15 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
     ChemicalDirectoryDataCardComponent.counter = 0; // ✅ Reset global counter when component is destroyed
   }
 
-  @Input() 
-  get data() {  
-    return this._data;  
+  @Input()
+  get data() {
+    return this._data;
   }
-  set data(value) {    
+  set data(value) {
     if (value && Object.keys(value).length > 0) {
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
-      
+
       if (column_list[this.resultTabs.chemicalDirectory?.name]?.length > 0) {
         column_list[this.resultTabs.chemicalDirectory.name].forEach((col: any) => {
           this.chem_column[col.value] = col.name;
@@ -86,25 +92,46 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
 
     document.body.removeChild(textArea);
 
-  // Step 2: Find the icon inside the clicked span and swap classes
-  const icon = el.querySelector('i');
+    // Step 2: Find the icon inside the clicked span and swap classes
+    const icon = el.querySelector('i');
 
-  if (icon?.classList.contains('fa-copy')) {
-    icon.classList.remove('fa-copy');
-    icon.classList.add('fa-check');
+    if (icon?.classList.contains('fa-copy')) {
+      icon.classList.remove('fa-copy');
+      icon.classList.add('fa-check');
 
-    // Step 3: Revert it back after 1.5 seconds
-    setTimeout(() => {
-      icon.classList.remove('fa-check');
-      icon.classList.add('fa-copy');
-    }, 1500);
-  }
+      // Step 3: Revert it back after 1.5 seconds
+      setTimeout(() => {
+        icon.classList.remove('fa-check');
+        icon.classList.add('fa-copy');
+      }, 1500);
+    }
   }
 
   handleROSButtonClick(value: string) {
     this.ROSChange.emit(value === 'ros_search' ? 'ROS_search' : 'ROS_filter');
   }
+  // handleROSButtonClick(value: any) {
+  //   if (value === 'ros_search') this.ROSChange.emit('ROS_search');
+  //   else {
+  //     this.ROSChange.emit('ROS_filter');
+  //   }
+  //   const tech_API = this.apiUrls.technicalRoutes.columnList;
+  //  this.columnListService.getColumnList(tech_API).subscribe({
+   
+  //     next: (res) => {
+  //       const response = res?.data?.columns;
+  //       Auth_operations.setColumnList(
+  //         'technical_route_column_list',
+  //         response
+  //       );
+  //     },
+  //     error: (e) => {
+  //       console.error(e);
+  //         this.setLoadingState.emit(false);
+  //     },
+  //   });
 
+  // }
   getPatentUrl(data: any) {
     return `https://patentscope.wipo.int/search/en/result.jsf?inchikey=${data?.inchikey}`;
   }
@@ -123,6 +150,10 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
 
   isDateTimeString(dateString: any) {
     return !isNaN(new Date(dateString).getTime());
+  }
+  onImgError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = 'assets/components/noimg.png';
   }
 
   getUpdationDate(data: any) {

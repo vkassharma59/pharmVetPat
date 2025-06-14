@@ -11,6 +11,7 @@ import { UserPriviledgeService } from './services/user_priviledges/user-priviled
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { LoginService } from './services/LoginService/login.service';
+import { IpService } from '../ip.serive';
 
 @Component({
   selector: 'app-root',
@@ -47,7 +48,8 @@ export class AppComponent {
     private toastr: ToastrService,
     private UserPriviledgeService: UserPriviledgeService,
     private LoginService: LoginService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private IpAddressService: IpService
   ) {}
 
   disableRightClick(event: MouseEvent) {
@@ -66,11 +68,22 @@ export class AppComponent {
   ngOnInit() {
     // this.router.resetConfig(routes);
     this.UpdateSignIn(true);
+    this.getIp();
   }
 
   handleSetLoading(data: boolean) {
     this.loading = data;
   }
+  getIp() {
+    this.IpAddressService.getClientIp().subscribe((data) => {
+      const ipAddress = data.ip;
+
+      // Save the IP address to local storage
+      localStorage.setItem('userIpAddress', ipAddress);
+      Auth_operations.updateIp(ipAddress);
+    });
+  }
+  
 
   UserPriviledgeUpdate() {
     this.UserPriviledgeService.getUserPriviledgesData().subscribe({

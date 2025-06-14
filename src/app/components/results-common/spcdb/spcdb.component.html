@@ -16,15 +16,11 @@
   </div>
   <div>
     <app-spcdb-card [columnDefs]="_data?.columns" [rowData]="_data?.rows"
-      (dataFetchRequest)="onDataFetchRequest($event)"
-        [currentChildAPIBody]="_currentChildAPIBody"
-      >
+      (dataFetchRequest)="onDataFetchRequest($event)" [currentChildAPIBody]="_currentChildAPIBody">
     </app-spcdb-card>
   </div>
-  <app-child-pagning-table
-  [currentChildAPIBody]="currentChildAPIBody"
-   [isFilterApplied]="isFilterApplied"
-   (handleChangeTabData)="onDataFetchRequest($event)"
+  <app-child-pagning-table [currentChildAPIBody]="currentChildAPIBody" [isFilterApplied]="isFilterApplied"
+    (handleChangeTabData)="onDataFetchRequest($event)"
     (setLoading)="handleSetLoading.emit($event)"></app-child-pagning-table>
 
 </ng-container>

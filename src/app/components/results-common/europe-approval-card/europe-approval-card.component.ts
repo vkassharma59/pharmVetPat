@@ -79,6 +79,10 @@ export class EuropeApprovalCardComponent implements OnInit, OnDestroy {
   getPubchemId(value: any) {
     return `https://pubchem.ncbi.nlm.nih.gov/#query=${value}`;
   }
+onImgError(event: Event) {
+  const imgElement = event.target as HTMLImageElement;
+  imgElement.src = 'assets/components/noimg.png';
+}
 
   getCompanyLogo(value: any): string {
     return `${environment.baseUrl}${environment.domainNameCompanyLogo}${value?.company_logo}`;
