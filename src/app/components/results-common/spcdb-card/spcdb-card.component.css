@@ -421,6 +421,7 @@ th.mat-header-cell.volume-cell {
   white-space: nowrap;
   text-overflow: ellipsis;
   display: block;
+
   width: 100px;
 }
 

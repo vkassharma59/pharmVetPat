@@ -96,7 +96,7 @@
             <td mat-cell *matCellDef="let element">
               <ng-container [ngSwitch]="column.value">
                 <img *ngSwitchCase="'flag'" [src]="element[column.value]" alt="flag" class="flag-img" />
-                <span *ngSwitchDefault [style.width.px]="150" class="fixed-cell">
+                <span *ngSwitchDefault [style.width.px]="150" class="fixed-cell" style="display:block;">
                   <div class="scrollable-text">
                     {{element[column.value]}}
                   </div>

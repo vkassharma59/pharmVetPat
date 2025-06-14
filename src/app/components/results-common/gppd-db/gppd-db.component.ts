@@ -16,8 +16,10 @@ import { LoaderComponent } from "../../../commons/loader/loader.component";
   selector: 'app-gppd-db',
   standalone: true,
   imports: [ChildPagningTableComponent, CommonModule, GppdDbCardComponent, LoaderComponent],
+
   templateUrl: './gppd-db.component.html',
-  styleUrl: './gppd-db.component.css'
+
+   styleUrl: './gppd-db.component.css'
 })
 export class GppdDbComponent implements OnChanges {
 
@@ -30,6 +32,7 @@ export class GppdDbComponent implements OnChanges {
 
   count: number = 0;
   totalPages: number = 0;
+
 
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
@@ -70,6 +73,7 @@ export class GppdDbComponent implements OnChanges {
     this.handleResultTabData.emit(this._data);
   }
 
+
   handleLoadingState(data: any) {
     this.loading = data;
   }
@@ -79,6 +83,7 @@ export class GppdDbComponent implements OnChanges {
   }
 
   onDataFetchRequest(payload: any) {
+
     this.isFilterApplied = !!(payload?.search || payload?.columns);
 
     // Reset loading + state

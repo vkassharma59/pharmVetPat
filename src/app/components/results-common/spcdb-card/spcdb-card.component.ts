@@ -16,6 +16,7 @@ import { map, catchError, tap } from 'rxjs/operators';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { AppConfigValues } from '../../../config/app-config';
 
+
 @Component({
   selector: 'app-spcdb-card',
   standalone: true,
@@ -26,7 +27,9 @@ import { AppConfigValues } from '../../../config/app-config';
     MatInputModule,
     MatFormFieldModule,
     MatPaginatorModule,
+
   ],
+
   templateUrl: './spcdb-card.component.html',
   styleUrl: './spcdb-card.component.css'
 })

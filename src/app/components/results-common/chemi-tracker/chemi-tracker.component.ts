@@ -172,9 +172,16 @@ export class ChemiTrackerComponent {
     },
   });
 
+
+  // Scroll to top
+
+
     window.scrollTo(0, 0);
 
     this.handleSelectFilter;
   }
   
+
+}
+
 }
