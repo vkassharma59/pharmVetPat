@@ -14,8 +14,8 @@
         <div class="heading p-2">
           <div class="row">
             <div class="col-md-6" *ngIf="_data?.route_of_synthesis && getColumnName('route_of_synthesis')">
-              <img [src]="getImageUrl(_data)" alt="error" class=" aspect-auto"  (error)="onImgError($event)"
-                style="height: 261px; margin: 3px; " />
+              <img [src]="getImageUrl(_data)" alt="error" class=" aspect-auto"
+              style="height: 268px;margin: 3px;width: 291px;" />
 
               <div class=" pom">
                 <button class="p-2 bg-[#0032A0] text-white" (click)="openImageModal(getImageUrl(_data))">

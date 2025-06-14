@@ -70,11 +70,70 @@ export class ChildPagningTableComponent implements OnChanges {
     }
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['currentChildAPIBody']?.currentValue || changes['isFilterApplied']?.currentValue !== undefined) {
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   if (changes['currentChildAPIBody']?.currentValue || changes['isFilterApplied']?.currentValue !== undefined) {
+  //     this.handleChangeData();
+  //   }
+  // }
+previousAPIBody: any = null; // Add this to your component to track previous request
+
+
+
+ngOnChanges(changes: SimpleChanges): void {
+  const currentBody = this.currentChildAPIBody;
+
+  const hasBodyChanged = JSON.stringify(currentBody) !== JSON.stringify(this.previousAPIBody);
+
+  // Only call API if body actually changed or filter is applied newly
+  if (
+    (changes['currentChildAPIBody'] && hasBodyChanged) ||
+    changes['isFilterApplied']?.currentValue !== undefined
+  ) {
+    if (this.isFilterApplied) {
+      // 🛑 Only reset to page 1 if this is a new filter, not for pagination
+      if (hasBodyChanged) {
+        this.MainPageNo = 1;
+        this._currentChildAPIBody = {
+          ...currentBody,
+          page_no: 1,
+          start: 0
+        };
+      } else {
+        // Keep page number from currentBody if not a new filter
+        this._currentChildAPIBody = {
+          ...currentBody
+        };
+      }
+
+      this.previousAPIBody = { ...this._currentChildAPIBody }; // store for comparison
+
+      console.log("📡 API call with:", this._currentChildAPIBody);
+
+      // ✅ emit loading once only
+      this.setLoading.emit(true);
+
+      this.serviceChildPaginationService
+        .getNextChildPaginationData(this._currentChildAPIBody)
+        .subscribe({
+          next: (res) => {
+            this._currentChildAPIBody.count = res?.data?.recordsFiltered ?? res?.data?.recordsTotal;
+            this.count = this._currentChildAPIBody.count ?? 0;
+
+            this.handleChangeData(); // make sure this doesn't emit loading again
+            this.handleChangeTabData.emit(this._currentChildAPIBody);
+            this.setLoading.emit(false);
+          },
+          error: (e) => {
+            console.error("❌ API Error:", e);
+            this.setLoading.emit(false);
+          }
+        });
+    } else {
       this.handleChangeData();
     }
   }
+}
+
 
   handleChangeData() {
     this.count = this._currentChildAPIBody?.count || 0;

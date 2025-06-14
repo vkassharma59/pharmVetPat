@@ -10,26 +10,26 @@ import { CommonModule } from '@angular/common';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { GppdDbCardComponent } from '../gppd-db-card/gppd-db-card.component';
 import { ChildPagningTableComponent } from '../../../commons/child-pagning-table/child-pagning-table.component';
+import { LoaderComponent } from "../../../commons/loader/loader.component";
 
 @Component({
   selector: 'app-gppd-db',
   standalone: true,
-  imports: [ChildPagningTableComponent, CommonModule, GppdDbCardComponent],
-   templateUrl: './gppd-db.component.html',
+  imports: [ChildPagningTableComponent, CommonModule, GppdDbCardComponent, LoaderComponent],
+  templateUrl: './gppd-db.component.html',
   styleUrl: './gppd-db.component.css'
 })
-export class  GppdDbComponent  implements OnChanges {
+export class GppdDbComponent implements OnChanges {
 
- _data: any = { columns: [], rows: [] }; // expected structure
+  _data: any = { columns: [], rows: [] };
   _currentChildAPIBody: any;
+
+  loading = false;
   searchByTable: boolean = false;
-  isFilterApplied: boolean = false; // agar filter lagana hai to true karenge
+  isFilterApplied: boolean = false;
+
   count: number = 0;
   totalPages: number = 0;
-
-  get pageSize(): number {
-    return this._currentChildAPIBody?.length || 25;
-  }
 
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
@@ -52,54 +52,72 @@ export class  GppdDbComponent  implements OnChanges {
     this._currentChildAPIBody = value;
   }
 
-  resultTabs: any = {};
+  get pageSize(): number {
+    return this._currentChildAPIBody?.length || 25;
+  }
 
-  constructor(private utilityService: UtilityService,
+  constructor(
+    private utilityService: UtilityService,
     private mainSearchService: MainSearchService
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
   }
+
+  resultTabs: any = {};
 
   ngOnChanges() {
     console.log('scientificDocs received data:', this._data);
     this.handleResultTabData.emit(this._data);
   }
 
- onDataFetchRequest(payload: any) {
+  handleLoadingState(data: any) {
+    this.loading = data;
+  }
+
+  get dataProcessing(): boolean {
+    return this.loading && !this.searchByTable;
+  }
+
+  onDataFetchRequest(payload: any) {
     this.isFilterApplied = !!(payload?.search || payload?.columns);
-    console.log('scientificDocs received data:', payload);
-     if (!('columns' in payload)) {
+
+    // Reset loading + state
+    this.loading = true;
+    this.searchByTable = false;
+
+    // Sanitize payload
+    if (!('columns' in payload)) {
       delete this._currentChildAPIBody.columns;
     }
     if (!('search' in payload)) {
       delete this._currentChildAPIBody.search;
     }
+
     const requestBody = {
       ...this._currentChildAPIBody,
       ...payload
     };
 
-    this.handleSetLoading.emit(true);
-
     this.mainSearchService.gppdDbSearchSpecific(requestBody).subscribe({
       next: (result: any) => {
         this._data.rows = result?.data?.data || [];
+        this._data.columns = result?.data?.columns || [];
+
         this.count = result?.data?.recordsFiltered ?? result?.data?.recordsTotal;
         this.totalPages = Math.ceil(this.count / this.pageSize);
         this._currentChildAPIBody.count = this.count;
+
         this.searchByTable = true;
+        this.loading = false;
         this.handleResultTabData.emit(this._data.rows);
-        this.handleSetLoading.emit(false);
       },
       error: (err) => {
         console.error('API Error:', err);
-        this.handleSetLoading.emit(false);
+        this.loading = false;
       },
       complete: () => {
-        this.handleSetLoading.emit(false);
+        this.loading = false;
       }
     });
   }
-
-
 }

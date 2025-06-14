@@ -22,12 +22,14 @@ export class MainSearchService {
     'api-key': environment.headerApiKey,
     'access-token': this.auth_token,
     'x-forwarded-for': this.ip,
+    'platforms': environment.platforms,
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
   });
 
   getSynthesisSearchSuggestions(props: any): Observable<any> {
     const body = props;
+
     return this.http
       .post(this.apiUrls.technicalRoutes.synthesisAutoSuggestions, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
@@ -100,12 +102,13 @@ export class MainSearchService {
       .pipe(catchError(this.handleError));
   }
 
-  technicalRoutesSearchSpecific(props: any): Observable<any> {
-    const body = props;
-    return this.http
-      .post(this.apiUrls.technicalRoutes.searchSpecific, body, { headers: this.headers })
-      .pipe(catchError(this.handleError));
-  }
+ technicalRoutesSearchSpecific(body: any, headers?: HttpHeaders): Observable<any> {
+  const url = body.api_url; // Extracted from body
+  const options = headers ? { headers } : {};
+console.log("header=",this.headers);
+  return this.http.post<any>(url, body, options);
+}
+
 
   basicProductSearchSpecific(props: any): Observable<any> {
     const body = props;
