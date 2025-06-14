@@ -36,6 +36,10 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     dateType: 'GENERIC_CONSTRAINING_DATE',
     developmentStage: '',
     innovatorOriginator: '',
+    devStage: '',
+    innovator: '',
+    startSales: null,
+    endSales: null
   }
 
   @ViewChild('simpleSearchkeywordInput') simpleSearchkeywordInput!: ElementRef;
@@ -94,19 +98,15 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   devStages: string[] = ['Stage 1', 'Stage 2', 'Stage 3']; // Your full list
   innovators: string[] = ['Pfizer', 'Roche', 'Novartis'];  // Your full list
 
-  filteredDevStages: string[] = [...this.devStages];
-  filteredInnovators: string[] = [...this.innovators];
 
-  devStageSearch: string = '';
-  innovatorSearch: string = '';
 
-  // Show/hide state
+  filteredDevStages: string[] = [];
+  filteredInnovators: string[] = [];
+
   showDevStageDropdown = false;
   showInnovatorDropdown = false;
-
-
-
-
+  devStageSearch: string = '';
+  innovatorSearch: string = '';
 
   tabs$ = this.utilityService.tabs$;
   resultTabs: any = [];
@@ -136,28 +136,19 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     ];
   }
 
-
-
   handleDevStageChange() {
     this.filteredDevStages = this.devStages.filter(stage =>
       stage.toLowerCase().includes(this.devStageSearch.toLowerCase())
     );
+    console.log("dshbdfnjdf", this.devStageSearch)
   }
 
-  selectDevStage(stage: string) {
-    this.advanceSearch.developmentStage = stage;
-    this.showDevStageDropdown = false;
-  }
+  
 
   handleInnovatorChange() {
     this.filteredInnovators = this.innovators.filter(innovator =>
       innovator.toLowerCase().includes(this.innovatorSearch.toLowerCase())
     );
-  }
-
-  selectInnovator(innovator: string) {
-    this.advanceSearch.innovatorOriginator = innovator;
-    this.showInnovatorDropdown = false;
   }
 
 
@@ -206,7 +197,45 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     this.advanceSearch.filterInputs.splice(index, 1);
   }
 
+
+  handleChangeKeywordDL(column: 'DEVELOPMENT_STAGE' | 'INNOVATOR_ORIGINATOR') {
+    let keyword = '';
+    if (column === 'DEVELOPMENT_STAGE') keyword = this.advanceSearch.devStage;
+    if (column === 'INNOVATOR_ORIGINATOR') keyword = this.advanceSearch.innovator;
+
+    if (!keyword || keyword.length < 3) {
+      if (column === 'DEVELOPMENT_STAGE') this.filteredDevStages = [];
+      if (column === 'INNOVATOR_ORIGINATOR') this.filteredInnovators = [];
+      return;
+    }
+
+    const payload = { column, keyword };
+    console.log('📡 Request:', payload);
+
+    this.mainSearchService.getAdvanceSearchSuggestions(payload).subscribe({
+      next: (res: any) => {
+        const list = res?.data?.suggestions || [];
+        console.log("vfsdbhfdn",list)
+        if (column === 'DEVELOPMENT_STAGE') this.filteredDevStages = list;
+        if (column === 'INNOVATOR_ORIGINATOR') this.filteredInnovators = list;
+      },
+      error: (err) => console.error('❌ API Error:', err)
+    });
+  }
+
+  selectDevStage(stage: string) {
+    this.advanceSearch.devStage = stage;
+    this.showDevStageDropdown = false;
+  }
+
+  selectInnovator(name: string) {
+    this.advanceSearch.innovator = name;
+    this.showInnovatorDropdown = false;
+  }
+
+
   handleChangeKeyword(searchType = '', index: number = 0) {
+    console.log(index, "Sdgvdg rg ", searchType)
     try {
       this.showSuggestions = true;
       switch (searchType) {

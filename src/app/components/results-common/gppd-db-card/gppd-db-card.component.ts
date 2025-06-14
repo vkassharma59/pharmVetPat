@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
+import { LoaderComponent } from "../../../commons/loader/loader.component";
 @Component({
   selector: 'app-gppd-db-card',
   standalone: true,
@@ -23,7 +24,7 @@ import { MainSearchService } from '../../../services/main-search/main-search.ser
     MatSortModule,
     MatInputModule,
     MatFormFieldModule,
-    MatPaginatorModule],
+    MatPaginatorModule, LoaderComponent],
   templateUrl: './gppd-db-card.component.html',
   styleUrl: './gppd-db-card.component.css'
 
@@ -38,6 +39,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     data?: any[]; // Replace `any` with your actual data type
   };
   _currentChildAPIBody: any;
+  loading=false;
   displayedColumns: string[] = [];
   columnHeaders: { [key: string]: string } = {};
   filterableColumns: string[] = [];
@@ -109,6 +111,9 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     this.paginator.page.subscribe(() => this.fetchData());
 
     this.cdr.detectChanges();
+  }
+  handleLoadingState(data: any) {
+    this.loading = data;
   }
 
   scrollTable(direction: 'left' | 'right'): void {

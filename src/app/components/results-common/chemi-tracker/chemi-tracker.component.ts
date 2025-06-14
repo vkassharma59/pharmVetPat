@@ -30,7 +30,7 @@ export class ChemiTrackerComponent {
   isCountryDropdownOpen: boolean = false;
   isOpen: boolean = false;
   searchThrough: string = '';
-
+  
   @Input()
   get data() {
     return this._data;
@@ -50,6 +50,7 @@ export class ChemiTrackerComponent {
       this.handleFetchFilters();
     }
   }
+  
 
   constructor(
     private utilityService: UtilityService,
@@ -92,7 +93,7 @@ export class ChemiTrackerComponent {
         this.country_value = 'Select Country';
       } else {
         delete this.DMFAPIBody.filters['dummy_6'];
-        this.formulation_value = 'Select Country';
+        this.formulation_value = 'Select TECH.API & FORMULATION';
       }
     } else {
       if (filter == 'country_of_company') {
@@ -134,19 +135,45 @@ export class ChemiTrackerComponent {
     });
   }
   clear() {
-    this.country_value = 'Select Filter';
-    this.formulation_value = 'Select TECH.API & Formulation';
+  // Reset dropdown labels
+  this.country_value = 'Select Country';
+  this.formulation_value = 'Select TECH.API & FORMULATION';
 
-    if (this.DMFAPIBody?.filters) {
-      delete this.DMFAPIBody.filters['country_of_company'];
-      delete this.DMFAPIBody.filters['dummy_6'];
-    }
-    this.handleResultTabData.emit([]);
-    this.handleSetLoading.emit(false);
+  // Close dropdowns
+  this.isCountryDropdownOpen = false;
+  this.isOpen = false;
 
-    window.scrollTo(0, 0);
+  // Clear filters
+  this.DMFAPIBody.filters = {};
 
-    this.handleSelectFilter;
-  }
-  
+  // Prepare new API body
+  this._currentChildAPIBody = {
+    ...this.DMFAPIBody,
+    filters: {}
+  };
+
+  // Emit loading state
+  this.handleSetLoading.emit(true);
+
+  // Call API with cleared filters
+  this.mainSearchService.chemiTrackerSearchSpecific(this._currentChildAPIBody).subscribe({
+    next: (res) => {
+      this._currentChildAPIBody = {
+        ...this._currentChildAPIBody,
+        count: res?.data?.chemi_tracker_count
+      };
+      this.handleResultTabData.emit(res.data);
+      this.handleSetLoading.emit(false);
+    },
+    error: (err) => {
+      console.error(err);
+      this._currentChildAPIBody.filter_enable = false;
+      this.handleSetLoading.emit(false);
+    },
+  });
+
+  // Scroll to top
+  window.scrollTo(0, 0);
+}
+
 }

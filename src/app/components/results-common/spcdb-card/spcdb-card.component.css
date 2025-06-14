@@ -29,6 +29,9 @@ mat-form-field {
   font-size: 12px; /* Smaller text */
 }
 
+.filter{
+  width: 70px;
+}
 .filter-field input {
   height: 24px;  /* Decreased height */
   font-size: 12px;
@@ -404,5 +407,19 @@ th.mat-header-cell.volume-cell {
   text-overflow: ellipsis;
   height: 40px;
   line-height: 40px;
+}
+.gbrn-column {
+  max-width: 150px !important;
+  min-width: 150px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.scrollable-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
 }
 

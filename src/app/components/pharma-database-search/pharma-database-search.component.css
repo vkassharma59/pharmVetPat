@@ -3,6 +3,15 @@
     margin: 30px auto;
     padding: 0 15px; /* side padding for smaller screens */
   }
+.dropdown-menu {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 1000;
+  position: absolute;
+}
+.dropdown-item {
+  cursor: pointer;
+}
 
 
   /* Title / Top Section */

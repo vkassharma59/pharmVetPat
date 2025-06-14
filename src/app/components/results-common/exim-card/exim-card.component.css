@@ -6,7 +6,9 @@
   margin-top: 5px;
   margin-bottom: 5px;
 }
-
+.filter{
+  width:70px;
+}
 /* ✅ Card-style Table */
 .mat-elevation-z8 {
   padding: 20px;
