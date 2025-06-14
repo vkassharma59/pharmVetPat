@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { AppConfigValues } from '../../../config/app-config';
 
 @Component({
   selector: 'app-spcdb-card',
@@ -39,6 +39,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
   data?: {
     data?: any[]; // Replace `any` with your actual data type
   };
+  apiUrls = AppConfigValues.appUrls;
   _currentChildAPIBody: any;
   displayedColumns: string[] = [];
   columnHeaders: { [key: string]: string } = {};
@@ -252,13 +253,16 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
     this.fetchData();
   }
   getAllDataFromApi(): Observable<any[]> {
+    const priv = JSON.parse(localStorage.getItem('priviledge_json') || '{}');
+    const reportLimit = priv['pharmvetpat-mongodb']?.ReportLimit || 25;
     const requestBody = {
       ...this._currentChildAPIBody,
-      start: 0,
-      length: this._currentChildAPIBody?.count || 1000,
+       page_no: 1, start: 0,
+      length: reportLimit,
     };
+
     console.log('📦  response body:', requestBody);
-    return this.mainSearchService.NonPatentSearchSpecific(requestBody).pipe(
+    return this.mainSearchService.spcdbSearchSpecific(requestBody).pipe(
       tap((result: SpcdbCardComponent) => {
         console.log('📦 Full API response:', result);
       }),
@@ -269,98 +273,115 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       })
     );
   }
-  downloadPDF(): void {
-    this.getAllDataFromApi().subscribe(data => {
-      const exportData = data.map(row => {
-        return this.displayedColumns.map(col => row[col] !== undefined ? String(row[col]) : '');
-      });
+ 
 
-      const colHeaders = this.displayedColumns.map(col => this.toTitleCase(col));
+  downloadPDF() {
+    const doc = new jsPDF();
+    const colHeaders = this.displayedColumns.map(col => this.columnHeaders[col]);
+    const rowData = this.dataSource.filteredData.map(row => this.displayedColumns.map(col => row[col]));
 
-      const doc = new jsPDF({
-        orientation: 'landscape', // More space for wide tables
-        unit: 'pt',
-        format: 'A4'
-      });
+    autoTable(doc, {
+      head: [colHeaders],
+      body: rowData
+    });
 
-      autoTable(doc, {
-        head: [colHeaders],
-        body: exportData,
-        startY: 40,
-        theme: 'grid',
-        styles: {
-          fontSize: 8,
-          cellPadding: 4,
-          overflow: 'linebreak'
-        },
-        headStyles: {
-          fillColor: [41, 128, 185],
-          textColor: 255,
-          fontStyle: 'bold'
-        },
-        bodyStyles: {
-          valign: 'top'
-        },
-        columnStyles: {
-          // Example: fixed width for specific column index
-          // 0: {cellWidth: 80}, 
-          // 2: {cellWidth: 120}
+    doc.save('ExportedData.pdf');
+  }
+  // // Optional helper to capitalize column names
+  // toTitleCase(str: string): string {
+  //   return str.replace(/_/g, ' ')
+  //     .replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+  // }
+ 
+ // 3️⃣ Download CSV
+ downloadCSV(): void {
+   this.getAllDataFromApi().subscribe(data => {
+     // Ensure column headers are properly titled
+     const headerRow = this.displayedColumns.map(col => this.toTitleCase(col)).join(',') + '\n';
+     let csvContent = headerRow;
+ 
+     data.forEach(row => {
+       const rowData = this.displayedColumns.map(col => {
+         let cell = row[col] !== undefined ? row[col] : '';
+         // Optional: Escape commas, quotes, and newlines
+         cell = String(cell).replace(/"/g, '""');
+         if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
+           cell = `"${cell}"`;
+         }
+         return cell;
+       });
+       csvContent += rowData.join(',') + '\n';
+     });
+ 
+     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+     saveAs(blob, 'ExportedData.csv');
+   });
+ }
+ 
+ 
+ // 4️⃣ Download Excel
+ downloadExcel(): void {
+  this.getAllDataFromApi().subscribe(data => {
+    const exportData = data.map(row => {
+      const formatted: any = {};
+      this.displayedColumns.forEach(col => {
+        let value = row[col];
+        if (Array.isArray(value)) {
+          value = value.join(', ');
+        } else if (typeof value === 'object' && value !== null) {
+          value = JSON.stringify(value);
         }
+        formatted[this.toTitleCase(col)] = value !== undefined ? value : '';
       });
-
-      doc.save('ExportedData.pdf');
+      return formatted;
     });
-  }
-  // Optional helper to capitalize column names
-  toTitleCase(str: string): string {
-    return str.replace(/_/g, ' ')
-      .replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
-  }
-  downloadCSV(): void {
-    this.getAllDataFromApi().subscribe(data => {
-      let csvContent = this.displayedColumns.join(',') + '\n';
 
-      data.forEach(row => {
-        const rowData = this.displayedColumns.map(col => {
-          let cell = row[col] !== undefined ? row[col] : '';
-          // Escape quotes and wrap in quotes if necessary
-          cell = String(cell).replace(/"/g, '""');
-          if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
-            cell = `"${cell}"`;
-          }
-          return cell;
-        });
-        csvContent += rowData.join(',') + '\n';
-      });
+    const worksheet = XLSX.utils.json_to_sheet(exportData, { skipHeader: false });
 
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      saveAs(blob, 'ExportedData.csv');
+    const headerRange = XLSX.utils.decode_range(worksheet['!ref'] || '');
+
+    for (let C = headerRange.s.c; C <= headerRange.e.c; ++C) {
+      const cellRef = XLSX.utils.encode_cell({ r: 0, c: C }); // First row = header
+      if (!worksheet[cellRef]) continue;
+      worksheet[cellRef].s = {
+        font: { bold: true, color: { rgb: "FFFFFF" } },
+        fill: { fgColor: { rgb: "4472C4" } },
+        alignment: { horizontal: 'center', vertical: 'center' },
+        border: {
+          top: { style: "thin", color: { rgb: "000000" } },
+          bottom: { style: "thin", color: { rgb: "000000" } },
+          left: { style: "thin", color: { rgb: "000000" } },
+          right: { style: "thin", color: { rgb: "000000" } }
+        }
+      };
+    }
+
+    // Set all column widths
+    worksheet['!cols'] = this.displayedColumns.map(() => ({ wch: 30 }));
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Exported Data');
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array',
+      cellStyles: true
     });
-  }
-  // ✅ Download as Excel
-  downloadExcel(): void {
-    this.getAllDataFromApi().subscribe(data => {
-      const exportData = data.map(row => {
-        const formatted: any = {};
-        this.displayedColumns.forEach(col => {
-          formatted[col] = row[col] !== undefined ? row[col] : '';
-        });
-        return formatted;
-      });
 
-      const worksheet = XLSX.utils.json_to_sheet(exportData);
-      // Set custom widths for each column (in characters)
-      worksheet["!cols"] = this.displayedColumns.map(() => ({ wch: 30 })); // 30 char width per column
-
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, 'Exported Data');
-
-      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-      const blob = new Blob([excelBuffer], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      });
-
-      saveAs(blob, 'ExportedData.xlsx');
+    const blob = new Blob([excelBuffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     });
-  }
+
+    saveAs(blob, 'ExportedData.xlsx');
+  });
+}
+
+
+ 
+ // ✅ Optional: Capitalize headers
+ toTitleCase(str: string): string {
+   return str.replace(/_/g, ' ')
+             .replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+ }
+ 
 }

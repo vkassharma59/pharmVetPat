@@ -38,9 +38,9 @@ export class ChemicalDirectoryComponent implements OnChanges {
     console.log('europeApproval received data:', this._data);
     this.handleResultTabData.emit(this._data);
   }
-  updateDataFromPagination(newData: any) {
-    this._data = newData.chem_dir_data; // or this.data = newData; if you want setter to trigger
-    this.handleResultTabData.emit(newData);
-    console.log("✅ Updated data from pagination:", newData);
-  }
+    updateDataFromPagination(newData: any) {
+  this._data = newData.chem_dir_data; // or this.data = newData; if you want setter to trigger
+  this.handleResultTabData.emit(newData);
+  console.log("✅ Updated data from pagination:", newData);
+}
 }
