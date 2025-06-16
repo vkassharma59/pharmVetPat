@@ -18,7 +18,6 @@
         ></chemical-directory-card>
         <chemical-directory-card class="card" [data]="dataItem"
         ></chemical-directory-card>
-        <chem-technical-route *ngIf="showTechnicalRoute"></chem-technical-route>
     </ng-container>
     <app-child-paging *ngIf="currentChildAPIBody?.count > 25"
      [currentChildAPIBody]="currentChildAPIBody"
