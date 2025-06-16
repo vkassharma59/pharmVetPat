@@ -27,7 +27,7 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
   _data: any = [];
   chem_column: any = {};
   resultTabs: any = {};
-
+  apiUrls = AppConfigValues.appUrls;
   MoreInfo: boolean = false;
   MoreApplicationInfo: boolean = false;
   searchType: string = 'trrn';
@@ -38,13 +38,14 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
 
   @Input() CurrentAPIBody: any;
   @Output() ROSChange: EventEmitter<any> = new EventEmitter<any>();
- @Output() setLoadingState: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() setLoadingState: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private dialog: MatDialog, private utilityService: UtilityService,
        private columnListService: ColumnListService,
           private mainSearchService: MainSearchService,
           private apiConfigService: ApiConfigService
   ) {
+    this.resultTabs = this.utilityService.getAllTabsName();
     this.localCount = ++ChemicalDirectoryDataCardComponent.counter; // ✅ Assign unique count to each instance
     const searchThrough = Auth_operations.getActiveformValues().activeForm;
     this.showAppIntermediates = (searchThrough === searchTypes.chemicalStructure);
@@ -158,10 +159,7 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
   isDateTimeString(dateString: any) {
     return !isNaN(new Date(dateString).getTime());
   }
-  onImgError(event: Event) {
-    const imgElement = event.target as HTMLImageElement;
-    imgElement.src = 'assets/components/noimg.png';
-  }
+ 
 
   getUpdationDate(data: any) {
     return this.isDateTimeString(data) ? new Date(data).toISOString().split('T')[0] : data;

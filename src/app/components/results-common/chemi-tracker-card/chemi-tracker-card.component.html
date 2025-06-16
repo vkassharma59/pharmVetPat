@@ -200,7 +200,7 @@
                                                         class="fas fa-copy"></i></span>
                                             </h1>
                                             <div *ngIf="data?.company_logo">
-                                                <img [src]="getCompanyLogo(data)"  (error)="onImgError($event)"
+                                                <img [src]="getCompanyLogo(data)"
                                                     alt="error" class="object-contain"
                                                     style="height: 75px" />
                                             </div>
@@ -234,7 +234,7 @@
                                             </p>
                                         </div>
                                         <div *ngIf="data?.country_of_company" class="">
-                                            <img [src]="getCountryUrl(data)"  (error)="onImgError($event)"
+                                            <img [src]="getCountryUrl(data)" 
                                             class="ps-3" alt="error" style="
                                     width: 100px;
                                     object-fit: contain;

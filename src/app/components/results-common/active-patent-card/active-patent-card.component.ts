@@ -249,7 +249,7 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
   }
  getAllDataFromApi(): Observable<any[]> {
     const priv = JSON.parse(localStorage.getItem('priviledge_json') || '{}');
-    const reportLimit = priv['pharmvetpat-mongodb']?.ReportLimit || 25;
+    const reportLimit = priv['pharmvetpat-mongodb']?.ReportLimit || 500;
     const requestBody = {
       ...this._currentChildAPIBody,
        page_no: 1, start: 0,
