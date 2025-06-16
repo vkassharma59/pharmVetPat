@@ -107,7 +107,10 @@ export class ChemiTrackerCardComponent implements OnDestroy {
   getChemicalImage(): string {
     return `${environment.baseUrl}${environment.domainNameChemicalDirectoryStructure}${this._data?.chemical_structure}`;
   }
-
+onImgError(event: Event) {
+  const imgElement = event.target as HTMLImageElement;
+  imgElement.src = 'assets/components/noimg.png';
+}
 
   openImageModal(imageUrl: string): void {
     this.dialog.open(ImageModalComponent, {

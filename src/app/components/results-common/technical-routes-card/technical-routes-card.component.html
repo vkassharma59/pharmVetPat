@@ -156,7 +156,7 @@
         <div class="heading2">
           <div class="row">
             <div class="col-md-4" *ngIf="_data?.company_logo && getColumnName('company_logo')">
-              <img [src]="getImageUrl2(_data)"  alt="error" style="width: 200px; height: 150px; margin-bottom: 12px" />
+              <img [src]="getImageUrl2(_data)"  (error)="onImgError($event)" alt="error" style="width: 200px; height: 150px; margin-bottom: 12px" />
               <div *ngIf="_data?.smilies_of_reactants && getColumnName('smilies_of_reactants')" class="col-md-10" style="margin:15px; margin-top: 54px;">
                 <h1 class="pt-0 uppercase font-bold" style="color:#312e81;">
                   {{ getColumnName("smilies_of_reactants") }}
@@ -222,7 +222,7 @@
                   <p class="pt-0 pb-4">{{ _data?.country_of_company }}</p>
                 </div>
                 <div *ngIf="_data?.country_of_company && getColumnName('country_of_company')" class="col-md-6">
-                  <img [src]="getCountryUrl(_data)"  alt="error" style="
+                  <img [src]="getCountryUrl(_data)"  (error)="onImgError($event)" alt="error" style="
                       width: 100px;
                       object-fit: contain;
                       margin-bottom: 12px;
