@@ -108,13 +108,6 @@ export class IndianMedicineCardComponent implements OnInit, OnDestroy {
       }, 1500);
     }
   }
- onImgError(event: Event) {
-  const imgElement = event.target as HTMLImageElement;
-  imgElement.src = 'assets/components/noimg.png';
-}
-
-
-
   getImageUrl(data: any): string {
     return (
       environment.baseUrlProduct +

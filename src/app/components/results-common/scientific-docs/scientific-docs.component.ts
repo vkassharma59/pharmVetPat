@@ -25,7 +25,7 @@ export class ScientificDocsComponent implements OnChanges {
    isFilterApplied: boolean = false; // agar filter lagana hai to true karenge
    count: number = 0;
    totalPages: number = 0;
- 
+  loading = false;
    get pageSize(): number {
      return this._currentChildAPIBody?.length || 25;
    }

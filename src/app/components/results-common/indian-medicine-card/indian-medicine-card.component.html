@@ -18,8 +18,7 @@
 
                 <div>
                     <img *ngIf="_data?.product_image1" class="product_image1" [src]="getImageUrl(_data)" alt="error"
-                      (error)="onImgError($event)"
-                        style="height: 150px; width: 100%; padding: 20px; object-fit: contain;">
+                    style="height: 150px; width: 100%; padding: 20px; object-fit: contain;">
 
                 </div>
 
@@ -71,15 +70,12 @@
 
         <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
             <img *ngIf="_data?.product_image2" class="product_image1" [src]="getImageUrl(_data)" alt="error"
-                (error)="onImgError($event)"
-                style="height: 150px; width: 100%; max-width: 200px; padding: 20px; object-fit: contain;">
+              style="height: 150px; width: 100%; max-width: 200px; padding: 20px; object-fit: contain;">
 
             <img *ngIf="_data?.product_image2" class="product_image2" [src]="getImageUrl(_data)" alt="error"
-                (error)="onImgError($event)"
                 style="height: 150px; width: 100%; max-width: 200px; padding: 20px; object-fit: contain;">
 
             <img *ngIf="_data?.product_image2" class="product_image3" [src]="getImageUrl(_data)" alt="error"
-                (error)="onImgError($event)"
                 style="height: 150px; width: 100%; max-width: 200px; padding: 20px; object-fit: contain;">
         </div>
 
