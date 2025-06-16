@@ -36,10 +36,9 @@
 
       <div class="col-lg-3" *ngIf="_data?.CHEMICAL_STRUCTURE && getColumnName('CHEMICAL_STRUCTURE')">
         <div class="mt-4">
-          <img [src]="getImageUrl(_data)"  (error)="onImgError($event)"
-            alt="error" class="ps-7 pe-7 aspect-auto object-contain"
+          <img [src]="getImageUrl(_data)"  alt="error" class="ps-7 pe-7 aspect-auto object-contain"
             style="height: 256px" />
-
+ <!-- (error)="onImgError($event)" -->
           <div class="ms-4 pom">
             <button class="p-2 bg-[#0032A0] text-white" (click)="openImageModal(getImageUrl(_data))">
               <i class="fa-solid fa-magnifying-glass"></i>
@@ -96,7 +95,7 @@
                   </div>
 
                   <div class="" *ngIf="_data?.INVENTOR_LOGO && getColumnName('INVENTOR_LOGO')">
-                    <img [src]="getInventorLogo(_data)"  (error)="onImgError($event)"
+                    <img [src]="getInventorLogo(_data)"  
                      alt="error"
                       style="object-fit: contain; width: 155px; height: 65px" />
                   </div>
