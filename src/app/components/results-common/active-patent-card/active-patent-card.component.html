@@ -92,7 +92,7 @@
               <ng-container [ngSwitch]="column.value">
                 <img *ngSwitchCase="'flag'" [src]="element[column.value]" alt="flag" class="flag-img" />
                 <span *ngSwitchDefault [style.width.px]="150" class="fixed-cell">
-                  <div class="scrollable-text" style="width:200px">
+                  <div class="scrollable-text">
                     {{element[column.value]}}
                   </div>
                 </span>

@@ -4,12 +4,11 @@ import { CommonModule } from '@angular/common';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
 import { Auth_operations } from '../../../Utils/SetToken';
-import { TechnicalRoutesComponent } from "../technical-routes/technical-routes.component";
 
 @Component({
   selector: 'chemical-directory',
   standalone: true,
-  imports: [ChemicalDirectoryDataCardComponent, CommonModule, ChildPagingComponent, TechnicalRoutesComponent],
+  imports: [ChemicalDirectoryDataCardComponent, CommonModule, ChildPagingComponent],
   templateUrl: './chemical-directory.component.html',
   styleUrl: './chemical-directory.component.css'
 })
@@ -44,12 +43,4 @@ export class ChemicalDirectoryComponent implements OnChanges {
   this.handleResultTabData.emit(newData);
   console.log("✅ Updated data from pagination:", newData);
 }
-showTechnicalRoute = false;
-
-handleROSChange(event: string): void {
-  if (event === 'showTechnicalRoute') {
-    this.showTechnicalRoute = true;
-  }
-}
-
 }

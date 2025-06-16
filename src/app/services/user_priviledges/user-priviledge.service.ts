@@ -22,7 +22,6 @@ export class UserPriviledgeService {
     'Content-Type': 'application/json',
     'api-key': env.headerApiKey,
     'access-token': this.auth_token,
-    'platforms': env.platforms,
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
   });
