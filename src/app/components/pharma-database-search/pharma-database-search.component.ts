@@ -143,7 +143,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     console.log("dshbdfnjdf", this.devStageSearch)
   }
 
-
+  
 
   handleInnovatorChange() {
     this.filteredInnovators = this.innovators.filter(innovator =>
@@ -215,7 +215,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     this.mainSearchService.getAdvanceSearchSuggestions(payload).subscribe({
       next: (res: any) => {
         const list = res?.data?.suggestions || [];
-        console.log("vfsdbhfdn", list)
+        console.log("vfsdbhfdn",list)
         if (column === 'DEVELOPMENT_STAGE') this.filteredDevStages = list;
         if (column === 'INNOVATOR_ORIGINATOR') this.filteredInnovators = list;
       },
@@ -235,6 +235,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
 
 
   handleChangeKeyword(searchType = '', index: number = 0) {
+    console.log(index, "Sdgvdg rg ", searchType)
     try {
       this.showSuggestions = true;
       switch (searchType) {
@@ -461,73 +462,8 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     })
   }
 
-  // checkPriviledgeAndHandleSearch(searchType: string = '') {
-
-  //   let todaysLimit: any = '';
-  //   this.setLoadingState.emit(true);
-
-  //   // Fetch user privileges
-  //   this.userPriviledgeService.getUserPriviledgesData().subscribe({
-  //     next: (res: any) => {
-  //       const userInfo = res?.data?.user_info;
-  //       if (!userInfo) {
-  //         this.setLoadingState.emit(false);
-  //         return;
-  //       }
-
-  //       const { account_type, start_date, expired_date, privilege_json } = userInfo;
-  //       const currentDate = new Date();
-  //       const endTargetDate = new Date(expired_date);
-  //       endTargetDate.setFullYear(endTargetDate.getFullYear() + 1);
-
-
-  //       // Check for expired premium account
-  //       if (account_type === 'premium' && currentDate > endTargetDate) {
-  //         this.setLoadingState.emit(false);
-  //         this.priviledgeModal.emit('Your Premium Account is expired. Please renew your account');
-  //         return;
-  //       }
-
-  //       // Save user data in localStorage
-  //       this.saveUserDataToLocalStorage(userInfo);
-
-  //       const userPrivilegeKey = `user_${userInfo.user_id}`;
-  //       const privilegeData = privilege_json?.[userPrivilegeKey];
-
-  //       if (!this.hasSearchPrivileges(privilegeData)) {
-  //         this.setLoadingState.emit(false);
-  //         this.priviledgeModal.emit('You do not have permission to Search or View. Please upgrade the account.');
-  //         return;
-  //       }
-
-  //       // Fetch today's privileges
-  //       this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
-  //         next: (res: any) => {
-  //           todaysLimit = res?.data;
-
-  //           const remainingLimit = privilegeData?.technicalroutesmongo?.DailySearchLimit - todaysLimit?.searchCount;
-  //           if (remainingLimit <= 0) {
-  //             this.setLoadingState.emit(false);
-  //             this.priviledgeModal.emit('Your Daily Search Limit is over for this Platform.');
-  //             return;
-  //           }
-
-  //           // Perform main search operation
-  //           this.searchBasedOnTypes(searchType);
-  //         },
-  //         error: (e) => {
-  //           console.error('Error fetching today’s privileges:', e);
-  //           this.setLoadingState.emit(false);
-  //         },
-  //       });
-  //     },
-  //     error: (e) => {
-  //       console.error('Error fetching user privileges:', e);
-  //       this.setLoadingState.emit(false);
-  //     },
-  //   });
-  // }
   checkPriviledgeAndHandleSearch(searchType: string = '') {
+
     let todaysLimit: any = '';
     this.setLoadingState.emit(true);
 
@@ -544,6 +480,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         const currentDate = new Date();
         const endTargetDate = new Date(expired_date);
         endTargetDate.setFullYear(endTargetDate.getFullYear() + 1);
+
 
         // Check for expired premium account
         if (account_type === 'premium' && currentDate > endTargetDate) {
@@ -569,7 +506,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
           next: (res: any) => {
             todaysLimit = res?.data;
 
-            const remainingLimit = privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit - todaysLimit?.searchCount;
+            const remainingLimit = privilegeData?.technicalroutesmongo?.DailySearchLimit - todaysLimit?.searchCount;
             if (remainingLimit <= 0) {
               this.setLoadingState.emit(false);
               this.priviledgeModal.emit('Your Daily Search Limit is over for this Platform.');
@@ -592,8 +529,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     });
   }
 
-
-
   private saveUserDataToLocalStorage(userInfo: any): void {
     const { account_type, start_date, expired_date, privilege_json, user_id, name, email, auth_token } = userInfo;
 
@@ -607,26 +542,17 @@ export class pharmaDatabaseSearchComponent implements OnInit {
 
     this.userAuth = { name, email, user_id, auth_token };
   }
+
   private hasSearchPrivileges(privilegeData: any): boolean {
     if (!privilegeData) return false;
 
-    const dbPrivileges = privilegeData?.['pharmvetpat-mongodb'];
+    const { technicalroutesmongo } = privilegeData;
     return (
-      dbPrivileges?.View !== 'false' &&
-      dbPrivileges?.Search !== '' &&
-      dbPrivileges?.Search !== 0
+      technicalroutesmongo?.View !== 'false' &&
+      technicalroutesmongo?.Search !== '' &&
+      technicalroutesmongo?.Search !== 0
     );
   }
-  // private hasSearchPrivileges(privilegeData: any): boolean {
-  //   if (!privilegeData) return false;
-
-  //   const { technicalroutesmongo } = privilegeData;
-  //   return (
-  //     technicalroutesmongo?.View !== 'false' &&
-  //     technicalroutesmongo?.Search !== '' &&
-  //     technicalroutesmongo?.Search !== 0
-  //   );
-  // }
 
   private searchBasedOnTypes(searchType: string) {
     switch (searchType) {

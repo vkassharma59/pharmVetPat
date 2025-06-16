@@ -17,6 +17,7 @@ import { Auth_operations } from '../../Utils/SetToken';
 import { MainSearchService } from '../../services/main-search/main-search.service';
 import { PaginationComponent } from '../../commons/pagination/pagination.component';
 import { ResultTabComponent } from '../../commons/result-tab/result-tab.component';
+import { MatPaginator } from '@angular/material/paginator';
 @Component({
   selector: 'chem-search-results',
   standalone: true,
@@ -26,7 +27,7 @@ import { ResultTabComponent } from '../../commons/result-tab/result-tab.componen
     ResultTabComponent,
     RouteResultComponent,
     PaginationComponent,
-   
+    MatPaginator
   ],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.css',
@@ -389,8 +390,6 @@ export class SearchResultsComponent {
       },
     });
   }
-
-
 
   private perforProductInfoSearch(resultTabData: any): void {
 
@@ -1174,7 +1173,6 @@ export class SearchResultsComponent {
     console.log('Search Input:', resultTabData);
     const pageSize = 25;
     const page_no = 1
-     this.setLoadingState.emit(true);
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name] = {};
       this.setLoadingState.emit(false);

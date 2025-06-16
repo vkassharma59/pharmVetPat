@@ -70,7 +70,7 @@
 
 
                 <img *ngIf="data?.commentry" class="commentry" [src]="getImageUrl(data)"
-                 
+                 (error)="onImgError($event)"
                  alt="error" style="
                       height: 220px;
                       width: 220px;
@@ -152,7 +152,7 @@
 
             <img *ngIf="data?.commentry" class="commentry" 
             [src]="getImageUrl(data)" alt="error"
-            
+             (error)="onImgError($event)"
             style="
                   height: 250px;
                   width: 250px;

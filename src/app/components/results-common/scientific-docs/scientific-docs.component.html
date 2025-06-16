@@ -1,4 +1,4 @@
-<ng-container *ngIf="!loading && (_data?.rows?.length ?? 0) > 0; else fallbackBlock">
+<ng-container *ngIf="_data?.rows?.length > 0 || searchByTable; else noData">
   <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper justify-between">
     <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
       Total Records : {{currentChildAPIBody?.count }}
@@ -23,23 +23,13 @@
     (handleChangeTabData)="onDataFetchRequest($event)"
     (setLoading)="handleSetLoading.emit($event)"></app-child-pagning-table>
 </ng-container>
-<!-- ❗ Show loader OR "No Data" fallback -->
-<ng-template #fallbackBlock>
+<ng-template #noData>
   <div class="card">
     <div class="card-header text-white bg-primary">
-      {{resultTabs.scientificDocs?.label || 'Data View' }}
+      {{resultTabs.scientificDocs?.label}}
     </div>
-    <div class="card-body text-center">
-      <!-- 🔄 Loader when data is loading -->
-      <ng-container *ngIf="loading; else noDataMsg">
-        <i class="fa-solid fa-spinner fa-spin fa-2x text-primary mb-2"></i>
-        <p>🔄 Please wait... Data is loading</p>
-      </ng-container>
-
-      <!-- ❌ No Data -->
-      <ng-template #noDataMsg>
-        <p class="mb-0">❌ No Data</p>
-      </ng-template>
+    <div class="card-body">
+      <p>No Data found!</p>
     </div>
   </div>
 </ng-template>

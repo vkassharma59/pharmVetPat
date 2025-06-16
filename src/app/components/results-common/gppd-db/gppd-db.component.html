@@ -1,4 +1,10 @@
-<ng-container *ngIf="(_data?.rows?.length ?? 0) > 0 || searchByTable; else noData">
+
+
+
+
+
+
+<ng-container *ngIf="(_data?.rows?.length ?? 0) > 0 || searchByTable; else checkProcessing">
   <!-- ✅ Data is present -->
 
   <div *ngIf="currentChildAPIBody?.count !== undefined" class="child-route-count-wrapper justify-between">
@@ -33,6 +39,20 @@
     (setLoading)="handleSetLoading.emit($event)">
   </app-child-pagning-table>
 </ng-container>
+
+<!-- 🔁 Fallback logic -->
+<ng-template #checkProcessing>
+  <ng-container *ngIf="dataProcessing; else noData">
+    <div class="card">
+      <div class="card-header text-white bg-primary">
+        {{ resultTabs.gppdDb?.label }}
+      </div>
+      <div class="card-body">
+        <p>🔄 Data in Process</p>
+      </div>
+    </div>
+  </ng-container>
+</ng-template>
 
 <!-- ❌ No Data -->
 <ng-template #noData>

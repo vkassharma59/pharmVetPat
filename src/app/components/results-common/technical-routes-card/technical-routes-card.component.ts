@@ -75,6 +75,11 @@ export class TechnicalRoutesCardComponent {
     return this.tech_column[value];
   }
 
+onImgError(event: Event) {
+  const imgElement = event.target as HTMLImageElement;
+  imgElement.src = 'assets/components/noimg.png';
+}
+
   handleCopy(text: string, el: HTMLElement) {
     const textArea = document.createElement('textarea');
     textArea.value = text;
