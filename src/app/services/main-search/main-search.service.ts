@@ -102,12 +102,12 @@ export class MainSearchService {
       .pipe(catchError(this.handleError));
   }
 
- technicalRoutesSearchSpecific(body: any, headers?: HttpHeaders): Observable<any> {
-  const url = body.api_url; // Extracted from body
-  const options = headers ? { headers } : {};
-console.log("header=",this.headers);
-  return this.http.post<any>(url, body, options);
-}
+technicalRoutesSearchSpecific(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.technicalRoutes.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
 
 
   basicProductSearchSpecific(props: any): Observable<any> {

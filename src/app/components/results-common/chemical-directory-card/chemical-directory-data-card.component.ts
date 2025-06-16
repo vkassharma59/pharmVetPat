@@ -8,11 +8,16 @@ import { UtilityService } from '../../../services/utility-service/utility.servic
 import { searchTypes } from '../../../services/utility-service/utility.service';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { ColumnListService } from '../../../services/columnList/column-list.service';
-
+import { AppConfig } from '../../../commons/models/app-config.interface';
+import { AppConfigValues } from '../../../config/app-config';
+import { appConfig } from '../../../app.config';
+import { ApiConfigService } from '../../../../appservice';
+import { TechnicalRoutesCardComponent } from '../technical-routes-card/technical-routes-card.component';
+import { TechnicalRoutesComponent } from "../technical-routes/technical-routes.component";
 @Component({
   selector: 'chemical-directory-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TechnicalRoutesCardComponent, TechnicalRoutesComponent],
   templateUrl: './chemical-directory-data-card.component.html',
   styleUrl: './chemical-directory-data-card.component.css',
 })
@@ -38,6 +43,7 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
   constructor(private dialog: MatDialog, private utilityService: UtilityService,
        private columnListService: ColumnListService,
           private mainSearchService: MainSearchService,
+          private apiConfigService: ApiConfigService
   ) {
     this.localCount = ++ChemicalDirectoryDataCardComponent.counter; // ✅ Assign unique count to each instance
     const searchThrough = Auth_operations.getActiveformValues().activeForm;
@@ -106,32 +112,33 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
       }, 1500);
     }
   }
+  showTechnicalRoute = false;
 
-  handleROSButtonClick(value: string) {
-    this.ROSChange.emit(value === 'ros_search' ? 'ROS_search' : 'ROS_filter');
-  }
-  // handleROSButtonClick(value: any) {
-  //   if (value === 'ros_search') this.ROSChange.emit('ROS_search');
-  //   else {
-  //     this.ROSChange.emit('ROS_filter');
-  //   }
-  //   const tech_API = this.apiUrls.technicalRoutes.columnList;
-  //  this.columnListService.getColumnList(tech_API).subscribe({
+ handleROSButtonClick(value: any) {
+    if (value === 'ros_search') this.ROSChange.emit('ROS_search');
+    else {
+      this.ROSChange.emit('ROS_filter');
+    }
+    const tech_API = this.apiConfigService.apiUrls.technicalRoutes.columnList;
+    console.log("technicalAPI:",tech_API);
+
+   this.columnListService.getColumnList(tech_API).subscribe({
    
-  //     next: (res) => {
-  //       const response = res?.data?.columns;
-  //       Auth_operations.setColumnList(
-  //         'technical_route_column_list',
-  //         response
-  //       );
-  //     },
-  //     error: (e) => {
-  //       console.error(e);
-  //         this.setLoadingState.emit(false);
-  //     },
-  //   });
+      next: (res) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(
+          'technical_route_column_list',
+          response
+        );
+        console.log("responce",response);
+      },
+      error: (e) => {
+        console.error(e);
+          this.setLoadingState.emit(false);
+      },
+    });
 
-  // }
+  }
   getPatentUrl(data: any) {
     return `https://patentscope.wipo.int/search/en/result.jsf?inchikey=${data?.inchikey}`;
   }

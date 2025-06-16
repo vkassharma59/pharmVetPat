@@ -6,7 +6,7 @@
 .dropdown-menu {
   border: 1px solid #ccc;
   border-radius: 4px;
-  z-index: 1000;
+  z-index: 2;
   position: absolute;
 }
 .dropdown-item {
@@ -202,7 +202,10 @@ color:#fff;
 background: linear-gradient(192deg, rgb(253, 139, 139) 6%, rgb(212, 58, 58) 53%, rgb(156, 18, 18) 87%);
 color:#fff;
   }
-
+  .form-label{
+    font-size: 17px;
+    font-weight: 400;
+  }
   /* Inputs & Selects: ensure consistent styling */
   .form-control {
     border-radius: 5px;

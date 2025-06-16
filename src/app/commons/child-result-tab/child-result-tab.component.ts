@@ -17,7 +17,8 @@ import { FormsModule } from '@angular/forms';
 export class ChildResultTabComponent {
 
   _currentAPIData: any;
-
+  @Output() childFilteredData = new EventEmitter<any>();
+  @Output() childFilterEvent = new EventEmitter<any>();
   @Output() handleChangeTabData: EventEmitter<any> = new EventEmitter();
   @Output() resetPagination: EventEmitter<any> = new EventEmitter();
   @Output() setLoading: EventEmitter<any> = new EventEmitter();
@@ -29,7 +30,7 @@ export class ChildResultTabComponent {
   set currentAPIData(value: any) {
     if (value) {
       const { api_url, ...body } = value; // Remove api_url and keep the rest
-      this._currentAPIData = {api_url, body};  // Store the remaining properties inside body
+      this._currentAPIData = { api_url, body };  // Store the remaining properties inside body
     }
   }
 
@@ -107,7 +108,7 @@ export class ChildResultTabComponent {
   constructor(
     private dialog: MatDialog,
     private ServiceResultTabFiltersService: ServiceResultTabFiltersService
-  ) {}
+  ) { }
 
   ngOnInit() {
     if (
@@ -116,7 +117,7 @@ export class ChildResultTabComponent {
     ) {
       this.isKSMEnabled = true;
     }
-    
+
     this.fetchFilters();
   }
 
@@ -146,27 +147,20 @@ export class ChildResultTabComponent {
       error: (e) => console.error(e),
     });
   }
-
-  OnBlur(filterValue: any) {
-    setTimeout(() => {
-      this.OpenSuggestionBox[filterValue] = false;
-      if (filterValue == 'active_ingredient') {
-        this.filterMap['openActiveIngredientFilter'] = false;
-      } else if (filterValue == 'company_name') {
-        this.filterMap['openActiveIngredientFilter'] = false;
-      } else if (filterValue == 'field_of_application') {
-        this.filterMap['openFieldOfApplicationsFilter'] = false;
-      } else if (filterValue == 'order_by') {
-        this.filterMap['openOrderfilter'] = false;
-      } else if (filterValue == 'route_type') {
-        this.filterMap['openRouteFilter'] = false;
-      } else if (filterValue == 'updation_date') {
-        this.filterMap['openUpdateDateFilter'] = false;
-      } else if (filterValue == 'types_of_route') {
-        this.filterMap['openTypeOfRouteFilter'] = false;
-      }
-    }, 300);
+  capitalizeFirstLetter(text: string): string {
+    if (!text) return '';
+    return text.charAt(0).toUpperCase() + text.slice(1);
   }
+
+
+  OnBlur(key: string): void {
+    setTimeout(() => {
+      if (!document.activeElement?.closest('.filter-dropdown')) {
+        this.filterMap[`open${this.capitalizeFirstLetter(key)}Filter`] = false;
+      }
+    }, 150);
+  }
+
 
   handleSearchFilter(filterValue: any, StoreFilters: any) {
     this.SearchFilterValues[filterValue] = this.SearchFilterValues[filterValue]
@@ -191,14 +185,6 @@ export class ChildResultTabComponent {
     else if (StoreFilters == 'types_of_route_filters')
       this.types_of_route_filters = filteredArr;
   }
-
-  handleCheckFilter(filter: any, value: any) {
-    let ExtraValue = this.FilterValues[filter];
-    let exists = ExtraValue.includes(value);
-    if (!exists) ExtraValue.push(value);
-    this.FilterValues[filter] = ExtraValue;
-  }
-
   handleRemovefilterElement(filter: any, index: any) {
     let ExtraValue = this.FilterValues[filter];
     ExtraValue.splice(index, 1);
@@ -333,31 +319,25 @@ export class ChildResultTabComponent {
 
   handleSearchFilterResults() {
     this.setLoading.emit(true);
-    let body = this._currentAPIData.body;
-    body.filter_enable = false;
-    if (this.FilterValues?.order_by?.length > 0)
-      body.order_by = this.FilterValues.order_by[0];
-    if (this.FilterValues?.route_type?.length > 0)
-      body.filters.route_type = this.FilterValues.route_type;
-    if (this.FilterValues?.active_ingredient?.length > 0)
-      body.filters.active_ingredient = this.FilterValues.active_ingredient;
-    if (this.FilterValues?.company_name?.length > 0)
-      body.filters.company_name = this.FilterValues.company_name;
-    if (this.FilterValues?.types_of_route?.length > 0)
-      body.filters.types_of_route = this.FilterValues.types_of_route;
-    if (this.FilterValues?.field_of_application?.length > 0)
-      body.filters.field_of_application =
-        this.FilterValues.field_of_application;
-    if (this.FilterValues?.updation_date?.length > 0)
-      body.filters.updation_date = this.FilterValues.updation_date;
 
-    let cleanedDataBody = this.removeEmptyArrays(body.filters);
-    body.filters = cleanedDataBody;
-    this._currentAPIData.body = body;
-    this._currentAPIData.body.page_no = 1;
-    this.ServiceResultTabFiltersService.getFilterOptions(
-      this._currentAPIData
-    ).subscribe({
+    const body = this._currentAPIData.body;
+    body.page_no = 1;
+    body.filter_enable = false;
+
+    // Set order_by separately
+    body.order_by = this.FilterValues.order_by[0] || '';
+
+    // Populate filters
+    const filters: any = {};
+    for (const key in this.FilterValues) {
+      if (key !== 'order_by' && this.FilterValues[key].length > 0) {
+        filters[key] = this.FilterValues[key];
+      }
+    }
+    body.filters = this.removeEmptyArrays(filters);
+
+    // Call API
+    this.ServiceResultTabFiltersService.getFilterOptions(this._currentAPIData).subscribe({
       next: (res) => {
         this.handleChangeTabData.emit(res?.data);
         this.setLoading.emit(false);
@@ -369,6 +349,56 @@ export class ChildResultTabComponent {
       },
     });
   }
+  extractBaseCompanyName(fullName: string): string {
+  // Remove suffix like " - Branch 1", " - HQ", etc.
+  return fullName.split(' ')[0].trim().toLowerCase();
+}
+
+  updateChildFilterData(): void {
+    // ✅ Example: Call API again with updated filters
+    this.childFilterEvent.emit(this.FilterValues); // or however you're passing filters to parent
+
+    // OR if you fetch data directly here
+    // this.getFilteredDataFromAPI(); 
+  }
+  handleCheckFilter(key: string, selectedName: string): void {
+    const allOptions = this[`${key}_filters`] || [];
+
+    // Extract base name (e.g., remove "- Branch" part, or split on " - ")
+    const baseName = selectedName.split(' - ')[0].trim();
+
+    // Get all matching entries
+    const matchingNames = allOptions
+      .filter(option => option.name.startsWith(baseName))
+      .map(option => option.name);
+
+    // Check if already selected
+    const allSelected = matchingNames.every(name =>
+      this.FilterValues[key].includes(name)
+    );
+
+    if (allSelected) {
+      // If already selected, remove all
+      this.FilterValues[key] = this.FilterValues[key].filter(
+        name => !matchingNames.includes(name)
+      );
+    } else {
+      // Otherwise, add all missing matches
+      matchingNames.forEach(name => {
+        if (!this.FilterValues[key].includes(name)) {
+          this.FilterValues[key].push(name);
+        }
+      });
+    }
+
+    this.updateChildFilterData(); // Optional: apply the filter immediately
+  }
+
+
+  emitCombinedFilters(): void {
+    this.childFilteredData.emit(this.FilterValues);
+  }
+
 
   handleSelectFilter(key: string, value: string) {
     this.setLoading.emit(true);
