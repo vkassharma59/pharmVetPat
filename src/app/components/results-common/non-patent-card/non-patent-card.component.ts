@@ -1,3 +1,324 @@
+// import { Component, Input, OnChanges, ViewChild, AfterViewInit, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
+// import { CommonModule } from '@angular/common';
+// import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+// import { MatSort, MatSortModule } from '@angular/material/sort';
+// import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+// import { jsPDF } from 'jspdf';
+// import autoTable from 'jspdf-autotable';
+// import * as XLSX from 'xlsx';
+// import { saveAs } from 'file-saver';
+// import { ViewChildren, ElementRef, QueryList } from '@angular/core';
+// import { MatInputModule } from '@angular/material/input';
+// import { MatFormFieldModule } from '@angular/material/form-field';
+// import { FormsModule } from '@angular/forms';
+// import { Observable, of } from 'rxjs';
+// import { map, catchError, tap } from 'rxjs/operators';
+// import { MainSearchService } from '../../../services/main-search/main-search.service';
+// @Component({
+//     selector: 'app-non-patent-card',
+//   standalone: true,
+//   imports: [CommonModule,
+//     FormsModule,
+//     MatTableModule,
+//     MatSortModule,
+//     MatInputModule,
+//     MatFormFieldModule,
+//     MatPaginatorModule],
+//    templateUrl: './non-patent-card.component.html',
+//   styleUrl: './non-patent-card.component.css'
+// })
+// export class NonPatentCardComponent implements OnChanges, AfterViewInit {
+
+//   @Output() dataFetchRequest = new EventEmitter<any>();
+//   @Input() columnDefs: any[] = [];
+//   @Input() rowData: any[] = [];
+//   data?: {
+//     data?: any[]; // Replace `any` with your actual data type
+//   };
+//   _currentChildAPIBody: any;
+//   displayedColumns: string[] = [];
+//   columnHeaders: { [key: string]: string } = {};
+//   filterableColumns: string[] = [];
+//   openFilter: { [key: string]: boolean } = {};
+//   activeSort: string = '';
+//   sortDirection: 'asc' | 'desc' | '' = '';
+
+//   columnsSearch: { [key: string]: string } = {};
+//   multiSortOrder: { column: number, dir: 'asc' | 'desc' }[] = [];
+//  noMatchingData: boolean = false;
+//   globalSearchValue: string = '';
+//   get pageSize(): number {
+//     return this._currentChildAPIBody?.length || 25;
+//   }
+//   dataSource = new MatTableDataSource<any>([]);
+//   @ViewChild(MatPaginator) paginator!: MatPaginator;
+//   @ViewChild(MatSort, { static: false }) sort!: MatSort;
+// @ViewChildren('filterInput') filterInputs!: QueryList<ElementRef<HTMLInputElement>>;
+
+//   @Input()
+//   get currentChildAPIBody() {
+//     return this._currentChildAPIBody;
+//   }
+//   set currentChildAPIBody(value: any) {
+//     this._currentChildAPIBody = value;
+//   }
+//   searchText: string = '';
+//   searchColumn: string | undefined;
+
+//   constructor(private cdr: ChangeDetectorRef,
+//     private mainSearchService: MainSearchService
+//   ) { }
+
+//   ngOnChanges(): void {
+//     //console.log('columnDefs:', this.columnDefs);
+//     // Reset counter only when the component is first loaded
+
+//     if (this.columnDefs && this.columnDefs.length > 0) {
+//       this.displayedColumns = [];
+//       this.columnHeaders = {};
+//       this.filterableColumns = [];
+
+//       // Check which columns have at least one non-empty value
+//       for (const col of this.columnDefs) {
+//         const colValue = col.value;
+
+//         const hasData = this.rowData?.some(row =>
+//           row[colValue] !== null && row[colValue] !== undefined && row[colValue] !== ''
+//         );
+
+//         if (hasData) {
+//           this.displayedColumns.push(colValue); // ✅ Only include columns with at least one value
+//           this.columnHeaders[colValue] = col.label;
+//           this.filterableColumns.push(colValue);
+//         } else {
+//           //console.log('🚫 Hiding column (empty data):', colValue);
+//         }
+//       }
+//     }
+//     if (this.rowData) {
+//       this.dataSource.data = this.rowData;
+//        this.noMatchingData = this.rowData.length === 0;
+//     }
+//   }
+//   ngAfterViewInit(): void {
+//     this.dataSource.sort = this.sort;
+//     this.dataSource.paginator = this.paginator;
+//     this.paginator.page.subscribe(() => this.fetchData());
+
+//     this.cdr.detectChanges();
+//   }
+
+//   scrollTable(direction: 'left' | 'right'): void {
+//     const container = document.querySelector('.scroll-container');
+//     if (container) {
+//       container.scrollBy({ left: direction === 'left' ? -150 : 150, behavior: 'smooth' });
+//     }
+//   }
+
+//   searchInColumn(column: any, filterInput: HTMLInputElement, event: MouseEvent): void {
+//     event.stopPropagation(); // prevent sort from triggering
+
+//     if (filterInput.value.trim() === '') {
+//       this.clearFilter(column.value, filterInput);
+//       return;
+//     }
+
+//     const searchValue = filterInput.value.trim();
+//     const columnKey = column.value;
+
+//     if (searchValue) {
+//       this.columnsSearch[columnKey] = searchValue;
+//     } else {
+//       delete this.columnsSearch[columnKey];
+//     }
+
+//     this.fetchData();
+//   }
+
+//   clearFilter(column: string, input: HTMLInputElement) {
+//     input.value = '';
+//     delete this.columnsSearch[column];
+//     this.fetchData();
+//   }
+//   onCustomSort(column: number) {
+//     const existing = this.multiSortOrder.find(s => s.column === column);
+//     if (existing) {
+//       // Toggle direction
+//       existing.dir = existing.dir === 'desc' ? 'asc' : 'desc';
+//     } else {
+//       // Add new column with default 'desc'
+//       this.multiSortOrder.push({ column, dir: 'desc' });
+//     }
+
+//     this.fetchData(); // Call API with updated sort order
+//   }
+
+//   toggleSort(index: number): void {
+//     const existingSort = this.multiSortOrder.find(s => s.column === index);
+//     let newDir: 'asc' | 'desc' = 'asc';
+
+//     if (existingSort) {
+//       newDir = existingSort.dir === 'asc' ? 'desc' : 'asc';
+//       this.multiSortOrder = this.multiSortOrder.filter(s => s.column !== index);
+//     }
+
+//     this.multiSortOrder.push({ column: index, dir: newDir });
+//     this.fetchData();
+//   }
+
+//   getSortIcon(index: number): string {
+//     const column = this.displayedColumns[index];
+//     const sort = this.multiSortOrder.find(s => s.column === index);
+//     if (!sort) return 'fa-sort';
+//     return sort.dir === 'asc' ? 'fa-sort-up' : 'fa-sort-down';
+//   }
+
+//   fetchData() {
+//     const isGlobalSearch = this.globalSearchValue && this.globalSearchValue.trim() !== '';
+//     // Add columns for global search: all displayedColumns with searchable: true
+//     const allColumns = isGlobalSearch
+//       ? this.displayedColumns.map(col => ({
+//         data: col,
+//         searchable: true
+//       }))
+//       : undefined;
+
+//     // Add only filtered columns for column search
+//     const searchColumns = !isGlobalSearch
+//       ? Object.entries(this.columnsSearch)
+//         .filter(([_, value]) => value && value.trim() !== '')
+//         .map(([key, value]) => ({
+//           data: key,
+//           searchable: true,
+//           search: { value: value.trim() }
+//         }))
+//       : [];
+//     const order = this.multiSortOrder.length > 0
+//       ? this.multiSortOrder
+//         .filter(s => typeof s.column === 'number')
+//         .map(s => {
+//           console.log('Sorting index:', s.column, 'direction:', s.dir);
+//           return {
+//             column: s.column,
+//             dir: s.dir
+//           };
+//         })
+//       : null;
+//     // const order = this.multiSortOrder.length > 0
+//     //   ? this.multiSortOrder.map(s => ({
+//     //     column: s.column,
+//     //     dir: s.dir
+//     //   }))
+//     //   : null;
+
+//     const globalSearch = isGlobalSearch
+//       ? { value: this.globalSearchValue.trim() }
+//       : null;
+
+//     const start = this.paginator ? this.paginator.pageIndex * this.paginator.pageSize : 0;
+//     const pageno = this.paginator ? this.paginator.pageIndex + 1 : 1;
+
+//     const payload: any = {
+//       start,
+//       pageno
+//     };
+//     console.log("payload data ", payload)
+//     if (isGlobalSearch && allColumns) {
+//       payload.columns = allColumns;
+//       payload.search = globalSearch;
+//     } else if (searchColumns.length > 0) {
+//       payload.columns = searchColumns;
+//     }
+//     if (order) payload.order = order;
+//     this.dataFetchRequest.emit(payload);
+//      setTimeout(() => {
+//       const currentData = this.dataSource.filteredData || [];
+//       this.noMatchingData = currentData.length === 0;
+//     }, 300);
+//   }
+
+//   resetToDefault() {
+//     this.multiSortOrder = [];
+//     this.columnsSearch = {};
+//     this.globalSearchValue = '';
+//     // Clear all input boxes in DOM (filters)
+//     this.filterInputs.forEach(inputRef => inputRef.nativeElement.value = '');
+//     this.fetchData();
+//   }
+//   getAllDataFromApi(): Observable<any[]> {
+//     const requestBody = {
+//       ...this._currentChildAPIBody,
+//       start: 0,
+//       length: this._currentChildAPIBody?.count || 1000,
+//     };
+//     console.log('📦  response body:', requestBody);
+//     return this.mainSearchService.NonPatentSearchSpecific(requestBody).pipe(
+//       tap((result: NonPatentCardComponent) => {
+//         console.log('📦 Full API response:', result);
+//       }),
+//       map((result: NonPatentCardComponent) => result?.data?.data || []),
+//       catchError(error => {
+//         console.error('❌ Error fetching all data:', error);
+//         return of([]); // Return an empty array on error
+//       })
+//     );
+//   }
+
+//   // ✅ Download as PDF
+//   downloadPDF(): void {
+//     this.getAllDataFromApi().subscribe(data => {
+//       const exportData = data.map(row => {
+//         return this.displayedColumns.map(col => row[col] !== undefined ? row[col] : '');
+//       });
+
+//       const colHeaders = this.displayedColumns;
+//       const doc = new jsPDF();
+//       autoTable(doc, {
+//         head: [colHeaders],
+//         body: exportData,
+//       });
+//       doc.save('ExportedData.pdf');
+//     });
+//   }
+
+//   // ✅ Download as CSV
+//   downloadCSV(): void {
+//     this.getAllDataFromApi().subscribe(data => {
+//       let csvContent = this.displayedColumns.join(',') + '\n';
+
+//       data.forEach(row => {
+//         const rowData = this.displayedColumns.map(col => row[col] !== undefined ? row[col] : '');
+//         csvContent += rowData.join(',') + '\n';
+//       });
+
+//       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+//       saveAs(blob, 'ExportedData.csv');
+//     });
+//   }
+//   // ✅ Download as Excel
+//   downloadExcel(): void {
+//     this.getAllDataFromApi().subscribe(data => {
+//       const exportData = data.map(row => {
+//         const formatted: any = {};
+//         this.displayedColumns.forEach(col => {
+//           formatted[col] = row[col] !== undefined ? row[col] : '';
+//         });
+//         return formatted;
+//       });
+
+//       const worksheet = XLSX.utils.json_to_sheet(exportData);
+//       const workbook = XLSX.utils.book_new();
+//       XLSX.utils.book_append_sheet(workbook, worksheet, 'Exported Data');
+
+//       const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+//       const blob = new Blob([excelBuffer], {
+//         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+//       });
+
+//       saveAs(blob, 'ExportedData.xlsx');
+//     });
+//   }
+// }
 import { Component, Input, OnChanges, ViewChild, AfterViewInit, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -6,6 +327,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 import { ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,8 +335,6 @@ import { FormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
-import * as ExcelJS from 'exceljs';
-import { saveAs } from 'file-saver';
 @Component({
   selector: 'app-non-patent-card',
   standalone: true,
@@ -359,79 +679,60 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
  
  
  // 4️⃣ Download Excel
-  downloadExcel(): void {
-   this.getAllDataFromApi().subscribe(data => {
-     const workbook = new ExcelJS.Workbook();
-     const worksheet = workbook.addWorksheet('Exported Data');
- 
-     // Define header columns
-     const columns = this.displayedColumns.map(col => ({
-       header: this.toTitleCase(col),
-       key: col,
-     }));
-     worksheet.columns = columns;
- 
-     // Add formatted data rows
-     data.forEach(row => {
-       const formattedRow: any = {};
-       this.displayedColumns.forEach(col => {
-         let value = row[col];
-         if (Array.isArray(value)) {
-           value = value.join(', ');
-         } else if (typeof value === 'object' && value !== null) {
-           value = JSON.stringify(value);
-         }
-         formattedRow[col] = value !== undefined ? value : '';
-       });
-       worksheet.addRow(formattedRow);
-     });
- 
-     // ✅ ADD AUTO-WIDTH ADJUSTMENT HERE
-     this.displayedColumns.forEach((col, index) => {
-       const excelCol = worksheet.getColumn(index + 1);
-       let maxLength = col.length;
- 
-       excelCol.eachCell({ includeEmpty: true }, cell => {
-         const cellValue = cell.value ? cell.value.toString() : '';
-         if (cellValue.length > maxLength) {
-           maxLength = cellValue.length;
-         }
-       });
- 
-       excelCol.width = maxLength + 6;
-     });
- 
-     // Style header row
-     const headerRow = worksheet.getRow(1);
-     headerRow.eachCell(cell => {
-       cell.font = {
-         bold: true,
-         color: { argb: 'FFFFFFFF' },
-         size: 15
-       };
-       cell.fill = {
-         type: 'pattern',
-         pattern: 'solid',
-         fgColor: { argb: 'FF4169E1' } // Dark blue
-       };
-       cell.alignment = { horizontal: 'center' };
-       cell.border = {
-         top: { style: 'thin' },
-         bottom: { style: 'thin' },
-         left: { style: 'thin' },
-         right: { style: 'thin' },
-       };
-     });
- 
-     // Save workbook
-     workbook.xlsx.writeBuffer().then(buffer => {
-       const blob = new Blob([buffer], {
-         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-       });
-       saveAs(blob, 'ExportedDataFormatted.xlsx');
-     });
-   });
- }
+ // 4️⃣ Download Excel
+ downloadExcel(): void {
+  this.getAllDataFromApi().subscribe(data => {
+    const exportData = data.map(row => {
+      const formatted: any = {};
+      this.displayedColumns.forEach(col => {
+        let value = row[col];
+        if (Array.isArray(value)) {
+          value = value.join(', ');
+        } else if (typeof value === 'object' && value !== null) {
+          value = JSON.stringify(value);
+        }
+        formatted[col] = value !== undefined ? value : '';
+      });
+      return formatted;
+    });
+
+    const headers = this.displayedColumns.map(col => this.toTitleCase(col));
+    const worksheet = XLSX.utils.json_to_sheet([]);
+    
+    // Add header with formatting
+    XLSX.utils.sheet_add_aoa(worksheet, [headers], { origin: 'A1' });
+
+    // Add data below header
+    XLSX.utils.sheet_add_json(worksheet, exportData, { origin: 'A2', skipHeader: true });
+
+    // Style header row
+    headers.forEach((_, i) => {
+      const cellRef = XLSX.utils.encode_cell({ r: 0, c: i });
+      if (!worksheet[cellRef]) return;
+      worksheet[cellRef].s = {
+        fill: { fgColor: { rgb: "CCE5FF" } }, // light blue background
+        font: { bold: true }
+      };
+    });
+
+    worksheet["!cols"] = this.displayedColumns.map(() => ({ wch: 30 }));
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Exported Data');
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array',
+      cellStyles: true
+    });
+
+    const blob = new Blob([excelBuffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    });
+
+    saveAs(blob, 'ExportedData.xlsx');
+  });
+}
 
  
  // ✅ Optional: Capitalize headers
