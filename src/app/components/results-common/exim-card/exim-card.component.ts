@@ -6,6 +6,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 import { ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,8 +14,6 @@ import { FormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
-import * as ExcelJS from 'exceljs';
-import { saveAs } from 'file-saver';
 @Component({
   selector: 'app-exim-card',
   standalone: true,
@@ -72,7 +71,6 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
   constructor(private cdr: ChangeDetectorRef,
     private mainSearchService: MainSearchService
   ) { }
-
 
   ngOnChanges(): void {
     //console.log('columnDefs:', this.columnDefs);
@@ -319,80 +317,57 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
 
   // 4️⃣ Download Excel
   // 4️⃣ Download Excel
- downloadExcel(): void {
-  this.getAllDataFromApi().subscribe(data => {
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('Exported Data');
-
-    // Define header columns
-    const columns = this.displayedColumns.map(col => ({
-      header: this.toTitleCase(col),
-      key: col,
-    }));
-    worksheet.columns = columns;
-
-    // Add formatted data rows
-    data.forEach(row => {
-      const formattedRow: any = {};
-      this.displayedColumns.forEach(col => {
-        let value = row[col];
-        if (Array.isArray(value)) {
-          value = value.join(', ');
-        } else if (typeof value === 'object' && value !== null) {
-          value = JSON.stringify(value);
-        }
-        formattedRow[col] = value !== undefined ? value : '';
-      });
-      worksheet.addRow(formattedRow);
-    });
-
-    // ✅ ADD AUTO-WIDTH ADJUSTMENT HERE
-    this.displayedColumns.forEach((col, index) => {
-      const excelCol = worksheet.getColumn(index + 1);
-      let maxLength = col.length;
-
-      excelCol.eachCell({ includeEmpty: true }, cell => {
-        const cellValue = cell.value ? cell.value.toString() : '';
-        if (cellValue.length > maxLength) {
-          maxLength = cellValue.length;
-        }
+  downloadExcel(): void {
+    this.getAllDataFromApi().subscribe(data => {
+      const exportData = data.map(row => {
+        const formatted: any = {};
+        this.displayedColumns.forEach(col => {
+          let value = row[col];
+          if (Array.isArray(value)) {
+            value = value.join(', ');
+          } else if (typeof value === 'object' && value !== null) {
+            value = JSON.stringify(value);
+          }
+          formatted[col] = value !== undefined ? value : '';
+        });
+        return formatted;
       });
 
-      excelCol.width = maxLength + 6;
-    });
+      const headers = this.displayedColumns.map(col => this.toTitleCase(col));
+      const worksheet = XLSX.utils.json_to_sheet([]);
 
-    // Style header row
-    const headerRow = worksheet.getRow(1);
-    headerRow.eachCell(cell => {
-      cell.font = {
-        bold: true,
-        color: { argb: 'FFFFFFFF' },
-        size: 15
-      };
-      cell.fill = {
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: 'FF4169E1' } // Dark blue
-      };
-      cell.alignment = { horizontal: 'center' };
-      cell.border = {
-        top: { style: 'thin' },
-        bottom: { style: 'thin' },
-        left: { style: 'thin' },
-        right: { style: 'thin' },
-      };
-    });
+      // Add header with formatting
+      XLSX.utils.sheet_add_aoa(worksheet, [headers], { origin: 'A1' });
 
-    // Save workbook
-    workbook.xlsx.writeBuffer().then(buffer => {
-      const blob = new Blob([buffer], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      // Add data below header
+      XLSX.utils.sheet_add_json(worksheet, exportData, { origin: 'A2', skipHeader: true });
+
+      // Style header row
+      headers.forEach((_, i) => {
+        const cellRef = XLSX.utils.encode_cell({ r: 0, c: i });
+        if (!worksheet[cellRef]) return;
+        worksheet[cellRef].s = {
+          fill: { fgColor: { rgb: "CCE5FF" } }, // light blue background
+          font: { bold: true }
+        };
       });
-      saveAs(blob, 'ExportedDataFormatted.xlsx');
-    });
-  });
-}
 
+      worksheet["!cols"] = this.displayedColumns.map(() => ({ wch: 30 }));
+
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Exported Data');
+
+      const excelBuffer = XLSX.write(workbook, {
+        bookType: 'xlsx',
+        type: 'array',
+        cellStyles: true
+      });
+      const blob = new Blob([excelBuffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      });
+      saveAs(blob, 'ExportedData.xlsx');
+    });
+  }
   // ✅ Optional: Capitalize headers
   toTitleCase(str: string): string {
     return str.replace(/_/g, ' ')
