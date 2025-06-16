@@ -40,7 +40,7 @@
                     </p>
                 </div>
 
-                <img *ngIf="_data?.plaintiff_logo" class="plaintiff_logo" [src]="getImageUrl1(_data)"  (error)="onImgError($event)" alt="error"
+                <img *ngIf="_data?.plaintiff_logo" class="plaintiff_logo" [src]="getImageUrl1(_data)"   alt="error"
                     style="height: 200px; width: 200px; padding: 10px;padding-left: 0;object-fit: contain;">
 
             </div>
@@ -74,7 +74,7 @@
                 </div>
 
                 <div>
-                    <img *ngIf="_data?.defendant_logo" class="defendant_logo" [src]="getImageUrl(_data)" alt="error"  (error)="onImgError($event)"
+                    <img *ngIf="_data?.defendant_logo" class="defendant_logo" [src]="getImageUrl(_data)" alt="error" 
                         style="height: 150px; width: 100%; padding: 10px;padding-left: 0; object-fit: contain;">
 
                 </div>
