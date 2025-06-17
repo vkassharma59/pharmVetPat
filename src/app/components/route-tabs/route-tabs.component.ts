@@ -15,20 +15,46 @@ import cloneDeep from 'lodash/cloneDeep';
 
 export class RouteTabsComponent {
 
-  resultTabValues: any = [];
-  
   @Output() handleCurrentTab = new EventEmitter<any>();
-  @Input() resultTabs: any;
+  resultTabValues: any = [];
+  private _resultTabs: any;
 
-
-  constructor(private utilityService: UtilityService) { }
-
-  ngOnInit() {
-    if(this.resultTabs) {
-      this.resultTabValues = JSON.parse(JSON.stringify(this.resultTabs));
-      
+  @Input()
+  get resultTabs(): any {
+    return this._resultTabs;
+  }
+  set resultTabs(value: any) {
+    this._resultTabs = value;
+    if (value) {
+      this.resultTabValues = JSON.parse(JSON.stringify(value));
     }
   }
+
+  private _activeTab: string = '';
+  @Input()
+  get activeTab(): string {
+    return this._activeTab;
+  }
+  set activeTab(value: string) {    
+    if (value && this.resultTabValues && Array.isArray(this.resultTabValues)) {
+      this._activeTab = value;
+      const data =  {};
+      this.resultTabValues.forEach((tab: any) => {
+        if(tab?.name === value) {
+          tab.isActive = true; 
+          data['isActive'] = true;
+          data['label'] = tab?.label;
+          data['name'] = value;
+        } else {
+          tab.isActive = false; // Set inactive for others
+        }
+      });
+
+      this.handleCurrentTab.emit(data);
+    }
+  }
+
+  constructor(private utilityService: UtilityService) { }
 
   handleTabClick(data: any) {
     // Set tab active

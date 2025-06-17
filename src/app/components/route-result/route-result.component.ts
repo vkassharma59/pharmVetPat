@@ -59,6 +59,7 @@ export class RouteResultComponent {
   searchThrough: string = '';
   isSplitDownload: boolean = false;
   isDownloadPermit: boolean = false;
+  activeTab: string = '';
 
   @Output() handleSetLoading: EventEmitter<any> = new EventEmitter<any>();
   @Output() backFunction: EventEmitter<any> = new EventEmitter<any>();
@@ -78,7 +79,6 @@ export class RouteResultComponent {
     return this._dataItem;
   }
   set dataItem(value: any) {
-    console.log(value);
     this._dataItem = value;
   }
 
@@ -367,5 +367,9 @@ export class RouteResultComponent {
         console.error('Error:', e);
       },
     });
+  }
+
+  onChemicalDirectoryActiveTabChange(tabName: string) {
+    this.activeTab = tabName;
   }
 }

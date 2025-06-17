@@ -127,6 +127,7 @@ export class ChemicalDirectoryComponent implements OnChanges {
 
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
+  @Output() activeTabChange = new EventEmitter<string>();
 
   @Input() CurrentAPIBody: any;
   private _currentChildAPIBody: any;
@@ -213,6 +214,10 @@ export class ChemicalDirectoryComponent implements OnChanges {
         this.handleSetLoading.emit(false);
       }
     });
+  }
+
+  onActiveTabChange(tabName: string) {
+    this.activeTabChange.emit(tabName);
   }
 
 }

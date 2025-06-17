@@ -40,6 +40,7 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
   @Input() CurrentAPIBody: any;
   @Output() ROSChange: EventEmitter<any> = new EventEmitter<any>();
   @Output() setLoadingState: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() activeTabChange: EventEmitter<string> = new EventEmitter<string>();
  @Input()
   get currentChildAPIBody() {
     return this._currentChildAPIBody;
@@ -130,6 +131,10 @@ handleROSButtonClick(value: any) {
     next: (res) => {
       const response = res?.data?.columns;
       Auth_operations.setColumnList('technicalRoutes', response);
+      // Emit active tab name after successful API call
+      if (this.resultTabs?.technicalRoutes?.name) {
+        this.activeTabChange.emit(this.resultTabs.technicalRoutes.name);
+      }
     },
     error: (e) => {
       console.error(e);
