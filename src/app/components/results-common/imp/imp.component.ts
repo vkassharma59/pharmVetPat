@@ -10,7 +10,7 @@ import { Auth_operations } from '../../../Utils/SetToken';
 @Component({
   selector: 'chem-imp',
   standalone: true,
-  imports: [TruncatePipe, CommonModule,ImpPatentsCardComponent, ChildPagingComponent],
+  imports: [TruncatePipe, CommonModule, ImpPatentsCardComponent, ChildPagingComponent],
   templateUrl: './imp.component.html',
   styleUrl: './imp.component.css'
 })
@@ -18,7 +18,7 @@ export class ImpComponent {
 
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
-   searchThrough: string = '';
+  searchThrough: string = '';
   resultTabs: any = {};
   _data: any = [];
   productValue: string = '';
@@ -56,14 +56,14 @@ export class ImpComponent {
       dropdownState: false
     }
   ];
-  
+
   @Input()
   get data() {
     return this._data;
   }
   set data(value: any) {
     this._data = value;
-    console.log("======adasygcfsv|",this._data)
+    console.log("======adasygcfsv|", this._data)
   }
 
   @Input()
@@ -72,7 +72,7 @@ export class ImpComponent {
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
-    if(value) {
+    if (value) {
       this.impPatentApiBody = JSON.parse(JSON.stringify(value)) || value;
       this.handleFetchFilters();
     }
@@ -114,8 +114,8 @@ export class ImpComponent {
   setFilterLabel(filterKey: string, label: string) {
     this.filterConfigs = this.filterConfigs.map((item) => {
       if (item.key === filterKey) {
-        if(label === '') {
-          switch(filterKey) {
+        if (label === '') {
+          switch (filterKey) {
             case 'product':
               label = 'Select Product';
               break;
@@ -136,38 +136,53 @@ export class ImpComponent {
       return item;
     });
   }
-  
+
 
   handleSelectFilter(filterKey: string, value: any) {
     this.onFilterButtonClick(filterKey);
     this.handleSetLoading.emit(true);
 
-    if (value == '') {
+    // Remove filter if value is empty
+    if (value === '') {
       delete this.impPatentApiBody.filters[filterKey];
-      const filterLabel = this.filterConfigs.find((item) => item.key === filterKey);
       this.setFilterLabel(filterKey, '');
     } else {
       this.impPatentApiBody.filters[filterKey] = value;
       this.setFilterLabel(filterKey, value);
     }
-  
+
+    // Create updated request body
     this._currentChildAPIBody = {
       ...this.impPatentApiBody,
       filters: { ...this.impPatentApiBody.filters }
-    };    
-    
+    };
+
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  
-    this.mainSearchService.impPatentsSearchSpecific(
-      this._currentChildAPIBody
-    ).subscribe({
+
+    this.mainSearchService.impPatentsSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
+        let resultData = res?.data || {};
+        console.log('📦 API Response:', resultData);
+
+        // ✅ Sort if ORDER_BY is selected
+        const sortValue = this.impPatentApiBody.filters['order_by']; // ✅ case-sensitive
+
+        if (sortValue === 'Newest') {
+          resultData.imp_patent_data = resultData.imp_patent_data?.sort((a: any, b: any) =>
+            new Date(b.APPLICATION_DATE).getTime() - new Date(a.APPLICATION_DATE).getTime()
+          );
+        } else if (sortValue === 'Oldest') {
+          resultData.imp_patent_data = resultData.imp_patent_data?.sort((a: any, b: any) =>
+            new Date(a.APPLICATION_DATE).getTime() - new Date(b.APPLICATION_DATE).getTime()
+          );
+        }
+
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
-          count: res?.data?.imp_patent_count
+          count: resultData?.imp_patent_count
         };
 
-        this.handleResultTabData.emit(res.data);
+        this.handleResultTabData.emit(resultData);
         this.handleSetLoading.emit(false);
         window.scrollTo(0, scrollTop);
       },
@@ -178,9 +193,10 @@ export class ImpComponent {
         };
         this.handleSetLoading.emit(false);
         window.scrollTo(0, scrollTop);
-      },
+      }
     });
   }
+
   clear() {
     // Reset all filter labels to default
     this.filterConfigs = this.filterConfigs.map(config => {
@@ -199,25 +215,25 @@ export class ImpComponent {
           defaultLabel = 'Order By';
           break;
       }
-  
+
       return {
         ...config,
         label: defaultLabel,
         dropdownState: false
       };
     });
-  
+
     // Clear filters object
     this.impPatentApiBody.filters = {};
-  
+
     // Reset API body and trigger fresh search (optional)
     this._currentChildAPIBody = {
       ...this.impPatentApiBody,
       filters: {}
     };
-  
+
     this.handleSetLoading.emit(true);
-  
+
     this.mainSearchService.impPatentsSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         this._currentChildAPIBody = {
@@ -233,9 +249,9 @@ export class ImpComponent {
         this.handleSetLoading.emit(false);
       },
     });
-  
+
     // Scroll to top
     window.scrollTo(0, 0);
   }
-  
+
 }

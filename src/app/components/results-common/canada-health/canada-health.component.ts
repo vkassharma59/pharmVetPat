@@ -20,28 +20,30 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
   canada_approval_column: any = {};
   resultTabs: any = {};
 
-  static apiCallCount: number = 0; // Global static counter
-  localCount: number = 0; // Instance-specific count
+  static apiCallCount: number = 0;
+  localCount: number = 0;
 
   @Input()
   get data() {
     return this._data;
   }
+
   set data(value: any) {
     if (value && Object.keys(value).length > 0) {
-      CanadaHealthComponent.apiCallCount++; // Increment static counter
-      this.localCount = CanadaHealthComponent.apiCallCount; // Assign instance count
-
-
+      CanadaHealthComponent.apiCallCount++;
+      this.localCount = CanadaHealthComponent.apiCallCount;
 
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
 
-      if (column_list[this.resultTabs.canadaApproval?.name]?.length > 0) {
-        for (let i = 0; i < column_list[this.resultTabs.canadaApproval.name].length; i++) {
-          this.canada_approval_column[column_list[this.resultTabs.canadaApproval.name][i].value] =
-            column_list[this.resultTabs.canadaApproval.name][i].name;
+      const tabKey = this.resultTabs?.canadaApproval?.name || 'CANADA_APPROVAL';
+
+      if (column_list?.[tabKey]?.length > 0) {
+        for (const col of column_list[tabKey]) {
+          this.canada_approval_column[col.value] = col.name;
         }
+      } else {
+        console.warn(`⚠️ No columns found for tab key: ${tabKey}`);
       }
 
       this._data = value;
@@ -51,14 +53,10 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
   constructor(private dialog: MatDialog, private utilityService: UtilityService) { }
 
   ngOnInit() {
-    // Reset counter only when the component is first loaded
-    if (CanadaHealthComponent.apiCallCount === 0) {
-      CanadaHealthComponent.apiCallCount = 0;
-    }
+    // No need to reset - already initialized
   }
 
   ngOnDestroy() {
-    // Reset counter when navigating away from the component
     CanadaHealthComponent.apiCallCount = 0;
   }
 
@@ -70,12 +68,11 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
     this.MoreInfo = !this.MoreInfo;
   }
 
-
   getColumnName(value: any) {
-    return this.canada_approval_column[value];
+    return this.canada_approval_column?.[value] ?? value;
   }
 
-  getPubchemId(value: any) {
+  getPubchemId(value: any): string {
     return `https://pubchem.ncbi.nlm.nih.gov/#query=${value}`;
   }
 
@@ -83,11 +80,11 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
     return `${environment.baseUrl}${environment.domainNameCompanyLogo}${value?.company_logo}`;
   }
 
-  getCountryUrl(value: any) {
+  getCountryUrl(value: any): string {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country_of_company}.png`;
   }
 
-  getCompanyWebsite(value: any) {
+  getCompanyWebsite(value: any): string {
     return `https://${value}`;
   }
 
@@ -102,14 +99,12 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
 
     document.body.removeChild(textArea);
 
-    // Step 2: Find the icon inside the clicked span and swap classes
     const icon = el.querySelector('i');
 
     if (icon?.classList.contains('fa-copy')) {
       icon.classList.remove('fa-copy');
       icon.classList.add('fa-check');
 
-      // Step 3: Revert it back after 1.5 seconds
       setTimeout(() => {
         icon.classList.remove('fa-check');
         icon.classList.add('fa-copy');
@@ -121,7 +116,7 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
     return (
       environment.baseUrl +
       environment.domainNameCompanyLogo +
-      this._data?.commentry
+      data?.company_logo
     );
   }
 }
