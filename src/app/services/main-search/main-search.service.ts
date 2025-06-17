@@ -101,6 +101,7 @@ export class MainSearchService {
   }
 
   technicalRoutesSearchSpecific(props: any): Observable<any> {
+    console.log("propers",props)
     const body = props;
     return this.http
       .post(this.apiUrls.technicalRoutes.searchSpecific, body, { headers: this.headers })

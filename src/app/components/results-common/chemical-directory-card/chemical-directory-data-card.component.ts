@@ -17,7 +17,7 @@ import { TechnicalRoutesComponent } from "../technical-routes/technical-routes.c
 @Component({
   selector: 'chemical-directory-card',
   standalone: true,
-  imports: [CommonModule, TechnicalRoutesCardComponent, TechnicalRoutesComponent],
+  imports: [CommonModule,],
   templateUrl: './chemical-directory-data-card.component.html',
   styleUrl: './chemical-directory-data-card.component.css',
 })
@@ -35,11 +35,18 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
   pageNo: number = 1;
   localCount: number;
   showAppIntermediates: boolean = false;
+  _currentChildAPIBody: any;
 
   @Input() CurrentAPIBody: any;
   @Output() ROSChange: EventEmitter<any> = new EventEmitter<any>();
   @Output() setLoadingState: EventEmitter<boolean> = new EventEmitter<boolean>();
-
+ @Input()
+  get currentChildAPIBody() {
+    return this._currentChildAPIBody;
+  }
+  set currentChildAPIBody(value: any) {
+    this._currentChildAPIBody = value;
+  }
   constructor(private dialog: MatDialog, private utilityService: UtilityService,
        private columnListService: ColumnListService,
           private mainSearchService: MainSearchService,
@@ -113,33 +120,24 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
       }, 1500);
     }
   }
-  showTechnicalRoute = false;
+handleROSButtonClick(value: any) {
+  if (value === 'ros_search') this.ROSChange.emit('ROS_search');
+  else this.ROSChange.emit('ROS_filter');
 
- handleROSButtonClick(value: any) {
-    if (value === 'ros_search') this.ROSChange.emit('ROS_search');
-    else {
-      this.ROSChange.emit('ROS_filter');
-    }
-    const tech_API = this.apiConfigService.apiUrls.technicalRoutes.columnList;
-    console.log("technicalAPI:",tech_API);
+  // Just for columnList setting
+  const tech_API = this.apiConfigService.apiUrls.technicalRoutes.columnList;
+  this.columnListService.getColumnList(tech_API).subscribe({
+    next: (res) => {
+      const response = res?.data?.columns;
+      Auth_operations.setColumnList('technicalRoutes', response);
+    },
+    error: (e) => {
+      console.error(e);
+      this.setLoadingState.emit(false);
+    },
+  });
+}
 
-   this.columnListService.getColumnList(tech_API).subscribe({
-   
-      next: (res) => {
-        const response = res?.data?.columns;
-        Auth_operations.setColumnList(
-          'technical_route_column_list',
-          response
-        );
-        console.log("responce",response);
-      },
-      error: (e) => {
-        console.error(e);
-          this.setLoadingState.emit(false);
-      },
-    });
-
-  }
   getPatentUrl(data: any) {
     return `https://patentscope.wipo.int/search/en/result.jsf?inchikey=${data?.inchikey}`;
   }
