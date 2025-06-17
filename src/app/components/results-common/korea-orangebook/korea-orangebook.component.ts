@@ -20,7 +20,7 @@ export class KoreaOrangebookComponent implements OnInit, OnDestroy {
   korea_approval_column: any = {};
   resultTabs: any = {};
   @Input() currentChildAPIBody: any;
-  @Input() index: number = 0; 
+  @Input() index: number = 0;
 
   static apiCallCount: number = 0; // Global static counter
   localCount: number = 0; // Instance-specific count
@@ -29,20 +29,26 @@ export class KoreaOrangebookComponent implements OnInit, OnDestroy {
   get data() {
     return this._data;
   }
+
   set data(value: any) {
     if (value && Object.keys(value).length > 0) {
-      KoreaOrangebookComponent.apiCallCount++; // Increment static counter
-      this.localCount = KoreaOrangebookComponent.apiCallCount; // Assign instance count
-    
+      KoreaOrangebookComponent.apiCallCount++;
+      this.localCount = KoreaOrangebookComponent.apiCallCount;
 
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
 
-      if (column_list[this.resultTabs.koreaApproval?.name]?.length > 0) {
-        for (let i = 0; i < column_list[this.resultTabs.koreaApproval.name].length; i++) {
-          this.korea_approval_column[column_list[this.resultTabs.koreaApproval.name][i].value] =
-            column_list[this.resultTabs.koreaApproval.name][i].name;
-        }
+      const tabKey = this.resultTabs?.koreaApproval?.name || 'KOREA_APPROVAL';
+      console.log('🟡 column_list:', column_list);
+      console.log('🟡 resultTabs:', this.resultTabs);
+      console.log('🟡 tabKey:', tabKey);
+
+      if (column_list?.[tabKey]?.length > 0) {
+        column_list[tabKey].forEach((col: any) => {
+          this.korea_approval_column[col.value] = col.name;
+        });
+      } else {
+        console.warn(`⚠️ No column list found for key: ${tabKey}`);
       }
 
       this._data = value;
@@ -51,16 +57,13 @@ export class KoreaOrangebookComponent implements OnInit, OnDestroy {
 
   constructor(private dialog: MatDialog, private utilityService: UtilityService) { }
 
-
   ngOnInit() {
-    // Reset counter only when the component is first loaded
     if (KoreaOrangebookComponent.apiCallCount === 0) {
       KoreaOrangebookComponent.apiCallCount = 0;
     }
   }
 
   ngOnDestroy() {
-    // Reset counter when navigating away from the component
     KoreaOrangebookComponent.apiCallCount = 0;
   }
 
@@ -72,8 +75,9 @@ export class KoreaOrangebookComponent implements OnInit, OnDestroy {
     this.MoreInfo = !this.MoreInfo;
   }
 
-  getColumnName(value: any) {
-    return this.korea_approval_column[value];
+  getColumnName(value: any): string {
+    const label = this.korea_approval_column?.[value];
+    return label ?? value; // fallback to key if no label found
   }
 
   getPubchemId(value: any) {
@@ -100,17 +104,13 @@ export class KoreaOrangebookComponent implements OnInit, OnDestroy {
     textArea.select();
     textArea.setSelectionRange(0, 99999);
     document.execCommand('copy');
-
     document.body.removeChild(textArea);
 
-    // Step 2: Find the icon inside the clicked span and swap classes
     const icon = el.querySelector('i');
-
     if (icon?.classList.contains('fa-copy')) {
       icon.classList.remove('fa-copy');
       icon.classList.add('fa-check');
 
-      // Step 3: Revert it back after 1.5 seconds
       setTimeout(() => {
         icon.classList.remove('fa-check');
         icon.classList.add('fa-copy');

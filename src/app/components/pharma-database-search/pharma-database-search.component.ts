@@ -46,20 +46,8 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   @ViewChild('chemicalStructureKeywordInput') chemicalStructureKeywordInput!: ElementRef;
   @ViewChild('synthesisSearchkeywordInput') synthesisSearchkeywordInput!: ElementRef;
   @ViewChild('intermediateSearchKeywordInput') intermediateSearchKeywordInput!: ElementRef;
-  // @HostListener('document:click', ['$event'])
-  // onOutsideClick(event: MouseEvent) {
-  //   const target = event.target as HTMLElement;
+    @ViewChild('devStageWrapper') devStageWrapper!: ElementRef;
 
-  //   // Close DevStage dropdown
-  //   if (!target.closest('.dev-stage-container')) {
-  //     this.showDevStageDropdown = false;
-  //   }
-
-  //   // Close Innovator dropdown
-  //   if (!target.closest('.innovator-container')) {
-  //     this.showInnovatorDropdown = false;
-  //   }
-  // }
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
     const target = event.target as HTMLElement;
@@ -316,12 +304,22 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       });
   }
   isSearchEnabled(): boolean {
-    if (!this.advanceSearch.filterInputs.length) return false;
+  const { devStage, innovator, startSales, endSales, filterInputs } = this.advanceSearch;
 
-    return this.advanceSearch.filterInputs.every(
-      input => input.filter && input.keyword?.trim()
-    );
-  }
+  // Check if any filter column has a keyword and is enabled
+  const hasFilterKeyword = filterInputs?.some(
+    (input: any) => input.filter && input.keyword?.trim() !== ''
+  );
+
+  return !!(
+    devStage?.trim() ||
+    innovator?.trim() ||
+    startSales ||
+    endSales ||
+    hasFilterKeyword
+  );
+}
+
   isInputEnabled(): boolean {
     return !!(this.intermediateSearch.filter && this.intermediateSearch.keyword?.trim());
   }
@@ -461,136 +459,92 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     })
   }
 
-  // checkPriviledgeAndHandleSearch(searchType: string = '') {
-
-  //   let todaysLimit: any = '';
-  //   this.setLoadingState.emit(true);
-
-  //   // Fetch user privileges
-  //   this.userPriviledgeService.getUserPriviledgesData().subscribe({
-  //     next: (res: any) => {
-  //       const userInfo = res?.data?.user_info;
-  //       if (!userInfo) {
-  //         this.setLoadingState.emit(false);
-  //         return;
-  //       }
-
-  //       const { account_type, start_date, expired_date, privilege_json } = userInfo;
-  //       const currentDate = new Date();
-  //       const endTargetDate = new Date(expired_date);
-  //       endTargetDate.setFullYear(endTargetDate.getFullYear() + 1);
-
-
-  //       // Check for expired premium account
-  //       if (account_type === 'premium' && currentDate > endTargetDate) {
-  //         this.setLoadingState.emit(false);
-  //         this.priviledgeModal.emit('Your Premium Account is expired. Please renew your account');
-  //         return;
-  //       }
-
-  //       // Save user data in localStorage
-  //       this.saveUserDataToLocalStorage(userInfo);
-
-  //       const userPrivilegeKey = `user_${userInfo.user_id}`;
-  //       const privilegeData = privilege_json?.[userPrivilegeKey];
-
-  //       if (!this.hasSearchPrivileges(privilegeData)) {
-  //         this.setLoadingState.emit(false);
-  //         this.priviledgeModal.emit('You do not have permission to Search or View. Please upgrade the account.');
-  //         return;
-  //       }
-
-  //       // Fetch today's privileges
-  //       this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
-  //         next: (res: any) => {
-  //           todaysLimit = res?.data;
-
-  //           const remainingLimit = privilegeData?.technicalroutesmongo?.DailySearchLimit - todaysLimit?.searchCount;
-  //           if (remainingLimit <= 0) {
-  //             this.setLoadingState.emit(false);
-  //             this.priviledgeModal.emit('Your Daily Search Limit is over for this Platform.');
-  //             return;
-  //           }
-
-  //           // Perform main search operation
-  //           this.searchBasedOnTypes(searchType);
-  //         },
-  //         error: (e) => {
-  //           console.error('Error fetching today’s privileges:', e);
-  //           this.setLoadingState.emit(false);
-  //         },
-  //       });
-  //     },
-  //     error: (e) => {
-  //       console.error('Error fetching user privileges:', e);
-  //       this.setLoadingState.emit(false);
-  //     },
-  //   });
-  // }
+  
   checkPriviledgeAndHandleSearch(searchType: string = '') {
-    let todaysLimit: any = '';
-    this.setLoadingState.emit(true);
+  const { startSales, endSales, filterInputs, simpleSearch, devStage, innovator } = this.advanceSearch;
 
-    // Fetch user privileges
-    this.userPriviledgeService.getUserPriviledgesData().subscribe({
-      next: (res: any) => {
-        const userInfo = res?.data?.user_info;
-        if (!userInfo) {
-          this.setLoadingState.emit(false);
-          return;
-        }
-
-        const { account_type, start_date, expired_date, privilege_json } = userInfo;
-        const currentDate = new Date();
-        const endTargetDate = new Date(expired_date);
-        endTargetDate.setFullYear(endTargetDate.getFullYear() + 1);
-
-        // Check for expired premium account
-        if (account_type === 'premium' && currentDate > endTargetDate) {
-          this.setLoadingState.emit(false);
-          this.priviledgeModal.emit('Your Premium Account is expired. Please renew your account');
-          return;
-        }
-
-        // Save user data in localStorage
-        this.saveUserDataToLocalStorage(userInfo);
-
-        const userPrivilegeKey = `user_${userInfo.user_id}`;
-        const privilegeData = privilege_json?.[userPrivilegeKey];
-
-        if (!this.hasSearchPrivileges(privilegeData)) {
-          this.setLoadingState.emit(false);
-          this.priviledgeModal.emit('You do not have permission to Search or View. Please upgrade the account.');
-          return;
-        }
-
-        // Fetch today's privileges
-        this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
-          next: (res: any) => {
-            todaysLimit = res?.data;
-
-            const remainingLimit = privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit - todaysLimit?.searchCount;
-            if (remainingLimit <= 0) {
-              this.setLoadingState.emit(false);
-              this.priviledgeModal.emit('Your Daily Search Limit is over for this Platform.');
-              return;
-            }
-
-            // Perform main search operation
-            this.searchBasedOnTypes(searchType);
-          },
-          error: (e) => {
-            console.error('Error fetching today’s privileges:', e);
-            this.setLoadingState.emit(false);
-          },
-        });
-      },
-      error: (e) => {
-        console.error('Error fetching user privileges:', e);
-        this.setLoadingState.emit(false);
-      },
-    });
+  // 🚨 Validate sales range if only one value is given
+  if (startSales && !endSales) {
+    this.priviledgeModal.emit('Please enter End Range.');
+    return;
   }
+  if (endSales && !startSales) {
+    this.priviledgeModal.emit('Please enter Start Range.');
+    return;
+  }
+
+  // ✅ New check: Proceed if any advanced filter input is filled
+  // ✅ Check if any valid input is filled: simple search, advanced filters, sales range, etc.
+const hasFilledKeyword = filterInputs?.some((input: any) => input.keyword && input.keyword.trim() !== '');
+const hasSimpleKeyword = simpleSearch?.keyword?.trim() !== '';
+const hasDevStage = devStage?.trim() !== '';
+const hasInnovator = innovator?.trim() !== '';
+
+if (!hasFilledKeyword && !hasSimpleKeyword && !startSales && !endSales && !hasDevStage && !hasInnovator) {
+  this.priviledgeModal.emit('Please enter at least one search input to continue.');
+  return;
+}
+
+
+  let todaysLimit: any = '';
+  this.setLoadingState.emit(true);
+
+  this.userPriviledgeService.getUserPriviledgesData().subscribe({
+    next: (res: any) => {
+      const userInfo = res?.data?.user_info;
+      if (!userInfo) {
+        this.setLoadingState.emit(false);
+        return;
+      }
+
+      const { account_type, expired_date, privilege_json } = userInfo;
+      const currentDate = new Date();
+      const endTargetDate = new Date(expired_date);
+      endTargetDate.setFullYear(endTargetDate.getFullYear() + 1);
+
+      if (account_type === 'premium' && currentDate > endTargetDate) {
+        this.setLoadingState.emit(false);
+        this.priviledgeModal.emit('Your Premium Account is expired. Please renew your account');
+        return;
+      }
+
+      this.saveUserDataToLocalStorage(userInfo);
+      const userPrivilegeKey = `user_${userInfo.user_id}`;
+      const privilegeData = privilege_json?.[userPrivilegeKey];
+
+      if (!this.hasSearchPrivileges(privilegeData)) {
+        this.setLoadingState.emit(false);
+        this.priviledgeModal.emit('You do not have permission to Search or View. Please upgrade the account.');
+        return;
+      }
+
+      this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
+        next: (res: any) => {
+          todaysLimit = res?.data;
+          const remainingLimit = privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit - todaysLimit?.searchCount;
+
+          if (remainingLimit <= 0) {
+            this.setLoadingState.emit(false);
+            this.priviledgeModal.emit('Your Daily Search Limit is over for this Platform.');
+            return;
+          }
+
+          // ✅ All checks passed, perform the actual search
+          this.searchBasedOnTypes(searchType);
+        },
+        error: (e) => {
+          console.error('Error fetching today’s privileges:', e);
+          this.setLoadingState.emit(false);
+        },
+      });
+    },
+    error: (e) => {
+      console.error('Error fetching user privileges:', e);
+      this.setLoadingState.emit(false);
+    },
+  });
+}
+
 
 
 

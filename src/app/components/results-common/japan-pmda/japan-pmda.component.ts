@@ -20,28 +20,30 @@ export class JapanPMDAComponent implements OnInit, OnDestroy {
   japan_approval_column: any = {};
   resultTabs: any = {};
 
-  static apiCallCount: number = 0; // Static counter (shared across instances)
-  localCount: number = 0; // Instance-specific count
+  static apiCallCount: number = 0;
+  localCount: number = 0;
 
   @Input()
-  get data() {  
-    return this._data;  
+  get data() {
+    return this._data;
   }
-  set data(value: any) {    
-    if (value && Object.keys(value).length > 0) {
-      JapanPMDAComponent.apiCallCount++; // Increment global counter
-      this.localCount = JapanPMDAComponent.apiCallCount; // Assign to local instance
 
-      
+  set data(value: any) {
+    if (value && Object.keys(value).length > 0) {
+      JapanPMDAComponent.apiCallCount++;
+      this.localCount = JapanPMDAComponent.apiCallCount;
 
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
 
-      if (column_list[this.resultTabs.japanApproval?.name]?.length > 0) {
-        for (let i = 0; i < column_list[this.resultTabs.japanApproval.name].length; i++) {
-          this.japan_approval_column[column_list[this.resultTabs.japanApproval.name][i].value] =
-            column_list[this.resultTabs.japanApproval.name][i].name;
+      const tabKey = this.resultTabs?.japanApproval?.name || 'JAPAN_APPROVAL'; // fallback key
+
+      if (column_list?.[tabKey]?.length > 0) {
+        for (const col of column_list[tabKey]) {
+          this.japan_approval_column[col.value] = col.name;
         }
+      } else {
+        console.warn(`⚠️ No columns found for tab key: ${tabKey}`);
       }
 
       this._data = value;
@@ -51,30 +53,26 @@ export class JapanPMDAComponent implements OnInit, OnDestroy {
   constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
 
   ngOnInit() {
-    // Reset static counter only when the component is first loaded
-    if (JapanPMDAComponent.apiCallCount === 0) {
-      JapanPMDAComponent.apiCallCount = 0;
-    }
+    // No need to reset, already initialized
   }
 
   ngOnDestroy() {
-    // Reset counter when navigating away from the component
     JapanPMDAComponent.apiCallCount = 0;
   }
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
-  
+
   toggleMoreInfo() {
     this.MoreInfo = !this.MoreInfo;
   }
 
-  getColumnName(value: any) {
-    return this.japan_approval_column[value];
+  getColumnName(value: string): string {
+    return this.japan_approval_column?.[value] ?? value;
   }
 
-  getPubchemId(value: any) {
+  getPubchemId(value: string) {
     return `https://pubchem.ncbi.nlm.nih.gov/#query=${value}`;
   }
 
@@ -85,8 +83,8 @@ export class JapanPMDAComponent implements OnInit, OnDestroy {
   getCountryUrl(value: any) {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country_of_company}.png`;
   }
-  
-  getCompanyWebsite(value: any) {
+
+  getCompanyWebsite(value: string) {
     return `https://${value}`;
   }
 
@@ -98,22 +96,19 @@ export class JapanPMDAComponent implements OnInit, OnDestroy {
     textArea.select();
     textArea.setSelectionRange(0, 99999);
     document.execCommand('copy');
-
     document.body.removeChild(textArea);
 
-  // Step 2: Find the icon inside the clicked span and swap classes
-  const icon = el.querySelector('i');
+    const icon = el.querySelector('i');
 
-  if (icon?.classList.contains('fa-copy')) {
-    icon.classList.remove('fa-copy');
-    icon.classList.add('fa-check');
+    if (icon?.classList.contains('fa-copy')) {
+      icon.classList.remove('fa-copy');
+      icon.classList.add('fa-check');
 
-    // Step 3: Revert it back after 1.5 seconds
-    setTimeout(() => {
-      icon.classList.remove('fa-check');
-      icon.classList.add('fa-copy');
-    }, 1500);
-  }
+      setTimeout(() => {
+        icon.classList.remove('fa-check');
+        icon.classList.add('fa-copy');
+      }, 1500);
+    }
   }
 
   getImageUrl(data: any): string {
