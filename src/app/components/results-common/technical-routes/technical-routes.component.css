@@ -1,0 +1,202 @@
+.container{
+   
+   height:auto;
+   width:auto;
+   
+}
+
+.tag_title{
+  font-family: 'Montserrat';
+font-style: normal;
+font-weight: 700;
+font-size: 30px;
+line-height: 49px;
+/* identical to box height */
+text-align: center;
+
+color: #0032A0;
+}
+
+.scroll::-webkit-scrollbar {
+  width: 5px;
+  height:5px;
+}
+
+/* Track */
+.scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+ ::-webkit-scrollbar-thumb {
+  background: #312e81;
+  border-radius: 5px;
+}
+
+p{
+  white-space: pre;
+  text-wrap: wrap;
+}
+
+
+.heading{
+     
+       margin-left:12px;
+}
+.heading2{
+
+  height:auto;
+   padding:12px 12px;
+   margin-top:5px;
+   
+}
+
+h2{
+    font-size: 17px;
+    font-weight: bold;
+}
+.para{
+
+    color:#312E81;
+    font-weight: bold;
+    margin-top:10px;
+}
+
+
+
+ .btn-custom {
+    background-color: #312E81;
+    color: #ffffff; 
+  }
+
+.imagecon1{
+    width:355px;
+    height:125px;
+      margin:5px 5px;
+    
+}
+
+
+
+/* h1{
+  
+    font-size: 12px;
+    font-weight:bold;
+    padding:8px 0px;
+} */
+
+.h6{
+    color:blue;
+    
+}
+
+.desc{
+  display: -webkit-box;
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.res{
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+
+@media(max-width:1024px){
+    .img{
+        height: 233px !important;;
+    }
+}
+
+
+
+.btn {
+  top: 0;
+  left: 0;
+  transition: all .15s linear 0s;
+  position: relative;
+  display: inline-block;
+  padding: 15px 25px;
+  background-color: #FFE800; /* $yellow */
+  
+  text-transform: uppercase;
+  color: #404040; /* $brown */
+  font-family: arial;
+  letter-spacing: 1px;
+  
+  box-shadow: -6px 6px 0 #404040; /* $brown */
+  text-decoration: none;
+}
+
+.btn:hover {
+  top: 3px;
+  left: -3px;
+  box-shadow: -3px 3px 0 #404040; /* $brown */
+}
+
+.btn:hover::after {
+  top: 1px;
+  left: -2px;
+  width: 4px; /* $angle-o */
+  height: 4px; /* $angle-o */
+}
+
+.btn:hover::before {
+  bottom: -2px;
+  right: 1px;
+  width: 4px; /* $angle-o */
+  height: 4px; /* $angle-o */
+}
+
+.btn::after {
+  transition: all .15s linear 0s;
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: -4px;
+  width: 8px; /* $angle */
+  height: 8px; /* $angle */
+  background-color: #404040; /* $brown */
+  transform: rotate(45deg);
+  z-index: -1;
+}
+
+.btn::before {
+  transition: all .15s linear 0s;
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  right: 2px;
+  width: 8px; /* $angle */
+  height: 8px; /* $angle */
+  background-color: #404040; /* $brown */
+  transform: rotate(45deg);
+  z-index: -1;
+}
+
+a.btn {
+  position: relative;
+}
+
+a:active.btn {
+  top: 6px;
+  left: -6px;
+  box-shadow: none;
+}
+
+a:active.btn::before {
+  bottom: 1px;
+  right: 1px;
+}
+
+a:active.btn::after {
+  top: 1px;
+  left: 1px;
+}
