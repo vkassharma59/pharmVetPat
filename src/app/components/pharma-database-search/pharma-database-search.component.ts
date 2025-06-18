@@ -1,15 +1,23 @@
-import { Component, ElementRef, EventEmitter, HostListener, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MainSearchService } from '../../services/main-search/main-search.service';
 import { NgClass, NgFor, NgIf } from '@angular/common';
+import { MainSearchService } from '../../services/main-search/main-search.service';
 import { UserPriviledgeService } from '../../services/user_priviledges/user-priviledge.service';
 import { Auth_operations } from '../../Utils/SetToken';
 import { ColumnListService } from '../../services/columnList/column-list.service';
 import { AppConfigValues } from '../../config/app-config';
 import { searchTypes, UtilityService } from '../../services/utility-service/utility.service';
-import { VideoTutorialComponent } from '../video-tutorial/video-tutorial.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../../dialog/dialog.component';
+import { VideoTutorialComponent } from '../video-tutorial/video-tutorial.component';
 
 @Component({
   selector: 'chem-pharma-database-search',
@@ -18,13 +26,12 @@ import { DialogComponent } from '../../dialog/dialog.component';
   templateUrl: './pharma-database-search.component.html',
   styleUrl: './pharma-database-search.component.css'
 })
-
 export class pharmaDatabaseSearchComponent implements OnInit {
 
   screenColumn = 'Select Filter';
-  criteria: string = '';
+  criteria = '';
   userAuth: any = {};
-  column: string = '';
+  column = '';
   searchTypes: any;
 
   chemicalStructure: any = { filter: '' }
@@ -39,68 +46,40 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     devStage: '',
     innovator: '',
     startSales: null,
-    endSales: null
+    endSales: null,
+    filterInputs: [{ filter: '', keyword: '' }]
   }
+
+  @Output() setLoadingState = new EventEmitter<any>();
+  @Output() chemSearchResults = new EventEmitter<any>();
+  @Output() priviledgeModal = new EventEmitter<any>();
+  @Output() showResultFunction = new EventEmitter<any>();
 
   @ViewChild('simpleSearchkeywordInput') simpleSearchkeywordInput!: ElementRef;
   @ViewChild('chemicalStructureKeywordInput') chemicalStructureKeywordInput!: ElementRef;
   @ViewChild('synthesisSearchkeywordInput') synthesisSearchkeywordInput!: ElementRef;
   @ViewChild('intermediateSearchKeywordInput') intermediateSearchKeywordInput!: ElementRef;
-    @ViewChild('devStageWrapper') devStageWrapper!: ElementRef;
 
-  @HostListener('document:click', ['$event'])
-  onClickOutside(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-
-    const devContainer = document.querySelector('.dev-stage-container');
-    const innovatorContainer = document.querySelector('.innovator-container');
-
-    if (devContainer && !devContainer.contains(target)) {
-      this.showDevStageDropdown = false;
-    }
-
-    if (innovatorContainer && !innovatorContainer.contains(target)) {
-      this.showInnovatorDropdown = false;
-    }
-  }
-
-  openDevStageDropdown() {
-    this.showDevStageDropdown = true;
-    this.showInnovatorDropdown = false; // Close other dropdown if open
-    this.filteredDevStages = [...this.devStages];
-  }
-
-  openInnovatorDropdown() {
-    this.showInnovatorDropdown = true;
-    this.showDevStageDropdown = false;
-    this.filteredInnovators = [...this.innovators];
-  }
-
-  @Output() setLoadingState: EventEmitter<any> = new EventEmitter<any>();
-  @Output() chemSearchResults: EventEmitter<any> = new EventEmitter<any>();
-  @Output() priviledgeModal: EventEmitter<any> = new EventEmitter<any>();
-  @Output() showResultFunction: EventEmitter<any> = new EventEmitter<any>();
-  // Dropdown master list
+  // Dropdown lists
   allDevelopmentStages: string[] = ['Preclinical', 'Phase I', 'Phase II', 'Phase III', 'Approved'];
   allInnovators: string[] = ['Pfizer', 'Moderna', 'Cipla', 'Sun Pharma', 'Dr. Reddy\'s'];
-  devStages: string[] = ['Stage 1', 'Stage 2', 'Stage 3']; // Your full list
-  innovators: string[] = ['Pfizer', 'Roche', 'Novartis'];  // Your full list
-
-
+  devStages: string[] = ['Stage 1', 'Stage 2', 'Stage 3'];
+  innovators: string[] = ['Pfizer', 'Roche', 'Novartis'];
 
   filteredDevStages: string[] = [];
   filteredInnovators: string[] = [];
 
   showDevStageDropdown = false;
   showInnovatorDropdown = false;
-  devStageSearch: string = '';
-  innovatorSearch: string = '';
+  devStageSearch = '';
+  innovatorSearch = '';
 
   tabs$ = this.utilityService.tabs$;
   resultTabs: any = [];
   apiUrls = AppConfigValues.appUrls;
-  showSuggestions: boolean = false;
-  activeSearchTab: string = 'api-search';
+  showSuggestions = false;
+  activeSearchTab = 'api-search';
+
   exampleSearchData = [
     { type: 'smiles_code', value: 'C#C', label: 'C#C' },
     { type: 'iupac', value: 'acetylene', label: 'acetylene' },
@@ -117,74 +96,72 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     private mainSearchService: MainSearchService,
     private userPriviledgeService: UserPriviledgeService,
     private utilityService: UtilityService,
-    private columnListService: ColumnListService) {
+    private columnListService: ColumnListService
+  ) {
     this.searchTypes = searchTypes;
-    this.advanceSearch.filterInputs = [
-      { filter: '', keyword: '' }
-    ];
+  }
+
+  ngOnInit() {
+    this.utilityService.resetTabs();
+    this.resultTabs = this.utilityService.getAllTabsName();
+    this.getChemicalStructureFilters();
+    this.getintermediateSearchFilters();
+    this.getAdvanceSearchFilters();
+  }
+
+  // ✅ Unified HostListener to close dropdowns
+  @HostListener('document:click', ['$event'])
+  onOutsideClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const devContainer = this.elementRef.nativeElement.querySelector('.dev-stage-container');
+    const innovatorContainer = this.elementRef.nativeElement.querySelector('.innovator-container');
+
+    if (devContainer && !devContainer.contains(target)) {
+      this.showDevStageDropdown = false;
+    }
+
+    if (innovatorContainer && !innovatorContainer.contains(target)) {
+      this.showInnovatorDropdown = false;
+    }
+
+    if (!this.elementRef.nativeElement.contains(target)) {
+      this.showSuggestions = false;
+    }
+  }
+
+  openDevStageDropdown() {
+    this.showDevStageDropdown = true;
+    this.showInnovatorDropdown = false;
+    this.filteredDevStages = [...this.devStages];
+  }
+
+  openInnovatorDropdown() {
+    this.showInnovatorDropdown = true;
+    this.showDevStageDropdown = false;
+    this.filteredInnovators = [...this.innovators];
+  }
+
+  selectDevStage(stage: string) {
+    this.advanceSearch.devStage = stage;
+    this.showDevStageDropdown = false;
+  }
+
+  selectInnovator(name: string) {
+    this.advanceSearch.innovator = name;
+    this.showInnovatorDropdown = false;
   }
 
   handleDevStageChange() {
     this.filteredDevStages = this.devStages.filter(stage =>
       stage.toLowerCase().includes(this.devStageSearch.toLowerCase())
     );
-    console.log("dshbdfnjdf", this.devStageSearch)
   }
-
-
 
   handleInnovatorChange() {
-    this.filteredInnovators = this.innovators.filter(innovator =>
-      innovator.toLowerCase().includes(this.innovatorSearch.toLowerCase())
+    this.filteredInnovators = this.innovators.filter(name =>
+      name.toLowerCase().includes(this.innovatorSearch.toLowerCase())
     );
   }
-
-
-
-  ngOnInit() {
-    // Get All tabs name
-    this.utilityService.resetTabs();
-    this.resultTabs = this.utilityService.getAllTabsName();
-
-    this.getChemicalStructureFilters();
-    this.getintermediateSearchFilters();
-    this.getAdvanceSearchFilters();
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: Event): void {
-    if (!this.elementRef.nativeElement.contains(event.target)) {
-      this.showSuggestions = false;
-    }
-  }
-
-  showContent(searchTab: string) {
-    this.activeSearchTab = searchTab;
-  }
-
-  addFilter() {
-    const lastfilter = this.advanceSearch.filterInputs[this.advanceSearch.filterInputs.length - 1];
-
-    if (lastfilter && lastfilter.filter && lastfilter.keyword) {
-      this.advanceSearch.filterInputs.push({ filter: '', keyword: '' });
-    }
-    else {
-      this.dialog.open(DialogComponent, {
-        data: {
-          title: 'Incomplete Filter',
-          message: 'Please fill in the current filter before adding a new one.'
-        },
-        width: '400px',
-        panelClass: 'custom-dialog'
-      });
-    }
-
-  }
-
-  removeFilter(index: number) {
-    this.advanceSearch.filterInputs.splice(index, 1);
-  }
-
 
   handleChangeKeywordDL(column: 'DEVELOPMENT_STAGE' | 'INNOVATOR_ORIGINATOR') {
     let keyword = '';
@@ -198,29 +175,15 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     }
 
     const payload = { column, keyword };
-    console.log('📡 Request:', payload);
-
     this.mainSearchService.getAdvanceSearchSuggestions(payload).subscribe({
       next: (res: any) => {
         const list = res?.data?.suggestions || [];
-        console.log("vfsdbhfdn", list)
         if (column === 'DEVELOPMENT_STAGE') this.filteredDevStages = list;
         if (column === 'INNOVATOR_ORIGINATOR') this.filteredInnovators = list;
       },
       error: (err) => console.error('❌ API Error:', err)
     });
   }
-
-  selectDevStage(stage: string) {
-    this.advanceSearch.devStage = stage;
-    this.showDevStageDropdown = false;
-  }
-
-  selectInnovator(name: string) {
-    this.advanceSearch.innovator = name;
-    this.showInnovatorDropdown = false;
-  }
-
 
   handleChangeKeyword(searchType = '', index: number = 0) {
     try {
@@ -246,6 +209,26 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       console.log(err);
       this.showSuggestions = false;
     }
+  }
+
+  addFilter() {
+    const lastFilter = this.advanceSearch.filterInputs[this.advanceSearch.filterInputs.length - 1];
+    if (lastFilter?.filter && lastFilter?.keyword) {
+      this.advanceSearch.filterInputs.push({ filter: '', keyword: '' });
+    } else {
+      this.dialog.open(DialogComponent, {
+        data: {
+          title: 'Incomplete Filter',
+          message: 'Please fill in the current filter before adding a new one.'
+        },
+        width: '400px',
+        panelClass: 'custom-dialog'
+      });
+    }
+  }
+
+  removeFilter(index: number) {
+    this.advanceSearch.filterInputs.splice(index, 1);
   }
 
   getAdvanceSearchSuggestions(index: number) {
@@ -767,6 +750,51 @@ if (!hasFilledKeyword && !hasSimpleKeyword && !startSales && !endSales && !hasDe
       },
     });
   }
+showContent(searchTab: string) {
+  this.activeSearchTab = searchTab;
+  this.showSuggestions = false;
+
+  // Reset all search input states when switching tabs
+  this.simpleSearch = {};
+  this.chemicalStructure = { filter: '' };
+  this.synthesisSearch = {};
+  this.intermediateSearch = { filter: '' };
+  this.advanceSearch = {
+    autosuggestionList: [],
+    dateType: 'GENERIC_CONSTRAINING_DATE',
+    developmentStage: '',
+    innovatorOriginator: '',
+    devStage: '',
+    innovator: '',
+    startSales: null,
+    endSales: null,
+    filterInputs: [{ filter: '', keyword: '' }]
+  };
+
+  // Optionally: refocus the input of the selected tab
+  setTimeout(() => {
+    switch (searchTab) {
+      case searchTypes.simpleSearch:
+        this.simpleSearchkeywordInput?.nativeElement?.focus();
+        break;
+      case searchTypes.chemicalStructure:
+        this.chemicalStructureKeywordInput?.nativeElement?.focus();
+        break;
+      case searchTypes.synthesisSearch:
+        this.synthesisSearchkeywordInput?.nativeElement?.focus();
+        break;
+      case searchTypes.intermediateSearch:
+        this.intermediateSearchKeywordInput?.nativeElement?.focus();
+        break;
+      case searchTypes.advanceSearch:
+        this.devStageSearch = '';
+        this.innovatorSearch = '';
+        this.filteredDevStages = [];
+        this.filteredInnovators = [];
+        break;
+    }
+  }, 100);
+}
 
   private performChemicalStructureSearch(): void {
 
