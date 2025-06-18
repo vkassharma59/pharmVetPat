@@ -370,23 +370,23 @@ export class ChildResultTabComponent {
     // Get all matching entries
     const matchingNames = allOptions
       .filter(option => option.name.startsWith(baseName))
-      .map(option => option.name);
+      .map(option => option.value);
 
     // Check if already selected
-    const allSelected = matchingNames.every(name =>
-      this.FilterValues[key].includes(name)
+    const allSelected = matchingNames.every(value =>
+      this.FilterValues[key].includes(value)
     );
 
     if (allSelected) {
       // If already selected, remove all
       this.FilterValues[key] = this.FilterValues[key].filter(
-        name => !matchingNames.includes(name)
+        value => !matchingNames.includes(value)
       );
     } else {
       // Otherwise, add all missing matches
-      matchingNames.forEach(name => {
-        if (!this.FilterValues[key].includes(name)) {
-          this.FilterValues[key].push(name);
+      matchingNames.forEach(value => {
+        if (!this.FilterValues[key].includes(value)) {
+          this.FilterValues[key].push(value);
         }
       });
     }
