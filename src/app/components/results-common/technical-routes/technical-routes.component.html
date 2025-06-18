@@ -56,9 +56,9 @@
       </div>
     </div>
   </div>
-<ng-container *ngIf="_data?.ros_data.length > 0; else noData">
+<!-- <ng-container *ngIf="_data?.ros_data.length > 0; else noData"> -->
     <ng-container
-        *ngIf="currentChildAPIBody && !isEmptyObject(currentChildAPIBody) && searchThrough !== 'synthesis-search'">
+        *ngIf="currentChildAPIBody && !isEmptyObject(currentChildAPIBody) && searchThrough ">
         <chem-child-result-tab [dataItem]="_data?.ros_data" [currentAPIData]="currentChildAPIBody"
             (handleChangeTabData)="handleResultTabData.emit($event)"
             (resetPagination)="resetPagination.emit($event)"
@@ -86,7 +86,7 @@
             (handleChangeTabData)="handleResultTabData.emit($event)"            
             (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
     </ng-container>
-</ng-container>
+<!-- </ng-container> -->
 <ng-template #noData>
     <div class="card">
         <div class="card-header text-white bg-primary">

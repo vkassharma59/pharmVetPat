@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, HostListener } from '@angular/core';
 import { ChemiTrackerCardComponent } from '../chemi-tracker-card/chemi-tracker-card.component';
 import { CommonModule } from '@angular/common';
 import { UtilityService } from '../../../services/utility-service/utility.service';
@@ -6,6 +6,7 @@ import { ChildPagingComponent } from '../../../commons/child-paging/child-paging
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
 import { Auth_operations } from '../../../Utils/SetToken';
+import { ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'chem-chemi-tracker',
@@ -30,7 +31,7 @@ export class ChemiTrackerComponent {
   isCountryDropdownOpen: boolean = false;
   isOpen: boolean = false;
   searchThrough: string = '';
-  
+
   @Input()
   get data() {
     return this._data;
@@ -50,7 +51,9 @@ export class ChemiTrackerComponent {
       this.handleFetchFilters();
     }
   }
-  
+
+  @ViewChild('countryDropdownRef') countryDropdownRef!: ElementRef;
+  @ViewChild('formulationDropdownRef') formulationDropdownRef!: ElementRef;
 
   constructor(
     private utilityService: UtilityService,
@@ -59,11 +62,22 @@ export class ChemiTrackerComponent {
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
 
   }
+  toggleCountryDropdown(event: MouseEvent) {
+  event.stopPropagation();
+  this.isCountryDropdownOpen = !this.isCountryDropdownOpen;
+  this.isOpen = false; // close other dropdown
+}
 
+toggleFormulationDropdown(event: MouseEvent) {
+  event.stopPropagation();
+  this.isOpen = !this.isOpen;
+  this.isCountryDropdownOpen = false; // close other dropdown
+}
   handleFetchFilters() {
     this.DMFAPIBody.filter_enable = true;
     this.mainSearchService.chemiTrackerSearchSpecific(this.DMFAPIBody).subscribe({
       next: (res) => {
+        console.log('🔍 Formulation Filter Values (dummy_6):', res?.data?.dummy_6); 
         this.countryFilters = res?.data?.country_of_company;
         this.foundationsFilters = res?.data?.dummy_6;
         this.DMFAPIBody.filter_enable = false;
@@ -77,7 +91,22 @@ export class ChemiTrackerComponent {
   handleFilter() {
     this.isCountryDropdownOpen = !this.isCountryDropdownOpen;
   }
-
+  @HostListener('document:click', ['$event'])
+handleClickOutside(event: MouseEvent): void {
+  const target = event.target as HTMLElement;
+  if (
+    this.countryDropdownRef &&
+    !this.countryDropdownRef.nativeElement.contains(target)
+  ) {
+    this.isCountryDropdownOpen = false;
+  }
+  if (
+    this.formulationDropdownRef &&
+    !this.formulationDropdownRef.nativeElement.contains(target)
+  ) {
+    this.isOpen = false;
+  }
+}
   dropdown() {
     this.isOpen = !this.isOpen;
   }
@@ -135,52 +164,52 @@ export class ChemiTrackerComponent {
     });
   }
   clear() {
-  // Reset dropdown labels
-  this.country_value = 'Select Country';
-  this.formulation_value = 'Select TECH.API & FORMULATION';
+    // Reset dropdown labels
+    this.country_value = 'Select Country';
+    this.formulation_value = 'Select TECH.API & FORMULATION';
 
-  // Close dropdowns
-  this.isCountryDropdownOpen = false;
-  this.isOpen = false;
+    // Close dropdowns
+    this.isCountryDropdownOpen = false;
+    this.isOpen = false;
 
-  // Clear filters
-  this.DMFAPIBody.filters = {};
+    // Clear filters
+    this.DMFAPIBody.filters = {};
 
-  // Prepare new API body
-  this._currentChildAPIBody = {
-    ...this.DMFAPIBody,
-    filters: {}
-  };
+    // Prepare new API body
+    this._currentChildAPIBody = {
+      ...this.DMFAPIBody,
+      filters: {}
+    };
 
-  // Emit loading state
-  this.handleSetLoading.emit(true);
+    // Emit loading state
+    this.handleSetLoading.emit(true);
 
-  // Call API with cleared filters
-  this.mainSearchService.chemiTrackerSearchSpecific(this._currentChildAPIBody).subscribe({
-    next: (res) => {
-      this._currentChildAPIBody = {
-        ...this._currentChildAPIBody,
-        count: res?.data?.chemi_tracker_count
-      };
-      this.handleResultTabData.emit(res.data);
-      this.handleSetLoading.emit(false);
-    },
-    error: (err) => {
-      console.error(err);
-      this._currentChildAPIBody.filter_enable = false;
-      this.handleSetLoading.emit(false);
-    },
-  });
+    // Call API with cleared filters
+    this.mainSearchService.chemiTrackerSearchSpecific(this._currentChildAPIBody).subscribe({
+      next: (res) => {
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          count: res?.data?.chemi_tracker_count
+        };
+        this.handleResultTabData.emit(res.data);
+        this.handleSetLoading.emit(false);
+      },
+      error: (err) => {
+        console.error(err);
+        this._currentChildAPIBody.filter_enable = false;
+        this.handleSetLoading.emit(false);
+      },
+    });
 
 
-  // Scroll to top
+    // Scroll to top
 
 
     window.scrollTo(0, 0);
 
     this.handleSelectFilter;
   }
-  
+
 
 }
 

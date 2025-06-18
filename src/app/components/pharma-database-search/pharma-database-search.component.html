@@ -181,15 +181,16 @@
         </div> -->
 
         <!-- Development Stage -->
-<div class="col-md-3 col-12 mb-2 mb-md-0 dev-stage-container" #devStageWrapper>
+        <div class="col-md-3 col-12 mb-2 mb-md-0 dev-stage-container" #devStageWrapper>
           <label class="form-label">Select Development Stage</label>
 
           <div class="position-relative">
             <input type="text" class="form-control" placeholder="Select Development Stage"
-              [(ngModel)]="advanceSearch.devStage" (focus)="showDevStageDropdown = true"
-              (input)="handleChangeKeywordDL('DEVELOPMENT_STAGE')" />
+              [(ngModel)]="advanceSearch.devStage" (focus)="!isAdvancedInputDisabled() && (showDevStageDropdown = true)"
+              (input)="!isAdvancedInputDisabled() && handleChangeKeywordDL('DEVELOPMENT_STAGE')"
+              [disabled]="isAdvancedInputDisabled()" />
 
-            <div *ngIf="showDevStageDropdown"
+            <div *ngIf="showDevStageDropdown && !isAdvancedInputDisabled()"
               class="position-absolute bg-white border border-gray-300 rounded shadow p-2 z-10 Dropdown"
               style="width: 100%; max-height: 250px; overflow-y: auto">
 
@@ -211,7 +212,8 @@
           <div class="position-relative">
             <input type="text" class="form-control" placeholder="Select Innovator Originator"
               [(ngModel)]="advanceSearch.innovator" (focus)="showInnovatorDropdown = true"
-              (input)="handleChangeKeywordDL('INNOVATOR_ORIGINATOR')" />
+              (input)="handleChangeKeywordDL('INNOVATOR_ORIGINATOR')" [disabled]="isAdvancedInputDisabled()" />
+
 
             <div *ngIf="showInnovatorDropdown"
               class="position-absolute bg-white border border-gray-300 rounded shadow p-2 z-10"
@@ -253,15 +255,18 @@
         <!-- Start Sales -->
         <div class="col-md-3 col-12 mb-2 mb-md-0">
           <label for="startSales" class="form-label">Start Range Sales ($M)</label>
-          <input type="number" class="form-control" id="startSales" placeholder="Start Range"
-            [(ngModel)]="advanceSearch.startSales" min="0" />
+          <input type="text" class="form-control" placeholder="Start Range" [(ngModel)]="advanceSearch.startSales"
+            [disabled]="isAdvancedInputDisabled()"
+            [title]="isAdvancedInputDisabled() ? 'Please enter Filter and Text first' : ''" />
+
         </div>
 
         <!-- End Sales -->
         <div class="col-md-3 col-12 mb-2 mb-md-0">
           <label for="endSales" class="form-label">End Range Sales ($M)</label>
-          <input type="number" class="form-control" id="endSales" placeholder="End Range"
-            [(ngModel)]="advanceSearch.endSales" min="0" />
+          <input type="text" class="form-control" placeholder="End Range" [(ngModel)]="advanceSearch.endSales"
+            [disabled]="isAdvancedInputDisabled()"
+            [title]="isAdvancedInputDisabled() ? 'Please enter Filter and Text first' : ''" />
         </div>
       </div>
 

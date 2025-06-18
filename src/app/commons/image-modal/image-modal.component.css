@@ -42,7 +42,7 @@ figure.zoom img {
     transform-origin:0% 0%;
   }
   .h-screen {
-    height: 100vh; /* Ensure the container takes the full height of the viewport */
+    height: 92vh; /* Ensure the container takes the full height of the viewport */
   }
   
   .flex {

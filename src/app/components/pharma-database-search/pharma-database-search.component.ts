@@ -287,21 +287,21 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       });
   }
   isSearchEnabled(): boolean {
-  const { devStage, innovator, startSales, endSales, filterInputs } = this.advanceSearch;
+    const { devStage, innovator, startSales, endSales, filterInputs } = this.advanceSearch;
 
-  // Check if any filter column has a keyword and is enabled
-  const hasFilterKeyword = filterInputs?.some(
-    (input: any) => input.filter && input.keyword?.trim() !== ''
-  );
+    // Check if any filter column has a keyword and is enabled
+    const hasFilterKeyword = filterInputs?.some(
+      (input: any) => input.filter && input.keyword?.trim() !== ''
+    );
 
-  return !!(
-    devStage?.trim() ||
-    innovator?.trim() ||
-    startSales ||
-    endSales ||
-    hasFilterKeyword
-  );
-}
+    return !!(
+      devStage?.trim() ||
+      innovator?.trim() ||
+      startSales ||
+      endSales ||
+      hasFilterKeyword
+    );
+  }
 
   isInputEnabled(): boolean {
     return !!(this.intermediateSearch.filter && this.intermediateSearch.keyword?.trim());
@@ -441,95 +441,97 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       }
     })
   }
+isAdvancedInputDisabled(): boolean {
+  const mainInput = this.advanceSearch?.filterInputs?.[0];
+  return !(mainInput?.filter?.trim() && mainInput?.keyword?.trim());
+}
 
-  
+
+
   checkPriviledgeAndHandleSearch(searchType: string = '') {
-  const { startSales, endSales, filterInputs, simpleSearch, devStage, innovator } = this.advanceSearch;
+    const { startSales, endSales, filterInputs, simpleSearch, devStage, innovator } = this.advanceSearch;
 
-  // 🚨 Validate sales range if only one value is given
-  if (startSales && !endSales) {
-    this.priviledgeModal.emit('Please enter End Range.');
-    return;
-  }
-  if (endSales && !startSales) {
-    this.priviledgeModal.emit('Please enter Start Range.');
-    return;
-  }
+    // 🚨 Validate sales range if only one value is given
+    if (startSales && !endSales) {
+      this.priviledgeModal.emit('Please enter End Range.');
+      return;
+    }
+    if (endSales && !startSales) {
+      this.priviledgeModal.emit('Please enter Start Range.');
+      return;
+    }
 
-  // ✅ New check: Proceed if any advanced filter input is filled
-  // ✅ Check if any valid input is filled: simple search, advanced filters, sales range, etc.
-const hasFilledKeyword = filterInputs?.some((input: any) => input.keyword && input.keyword.trim() !== '');
-const hasSimpleKeyword = simpleSearch?.keyword?.trim() !== '';
-const hasDevStage = devStage?.trim() !== '';
-const hasInnovator = innovator?.trim() !== '';
+    // ✅ New check: Proceed if any advanced filter input is filled
+    // ✅ Check if any valid input is filled: simple search, advanced filters, sales range, etc.
+    const hasFilledKeyword = filterInputs?.some((input: any) => input.keyword && input.keyword.trim() !== '');
+    const hasSimpleKeyword = simpleSearch?.keyword?.trim() !== '';
+    const hasDevStage = devStage?.trim() !== '';
+    const hasInnovator = innovator?.trim() !== '';
 
-if (!hasFilledKeyword && !hasSimpleKeyword && !startSales && !endSales && !hasDevStage && !hasInnovator) {
-  this.priviledgeModal.emit('Please enter at least one search input to continue.');
-  return;
-}
+    if (!hasFilledKeyword && !hasSimpleKeyword && !startSales && !endSales && !hasDevStage && !hasInnovator) {
+      this.priviledgeModal.emit('Please enter at least one search input to continue.');
+      return;
+    }
 
 
-  let todaysLimit: any = '';
-  this.setLoadingState.emit(true);
+    let todaysLimit: any = '';
+    this.setLoadingState.emit(true);
 
-  this.userPriviledgeService.getUserPriviledgesData().subscribe({
-    next: (res: any) => {
-      const userInfo = res?.data?.user_info;
-      if (!userInfo) {
-        this.setLoadingState.emit(false);
-        return;
-      }
-
-      const { account_type, expired_date, privilege_json } = userInfo;
-      const currentDate = new Date();
-      const endTargetDate = new Date(expired_date);
-      endTargetDate.setFullYear(endTargetDate.getFullYear() + 1);
-
-      if (account_type === 'premium' && currentDate > endTargetDate) {
-        this.setLoadingState.emit(false);
-        this.priviledgeModal.emit('Your Premium Account is expired. Please renew your account');
-        return;
-      }
-
-      this.saveUserDataToLocalStorage(userInfo);
-      const userPrivilegeKey = `user_${userInfo.user_id}`;
-      const privilegeData = privilege_json?.[userPrivilegeKey];
-
-      if (!this.hasSearchPrivileges(privilegeData)) {
-        this.setLoadingState.emit(false);
-        this.priviledgeModal.emit('You do not have permission to Search or View. Please upgrade the account.');
-        return;
-      }
-
-      this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
-        next: (res: any) => {
-          todaysLimit = res?.data;
-          const remainingLimit = privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit - todaysLimit?.searchCount;
-
-          if (remainingLimit <= 0) {
-            this.setLoadingState.emit(false);
-            this.priviledgeModal.emit('Your Daily Search Limit is over for this Platform.');
-            return;
-          }
-
-          // ✅ All checks passed, perform the actual search
-          this.searchBasedOnTypes(searchType);
-        },
-        error: (e) => {
-          console.error('Error fetching today’s privileges:', e);
+    this.userPriviledgeService.getUserPriviledgesData().subscribe({
+      next: (res: any) => {
+        const userInfo = res?.data?.user_info;
+        if (!userInfo) {
           this.setLoadingState.emit(false);
-        },
-      });
-    },
-    error: (e) => {
-      console.error('Error fetching user privileges:', e);
-      this.setLoadingState.emit(false);
-    },
-  });
-}
+          return;
+        }
 
+        const { account_type, expired_date, privilege_json } = userInfo;
+        const currentDate = new Date();
+        const endTargetDate = new Date(expired_date);
+        endTargetDate.setFullYear(endTargetDate.getFullYear() + 1);
 
+        if (account_type === 'premium' && currentDate > endTargetDate) {
+          this.setLoadingState.emit(false);
+          this.priviledgeModal.emit('Your Premium Account is expired. Please renew your account');
+          return;
+        }
 
+        this.saveUserDataToLocalStorage(userInfo);
+        const userPrivilegeKey = `user_${userInfo.user_id}`;
+        const privilegeData = privilege_json?.[userPrivilegeKey];
+
+        if (!this.hasSearchPrivileges(privilegeData)) {
+          this.setLoadingState.emit(false);
+          this.priviledgeModal.emit('You do not have permission to Search or View. Please upgrade the account.');
+          return;
+        }
+
+        this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
+          next: (res: any) => {
+            todaysLimit = res?.data;
+            const remainingLimit = privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit - todaysLimit?.searchCount;
+
+            if (remainingLimit <= 0) {
+              this.setLoadingState.emit(false);
+              this.priviledgeModal.emit('Your Daily Search Limit is over for this Platform.');
+              return;
+            }
+
+            // ✅ All checks passed, perform the actual search
+            this.searchBasedOnTypes(searchType);
+          },
+          error: (e) => {
+            console.error('Error fetching today’s privileges:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching user privileges:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
 
   private saveUserDataToLocalStorage(userInfo: any): void {
     const { account_type, start_date, expired_date, privilege_json, user_id, name, email, auth_token } = userInfo;
@@ -554,16 +556,7 @@ if (!hasFilledKeyword && !hasSimpleKeyword && !startSales && !endSales && !hasDe
       dbPrivileges?.Search !== 0
     );
   }
-  // private hasSearchPrivileges(privilegeData: any): boolean {
-  //   if (!privilegeData) return false;
-
-  //   const { technicalroutesmongo } = privilegeData;
-  //   return (
-  //     technicalroutesmongo?.View !== 'false' &&
-  //     technicalroutesmongo?.Search !== '' &&
-  //     technicalroutesmongo?.Search !== 0
-  //   );
-  // }
+ 
 
   private searchBasedOnTypes(searchType: string) {
     switch (searchType) {
@@ -670,6 +663,10 @@ if (!hasFilledKeyword && !hasSimpleKeyword && !startSales && !endSales && !hasDe
         ...(this.isValidDate(this.advanceSearch?.startDate) ? { start_date: this.advanceSearch?.startDate } : {}),
         ...(this.isValidDate(this.advanceSearch?.endDate) ? { end_date: this.advanceSearch?.endDate } : {})
       },
+      ...(this.advanceSearch?.devStage && { development_stage: this.advanceSearch.devStage }),
+      ...(this.advanceSearch?.innovator && { innovators: this.advanceSearch.innovator }),
+      ...(this.advanceSearch?.startSales !== null && this.advanceSearch?.startSales !== undefined && { start_sale_range: this.advanceSearch.startSales }),
+      ...(this.advanceSearch?.endSales !== null && this.advanceSearch?.endSales !== undefined && { end_sale_range: this.advanceSearch.endSales }),
       page_no: 1
     };
 
@@ -750,51 +747,51 @@ if (!hasFilledKeyword && !hasSimpleKeyword && !startSales && !endSales && !hasDe
       },
     });
   }
-showContent(searchTab: string) {
-  this.activeSearchTab = searchTab;
-  this.showSuggestions = false;
+  showContent(searchTab: string) {
+    this.activeSearchTab = searchTab;
+    this.showSuggestions = false;
 
-  // Reset all search input states when switching tabs
-  this.simpleSearch = {};
-  this.chemicalStructure = { filter: '' };
-  this.synthesisSearch = {};
-  this.intermediateSearch = { filter: '' };
-  this.advanceSearch = {
-    autosuggestionList: [],
-    dateType: 'GENERIC_CONSTRAINING_DATE',
-    developmentStage: '',
-    innovatorOriginator: '',
-    devStage: '',
-    innovator: '',
-    startSales: null,
-    endSales: null,
-    filterInputs: [{ filter: '', keyword: '' }]
-  };
+    // Reset all search input states when switching tabs
+    this.simpleSearch = {};
+    this.chemicalStructure = { filter: '' };
+    this.synthesisSearch = {};
+    this.intermediateSearch = { filter: '' };
+    this.advanceSearch = {
+      autosuggestionList: [],
+      dateType: 'GENERIC_CONSTRAINING_DATE',
+      developmentStage: '',
+      innovatorOriginator: '',
+      devStage: '',
+      innovator: '',
+      startSales: null,
+      endSales: null,
+      filterInputs: [{ filter: '', keyword: '' }]
+    };
 
-  // Optionally: refocus the input of the selected tab
-  setTimeout(() => {
-    switch (searchTab) {
-      case searchTypes.simpleSearch:
-        this.simpleSearchkeywordInput?.nativeElement?.focus();
-        break;
-      case searchTypes.chemicalStructure:
-        this.chemicalStructureKeywordInput?.nativeElement?.focus();
-        break;
-      case searchTypes.synthesisSearch:
-        this.synthesisSearchkeywordInput?.nativeElement?.focus();
-        break;
-      case searchTypes.intermediateSearch:
-        this.intermediateSearchKeywordInput?.nativeElement?.focus();
-        break;
-      case searchTypes.advanceSearch:
-        this.devStageSearch = '';
-        this.innovatorSearch = '';
-        this.filteredDevStages = [];
-        this.filteredInnovators = [];
-        break;
-    }
-  }, 100);
-}
+    // Optionally: refocus the input of the selected tab
+    setTimeout(() => {
+      switch (searchTab) {
+        case searchTypes.simpleSearch:
+          this.simpleSearchkeywordInput?.nativeElement?.focus();
+          break;
+        case searchTypes.chemicalStructure:
+          this.chemicalStructureKeywordInput?.nativeElement?.focus();
+          break;
+        case searchTypes.synthesisSearch:
+          this.synthesisSearchkeywordInput?.nativeElement?.focus();
+          break;
+        case searchTypes.intermediateSearch:
+          this.intermediateSearchKeywordInput?.nativeElement?.focus();
+          break;
+        case searchTypes.advanceSearch:
+          this.devStageSearch = '';
+          this.innovatorSearch = '';
+          this.filteredDevStages = [];
+          this.filteredInnovators = [];
+          break;
+      }
+    }, 100);
+  }
 
   private performChemicalStructureSearch(): void {
 

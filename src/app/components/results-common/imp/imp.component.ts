@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ElementRef,
+  HostListener
+} from '@angular/core';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { CommonModule } from '@angular/common';
 import { ImpPatentsCardComponent } from '../imp-patents-card/imp-patents-card.component';
@@ -15,9 +22,9 @@ import { Auth_operations } from '../../../Utils/SetToken';
   styleUrl: './imp.component.css'
 })
 export class ImpComponent {
-
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
+
   searchThrough: string = '';
   resultTabs: any = {};
   _data: any = [];
@@ -37,7 +44,7 @@ export class ImpComponent {
     {
       key: 'patent_type',
       label: 'Patent Type',
-      dataKey: 'patentTypeFilers',
+      dataKey: 'patentTypeFilters',
       filterType: 'patent_type',
       dropdownState: false
     },
@@ -63,7 +70,6 @@ export class ImpComponent {
   }
   set data(value: any) {
     this._data = value;
-    console.log("======adasygcfsv|", this._data)
   }
 
   @Input()
@@ -80,19 +86,43 @@ export class ImpComponent {
 
   constructor(
     private utilityService: UtilityService,
-    private mainSearchService: MainSearchService) {
+    private mainSearchService: MainSearchService,
+    private eRef: ElementRef
+  ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
 
+  /** ✅ Detect click outside any dropdown to close all */
+  @HostListener('document:click', ['$event'])
+  handleClickOutside(event: Event) {
+    if (!this.eRef.nativeElement.contains(event.target)) {
+      this.filterConfigs = this.filterConfigs.map(config => ({
+        ...config,
+        dropdownState: false
+      }));
+    }
+  }
+
   handleFetchFilters() {
     this.impPatentApiBody.filter_enable = true;
+
     this.mainSearchService.impPatentsSearchSpecific(this.impPatentApiBody).subscribe({
       next: (res) => {
-        this.impPatentFilters.productFilters = res?.data?.product;
-        this.impPatentFilters.orderByFilters = res?.data?.order_by;
-        this.impPatentFilters.patentTypeFilters = res?.data?.patent_type;
-        this.impPatentFilters.assigneeFilters = res?.data?.assignee;
+        this.impPatentFilters.productFilters = res?.data?.product || [];
+        this.impPatentFilters.orderByFilters = res?.data?.order_by || [];
+
+        this.impPatentFilters.patentTypeFilters = (res?.data?.patent_type || []).map((item: any) => {
+          const key = Object.keys(item)[0];
+          const count = item[key]?.length || 0;
+
+          return {
+            name: `${key} (${count})`,
+            value: key
+          };
+        });
+
+        this.impPatentFilters.assigneeFilters = res?.data?.assignee || [];
         this.impPatentApiBody.filter_enable = false;
       },
       error: (err) => {
@@ -103,12 +133,10 @@ export class ImpComponent {
   }
 
   onFilterButtonClick(filterKey: string) {
-    this.filterConfigs = this.filterConfigs.map((item) => {
-      if (item.key === filterKey) {
-        return { ...item, dropdownState: !item.dropdownState };
-      }
-      return { ...item, dropdownState: false };
-    });
+    this.filterConfigs = this.filterConfigs.map(config => ({
+      ...config,
+      dropdownState: config.key === filterKey ? !config.dropdownState : false
+    }));
   }
 
   setFilterLabel(filterKey: string, label: string) {
@@ -116,42 +144,29 @@ export class ImpComponent {
       if (item.key === filterKey) {
         if (label === '') {
           switch (filterKey) {
-            case 'product':
-              label = 'Select Product';
-              break;
-            case 'patent_type':
-              label = 'Patent Typ'
-              break;
-            case 'assignee':
-              label = 'Select Assignee'
-              break;
-            case 'order_by':
-              label = 'Order By'
-              break;
+            case 'product': label = 'Select Product'; break;
+            case 'patent_type': label = 'Patent Type'; break;
+            case 'assignee': label = 'Select Assignee'; break;
+            case 'order_by': label = 'Order By'; break;
           }
         }
-
-        return { ...item, label: label };
+        return { ...item, label };
       }
       return item;
     });
   }
 
-
-  handleSelectFilter(filterKey: string, value: any) {
-    this.onFilterButtonClick(filterKey);
+  handleSelectFilter(filterKey: string, value: any, name?: string): void {
     this.handleSetLoading.emit(true);
 
-    // Remove filter if value is empty
     if (value === '') {
       delete this.impPatentApiBody.filters[filterKey];
       this.setFilterLabel(filterKey, '');
     } else {
       this.impPatentApiBody.filters[filterKey] = value;
-      this.setFilterLabel(filterKey, value);
+      this.setFilterLabel(filterKey, name || '');
     }
 
-    // Create updated request body
     this._currentChildAPIBody = {
       ...this.impPatentApiBody,
       filters: { ...this.impPatentApiBody.filters }
@@ -162,18 +177,15 @@ export class ImpComponent {
     this.mainSearchService.impPatentsSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         let resultData = res?.data || {};
-        console.log('📦 API Response:', resultData);
-
-        // ✅ Sort if ORDER_BY is selected
-        const sortValue = this.impPatentApiBody.filters['order_by']; // ✅ case-sensitive
+        const sortValue = this.impPatentApiBody.filters['order_by'];
 
         if (sortValue === 'Newest') {
-          resultData.imp_patent_data = resultData.imp_patent_data?.sort((a: any, b: any) =>
-            new Date(b.APPLICATION_DATE).getTime() - new Date(a.APPLICATION_DATE).getTime()
+          resultData.imp_patent_data = resultData.imp_patent_data?.sort(
+            (a: any, b: any) => new Date(b.APPLICATION_DATE).getTime() - new Date(a.APPLICATION_DATE).getTime()
           );
         } else if (sortValue === 'Oldest') {
-          resultData.imp_patent_data = resultData.imp_patent_data?.sort((a: any, b: any) =>
-            new Date(a.APPLICATION_DATE).getTime() - new Date(b.APPLICATION_DATE).getTime()
+          resultData.imp_patent_data = resultData.imp_patent_data?.sort(
+            (a: any, b: any) => new Date(a.APPLICATION_DATE).getTime() - new Date(b.APPLICATION_DATE).getTime()
           );
         }
 
@@ -186,7 +198,7 @@ export class ImpComponent {
         this.handleSetLoading.emit(false);
         window.scrollTo(0, scrollTop);
       },
-      error: (err) => {
+      error: () => {
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
           filter_enable: false
@@ -198,22 +210,13 @@ export class ImpComponent {
   }
 
   clear() {
-    // Reset all filter labels to default
     this.filterConfigs = this.filterConfigs.map(config => {
       let defaultLabel = '';
       switch (config.key) {
-        case 'product':
-          defaultLabel = 'Select Product';
-          break;
-        case 'patent_type':
-          defaultLabel = 'Patent Type';
-          break;
-        case 'assignee':
-          defaultLabel = 'Select Assignee';
-          break;
-        case 'order_by':
-          defaultLabel = 'Order By';
-          break;
+        case 'product': defaultLabel = 'Select Product'; break;
+        case 'patent_type': defaultLabel = 'Patent Type'; break;
+        case 'assignee': defaultLabel = 'Select Assignee'; break;
+        case 'order_by': defaultLabel = 'Order By'; break;
       }
 
       return {
@@ -223,10 +226,8 @@ export class ImpComponent {
       };
     });
 
-    // Clear filters object
     this.impPatentApiBody.filters = {};
 
-    // Reset API body and trigger fresh search (optional)
     this._currentChildAPIBody = {
       ...this.impPatentApiBody,
       filters: {}
@@ -250,8 +251,6 @@ export class ImpComponent {
       },
     });
 
-    // Scroll to top
     window.scrollTo(0, 0);
   }
-
 }
