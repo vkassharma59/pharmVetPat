@@ -19,7 +19,9 @@ export class TechnicalRoutesComponent {
     @Output() resetPagination = new EventEmitter<any>();
     @Output() handleSetLoading = new EventEmitter<boolean>();
     @Input() currentChildAPIBody: any;
+  @Input() MainDataResultShow: any;
     searchThrough: string = '';
+
 
   resultTabs: any = {};
   _data: any = [];
@@ -29,6 +31,15 @@ export class TechnicalRoutesComponent {
   }
   set data(value: any) {
     this._data = value;
+    console.log("r0000000000000eghrdjihborftht",value)
+  }
+  viewProduct: boolean = false;
+
+
+  handleToggleViewProduct() {
+    this.viewProduct = !this.viewProduct;
+    console.log(this.viewProduct,"reghrdjihborftht", this.currentChildAPIBody)
+    
   }
 
   constructor(private utilityService: UtilityService) {
