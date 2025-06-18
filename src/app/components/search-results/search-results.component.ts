@@ -1431,13 +1431,11 @@ console.log("dgdsg", this.childApiBody[resultTabData.index][this.resultTabs?.tec
   onChildPaginationChange(data: any, index) {
     switch (this.currentTabData.name) {
       case this.resultTabs?.technicalRoutes.name:
-        if (data?.ros_data.length > 0) {
-          this.childApiBody[index][this.resultTabs?.technicalRoutes.name].count = data?.ros_count;
+          this.childApiBody[index][this.resultTabs?.technicalRoutes.name].count = data?.ros_count ?? 0;
           if (!this.allDataSets[index]) {
             this.allDataSets[index] = {};
           }
-          this.allDataSets[index][this.resultTabs.technicalRoutes.name] = data?.ros_data;
-        }
+          this.allDataSets[index][this.resultTabs.technicalRoutes.name] = data ?? [];
         break;
       case this.resultTabs?.productInfo.name:
         if (data?.basic_product_data.length > 0) {
