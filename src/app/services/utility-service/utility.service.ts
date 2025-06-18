@@ -37,6 +37,7 @@ export class UtilityService {
   private tabsSubject = new BehaviorSubject(RESULT_TABS);
   tabs$ = this.tabsSubject.asObservable();
   constructor(private http: HttpClient) {}
+  
   setActiveTab(tabName: string): void {
     const updatedTabs = this.tabsSubject.getValue().map(tab => ({
       ...tab,

@@ -364,7 +364,6 @@ export class SearchResultsComponent {
       index: resultTabData.index,
       count: 0
     }
-console.log("dgdsg", this.childApiBody[resultTabData.index][this.resultTabs?.technicalRoutes.name])
     const tech_API = this.apiUrls.technicalRoutes.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
