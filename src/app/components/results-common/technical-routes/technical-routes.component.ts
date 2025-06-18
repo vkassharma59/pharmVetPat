@@ -15,12 +15,14 @@ import { Auth_operations } from '../../../Utils/SetToken';
 })
 export class TechnicalRoutesComponent {
 
-    @Output() handleResultTabData = new EventEmitter<any>();
-    @Output() resetPagination = new EventEmitter<any>();
-    @Output() handleSetLoading = new EventEmitter<boolean>();
-    @Input() currentChildAPIBody: any;
+  @Output() handleResultTabData = new EventEmitter<any>();
+  @Output() resetPagination = new EventEmitter<any>();
+  @Output() handleSetLoading = new EventEmitter<boolean>();
+  @Input() currentChildAPIBody: any;
+  @Input() specialCount: any;
+  @Input() CurrentAPIBody: any;
   @Input() MainDataResultShow: any;
-    searchThrough: string = '';
+  searchThrough: string = '';
 
 
   resultTabs: any = {};
@@ -31,15 +33,13 @@ export class TechnicalRoutesComponent {
   }
   set data(value: any) {
     this._data = value;
-    console.log("r0000000000000eghrdjihborftht",value)
   }
   viewProduct: boolean = false;
 
 
   handleToggleViewProduct() {
     this.viewProduct = !this.viewProduct;
-    console.log(this.viewProduct,"reghrdjihborftht", this.currentChildAPIBody)
-    
+
   }
 
   constructor(private utilityService: UtilityService) {

@@ -135,6 +135,7 @@ handleROSButtonClick(value: any) {
       if (this.resultTabs?.technicalRoutes?.name) {
         this.activeTabChange.emit(this.resultTabs.technicalRoutes.name);
       }
+       this.setLoadingState.emit(false);
     },
     error: (e) => {
       console.error(e);

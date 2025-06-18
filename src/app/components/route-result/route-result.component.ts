@@ -69,6 +69,7 @@ export class RouteResultComponent {
   @Output() resetPagination: EventEmitter<any> = new EventEmitter<any>();
 
   _currentChildAPIBody: any;
+   @Input() specialCount: any;
   @Input() currentApiData: any;
   @Input() CurrentAPIBody: any;
   @Input() index: number | undefined;
