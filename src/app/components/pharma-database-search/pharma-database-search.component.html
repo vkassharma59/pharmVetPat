@@ -82,7 +82,7 @@
         <h2 class="section-title">OR Advanced Search</h2>
 
         <!-- Filter Group 1 -->
-        <div class="row mb-3 align-items-center">
+        <div class="row mb-2 align-items-center">
           <div class="col-md-4 col-12 mb-2 mb-md-0">
             <label for="seeAllFilter1" class="form-label">Select a Filter:</label>
           </div>
@@ -121,13 +121,36 @@
                   </li>
                 </ul>
               </div>
-              <div class="col-md-2 col-12 d-flex">
-                <button (click)="addFilter()" class="btn btn-outline-secondary w-100">Add another filter +</button>
+              <div _ngcontent-ng-c3105717028="" class="col-md-1 col-1 d-flex" (click)="addFilter()"
+                style="/* border-width: 1px; */padding: 2px;margin-left: 10px;">
+                <button _ngcontent-ng-c3105717028="" class="btn btn-outline-secondary px-2 py-1 w-100 small-btn"> Add
+                  filter + </button>
               </div>
-              <div class="col-md-2 col-6 mb-2 mb-md-0">
-                <button *ngIf="i > 0" (click)="removeFilter(i)" class="btn btn-outline-secondary w-100">Remove filter
-                  -</button>
+              <div style="/* border: 2px solid red; */" class="col-md-1 col-1 d-flex" _ngcontent-ng-c3105717028="">
+                <button _ngcontent-ng-c3105717028="" *ngIf="i > 0" (click)="removeFilter(i)"
+                  class="btn btn-outline-secondary px-2 py-1 w-100 small-btn"> Remove
+                  - </button>
               </div>
+              <!-- <div class="col-md-2 col-2 mb-2 mb-md-0" style="border-width: 2px solid red;">
+                <button *ngIf="i > 0" (click)="removeFilter(i)"
+                  class="btn btn-outline-secondary px-2 py-1 w-100 small-btn">
+                  Remove filter -
+                </button>
+              </div> -->
+              <div  class="col-md-2 col-2"
+                style="border-width: 2px black;width: 30px;margin-left: 9px;">
+                   <!-- <option _ngcontent-ng-c3105717028="" selected="" disabled=""
+                    [(ngModel)]="advanceSearch.filterInputs[i].operator">Operator</option> -->
+                  <select *ngIf="i > 0" class="form-select form-select-sm form-control" 
+                    style="width: auto; min-width: 100px;"
+                    [(ngModel)]="advanceSearch.filterInputs[i].operator">
+                    <option  disabled selected>Operator</option>
+                    <option value="AND">AND</option>
+                    <option value="OR">OR</option>
+                  </select>
+                
+              </div>
+             
             </ng-container>
           </ng-container>
         </div>

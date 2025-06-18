@@ -50,6 +50,12 @@
     gap: 0.3rem;
     align-items: baseline;
 }
+.small-btn {
+  font-size: 13px;
+  padding: 4px 8px !important; /* adjust as needed */
+  width: auto !important; /* if you want less than 100% */
+  min-width: 100px; /* optional for fixed minimum */
+}
 
 /* Keep Chem, Robotics, and Pharma Database together on larger screens */
 @media (min-width: 769px) {

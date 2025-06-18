@@ -18,14 +18,16 @@
   class="card"
   [data]="dataItem"
   [currentChildAPIBody]="currentChildAPIBody"
-  (ROSChange)="handleROSChange($event)">
+ 
+  (activeTabChange)="onActiveTabChange($event)">
 </chemical-directory-card>
 
 <chemical-directory-card
   class="card"
   [data]="dataItem"
   [currentChildAPIBody]="currentChildAPIBody"
-  (ROSChange)="handleROSChange($event)">
+ 
+  (activeTabChange)="onActiveTabChange($event)">
 </chemical-directory-card>
 
     </ng-container>
