@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Input } from '@angular/core';
 import { ServiceResultTabFiltersService } from '../../services/result_tab/service-result-tab-filters.service';
 import { FormsModule } from '@angular/forms';
+import { HostListener, ElementRef, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'chem-child-result-tab',
@@ -22,6 +23,8 @@ export class ChildResultTabComponent {
   @Output() handleChangeTabData: EventEmitter<any> = new EventEmitter();
   @Output() resetPagination: EventEmitter<any> = new EventEmitter();
   @Output() setLoading: EventEmitter<any> = new EventEmitter();
+  @ViewChildren('dropdownRef') dropdownRefs!: QueryList<ElementRef>;
+
   @Input() dataItem: any;
   @Input()
   get currentAPIData() {
@@ -120,6 +123,34 @@ export class ChildResultTabComponent {
 
     this.fetchFilters();
   }
+  @HostListener('document:mousedown', ['$event'])
+onClickOutside(event: MouseEvent) {
+  const clickedInsideAny = this.dropdownRefs?.some((dropdown: ElementRef) =>
+    dropdown.nativeElement.contains(event.target)
+  );
+
+  if (!clickedInsideAny) {
+    this.filterMap = {
+      openCompanyFilter: false,
+      openFieldOfApplicationsFilter: false,
+      openRouteFilter: false,
+      openOrderfilter: false,
+      openActiveIngredientFilter: false,
+      openUpdateDateFilter: false,
+      openTypeOfRouteFilter: false,
+    };
+
+    this.OpenSuggestionBox = {
+      company_name: false,
+      route_type: false,
+      field_of_application: false,
+      order_by: false,
+      active_ingredient: false,
+      updation_date: false,
+      types_of_route: false,
+    };
+  }
+}
 
   fetchFilters() {
     this._currentAPIData.body.filter_enable = true;
