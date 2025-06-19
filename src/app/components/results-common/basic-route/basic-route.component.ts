@@ -21,6 +21,7 @@ export class BasicRouteComponent {
   @Output() handleSetLoading = new EventEmitter<boolean>();
   searchThrough: string = '';
   @Input() currentChildAPIBody: any;
+  @Input() index: any;
   @Input()
   get data() {
     return this._data;

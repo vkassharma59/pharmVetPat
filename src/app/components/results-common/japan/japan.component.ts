@@ -20,6 +20,7 @@ export class JapanComponent {
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
   @Input() currentChildAPIBody: any;
+  @Input() index: any;
   searchThrough: string = '';
 
   resultTabs: any = {};

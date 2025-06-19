@@ -89,6 +89,8 @@ export class ImpComponent {
     }
   }
 
+  @Input() index: any;
+
   constructor(
     private utilityService: UtilityService,
     private mainSearchService: MainSearchService

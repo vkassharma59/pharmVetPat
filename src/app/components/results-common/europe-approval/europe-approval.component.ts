@@ -31,6 +31,7 @@ export class EuropeApprovalComponent {
     this._data = value;
     this.handleResultTabData.emit(this._data || []);
   }
+  @Input() index: any;
 
   constructor(private utilityService: UtilityService) {
     this.resultTabs = this.utilityService.getAllTabsName();

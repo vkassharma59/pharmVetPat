@@ -30,6 +30,7 @@ export class CanadaComponent {
   set data(value: any) {
     this._data = value;
   }
+  @Input() index: any;
 
   constructor(private utilityService: UtilityService) {
     this.resultTabs = this.utilityService.getAllTabsName();

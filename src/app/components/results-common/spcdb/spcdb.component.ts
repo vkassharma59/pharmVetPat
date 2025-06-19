@@ -99,6 +99,5 @@ export class SpcdbComponent implements OnChanges {
     });
   }
 
-
-
+  @Input() index: any;
 }

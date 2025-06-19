@@ -54,6 +54,8 @@ export class ChemicalDirectoryComponent implements OnChanges {
     // optionally add logic here
   }
 
+  @Input() index: any;
+
   constructor(
     private utilityService: UtilityService,
     private apiConfigService: ApiConfigService,

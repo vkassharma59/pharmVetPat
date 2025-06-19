@@ -52,6 +52,8 @@ get pageSize(): number {
     this._currentChildAPIBody = value;
   }
 
+  @Input() index: any;
+
   resultTabs: any = {};
 
   constructor(private utilityService: UtilityService,

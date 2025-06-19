@@ -49,6 +49,7 @@ export class ScientificDocsComponent implements OnChanges {
    set currentChildAPIBody(value: any) {
      this._currentChildAPIBody = value;
    }
+   @Input() index: any;
    resultTabs: any = {};
    constructor(private utilityService: UtilityService,
      private mainSearchService: MainSearchService

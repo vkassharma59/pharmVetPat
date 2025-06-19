@@ -48,6 +48,8 @@ export class ImpurityComponent {
     }
   }
 
+  @Input() index: any;
+
   constructor(
     private utilityService: UtilityService,
     private mainSearchService: MainSearchService

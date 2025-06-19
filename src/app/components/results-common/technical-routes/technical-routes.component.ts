@@ -23,6 +23,7 @@ export class TechnicalRoutesComponent {
   @Input() specialCount: any;
   @Input() CurrentAPIBody: any;
   @Input() MainDataResultShow: any;
+  @Input() index: any;
   searchThrough: string = '';
 rosCounts: { agrochemical: number; pharmaceutical: number } = {
   agrochemical: 0,

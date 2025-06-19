@@ -52,6 +52,8 @@ export class ChemiTrackerComponent {
     }
   }
 
+  @Input() index: any;
+
   @ViewChild('countryDropdownRef') countryDropdownRef!: ElementRef;
   @ViewChild('formulationDropdownRef') formulationDropdownRef!: ElementRef;
 
