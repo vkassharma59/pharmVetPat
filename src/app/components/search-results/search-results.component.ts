@@ -1150,16 +1150,19 @@ export class SearchResultsComponent {
             this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name].count = result?.data?.recordsTotal;
 
             this.setLoadingState.emit(false);
+            this.loadingService.setLoading(this.resultTabs.scientificDocs.name, resultTabData.index, false);
           },
           error: (e) => {
             console.error('Error during main search:', e);
             this.setLoadingState.emit(false);
+            this.loadingService.setLoading(this.resultTabs.scientificDocs.name, resultTabData.index, false);
           },
         });
       },
       error: (e) => {
         console.error('Error fetching column list:', e);
         this.setLoadingState.emit(false);
+        this.loadingService.setLoading(this.resultTabs.scientificDocs.name, resultTabData.index, false);
       },
     });
   }
@@ -1217,16 +1220,19 @@ export class SearchResultsComponent {
             this.allDataSets[resultTabData.index][this.resultTabs.spcDb.name].rows = dataRows;
             this.childApiBody[resultTabData.index][this.resultTabs.spcDb.name].count = result?.data?.recordsTotal;
             this.setLoadingState.emit(false);
+            this.loadingService.setLoading(this.resultTabs.spcDb.name, resultTabData.index, false);
           },
           error: (e) => {
             console.error('Error during main search:', e);
             this.setLoadingState.emit(false);
+            this.loadingService.setLoading(this.resultTabs.spcDb.name, resultTabData.index, false);
           },
         });
       },
       error: (e) => {
         console.error('Error fetching column list:', e);
         this.setLoadingState.emit(false);
+        this.loadingService.setLoading(this.resultTabs.spcDb.name, resultTabData.index, false);
       },
     });
   }
@@ -1284,16 +1290,19 @@ export class SearchResultsComponent {
             this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name].rows = dataRows;
             this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name].count = result?.data?.recordsTotal;
             this.setLoadingState.emit(false);
+            this.loadingService.setLoading(this.resultTabs.gppdDb.name, resultTabData.index, false);
           },
           error: (e) => {
             console.error('Error during main search:', e);
             this.setLoadingState.emit(false);
+            this.loadingService.setLoading(this.resultTabs.gppdDb.name, resultTabData.index, false);
           },
         });
       },
       error: (e) => {
         console.error('Error fetching column list:', e);
         this.setLoadingState.emit(false);
+        this.loadingService.setLoading(this.resultTabs.gppdDb.name, resultTabData.index, false);
       },
     });
   }
@@ -1347,20 +1356,25 @@ export class SearchResultsComponent {
             // ✅ Append search result (rows) to saved structure
             this.allDataSets[resultTabData.index][this.resultTabs.activePatent.name].rows = dataRows;
             this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name].count = result?.data?.recordsTotal;
+            this.allDataSets[resultTabData.index][this.resultTabs.activePatent.name] = result?.data;
             this.setLoadingState.emit(false);
+            this.loadingService.setLoading(this.resultTabs.activePatent.name, resultTabData.index, false);
           },
           error: (e) => {
             console.error('Error during main search:', e);
             this.setLoadingState.emit(false);
+            this.loadingService.setLoading(this.resultTabs.activePatent.name, resultTabData.index, false);
           },
         });
       },
       error: (e) => {
         console.error('Error fetching column list:', e);
         this.setLoadingState.emit(false);
+        this.loadingService.setLoading(this.resultTabs.activePatent.name, resultTabData.index, false);
       },
     });
   }
+
   private performNonPatentSearch(resultTabData: any): void {
     console.log('Search Input:', resultTabData);
     const pageSize = 25;
@@ -1412,16 +1426,19 @@ export class SearchResultsComponent {
             this.allDataSets[resultTabData.index][this.resultTabs.nonPatentLandscape.name].rows = dataRows;
             this.childApiBody[resultTabData.index][this.resultTabs.nonPatentLandscape.name].count = result?.data?.recordsTotal;
             this.setLoadingState.emit(false);
+            this.loadingService.setLoading(this.resultTabs.nonPatentLandscape.name, resultTabData.index, false);
           },
           error: (e) => {
             console.error('Error during main search:', e);
             this.setLoadingState.emit(false);
+            this.loadingService.setLoading(this.resultTabs.nonPatentLandscape.name, resultTabData.index, false);
           },
         });
       },
       error: (e) => {
         console.error('Error fetching column list:', e);
         this.setLoadingState.emit(false);
+        this.loadingService.setLoading(this.resultTabs.nonPatentLandscape.name, resultTabData.index, false);
       },
     });
   }
@@ -1476,16 +1493,19 @@ export class SearchResultsComponent {
             this.allDataSets[resultTabData.index][this.resultTabs.eximData.name].rows = dataRows;
             this.childApiBody[resultTabData.index][this.resultTabs.eximData.name].count = result?.data?.recordsTotal;
             this.setLoadingState.emit(false);
+            this.loadingService.setLoading(this.resultTabs.eximData.name, resultTabData.index, false);
           },
           error: (e) => {
             console.error('Error during main search:', e);
             this.setLoadingState.emit(false);
+            this.loadingService.setLoading(this.resultTabs.eximData.name, resultTabData.index, false);
           },
         });
       },
       error: (e) => {
         console.error('Error fetching column list:', e);
         this.setLoadingState.emit(false);
+        this.loadingService.setLoading(this.resultTabs.eximData.name, resultTabData.index, false);
       },
     });
   }
