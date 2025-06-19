@@ -189,6 +189,7 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
+        this.performTechnicalRouteSearch(resultTabData);
         break;
       case this.resultTabs?.productInfo.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.productInfo.name]).length === 0) {
@@ -196,6 +197,7 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
+        this.perforProductInfoSearch(resultTabData);
         break;
       case this.resultTabs?.chemicalDirectory.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.chemicalDirectory.name]).length === 0) {
@@ -203,6 +205,7 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
+        this.perforChemicalDirectorySearch(resultTabData);
         break;
       case this.resultTabs?.impurity.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.impurity.name]).length === 0) {
@@ -210,6 +213,7 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
+        this.perforImpuritySearch(resultTabData);
         break;
       case this.resultTabs?.chemiTracker.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.chemiTracker.name]).length === 0) {
@@ -217,6 +221,7 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
+        this.perforChemiTrackerSearch(resultTabData);
         break;
       case this.resultTabs?.impPatents.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.impPatents.name]).length === 0) {
@@ -224,6 +229,7 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
+        this.performImpPatentsSearch(resultTabData);
         break;
       case this.resultTabs?.canadaApproval.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.canadaApproval.name]).length === 0) {
@@ -231,6 +237,7 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
+        this.performCanadaApprovalSearch(resultTabData);
         break;
       case this.resultTabs?.japanApproval.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.japanApproval.name]).length === 0) {
@@ -238,6 +245,7 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
+        this.performJapanApprovalSearch(resultTabData);
         break;
       case this.resultTabs?.koreaApproval.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.koreaApproval.name]).length === 0) {
@@ -245,6 +253,7 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
+        this.performKoreaApprovalSearch(resultTabData);
         break;
       case this.resultTabs?.indianMedicine.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.indianMedicine.name]).length === 0) {
@@ -252,6 +261,7 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
+        this.performIndianMedicineSearch(resultTabData);
         break;
       case this.resultTabs?.litigation.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.litigation.name]).length === 0) {
@@ -259,6 +269,8 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
+        this.performLitigationSearch(resultTabData);
+
         break;
       case this.resultTabs?.europeApproval.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.europeApproval.name]).length === 0) {
@@ -266,6 +278,8 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
+        this.performEuropeApprovalSearch(resultTabData);
+
         break;
       // For new tab work
       case this.resultTabs?.usApproval.name:
@@ -274,23 +288,22 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
+        this.performUsApprovalSearch(resultTabData);
+
         break;
-      case this.resultTabs?.veterinaryUsApproval.name:
+      
+
+        case this.resultTabs?.veterinaryUsApproval.name:
+
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.veterinaryUsApproval.name]).length === 0) {
           this.performveterinaryUsApprovalSearch(resultTabData);
         } else {
           this.setLoadingState.emit(false);
         }
-        break;
-      case this.resultTabs?.veterinaryUsApproval.name:
-        if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.veterinaryUsApproval.name]).length === 0) {
-          this.performveterinaryUsApprovalSearch(resultTabData);
-        } else {
-          this.setLoadingState.emit(false);
-        }
+        this.performveterinaryUsApprovalSearch(resultTabData);
         break;
       case this.resultTabs?.activePatent.name:
-      case this.resultTabs?.activePatent.name:
+
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.activePatent.name]).length === 0) {
           this.performactivePatentSearch(resultTabData);
         } else {
@@ -303,6 +316,7 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
+        this.performNonPatentSearch(resultTabData);
         break;
       case this.resultTabs?.scientificDocs.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.scientificDocs.name]).length === 0) {
@@ -310,6 +324,7 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
+        this.scientificDocsSearch(resultTabData);
         break;
       case this.resultTabs?.spcDb.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.spcDb.name]).length === 0) {
@@ -317,6 +332,7 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
+        this.spcDbSearch(resultTabData);
         break;
       case this.resultTabs?.gppdDb.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.gppdDb.name]).length === 0) {
@@ -324,6 +340,7 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
+        this.gppdDbSearch(resultTabData);
         break;
       case this.resultTabs?.eximData.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.eximData.name]).length === 0) {
@@ -331,6 +348,7 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
+        this.eximDataSearch(resultTabData);
         break;
       default:
         this.setLoadingState.emit(false);
@@ -362,6 +380,7 @@ export class SearchResultsComponent {
       index: resultTabData.index,
       count: 0
     }
+
     const tech_API = this.apiUrls.technicalRoutes.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
