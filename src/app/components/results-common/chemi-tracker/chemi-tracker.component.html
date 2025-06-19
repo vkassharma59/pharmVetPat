@@ -88,10 +88,15 @@
 <ng-template #noData>
   <div class="card">
     <div class="card-header text-white bg-primary">
-      {{ resultTabs?.chemiTracker?.label }}
+      {{resultTabs.chemiTracker?.label}}
     </div>
     <div class="card-body">
-      <p>No Data found!</p>
+      <ng-container *ngIf="loadingService.getLoading(resultTabs.chemiTracker.name, index); else noDataText">
+        Loading...
+      </ng-container>
+      <ng-template #noDataText>
+        <p>No Data found!</p>
+      </ng-template>
     </div>
   </div>
 </ng-template>

@@ -7,6 +7,7 @@ import { UtilityService } from '../../../services/utility-service/utility.servic
 import { ApiConfigService } from '../../../../appservice';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { Auth_operations } from '../../../Utils/SetToken';
+import { LoadingService } from '../../../services/loading-service/loading.service';
 
 @Component({
   selector: 'chemical-directory',
@@ -54,10 +55,14 @@ export class ChemicalDirectoryComponent implements OnChanges {
     // optionally add logic here
   }
 
+  @Input() index: any;
+  @Input() tabName?: string;
+
   constructor(
     private utilityService: UtilityService,
     private apiConfigService: ApiConfigService,
-    private mainSearchService: MainSearchService
+    private mainSearchService: MainSearchService,
+    public loadingService: LoadingService
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;

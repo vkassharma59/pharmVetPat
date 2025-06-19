@@ -85,10 +85,15 @@
   <ng-template #noData>
     <div class="card">
       <div class="card-header text-white bg-primary">
-        {{resultTabs?.technicalRoutes?.label}}
+        {{resultTabs.technicalRoutes?.label}}
       </div>
       <div class="card-body">
-        <p>No Data found!</p>
+        <ng-container *ngIf="loadingService.getLoading(resultTabs.technicalRoutes.name, index); else noDataText">
+          Loading...
+        </ng-container>
+        <ng-template #noDataText>
+          <p>No Data found!</p>
+        </ng-template>
       </div>
     </div>
   </ng-template>

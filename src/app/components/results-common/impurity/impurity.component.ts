@@ -5,6 +5,7 @@ import { UtilityService } from '../../../services/utility-service/utility.servic
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
 import { Auth_operations } from '../../../Utils/SetToken';
+import { LoadingService } from '../../../services/loading-service/loading.service';
 
 @Component({
   selector: 'chem-impurity',
@@ -27,6 +28,7 @@ export class ImpurityComponent {
   ImpurityBody: any;
   category_filters: any;
   category_value: any = 'Select Category';
+  @Input() tabName?: string;
 
   @Input()
   get data() {
@@ -48,9 +50,12 @@ export class ImpurityComponent {
     }
   }
 
+  @Input() index: any;
+
   constructor(
     private utilityService: UtilityService,
-    private mainSearchService: MainSearchService
+    private mainSearchService: MainSearchService,
+    public loadingService: LoadingService
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;

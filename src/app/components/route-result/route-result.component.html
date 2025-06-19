@@ -29,6 +29,8 @@
     <ng-container *ngSwitchCase="resultTabWithKeys.productInfo.name">
       <chem-product-info [data]="_dataItem.productInfo"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.productInfo.name]"
+        [index]="index"
+        [tabName]="resultTabWithKeys.productInfo.name"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)">
       </chem-product-info>
@@ -38,6 +40,8 @@
       <chem-technical-route [data]="_dataItem.technicalRoutes" [CurrentAPIBody]="CurrentAPIBody"
         [specialCount]="_dataItem?.technicalRoutes?.special_count"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.technicalRoutes.name]"
+        [index]="index"
+        [tabName]="resultTabWithKeys.technicalRoutes.name"
         (handleSetLoading)="handleSetLoading.emit($event)" (resetPagination)="resetPagination.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-technical-route>
     </ng-container>
@@ -45,6 +49,8 @@
     <ng-container *ngSwitchCase="resultTabWithKeys.chemicalDirectory.name">
       <chemical-directory [data]="_dataItem.chemicalDirectory"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.chemicalDirectory.name]"
+        [index]="index"
+        [tabName]="resultTabWithKeys.chemicalDirectory.name"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"
          (handleROSChange)="handleROSChange.emit($event)"
@@ -55,6 +61,8 @@
     <ng-container *ngSwitchCase="resultTabWithKeys.impurity.name">
       <chem-impurity [data]="_dataItem.impurity"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.impurity.name]"
+        [index]="index"
+        [tabName]="resultTabWithKeys.impurity.name"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-impurity>
     </ng-container>
@@ -62,6 +70,8 @@
     <ng-container *ngSwitchCase="resultTabWithKeys.chemiTracker.name">
       <chem-chemi-tracker [data]="_dataItem.chemiTracker"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.chemiTracker.name]"
+        [index]="index"
+        [tabName]="resultTabWithKeys.chemiTracker.name"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-chemi-tracker>
     </ng-container>
@@ -69,6 +79,8 @@
     <ng-container *ngSwitchCase="resultTabWithKeys.europeApproval.name">
       <chem-europe-approval [data]="_dataItem.europeApproval"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.europeApproval.name]"
+        [index]="index"
+        [tabName]="resultTabWithKeys.europeApproval.name"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-europe-approval>
     </ng-container>
@@ -84,6 +96,8 @@
     <ng-container *ngSwitchCase="resultTabWithKeys.canadaApproval.name">
       <chem-canada [data]="_dataItem.canadaApproval"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.canadaApproval.name]"
+        [index]="index"
+        [tabName]="resultTabWithKeys.canadaApproval.name"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-canada>
     </ng-container>
@@ -91,14 +105,17 @@
     <ng-container *ngSwitchCase="resultTabWithKeys.japanApproval.name">
       <chem-japan [data]="_dataItem.japanApproval"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.japanApproval.name]"
+        [index]="index"
+        [tabName]="resultTabWithKeys.japanApproval.name"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-japan>
     </ng-container>
 
-
     <ng-container *ngSwitchCase="resultTabWithKeys.koreaApproval.name">
       <chem-korea [data]="_dataItem.koreaApproval"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.koreaApproval.name]"
+        [index]="index"
+        [tabName]="resultTabWithKeys.koreaApproval.name"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-korea>
     </ng-container>
@@ -106,6 +123,8 @@
     <ng-container *ngSwitchCase="resultTabWithKeys.indianMedicine.name">
       <chem-indian [data]="_dataItem.indianMedicine"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.indianMedicine.name]"
+        [index]="index"
+        [tabName]="resultTabWithKeys.indianMedicine.name"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-indian>
     </ng-container>
@@ -113,6 +132,8 @@
     <ng-container *ngSwitchCase="resultTabWithKeys.litigation.name">
       <chem-litigation [data]="_dataItem.litigation"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.litigation.name]"
+        [index]="index"
+        [tabName]="resultTabWithKeys.litigation.name"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-litigation>
     </ng-container>
@@ -120,18 +141,24 @@
     <ng-container *ngSwitchCase="resultTabWithKeys.activePatent.name">
       <chem-active-patent [data]="_dataItem.activePatent"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.activePatent.name]"
+        [index]="index"
+        [tabName]="resultTabWithKeys.activePatent.name"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-active-patent>
     </ng-container>
     <ng-container *ngSwitchCase="resultTabWithKeys.nonPatentLandscape.name">
       <app-non-patent [data]="_dataItem.nonPatentLandscape"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.nonPatentLandscape.name]"
+        [index]="index"
+        [tabName]="resultTabWithKeys.nonPatentLandscape.name"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></app-non-patent>
     </ng-container>
     <ng-container *ngSwitchCase="resultTabWithKeys.impPatents.name">
       <chem-imp [data]="_dataItem.impPatents"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.impPatents.name]"
+        [index]="index"
+        [tabName]="resultTabWithKeys.impPatents.name"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-imp>
     </ng-container>
@@ -139,6 +166,8 @@
     <ng-container *ngSwitchCase="resultTabWithKeys.gppdDb.name">
       <app-gppd-db [data]="_dataItem.gppdDb"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.gppdDb.name]"
+        [index]="index"
+        [tabName]="resultTabWithKeys.gppdDb.name"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)">
       </app-gppd-db>
@@ -146,6 +175,8 @@
 
     <ng-container *ngSwitchCase="resultTabWithKeys.spcDb.name">
       <chem-spcdb [data]="_dataItem.spcDb" [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.spcDb.name]"
+        [index]="index"
+        [tabName]="resultTabWithKeys.spcDb.name"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)">
       </chem-spcdb>
@@ -154,6 +185,8 @@
     <ng-container *ngSwitchCase="resultTabWithKeys.scientificDocs.name">
       <app-scientific-docs [data]="_dataItem.scientificDocs"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.scientificDocs.name]"
+        [index]="index"
+        [tabName]="resultTabWithKeys.scientificDocs.name"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)">
       </app-scientific-docs>
@@ -162,6 +195,8 @@
     <ng-container *ngSwitchCase="resultTabWithKeys.eximData.name">
       <chem-exim [data]="_dataItem.eximData"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.eximData.name]"
+        [index]="index"
+        [tabName]="resultTabWithKeys.eximData.name"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)">
       </chem-exim>
@@ -207,7 +242,6 @@
           Choose any 3 vertical report to download
         </h1>
       </div>
-      <!-- Modal Footer 
       <div class="p-3 border-t">
         <div class="flex justify-end gap-2">
           <button data-bs-dismiss="modal" class="px-3 py-2 bg-red-500 rounded-md text-white font-bold">

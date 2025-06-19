@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { ChildPagningTableComponent } from '../../../commons/child-pagning-table/child-pagning-table.component';
 import { ScientificDocsCardComponent } from '../scientific-docs-card/scientific-docs-card.component';
+import { LoadingService } from '../../../services/loading-service/loading.service';
 @Component({
  
   selector: 'app-scientific-docs',
@@ -31,7 +32,8 @@ export class ScientificDocsComponent implements OnChanges {
    }
    @Output() handleResultTabData = new EventEmitter<any>();
    @Output() handleSetLoading = new EventEmitter<boolean>();
- 
+   @Input() index: any;
+   @Input() tabName?: string;
    @Input()
    set data(value: any) {
      this._data = value;
@@ -51,7 +53,8 @@ export class ScientificDocsComponent implements OnChanges {
    }
    resultTabs: any = {};
    constructor(private utilityService: UtilityService,
-     private mainSearchService: MainSearchService
+     private mainSearchService: MainSearchService,
+     public loadingService: LoadingService
    ) {
      this.resultTabs = this.utilityService.getAllTabsName();
    }

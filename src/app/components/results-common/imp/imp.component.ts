@@ -15,6 +15,7 @@ import { ChildPagingComponent } from '../../../commons/child-paging/child-paging
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
 import { Auth_operations } from '../../../Utils/SetToken';
+import { LoadingService } from '../../../services/loading-service/loading.service';
 
 @Component({
   selector: 'chem-imp',
@@ -89,9 +90,13 @@ export class ImpComponent {
     }
   }
 
+  @Input() index: any;
+  @Input() tabName?: string;
+
   constructor(
     private utilityService: UtilityService,
-    private mainSearchService: MainSearchService
+    private mainSearchService: MainSearchService,
+    public loadingService: LoadingService
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
@@ -124,7 +129,7 @@ export class ImpComponent {
 
   handleFetchFilters() {
     this.impPatentApiBody.filter_enable = true;
-
+    this.loadingService.setLoading(this.resultTabs.impPatents.name, this.index, true);
     this.mainSearchService.impPatentsSearchSpecific(this.impPatentApiBody).subscribe({
       next: (res) => {
         this.impPatentFilters.productFilters = res?.data?.product || [];
@@ -141,6 +146,7 @@ export class ImpComponent {
 
         this.impPatentFilters.assigneeFilters = res?.data?.assignee || [];
         this.impPatentApiBody.filter_enable = false;
+        this.loadingService.setLoading(this.resultTabs.impPatents.name, this.index, false);
       },
       error: (err) => {
         console.error(err);

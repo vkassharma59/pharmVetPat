@@ -11,6 +11,7 @@ import {
  import { MainSearchService } from '../../../services/main-search/main-search.service';
  import { ChildPagningTableComponent } from '../../../commons/child-pagning-table/child-pagning-table.component';
 import { EximCardComponent } from '../exim-card/exim-card.component';
+import { LoadingService } from '../../../services/loading-service/loading.service';
  
  @Component({
   selector: 'chem-exim',
@@ -51,9 +52,12 @@ import { EximCardComponent } from '../exim-card/exim-card.component';
    set currentChildAPIBody(value: any) {
      this._currentChildAPIBody = value;
    }
+   @Input() index: any;
+   @Input() tabName?: string;
    resultTabs: any = {};
    constructor(private utilityService: UtilityService,
-     private mainSearchService: MainSearchService
+     private mainSearchService: MainSearchService,
+     public loadingService: LoadingService
    ) {
      this.resultTabs = this.utilityService.getAllTabsName();
    }

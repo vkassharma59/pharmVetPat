@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { environment } from '../../../../environments/environment';
 import { IndianMedicineCardComponent } from '../indian-medicine-card/indian-medicine-card.component';
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
+import { LoadingService } from '../../../services/loading-service/loading.service';
 @Component({
   selector: 'chem-indian',
   standalone: true,
@@ -29,8 +30,10 @@ export class IndianComponent {
      set data(value: any) {
        this._data = value;
      }
+     @Input() index: any;
+     @Input() tabName?: string;
    
-     constructor(private utilityService: UtilityService) {
+     constructor(private utilityService: UtilityService, public loadingService: LoadingService, private dialog: MatDialog) {
        this.resultTabs = this.utilityService.getAllTabsName();
        this.searchThrough = Auth_operations.getActiveformValues().activeForm;
      }
