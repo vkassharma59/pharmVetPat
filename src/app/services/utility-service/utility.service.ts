@@ -13,7 +13,7 @@ const RESULT_TABS = [
   { name: 'chemicalDirectory', label: 'Chemical Directory (Building Block)', isActive: false },
   { name: 'impurity', label: 'Impurity', isActive: false },
   { name: 'usApproval', label: 'US Approval (Orange Book)', isActive: false },
-  { name: 'veterinaryUsApproval', label: 'Veterinary US Approval (Orange Book)', isActive: false },
+  { name: 'veterinaryUsApproval', label: 'Veterinary US Approval (Green Book)', isActive: false },
   { name: 'europeApproval', label: 'Europe Approval (EMA)', isActive: false },
   { name: 'canadaApproval', label: 'Canada Approval (Health Canada)', isActive: false },
   { name: 'japanApproval', label: 'Japan Approval (PMDA)', isActive: false },

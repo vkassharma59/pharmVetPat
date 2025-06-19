@@ -4,6 +4,8 @@ import {
   Input,
   Output,
   ElementRef,
+  ViewChildren,
+  QueryList,
   HostListener
 } from '@angular/core';
 import { UtilityService } from '../../../services/utility-service/utility.service';
@@ -24,6 +26,9 @@ import { Auth_operations } from '../../../Utils/SetToken';
 export class ImpComponent {
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
+
+  @ViewChildren('dropdownRef') dropdownRefs!: QueryList<ElementRef>;
+  lastClickedFilterKey: string | null = null;
 
   searchThrough: string = '';
   resultTabs: any = {};
@@ -86,22 +91,35 @@ export class ImpComponent {
 
   constructor(
     private utilityService: UtilityService,
-    private mainSearchService: MainSearchService,
-    private eRef: ElementRef
+    private mainSearchService: MainSearchService
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
 
-  /** ✅ Detect click outside any dropdown to close all */
-  @HostListener('document:click', ['$event'])
-  handleClickOutside(event: Event) {
-    if (!this.eRef.nativeElement.contains(event.target)) {
-      this.filterConfigs = this.filterConfigs.map(config => ({
-        ...config,
-        dropdownState: false
-      }));
-    }
+@HostListener('document:mousedown', ['$event'])
+ onClickOutside(event: MouseEvent) {
+  const clickedInsideAny = this.dropdownRefs?.some((dropdown: ElementRef) =>
+    dropdown.nativeElement.contains(event.target)
+  );
+
+  if (!clickedInsideAny) {
+    this.filterConfigs = this.filterConfigs.map(config => ({
+      ...config,
+      dropdownState: false
+    }));
+  }
+}
+
+  onFilterButtonClick(filterKey: string) {
+    this.lastClickedFilterKey = filterKey;
+
+    this.filterConfigs = this.filterConfigs.map((item) => {
+      if (item.key === filterKey) {
+        return { ...item, dropdownState: !item.dropdownState };
+      }
+      return { ...item, dropdownState: false };
+    });
   }
 
   handleFetchFilters() {
@@ -115,7 +133,6 @@ export class ImpComponent {
         this.impPatentFilters.patentTypeFilters = (res?.data?.patent_type || []).map((item: any) => {
           const key = Object.keys(item)[0];
           const count = item[key]?.length || 0;
-
           return {
             name: `${key} (${count})`,
             value: key
@@ -128,15 +145,8 @@ export class ImpComponent {
       error: (err) => {
         console.error(err);
         this.impPatentApiBody.filter_enable = false;
-      },
+      }
     });
-  }
-
-  onFilterButtonClick(filterKey: string) {
-    this.filterConfigs = this.filterConfigs.map(config => ({
-      ...config,
-      dropdownState: config.key === filterKey ? !config.dropdownState : false
-    }));
   }
 
   setFilterLabel(filterKey: string, label: string) {
@@ -150,7 +160,7 @@ export class ImpComponent {
             case 'order_by': label = 'Order By'; break;
           }
         }
-        return { ...item, label };
+        return { ...item, label: label };
       }
       return item;
     });
@@ -218,12 +228,7 @@ export class ImpComponent {
         case 'assignee': defaultLabel = 'Select Assignee'; break;
         case 'order_by': defaultLabel = 'Order By'; break;
       }
-
-      return {
-        ...config,
-        label: defaultLabel,
-        dropdownState: false
-      };
+      return { ...config, label: defaultLabel, dropdownState: false };
     });
 
     this.impPatentApiBody.filters = {};
@@ -248,7 +253,7 @@ export class ImpComponent {
         console.error(err);
         this._currentChildAPIBody.filter_enable = false;
         this.handleSetLoading.emit(false);
-      },
+      }
     });
 
     window.scrollTo(0, 0);

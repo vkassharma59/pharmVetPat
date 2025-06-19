@@ -104,9 +104,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   ngOnInit() {
     this.utilityService.resetTabs();
     this.resultTabs = this.utilityService.getAllTabsName();
-    this.getChemicalStructureFilters();
-    this.getintermediateSearchFilters();
-    this.getAdvanceSearchFilters();
+    this.getAllFilters();
   }
 
   // ✅ Unified HostListener to close dropdowns
@@ -127,6 +125,12 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     if (!this.elementRef.nativeElement.contains(target)) {
       this.showSuggestions = false;
     }
+  }
+
+  getAllFilters() {
+    this.getChemicalStructureFilters();
+    this.getintermediateSearchFilters();
+    this.getAdvanceSearchFilters();
   }
 
   openDevStageDropdown() {
@@ -651,7 +655,7 @@ isAdvancedInputDisabled(): boolean {
           throw new Error("Each filterInput must contain 'filter' and 'keyword' properties.");
         }
         return {
-          ...(index > 0 ? { operator: "OR" } : {}), // Add "operator: OR" for subsequent criteria
+          ...(index > 0 ? { operator: input.operator || "OR" } : {}),  // use selected operator
           column: input.filter,
           keyword: input.keyword
         };
@@ -790,6 +794,9 @@ isAdvancedInputDisabled(): boolean {
           this.filteredInnovators = [];
           break;
       }
+
+      // Get all the filters again
+      this.getAllFilters();
     }, 100);
   }
 
