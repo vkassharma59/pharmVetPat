@@ -1,101 +1,96 @@
-<div class="py-3" >
-  <div class="flex gap-2">
-    <div  class="py-2 px-2 text-lg text-justify font-semibold overflow-auto">
-      <!-- <app-truncate-title customClass="tab-title tag_title" [title]="'Technical Routes<sup>N</sup> >> '"
-        [fullText]="MainDataResultShow?.chem_dir_data[index]?.chemical_name" [maxLength]="125"></app-truncate-title> -->
-    </div>
-  </div>
-  <div>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="flex gap-2 items-center flex-wrap">
-          <button class="px-3 py-2 my-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
-            KSM : {{ _data?.KSM }}
-          </button>
+<div>
+  <div class="row" *ngIf="CurrentAPIBody?.currentTab === 'chemicalDirectory'">
+    <div class="col-md-6">
+      <div class="flex gap-2 items-center flex-wrap">
+        <button class="px-3 py-2 my-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
+          KSM : {{ _data?.KSM }}
+        </button>
 
-          <button class="px-3 py-2 my-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
-            Agrochemical Compound :
-            <!-- {{ MainDataResultShow?.chem_dir_data[index]?.special_count?.agroTotal }} -->
-          </button>
-          <button class="px-3 py-2 my-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
-            Pharmaceutical Ingredient:
-            <!-- {{ MainDataResultShow?.chem_dir_data[index]?.special_count?.pharmaTotal }} -->
-          </button>
-        </div>
+        <button class="px-3 py-2 my-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
+          Agrochemical Compound :{{ rosCounts.agrochemical}}
+          <!-- {{ MainDataResultShow?.chem_dir_data[index]?.special_count?.agroTotal }} -->
+        </button>
+        <button class="px-3 py-2 my-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
+          Pharmaceutical Ingredient:{{ rosCounts.pharmaceutical }}
+          <!-- {{ MainDataResultShow?.chem_dir_data[index]?.special_count?.pharmaTotal }} -->
+        </button>
       </div>
-      <div class="col-md-6">
-        <div class="p-2">
-          <a (click)="handleToggleViewProduct()" class="btn">Click to View Application of Intermediates</a>
-        </div>
-        <!-- <button
+    </div>
+    <div class="col-md-6">
+      <div class="p-2">
+        <a (click)="handleToggleViewProduct()" class="btn">Click to View Application of Intermediates</a>
+      </div>
+      <!-- <button
           class="px-3 py-2 bg-[#FFCD04] text-black rounded-full"
           (click)="handleToggleViewProduct()"
         >
           Click to View Application of Intermediates
         </button> -->
-      </div>
     </div>
+  </div>
 
  <div *ngIf="viewProduct"
-    class="fixed top-0 left-0 h-screen w-screen backdrop-blur-sm py-3 flex justify-center items-center z-30">
-    <div class="relative bg-white rounded-md max-w-[90vw] border-2 border-[#0032A0]">
-      <div class="sticky top-0 flex items-center bg-white rouned-md">
-        <span class="text-left text-lg hover:cursor-pointer my-2 px-3" (click)="handleToggleViewProduct()">
-          X
-        </span>
-        <div class="flex justify-center items-center flex-grow">
-          <h1 class="text-center text-lg font-bold">
-            Application of Intermediate
-          </h1>
-        </div>
-      </div>
-      <div class="scroll px-3 py-2 overflow-auto max-h-[50vh] rounded-md">
-        <li *ngFor="let data of _data?.uniq_products; let i = index" class="py-2">
-          <a class="dropdown-item">{{ i + 1 }}. &nbsp; {{ data }}</a>
-        </li>
+  class="fixed top-0 left-0 h-screen w-screen backdrop-blur-sm py-3 flex justify-center items-center z-30">
+  <div class="relative bg-white rounded-md max-w-[70vw] border-2 border-[#0032A0]">
+    <!-- Header -->
+    <div class="sticky top-0 flex items-center bg-white rounded-md border-b">
+      <span class="text-left text-lg hover:cursor-pointer my-2 px-3" (click)="handleToggleViewProduct()">
+        X
+      </span>
+      <div class="flex justify-center items-center flex-grow">
+        <h1 class="text-center text-lg font-bold">
+          Application of Intermediate
+        </h1>
       </div>
     </div>
-  </div>
-<ng-container *ngIf="_data?.ros_data?.length > 0; else noData">
-    <ng-container
-        *ngIf="currentChildAPIBody && !isEmptyObject(currentChildAPIBody) && searchThrough !== 'synthesis-search'">
-        <chem-child-result-tab [dataItem]="_data?.ros_data" [currentAPIData]="currentChildAPIBody"
-            (handleChangeTabData)="handleResultTabData.emit($event)"
-            (resetPagination)="resetPagination.emit($event)"
-            (setLoading)="handleSetLoading.emit($event)"></chem-child-result-tab>
-        <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper">
-            <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
-                Total Records : {{ currentChildAPIBody?.count }}
-            </button>
-        </div>
-        <ng-container *ngFor="let dataItem of _data?.ros_data; let i = index">
-            <div class="py-4">
-                <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
-                    <span
-                        class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-normal h-[37px] flex justify-center items-center">
-                        Sub Route
-                        {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
-                    </span>
-                </div>
-            </div>
-            <chem-technical-route-card class="card" [data]="dataItem"></chem-technical-route-card>
-        </ng-container>
-        <app-child-paging 
-            *ngIf="currentChildAPIBody?.count > 25"
-            [currentChildAPIBody]="currentChildAPIBody"
-            (handleChangeTabData)="handleResultTabData.emit($event)"            
-            (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
-    </ng-container>
-</ng-container>
-<ng-template #noData>
-    <div class="card">
-        <div class="card-header text-white bg-primary">
-            {{resultTabs?.technicalRoutes?.label}}
-        </div>
-        <div class="card-body">
-            <p>No Data found!</p>
-        </div>
-    </div>
-</ng-template>
 
+    <!-- Scrollable List -->
+    <div class="scroll px-8 py-3 overflow-auto max-h-[50vh] rounded-md">
+      <div *ngFor="let data of _data?.uniq_products; let i = index" class="py-1">
+        <span class="text-base">{{ i + 1 }}&nbsp;&nbsp;{{ data }}</span>
+      </div>
+    </div>
   </div>
+</div>
+
+
+  <ng-container *ngIf="_data?.ros_data?.length > 0; else noData">
+    <ng-container
+      *ngIf="currentChildAPIBody && !isEmptyObject(currentChildAPIBody) && searchThrough !== 'synthesis-search'">
+      <chem-child-result-tab [dataItem]="_data?.ros_data" [currentAPIData]="currentChildAPIBody"
+        (handleChangeTabData)="handleResultTabData.emit($event)" (resetPagination)="resetPagination.emit($event)"
+        (setLoading)="handleSetLoading.emit($event)"></chem-child-result-tab>
+      <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper">
+        <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
+          Total Records : {{ currentChildAPIBody?.count }}
+        </button>
+      </div>
+      <ng-container *ngFor="let dataItem of _data?.ros_data; let i = index">
+        <div class="py-4">
+          <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
+            <span
+              class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-normal h-[37px] flex justify-center items-center">
+              Sub Route
+              {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
+            </span>
+          </div>
+        </div>
+        <chem-technical-route-card class="card" [data]="dataItem"></chem-technical-route-card>
+      </ng-container>
+      <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"
+        (handleChangeTabData)="handleResultTabData.emit($event)"
+        (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
+    </ng-container>
+  </ng-container>
+  <ng-template #noData>
+    <div class="card">
+      <div class="card-header text-white bg-primary">
+        {{resultTabs?.technicalRoutes?.label}}
+      </div>
+      <div class="card-body">
+        <p>No Data found!</p>
+      </div>
+    </div>
+  </ng-template>
+
+</div>

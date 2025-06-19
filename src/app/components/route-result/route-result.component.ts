@@ -67,7 +67,8 @@ export class RouteResultComponent {
   @Output() handleChildPaginationSearch: EventEmitter<any> = new EventEmitter<any>();
   @Output() OpenPriviledgeModal: EventEmitter<any> = new EventEmitter<any>();
   @Output() resetPagination: EventEmitter<any> = new EventEmitter<any>();
-
+  @Output() handleROSChange: EventEmitter<any> = new EventEmitter<any>();
+  
   _currentChildAPIBody: any;
    @Input() specialCount: any;
   @Input() currentApiData: any;

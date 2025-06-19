@@ -26,7 +26,7 @@ import { ResultTabComponent } from '../../commons/result-tab/result-tab.componen
     ResultTabComponent,
     RouteResultComponent,
     PaginationComponent,
-   
+
   ],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.css',
@@ -38,8 +38,6 @@ export class SearchResultsComponent {
   @Output() showResultFunction: EventEmitter<any> = new EventEmitter<any>();
   @Output() backFunction: EventEmitter<any> = new EventEmitter<any>();
   @Output() generatePdf: EventEmitter<any> = new EventEmitter<any>();
-
-
   @Output() setLoadingState: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() allDataSets: any = [];
   @Input() searchData: any;
@@ -277,29 +275,29 @@ export class SearchResultsComponent {
           this.setLoadingState.emit(false);
         }
         break;
-         case this.resultTabs?.veterinaryUsApproval.name:
+      case this.resultTabs?.veterinaryUsApproval.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.veterinaryUsApproval.name]).length === 0) {
           this.performveterinaryUsApprovalSearch(resultTabData);
         } else {
           this.setLoadingState.emit(false);
         }
         break;
-         case this.resultTabs?.veterinaryUsApproval.name:
+      case this.resultTabs?.veterinaryUsApproval.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.veterinaryUsApproval.name]).length === 0) {
           this.performveterinaryUsApprovalSearch(resultTabData);
         } else {
           this.setLoadingState.emit(false);
         }
         break;
-         case this.resultTabs?.activePatent.name:
-         case this.resultTabs?.activePatent.name:
+      case this.resultTabs?.activePatent.name:
+      case this.resultTabs?.activePatent.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.activePatent.name]).length === 0) {
           this.performactivePatentSearch(resultTabData);
         } else {
           this.setLoadingState.emit(false);
         }
         break;
-         case this.resultTabs?.nonPatentLandscape.name:
+      case this.resultTabs?.nonPatentLandscape.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.nonPatentLandscape.name]).length === 0) {
           this.performNonPatentSearch(resultTabData);
         } else {
@@ -327,7 +325,7 @@ export class SearchResultsComponent {
           this.setLoadingState.emit(false);
         }
         break;
-         case this.resultTabs?.eximData.name:
+      case this.resultTabs?.eximData.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.eximData.name]).length === 0) {
           this.eximDataSearch(resultTabData);
         } else {
@@ -364,7 +362,6 @@ export class SearchResultsComponent {
       index: resultTabData.index,
       count: 0
     }
-console.log("dgdsg", this.childApiBody[resultTabData.index][this.resultTabs?.technicalRoutes.name])
     const tech_API = this.apiUrls.technicalRoutes.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
@@ -987,7 +984,7 @@ console.log("dgdsg", this.childApiBody[resultTabData.index][this.resultTabs?.tec
       },
     });
   }
-   private performveterinaryUsApprovalSearch(resultTabData: any): void {
+  private performveterinaryUsApprovalSearch(resultTabData: any): void {
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.veterinaryUsApproval.name] = {};
       this.setLoadingState.emit(false);
@@ -1035,7 +1032,7 @@ console.log("dgdsg", this.childApiBody[resultTabData.index][this.resultTabs?.tec
       },
     });
   }
-  
+
   private scientificDocsSearch(resultTabData: any,): void {
     console.log('Search Input:', resultTabData);
     const pageSize = 25;
@@ -1170,11 +1167,11 @@ console.log("dgdsg", this.childApiBody[resultTabData.index][this.resultTabs?.tec
   }
 
 
-   private gppdDbSearch(resultTabData: any): void {
+  private gppdDbSearch(resultTabData: any): void {
     console.log('Search Input:', resultTabData);
     const pageSize = 25;
     const page_no = 1
-     this.setLoadingState.emit(true);
+    this.setLoadingState.emit(true);
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name] = {};
       this.setLoadingState.emit(false);
@@ -1299,7 +1296,7 @@ console.log("dgdsg", this.childApiBody[resultTabData.index][this.resultTabs?.tec
       },
     });
   }
- private performNonPatentSearch(resultTabData: any): void {
+  private performNonPatentSearch(resultTabData: any): void {
     console.log('Search Input:', resultTabData);
     const pageSize = 25;
     const page_no = 1
@@ -1363,7 +1360,7 @@ console.log("dgdsg", this.childApiBody[resultTabData.index][this.resultTabs?.tec
       },
     });
   }
- private eximDataSearch(resultTabData: any): void {
+  private eximDataSearch(resultTabData: any): void {
     console.log('Search Input:', resultTabData);
     const pageSize = 25;
     const page_no = 1
@@ -1427,15 +1424,91 @@ console.log("dgdsg", this.childApiBody[resultTabData.index][this.resultTabs?.tec
       },
     });
   }
+ 
+ButtonROSSearch(SearchKey: any): void {
+  this.setLoadingState.emit(true);
+  const index = 0;
+
+  console.log('🔍 ButtonROSSearch triggered with SearchKey:', SearchKey);
+
+  if (!this.childApiBody[index]) {
+    this.childApiBody[index] = {};
+    console.log('📦 Initialized childApiBody for index:', index);
+  }
+
+  const isROS = SearchKey === 'ROS_search';
+
+//   const searchValue = this.resultTabs?.technicalRoutes.name?.searchWithValue;
+//  // console.log('🔎 Search Value (TRRN):',resultTabData);
+
+//   if (!searchValue) {
+//     console.warn('⚠️ No search value found for technical route.');
+//     this.setLoadingState.emit(false);
+//     return;
+//   }
+
+  const body = {
+    api_url: this.apiUrls.technicalRoutes.searchSpecific,
+    search_type: 'TRRN',
+//keyword: searchValue,
+    keyword:['101054', '101648', '1066', '1077', '14079', '16387', '16773', '17017', '17319', '17370', '1820', '18444', '18445', '19526', '19529', '19530', '19531', '19918', '20370', '20736', '20740', '20746', '21898', '2224', '22254', '23535', '2394', '2407', '24402', '26002', '2674', '27171', '2724', '3', '3086', '3143', '3241', '38012', '399', '405', '408', '43502', '43505', '44212', '45858', '51570', '51617', '51707', '51732', '51739', '51749', '51751', '51755', '51763', '51769', '52845', '53114', '53312', '53592', '53611', '53678', '53679', '53799', '53815', '53818', '54021', '54023', '54419', '54453', '54580', '55098', '55334', '55434', '55490', '55535', '56733', '57873', '57915', '57920', '57997', '57998', '58060', '58260', '58409', '58835', '58839', '59385', '59386', '59852', '59983', '60759', '60882', '61060', '61096', '61099', '61100', '61462', '61830', '61831', '62025'],
+    page_no: 1,
+    filter_enable: false,
+    filters: isROS ? {} : { types_of_route: 'KSM' },
+    order_by: '',
+    index: index,
+  };
+
+  console.log('📤 Request body prepared:', body);
+
+  this.childApiBody[index]['ROS'] = body;
+
+  const tech_API = this.apiUrls.technicalRoutes.columnList;
+  console.log('📡 Fetching column list from:', tech_API);
+
+  this.columnListService.getColumnList(tech_API).subscribe({
+    next: (res: any) => {
+      const columns = res?.data?.columns;
+      console.log('✅ Column list received:', columns);
+
+      Auth_operations.setColumnList('ROS', columns);
+
+      console.log('📡 Calling technicalRoutesSearchSpecific API...');
+      this.mainSearchService.technicalRoutesSearchSpecific(body).subscribe({
+        next: (result: any) => {
+          console.log('✅ ROS search result:', result?.data);
+
+          this.childApiBody[index]['ROS'].count = result?.data?.ros_count || 0;
+          this.allDataSets[index] = this.allDataSets[index] || {};
+          this.allDataSets[index]['ROS'] = result?.data || {};
+
+          this.currentTabData = result?.data;
+
+          this.setLoadingState.emit(false);
+          console.log('✅ Data set and tab updated, loading stopped.');
+        },
+        error: (e) => {
+          console.error('❌ ROS API error:', e);
+          this.setLoadingState.emit(false);
+        }
+      });
+    },
+    error: (err) => {
+      console.error('❌ Column list fetch error:', err);
+      this.setLoadingState.emit(false);
+    }
+  });
+}
+
 
   onChildPaginationChange(data: any, index) {
     switch (this.currentTabData.name) {
       case this.resultTabs?.technicalRoutes.name:
-          this.childApiBody[index][this.resultTabs?.technicalRoutes.name].count = data?.ros_count ?? 0;
-          if (!this.allDataSets[index]) {
-            this.allDataSets[index] = {};
-          }
-          this.allDataSets[index][this.resultTabs.technicalRoutes.name] = data ?? [];
+        this.childApiBody[index][this.resultTabs?.technicalRoutes.name].count = data?.ros_count ?? 0;
+        if (!this.allDataSets[index]) {
+          this.allDataSets[index] = {};
+        }
+        this.allDataSets[index][this.resultTabs.technicalRoutes.name] = data ?? [];
         break;
       case this.resultTabs?.productInfo.name:
         if (data?.basic_product_data.length > 0) {
@@ -1549,7 +1622,7 @@ console.log("dgdsg", this.childApiBody[resultTabData.index][this.resultTabs?.tec
         }
         break;
       default:
-        // do nothing
+      // do nothing
     }
   }
 }

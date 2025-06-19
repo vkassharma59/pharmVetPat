@@ -5,6 +5,7 @@ import { UtilityService } from '../../../services/utility-service/utility.servic
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
 import { ChildResultTabComponent } from '../../../commons/child-result-tab/child-result-tab.component';
 import { Auth_operations } from '../../../Utils/SetToken';
+import { SharedRosService } from '../../../shared-ros.service';
 
 @Component({
   selector: 'chem-technical-route',
@@ -23,6 +24,10 @@ export class TechnicalRoutesComponent {
   @Input() CurrentAPIBody: any;
   @Input() MainDataResultShow: any;
   searchThrough: string = '';
+rosCounts: { agrochemical: number; pharmaceutical: number } = {
+  agrochemical: 0,
+  pharmaceutical: 0
+};
 
 
   resultTabs: any = {};
@@ -36,13 +41,24 @@ export class TechnicalRoutesComponent {
   }
   viewProduct: boolean = false;
 
+  ngOnInit() {
+  this.sharedROS.rosCount$.subscribe(count => {
+    if (count) {
+      console.log('Received ROS Count:', count);
+      this.rosCounts = count; // ✔️ update the local variable
+    }
+  });
+   console.log('data gvfdh Count:', this._data);
+}
 
   handleToggleViewProduct() {
     this.viewProduct = !this.viewProduct;
 
   }
 
-  constructor(private utilityService: UtilityService) {
+  constructor(private utilityService: UtilityService,
+    private sharedROS: SharedRosService
+  ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }

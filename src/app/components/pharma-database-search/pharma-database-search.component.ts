@@ -655,7 +655,7 @@ isAdvancedInputDisabled(): boolean {
           throw new Error("Each filterInput must contain 'filter' and 'keyword' properties.");
         }
         return {
-          ...(index > 0 ? { operator: "OR" } : {}), // Add "operator: OR" for subsequent criteria
+          ...(index > 0 ? { operator: input.operator || "OR" } : {}),  // use selected operator
           column: input.filter,
           keyword: input.keyword
         };

@@ -47,6 +47,7 @@
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.chemicalDirectory.name]"
         (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"
+         (handleROSChange)="handleROSChange.emit($event)"
         (activeTabChange)="onChemicalDirectoryActiveTabChange($event)">
       </chemical-directory>
     </ng-container>
