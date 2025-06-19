@@ -6,6 +6,7 @@ import { ChildPagingComponent } from '../../../commons/child-paging/child-paging
 import { ChildResultTabComponent } from '../../../commons/child-result-tab/child-result-tab.component';
 import { Auth_operations } from '../../../Utils/SetToken';
 import { SharedRosService } from '../../../shared-ros.service';
+import { LoadingService } from '../../../services/loading-service/loading.service';
 
 @Component({
   selector: 'chem-technical-route',
@@ -24,6 +25,7 @@ export class TechnicalRoutesComponent {
   @Input() CurrentAPIBody: any;
   @Input() MainDataResultShow: any;
   @Input() index: any;
+  @Input() tabName: string | undefined;
   searchThrough: string = '';
 rosCounts: { agrochemical: number; pharmaceutical: number } = {
   agrochemical: 0,
@@ -57,8 +59,10 @@ rosCounts: { agrochemical: number; pharmaceutical: number } = {
 
   }
 
-  constructor(private utilityService: UtilityService,
-    private sharedROS: SharedRosService
+  constructor(
+    private utilityService: UtilityService,
+    private sharedROS: SharedRosService,
+    public loadingService: LoadingService
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;

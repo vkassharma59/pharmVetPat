@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { environment } from '../../../../environments/environment';
 import { CanadaHealthComponent } from '../canada-health/canada-health.component';
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
+import { LoadingService } from '../../../services/loading-service/loading.service';
 
 @Component({
   selector: 'chem-canada',
@@ -31,8 +32,12 @@ export class CanadaComponent {
     this._data = value;
   }
   @Input() index: any;
+  @Input() tabName?: string;
 
-  constructor(private utilityService: UtilityService) {
+  constructor(
+    private utilityService: UtilityService,
+    public loadingService: LoadingService
+  ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
 

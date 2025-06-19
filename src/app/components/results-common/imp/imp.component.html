@@ -1,6 +1,6 @@
 <div class="child-route-count-wrapper flex justify-between items-center w-full">
   <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
-    Total Records : {{ currentChildAPIBody?.count }} {{index}}
+    Total Records : {{ currentChildAPIBody?.count }}
   </button>
   <div class="flex flex-wrap gap-3">
     <div class="dropdown" *ngFor="let configData of filterConfigs" #dropdownRef>
@@ -56,7 +56,12 @@
       {{resultTabs.impPatents?.label}}
     </div>
     <div class="card-body">
-      <p>No Data found!</p>
+      <ng-container *ngIf="loadingService.getLoading(resultTabs.impPatents.name, index); else noDataText">
+        Loading...
+      </ng-container>
+      <ng-template #noDataText>
+        <p>No Data found!</p>
+      </ng-template>
     </div>
   </div>
 </ng-template>

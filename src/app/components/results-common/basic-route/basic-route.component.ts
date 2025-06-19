@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { Auth_operations } from '../../../Utils/SetToken';
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
+import { LoadingService } from '../../../services/loading-service/loading.service';
 
 @Component({
   selector: 'chem-product-info',
@@ -22,7 +23,8 @@ export class BasicRouteComponent {
   searchThrough: string = '';
   @Input() currentChildAPIBody: any;
   @Input() index: any;
-  @Input()
+  @Input() tabName?: string;
+    @Input()
   get data() {
     return this._data;
   }
@@ -30,8 +32,8 @@ export class BasicRouteComponent {
     this._data = value;
   }
 
-  constructor(private utilityService: UtilityService) {
-    this.resultTabs = this.utilityService.getAllTabsName();
+  constructor(private utilityService: UtilityService, public loadingService: LoadingService) {
+    this.resultTabs = this.utilityService.getAllTabsName();    
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
 }

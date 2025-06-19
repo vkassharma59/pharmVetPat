@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { ChildPagningTableComponent } from '../../../commons/child-pagning-table/child-pagning-table.component';
 import { NonPatentCardComponent } from '../non-patent-card/non-patent-card.component';
+import { LoadingService } from '../../../services/loading-service/loading.service';
 
 @Component({
   selector: 'app-non-patent',
@@ -25,12 +26,14 @@ export class NonPatentComponent implements OnChanges {
   searchByTable: boolean = false;
   isFilterApplied: boolean = false; // agar filter lagana hai to true karenge
   count: number = 0;
-  totalPages: number = 0;
+  totalPages: number = 0;    
+  @Input() tabName?: string;
 
   get pageSize(): number {
     return this._currentChildAPIBody?.length || 25;
   }
 
+  @Input() index: any;
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
 
@@ -52,12 +55,11 @@ export class NonPatentComponent implements OnChanges {
     this._currentChildAPIBody = value;
   }
 
-  @Input() index: any;
-
   resultTabs: any = {};
 
   constructor(private utilityService: UtilityService,
-    private mainSearchService: MainSearchService
+    private mainSearchService: MainSearchService,
+    public loadingService: LoadingService
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
   }

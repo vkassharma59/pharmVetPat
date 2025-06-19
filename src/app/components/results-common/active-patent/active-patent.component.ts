@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { ActivePatentCardComponent } from "../active-patent-card/active-patent-card.component";
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { ChildPagningTableComponent } from '../../../commons/child-pagning-table/child-pagning-table.component';
+import { LoadingService } from '../../../services/loading-service/loading.service';
 
 @Component({
   selector: 'chem-active-patent',
@@ -53,11 +54,13 @@ get pageSize(): number {
   }
 
   @Input() index: any;
+  @Input() tabName?: string;
 
   resultTabs: any = {};
 
   constructor(private utilityService: UtilityService,
-    private mainSearchService: MainSearchService
+    private mainSearchService: MainSearchService,
+    public loadingService: LoadingService
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
   }

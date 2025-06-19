@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { environment } from '../../../../environments/environment';
 import { JapanPMDAComponent } from "../japan-pmda/japan-pmda.component";
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
+import { LoadingService } from '../../../services/loading-service/loading.service';
 
 @Component({
   selector: 'chem-japan',
@@ -21,6 +22,7 @@ export class JapanComponent {
   @Output() handleSetLoading = new EventEmitter<boolean>();
   @Input() currentChildAPIBody: any;
   @Input() index: any;
+  @Input() tabName?: string;
   searchThrough: string = '';
 
   resultTabs: any = {};
@@ -33,7 +35,10 @@ export class JapanComponent {
     this._data = value;
   }
 
-  constructor(private utilityService: UtilityService) {
+  constructor(
+    private utilityService: UtilityService,
+    public loadingService: LoadingService
+  ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }

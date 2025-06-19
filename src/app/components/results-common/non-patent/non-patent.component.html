@@ -1,4 +1,4 @@
- <ng-container *ngIf="_data?.rows?.length > 0 || searchByTable; else noData">
+<ng-container *ngIf="_data?.rows?.length > 0 || searchByTable; else noData">
   <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper justify-between">
     <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
       Total Records : {{currentChildAPIBody?.count }}
@@ -34,7 +34,12 @@
       {{resultTabs.nonPatentLandscape?.label}}
     </div>
     <div class="card-body">
-      <p>No Data found!</p>
+      <ng-container *ngIf="loadingService.getLoading(resultTabs.nonPatentLandscape.name, index); else noDataText">
+        Loading...
+      </ng-container>
+      <ng-template #noDataText>
+        <p>No Data found!</p>
+      </ng-template>
     </div>
   </div>
 </ng-template>
