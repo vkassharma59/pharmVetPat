@@ -79,19 +79,70 @@ previousAPIBody: any = null; // Add this to your component to track previous req
 
 
 
+// ngOnChanges(changes: SimpleChanges): void {
+//   const currentBody = this.currentChildAPIBody;
+
+//   const hasBodyChanged = JSON.stringify(currentBody) !== JSON.stringify(this.previousAPIBody);
+
+//   // Only call API if body actually changed or filter is applied newly
+//   if (
+//     (changes['currentChildAPIBody'] && hasBodyChanged) ||
+//     changes['isFilterApplied']?.currentValue !== undefined
+//   ) {
+//     if (this.isFilterApplied) {
+//       // 🛑 Only reset to page 1 if this is a new filter, not for pagination
+//       if (hasBodyChanged) {
+//         this.MainPageNo = 1;
+//         this._currentChildAPIBody = {
+//           ...currentBody,
+//           page_no: 1,
+//           start: 0
+//         };
+//       } else {
+//         // Keep page number from currentBody if not a new filter
+//         this._currentChildAPIBody = {
+//           ...currentBody
+//         };
+//       }
+
+//       this.previousAPIBody = { ...this._currentChildAPIBody }; // store for comparison
+
+//       console.log("📡 API call with:", this._currentChildAPIBody);
+
+//       // ✅ emit loading once only
+//       this.setLoading.emit(true);
+
+//       this.serviceChildPaginationService
+//         .getNextChildPaginationData(this._currentChildAPIBody)
+//         .subscribe({
+//           next: (res) => {
+//             this._currentChildAPIBody.count = res?.data?.recordsFiltered ?? res?.data?.recordsTotal;
+//             this.count = this._currentChildAPIBody.count ?? 0;
+
+//             this.handleChangeData(); // make sure this doesn't emit loading again
+//             this.handleChangeTabData.emit(this._currentChildAPIBody);
+//             this.setLoading.emit(false);
+//           },
+//           error: (e) => {
+//             console.error("❌ API Error:", e);
+//             this.setLoading.emit(false);
+//           }
+//         });
+//     } else {
+//       this.handleChangeData();
+//     }
+//   }
+// }
 ngOnChanges(changes: SimpleChanges): void {
   const currentBody = this.currentChildAPIBody;
-
   const hasBodyChanged = JSON.stringify(currentBody) !== JSON.stringify(this.previousAPIBody);
 
-  // Only call API if body actually changed or filter is applied newly
   if (
     (changes['currentChildAPIBody'] && hasBodyChanged) ||
     changes['isFilterApplied']?.currentValue !== undefined
   ) {
     if (this.isFilterApplied) {
-      // 🛑 Only reset to page 1 if this is a new filter, not for pagination
-      if (hasBodyChanged) {
+      if (hasBodyChanged && currentBody.page_no === 1) {
         this.MainPageNo = 1;
         this._currentChildAPIBody = {
           ...currentBody,
@@ -99,17 +150,12 @@ ngOnChanges(changes: SimpleChanges): void {
           start: 0
         };
       } else {
-        // Keep page number from currentBody if not a new filter
-        this._currentChildAPIBody = {
-          ...currentBody
-        };
+        this._currentChildAPIBody = { ...currentBody };
+        this.MainPageNo = currentBody.page_no || 1; // ✅ Don't reset to 1
       }
 
-      this.previousAPIBody = { ...this._currentChildAPIBody }; // store for comparison
+      this.previousAPIBody = { ...this._currentChildAPIBody };
 
-      console.log("📡 API call with:", this._currentChildAPIBody);
-
-      // ✅ emit loading once only
       this.setLoading.emit(true);
 
       this.serviceChildPaginationService
@@ -119,7 +165,7 @@ ngOnChanges(changes: SimpleChanges): void {
             this._currentChildAPIBody.count = res?.data?.recordsFiltered ?? res?.data?.recordsTotal;
             this.count = this._currentChildAPIBody.count ?? 0;
 
-            this.handleChangeData(); // make sure this doesn't emit loading again
+            this.handleChangeData();
             this.handleChangeTabData.emit(this._currentChildAPIBody);
             this.setLoading.emit(false);
           },
@@ -179,33 +225,51 @@ ngOnChanges(changes: SimpleChanges): void {
     this.MainPageNo = total;
     this.handlePageClick(this.MainPageNo);
   };
-  handleNextclick1 = () => {
-    if (this.MainPageNo >= this.totalPages) return;
-    console.log("sfsdgbgf", this.MainPageNo)
-    console.log("-------------", this.totalPages)
-    this.MainPageNo += 1;
+  // handleNextclick1 = () => {
+  //   if (this.MainPageNo >= this.totalPages) return;
+  //   console.log("sfsdgbgf", this.MainPageNo)
+  //   console.log("-------------", this.totalPages)
+  //   this.MainPageNo += 1;
 
-    if (!this.isFilterApplied) {
-      if (this.PageArray[this.PageArray.length - 1] < this.totalPages) {
-        this.PageArray.shift();
-        const nextPage = this.MainPageNo + 4 <= this.totalPages ? this.MainPageNo + 4 : this.totalPages;
-        this.PageArray.push(nextPage);
-      }
-    } else {
-      // ✅ For filtered case: update PageArray for UI
-      const currentPage = this.MainPageNo;
-      const total = this.totalPages;
-      const startIndex = Math.floor((currentPage - 1) / 5) * 5 + 1;
+  //   if (!this.isFilterApplied) {
+  //     if (this.PageArray[this.PageArray.length - 1] < this.totalPages) {
+  //       this.PageArray.shift();
+  //       const nextPage = this.MainPageNo + 4 <= this.totalPages ? this.MainPageNo + 4 : this.totalPages;
+  //       this.PageArray.push(nextPage);
+  //     }
+  //   } else {
+  //     // ✅ For filtered case: update PageArray for UI
+  //     const currentPage = this.MainPageNo;
+  //     const total = this.totalPages;
+  //     const startIndex = Math.floor((currentPage - 1) / 5) * 5 + 1;
 
-      this.PageArray = [];
-      for (let i = startIndex; i <= Math.min(total, startIndex + 4); i++) {
-        this.PageArray.push(i);
-      }
-    }
+  //     this.PageArray = [];
+  //     for (let i = startIndex; i <= Math.min(total, startIndex + 4); i++) {
+  //       this.PageArray.push(i);
+  //     }
+  //   }
 
-    // ✅ Always send updated page but keep filters intact
-    this.handlePageClick1(this.MainPageNo);
-  };
+  //   // ✅ Always send updated page but keep filters intact
+  //   this.handlePageClick1(this.MainPageNo);
+  // };
+handleNextclick1 = () => {
+  if (this.MainPageNo >= this.totalPages) return;
+
+  // ✅ First update MainPageNo
+  this.MainPageNo += 1;
+
+  const currentPage = this.MainPageNo;
+  const total = this.totalPages;
+  const startIndex = Math.floor((currentPage - 1) / 5) * 5 + 1;
+
+  this.PageArray = [];
+  for (let i = startIndex; i <= Math.min(total, startIndex + 4); i++) {
+    this.PageArray.push(i);
+  }
+
+  // ✅ Important: API call with new page
+  this.handlePageClick1(this.MainPageNo);
+};
 
   handleNextclick = () => {
     if (this.MainPageNo >= this.totalPages) return;
@@ -237,6 +301,7 @@ ngOnChanges(changes: SimpleChanges): void {
 
     this.handlePageClick(this.MainPageNo);
   };
+  
   handlePageClick1 = (page: number) => {
     this.setLoading.emit(true);
 

@@ -18,10 +18,10 @@
       [searchData]="searchData"
       [CurrentAPIBody]="CurrentAPIBody"
       [currentChildAPIBody]="childApiBody[i]"
-       [specialCount]="item?.special_count"
       (onResultTabChange)="onResultTabChange($event)"
       (handleSetLoading)="handleLoadingState($event)"
       (resetPagination)="resetPagination($event, i)"
+      (handleROSChange)="ButtonROSSearch($event)"
       (handleChildPaginationSearch)="onChildPaginationChange($event, i)"
     ></chem-route-results>
   </div>

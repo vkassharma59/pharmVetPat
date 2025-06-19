@@ -14,21 +14,15 @@
                 </span>
             </div>
         </div>
-      <!-- <chemical-directory-card
-  class="card"
-  [data]="dataItem"
-  [currentChildAPIBody]="currentChildAPIBody"
- 
-  (activeTabChange)="onActiveTabChange($event)">
-</chemical-directory-card> -->
 
-<chemical-directory-card
-  class="card"
-  [data]="dataItem"
-  [currentChildAPIBody]="currentChildAPIBody"
- 
-  (activeTabChange)="onActiveTabChange($event)">
-</chemical-directory-card>
+        <chemical-directory-card class="card" [data]="dataItem" [currentChildAPIBody]="currentChildAPIBody"
+            (ROSChange)="handleROSChange.emit($event)" (activeTabChange)="onActiveTabChange($event)">
+        </chemical-directory-card>
+
+
+        <!-- <chemical-directory-card class="card" [data]="dataItem" [currentChildAPIBody]="currentChildAPIBody"
+            (ROSChange)="handleROSChange.emit($event)" (activeTabChange)="onActiveTabChange($event)">
+        </chemical-directory-card> -->
 
     </ng-container>
     <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"

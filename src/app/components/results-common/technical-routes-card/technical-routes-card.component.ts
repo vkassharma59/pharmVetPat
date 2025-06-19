@@ -65,6 +65,7 @@ export class TechnicalRoutesCardComponent {
     if (TechnicalRoutesCardComponent.apiCallCount === 0) {
       TechnicalRoutesCardComponent.apiCallCount = 0;
     }
+      console.log('--------- gvfdh Count:', this._data);
   }
 
   ngOnDestroy() {

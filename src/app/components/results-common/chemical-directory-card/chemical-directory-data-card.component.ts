@@ -14,6 +14,8 @@ import { appConfig } from '../../../app.config';
 import { ApiConfigService } from '../../../../appservice';
 import { TechnicalRoutesCardComponent } from '../technical-routes-card/technical-routes-card.component';
 import { TechnicalRoutesComponent } from "../technical-routes/technical-routes.component";
+import { SharedRosService } from '../../../shared-ros.service';
+
 @Component({
   selector: 'chemical-directory-card',
   standalone: true,
@@ -41,7 +43,7 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
   @Output() ROSChange: EventEmitter<any> = new EventEmitter<any>();
   @Output() setLoadingState: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() activeTabChange: EventEmitter<string> = new EventEmitter<string>();
- @Input()
+  @Input()
   get currentChildAPIBody() {
     return this._currentChildAPIBody;
   }
@@ -49,9 +51,10 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
     this._currentChildAPIBody = value;
   }
   constructor(private dialog: MatDialog, private utilityService: UtilityService,
-       private columnListService: ColumnListService,
-          private mainSearchService: MainSearchService,
-          private apiConfigService: ApiConfigService
+    private columnListService: ColumnListService,
+    private mainSearchService: MainSearchService,
+    private apiConfigService: ApiConfigService,
+     private sharedROS: SharedRosService
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.localCount = ++ChemicalDirectoryDataCardComponent.counter; // ✅ Assign unique count to each instance
@@ -121,28 +124,32 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
       }, 1500);
     }
   }
-handleROSButtonClick(value: any) {
-  if (value === 'ros_search') this.ROSChange.emit('ROS_search');
-  else this.ROSChange.emit('ROS_filter');
+  handleROSButtonClick(value: any) {
+    if (value === 'ros_search') this.ROSChange.emit('ROS_search');
+    else this.ROSChange.emit('ROS_filter');
 
-  // Just for columnList setting
-  const tech_API = this.apiConfigService.apiUrls.technicalRoutes.columnList;
-  this.columnListService.getColumnList(tech_API).subscribe({
-    next: (res) => {
-      const response = res?.data?.columns;
-      Auth_operations.setColumnList('technicalRoutes', response);
-      // Emit active tab name after successful API call
-      if (this.resultTabs?.technicalRoutes?.name) {
-        this.activeTabChange.emit(this.resultTabs.technicalRoutes.name);
-      }
-       this.setLoadingState.emit(false);
-    },
-    error: (e) => {
-      console.error(e);
-      this.setLoadingState.emit(false);
-    },
-  });
-}
+    // Just for columnList setting
+    const tech_API = this.apiConfigService.apiUrls.technicalRoutes.columnList;
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList('technicalRoutes', response);
+        // Emit active tab name after successful API call
+        this.sharedROS.setROSCount({
+          agrochemical:this. _data?.special_count?.agroTotal ?? 0,
+          pharmaceutical:this._data?.special_count?.pharmaTotal ?? 0
+        });
+        if (this.resultTabs?.technicalRoutes?.name) {
+          this.activeTabChange.emit(this.resultTabs.technicalRoutes.name);
+        }
+        this.setLoadingState.emit(false);
+      },
+      error: (e) => {
+        console.error(e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
 
   getPatentUrl(data: any) {
     return `https://patentscope.wipo.int/search/en/result.jsf?inchikey=${data?.inchikey}`;
@@ -163,7 +170,7 @@ handleROSButtonClick(value: any) {
   isDateTimeString(dateString: any) {
     return !isNaN(new Date(dateString).getTime());
   }
- 
+
 
   getUpdationDate(data: any) {
     return this.isDateTimeString(data) ? new Date(data).toISOString().split('T')[0] : data;
