@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="gap-3 w-full flex-wrap hidden sm:flex">
-      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
+      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]" #dropdownRef>
         <h1 class="text-[#0032A0] font-bold text-xs my-1">Order By</h1>
         <div class="custom-select">
           <div (click)="handleListfilter('openOrderfilter')"
@@ -72,7 +72,7 @@
         </div>
       </div>
 
-      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
+      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]" #dropdownRef>
         <h1 class="text-[#0032A0] font-bold text-xs my-1">Appl. of Inter.</h1>
         <div class="custom-select">
           <div (click)="handleListfilter('openActiveIngredientFilter')"
@@ -138,7 +138,7 @@
         </div>
       </div>
 
-      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
+      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]"#dropdownRef>
         <h1 class="text-[#0032A0] font-bold text-xs my-1">
           Field Of Application
         </h1>
@@ -204,7 +204,7 @@
         </div>
       </div>
 
-      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
+      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]" #dropdownRef>
   <h1 class="text-[#0032A0] font-bold text-xs my-1">Company</h1>
 
   <!-- Display selected values -->
@@ -259,7 +259,7 @@
 
 
       <div *ngIf="!isKSMEnabled"
-        class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
+        class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]" #dropdownRef>
         <h1 class="text-[#0032A0] font-bold text-xs my-1">All AI/KSM</h1>
         <div class="custom-select">
           <div (click)="handleListfilter('openTypeOfRouteFilter')"
@@ -314,7 +314,7 @@
         </div>
       </div>
 
-      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
+      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]" #dropdownRef>
         <h1 class="text-[#0032A0] font-bold text-xs my-1">Route Type</h1>
         <div class="custom-select">
           <div (click)="handleListfilter('openRouteFilter')"
@@ -361,7 +361,7 @@
         </div>
       </div>
 
-      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44">
+      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44" #dropdownRef>
         <h1 class="text-[#0032A0] font-bold text-xs my-1">Updation Date</h1>
         <div class="custom-select">
           <div (click)="handleListfilter('openUpdateDateFilter')"
@@ -420,8 +420,8 @@
     <button (click)="toogleFilter()" class="sm:hidden text-sm text-white font-bold bg-[#0032A0] px-4 py-2 rounded-full">
       Filters
     </button>
-    <div *ngIf="showFilter" class="gap-3 w-full flex-wrap flex py-2 sm:hidden">
-      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44">
+    <div *ngIf="showFilter" class="gap-3 w-full flex-wrap flex py-2 sm:hidden" >
+      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44"#dropdownRef>
         <h1 class="text-[#0032A0] font-bold text-xs my-1">Order By</h1>
         <div class="custom-select">
           <div (click)="handleListfilter('openOrderfilter')"
@@ -468,7 +468,7 @@
         </div>
       </div>
 
-      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
+      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]" #dropdownRef>
         <h1 class="text-[#0032A0] font-bold text-xs my-1">Appl. of Inter.</h1>
         <div (click)="handleListfilter('openActiveIngredientFilter')"
           class="py-1 w-full bg-transparent text-sm flex justify-between text-gray-500 font-semibold focus:outline-none cursor-pointer">
@@ -528,7 +528,7 @@
         </div>
       </div>
 
-      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
+      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]" #dropdownRef>
         <h1 class="text-[#0032A0] font-bold text-xs my-1">
           Field of Application
         </h1>
@@ -592,7 +592,7 @@
         </div>
       </div>
 
-      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
+      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]" #dropdownRef>
         <h1 class="text-[#0032A0] font-bold text-xs my-1">Company</h1>
         <div (click)="handleListfilter('openCompanyFilter')"
           class="py-1 w-full bg-transparent text-sm flex justify-between text-gray-500 font-semibold focus:outline-none cursor-pointer">
@@ -641,7 +641,7 @@
       </div>
 
       <div *ngIf="!isKSMEnabled"
-        class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
+        class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]" #dropdownRef>
         <h1 class="text-[#0032A0] font-bold text-xs my-1">All AI/KSM</h1>
         <div (click)="handleListfilter('openTypeOfRouteFilter')"
           class="py-1 w-full bg-transparent text-sm flex justify-between text-gray-500 font-semibold focus:outline-none cursor-pointer">
@@ -694,7 +694,7 @@
         </div>
       </div>
 
-      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
+      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]" #dropdownRef>
         <h1 class="text-[#0032A0] font-bold text-xs my-1">Route Type</h1>
         <div (click)="handleListfilter('openRouteFilter')"
           class="py-1 w-full bg-transparent text-sm flex justify-between text-gray-500 font-semibold focus:outline-none cursor-pointer">
@@ -739,7 +739,7 @@
         </div>
       </div>
 
-      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
+      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]" #dropdownRef>
         <h1 class="text-[#0032A0] font-bold text-xs my-1">Updation Date</h1>
         <div (click)="handleListfilter('openUpdateDateFilter')"
           class="py-1 w-full bg-transparent text-sm flex justify-between text-gray-500 font-semibold focus:outline-none cursor-pointer">
