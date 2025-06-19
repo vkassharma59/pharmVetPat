@@ -354,12 +354,14 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         break;
       case searchTypes.chemicalStructure:
         this.chemicalStructure = { filter: '' };
+        this.getChemicalStructureFilters();
         break;
       case searchTypes.synthesisSearch:
         this.synthesisSearch = {};
         break;
       case searchTypes.intermediateSearch:
         this.intermediateSearch = { filter: '' };
+        this.getintermediateSearchFilters();
         break;
       case searchTypes.advanceSearch:
         this.advanceSearch = {
@@ -369,6 +371,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         this.advanceSearch.filterInputs = [
           { filter: '', keyword: '' }
         ];
+        this.getAdvanceSearchFilters();
         break;
     }
   }
