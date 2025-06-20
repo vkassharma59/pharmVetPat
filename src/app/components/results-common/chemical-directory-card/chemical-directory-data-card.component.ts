@@ -54,7 +54,7 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
     private columnListService: ColumnListService,
     private mainSearchService: MainSearchService,
     private apiConfigService: ApiConfigService,
-     private sharedROS: SharedRosService
+    private sharedROS: SharedRosService
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.localCount = ++ChemicalDirectoryDataCardComponent.counter; // ✅ Assign unique count to each instance
@@ -125,31 +125,48 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
     }
   }
   handleROSButtonClick(value: any) {
-    if (value === 'ros_search') this.ROSChange.emit('ROS_search');
-    else this.ROSChange.emit('ROS_filter');
-
-    // Just for columnList setting
+    console.log("📍 ROS button clicked with:", value);
+    
+    // Always emit - even if value is same as last time
+    if (value === 'ros_search') {
+      this.ROSChange.emit('ROS_search_' + new Date().getTime());
+    } else {
+      this.ROSChange.emit('ROS_filter_' + new Date().getTime());
+    }
+   
+    this.setLoadingState.emit(true);
     const tech_API = this.apiConfigService.apiUrls.technicalRoutes.columnList;
+
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res) => {
         const response = res?.data?.columns;
+        console.log("📦 technical code:", response);
+
         Auth_operations.setColumnList('technicalRoutes', response);
-        // Emit active tab name after successful API call
+       
+        // Force update rosCount to shared service
         this.sharedROS.setROSCount({
-          agrochemical:this. _data?.special_count?.agroTotal ?? 0,
-          pharmaceutical:this._data?.special_count?.pharmaTotal ?? 0
+          agrochemical: this._data?.special_count?.agroTotal ?? 0,
+          pharmaceutical: this._data?.special_count?.pharmaTotal ?? 0
         });
+        console.log("Button clicked");
+        console.log("Current value:", value);
+        console.log("Current tab:", this.resultTabs?.technicalRoutes?.name);
+        console.log("Data for count update:", this._data?.special_count);
+        
         if (this.resultTabs?.technicalRoutes?.name) {
+          console.log("📤 Emitting tab change to:", this.resultTabs.technicalRoutes.name);
           this.activeTabChange.emit(this.resultTabs.technicalRoutes.name);
         }
         this.setLoadingState.emit(false);
       },
       error: (e) => {
-        console.error(e);
+        console.error("❌ API error in handleROSButtonClick", e);
         this.setLoadingState.emit(false);
       },
     });
   }
+
 
   getPatentUrl(data: any) {
     return `https://patentscope.wipo.int/search/en/result.jsf?inchikey=${data?.inchikey}`;

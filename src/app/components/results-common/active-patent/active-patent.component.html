@@ -30,7 +30,7 @@
       {{resultTabs.activePatent?.label}}
     </div>
     <div class="card-body">
-      <ng-container *ngIf="loadingService.getLoading(this.resultTabs?.activePatent, index); else noDataText">
+      <ng-container *ngIf="loadingService.getLoading(resultTabs.activePatent.name, index); else noDataText">
         Loading...
       </ng-container>
       <ng-template #noDataText>

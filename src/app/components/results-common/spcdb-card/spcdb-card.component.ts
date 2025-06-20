@@ -39,6 +39,8 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
   @Output() dataFetchRequest = new EventEmitter<any>();
   @Input() columnDefs: any[] = [];
   @Input() rowData: any[] = [];
+  isExportingCSV: boolean = false;
+  isExportingExcel: boolean = false;
   data?: {
     data?: any[]; // Replace `any` with your actual data type
   };
@@ -260,7 +262,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
     const reportLimit = priv['pharmvetpat-mongodb']?.ReportLimit || 500;
     const requestBody = {
       ...this._currentChildAPIBody,
-       page_no: 1, start: 0,
+      page_no: 1, start: 0,
       length: reportLimit,
     };
 
@@ -276,7 +278,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       })
     );
   }
- 
+
 
   downloadPDF() {
     const doc = new jsPDF();
@@ -298,6 +300,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
  
  // 3️⃣ Download CSV
  downloadCSV(): void {
+   this.isExportingCSV =true;
   this.getAllDataFromApi().subscribe(data => {
     // Generate header row with Title Case
     const headerRow = this.displayedColumns.map(col => this.toTitleCase(col)).join(',') + '\n';
@@ -329,6 +332,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     saveAs(blob, 'ExportedData.csv');
+     this.isExportingCSV =false;
   });
 }
 
@@ -339,14 +343,14 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
     this.getAllDataFromApi().subscribe(data => {
       const workbook = new ExcelJS.Workbook();
       const worksheet = workbook.addWorksheet('Exported Data');
-  
+
       // Define header columns
       const columns = this.displayedColumns.map(col => ({
         header: this.toTitleCase(col),
         key: col,
       }));
       worksheet.columns = columns;
-  
+
       // Add formatted data rows
       data.forEach(row => {
         const formattedRow: any = {};
@@ -361,22 +365,22 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
         });
         worksheet.addRow(formattedRow);
       });
-  
+
       // ✅ ADD AUTO-WIDTH ADJUSTMENT HERE
       this.displayedColumns.forEach((col, index) => {
         const excelCol = worksheet.getColumn(index + 1);
         let maxLength = col.length;
-  
+
         excelCol.eachCell({ includeEmpty: true }, cell => {
           const cellValue = cell.value ? cell.value.toString() : '';
           if (cellValue.length > maxLength) {
             maxLength = cellValue.length;
           }
         });
-  
+
         excelCol.width = maxLength + 6;
       });
-  
+
       // Style header row
       const headerRow = worksheet.getRow(1);
       headerRow.eachCell(cell => {
@@ -398,23 +402,24 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
           right: { style: 'thin' },
         };
       });
-  
+
       // Save workbook
       workbook.xlsx.writeBuffer().then(buffer => {
         const blob = new Blob([buffer], {
           type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         });
         saveAs(blob, 'ExportedDataFormatted.xlsx');
+        this.isExportingExcel = false;
       });
     });
   }
 
 
- 
- // ✅ Optional: Capitalize headers
- toTitleCase(str: string): string {
-   return str.replace(/_/g, ' ')
-             .replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
- }
- 
+
+  // ✅ Optional: Capitalize headers
+  toTitleCase(str: string): string {
+    return str.replace(/_/g, ' ')
+      .replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+  }
+
 }

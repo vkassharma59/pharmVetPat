@@ -373,5 +373,6 @@ export class RouteResultComponent {
 
   onChemicalDirectoryActiveTabChange(tabName: string) {
     this.activeTab = tabName;
-  }
+
+    }
 }

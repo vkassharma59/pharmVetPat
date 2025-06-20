@@ -23,8 +23,10 @@ export class ChildResultTabComponent {
   @Output() handleChangeTabData: EventEmitter<any> = new EventEmitter();
   @Output() resetPagination: EventEmitter<any> = new EventEmitter();
   @Output() setLoading: EventEmitter<any> = new EventEmitter();
+  @Output() handleSetLoading: EventEmitter<any> = new EventEmitter<any>();
   @ViewChildren('dropdownRef') dropdownRefs!: QueryList<ElementRef>;
-
+  raise_query_object: any;
+  @Input() CurrentAPIBody: any;
   @Input() dataItem: any;
   @Input()
   get currentAPIData() {
@@ -120,7 +122,8 @@ export class ChildResultTabComponent {
     ) {
       this.isKSMEnabled = true;
     }
-
+    this.raise_query_object = this.CurrentAPIBody?.body;
+     console.log("this.CurrentAPIBody?.body,",this.CurrentAPIBody?.body)
     this.fetchFilters();
   }
   @HostListener('document:mousedown', ['$event'])
@@ -494,12 +497,17 @@ getFieldApplicationLabel(value: string): string {
     const formattedDate = `${year}-${month}-${day}`;
     return formattedDate;
   }
-
   OpenQueryModal() {
     const dialogRef = this.dialog.open(Chem_Robotics_QueryModalComponent, {
       width: '450px',
       height: '500px',
+      data: {
+        raise_query_object: this.raise_query_object,
+        handleLoading: this.setLoading,
+      },
+
       panelClass: 'full-screen-modal',
     });
+     console.log(" raise_query_object: this.raise_query_object,",this.raise_query_object,)
   }
 }

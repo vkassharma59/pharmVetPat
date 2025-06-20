@@ -6,13 +6,17 @@
       color:#fff" (click)="downloadPDF()">
         Download PDF <i class="fa-solid fa-download"></i>
       </button> -->
-      <button mat-raised-button style="background: linear-gradient(192deg, rgb(131, 164, 236) 0%, rgb(79, 154, 240) 50%, rgba(0, 58, 219, 1) 100%);
-      color:#fff" (click)="downloadCSV()">
-        Download CSV <i class="fa-solid fa-download"></i>
+      <button mat-raised-button [disabled]="isExportingCSV"
+        style="background: linear-gradient(192deg, rgb(131, 164, 236) 0%, rgb(79, 154, 240) 50%, rgba(0, 58, 219, 1) 100%); color:#fff"
+        (click)="downloadCSV()">
+        <span *ngIf="!isExportingCSV">Download CSV <i class="fa-solid fa-download"></i></span>
+        <span *ngIf="isExportingCSV"><i class="fa fa-spinner fa-spin"></i> Exporting...</span>
       </button>
-      <button mat-raised-button style="background: linear-gradient(192deg, rgb(131, 164, 236) 0%, rgb(79, 154, 240) 50%, rgba(0, 58, 219, 1) 100%);
-      color:#fff" (click)="downloadExcel()">
-        Download Excel <i class="fa-solid fa-download"></i>
+      <button mat-raised-button [disabled]="isExportingExcel"
+        style="background: linear-gradient(192deg, rgb(131, 164, 236) 0%, rgb(79, 154, 240) 50%, rgba(0, 58, 219, 1) 100%); color:#fff"
+        (click)="downloadExcel()">
+        <span *ngIf="!isExportingExcel">Download Excel <i class="fa-solid fa-download"></i></span>
+        <span *ngIf="isExportingExcel"><i class="fa fa-spinner fa-spin"></i> Exporting...</span>
       </button>
     </div>
 

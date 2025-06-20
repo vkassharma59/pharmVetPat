@@ -57,7 +57,7 @@
   <ng-container *ngIf="_data > 0; else noData">
     <ng-container
       *ngIf="currentChildAPIBody && !isEmptyObject(currentChildAPIBody) && searchThrough !== 'synthesis-search'">
-      <chem-child-result-tab [dataItem]="_data?.ros_data" [currentAPIData]="currentChildAPIBody"
+      <chem-child-result-tab [dataItem]="_data?.ros_data"   [CurrentAPIBody]="CurrentAPIBody"  [currentAPIData]="currentChildAPIBody"
         (handleChangeTabData)="handleResultTabData.emit($event)" (resetPagination)="resetPagination.emit($event)"
         (setLoading)="handleSetLoading.emit($event)"></chem-child-result-tab>
       <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper">

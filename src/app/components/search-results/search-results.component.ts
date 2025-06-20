@@ -315,6 +315,7 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
+        this.performactivePatentSearch(resultTabData);
         break;
       case this.resultTabs?.nonPatentLandscape.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.nonPatentLandscape.name]).length === 0) {

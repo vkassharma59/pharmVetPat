@@ -1,8 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UtilityService } from '../../services/utility-service/utility.service';
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import cloneDeep from 'lodash/cloneDeep';
-
 
 @Component({
   selector: 'chem-route-tabs',
@@ -11,7 +9,6 @@ import cloneDeep from 'lodash/cloneDeep';
   templateUrl: './route-tabs.component.html',
   styleUrl: './route-tabs.component.scss'
 })
-
 
 export class RouteTabsComponent {
 
@@ -60,8 +57,9 @@ export class RouteTabsComponent {
     // Set tab active
     this.resultTabValues.forEach((tab: any) => {
       tab.isActive = tab?.name === data?.name; // Set active if names match, else false
+      
     });
 
     this.handleCurrentTab.emit(data);
   }
-}
+ }
