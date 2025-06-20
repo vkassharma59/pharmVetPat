@@ -124,33 +124,33 @@ export class ChildResultTabComponent {
     this.fetchFilters();
   }
   @HostListener('document:mousedown', ['$event'])
-onClickOutside(event: MouseEvent) {
-  const clickedInsideAny = this.dropdownRefs?.some((dropdown: ElementRef) =>
-    dropdown.nativeElement.contains(event.target)
-  );
+  onClickOutside(event: MouseEvent) {
+    const clickedInsideAny = this.dropdownRefs?.some((dropdown: ElementRef) =>
+      dropdown.nativeElement.contains(event.target)
+    );
 
-  if (!clickedInsideAny) {
-    this.filterMap = {
-      openCompanyFilter: false,
-      openFieldOfApplicationsFilter: false,
-      openRouteFilter: false,
-      openOrderfilter: false,
-      openActiveIngredientFilter: false,
-      openUpdateDateFilter: false,
-      openTypeOfRouteFilter: false,
-    };
+    if (!clickedInsideAny) {
+      this.filterMap = {
+        openCompanyFilter: false,
+        openFieldOfApplicationsFilter: false,
+        openRouteFilter: false,
+        openOrderfilter: false,
+        openActiveIngredientFilter: false,
+        openUpdateDateFilter: false,
+        openTypeOfRouteFilter: false,
+      };
 
-    this.OpenSuggestionBox = {
-      company_name: false,
-      route_type: false,
-      field_of_application: false,
-      order_by: false,
-      active_ingredient: false,
-      updation_date: false,
-      types_of_route: false,
-    };
+      this.OpenSuggestionBox = {
+        company_name: false,
+        route_type: false,
+        field_of_application: false,
+        order_by: false,
+        active_ingredient: false,
+        updation_date: false,
+        types_of_route: false,
+      };
+    }
   }
-}
 
   fetchFilters() {
     this._currentAPIData.body.filter_enable = true;
@@ -381,9 +381,9 @@ onClickOutside(event: MouseEvent) {
     });
   }
   extractBaseCompanyName(fullName: string): string {
-  // Remove suffix like " - Branch 1", " - HQ", etc.
-  return fullName.split(' ')[0].trim().toLowerCase();
-}
+    // Remove suffix like " - Branch 1", " - HQ", etc.
+    return fullName.split(' ')[0].trim().toLowerCase();
+  }
 
   updateChildFilterData(): void {
     // ✅ Example: Call API again with updated filters
@@ -392,39 +392,43 @@ onClickOutside(event: MouseEvent) {
     // OR if you fetch data directly here
     // this.getFilteredDataFromAPI(); 
   }
-  handleCheckFilter(key: string, selectedName: string): void {
-    const allOptions = this[`${key}_filters`] || [];
+  handleCheckFilter(key: string, selectedValue: string): void {
+  const allOptions = this[`${key}_filters`] || [];
 
-    // Extract base name (e.g., remove "- Branch" part, or split on " - ")
-    const baseName = selectedName.split(' - ')[0].trim();
-
-    // Get all matching entries
-    const matchingNames = allOptions
+  // For company_name, match related branches using base name
+  let valuesToToggle: string[] = [];
+  if (key === 'company_name') {
+    const baseName = selectedValue.split(' - ')[0].trim();
+    valuesToToggle = allOptions
       .filter(option => option.name.startsWith(baseName))
       .map(option => option.value);
-
-    // Check if already selected
-    const allSelected = matchingNames.every(value =>
-      this.FilterValues[key].includes(value)
-    );
-
-    if (allSelected) {
-      // If already selected, remove all
-      this.FilterValues[key] = this.FilterValues[key].filter(
-        value => !matchingNames.includes(value)
-      );
-    } else {
-      // Otherwise, add all missing matches
-      matchingNames.forEach(value => {
-        if (!this.FilterValues[key].includes(value)) {
-          this.FilterValues[key].push(value);
-        }
-      });
-    }
-
-    this.updateChildFilterData(); // Optional: apply the filter immediately
+  } else {
+    valuesToToggle = [selectedValue];
   }
 
+  const allSelected = valuesToToggle.every(value =>
+    this.FilterValues[key].includes(value)
+  );
+
+  if (allSelected) {
+    this.FilterValues[key] = this.FilterValues[key].filter(
+      value => !valuesToToggle.includes(value)
+    );
+  } else {
+    valuesToToggle.forEach(value => {
+      if (!this.FilterValues[key].includes(value)) {
+        this.FilterValues[key].push(value);
+      }
+    });
+  }
+
+  this.updateChildFilterData();
+}
+
+getFieldApplicationLabel(value: string): string {
+  const match = this.field_of_applications_filters.find(opt => opt.value === value);
+  return match ? match.name : value;
+}
 
   emitCombinedFilters(): void {
     this.childFilteredData.emit(this.FilterValues);

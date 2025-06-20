@@ -146,7 +146,7 @@ export class SearchResultsComponent {
           next: (res: any) => {
             todaysLimit = res?.data;
 
-            const remainingLimit = privilegeData?.technicalroutesmongo?.DailySearchLimit - todaysLimit?.searchCount;
+            const remainingLimit = privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit - todaysLimit?.searchCount;
             if (remainingLimit <= 0) {
               this.setLoadingState.emit(false);
               this.openPriviledgeModal('Your Daily Search Limit is over for this Platform.');
@@ -170,15 +170,17 @@ export class SearchResultsComponent {
   }
 
   private hasSearchPrivileges(privilegeData: any): boolean {
-    if (!privilegeData) return false;
+  if (!privilegeData) return false;
 
-    const { technicalroutesmongo } = privilegeData;
-    return (
-      technicalroutesmongo?.View !== 'false' &&
-      technicalroutesmongo?.Search !== '' &&
-      technicalroutesmongo?.Search !== 0
-    );
-  }
+  const key = 'pharmvetpat-mongodb'; // dynamic key
+  const section = privilegeData[key];
+
+  return (
+    section?.View !== 'false' &&
+    section?.Search !== '' &&
+    section?.Search !== 0
+  );
+}
 
   onResultTabChange(resultTabData: any) {
     this.setLoadingState.emit(true);

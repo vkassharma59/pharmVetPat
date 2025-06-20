@@ -23,6 +23,7 @@ declare var google: any;
 })
 export class HeaderComponent {
   @Output() setLoadingState: EventEmitter<any> = new EventEmitter<any>();
+@Output() priviledgeModal = new EventEmitter<string>();
 
   @Input() transparent: boolean = false;
   @Input() homePage: boolean = false;
@@ -147,58 +148,142 @@ export class HeaderComponent {
   convertUserIdToBase64(userId: any) {
     return btoa(userId.toString());
   }
-
-  handleLogin(): void {
-    if (!this.email || !this.password) {
-      return alert('fields are required');
-    }
-    this.loadingState = 'Loading...';
-    this.LoginService.login(this.email, this.password).subscribe({
-      next: (res) => {
-        if (res && res.data && res.data.user_info) {
-          const userInfo = res.data.user_info;
-          this.userAuth = {
-            name: userInfo.name,
-            email: userInfo.email,
-            user_id: userInfo.user_id,
-            auth_token: userInfo.auth_token,
-          };
-          let priviledge = `user_${this.userAuth?.user_id}`;
-          const loginToken = this.convertUserIdToBase64(userInfo.user_id);
-
-          if (typeof window !== 'undefined' && window.localStorage) {
-            localStorage.setItem('userEmail', userInfo.email);
-            localStorage.setItem('userName', userInfo.name);
-            localStorage.setItem('account_type', userInfo.account_type);
-            localStorage.setItem('starting_date', userInfo.start_date);
-            localStorage.setItem('expired_date', userInfo.expired_date);
-            localStorage.setItem('userId', userInfo.user_id);
-            localStorage.setItem('auth', JSON.stringify(this.userAuth)); // Store the auth object
-            localStorage.setItem('loggedIn', JSON.stringify(true));
-            localStorage.setItem('loginToken', loginToken);
-            localStorage.setItem(
-              'priviledge_json',
-              JSON.stringify(userInfo?.privilege_json[priviledge])
-            );
-          }
-
-          Auth_operations.setLoginToken(loginToken);
-          Auth_operations.UpdateToken(this.userAuth.auth_token);
-        }
-        // this.auth = true;
-        // this.showSignInModal.emit(false);
-        this.loadingState = 'Submit';
-        window.location.reload();
-      },
-      error: (e) => {
-        console.error('Error:', e);
-        this.loadingState = 'Submit';
-        if (!e.status) {
-          alert(e.message);
-        }
-      },
-    });
+ handleLogin(): void {
+    debugger
+  if (!this.email || !this.password) {
+    alert('Fields are required');
+    return;
   }
+
+  console.log('🔐 Logging in with:', this.email);
+  this.loadingState = 'Loading...';
+debugger
+  this.LoginService.login(this.email, this.password).subscribe({
+    next: (res) => {
+      console.log('✅ Login API Response:', res);
+
+      if (res && res.data && res.data.user_info) {
+        const userInfo = res.data.user_info;
+        const privilege_json = userInfo.privilege_json;
+        const userPrivilegeKey = `user_${userInfo.user_id}`;
+        const privilegeData = privilege_json?.[userPrivilegeKey];
+
+        this.userAuth = {
+          name: userInfo.name,
+          email: userInfo.email,
+          user_id: userInfo.user_id,
+          auth_token: userInfo.auth_token,
+        };
+
+        this.saveUserDataToLocalStorage(userInfo); // ✅ Save base data
+debugger
+        // ✅ Privilege check
+        if (!this.hasSearchPrivileges(privilegeData)) {
+          this.setLoadingState.emit(false);
+          this.priviledgeModal.emit(
+            'You do not have permission to Search or View. Please upgrade the account.'
+          );
+          return;
+        }
+
+        // ✅ Save specific privilege to localStorage after check
+        localStorage.setItem(
+          'priviledge_json',
+          JSON.stringify(privilegeData)
+        );
+debugger
+        const loginToken = this.convertUserIdToBase64(userInfo.user_id);
+        Auth_operations.setLoginToken(loginToken);
+        Auth_operations.UpdateToken(this.userAuth.auth_token);
+
+        this.loadingState = 'Submit';
+        window.location.reload(); // Refresh page after successful login
+      }
+    },
+    error: (e) => {
+      debugger
+      console.error('❌ Login Error:', e);
+      this.loadingState = 'Submit';
+      if (!e.status) {
+        alert(e.message);
+      }
+    },
+  });
+}
+
+private hasSearchPrivileges(privilegeData: any): boolean {
+  if (!privilegeData) return false;
+
+  const dbPrivileges = privilegeData?.['pharmvetpat-mongodb'];
+  return (
+    dbPrivileges?.View !== 'false' &&
+    dbPrivileges?.Search !== '' &&
+    dbPrivileges?.Search !== 0
+  );
+}
+ private saveUserDataToLocalStorage(userInfo: any): void {
+  const loginToken = this.convertUserIdToBase64(userInfo.user_id);
+  localStorage.setItem('userEmail', userInfo.email);
+  localStorage.setItem('userName', userInfo.name);
+  localStorage.setItem('account_type', userInfo.account_type);
+  localStorage.setItem('starting_date', userInfo.start_date);
+  localStorage.setItem('expired_date', userInfo.expired_date);
+  localStorage.setItem('userId', userInfo.user_id);
+  localStorage.setItem('auth', JSON.stringify(this.userAuth));
+  localStorage.setItem('loggedIn', JSON.stringify(true));
+  localStorage.setItem('loginToken', loginToken);
+}
+  // handleLogin(): void {
+  //   if (!this.email || !this.password) {
+  //     return alert('fields are required');
+  //   }
+  //   this.loadingState = 'Loading...';
+  //   this.LoginService.login(this.email, this.password).subscribe({
+  //     next: (res) => {
+  //       if (res && res.data && res.data.user_info) {
+  //         const userInfo = res.data.user_info;
+  //         this.userAuth = {
+  //           name: userInfo.name,
+  //           email: userInfo.email,
+  //           user_id: userInfo.user_id,
+  //           auth_token: userInfo.auth_token,
+  //         };
+  //         let priviledge = `user_${this.userAuth?.user_id}`;
+  //         const loginToken = this.convertUserIdToBase64(userInfo.user_id);
+
+  //         if (typeof window !== 'undefined' && window.localStorage) {
+  //           localStorage.setItem('userEmail', userInfo.email);
+  //           localStorage.setItem('userName', userInfo.name);
+  //           localStorage.setItem('account_type', userInfo.account_type);
+  //           localStorage.setItem('starting_date', userInfo.start_date);
+  //           localStorage.setItem('expired_date', userInfo.expired_date);
+  //           localStorage.setItem('userId', userInfo.user_id);
+  //           localStorage.setItem('auth', JSON.stringify(this.userAuth)); // Store the auth object
+  //           localStorage.setItem('loggedIn', JSON.stringify(true));
+  //           localStorage.setItem('loginToken', loginToken);
+  //           localStorage.setItem(
+  //             'priviledge_json',
+  //             JSON.stringify(userInfo?.privilege_json[priviledge])
+  //           );
+  //         }
+
+  //         Auth_operations.setLoginToken(loginToken);
+  //         Auth_operations.UpdateToken(this.userAuth.auth_token);
+  //       }
+  //       // this.auth = true;
+  //       // this.showSignInModal.emit(false);
+  //       this.loadingState = 'Submit';
+  //       window.location.reload();
+  //     },
+  //     error: (e) => {
+  //       console.error('Error:', e);
+  //       this.loadingState = 'Submit';
+  //       if (!e.status) {
+  //         alert(e.message);
+  //       }
+  //     },
+  //   });
+  // }
 
   updateCount() {
     this.selectedCount = this.labels.filter((label) => label.checked).length;
