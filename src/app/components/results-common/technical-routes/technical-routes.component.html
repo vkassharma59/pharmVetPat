@@ -1,5 +1,6 @@
 <div>
-  <div class="row" *ngIf="CurrentAPIBody?.currentTab === 'chemicalDirectory'">
+  <div class="row" *ngIf="CurrentAPIBody?.currentTab === resultTabs.technicalRoutes.name
+    && searchThrough !== 'synthesis-search'">
     <div class="col-md-6">
       <div class="flex gap-2 items-center flex-wrap">
         <button class="px-3 py-2 my-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">

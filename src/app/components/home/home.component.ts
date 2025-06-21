@@ -84,11 +84,15 @@ openCloseAccordion(key: string, event?: Event): void {
   }
 
   handleLoading(event: boolean) {
-    this.loading = event;
+    setTimeout(() => {
+      this.loading = event;
+    }, 100);  
   }
 
   handleSetLoading(data: any) {
-    this.loading = data;
+    setTimeout(() => {
+      this.loading = data;
+    }, 100);    
   }
 
   handleSearchResults(data: any) {

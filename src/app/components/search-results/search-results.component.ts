@@ -35,13 +35,20 @@ import { LoadingService } from '../../services/loading-service/loading.service';
 
 export class SearchResultsComponent {
 
+  _searchData: any;
   @Output() showDataResultFunction: EventEmitter<any> = new EventEmitter<any>();
   @Output() showResultFunction: EventEmitter<any> = new EventEmitter<any>();
   @Output() backFunction: EventEmitter<any> = new EventEmitter<any>();
   @Output() generatePdf: EventEmitter<any> = new EventEmitter<any>();
   @Output() setLoadingState: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() allDataSets: any = [];
-  @Input() searchData: any;
+  @Input() allDataSets: any = [];  
+  @Input()
+  get searchData() {
+    return this._searchData;
+  }
+  set searchData(value: any) {
+    this._searchData = value;
+  }
   @Input() CurrentAPIBody: any;
 
   paginationRerenderTrigger: any = 0;
@@ -1488,29 +1495,24 @@ export class SearchResultsComponent {
   }
  
 ButtonROSSearch(SearchKey: any, index: number): void {
+  
   this.setLoadingState.emit(true);
-
-  console.log('🔍 ButtonROSSearch triggered with SearchKey:', SearchKey);
-
-  // if (!this.childApiBody[index]) {
-  //   this.childApiBody[index] = {};
-  //   console.log('📦 Initialized childApiBody for index:', index);
-  // }
+  this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, index, false);
 
   const isROS = SearchKey === 'ROS_search';
-  const searchValue = this.resultTabs?.technicalRoutes.name?.searchWithValue;
+  const searchValue = this.allDataSets[index]?.[this.resultTabs?.chemicalDirectory.name][0].trrn;
 
-  // if (!searchValue) {
-  //   console.warn('⚠️ No search value found for technical route.');
-  //   this.setLoadingState.emit(false);
-  //   return;
-  // }
+  if (!searchValue) {
+    console.warn('⚠️ No search value found for technical route.');
+    this.setLoadingState.emit(false);
+    this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, index, false);
+    return;
+  }
 
   const body = {
     api_url: this.apiUrls.technicalRoutes.searchSpecific,
     search_type: 'TRRN',
-    // keyword: searchValue,
-    keyword:['101054', '101648', '1066', '1077', '14079', '16387', '16773', '17017', '17319', '17370', '1820', '18444', '18445', '19526', '19529', '19530', '19531', '19918', '20370', '20736', '20740', '20746', '21898', '2224', '22254', '23535', '2394', '2407', '24402', '26002', '2674', '27171', '2724', '3', '3086', '3143', '3241', '38012', '399', '405', '408', '43502', '43505', '44212', '45858', '51570', '51617', '51707', '51732', '51739', '51749', '51751', '51755', '51763', '51769', '52845', '53114', '53312', '53592', '53611', '53678', '53679', '53799', '53815', '53818', '54021', '54023', '54419', '54453', '54580', '55098', '55334', '55434', '55490', '55535', '56733', '57873', '57915', '57920', '57997', '57998', '58060', '58260', '58409', '58835', '58839', '59385', '59386', '59852', '59983', '60759', '60882', '61060', '61096', '61099', '61100', '61462', '61830', '61831', '62025'],
+    keyword: this.allDataSets[index]?.[this.resultTabs?.chemicalDirectory.name][0].trrn,
     page_no: 1,
     filter_enable: false,
     filters: isROS ? {} : { types_of_route: 'KSM' },
@@ -1518,31 +1520,29 @@ ButtonROSSearch(SearchKey: any, index: number): void {
     index: index,
   };
 
-  console.log('📤 Request body prepared:', body);
-
-  this.childApiBody[index]['ROS'] = body;
+  if (this.childApiBody?.[index]) {
+    this.childApiBody[index][this.resultTabs.technicalRoutes.name] = {};
+  } else {
+    this.childApiBody[index] = {};
+  }
 
   const tech_API = this.apiUrls.technicalRoutes.columnList;
-  console.log('📡 Fetching column list from:', tech_API);
-
   this.columnListService.getColumnList(tech_API).subscribe({
     next: (res: any) => {
       const columns = res?.data?.columns;
-      console.log('✅ Column list received:', columns);
+      Auth_operations.setColumnList(this.resultTabs.technicalRoutes.name, res);
 
-      Auth_operations.setColumnList('ROS', columns);
-
-      console.log('📡 Calling technicalRoutesSearchSpecific API...');
       this.mainSearchService.technicalRoutesSearchSpecific(body).subscribe({
         next: (result: any) => {
-          console.log('✅ ROS search result:', result?.data);
-
-          this.childApiBody[index]['ROS'].count = result?.data?.ros_count || 0;
-          this.allDataSets[index] = this.allDataSets[index] || {};
-          this.allDataSets[index]['ROS'] = result?.data || {};
-
-          this.currentTabData = result?.data;
-
+          this.childApiBody[index][this.resultTabs?.technicalRoutes.name].count = result?.data?.ros_count;
+          this.allDataSets[index][this.resultTabs.technicalRoutes.name] = result?.data;
+          // this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, index, false);
+          this.utilityService.setActiveTab(this.resultTabs.technicalRoutes.name);
+          this.currentTabData = {
+            isActive: true,
+            label: this.resultTabs.technicalRoutes.label,
+            name: this.resultTabs.technicalRoutes.name
+          };
           this.setLoadingState.emit(false);
           console.log('✅ Data set and tab updated, loading stopped.');
         },
