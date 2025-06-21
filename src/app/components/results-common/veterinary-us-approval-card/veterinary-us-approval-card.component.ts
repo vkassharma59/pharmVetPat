@@ -13,17 +13,20 @@ import { VeterinaryUsApprovalComponent } from '../veterinary-us-approval/veterin
   styleUrl: './veterinary-us-approval-card.component.css'
 })
 export class VeterinaryUsApprovalCardComponent implements OnInit, OnDestroy {
-
+  private static apiCallCount: number = 0; // ✅ Global static counter
  _data: any = {};
   MoreInfo: boolean = false;
+  searchType: string = 'trrn';
+   keyword: string = '';
   pageNo: number = 1;
   litigation_column: any = {};
   resultTabs: any = {};
   copied: boolean = false;
 
-  static apiCallCount: number = 0;
-  localCount: number = 0;
+   apiCallInstance: number = 0; // ✅ Instance-specific count
 
+  localCount: number = 0;
+  
   constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
 
   ngOnInit() {

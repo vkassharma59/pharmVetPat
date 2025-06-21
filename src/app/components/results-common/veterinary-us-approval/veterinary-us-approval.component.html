@@ -61,3 +61,97 @@
  </div>
   <app-veterinary-us-approval-card></app-veterinary-us-approval-card>
 </div>
+<!-- 
+<div class="child-route-count-wrapper flex justify-between items-center w-full">
+  <div >
+    <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
+    Total Records : {{ currentChildAPIBody?.count }}
+  </button>
+  </div>
+  <div class="d-flex">
+    <button  class="clear btn btn-outline-primary">
+            <i class="fa-solid fa-rotate" aria-hidden="true"></i>
+    </button>
+  
+    <select class="form-select dropdown-width mx-1 dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
+          <option>Select Ingredient</option>
+             <option>ERTUGLIFLOZIN; SITAGLIPTIN PHOSPHATE</option>
+            <option>SITAGLIPTIN</option>
+            <option>SITAGLIPTIN PHOSPHATE</option>
+            <option> METFOMIN HYDROCHLORIDE; SITAGLIPTIN PHOSPHATE</option>
+            <option>SIMVASTATIN;SITAGLIPTIN PHOSPHATE</option>
+     
+    </select>
+        <select class="form-select dropdown-width mx-1 dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
+      <option>Select Trade</option>
+      <option>MSD SUB MERCK</option>
+      <option>ZYDUS LIFESCIENCES</option>
+      <option>MERCK SHARP DOHME</option>
+   
+      
+
+    </select>
+  
+    <select class="form-select dropdown-width mx-1 dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
+      <option>Select Ingredient</option>
+      <option>15MG;EQ 100MG BASE</option>
+      <option>5MG;EQ 100MG BASE</option>
+      <option>100MG</option>
+      <option>50MG</option>
+      <option>25MG</option>
+      <option>EQ 25MG BASE</option>
+      <option>EQ 50MG BASE</option>
+      
+      <option>AN EQ 100MG BASE</option>
+     
+      <option>Z 1GM;EQ 100MG BASE </option>
+     
+      <option>500MG;EQ 50MG BASE </option>
+      
+      <option>1GM;EQ 50MG BASE </option>
+    
+      <option>10MG;EQ 100MG BASE  **Federal Register determination that product was not discontinued or withdrawn for safety or effectiveness reasons**</option>
+      <option>20MG;EQ 50MG BASE **Federal Register determination that product was not discontinued or withdrawn for safety or effectiveness reasons**</option>  
+      <option>20MG;EQ 100MG BASE **Federal Register determination that product was not discontinued or withdrawn for safety or effectiveness reasons**</option>
+      <option> 40MG;EQ 50MG BASE **Federal Register determination that product was not discontinued or withdrawn for safety or effectiveness reasons**</option>
+      <option>40MG;EQ 100MG BASE **Federal Register determination that product was not discontinued or withdrawn for safety or effectiveness reasons** </option>    
+      <option>10MG;EQ 50MG BASE **Federal Register determination that product was not discontinued or withdrawn for safety or effectiveness reasons**</option>
+      
+
+    </select>
+
+  </div>
+ </div>
+ <ng-container *ngIf="_data.length > 0; else noData">
+  <ng-container *ngFor="let dataItem of _data; let i = index">
+    <div class="py-4">
+      <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
+        <span
+          class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-normal h-[37px] flex justify-center items-center">
+          Sub Route
+          {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
+        </span>
+      </div>
+    </div>
+  <app-veterinary-us-approval-card class="card" 
+  ></app-veterinary-us-approval-card>
+</ng-container> 
+  <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"
+    (handleChangeTabData)="handleResultTabData.emit($event)"
+    (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
+ </ng-container> 
+    <ng-template #noData>
+  <div class="card" style="background-color: white;">
+    <div class="card-header text-white bg-primary" style="background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);">
+      {{resultTabs.impPatents?.label}}
+    </div>
+    <div class="card-body">
+      <ng-container *ngIf="loadingService.getLoading(resultTabs.impPatents.name, index); else noDataText">
+        Loading...
+      </ng-container>
+      <ng-template #noDataText>
+        <p>No Data found!</p>
+      </ng-template>
+    </div>
+  </div>
+</ng-template> -->

@@ -21,7 +21,6 @@ export class ImpurityCardComponent implements OnInit, OnDestroy {
   searchType: string = 'trrn';
   keyword: string = '';
   pageNo: number = 1;
-
   impurity_column: any = {};
   resultTabs: any = {};
 
