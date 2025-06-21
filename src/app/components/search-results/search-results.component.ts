@@ -1499,7 +1499,7 @@ export class SearchResultsComponent {
 ButtonROSSearch(SearchKey: any, index: number): void {
   
   this.setLoadingState.emit(true);
-  this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, index, false);
+  this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, index, true);
 
   const isROS = SearchKey === 'ROS_search';
   const searchValue = this.allDataSets[index]?.[this.resultTabs?.chemicalDirectory.name][0].trrn;
