@@ -5,6 +5,7 @@ import {
   EventEmitter,
   ElementRef,
   ViewChild,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { LoaderComponent } from '../../commons/loader/loader.component';
 import { CommonModule } from '@angular/common';
@@ -66,6 +67,7 @@ export class SearchResultsComponent {
   searchTypes: any;
 
   constructor(
+    private cdr: ChangeDetectorRef,
     private utilityService: UtilityService,
     private userPriviledgeService: UserPriviledgeService,
     private columnListService: ColumnListService,
@@ -1533,7 +1535,7 @@ ButtonROSSearch(SearchKey: any, index: number): void {
   this.columnListService.getColumnList(tech_API).subscribe({
     next: (res: any) => {
       const columns = res?.data?.columns;
-      Auth_operations.setColumnList(this.resultTabs.technicalRoutes.name, res);
+      Auth_operations.setColumnList(this.resultTabs.technicalRoutes.name, columns);
 
       this.mainSearchService.technicalRoutesSearchSpecific(body).subscribe({
         next: (result: any) => {
@@ -1547,6 +1549,7 @@ ButtonROSSearch(SearchKey: any, index: number): void {
             name: this.resultTabs.technicalRoutes.name
           };
           this.setLoadingState.emit(false);
+          this.cdr.detectChanges();
           console.log('✅ Data set and tab updated, loading stopped.');
         },
         error: (e) => {

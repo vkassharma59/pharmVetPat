@@ -80,7 +80,7 @@ export class RouteResultComponent {
   get dataItem() {
     return this._dataItem;
   }
-  set dataItem(value: any) {
+  set dataItem(value: any) {  
     this._dataItem = value;
   }
 
