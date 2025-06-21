@@ -146,10 +146,10 @@ export class RouteResultComponent {
       case searchTypes.synthesisSearch:
         if (data.name === this.resultTabWithKeys.chemicalDirectory.name) {
           searchWith = 'TRRN';
-          searchWithValue = this.dataItem[this.resultTabWithKeys.technicalRoutes.name][0].trrn;
+          searchWithValue = this.dataItem[this.resultTabWithKeys.technicalRoutes.name]?.ros_data[0]?.trrn;
         } else {
           searchWith = 'GBRN';
-          searchWithValue = this.dataItem[this.resultTabWithKeys.technicalRoutes.name][0].gbrn;
+          searchWithValue = this.dataItem[this.resultTabWithKeys.technicalRoutes.name]?.ros_data[0]?.gbrn;
         }
         break;
       case searchTypes.intermediateSearch:
