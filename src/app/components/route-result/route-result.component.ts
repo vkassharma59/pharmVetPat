@@ -181,6 +181,7 @@ export class RouteResultComponent {
 
     this.onResultTabChange.emit(tempObj);
     this.currentTabData = data;
+    this.activeTab = data.name;
   }
 
   OpenQueryModal() {
@@ -372,6 +373,5 @@ export class RouteResultComponent {
 
   onChemicalDirectoryActiveTabChange(tabName: string) {
     this.activeTab = tabName;
-
-    }
+  }
 }
