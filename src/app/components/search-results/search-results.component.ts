@@ -1549,6 +1549,7 @@ ButtonROSSearch(SearchKey: any, index: number): void {
             name: this.resultTabs.technicalRoutes.name
           };
           this.setLoadingState.emit(false);
+          this.CurrentAPIBody.currentTab = this.resultTabs.technicalRoutes.name;
           this.cdr.detectChanges();
           console.log('✅ Data set and tab updated, loading stopped.');
         },

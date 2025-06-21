@@ -36,9 +36,6 @@ export class TechnicalRoutesCardComponent {
     if (value && Object.keys(value).length > 0) {
       TechnicalRoutesCardComponent.apiCallCount++; // Increment global counter
       this.localCount = TechnicalRoutesCardComponent.apiCallCount; // Assign to local instance
-
-      
-
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
       if (column_list[this.resultTabs.technicalRoutes?.name]?.length > 0) {
