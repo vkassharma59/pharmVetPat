@@ -336,7 +336,7 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
 
   downloadExcel(): void {
     this.isExportingExcel =true;
-    this.isExportingExcel =true;
+  
    this.getAllDataFromApi().subscribe(data => {
      const workbook = new ExcelJS.Workbook();
      const worksheet = workbook.addWorksheet('Exported Data');
@@ -407,7 +407,7 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
        });
        saveAs(blob, 'ExportedDataFormatted.xlsx');
        this.isExportingExcel =false;
-       this.isExportingExcel =false;
+      
      });
    });
  }

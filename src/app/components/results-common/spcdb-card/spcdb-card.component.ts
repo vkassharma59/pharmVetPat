@@ -342,6 +342,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
 
   // 4️⃣ Download Excel
   downloadExcel(): void {
+     this.isExportingExcel = true;
     this.getAllDataFromApi().subscribe(data => {
       const workbook = new ExcelJS.Workbook();
       const worksheet = workbook.addWorksheet('Exported Data');
@@ -419,8 +420,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
         });
         saveAs(blob, 'ExportedDataFormatted.xlsx');
         this.isExportingExcel = false;
-        this.isExportingExcel = false;
-      });
+           });
     });
   }
 
