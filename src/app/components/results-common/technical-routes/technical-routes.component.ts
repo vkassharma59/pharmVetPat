@@ -51,12 +51,10 @@ rosCounts: { agrochemical: number; pharmaceutical: number } = {
       this.rosCounts = count; // ✔️ update the local variable
     }
   });
-   console.log('data gvfdh Count:', this._data);
 }
 
   handleToggleViewProduct() {
     this.viewProduct = !this.viewProduct;
-
   }
 
   constructor(

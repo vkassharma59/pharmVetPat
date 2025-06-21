@@ -9,6 +9,7 @@ import { MainSearchService } from '../../../services/main-search/main-search.ser
 import { Auth_operations } from '../../../Utils/SetToken';
 import { LoadingService } from '../../../services/loading-service/loading.service';
 
+
 @Component({
   selector: 'chemical-directory',
   standalone: true,
@@ -86,7 +87,8 @@ export class ChemicalDirectoryComponent implements OnChanges {
 }
 
   onActiveTabChange(tabName: string) {
-    this.activeTabChange.emit(tabName);
+       this.activeTabChange.emit(tabName);
+    
   }
 
 }

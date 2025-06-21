@@ -30,7 +30,7 @@
       {{resultTabs.spcDb?.label}}
     </div>
     <div class="card-body">
-      <ng-container *ngIf="loadingService.getLoading(resultTabs.gppdDb.name, index); else noDataText">
+      <ng-container *ngIf="loadingService.getLoading(resultTabs.spcDb.name, index); else noDataText">
         Loading...
       </ng-container>
       <ng-template #noDataText>

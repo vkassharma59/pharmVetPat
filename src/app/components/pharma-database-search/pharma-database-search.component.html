@@ -137,20 +137,21 @@
                   Remove filter -
                 </button>
               </div> -->
-              <div  class="col-md-2 col-2"
-                style="border-width: 2px black;width: 30px;margin-left: 9px;">
-                   <!-- <option _ngcontent-ng-c3105717028="" selected="" disabled=""
+              <div class="col-md-2 col-2" style="border-width: 2px black;width: 30px;margin-left: 9px;">
+                <!-- <option _ngcontent-ng-c3105717028="" selected="" disabled=""
                     [(ngModel)]="advanceSearch.filterInputs[i].operator">Operator</option> -->
-                  <select *ngIf="i > 0" class="form-select form-select-sm form-control" 
-                    style="width: auto; min-width: 100px;"
-                    [(ngModel)]="advanceSearch.filterInputs[i].operator">
-                    <option  disabled selected>Operator</option>
-                    <option value="AND">AND</option>
-                    <option value="OR">OR</option>
-                  </select>
-                
+                <select *ngIf="i > 0" class="form-select form-select-sm form-control"
+                  style="width: auto; min-width: 100px;" [(ngModel)]="advanceSearch.filterInputs[i].operator">
+                  <!-- Placeholder option: empty value, disabled -->
+                  <option [ngValue]="undefined" disabled>
+                    Operator
+                  </option>
+                  <option [ngValue]="'AND'">AND</option>
+                  <option [ngValue]="'OR'">OR</option>
+                </select>
+
               </div>
-             
+
             </ng-container>
           </ng-container>
         </div>

@@ -34,6 +34,8 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
   @Output() dataFetchRequest = new EventEmitter<any>();
   @Input() columnDefs: any[] = [];
   @Input() rowData: any[] = [];
+  isExportingCSV: boolean = false;
+  isExportingExcel: boolean = false;
   data?: {
     data?: any[]; // Replace `any` with your actual data type
   };
@@ -293,6 +295,7 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
  
  // 3️⃣ Download CSV
  downloadCSV(): void {
+   this.isExportingCSV =true;
   this.getAllDataFromApi().subscribe(data => {
     // Generate header row with Title Case
     const headerRow = this.displayedColumns.map(col => this.toTitleCase(col)).join(',') + '\n';
@@ -324,6 +327,7 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     saveAs(blob, 'ExportedData.csv');
+     this.isExportingCSV =false;
   });
 }
 
@@ -331,6 +335,7 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
  // 4️⃣ Download Excel
 
   downloadExcel(): void {
+    this.isExportingExcel =true;
    this.getAllDataFromApi().subscribe(data => {
      const workbook = new ExcelJS.Workbook();
      const worksheet = workbook.addWorksheet('Exported Data');
@@ -400,6 +405,7 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
        });
        saveAs(blob, 'ExportedDataFormatted.xlsx');
+       this.isExportingExcel =false;
      });
    });
  }
