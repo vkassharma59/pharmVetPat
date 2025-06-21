@@ -25,7 +25,7 @@
     [activeTab]="activeTab"></chem-route-tabs>
 
   <!-- Main Content Section -->
-  <div class="mt-3" [ngSwitch]="currentTabData?.name">
+  <div class="mt-3" [ngSwitch]="activeTab || currentTabData?.name">
     <ng-container *ngSwitchCase="resultTabWithKeys.productInfo.name">
       <chem-product-info [data]="_dataItem.productInfo"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.productInfo.name]" [index]="index"

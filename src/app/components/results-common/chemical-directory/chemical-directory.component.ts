@@ -72,7 +72,7 @@ export class ChemicalDirectoryComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['data']) {
       console.log('✅ ChemicalDirectoryComponent received new data:', this._data);
-      this.handleResultTabData.emit(this._data);
+      // this.handleResultTabData.emit(this._data);
     }
   }
 

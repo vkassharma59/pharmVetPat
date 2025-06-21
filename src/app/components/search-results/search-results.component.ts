@@ -5,6 +5,7 @@ import {
   EventEmitter,
   ElementRef,
   ViewChild,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { LoaderComponent } from '../../commons/loader/loader.component';
 import { CommonModule } from '@angular/common';
@@ -66,6 +67,7 @@ export class SearchResultsComponent {
   searchTypes: any;
 
   constructor(
+    private cdr: ChangeDetectorRef,
     private utilityService: UtilityService,
     private userPriviledgeService: UserPriviledgeService,
     private columnListService: ColumnListService,
@@ -1497,7 +1499,7 @@ export class SearchResultsComponent {
 ButtonROSSearch(SearchKey: any, index: number): void {
   
   this.setLoadingState.emit(true);
-  this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, index, false);
+  this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, index, true);
 
   const isROS = SearchKey === 'ROS_search';
   const searchValue = this.allDataSets[index]?.[this.resultTabs?.chemicalDirectory.name][0].trrn;
@@ -1520,23 +1522,26 @@ ButtonROSSearch(SearchKey: any, index: number): void {
     index: index,
   };
 
-  if (this.childApiBody?.[index]) {
-    this.childApiBody[index][this.resultTabs.technicalRoutes.name] = {};
-  } else {
-    this.childApiBody[index] = {};
+  if (!Array.isArray(this.childApiBody)) {
+    this.childApiBody = [];
   }
 
+  if (!this.childApiBody[index]) {
+    this.childApiBody[index] = {};
+  }
+  
+  this.childApiBody[index][this.resultTabs.technicalRoutes.name] = body;
   const tech_API = this.apiUrls.technicalRoutes.columnList;
   this.columnListService.getColumnList(tech_API).subscribe({
     next: (res: any) => {
       const columns = res?.data?.columns;
-      Auth_operations.setColumnList(this.resultTabs.technicalRoutes.name, res);
+      Auth_operations.setColumnList(this.resultTabs.technicalRoutes.name, columns);
 
       this.mainSearchService.technicalRoutesSearchSpecific(body).subscribe({
         next: (result: any) => {
           this.childApiBody[index][this.resultTabs?.technicalRoutes.name].count = result?.data?.ros_count;
           this.allDataSets[index][this.resultTabs.technicalRoutes.name] = result?.data;
-          // this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, index, false);
+          this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, index, false);
           this.utilityService.setActiveTab(this.resultTabs.technicalRoutes.name);
           this.currentTabData = {
             isActive: true,
@@ -1544,6 +1549,8 @@ ButtonROSSearch(SearchKey: any, index: number): void {
             name: this.resultTabs.technicalRoutes.name
           };
           this.setLoadingState.emit(false);
+          this.CurrentAPIBody.currentTab = this.resultTabs.technicalRoutes.name;
+          this.cdr.detectChanges();
           console.log('✅ Data set and tab updated, loading stopped.');
         },
         error: (e) => {
