@@ -149,7 +149,7 @@ export class HeaderComponent {
     return btoa(userId.toString());
   }
  handleLogin(): void {
-    debugger
+    
   if (!this.email || !this.password) {
     alert('Fields are required');
     return;
@@ -172,7 +172,7 @@ export class HeaderComponent {
         };
 
         this.saveUserDataToLocalStorage(userInfo); // ✅ Save base data
-debugger
+
         // ✅ Privilege check
         if (!this.hasSearchPrivileges(privilegeData)) {
           this.setLoadingState.emit(false);
@@ -187,7 +187,7 @@ debugger
           'priviledge_json',
           JSON.stringify(privilegeData)
         );
-debugger
+
         const loginToken = this.convertUserIdToBase64(userInfo.user_id);
         Auth_operations.setLoginToken(loginToken);
         Auth_operations.UpdateToken(this.userAuth.auth_token);
@@ -197,7 +197,7 @@ debugger
       }
     },
     error: (e) => {
-      debugger
+      
       console.error('❌ Login Error:', e);
       this.loadingState = 'Submit';
       if (!e.status) {

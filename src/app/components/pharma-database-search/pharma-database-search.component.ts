@@ -289,35 +289,35 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         error: (e) => console.error(e),
       });
   }
- isSearchEnabled(): boolean {
-  const {
-    filterInputs,
-    devStage,
-    innovator,
-    startSales,
-    endSales,
-    dateType,
-    startDate,
-    endDate
-  } = this.advanceSearch;
+  isSearchEnabled(): boolean {
+    const {
+      filterInputs,
+      devStage,
+      innovator,
+      startSales,
+      endSales,
+      dateType,
+      startDate,
+      endDate
+    } = this.advanceSearch;
 
-  const hasFilterKeyword = filterInputs?.some(
-    (input: any) => input.filter?.trim() && input.keyword?.trim()
-  );
+    const hasFilterKeyword = filterInputs?.some(
+      (input: any) => input.filter?.trim() && input.keyword?.trim()
+    );
 
-  const hasDateFilters =
-    dateType?.trim() !== '' &&
-    this.isValidDate(startDate) &&
-    this.isValidDate(endDate);
+    const hasDateFilters =
+      dateType?.trim() !== '' &&
+      this.isValidDate(startDate) &&
+      this.isValidDate(endDate);
 
-  return (
-    hasFilterKeyword ||
-    hasDateFilters ||
-    devStage?.trim() !== '' ||
-    innovator?.trim() !== '' ||
-    (startSales && endSales)
-  );
-}
+    return (
+      hasFilterKeyword ||
+      hasDateFilters ||
+      devStage?.trim() !== '' ||
+      innovator?.trim() !== '' ||
+      (startSales && endSales)
+    );
+  }
 
 
 
@@ -380,7 +380,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       case searchTypes.advanceSearch:
         this.advanceSearch = {
           autosuggestionList: [],
-          dateType: 'GENERIC_CONSTRAINING_DATE',
+          dateType: '',
         }
         this.advanceSearch.filterInputs = [
           { filter: '', keyword: '' }
@@ -543,6 +543,16 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
           next: (res: any) => {
             todaysLimit = res?.data;
+            // console.log("Dailylimit", privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit);
+            // console.log("limittodays", todaysLimit?.searchCount);
+
+            // // 🛑 If today's search count is exactly 0, block the search first
+            // if (todaysLimit?.searchCount == 0) {
+            //   this.setLoadingState.emit(false);
+            //   this.priviledgeModal.emit('Your  Search Limit is over for this Platform.Please upgrade the account.');
+            //   return;
+            // }
+
 
             const remainingLimit = privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit - todaysLimit?.searchCount;
             console.log("Dailylimit", privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit);
@@ -715,49 +725,49 @@ export class pharmaDatabaseSearchComponent implements OnInit {
           start_date: this.advanceSearch.startDate,
           end_date: this.advanceSearch.endDate
         }
-            }),
-        ...(this.advanceSearch?.devStage && { development_stage: this.advanceSearch.devStage }),
-        ...(this.advanceSearch?.innovator && { innovators: this.advanceSearch.innovator }),
-        ...(this.advanceSearch?.startSales !== null &&
-          this.advanceSearch?.startSales !== undefined &&
-          this.advanceSearch?.endSales !== null &&
-          this.advanceSearch?.endSales !== undefined && {
-          sale_range: {
-            start: this.advanceSearch.startSales,
-            end: this.advanceSearch.endSales
-          }
-        }),
-        page_no: 1
-      };
-        const tech_API = this.apiUrls.basicProductInfo.columnList;
-      this.columnListService.getColumnList(tech_API).subscribe({
-        next: (res: any) => {
-          const response = res?.data?.columns;
-          Auth_operations.setColumnList(this.resultTabs.productInfo.name, response);
+      }),
+      ...(this.advanceSearch?.devStage && { development_stage: this.advanceSearch.devStage }),
+      ...(this.advanceSearch?.innovator && { innovators: this.advanceSearch.innovator }),
+      ...(this.advanceSearch?.startSales !== null &&
+        this.advanceSearch?.startSales !== undefined &&
+        this.advanceSearch?.endSales !== null &&
+        this.advanceSearch?.endSales !== undefined && {
+        sale_range: {
+          start: this.advanceSearch.startSales,
+          end: this.advanceSearch.endSales
+        }
+      }),
+      page_no: 1
+    };
+    const tech_API = this.apiUrls.basicProductInfo.columnList;
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.productInfo.name, response);
 
-          this.mainSearchService.getAdvanceSearchResults(apiBody).subscribe({
-            next: (res: any) => {
-              this.showResultFunction.emit({
-                apiBody,
-                API_URL: this.apiUrls.basicProductInfo.simpleSearchResults,
-                currentTab: this.resultTabs.productInfo.name,
-                actual_value: '',
-              });
-              this.chemSearchResults.emit(res?.data);
-              this.setLoadingState.emit(false);
-            },
-            error: (e) => {
-              console.error('Error during main search:', e);
-              this.setLoadingState.emit(false);
-            },
-          });
-        },
-        error: (e) => {
-          console.error('Error fetching column list:', e);
-          this.setLoadingState.emit(false);
-        },
-      });
-    }
+        this.mainSearchService.getAdvanceSearchResults(apiBody).subscribe({
+          next: (res: any) => {
+            this.showResultFunction.emit({
+              apiBody,
+              API_URL: this.apiUrls.basicProductInfo.simpleSearchResults,
+              currentTab: this.resultTabs.productInfo.name,
+              actual_value: '',
+            });
+            this.chemSearchResults.emit(res?.data);
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
 
   private performSynthesisSearch(): void {
     Auth_operations.setActiveformValues({
@@ -816,7 +826,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     this.intermediateSearch = { filter: '' };
     this.advanceSearch = {
       autosuggestionList: [],
-      dateType: 'GENERIC_CONSTRAINING_DATE',
+      dateType: '',
       developmentStage: '',
       innovatorOriginator: '',
       devStage: '',
