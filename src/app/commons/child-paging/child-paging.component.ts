@@ -20,10 +20,8 @@ export class ChildPagingComponent {
   count: any = 0;
 
   @Input()
-  get currentChildAPIBody() {
-   
-    return this._currentChildAPIBody;
-   
+  get currentChildAPIBody() {   
+    return this._currentChildAPIBody;   
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;

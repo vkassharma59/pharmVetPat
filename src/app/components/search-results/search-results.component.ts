@@ -1520,12 +1520,15 @@ ButtonROSSearch(SearchKey: any, index: number): void {
     index: index,
   };
 
-  if (this.childApiBody?.[index]) {
-    this.childApiBody[index][this.resultTabs.technicalRoutes.name] = {};
-  } else {
-    this.childApiBody[index] = {};
+  if (!Array.isArray(this.childApiBody)) {
+    this.childApiBody = [];
   }
 
+  if (!this.childApiBody[index]) {
+    this.childApiBody[index] = {};
+  }
+  
+  this.childApiBody[index][this.resultTabs.technicalRoutes.name] = body;
   const tech_API = this.apiUrls.technicalRoutes.columnList;
   this.columnListService.getColumnList(tech_API).subscribe({
     next: (res: any) => {
@@ -1536,7 +1539,7 @@ ButtonROSSearch(SearchKey: any, index: number): void {
         next: (result: any) => {
           this.childApiBody[index][this.resultTabs?.technicalRoutes.name].count = result?.data?.ros_count;
           this.allDataSets[index][this.resultTabs.technicalRoutes.name] = result?.data;
-          // this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, index, false);
+          this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, index, false);
           this.utilityService.setActiveTab(this.resultTabs.technicalRoutes.name);
           this.currentTabData = {
             isActive: true,
