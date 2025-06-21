@@ -1,7 +1,6 @@
 <div class="container mt-4 helloo">
   <div
-  *ngIf="
-    CurrentAPIBody.currentTab == resultTabs.technicalRoutes.name"
+  *ngIf="isTechnicalRoutesTabActive()"
   class="py-2"
   >
     <div class="h-auto min-h-35 px-2 py-2 lg:px-2">

@@ -36,7 +36,7 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
   @Input() rowData: any[] = [];
    isExportingCSV: boolean = false;
   isExportingExcel: boolean = false;
-  data?: {
+   data?: {
     data?: any[]; // Replace `any` with your actual data type
   };
   _currentChildAPIBody: any;
@@ -336,6 +336,7 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
   // 4️⃣ Download Excel
  downloadExcel(): void {
    this.isExportingExcel =true;
+   this.isExportingExcel =true;
   this.getAllDataFromApi().subscribe(data => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Exported Data');
@@ -405,6 +406,7 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
       saveAs(blob, 'ExportedDataFormatted.xlsx');
+      this.isExportingExcel =false;
       this.isExportingExcel =false;
     });
   });

@@ -40,7 +40,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   intermediateSearch: any = { filter: '' }
   advanceSearch: any = {
     autosuggestionList: [],
-    dateType: 'GENERIC_CONSTRAINING_DATE',
+    dateType: '',
     developmentStage: '',
     innovatorOriginator: '',
     devStage: '',
@@ -289,22 +289,38 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         error: (e) => console.error(e),
       });
   }
-  isSearchEnabled(): boolean {
-    const { devStage, innovator, startSales, endSales, filterInputs } = this.advanceSearch;
+ isSearchEnabled(): boolean {
+  const {
+    filterInputs,
+    devStage,
+    innovator,
+    startSales,
+    endSales,
+    dateType,
+    startDate,
+    endDate
+  } = this.advanceSearch;
 
-    // Check if any filter column has a keyword and is enabled
-    const hasFilterKeyword = filterInputs?.some(
-      (input: any) => input.filter && input.keyword?.trim() !== ''
-    );
+  const hasFilterKeyword = filterInputs?.some(
+    (input: any) => input.filter?.trim() && input.keyword?.trim()
+  );
 
-    return !!(
-      devStage?.trim() ||
-      innovator?.trim() ||
-      startSales ||
-      endSales ||
-      hasFilterKeyword
-    );
-  }
+  const hasDateFilters =
+    dateType?.trim() !== '' &&
+    this.isValidDate(startDate) &&
+    this.isValidDate(endDate);
+
+  return (
+    hasFilterKeyword ||
+    hasDateFilters ||
+    devStage?.trim() !== '' ||
+    innovator?.trim() !== '' ||
+    (startSales && endSales)
+  );
+}
+
+
+
 
   isInputEnabled(): boolean {
     return !!(this.intermediateSearch.filter && this.intermediateSearch.keyword?.trim());
@@ -344,7 +360,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         error: (e) => console.error(e),
       });
   }
-
   clearInputAndSuggetions(searchType = '') {
     this.showSuggestions = false;
     switch (searchType) {
@@ -374,6 +389,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         break;
     }
   }
+
 
   handleSuggestionClick(value: any, searchType = '', index: number = 0) {
     this.showSuggestions = false;
@@ -447,10 +463,10 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       }
     })
   }
-isAdvancedInputDisabled(): boolean {
-  const mainInput = this.advanceSearch?.filterInputs?.[0];
-  return !(mainInput?.filter?.trim() && mainInput?.keyword?.trim());
-}
+  isAdvancedInputDisabled(): boolean {
+    const mainInput = this.advanceSearch?.filterInputs?.[0];
+    return !(mainInput?.filter?.trim() && mainInput?.keyword?.trim());
+  }
 
 
 
@@ -467,17 +483,29 @@ isAdvancedInputDisabled(): boolean {
       return;
     }
 
-    // ✅ New check: Proceed if any advanced filter input is filled
-    // ✅ Check if any valid input is filled: simple search, advanced filters, sales range, etc.
-    const hasFilledKeyword = filterInputs?.some((input: any) => input.keyword && input.keyword.trim() !== '');
-    const hasSimpleKeyword = simpleSearch?.keyword?.trim() !== '';
-    const hasDevStage = devStage?.trim() !== '';
-    const hasInnovator = innovator?.trim() !== '';
+    // // ✅ New check: Proceed if any advanced filter input is filled
+    // // ✅ Check if any valid input is filled: simple search, advanced filters, sales range, etc.
+    // const hasFilledKeyword = filterInputs?.some((input: any) => input.keyword && input.keyword.trim() !== '');
+    // const hasSimpleKeyword = simpleSearch?.keyword?.trim() !== '';
+    // // const hasDevStage = devStage?.trim() !== '';
+    // // const hasInnovator = innovator?.trim() !== '';
 
-    if (!hasFilledKeyword && !hasSimpleKeyword && !startSales && !endSales && !hasDevStage && !hasInnovator) {
-      this.priviledgeModal.emit('Please enter at least one search input to continue.');
-      return;
-    }
+    // if (!hasFilledKeyword && !hasSimpleKeyword && !startSales && !endSales ) {
+    //   this.priviledgeModal.emit('Please enter at least one search input to continue.');
+    //   return;
+    // }
+    const hasFilledKeyword = filterInputs?.some(input =>
+      input.filter?.trim() && input.keyword?.trim()
+    );
+    // const hasOtherInput =
+    //   devStage?.trim() !== '' ||
+    //   innovator?.trim() !== '' ||
+    //   (startSales && endSales);
+
+    // if (!hasFilledKeyword && !hasOtherInput) {
+    //   this.priviledgeModal.emit('Please fill at least one field like Filter, Development Stage, Innovator or Sales Range.');
+    //   return;
+    // }
 
 
     let todaysLimit: any = '';
@@ -515,12 +543,15 @@ isAdvancedInputDisabled(): boolean {
         this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
           next: (res: any) => {
             todaysLimit = res?.data;
-           
+
             const remainingLimit = privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit - todaysLimit?.searchCount;
+            console.log("Dailylimit", privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit);
+            console.log("limittodays", todaysLimit?.searchCount);
+            console.log("remaining limt", remainingLimit)
             if (remainingLimit <= 0) {
               this.setLoadingState.emit(false);
               this.priviledgeModal.emit('Your Daily Search Limit is over for this Platform.');
-             
+
               return;
             }
 
@@ -563,7 +594,7 @@ isAdvancedInputDisabled(): boolean {
       dbPrivileges?.Search !== 0
     );
   }
- 
+
 
   private searchBasedOnTypes(searchType: string) {
     switch (searchType) {
@@ -640,10 +671,10 @@ isAdvancedInputDisabled(): boolean {
   private performAdvancedSearch(): void {
 
     // Validations and transformations
-    if (!Array.isArray(this.advanceSearch?.filterInputs) || this.advanceSearch?.filterInputs.length === 0) {
-      alert("filterInputs must be a non-empty array.");
-      return;
-    }
+    // if (!Array.isArray(this.advanceSearch?.filterInputs) || this.advanceSearch?.filterInputs.length === 0) {
+    //   alert("filterInputs must be a non-empty array.");
+    //   return;
+    // }
 
     Auth_operations.setActiveformValues({
       column: this.column,
@@ -651,62 +682,82 @@ isAdvancedInputDisabled(): boolean {
       screenColumn: this.screenColumn,
       activeForm: searchTypes.advanceSearch,
     });
+    const validFilters = this.advanceSearch?.filterInputs
+      ?.filter(input => input.filter?.trim() && input.keyword?.trim());
+
+    const hasValidCriteria = validFilters && validFilters.length > 0;
+
+    const criteria = hasValidCriteria
+      ? validFilters.map((input, index) => ({
+        ...(index > 0 ? { operator: input.operator || 'OR' } : {}),
+        column: input.filter,
+        keyword: input.keyword
+      }))
+      : undefined;
+
+    const hasValidDateFilters =
+      this.advanceSearch?.dateType &&
+      this.isValidDate(this.advanceSearch?.startDate) &&
+      this.isValidDate(this.advanceSearch?.endDate);
 
     const apiBody = {
-      criteria: this.advanceSearch?.filterInputs.map((input, index) => {
-        if (!input.filter || !input.keyword) {
-          throw new Error("Each filterInput must contain 'filter' and 'keyword' properties.");
+
+      // date_filters: {
+      //   ...(this.advanceSearch?.dateType ? { column: this.advanceSearch?.dateType } : {}),
+      //   ...(this.isValidDate(this.advanceSearch?.startDate) ? { start_date: this.advanceSearch?.startDate } : {}),
+      //   ...(this.isValidDate(this.advanceSearch?.endDate) ? { end_date: this.advanceSearch?.endDate } : {})
+      // },
+      ...(hasValidCriteria && { criteria }),
+
+      ...(hasValidDateFilters && {
+        date_filters: {
+          column: this.advanceSearch.dateType,
+          start_date: this.advanceSearch.startDate,
+          end_date: this.advanceSearch.endDate
         }
-        return {
-          ...(index > 0 ? { operator: input.operator || "OR" } : {}),  // use selected operator
-          column: input.filter,
-          keyword: input.keyword
-        };
-      }),
+            }),
+        ...(this.advanceSearch?.devStage && { development_stage: this.advanceSearch.devStage }),
+        ...(this.advanceSearch?.innovator && { innovators: this.advanceSearch.innovator }),
+        ...(this.advanceSearch?.startSales !== null &&
+          this.advanceSearch?.startSales !== undefined &&
+          this.advanceSearch?.endSales !== null &&
+          this.advanceSearch?.endSales !== undefined && {
+          sale_range: {
+            start: this.advanceSearch.startSales,
+            end: this.advanceSearch.endSales
+          }
+        }),
+        page_no: 1
+      };
+        const tech_API = this.apiUrls.basicProductInfo.columnList;
+      this.columnListService.getColumnList(tech_API).subscribe({
+        next: (res: any) => {
+          const response = res?.data?.columns;
+          Auth_operations.setColumnList(this.resultTabs.productInfo.name, response);
 
-      // Validate date filters (optional fields)
-      date_filters: {
-        ...(this.advanceSearch?.dateType ? { column: this.advanceSearch?.dateType } : {}),
-        ...(this.isValidDate(this.advanceSearch?.startDate) ? { start_date: this.advanceSearch?.startDate } : {}),
-        ...(this.isValidDate(this.advanceSearch?.endDate) ? { end_date: this.advanceSearch?.endDate } : {})
-      },
-      ...(this.advanceSearch?.devStage && { development_stage: this.advanceSearch.devStage }),
-      ...(this.advanceSearch?.innovator && { innovators: this.advanceSearch.innovator }),
-      ...(this.advanceSearch?.startSales !== null && this.advanceSearch?.startSales !== undefined && { start_sale_range: this.advanceSearch.startSales }),
-      ...(this.advanceSearch?.endSales !== null && this.advanceSearch?.endSales !== undefined && { end_sale_range: this.advanceSearch.endSales }),
-      page_no: 1
-    };
-
-
-    const tech_API = this.apiUrls.basicProductInfo.columnList;
-    this.columnListService.getColumnList(tech_API).subscribe({
-      next: (res: any) => {
-        const response = res?.data?.columns;
-        Auth_operations.setColumnList(this.resultTabs.productInfo.name, response);
-
-        this.mainSearchService.getAdvanceSearchResults(apiBody).subscribe({
-          next: (res: any) => {
-            this.showResultFunction.emit({
-              apiBody,
-              API_URL: this.apiUrls.basicProductInfo.simpleSearchResults,
-              currentTab: this.resultTabs.productInfo.name,
-              actual_value: '',
-            });
-            this.chemSearchResults.emit(res?.data);
-            this.setLoadingState.emit(false);
-          },
-          error: (e) => {
-            console.error('Error during main search:', e);
-            this.setLoadingState.emit(false);
-          },
-        });
-      },
-      error: (e) => {
-        console.error('Error fetching column list:', e);
-        this.setLoadingState.emit(false);
-      },
-    });
-  }
+          this.mainSearchService.getAdvanceSearchResults(apiBody).subscribe({
+            next: (res: any) => {
+              this.showResultFunction.emit({
+                apiBody,
+                API_URL: this.apiUrls.basicProductInfo.simpleSearchResults,
+                currentTab: this.resultTabs.productInfo.name,
+                actual_value: '',
+              });
+              this.chemSearchResults.emit(res?.data);
+              this.setLoadingState.emit(false);
+            },
+            error: (e) => {
+              console.error('Error during main search:', e);
+              this.setLoadingState.emit(false);
+            },
+          });
+        },
+        error: (e) => {
+          console.error('Error fetching column list:', e);
+          this.setLoadingState.emit(false);
+        },
+      });
+    }
 
   private performSynthesisSearch(): void {
     Auth_operations.setActiveformValues({
