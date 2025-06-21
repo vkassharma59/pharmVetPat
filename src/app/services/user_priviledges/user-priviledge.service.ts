@@ -47,7 +47,7 @@ export class UserPriviledgeService {
 
   getUserTodayPriviledgesData() {
     const body = {
-      vertical: 'Technical Routes (MongoDB)',
+      vertical: 'PharmaVetPat MongoDB',
     };
     let auth_token = Auth_operations.getToken();
 

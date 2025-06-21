@@ -127,33 +127,54 @@ export class ImpComponent {
     });
   }
 
-  handleFetchFilters() {
-    this.impPatentApiBody.filter_enable = true;
-    this.loadingService.setLoading(this.resultTabs.impPatents.name, this.index, true);
-    this.mainSearchService.impPatentsSearchSpecific(this.impPatentApiBody).subscribe({
-      next: (res) => {
-        this.impPatentFilters.productFilters = res?.data?.product || [];
-        this.impPatentFilters.orderByFilters = res?.data?.order_by || [];
+handleFetchFilters() {
+  this.impPatentApiBody.filter_enable = true;
+  this.loadingService.setLoading(this.resultTabs.impPatents.name, this.index, true);
 
-        this.impPatentFilters.patentTypeFilters = (res?.data?.patent_type || []).map((item: any) => {
-          const key = Object.keys(item)[0];
-          const count = item[key]?.length || 0;
-          return {
-            name: `${key} (${count})`,
-            value: key
-          };
-        });
+  this.mainSearchService.impPatentsSearchSpecific(this.impPatentApiBody).subscribe({
+    next: (res) => {
+      // RAW FILTERS
+      const productRaw = res?.data?.product || [];
+      const assigneeRaw = res?.data?.assignee || [];
+      const orderByRaw = res?.data?.order_by || [];
+      const patentTypeRaw = res?.data?.patent_type || [];
 
-        this.impPatentFilters.assigneeFilters = res?.data?.assignee || [];
-        this.impPatentApiBody.filter_enable = false;
-        this.loadingService.setLoading(this.resultTabs.impPatents.name, this.index, false);
-      },
-      error: (err) => {
-        console.error(err);
-        this.impPatentApiBody.filter_enable = false;
-      }
-    });
-  }
+      // ✅ MAP TO { name, value } FORM
+      this.impPatentFilters.productFilters = productRaw.map((item: string) => ({
+        name: item,
+        value: item
+      }));
+
+      this.impPatentFilters.assigneeFilters = assigneeRaw.map((item: string) => ({
+        name: item,
+        value: item
+      }));
+
+      this.impPatentFilters.orderByFilters = orderByRaw.map((item: string) => ({
+        name: item,
+        value: item
+      }));
+
+      this.impPatentFilters.patentTypeFilters = patentTypeRaw.map((item: any) => {
+        const key = Object.keys(item)[0];
+        const count = item[key]?.length || 0;
+        return {
+          name: `${key} (${count})`,
+          value: key
+        };
+      });
+
+      this.impPatentApiBody.filter_enable = false;
+      this.loadingService.setLoading(this.resultTabs.impPatents.name, this.index, false);
+    },
+    error: (err) => {
+      console.error(err);
+      this.impPatentApiBody.filter_enable = false;
+    }
+  });
+}
+
+
 
   setFilterLabel(filterKey: string, label: string) {
     this.filterConfigs = this.filterConfigs.map((item) => {
@@ -180,7 +201,8 @@ export class ImpComponent {
       this.setFilterLabel(filterKey, '');
     } else {
       this.impPatentApiBody.filters[filterKey] = value;
-      this.setFilterLabel(filterKey, name || '');
+     this.setFilterLabel(filterKey, name ?? value ?? '');
+
     }
 
     this._currentChildAPIBody = {

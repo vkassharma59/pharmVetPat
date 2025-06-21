@@ -118,7 +118,7 @@ export class RouteResultComponent {
     const Userdata = JSON.parse(localStorage.getItem('priviledge_json') || '');
 
     this.isSplitDownload =
-      Userdata?.technicalroutesmongo?.SplitDownload == 'true' ? true : false;
+      Userdata?.['pharmvetpat-mongodb']?.SplitDownload == 'true' ? true : false;
 
     this.isDownloadPermit = Account_type == 'premium' ? true : false;
   }
@@ -236,9 +236,9 @@ export class RouteResultComponent {
           let priviledge_data = userInfo?.privilege_json[priviledge];
           if (
             !priviledge_data ||
-            priviledge_data?.technicalroutesmongo?.SplitDownload === 'false' ||
-            priviledge_data?.technicalroutesmongo?.DownloadCount == '' ||
-            priviledge_data?.technicalroutesmongo?.DownloadCount == 0
+            priviledge_data?.['pharmvetpat-mongodb']?.SplitDownload === 'false' ||
+            priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == '' ||
+            priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == 0
           ) {
             this.handleSetLoading.emit(false);
             this.OpenPriviledgeModal.emit(
@@ -252,7 +252,7 @@ export class RouteResultComponent {
                 if (res && res?.data) {
                   todays_limit = res.data;
                   if (
-                    priviledge_data?.technicalroutesmongo?.DailyDownloadLimit -
+                    priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit -
                     todays_limit?.downloadCount <= 0
                   ) {
                     this.handleSetLoading.emit(false);
@@ -263,7 +263,7 @@ export class RouteResultComponent {
                     return;
                   }
                   if (
-                    priviledge_data?.technicalroutesmongo?.DailyDownloadLimit -
+                    priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit -
                     todays_limit?.downloadCount >
                     0
                   ) {
