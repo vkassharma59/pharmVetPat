@@ -10,7 +10,7 @@
   (handleLoading)="handleLoadingState($event)"
 ></app-result-tab>
 
-<ng-container *ngIf="allDataSets ; else noData">
+<ng-container *ngIf="allDataSets.length > 0; else noData">
   <div *ngFor="let item of allDataSets; let i = index"> 
     <chem-route-results
       (backFunction)="handleBack()"
