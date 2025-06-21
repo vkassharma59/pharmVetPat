@@ -149,6 +149,7 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
           agrochemical: this._data?.special_count?.agroTotal ?? 0,
           pharmaceutical: this._data?.special_count?.pharmaTotal ?? 0
         });
+        
         console.log("Button clicked");
         console.log("Current value:", value);
         console.log("Current tab:", this.resultTabs?.technicalRoutes?.name);

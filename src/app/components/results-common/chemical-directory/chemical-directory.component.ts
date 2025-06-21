@@ -87,8 +87,7 @@ export class ChemicalDirectoryComponent implements OnChanges {
 }
 
   onActiveTabChange(tabName: string) {
-       this.activeTabChange.emit(tabName);
-    
+       this.activeTabChange.emit(tabName);    
   }
 
 }

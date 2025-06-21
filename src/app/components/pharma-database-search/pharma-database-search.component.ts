@@ -210,7 +210,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
           break;
       }
     } catch (err) {
-      console.log(err);
       this.showSuggestions = false;
     }
   }
@@ -515,9 +514,6 @@ isAdvancedInputDisabled(): boolean {
             todaysLimit = res?.data;
            
             const remainingLimit = privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit - todaysLimit?.searchCount;
-            console.log("Dailylimit", privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit);
-             console.log("limittodays", todaysLimit?.searchCount);
-             console.log("remaining limt",remainingLimit)
             if (remainingLimit <= 0) {
               this.setLoadingState.emit(false);
               this.priviledgeModal.emit('Your Daily Search Limit is over for this Platform.');

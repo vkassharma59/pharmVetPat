@@ -62,7 +62,6 @@ import { LoadingService } from '../../../services/loading-service/loading.servic
    }
  
    ngOnChanges() {
-     console.log('scientificDocs received data:', this._data);
      this.handleResultTabData.emit(this._data);
    }
  

@@ -40,11 +40,9 @@ export class ChildPagningTableComponent implements OnChanges {
 
   @Input()
   get currentChildAPIBody(): ChildAPIBody {
-      console.log("🔄 currentChildAPIBody set to:", this._currentChildAPIBody); // Log here
     return this._currentChildAPIBody;
   }
   set currentChildAPIBody(value: ChildAPIBody) {
-    console.log("childodyApi", value)
     this._currentChildAPIBody = value;
     this.count = value?.count || 0;
     this.updateInitialPageArray();
@@ -391,8 +389,6 @@ handleNextclick1 = () => {
       this._currentChildAPIBody
     ).subscribe({
       next: (res) => {
-        console.log("✅ API Response:", res?.data);
-
         this._currentChildAPIBody.count = res?.data?.recordsFiltered ?? res?.data?.recordsTotal;
         this.count = this._currentChildAPIBody.count ?? 0;
 

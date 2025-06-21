@@ -201,7 +201,6 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
       ? this.multiSortOrder
         .filter(s => typeof s.column === 'number')
         .map(s => {
-          console.log('Sorting index:', s.column, 'direction:', s.dir);
           return {
             column: s.column,
             dir: s.dir
@@ -226,7 +225,6 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
       start,
       pageno
     };
-    console.log("payload data ", payload)
     if (isGlobalSearch && allColumns) {
       payload.columns = allColumns;
       payload.search = globalSearch;
@@ -258,10 +256,8 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
       length: reportLimit,
     };
 
-    console.log('📦  response body:', requestBody);
     return this.mainSearchService.activePatentSearchSpecific(requestBody).pipe(
       tap((result: ActivePatentCardComponent) => {
-        console.log('📦 Full API response:', result);
       }),
       map((result: ActivePatentCardComponent) => result?.data?.data || []),
       catchError(error => {

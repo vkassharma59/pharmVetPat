@@ -102,7 +102,6 @@ export class MainSearchService {
   }
 
   technicalRoutesSearchSpecific(props: any): Observable<any> {
-    console.log("propers",props)
     const body = props;
     return this.http
       .post(this.apiUrls.technicalRoutes.searchSpecific, body, { headers: this.headers })
@@ -263,7 +262,6 @@ export class MainSearchService {
  
 
   private handleError(error: HttpErrorResponse): Observable<never> {
-    console.log(error);
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred:', error.error.message);
     } else {

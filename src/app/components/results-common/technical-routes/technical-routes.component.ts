@@ -40,7 +40,9 @@ rosCounts: { agrochemical: number; pharmaceutical: number } = {
     return this._data;
   }
   set data(value: any) {
-    this._data = value;
+    if(value) {
+      this._data = value;
+    }
   }
   viewProduct: boolean = false;
 

@@ -155,13 +155,9 @@ export class HeaderComponent {
     return;
   }
 
-  console.log('🔐 Logging in with:', this.email);
   this.loadingState = 'Loading...';
-debugger
   this.LoginService.login(this.email, this.password).subscribe({
     next: (res) => {
-      console.log('✅ Login API Response:', res);
-
       if (res && res.data && res.data.user_info) {
         const userInfo = res.data.user_info;
         const privilege_json = userInfo.privilege_json;
@@ -387,11 +383,9 @@ dropdown(index:number):void{
     // this.isdataVisible=this.isdataVisible.map(()=> false);
     // this.isdataVisible[index]=true;
     this.descDropdown[index]=!this.descDropdown[index];
-    console.log(this.descDropdown);
   }
   menuDropDown():void{
     this.isMenuOpen=!this.isMenuOpen;
-    console.log(this.isMenuOpen);
   }
 
   @HostListener('window:scroll', [])
