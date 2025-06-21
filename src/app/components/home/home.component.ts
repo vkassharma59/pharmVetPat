@@ -84,11 +84,15 @@ openCloseAccordion(key: string, event?: Event): void {
   }
 
   handleLoading(event: boolean) {
-    this.loading = event;
+    setTimeout(() => {
+      this.loading = event;
+    }, 100);  
   }
 
   handleSetLoading(data: any) {
-    this.loading = data;
+    setTimeout(() => {
+      this.loading = data;
+    }, 100);    
   }
 
   handleSearchResults(data: any) {
@@ -122,10 +126,24 @@ openCloseAccordion(key: string, event?: Event): void {
           this.CurrentAPIBody.count = this.searchData?.ros_count;
           // Remove extra keys from allDataSets beyond the length
           this.allDataSets = this.allDataSets.slice(0, this.searchData?.ros_data?.length);
-          for (let i = 0; i < this.searchData?.ros_data?.length; i++) {
-            this.allDataSets[i][this.resultTabs.technicalRoutes.name][0] =
-              this.searchData?.ros_data[i];
-          }
+          const {
+            ros_data = [],
+            uniq_products = [],
+            KSM = 0,
+            ros_count = 0
+          } = this.searchData || {};
+
+          ros_data.forEach((item, i) => {
+            const tempObj = {
+              ros_data: [item],
+              uniq_products,
+              KSM,
+              ros_count
+            };
+
+            this.allDataSets[i][this.resultTabs.technicalRoutes.name] = tempObj;
+          });
+
         } else {
             this.allDataSets = [];
         }

@@ -40,18 +40,19 @@ rosCounts: { agrochemical: number; pharmaceutical: number } = {
     return this._data;
   }
   set data(value: any) {
-    this._data = value;
+    if(value) {
+      this._data = value;
+    }
   }
   viewProduct: boolean = false;
 
   ngOnInit() {
-  this.sharedROS.rosCount$.subscribe(count => {
-    if (count) {
-      console.log('Received ROS Count:', count);
-      this.rosCounts = count; // ✔️ update the local variable
-    }
-  });
-}
+    this.sharedROS.rosCount$.subscribe(count => {
+      if (count && count?.index === this.index) {
+        this.rosCounts = count;
+      }
+    });
+  }
 
   handleToggleViewProduct() {
     this.viewProduct = !this.viewProduct;

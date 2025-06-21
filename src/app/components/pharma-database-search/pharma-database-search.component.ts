@@ -210,7 +210,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
           break;
       }
     } catch (err) {
-      console.log(err);
       this.showSuggestions = false;
     }
   }
@@ -354,12 +353,14 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         break;
       case searchTypes.chemicalStructure:
         this.chemicalStructure = { filter: '' };
+        this.getChemicalStructureFilters();
         break;
       case searchTypes.synthesisSearch:
         this.synthesisSearch = {};
         break;
       case searchTypes.intermediateSearch:
         this.intermediateSearch = { filter: '' };
+        this.getintermediateSearchFilters();
         break;
       case searchTypes.advanceSearch:
         this.advanceSearch = {
@@ -369,6 +370,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         this.advanceSearch.filterInputs = [
           { filter: '', keyword: '' }
         ];
+        this.getAdvanceSearchFilters();
         break;
     }
   }
@@ -515,9 +517,6 @@ isAdvancedInputDisabled(): boolean {
             todaysLimit = res?.data;
            
             const remainingLimit = privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit - todaysLimit?.searchCount;
-            console.log("Dailylimit", privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit);
-             console.log("limittodays", todaysLimit?.searchCount);
-             console.log("remaining limt",remainingLimit)
             if (remainingLimit <= 0) {
               this.setLoadingState.emit(false);
               this.priviledgeModal.emit('Your Daily Search Limit is over for this Platform.');

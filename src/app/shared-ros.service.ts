@@ -6,14 +6,13 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class SharedRosService {
 
-  // constructor() { }
-   private rosCountSubject = new BehaviorSubject<{ agrochemical: number, pharmaceutical: number } | null>(null);
+   private rosCountSubject = new BehaviorSubject<{ agrochemical: number, pharmaceutical: number, index: any } | null>(null);
 
   // Observable to subscribe to
   rosCount$ = this.rosCountSubject.asObservable();
 
   // Function to update
-  setROSCount(count: { agrochemical: number, pharmaceutical: number }) {
+  setROSCount(count: { agrochemical: number, pharmaceutical: number, index: any }) {
     this.rosCountSubject.next(count);
   }
 }

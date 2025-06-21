@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, input, Output } from '@angular/core';
 import { searchTypes, UtilityService } from '../../services/utility-service/utility.service';
-import { JsonPipe, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { CommonModule, JsonPipe, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { RouteTabsComponent } from '../route-tabs/route-tabs.component';
 import { UserPriviledgeService } from '../../services/user_priviledges/user-priviledge.service';
 import { Auth_operations } from '../../Utils/SetToken';
@@ -34,7 +34,7 @@ import { VeterinaryUsApprovalComponent } from "../results-common/veterinary-us-a
 @Component({
   selector: 'chem-route-results',
   standalone: true,
-  imports: [FormsModule, NgFor, NgIf, BasicRouteComponent, TechnicalRoutesComponent,
+  imports: [CommonModule, FormsModule, NgFor, NgIf, BasicRouteComponent, TechnicalRoutesComponent,
     ImpurityComponent, ChemiTrackerComponent, ImpComponent, IndianComponent, ChemicalDirectoryComponent,
     JapanComponent, CanadaComponent, EuropeApprovalComponent, KoreaComponent, LitigationComponent,
     UsComponent, SpcdbComponent, EximComponent, RouteTabsComponent, ActivePatentComponent,
@@ -80,7 +80,7 @@ export class RouteResultComponent {
   get dataItem() {
     return this._dataItem;
   }
-  set dataItem(value: any) {
+  set dataItem(value: any) {  
     this._dataItem = value;
   }
 
@@ -146,10 +146,10 @@ export class RouteResultComponent {
       case searchTypes.synthesisSearch:
         if (data.name === this.resultTabWithKeys.chemicalDirectory.name) {
           searchWith = 'TRRN';
-          searchWithValue = this.dataItem[this.resultTabWithKeys.technicalRoutes.name][0].trrn;
+          searchWithValue = this.dataItem[this.resultTabWithKeys.technicalRoutes.name]?.ros_data[0]?.trrn;
         } else {
           searchWith = 'GBRN';
-          searchWithValue = this.dataItem[this.resultTabWithKeys.technicalRoutes.name][0].gbrn;
+          searchWithValue = this.dataItem[this.resultTabWithKeys.technicalRoutes.name]?.ros_data[0]?.gbrn;
         }
         break;
       case searchTypes.intermediateSearch:
@@ -181,6 +181,7 @@ export class RouteResultComponent {
 
     this.onResultTabChange.emit(tempObj);
     this.currentTabData = data;
+    this.activeTab = data.name;
   }
 
   OpenQueryModal() {
@@ -348,7 +349,6 @@ export class RouteResultComponent {
                       } catch (err) {
                         this.handleSetLoading.emit(false);
                         this.generatePDFloader = false;
-                        console.log(err);
                       }
                     }
                   }
@@ -373,6 +373,5 @@ export class RouteResultComponent {
 
   onChemicalDirectoryActiveTabChange(tabName: string) {
     this.activeTab = tabName;
-
-    }
+  }
 }

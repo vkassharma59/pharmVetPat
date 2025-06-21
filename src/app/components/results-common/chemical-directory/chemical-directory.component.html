@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <chemical-directory-card class="card" [data]="dataItem" [currentChildAPIBody]="currentChildAPIBody"
+        <chemical-directory-card class="card" [data]="dataItem" [index]="index" [currentChildAPIBody]="currentChildAPIBody"
             (ROSChange)="handleROSChange.emit($event)" (activeTabChange)="onActiveTabChange($event)">
         </chemical-directory-card>
 

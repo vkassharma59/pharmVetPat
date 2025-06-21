@@ -46,8 +46,7 @@ export class RouteTabsComponent {
           tab.isActive = false; // Set inactive for others
         }
       });
-
-      this.handleCurrentTab.emit(data);
+      // this.handleCurrentTab.emit(data);
     }
   }
 

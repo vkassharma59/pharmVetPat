@@ -1,6 +1,7 @@
 <app-loader *ngIf="loading"></app-loader>
 
 <app-result-tab
+  *ngIf="searchThrough === searchTypes.synthesisSearch"
   (makePdf)="generatePdf.emit($event)"
   [MainDataResultShow]="allDataSets"
   [CurrentAPIBody]="CurrentAPIBody"
@@ -15,13 +16,13 @@
       (backFunction)="handleBack()"
       [index]="i"
       [dataItem]="item"
-      [searchData]="searchData"
+      [searchData]="_searchData"
       [CurrentAPIBody]="CurrentAPIBody"
       [currentChildAPIBody]="childApiBody[i]"
       (onResultTabChange)="onResultTabChange($event)"
       (handleSetLoading)="handleLoadingState($event)"
       (resetPagination)="resetPagination($event, i)"
-      (handleROSChange)="ButtonROSSearch($event)"
+      (handleROSChange)="ButtonROSSearch($event, i)"
       (handleChildPaginationSearch)="onChildPaginationChange($event, i)"
     ></chem-route-results>
   </div>

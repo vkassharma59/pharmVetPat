@@ -68,7 +68,6 @@ export class LoginService {
   }
 
   private handleError(error: HttpErrorResponse): Observable<any> {
-    console.log(error.error);
     // if (!error.error.status) {
     //   alert(error.error.message);
     // }

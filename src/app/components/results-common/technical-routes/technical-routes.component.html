@@ -1,9 +1,10 @@
 <div>
-  <div class="row" *ngIf="CurrentAPIBody?.currentTab === 'chemicalDirectory'">
+  <div class="row" *ngIf="CurrentAPIBody?.currentTab === resultTabs.technicalRoutes.name
+    && searchThrough !== 'synthesis-search'">
     <div class="col-md-6">
       <div class="flex gap-2 items-center flex-wrap">
         <button class="px-3 py-2 my-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
-          KSM : {{ _data?.KSM }}
+          KSM : <span>{{(_data?.KSM) ? _data?.KSM : '0'}}</span>
         </button>
 
         <button class="px-3 py-2 my-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
@@ -45,7 +46,7 @@
     </div>
 
     <!-- Scrollable List -->
-    <div class="scroll px-8 py-3 overflow-auto max-h-[50vh] rounded-md">
+    <div class="scroll px-8 py-3 overflow-auto max-h-[50vh] rounded-md" *ngIf="_data?.uniq_products?.length > 0">
       <div *ngFor="let data of _data?.uniq_products; let i = index" class="py-1">
         <span class="text-base">{{ i + 1 }}&nbsp;&nbsp;{{ data }}</span>
       </div>
@@ -54,19 +55,21 @@
 </div>
 
 
-  <ng-container *ngIf="_data > 0; else noData">
+  <ng-container *ngIf="_data?.ros_data?.length > 0; else noData">
     <ng-container
       *ngIf="currentChildAPIBody && !isEmptyObject(currentChildAPIBody) && searchThrough !== 'synthesis-search'">
       <chem-child-result-tab [dataItem]="_data?.ros_data"   [CurrentAPIBody]="CurrentAPIBody"  [currentAPIData]="currentChildAPIBody"
         (handleChangeTabData)="handleResultTabData.emit($event)" (resetPagination)="resetPagination.emit($event)"
         (setLoading)="handleSetLoading.emit($event)"></chem-child-result-tab>
+    </ng-container>
+    <ng-container>
       <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper">
         <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
           Total Records : {{ currentChildAPIBody?.count }}
         </button>
       </div>
-      <ng-container *ngFor="let dataItem of _data; let i = index">
-        <div class="py-4">
+      <ng-container *ngFor="let dataItem of _data?.ros_data; let i = index">
+        <div class="py-4" *ngIf="searchThrough !== 'synthesis-search'">
           <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
             <span
               class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-normal h-[37px] flex justify-center items-center">

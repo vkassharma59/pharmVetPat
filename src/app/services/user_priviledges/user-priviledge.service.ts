@@ -54,6 +54,7 @@ export class UserPriviledgeService {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'api-key': env.headerApiKey,
+      'platforms': env.platforms,
       'access-token': auth_token,
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
@@ -65,7 +66,6 @@ export class UserPriviledgeService {
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
-    console.log(error);
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred:', error.error.message);
     } else {

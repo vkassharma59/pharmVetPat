@@ -20,21 +20,16 @@ export class ChildPagingComponent {
   count: any = 0;
 
   @Input()
-  get currentChildAPIBody() {
-   
-    return this._currentChildAPIBody;
-   
+  get currentChildAPIBody() {   
+    return this._currentChildAPIBody;   
   }
   set currentChildAPIBody(value: any) {
-    console.log("🔄 currentChildAPIBody set to:", value); // Log here
-
     this._currentChildAPIBody = value;
     this.PageArray = [];
     this.count = 0;
 
 
     if (this._currentChildAPIBody?.count) {
-      console.log("🔄 current:", this.count = this._currentChildAPIBody?.count); // Log here
       this.count = this._currentChildAPIBody?.count;
     }
 
@@ -105,10 +100,8 @@ export class ChildPagingComponent {
       this._currentChildAPIBody
     ).subscribe({
       next: (res) => {
-         console.log("✅ API Response:", res?.data);
         this.handleChangeData(); // Refresh page array if count changed
         this.handleChangeTabData.emit(res?.data);
-        console.log("body uri-------------------- resposne ",res.data)
         this.setLoading.emit(false);
       },
       error: (e) => {
@@ -141,7 +134,6 @@ export class ChildPagingComponent {
   }
 
   ngOnChanges(): void {
-    console.log("🛠 ngOnChangescalled, currentChildAPIBody:", this._currentChildAPIBody);
     this.handleChangeData();
   }
 }
