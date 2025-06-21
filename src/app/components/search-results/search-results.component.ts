@@ -1076,11 +1076,9 @@ export class SearchResultsComponent {
   }
 
   private scientificDocsSearch(resultTabData: any,): void {
-    console.log('Search Input:', resultTabData);
     const pageSize = 25;
     const page_no = 1
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
-      console.log('Empty   search parameters, skipping search.');
       this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = {};
       this.setLoadingState.emit(false);
       return;
@@ -1103,7 +1101,6 @@ export class SearchResultsComponent {
       next: (res: any) => {
         const columnList = res?.data?.columns || [];
 
-        console.log('Column List API Response:', columnList);
 
         // Step 3: Save column list locally
         Auth_operations.setColumnList(this.resultTabs.scientificDocs.name, columnList);
@@ -1117,7 +1114,6 @@ export class SearchResultsComponent {
         // Step 4: Call main search API
         this.mainSearchService.scientificDocsSpecific(this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]).subscribe({
           next: (result: any) => {
-            console.log('Search API Result:', result);
 
             const dataRows = result?.data?.data || [];
 

@@ -43,7 +43,6 @@ export class PaginationComponent {
     }
 
     this.totalPageNumbers = this.ResultDataCount;
-    console.log(this.totalPageNumbers);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -145,13 +144,11 @@ export class PaginationComponent {
     this.setLoading.emit(true);
     this.CurrentAPIBody.body.page_no = page;
     this.MainPageNo = page;
-    console.log(this.CurrentAPIBody);
 
     this.ServicePaginationService.getNextPaginationData(
       this.CurrentAPIBody
     ).subscribe({
       next: (res) => {
-        console.log(res?.data);
         this.showDataResultFunction.emit(res?.data);
         this.setLoading.emit(false);
         window.scroll({

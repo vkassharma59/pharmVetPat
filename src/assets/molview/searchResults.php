@@ -274,7 +274,6 @@
 
 <script>
     function fun1(id){
-        console.log(id);
     }
 
     function placeImageHd(arg){

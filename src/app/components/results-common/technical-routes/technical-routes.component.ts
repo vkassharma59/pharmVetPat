@@ -41,7 +41,6 @@ rosCounts: { agrochemical: number; pharmaceutical: number } = {
   }
   set data(value: any) {
     if(value) {
-      console.log(value);
       this._data = value;
     }
   }

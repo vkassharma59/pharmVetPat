@@ -348,7 +348,6 @@ export class RouteResultComponent {
                       } catch (err) {
                         this.handleSetLoading.emit(false);
                         this.generatePDFloader = false;
-                        console.log(err);
                       }
                     }
                   }

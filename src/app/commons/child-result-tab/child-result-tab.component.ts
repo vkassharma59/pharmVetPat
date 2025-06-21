@@ -123,7 +123,6 @@ export class ChildResultTabComponent {
       this.isKSMEnabled = true;
     }
     this.raise_query_object = this.CurrentAPIBody?.body;
-     console.log("this.CurrentAPIBody?.body,",this.CurrentAPIBody?.body)
     this.fetchFilters();
   }
   @HostListener('document:mousedown', ['$event'])
@@ -508,6 +507,5 @@ getFieldApplicationLabel(value: string): string {
 
       panelClass: 'full-screen-modal',
     });
-     console.log(" raise_query_object: this.raise_query_object,",this.raise_query_object,)
   }
 }
