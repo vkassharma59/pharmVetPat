@@ -161,7 +161,7 @@
           <div class="col-md-4 col-12 mb-2 mb-md-0">
             <label for="seeAllDataType" class="form-label">Select Data Type (Optional):</label>
             <select class="form-control" [(ngModel)]="advanceSearch.dateType">
-              <option value="">Date Type</option>
+              <option value="" disabled selected hidden>Date Type</option>
               <option *ngFor="let filter of advanceSearch.date_columns" [value]="filter.value">
                 {{ filter.name }}
               </option>
@@ -209,12 +209,15 @@
           <label class="form-label">Select Development Stage</label>
 
           <div class="position-relative">
-            <input type="text" class="form-control" placeholder="Select Development Stage"
+            <!-- <input type="text" class="form-control" placeholder="Select Development Stage"
               [(ngModel)]="advanceSearch.devStage" (focus)="!isAdvancedInputDisabled() && (showDevStageDropdown = true)"
               (input)="!isAdvancedInputDisabled() && handleChangeKeywordDL('DEVELOPMENT_STAGE')"
-              [disabled]="isAdvancedInputDisabled() && false" />
+              [disabled]="isAdvancedInputDisabled() && false" /> -->
+            <input type="text" class="form-control" placeholder="Select Development Stage"
+              [(ngModel)]="advanceSearch.devStage" (focus)="showDevStageDropdown = true"
+              (input)="handleChangeKeywordDL('DEVELOPMENT_STAGE')" />
 
-            <div *ngIf="showDevStageDropdown && !isAdvancedInputDisabled()"
+            <div *ngIf="showDevStageDropdown "
               class="position-absolute bg-white border border-gray-300 rounded shadow p-2 z-10 Dropdown"
               style="width: 100%; max-height: 250px; overflow-y: auto">
 
@@ -236,7 +239,7 @@
           <div class="position-relative">
             <input type="text" class="form-control" placeholder="Select Innovator Originator"
               [(ngModel)]="advanceSearch.innovator" (focus)="showInnovatorDropdown = true"
-              (input)="handleChangeKeywordDL('INNOVATOR_ORIGINATOR')" [disabled]="isAdvancedInputDisabled() && false" />
+              (input)="handleChangeKeywordDL('INNOVATOR_ORIGINATOR')" />
 
 
             <div *ngIf="showInnovatorDropdown"
@@ -253,29 +256,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Innovator Originator -->
-        <!-- <div class="col-md-3 col-12 mb-2 mb-md-0 innovator-container">
-          <label class="form-label">Select Innovator Originator</label>
-          <div class="position-relative">
-            <input type="text" class="form-control" placeholder="Select Innovator Originator"
-              [(ngModel)]="advanceSearch.innovatorOriginator"
-              (focus)="showInnovatorDropdown = true; filteredInnovators = innovators"
-              (input)="handleInnovatorChange()" />
-
-            <div *ngIf="showInnovatorDropdown"
-              class="position-absolute bg-white border border-gray-300 rounded shadow p-2 z-10"
-              style="width: 100%; max-height: 250px; overflow-y: auto">
-              <input type="text" class="form-control mb-2" placeholder="Search" [(ngModel)]="innovatorSearch"
-                (input)="handleInnovatorChange()" />
-              <div *ngFor="let innovator of filteredInnovators" class="px-2 py-1 hover:bg-light cursor-pointer"
-                (click)="selectInnovator(innovator)">
-                {{ innovator }}
-              </div>
-            </div>
-          </div>
-        </div> -->
-
         <!-- Start Sales -->
         <div class="col-md-3 col-12 mb-2 mb-md-0">
           <label for="startSales" class="form-label">Start Range Sales ($M)</label>

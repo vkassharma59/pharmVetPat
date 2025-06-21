@@ -63,7 +63,7 @@ export class ResultTabComponent {
   };
 
   userAuth: any = {};
-  
+
 
   constructor(
     private dialog: MatDialog,
@@ -73,14 +73,17 @@ export class ResultTabComponent {
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
   }
+  isTechnicalRoutesTabActive(): boolean {
+    return this.CurrentAPIBody?.currentTab === this.resultTabs?.technicalRoutes?.name;
+  }
 
   ngOnInit() {
     if (
-      this.CurrentAPIBody.currentTab == this.resultTabs.technicalRoutes.name ) {
+      this.CurrentAPIBody.currentTab == this.resultTabs.technicalRoutes.name) {
       this.raise_query_object = this.CurrentAPIBody?.body;
       this.fetchFilters();
     }
-
+    // console.log(this.resultTabs.technicalRoutes.name, "CurrentAPIBody.currentTab", this.CurrentAPIBody.currentTab)
     const Account_type = localStorage.getItem('account_type');
     const Userdata = JSON.parse(localStorage.getItem('priviledge_json') || '');
     this.isSplitDownload = Userdata?.['pharmvetpat-mongodb']?.SplitDownload;
@@ -240,7 +243,7 @@ export class ResultTabComponent {
                   todays_limit = res.data;
                   if (
                     priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit -
-                      todays_limit?.downloadCount <=
+                    todays_limit?.downloadCount <=
                     0
                   ) {
                     this.handleLoading.emit(false);
@@ -253,7 +256,7 @@ export class ResultTabComponent {
 
                   if (
                     priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit -
-                      todays_limit?.downloadCount >
+                    todays_limit?.downloadCount >
                     0
                   ) {
                     let pdf_body = this.CurrentAPIBody;

@@ -83,7 +83,12 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.veterinaryUsApproval.name">
-      <app-veterinary-us-approval></app-veterinary-us-approval>
+      <app-veterinary-us-approval [data]="_dataItem.veterinaryUsApproval"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.veterinaryUsApproval.name]"
+        [index]="index"
+        [tabName]="resultTabWithKeys.veterinaryUsApproval.name"
+        (handleSetLoading)="handleSetLoading.emit($event)"
+        (handleResultTabData)="handleChildPaginationSearch.emit($event)"></app-veterinary-us-approval>
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.canadaApproval.name">

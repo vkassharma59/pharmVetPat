@@ -262,7 +262,8 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
     const reportLimit = priv['pharmvetpat-mongodb']?.ReportLimit || 500;
     const requestBody = {
       ...this._currentChildAPIBody,
-      page_no: 1, start: 0,
+      page_no: 1,
+      start: 0,
       length: reportLimit,
     };
 
@@ -278,6 +279,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       })
     );
   }
+
 
 
   downloadPDF() {
@@ -297,52 +299,54 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
   //   return str.replace(/_/g, ' ')
   //     .replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
   // }
- 
- // 3️⃣ Download CSV
- downloadCSV(): void {
-   this.isExportingCSV =true;
-  this.getAllDataFromApi().subscribe(data => {
-    // Generate header row with Title Case
-    const headerRow = this.displayedColumns.map(col => this.toTitleCase(col)).join(',') + '\n';
-    let csvContent = headerRow;
 
-    data.forEach(row => {
-      const rowData = this.displayedColumns.map(col => {
-        let value = row[col];
+  // 3️⃣ Download CSV
+  downloadCSV(): void {
+    this.isExportingCSV = true;
+    this.getAllDataFromApi().subscribe(data => {
+      // Generate header row with Title Case
+      const headerRow = this.displayedColumns.map(col => this.toTitleCase(col)).join(',') + '\n';
+      let csvContent = headerRow;
 
-        // Apply same formatting as Excel export
-        if (Array.isArray(value)) {
-          value = value.join(', ');
-        } else if (typeof value === 'object' && value !== null) {
-          value = JSON.stringify(value);
-        } else if (value === null || value === undefined) {
-          value = '';
-        }
+      data.forEach(row => {
+        const rowData = this.displayedColumns.map(col => {
+          let value = row[col];
 
-        // Escape quotes and commas for CSV
-        let cell = String(value).replace(/"/g, '""');
-        if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
-          cell = `"${cell}"`;
-        }
-        return cell;
+          // Apply same formatting as Excel export
+          if (Array.isArray(value)) {
+            value = value.join(', ');
+          } else if (typeof value === 'object' && value !== null) {
+            value = JSON.stringify(value);
+          } else if (value === null || value === undefined) {
+            value = '';
+          }
+
+          // Escape quotes and commas for CSV
+          let cell = String(value).replace(/"/g, '""');
+          if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
+            cell = `"${cell}"`;
+          }
+          return cell;
+        });
+
+        csvContent += rowData.join(',') + '\n';
       });
 
-      csvContent += rowData.join(',') + '\n';
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      saveAs(blob, 'ExportedData.csv');
+      this.isExportingCSV = false;
     });
+  }
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    saveAs(blob, 'ExportedData.csv');
-     this.isExportingCSV =false;
-  });
-}
 
- 
- 
- // 4️⃣ Download Excel
-   downloadExcel(): void {
+
+  // 4️⃣ Download Excel
+  downloadExcel(): void {
+     this.isExportingExcel = true;
     this.getAllDataFromApi().subscribe(data => {
       const workbook = new ExcelJS.Workbook();
       const worksheet = workbook.addWorksheet('Exported Data');
+
 
       // Define header columns
       const columns = this.displayedColumns.map(col => ({
@@ -350,6 +354,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
         key: col,
       }));
       worksheet.columns = columns;
+
 
       // Add formatted data rows
       data.forEach(row => {
@@ -366,10 +371,12 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
         worksheet.addRow(formattedRow);
       });
 
+
       // ✅ ADD AUTO-WIDTH ADJUSTMENT HERE
       this.displayedColumns.forEach((col, index) => {
         const excelCol = worksheet.getColumn(index + 1);
         let maxLength = col.length;
+
 
         excelCol.eachCell({ includeEmpty: true }, cell => {
           const cellValue = cell.value ? cell.value.toString() : '';
@@ -378,8 +385,10 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
           }
         });
 
+
         excelCol.width = maxLength + 6;
       });
+
 
       // Style header row
       const headerRow = worksheet.getRow(1);
@@ -403,6 +412,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
         };
       });
 
+
       // Save workbook
       workbook.xlsx.writeBuffer().then(buffer => {
         const blob = new Blob([buffer], {
@@ -410,11 +420,9 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
         });
         saveAs(blob, 'ExportedDataFormatted.xlsx');
         this.isExportingExcel = false;
-      });
+           });
     });
   }
-
-
 
   // ✅ Optional: Capitalize headers
   toTitleCase(str: string): string {
