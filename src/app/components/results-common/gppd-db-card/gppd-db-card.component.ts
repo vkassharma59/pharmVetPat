@@ -39,6 +39,8 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
   data?: {
     data?: any[]; // Replace `any` with your actual data type
   };
+   isExportingCSV: boolean = false;
+  isExportingExcel: boolean = false;
   _currentChildAPIBody: any;
   loading=false;
   displayedColumns: string[] = [];
@@ -297,31 +299,45 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
  
  // 3️⃣ Download CSV
  downloadCSV(): void {
-   this.getAllDataFromApi().subscribe(data => {
-     // Ensure column headers are properly titled
-     const headerRow = this.displayedColumns.map(col => this.toTitleCase(col)).join(',') + '\n';
-     let csvContent = headerRow;
- 
-     data.forEach(row => {
-       const rowData = this.displayedColumns.map(col => {
-         let cell = row[col] !== undefined ? row[col] : '';
-         // Optional: Escape commas, quotes, and newlines
-         cell = String(cell).replace(/"/g, '""');
-         if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
-           cell = `"${cell}"`;
-         }
-         return cell;
-       });
-       csvContent += rowData.join(',') + '\n';
-     });
- 
-     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-     saveAs(blob, 'ExportedData.csv');
-   });
- }
- 
+   this.isExportingCSV =true;
+  this.getAllDataFromApi().subscribe(data => {
+    // Generate header row with Title Case
+    const headerRow = this.displayedColumns.map(col => this.toTitleCase(col)).join(',') + '\n';
+    let csvContent = headerRow;
+
+    data.forEach(row => {
+      const rowData = this.displayedColumns.map(col => {
+        let value = row[col];
+
+        // Apply same formatting as Excel export
+        if (Array.isArray(value)) {
+          value = value.join(', ');
+        } else if (typeof value === 'object' && value !== null) {
+          value = JSON.stringify(value);
+        } else if (value === null || value === undefined) {
+          value = '';
+        }
+
+        // Escape quotes and commas for CSV
+        let cell = String(value).replace(/"/g, '""');
+        if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
+          cell = `"${cell}"`;
+        }
+        return cell;
+      });
+
+      csvContent += rowData.join(',') + '\n';
+    });
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, 'ExportedData.csv');
+     this.isExportingCSV =false;
+  });
+}
+
  // 4️⃣ Download Excel
   downloadExcel(): void {
+     this.isExportingExcel =true;
    this.getAllDataFromApi().subscribe(data => {
      const workbook = new ExcelJS.Workbook();
      const worksheet = workbook.addWorksheet('Exported Data');
@@ -391,6 +407,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
        });
        saveAs(blob, 'ExportedDataFormatted.xlsx');
+        this.isExportingExcel =false;
      });
    });
  }

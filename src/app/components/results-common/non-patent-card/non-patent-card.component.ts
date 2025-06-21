@@ -33,6 +33,8 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
   @Output() dataFetchRequest = new EventEmitter<any>();
   @Input() columnDefs: any[] = [];
   @Input() rowData: any[] = [];
+  isExportingCSV: boolean = false;
+  isExportingExcel: boolean = false;
   data?: {
     data?: any[]; // Replace `any` with your actual data type
   };
@@ -246,57 +248,13 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
 
     this.fetchData();
   }
-  
 
-  // 2️⃣ Download PDF
-  // downloadPDF(): void {
-  //   this.getAllDataFromApi().subscribe(data => {
-  //     const exportData = data.map(row => {
-  //       return this.displayedColumns.map(col => {
-  //         const value = row[col];
-  //         return value !== undefined
-  //           ? typeof value === 'object' ? JSON.stringify(value) : String(value)
-  //           : '';
-  //       });
-  //     });
-
-  //     const colHeaders = this.displayedColumns.map(col => this.toTitleCase(col));
-
-  //     const doc = new jsPDF({
-  //       orientation: 'landscape',
-  //       unit: 'pt',
-  //       format: 'A4'
-  //     });
-
-  //     autoTable(doc, {
-  //       head: [colHeaders],
-  //       body: exportData,
-  //       startY: 40,
-  //       theme: 'grid',
-  //       styles: {
-  //         fontSize: 8,
-  //         cellPadding: 4,
-  //         overflow: 'linebreak'
-  //       },
-  //       headStyles: {
-  //         fillColor: [41, 128, 185],
-  //         textColor: 255,
-  //         fontStyle: 'bold'
-  //       },
-  //       bodyStyles: {
-  //         valign: 'top'
-  //       }
-  //     });
-
-  //     doc.save('ExportedData.pdf');
-  //   });
-  // }
- getAllDataFromApi(): Observable<any[]> {
+  getAllDataFromApi(): Observable<any[]> {
     const priv = JSON.parse(localStorage.getItem('priviledge_json') || '{}');
     const reportLimit = priv['pharmvetpat-mongodb']?.ReportLimit || 500;
     const requestBody = {
       ...this._currentChildAPIBody,
-       page_no: 1, start: 0,
+      page_no: 1, start: 0,
       length: reportLimit,
     };
 
@@ -312,7 +270,6 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
       })
     );
   }
- 
 
   downloadPDF() {
     const doc = new jsPDF();
@@ -334,111 +291,126 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
  
  // 3️⃣ Download CSV
  downloadCSV(): void {
-   this.getAllDataFromApi().subscribe(data => {
-     // Ensure column headers are properly titled
-     const headerRow = this.displayedColumns.map(col => this.toTitleCase(col)).join(',') + '\n';
-     let csvContent = headerRow;
- 
-     data.forEach(row => {
-       const rowData = this.displayedColumns.map(col => {
-         let cell = row[col] !== undefined ? row[col] : '';
-         // Optional: Escape commas, quotes, and newlines
-         cell = String(cell).replace(/"/g, '""');
-         if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
-           cell = `"${cell}"`;
-         }
-         return cell;
-       });
-       csvContent += rowData.join(',') + '\n';
-     });
- 
-     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-     saveAs(blob, 'ExportedData.csv');
-   });
- }
- 
+   this.isExportingCSV =true;
+  this.getAllDataFromApi().subscribe(data => {
+    // Generate header row with Title Case
+    const headerRow = this.displayedColumns.map(col => this.toTitleCase(col)).join(',') + '\n';
+    let csvContent = headerRow;
+
+    data.forEach(row => {
+      const rowData = this.displayedColumns.map(col => {
+        let value = row[col];
+
+        // Apply same formatting as Excel export
+        if (Array.isArray(value)) {
+          value = value.join(', ');
+        } else if (typeof value === 'object' && value !== null) {
+          value = JSON.stringify(value);
+        } else if (value === null || value === undefined) {
+          value = '';
+        }
+
+        // Escape quotes and commas for CSV
+        let cell = String(value).replace(/"/g, '""');
+        if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
+          cell = `"${cell}"`;
+        }
+        return cell;
+      });
+
+      csvContent += rowData.join(',') + '\n';
+    });
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, 'ExportedData.csv');
+     this.isExportingCSV =false;
+  });
+}
+
  
  // 4️⃣ Download Excel
   downloadExcel(): void {
-   this.getAllDataFromApi().subscribe(data => {
-     const workbook = new ExcelJS.Workbook();
-     const worksheet = workbook.addWorksheet('Exported Data');
- 
-     // Define header columns
-     const columns = this.displayedColumns.map(col => ({
-       header: this.toTitleCase(col),
-       key: col,
-     }));
-     worksheet.columns = columns;
- 
-     // Add formatted data rows
-     data.forEach(row => {
-       const formattedRow: any = {};
-       this.displayedColumns.forEach(col => {
-         let value = row[col];
-         if (Array.isArray(value)) {
-           value = value.join(', ');
-         } else if (typeof value === 'object' && value !== null) {
-           value = JSON.stringify(value);
-         }
-         formattedRow[col] = value !== undefined ? value : '';
-       });
-       worksheet.addRow(formattedRow);
-     });
- 
-     // ✅ ADD AUTO-WIDTH ADJUSTMENT HERE
-     this.displayedColumns.forEach((col, index) => {
-       const excelCol = worksheet.getColumn(index + 1);
-       let maxLength = col.length;
- 
-       excelCol.eachCell({ includeEmpty: true }, cell => {
-         const cellValue = cell.value ? cell.value.toString() : '';
-         if (cellValue.length > maxLength) {
-           maxLength = cellValue.length;
-         }
-       });
- 
-       excelCol.width = maxLength + 6;
-     });
- 
-     // Style header row
-     const headerRow = worksheet.getRow(1);
-     headerRow.eachCell(cell => {
-       cell.font = {
-         bold: true,
-         color: { argb: 'FFFFFFFF' },
-         size: 15
-       };
-       cell.fill = {
-         type: 'pattern',
-         pattern: 'solid',
-         fgColor: { argb: 'FF4169E1' } // Dark blue
-       };
-       cell.alignment = { horizontal: 'center' };
-       cell.border = {
-         top: { style: 'thin' },
-         bottom: { style: 'thin' },
-         left: { style: 'thin' },
-         right: { style: 'thin' },
-       };
-     });
- 
-     // Save workbook
-     workbook.xlsx.writeBuffer().then(buffer => {
-       const blob = new Blob([buffer], {
-         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-       });
-       saveAs(blob, 'ExportedDataFormatted.xlsx');
-     });
-   });
- }
+     this.isExportingExcel = true;
+    this.getAllDataFromApi().subscribe(data => {
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet('Exported Data');
 
- 
- // ✅ Optional: Capitalize headers
- toTitleCase(str: string): string {
-   return str.replace(/_/g, ' ')
-             .replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
- }
- 
+      // Define header columns
+      const columns = this.displayedColumns.map(col => ({
+        header: this.toTitleCase(col),
+        key: col,
+      }));
+      worksheet.columns = columns;
+
+      // Add formatted data rows
+      data.forEach(row => {
+        const formattedRow: any = {};
+        this.displayedColumns.forEach(col => {
+          let value = row[col];
+          if (Array.isArray(value)) {
+            value = value.join(', ');
+          } else if (typeof value === 'object' && value !== null) {
+            value = JSON.stringify(value);
+          }
+          formattedRow[col] = value !== undefined ? value : '';
+        });
+        worksheet.addRow(formattedRow);
+      });
+
+      // ✅ ADD AUTO-WIDTH ADJUSTMENT HERE
+      this.displayedColumns.forEach((col, index) => {
+        const excelCol = worksheet.getColumn(index + 1);
+        let maxLength = col.length;
+
+        excelCol.eachCell({ includeEmpty: true }, cell => {
+          const cellValue = cell.value ? cell.value.toString() : '';
+          if (cellValue.length > maxLength) {
+            maxLength = cellValue.length;
+          }
+        });
+
+        excelCol.width = maxLength + 6;
+      });
+
+      // Style header row
+      const headerRow = worksheet.getRow(1);
+      headerRow.eachCell(cell => {
+        cell.font = {
+          bold: true,
+          color: { argb: 'FFFFFFFF' },
+          size: 15
+        };
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FF4169E1' } // Dark blue
+        };
+        cell.alignment = { horizontal: 'center' };
+        cell.border = {
+          top: { style: 'thin' },
+          bottom: { style: 'thin' },
+          left: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+      });
+
+      // Save workbook
+      workbook.xlsx.writeBuffer().then(buffer => {
+        const blob = new Blob([buffer], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        });
+        saveAs(blob, 'ExportedDataFormatted.xlsx');
+        this.isExportingExcel =false;
+      });
+    });
+  }
+
+
+  // ✅ Optional: Capitalize headers
+  toTitleCase(str: string): string {
+    return str.replace(/_/g, ' ')
+      .replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+  }
+
 
 }

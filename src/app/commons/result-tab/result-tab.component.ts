@@ -83,8 +83,8 @@ export class ResultTabComponent {
 
     const Account_type = localStorage.getItem('account_type');
     const Userdata = JSON.parse(localStorage.getItem('priviledge_json') || '');
-    this.isSplitDownload = Userdata?.technicalroutesmongo?.SplitDownload;
-    this.isDownloadAvailable = Userdata?.technicalroutesmongo?.Download;
+    this.isSplitDownload = Userdata?.['pharmvetpat-mongodb']?.SplitDownload;
+    this.isDownloadAvailable = Userdata?.['pharmvetpat-mongodb']?.Download;
     this.isDownloadPermit = Account_type == 'premium' ? true : false;
   }
 
@@ -222,9 +222,9 @@ export class ResultTabComponent {
           let priviledge_data = userInfo?.privilege_json[priviledge];
           if (
             !priviledge_data ||
-            priviledge_data?.technicalroutesmongo?.Download === 'false' ||
-            priviledge_data?.technicalroutesmongo?.DownloadCount == '' ||
-            priviledge_data?.technicalroutesmongo?.DownloadCount == 0
+            priviledge_data?.['pharmvetpat-mongodb']?.Download === 'false' ||
+            priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == '' ||
+            priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == 0
           ) {
             this.handleLoading.emit(false);
             this.priviledgeModal.emit(
@@ -239,7 +239,7 @@ export class ResultTabComponent {
                 if (res && res?.data) {
                   todays_limit = res.data;
                   if (
-                    priviledge_data?.technicalroutesmongo?.DailyDownloadLimit -
+                    priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit -
                       todays_limit?.downloadCount <=
                     0
                   ) {
@@ -252,7 +252,7 @@ export class ResultTabComponent {
                   }
 
                   if (
-                    priviledge_data?.technicalroutesmongo?.DailyDownloadLimit -
+                    priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit -
                       todays_limit?.downloadCount >
                     0
                   ) {
@@ -260,7 +260,7 @@ export class ResultTabComponent {
 
                     pdf_body.body['report_download'] = true;
                     pdf_body.body['limit'] =
-                      priviledge_data?.technicalroutesmongo?.ReportLimit;
+                      priviledge_data?.['pharmvetpat-mongodb']?.ReportLimit;
 
                     this.ServiceResultTabFiltersService.getGeneratePDF(
                       pdf_body

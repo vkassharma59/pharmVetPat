@@ -44,7 +44,12 @@
             {{resultTabs?.impurity?.label}}
         </div>
         <div class="card-body">
-            <p>No Data found!</p>
+            <ng-container *ngIf="loadingService.getLoading(resultTabs.impurity.name, index); else noDataText">
+              Loading...
+            </ng-container>
+            <ng-template #noDataText>
+              <p>No Data found!</p>
+            </ng-template>
         </div>
     </div>
 </ng-template>

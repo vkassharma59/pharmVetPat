@@ -35,6 +35,7 @@ export class Chem_Robotics_QueryModalComponent {
     } else {
       this.search = this.data.raise_query_object?.criteria[0]?.keyword;
     }
+    console.log(this.data.raise_query_object?.criteria[0]?.keyword,"gvdfbdf",this.data.raise_query_object.keyword)
   }
 
   handleSendRaiseQuery() {

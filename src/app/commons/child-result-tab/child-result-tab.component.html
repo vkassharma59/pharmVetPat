@@ -138,124 +138,86 @@
         </div>
       </div>
 
-      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]"#dropdownRef>
-        <h1 class="text-[#0032A0] font-bold text-xs my-1">
-          Field Of Application
-        </h1>
+      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]" #dropdownRef>
+        <h1 class="text-[#0032A0] font-bold text-xs my-1">Field Of Application</h1>
+
+        <!-- Dropdown header (click to open) -->
         <div class="custom-select">
           <div (click)="handleListfilter('openFieldOfApplicationsFilter')"
             class="py-1 w-full flex justify-between items-center bg-transparent text-sm text-gray-500 font-semibold focus:outline-none cursor-pointer">
-            <!-- <h1>{{ TabFilters.field_of_application }}</h1>
-            <i class="fa-solid fa-caret-down"></i> -->
             <div *ngIf="FilterValues.field_of_application?.length > 0"
               class="w-full overflow-x-auto text-nowrap flex gap-1">
-              <div *ngFor="
-                  let value of FilterValues.field_of_application;
-                  let i = index
-                " class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1">
+              <div *ngFor="let value of FilterValues.field_of_application; let i = index"
+                class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1">
+                <!-- 🟦 Show the matching display name -->
+                <h1 class="text-nowrap">{{ getFieldApplicationLabel(value) }}</h1>
+                <button (click)="handleRemovefilterElement('field_of_application', i)">X</button>
+              </div>
+            </div>
+            <h1 *ngIf="FilterValues.field_of_application?.length <= 0">Select option</h1>
+          </div>
+        </div>
+
+        <!-- Dropdown filter list -->
+        <div *ngIf="filterMap.openFieldOfApplicationsFilter && OpenSuggestionBox.field_of_application"
+          class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-w-[40vw] w-full lg:w-80 max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md">
+          <input id="field_of_application" (blur)="OnBlur('field_of_application')"
+            [(ngModel)]="SearchFilterValues.field_of_application"
+            (input)="handleSearchFilter('field_of_application', 'field_of_applications_filters')"
+            class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
+            placeholder="Search Filter" />
+
+          <div class="overflow-y-auto max-h-[35vh] my-2">
+            <label *ngFor="let option of field_of_applications_filters"
+              class="flex items-center space-x-2 text-sm mb-1">
+              <input type="checkbox" [checked]="FilterValues.field_of_application.includes(option.value)"
+                (change)="handleCheckFilter('field_of_application', option.value)" />
+              <span>{{ option.name }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]" #dropdownRef>
+        <h1 class="text-[#0032A0] font-bold text-xs my-1">Company</h1>
+
+        <!-- Display selected values -->
+        <div class="custom-select">
+          <div (click)="handleListfilter('openCompanyFilter')"
+            class="py-1 w-full flex justify-between items-center bg-transparent text-sm text-gray-500 font-semibold focus:outline-none cursor-pointer">
+            <div *ngIf="FilterValues.company_name?.length > 0" class="w-full overflow-x-auto text-nowrap flex gap-1">
+              <div *ngFor="let value of FilterValues.company_name; let i = index"
+                class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1">
                 <h1 class="text-nowrap">{{ value }}</h1>
-                <button (click)="handleRemovefilterElement('field_of_application', i)">
+                <button (click)="handleRemovefilterElement('company_name', i)">
                   X
                 </button>
               </div>
             </div>
-            <h1 *ngIf="FilterValues.field_of_application?.length <= 0">
-              Select option
-            </h1>
+            <h1 *ngIf="FilterValues.company_name?.length === 0">Select option</h1>
           </div>
         </div>
-        <div *ngIf="
-            filterMap.openFieldOfApplicationsFilter &&
-            OpenSuggestionBox.field_of_application
-          "
-          class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 max-w-[40vw] w-full lg:w-80 max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md">
-          <!-- <button
-            (click)="handleSelectFilter('field_of_application', '')"
-            class="uppercase px-1 py-2 text-left w-full rounded-md text-xs hover:bg-[#0032A0] hover:text-white"
-          >
-            View All
-          </button>
-          <button
-            (click)="handleSelectFilter('field_of_application', option.value)"
-            *ngFor="let option of field_of_applications_filters"
-            class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white"
-          >
-            {{ option.name }}
-          </button> -->
-          <input id="field_of_application" (blur)="OnBlur('field_of_application')"
-            [(ngModel)]="SearchFilterValues.field_of_application" (input)="
-              handleSearchFilter(
-                'field_of_application',
-                'field_of_applications_filters'
-              )
-            " [value]="SearchFilterValues.field_of_application"
+
+        <!-- Dropdown with search and checkbox list -->
+        <div *ngIf="filterMap.openCompanyFilter && OpenSuggestionBox.company_name"
+          class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 max-w-[40vw] md:w-48 w-80 lg:w-80 max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md">
+          <!-- Search box -->
+          <input id="company_name" (blur)="OnBlur('company_name')" [(ngModel)]="SearchFilterValues.company_name"
+            (input)="handleSearchFilter('company_name', 'company_name_filters')"
             class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
             placeholder="Search Filter" />
-          <div *ngIf="
-              field_of_applications_filters &&
-              field_of_applications_filters?.length > 0
-            " class="overflow-y-auto max-h-[35vh] my-2">
-            <button (click)="handleCheckFilter('field_of_application', option.value)"
-              *ngFor="let option of field_of_applications_filters"
-              class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white">
-              {{ option.name }}
-            </button>
+
+          <!-- Multi-select checkboxes -->
+          <div *ngIf="company_name_filters?.length > 0" class="overflow-y-auto max-h-[35vh]">
+            <label *ngFor="let option of company_name_filters" class="flex items-center space-x-2 text-sm mb-1">
+              <input type="checkbox" [checked]="FilterValues.company_name.includes(option.value)"
+                (change)="handleCheckFilter('company_name', option.name)" />
+              <span>{{ option.name }}</span>
+            </label>
           </div>
         </div>
       </div>
-
-      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]" #dropdownRef>
-  <h1 class="text-[#0032A0] font-bold text-xs my-1">Company</h1>
-
-  <!-- Display selected values -->
-  <div class="custom-select">
-    <div
-      (click)="handleListfilter('openCompanyFilter')"
-      class="py-1 w-full flex justify-between items-center bg-transparent text-sm text-gray-500 font-semibold focus:outline-none cursor-pointer"
-    >
-      <div *ngIf="FilterValues.company_name?.length > 0" class="w-full overflow-x-auto text-nowrap flex gap-1">
-        <div
-          *ngFor="let value of FilterValues.company_name; let i = index"
-          class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1"
-        >
-          <h1 class="text-nowrap">{{ value }}</h1>
-          <button (click)="handleRemovefilterElement('company_name', i)">
-            X
-          </button>
-        </div>
-      </div>
-      <h1 *ngIf="FilterValues.company_name?.length === 0">Select option</h1>
-    </div>
-  </div>
-
-  <!-- Dropdown with search and checkbox list -->
-  <div
-    *ngIf="filterMap.openCompanyFilter && OpenSuggestionBox.company_name"
-    class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 max-w-[40vw] md:w-48 w-80 lg:w-80 max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md"
-  >
-    <!-- Search box -->
-    <input
-      id="company_name"
-      (blur)="OnBlur('company_name')"
-      [(ngModel)]="SearchFilterValues.company_name"
-      (input)="handleSearchFilter('company_name', 'company_name_filters')"
-      class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
-      placeholder="Search Filter"
-    />
-
-    <!-- Multi-select checkboxes -->
-    <div *ngIf="company_name_filters?.length > 0" class="overflow-y-auto max-h-[35vh]">
-      <label *ngFor="let option of company_name_filters" class="flex items-center space-x-2 text-sm mb-1">
-        <input
-          type="checkbox"
-          [checked]="FilterValues.company_name.includes(option.name)"
-          (change)="handleCheckFilter('company_name', option.name)"
-        />
-        <span>{{ option.name }}</span>
-      </label>
-    </div>
-  </div>
-</div>
 
 
       <div *ngIf="!isKSMEnabled"
@@ -420,8 +382,8 @@
     <button (click)="toogleFilter()" class="sm:hidden text-sm text-white font-bold bg-[#0032A0] px-4 py-2 rounded-full">
       Filters
     </button>
-    <div *ngIf="showFilter" class="gap-3 w-full flex-wrap flex py-2 sm:hidden" >
-      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44"#dropdownRef>
+    <div *ngIf="showFilter" class="gap-3 w-full flex-wrap flex py-2 sm:hidden">
+      <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44" #dropdownRef>
         <h1 class="text-[#0032A0] font-bold text-xs my-1">Order By</h1>
         <div class="custom-select">
           <div (click)="handleListfilter('openOrderfilter')"

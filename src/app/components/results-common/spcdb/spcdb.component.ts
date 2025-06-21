@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { SpcdbCardComponent } from '../spcdb-card/spcdb-card.component';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { ChildPagningTableComponent } from '../../../commons/child-pagning-table/child-pagning-table.component';
+import { LoadingService } from '../../../services/loading-service/loading.service';
 
 @Component({
   selector: 'chem-spcdb',
@@ -31,7 +32,9 @@ export class SpcdbComponent implements OnChanges {
   }
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
-
+  @Input() index: any;
+  @Input() tabName?: string;
+  
   @Input()
   set data(value: any) {
     this._data = value;
@@ -50,8 +53,10 @@ export class SpcdbComponent implements OnChanges {
     this._currentChildAPIBody = value;
   }
   resultTabs: any = {};
-  constructor(private utilityService: UtilityService,
-    private mainSearchService: MainSearchService
+  constructor(
+    private utilityService: UtilityService,
+    private mainSearchService: MainSearchService,
+    public loadingService: LoadingService
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
   }
@@ -98,7 +103,4 @@ export class SpcdbComponent implements OnChanges {
       }
     });
   }
-
-
-
 }

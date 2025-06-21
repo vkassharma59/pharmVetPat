@@ -54,10 +54,10 @@
 </div>
 
 
-  <ng-container *ngIf="_data?.ros_data?.length > 0; else noData">
+  <ng-container *ngIf="_data > 0; else noData">
     <ng-container
       *ngIf="currentChildAPIBody && !isEmptyObject(currentChildAPIBody) && searchThrough !== 'synthesis-search'">
-      <chem-child-result-tab [dataItem]="_data?.ros_data" [currentAPIData]="currentChildAPIBody"
+      <chem-child-result-tab [dataItem]="_data?.ros_data"   [CurrentAPIBody]="CurrentAPIBody"  [currentAPIData]="currentChildAPIBody"
         (handleChangeTabData)="handleResultTabData.emit($event)" (resetPagination)="resetPagination.emit($event)"
         (setLoading)="handleSetLoading.emit($event)"></chem-child-result-tab>
       <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper">
@@ -65,7 +65,7 @@
           Total Records : {{ currentChildAPIBody?.count }}
         </button>
       </div>
-      <ng-container *ngFor="let dataItem of _data?.ros_data; let i = index">
+      <ng-container *ngFor="let dataItem of _data; let i = index">
         <div class="py-4">
           <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
             <span
@@ -85,10 +85,15 @@
   <ng-template #noData>
     <div class="card">
       <div class="card-header text-white bg-primary">
-        {{resultTabs?.technicalRoutes?.label}}
+        {{resultTabs.technicalRoutes?.label}}
       </div>
       <div class="card-body">
-        <p>No Data found!</p>
+        <ng-container *ngIf="loadingService.getLoading(resultTabs.technicalRoutes.name, index); else noDataText">
+          Loading...
+        </ng-container>
+        <ng-template #noDataText>
+          <p>No Data found!</p>
+        </ng-template>
       </div>
     </div>
   </ng-template>

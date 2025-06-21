@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { environment } from '../../../../environments/environment';
 import { KoreaOrangebookComponent } from '../korea-orangebook/korea-orangebook.component';
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
+import { LoadingService } from '../../../services/loading-service/loading.service';
 
 @Component({
   selector: 'chem-korea',
@@ -20,6 +21,8 @@ export class KoreaComponent {
     @Output() handleResultTabData = new EventEmitter<any>();
     @Output() handleSetLoading = new EventEmitter<boolean>();
     @Input() currentChildAPIBody: any;
+    @Input() index: any;
+    @Input() tabName?: string;
   searchThrough: string = '';
 
  resultTabs: any = {};
@@ -32,7 +35,10 @@ export class KoreaComponent {
       this._data = value;
     }
   
-    constructor(private utilityService: UtilityService) {
+    constructor(
+      private utilityService: UtilityService,
+      public loadingService: LoadingService
+    ) {
       this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
     }

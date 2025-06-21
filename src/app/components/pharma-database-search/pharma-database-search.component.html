@@ -137,20 +137,21 @@
                   Remove filter -
                 </button>
               </div> -->
-              <div  class="col-md-2 col-2"
-                style="border-width: 2px black;width: 30px;margin-left: 9px;">
-                   <!-- <option _ngcontent-ng-c3105717028="" selected="" disabled=""
+              <div class="col-md-2 col-2" style="border-width: 2px black;width: 30px;margin-left: 9px;">
+                <!-- <option _ngcontent-ng-c3105717028="" selected="" disabled=""
                     [(ngModel)]="advanceSearch.filterInputs[i].operator">Operator</option> -->
-                  <select *ngIf="i > 0" class="form-select form-select-sm form-control" 
-                    style="width: auto; min-width: 100px;"
-                    [(ngModel)]="advanceSearch.filterInputs[i].operator">
-                    <option  disabled selected>Operator</option>
-                    <option value="AND">AND</option>
-                    <option value="OR">OR</option>
-                  </select>
-                
+                <select *ngIf="i > 0" class="form-select form-select-sm form-control"
+                  style="width: auto; min-width: 100px;" [(ngModel)]="advanceSearch.filterInputs[i].operator">
+                  <!-- Placeholder option: empty value, disabled -->
+                  <option [ngValue]="undefined" disabled>
+                    Operator
+                  </option>
+                  <option [ngValue]="'AND'">AND</option>
+                  <option [ngValue]="'OR'">OR</option>
+                </select>
+
               </div>
-             
+
             </ng-container>
           </ng-container>
         </div>
@@ -211,7 +212,7 @@
             <input type="text" class="form-control" placeholder="Select Development Stage"
               [(ngModel)]="advanceSearch.devStage" (focus)="!isAdvancedInputDisabled() && (showDevStageDropdown = true)"
               (input)="!isAdvancedInputDisabled() && handleChangeKeywordDL('DEVELOPMENT_STAGE')"
-              [disabled]="isAdvancedInputDisabled()" />
+              [disabled]="isAdvancedInputDisabled() && false" />
 
             <div *ngIf="showDevStageDropdown && !isAdvancedInputDisabled()"
               class="position-absolute bg-white border border-gray-300 rounded shadow p-2 z-10 Dropdown"
@@ -235,7 +236,7 @@
           <div class="position-relative">
             <input type="text" class="form-control" placeholder="Select Innovator Originator"
               [(ngModel)]="advanceSearch.innovator" (focus)="showInnovatorDropdown = true"
-              (input)="handleChangeKeywordDL('INNOVATOR_ORIGINATOR')" [disabled]="isAdvancedInputDisabled()" />
+              (input)="handleChangeKeywordDL('INNOVATOR_ORIGINATOR')" [disabled]="isAdvancedInputDisabled() && false" />
 
 
             <div *ngIf="showInnovatorDropdown"
@@ -279,7 +280,7 @@
         <div class="col-md-3 col-12 mb-2 mb-md-0">
           <label for="startSales" class="form-label">Start Range Sales ($M)</label>
           <input type="text" class="form-control" placeholder="Start Range" [(ngModel)]="advanceSearch.startSales"
-            [disabled]="isAdvancedInputDisabled()"
+            [disabled]="isAdvancedInputDisabled() && false"
             [title]="isAdvancedInputDisabled() ? 'Please enter Filter and Text first' : ''" />
 
         </div>
@@ -288,7 +289,7 @@
         <div class="col-md-3 col-12 mb-2 mb-md-0">
           <label for="endSales" class="form-label">End Range Sales ($M)</label>
           <input type="text" class="form-control" placeholder="End Range" [(ngModel)]="advanceSearch.endSales"
-            [disabled]="isAdvancedInputDisabled()"
+            [disabled]="isAdvancedInputDisabled() && false"
             [title]="isAdvancedInputDisabled() ? 'Please enter Filter and Text first' : ''" />
         </div>
       </div>

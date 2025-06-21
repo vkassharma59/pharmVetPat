@@ -7,6 +7,7 @@ import { MainSearchService } from '../../../services/main-search/main-search.ser
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
 import { Auth_operations } from '../../../Utils/SetToken';
 import { ViewChild, ElementRef } from '@angular/core';
+import { LoadingService } from '../../../services/loading-service/loading.service';
 
 @Component({
   selector: 'chem-chemi-tracker',
@@ -52,12 +53,17 @@ export class ChemiTrackerComponent {
     }
   }
 
+  @Input() index: any;
+  @Input() tabName?: string;
+
   @ViewChild('countryDropdownRef') countryDropdownRef!: ElementRef;
   @ViewChild('formulationDropdownRef') formulationDropdownRef!: ElementRef;
 
   constructor(
     private utilityService: UtilityService,
-    private mainSearchService: MainSearchService) {
+    private mainSearchService: MainSearchService,
+    public loadingService: LoadingService
+  ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
 

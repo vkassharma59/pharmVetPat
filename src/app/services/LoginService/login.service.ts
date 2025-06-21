@@ -26,7 +26,7 @@ export class LoginService {
     'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
   });
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   login(email: string, password: string): Observable<any> {
     const body = { email, password };
@@ -57,6 +57,7 @@ export class LoginService {
       'Content-Type': 'application/json',
       'access-token': access_token,
       'api-key': environment.headerApiKey,
+      'platforms': environment.platforms,
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
     });
