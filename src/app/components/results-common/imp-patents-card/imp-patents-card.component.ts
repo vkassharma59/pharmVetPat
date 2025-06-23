@@ -27,7 +27,6 @@ export class ImpPatentsCardComponent implements OnInit, OnDestroy {
 
   @Input()
   get data() {
-    console.log("adasygcfsv|",this._data)
     return this._data;
     
   }
@@ -44,7 +43,6 @@ export class ImpPatentsCardComponent implements OnInit, OnDestroy {
             column_list[this.resultTabs.impPatents.name][i].name;
         }
       }
-
       this._data = value;
     }
   }
