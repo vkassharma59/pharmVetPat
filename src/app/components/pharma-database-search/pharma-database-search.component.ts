@@ -765,7 +765,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         },
       });
     }
-
+ 
   private performSynthesisSearch(): void {
     Auth_operations.setActiveformValues({
       column: this.column,

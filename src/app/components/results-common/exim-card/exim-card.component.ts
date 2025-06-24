@@ -34,7 +34,7 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
   @Input() rowData: any[] = [];
   isExportingCSV: boolean = false;
   isExportingExcel: boolean = false;
-  data?: {
+   data?: {
     data?: any[]; // Replace `any` with your actual data type
   };
   _currentChildAPIBody: any;
@@ -332,8 +332,7 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
 
   downloadExcel(): void {
     this.isExportingExcel =true;
-  
-   this.getAllDataFromApi().subscribe(data => {
+     this.getAllDataFromApi().subscribe(data => {
      const workbook = new ExcelJS.Workbook();
      const worksheet = workbook.addWorksheet('Exported Data');
  
