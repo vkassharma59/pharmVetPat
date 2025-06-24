@@ -40,13 +40,10 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     data?: any[]; // Replace `any` with your actual data type
   };
   isExportingCSV: boolean = false;
-
   isExportingExcel: boolean = false;
-
 
   _currentChildAPIBody: any;
   loading = false;
-
   displayedColumns: string[] = [];
   columnHeaders: { [key: string]: string } = {};
   filterableColumns: string[] = [];
@@ -266,7 +263,6 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     const requestBody = {
       ...this._currentChildAPIBody,
       page_no: 1, start: 0,
-     
       length: reportLimit,
     };
 
@@ -282,7 +278,6 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
       })
     );
   }
-
 
 
   downloadPDF() {
@@ -303,7 +298,6 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
   //     .replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
   // }
 
- 
   // 3️⃣ Download CSV
   downloadCSV(): void {
     this.isExportingCSV = true;
@@ -315,18 +309,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
       data.forEach(row => {
         const rowData = this.displayedColumns.map(col => {
           let value = row[col];
-      data.forEach(row => {
-        const rowData = this.displayedColumns.map(col => {
-          let value = row[col];
 
-          // Apply same formatting as Excel export
-          if (Array.isArray(value)) {
-            value = value.join(', ');
-          } else if (typeof value === 'object' && value !== null) {
-            value = JSON.stringify(value);
-          } else if (value === null || value === undefined) {
-            value = '';
-          }
           // Apply same formatting as Excel export
           if (Array.isArray(value)) {
             value = value.join(', ');
@@ -343,16 +326,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
           }
           return cell;
         });
-          // Escape quotes and commas for CSV
-          let cell = String(value).replace(/"/g, '""');
-          if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
-            cell = `"${cell}"`;
-          }
-          return cell;
-        });
 
-        csvContent += rowData.join(',') + '\n';
-      });
         csvContent += rowData.join(',') + '\n';
       });
 
@@ -361,14 +335,11 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
       this.isExportingCSV = false;
     });
   }
-    
 
-  // 4️⃣ Download Excel
   // 4️⃣ Download Excel
   downloadExcel(): void {
     this.isExportingExcel = true;
-    
-    this.getAllDataFromApi().subscribe(data => {
+      this.getAllDataFromApi().subscribe(data => {
       const workbook = new ExcelJS.Workbook();
       const worksheet = workbook.addWorksheet('Exported Data');
 
@@ -438,7 +409,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
         });
         saveAs(blob, 'ExportedDataFormatted.xlsx');
         this.isExportingExcel = false;
-       
+    
       });
     });
   }
@@ -450,7 +421,5 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
       .replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
   }
 
-
-  
 }
 

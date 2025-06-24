@@ -86,9 +86,10 @@ th {
 }
 
 td {
-  color: black;
+ 
+  color: #212529;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 p {
@@ -96,10 +97,7 @@ p {
   color: #1b1b1b;
 }
 
-.card-header {
-  background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
-  justify-content: space-between;
-}
+
 
 .custom-table-green thead th {
   background-color: #0056b3 !important; /* ✅ Header stays blue */
@@ -116,6 +114,20 @@ table.custom-table-green tbody tr {
  
 }
 
+::-webkit-scrollbar {
+    width: 7px;
+    height:7px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #312e81;
+  }
 
 table.custom-table-green tbody td {
   background-color: #f8faff !important; /* ✅ Also override on <td> if needed */
