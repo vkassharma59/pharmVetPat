@@ -5,7 +5,7 @@ import { Auth_operations } from '../../../Utils/SetToken';
 import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../../../environments/environment';
-import { UsApprovalCardComponent } from '../../us-approval-card/us-approval-card.component';
+import { UsApprovalCardComponent } from '../us-approval-card/us-approval-card.component';
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
 import { LoadingService } from '../../../services/loading-service/loading.service';
 
@@ -25,11 +25,13 @@ export class UsComponent {
   _data: any = [];
   @Input()
   get data() {
+    console.log("hfkjhf",this.data);
     return this._data;
   }
   set data(name: any) {
     this._data = name;
-    this.handleResultTabData.emit(this._data || []);
+    console.log("hfngefenhdd",this._data)
+    this.handleResultTabData.emit(this._data);
   }
   @Input() index: any;
   @Input() tabName?: string;

@@ -987,6 +987,7 @@ export class SearchResultsComponent {
   }
 
   private performUsApprovalSearch(resultTabData: any): void {
+
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.usApproval.name] = {};
       this.setLoadingState.emit(false);
@@ -1018,8 +1019,8 @@ export class SearchResultsComponent {
 
         this.mainSearchService.usApprovalSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name]).subscribe({
           next: (result: any) => {
-            this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name].count = result?.data?.ema_count;
-            this.allDataSets[resultTabData.index][this.resultTabs.usApproval] = result?.data?.ema_data;
+            this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name].count = result?.data?.orange_book_us_count;
+            this.allDataSets[resultTabData.index][this.resultTabs.usApproval.name] = result?.data?.orange_book_us_data;
             this.setLoadingState.emit(false);
             this.loadingService.setLoading(this.resultTabs.usApproval.name, resultTabData.index, false);
           },
@@ -1037,7 +1038,9 @@ export class SearchResultsComponent {
       },
     });
   }
+ 
   private performveterinaryUsApprovalSearch(resultTabData: any): void {
+
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.veterinaryUsApproval.name] = {};
       this.setLoadingState.emit(false);
@@ -1055,9 +1058,9 @@ export class SearchResultsComponent {
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
-      // filter_enable: false,
-      // filters: {},
-      // order_by: '',
+      filter_enable: false,
+      filters: {},
+      order_by: '',
       index: resultTabData.index
     }
 
@@ -1070,7 +1073,7 @@ export class SearchResultsComponent {
         this.mainSearchService.veterinaryusApprovalSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.veterinaryUsApproval.name]).subscribe({
           next: (result: any) => {
             this.childApiBody[resultTabData.index][this.resultTabs.veterinaryUsApproval.name].count = result?.data?.green_book_us_count;
-            this.allDataSets[resultTabData.index][this.resultTabs.veterinaryUsApproval] = result?.data?.green_book_us_data;
+            this.allDataSets[resultTabData.index][this.resultTabs.veterinaryUsApproval.name] = result?.data?.green_book_us_data;
              console.log('main search:', result?.data?.green_book_us_data);
             this.setLoadingState.emit(false);
             this.loadingService.setLoading(this.resultTabs.veterinaryUsApproval.name, resultTabData.index, false);
@@ -1089,6 +1092,7 @@ export class SearchResultsComponent {
       },
     });
   }
+
 
   private scientificDocsSearch(resultTabData: any,): void {
     const pageSize = 25;
