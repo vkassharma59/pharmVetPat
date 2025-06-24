@@ -102,6 +102,7 @@ export class RouteResultComponent {
   }
 
   ngOnInit() {
+    console.log("_dataItem.veterinaryUsApproval",this._dataItem.veterinaryUsApproval)
     this.resultTabs = Object.values(this.utilityService.getAllTabsName());
     this.currentTabData = this.resultTabs.find((tab: any) => tab.isActive);
 
