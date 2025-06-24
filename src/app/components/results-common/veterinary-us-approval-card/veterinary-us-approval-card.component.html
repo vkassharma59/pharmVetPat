@@ -12,10 +12,9 @@
 
   <!-- Title Section -->
   <div class="mb-3">
-    <h4 class="text-primary mb-1"> {{ localCount }}. {{_data?.active_ingredients}}</h4>
-    <h5 class="text-dark">{{_data?.trade_name}}</h5>
+    <h4 class="text-primary mb-1" style="font-size: 18px;"> {{ localCount }}. {{_data?.active_ingredients}}</h4>
+    <h5 class="text-dark" style="font-size: 16px;">{{_data?.trade_name}}</h5>
   </div>
-
   <div class="row g-3 mb-4">
     <div class="col-md-3 col-sm-6" *ngIf="_data?.gbrn && getColumnName('gbrn')">
       <h6 class="font-bold text-indigo-900">
@@ -24,8 +23,8 @@
           <i class="fas fa-copy"></i>
         </span>
       </h6>
-      <p class="text-wrap max-h-12 whitespace-normal">
-        {{ _data?.gbrn }}
+      <p class="text-wrap max-h-12 whitespace-normal overflow-y-auto">
+        {{ _data?.gbrn }} 
       </p>
     </div>
 
@@ -37,7 +36,7 @@
           <i class="fas fa-copy"></i>
         </span>
       </h6>
-      <p class="text-wrap max-h-12 whitespace-normal">
+      <p class="text-wrap max-h-12 whitespace-normal overflow-y-auto">
         {{ _data?.application_number }}
       </p>
     </div>
@@ -51,7 +50,7 @@
           <i class="fas fa-copy"></i>
         </span>
       </h6>
-      <p class="text-wrap max-h-12 whitespace-normal">
+      <p class="text-wrap max-h-12 whitespace-normal overflow-y-auto">
         {{ _data?.active_ingredients}}
       </p>
     </div>
@@ -65,7 +64,7 @@
           <i class="fas fa-copy"></i>
         </span>
       </h6>
-      <p class="text-wrap max-h-12 whitespace-normal">
+      <p class="text-wrap max-h-12 whitespace-normal overflow-y-auto">
         {{ _data?.trade_name }}
       </p>
     </div>
@@ -78,13 +77,14 @@
           <i class="fas fa-copy"></i>
         </span>
       </h6>
-      <p class="text-wrap max-h-12 whitespace-normal">
+      <p class="text-wrap max-h-12 whitespace-normal overflow-y-auto">
         {{ _data?.ingredient }}
       </p>
     </div>
   </div>
+  
   <!-- Section: NADA ANADA -->
-  <div class="mb-4" >
+  <div class="mb-4">
     <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">NADA ANADA:</h5>
     <div class="table-responsive">
       <table class="table table-sm custom-table-green">
@@ -96,24 +96,22 @@
           </tr>
         </thead>
         <tbody>
-          <ng-container *ngIf="_data?.nadaAnadaData?.length > 0; else noDataFound">
+          <ng-container *ngIf="_data?.nadaAnadaData?.length > 0; else noDataFound4">
             <tr *ngFor="let item of _data.nadaAnadaData" class="custom-row-bg">
               <td>{{ item.application_number }}</td>
               <td>{{ item.trade_name }}</td>
               <td>{{ item.sponsor_name }}</td>
             </tr>
           </ng-container>
-          <ng-template #noDataFound>
+          <ng-template #noDataFound4>
             <tr class="custom-row-bg">
-              <td colspan="3" class="text-muted">No NADA ANADA Data Found!</td>
+              <td class="text-left">No NADA ANADA Data Found!</td>
             </tr>
           </ng-template>
         </tbody>
       </table>
     </div>
   </div>
-
-
 
   <!-- Section: Patent Information -->
   <div class="mb-4">
@@ -139,7 +137,7 @@
           </ng-container>
           <ng-template #noDataFound>
             <tr class="custom-row-bg">
-              <td colspan="4" class="text-center">No Patent Info Data Found!</td>
+              <td class="text-left">No Patent Info Data Found!</td>
             </tr>
           </ng-template>
 
@@ -149,7 +147,7 @@
   </div>
 
   <!-- Section: Exclusivity Periods -->
-  <div class="mb-4" >
+  <div class="mb-4">
     <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Exclusivity Periods:</h5>
     <div class="table-responsive">
       <table class="table table-sm custom-table-green">
@@ -163,7 +161,7 @@
           </tr>
         </thead>
         <tbody>
-          <ng-container *ngIf="_data?.exclusivityData?.length > 0; else noDataFound">
+          <ng-container *ngIf="_data?.exclusivityData?.length > 0; else noDataFound1">
             <tr *ngFor="let item of _data.exclusivityData" class="custom-row-bg">
               <td>{{ item.application_number }}</td>
               <td>{{ item.trade_name }}</td>
@@ -172,9 +170,9 @@
               <td>{{ item.green_book }}</td>
             </tr>
           </ng-container>
-          <ng-template #noDataFound>
+          <ng-template #noDataFound1>
             <tr class="custom-row-bg">
-              <td colspan="4" class="text-center">No Exclusivity Periods Data Found!</td>
+              <td  class="text-left">No Exclusivity Periods Data Found!</td>
             </tr>
           </ng-template>
         </tbody>
@@ -183,7 +181,7 @@
   </div>
 
   <!-- Section: Notice of Hearing -->
-  <div class="mb-4" >
+  <div class="mb-4">
     <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Notice of Hearing:</h5>
     <div class="table-responsive">
       <table class="table table-sm custom-table-green">
@@ -196,27 +194,27 @@
           </tr>
         </thead>
         <tbody>
-            <ng-container *ngIf="_data?.noticeOfHearingData?.length > 0; else noDataFound">
+          <ng-container *ngIf="_data?.noticeOfHearingData?.length > 0; else noDataFound2">
             <tr *ngFor="let item of _data.noticeOfHearingData" class="custom-row-bg">
               <td>{{ item.application_number }}</td>
               <td>{{ item.trade_name }}</td>
               <td>{{ item.sponsor_name }}</td>
               <td>{{ item.publication_date }}</td>
-             
+
             </tr>
           </ng-container>
-          <ng-template #noDataFound>
+          <ng-template #noDataFound2>
             <tr class="custom-row-bg">
-              <td colspan="4" class="text-center">No Exclusivity Periods Data Found!</td>
+              <td  class="text-left">No Exclusivity Periods Data Found!</td>
             </tr>
           </ng-template>
-            </tbody>
+        </tbody>
       </table>
     </div>
   </div>
 
   <!-- Section: Voluntary Withdrawal -->
-  <div class="mb-4" >
+  <div class="mb-4">
     <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Voluntary Withdrawal:</h5>
     <div class="table-responsive">
       <table class="table table-sm custom-table-green">
@@ -229,7 +227,7 @@
           </tr>
         </thead>
         <tbody>
-           <ng-container *ngIf="_data?.voluntaryWithdrawalData?.length > 0; else noDataFound">
+          <ng-container *ngIf="_data?.voluntaryWithdrawalData?.length > 0; else noDataFound3">
             <tr *ngFor="let item of _data.voluntaryWithdrawalData" class="custom-row-bg">
               <td>{{ item.application_number }}</td>
               <td>{{ item.date_withdrawn }}</td>
@@ -237,12 +235,12 @@
               <td>{{ item.sponsor_when_withdrawn }}</td>
             </tr>
           </ng-container>
-          <ng-template #noDataFound>
+          <ng-template #noDataFound3>
             <tr class="custom-row-bg">
-              <td colspan="4" class="text-center">No Voluntary Withdrawal Data Found!</td>
+              <td  class="text-left">No Voluntary Withdrawal Data Found!</td>
             </tr>
           </ng-template>
-                  </tbody>
+        </tbody>
       </table>
     </div>
   </div>

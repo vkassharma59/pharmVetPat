@@ -12,26 +12,37 @@ import { LoadingService } from '../../../services/loading-service/loading.servic
 @Component({
   selector: 'chem-us',
   standalone: true,
-  imports: [CommonModule, UsApprovalCardComponent,ChildPagingComponent],
+  imports: [CommonModule, UsApprovalCardComponent, ChildPagingComponent],
   templateUrl: './us.component.html',
   styleUrl: './us.component.css'
 })
 export class UsComponent {
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
-  @Input() currentChildAPIBody: any;
+  _currentChildAPIBody: any;
   searchThrough: string = '';
   resultTabs: any = {};
   _data: any = [];
   @Input()
   get data() {
-    console.log("hfkjhf",this.data);
+    console.log("hfkjhf", this.data);
     return this._data;
   }
   set data(name: any) {
     this._data = name;
-    console.log("hfngefenhdd",this._data)
+    console.log("hfngefenhdd", this._data)
     this.handleResultTabData.emit(this._data);
+  }
+  @Input()
+  get currentChildAPIBody() {
+    return this._currentChildAPIBody;
+  }
+  set currentChildAPIBody(value: any) {
+    this._currentChildAPIBody = value;
+    // if (value) {
+    //   this.ImpurityBody = JSON.parse(JSON.stringify(this._currentChildAPIBody)) || this._currentChildAPIBody;
+    //   this.handleFetchFilters();
+    // }
   }
   @Input() index: any;
   @Input() tabName?: string;
@@ -43,10 +54,34 @@ export class UsComponent {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
+  patentColumns: any[] = []; // Column list from currentChildAPIBody
+  patentData: any[] = [];    // Data from @Input() data
+
   ngOnChanges() {
-    console.log('usApproval received data:', this._data);
-    this.handleResultTabData.emit(this._data);
+  console.log('incoming _data', this._data);
+  console.log('currentChildAPIBody', this._currentChildAPIBody);
+
+  // Fix 1: Wrap _data in array if it's not one already
+  if (this._data && !Array.isArray(this._data)) {
+    this.patentData = [this._data];
+    console.log('✅ Wrapped object in array:', this.patentData);
+  } else if (Array.isArray(this._data)) {
+    this.patentData = this._data;
+    console.log('✅ patentData is array:', this.patentData);
+  } else {
+    console.warn('⚠️ patentData is missing or not valid');
   }
+
+  // Fix 2: Handle column definitions
+  if (this.currentChildAPIBody?.columnList?.patentColumnList?.length) {
+    this.patentColumns = this.currentChildAPIBody.columnList.patentColumnList;
+    console.log('✅ patentColumns set:', this.patentColumns);
+  } else {
+    console.warn('⚠️ patentColumns not available from currentChildAPIBody');
+  }
+}
+
+
   //   isPopupOpen = false;
 
   //   openPopup() {

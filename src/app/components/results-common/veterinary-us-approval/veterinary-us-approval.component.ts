@@ -25,7 +25,6 @@ export class VeterinaryUsApprovalComponent {
   _data: any = [];
    @Input() index: any;
    @Input() tabName?: string;
-   
   @Input()
   get data() {
     return this._data;
