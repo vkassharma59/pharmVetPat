@@ -5,6 +5,7 @@ import { UtilityService } from '../../../services/utility-service/utility.servic
 import { environment } from '../../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-us-approval-card',
   standalone: true,
@@ -56,17 +57,31 @@ export class UsApprovalCardComponent {
     }
   }
 
-  constructor(private dialog: MatDialog, private utilityService: UtilityService) { }
+  constructor(private dialog: MatDialog, private utilityService: UtilityService,private http: HttpClient) { }
   isArray(value: any): boolean {
     return Array.isArray(value);
   }
+   patentColumns: any[] = [];
+  patentData: any[] = [];
 
   ngOnInit() {
-    // Reset counter only when the component is first loaded
-    if (UsApprovalCardComponent.apiCallCount === 0) {
+    this.http.get('API_ENDPOINT_HERE').subscribe((res: any) => {
+      this.patentColumns = res?.data?.patentColumnList || [];
+      this.patentData = res?.data?.patentData || []; // assuming this is how patent rows come
+      if (UsApprovalCardComponent.apiCallCount === 0) {
       UsApprovalCardComponent.apiCallCount = 0;
     }
+    });
   }
+  
+ ngOnChanges() {
+    console.log('📦 US Approval data received:', this.data);
+    if (this.data && Array.isArray(this.data.patent_list)) {
+      this.patentData = this.data.patent_list;
+      this.patentColumns = this.data.patentColumnList;
+    }
+  }
+
 
   ngOnDestroy() {
     // Reset counter when navigating away from the component
@@ -82,7 +97,7 @@ export class UsApprovalCardComponent {
   }
   getColumnName(field: string): string {
     const colName = this.us_approval_column?.[field];
-    console.log(`getColumnName(${field}) =>`, colName);
+    // console.log(`getColumnName(${field}) =>`, colName);
     return colName || field.replace(/_/g, ' ').toUpperCase(); // fallback display
   }
 

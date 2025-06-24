@@ -79,6 +79,8 @@ export class SearchResultsComponent {
     this.searchTypes = searchTypes;
     this.childApiBody = [];
   }
+patentColumns: any[] = []; // to store column headers
+patentData: any[] = [];    // optional if you want to extract separately
 
   ngOnChanges(_changes: any) {
     this.paginationRerenderTrigger = !this.paginationRerenderTrigger;
@@ -987,40 +989,59 @@ export class SearchResultsComponent {
   }
 
   private performUsApprovalSearch(resultTabData: any): void {
+  if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+    this.allDataSets[resultTabData.index][this.resultTabs.usApproval.name] = {};
+    this.setLoadingState.emit(false);
+    return;
+  }
 
-    if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
-      this.allDataSets[resultTabData.index][this.resultTabs.usApproval.name] = {};
-      this.setLoadingState.emit(false);
-      return;
-    }
+  // 🛠 Setup childApiBody if not already present
+  if (!this.childApiBody?.[resultTabData.index]) {
+    this.childApiBody[resultTabData.index] = {};
+  }
 
-    if (this.childApiBody?.[resultTabData.index]) {
-      this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name] = {};
-    } else {
-      this.childApiBody[resultTabData.index] = {};
-    }
+  // 🛠 Setup request body for search
+  this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name] = {
+    api_url: this.apiUrls.usApproval.searchSpecific,
+    search_type: resultTabData?.searchWith,
+    keyword: resultTabData?.searchWithValue,
+    page_no: 1,
+    filter_enable: false,
+    filters: {},
+    order_by: '',
+    index: resultTabData.index
+  };
 
-    this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name] = {
-      api_url: this.apiUrls.usApproval.searchSpecific,
-      search_type: resultTabData?.searchWith,
-      keyword: resultTabData?.searchWithValue,
-      page_no: 1,
-      filter_enable: false,
-      filters: {},
-      order_by: '',
-      index: resultTabData.index
-    }
+  const tech_API = this.apiUrls.usApproval.columnList;
 
-    const tech_API = this.apiUrls.usApproval.columnList;
-    this.columnListService.getColumnList(tech_API).subscribe({
-      next: (res: any) => {
-        const response = res?.data?.columns;
-        Auth_operations.setColumnList(this.resultTabs.usApproval.name, response);
+  // ✅ Step 1: Get Column List
+  this.columnListService.getColumnList(tech_API).subscribe({
+    next: (res: any) => {
+      const response = res?.data;
 
-        this.mainSearchService.usApprovalSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name]).subscribe({
+      // ✅ Extract patentColumnList
+      const patentColumns = response?.patentColumnList || [];
+      this.patentColumns = patentColumns;  // You need to define this.patentColumns in component
+
+      // 🔐 Optionally store in Auth if needed globally
+      Auth_operations.setColumnList(this.resultTabs.usApproval.name, response);
+
+      // ✅ Step 2: Call Main Search API
+      this.mainSearchService.usApprovalSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name])
+        .subscribe({
           next: (result: any) => {
-            this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name].count = result?.data?.orange_book_us_count;
-            this.allDataSets[resultTabData.index][this.resultTabs.usApproval.name] = result?.data?.orange_book_us_data;
+            // ✅ Log to verify
+            console.log('API result:', result);
+
+            // ✅ Extract data and count
+            const data = result?.data?.orange_book_us_data || [];
+            const count = result?.data?.orange_book_us_count || 0;
+
+            this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name].count = count;
+            this.allDataSets[resultTabData.index][this.resultTabs.usApproval.name] = data;
+console.log('patentColumns:', this.patentColumns);
+console.log('allDataSets:', this.allDataSets);
+
             this.setLoadingState.emit(false);
             this.loadingService.setLoading(this.resultTabs.usApproval.name, resultTabData.index, false);
           },
@@ -1030,14 +1051,15 @@ export class SearchResultsComponent {
             this.loadingService.setLoading(this.resultTabs.usApproval.name, resultTabData.index, false);
           },
         });
-      },
-      error: (e) => {
-        console.error('Error fetching column list:', e);
-        this.setLoadingState.emit(false);
-        this.loadingService.setLoading(this.resultTabs.usApproval.name, resultTabData.index, false);
-      },
-    });
-  }
+    },
+    error: (e) => {
+      console.error('Error fetching column list:', e);
+      this.setLoadingState.emit(false);
+      this.loadingService.setLoading(this.resultTabs.usApproval.name, resultTabData.index, false);
+    },
+  });
+}
+
   private performveterinaryUsApprovalSearch(resultTabData: any): void {
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.veterinaryUsApproval.name] = {};

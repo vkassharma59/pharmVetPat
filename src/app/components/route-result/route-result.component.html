@@ -74,7 +74,8 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.usApproval.name">
-      <chem-us [data]="_dataItem.usApproval" [currentChildAPIBody]="currentChildAPIBody?.[resultTabWithKeys.usApproval.name]" [index]="index"
+      <chem-us [data]="_dataItem.usApproval"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.usApproval.name]" [index]="index"
         (handleSetLoading)="handleSetLoading.emit($event)" [tabName]="resultTabWithKeys.usApproval.name"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)">
       </chem-us>
@@ -84,10 +85,8 @@
 
     <ng-container *ngSwitchCase="resultTabWithKeys.veterinaryUsApproval.name">
       <app-veterinary-us-approval [data]="_dataItem.veterinaryUsApproval"
-        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.veterinaryUsApproval.name]"
-        [index]="index"
-        [tabName]="resultTabWithKeys.veterinaryUsApproval.name"
-        (handleSetLoading)="handleSetLoading.emit($event)"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.veterinaryUsApproval.name]" [index]="index"
+        [tabName]="resultTabWithKeys.veterinaryUsApproval.name" (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></app-veterinary-us-approval>
     </ng-container>
 
