@@ -10,10 +10,13 @@ p{
   font-size: 14px;
 
 }
+
 .card-header {
-   
-  background-color: #EAB704;
+    background: #020024;
+    background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
+    justify-content: space-between;
   }
+
   
   .icon {
     font-size: 20px;

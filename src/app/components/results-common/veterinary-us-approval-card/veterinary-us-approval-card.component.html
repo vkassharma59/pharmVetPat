@@ -1,52 +1,90 @@
-<div class="bg-success text-white p-3 fw-500 mb-2 mt-2 card-header" style="background-color:#0032a0;">
+<!-- <div class="bg-success text-white p-3 fw-500 mb-2 mt-2 card-header" style="background-color:#0032a0;">
   ChemRobotics™ Green Book &gt;&gt; ACEPROMAZINE MALEATE
+</div> -->
+<div class="card-header text-white ">
+  <div style="padding-top:7px; justify-content:space-between;display:flex;">
+    {{resultTabs?.veterinaryUsApproval?.label}} >> {{_data?.active_ingredients}}
+    <button class="btn btn-warning"><i class="fa-solid fa-download"></i></button>
+  </div>
 </div>
-<div class="container-fluid p-3 " style="background-color:#f8faff;">
+<div class="container-fluid p-3" style="background-color:#f8faff;">
   <!-- Breadcrumb -->
 
-
   <!-- Title Section -->
   <div class="mb-3">
-    <h4 class="text-primary mb-1">1. ACEPROMAZINE MALEATE</h4>
-    <h5 class="text-dark">PROMACE® INJECTABLE</h5>
+    <h4 class="text-primary mb-1"> {{ localCount }}. {{_data?.active_ingredients}}</h4>
+    <h5 class="text-dark">{{_data?.trade_name}}</h5>
   </div>
 
-  <!-- Info Grid -->
   <div class="row g-3 mb-4">
-    <div class="col-md-3 col-sm-6">
-      <div class="h-100">
-        <h6>GBRN</h6>
-        <div class="subtitle">16208</div>
-      </div>
+    <div class="col-md-3 col-sm-6" *ngIf="_data?.gbrn && getColumnName('gbrn')">
+      <h6 class="font-bold text-indigo-900">
+        {{ getColumnName('gbrn') }}
+        <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.gbrn, copyBtn)">
+          <i class="fas fa-copy"></i>
+        </span>
+      </h6>
+      <p class="text-wrap max-h-12 whitespace-normal">
+        {{ _data?.gbrn }}
+      </p>
     </div>
-    <div class="col-md-3 col-sm-6">
-      <div class="h-100">
-        <h6>Application Number</h6>
-        <div class="subtitle">015-030</div>
-      </div>
+
+    <div class="col-md-3 col-sm-6" *ngIf="_data?.gbrn && getColumnName('application_number')">
+      <h6 class="font-bold text-indigo-900">
+        {{ getColumnName('application_number') }}
+        <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+          (click)="handleCopy(_data?.application_number, copyBtn)">
+          <i class="fas fa-copy"></i>
+        </span>
+      </h6>
+      <p class="text-wrap max-h-12 whitespace-normal">
+        {{ _data?.application_number }}
+      </p>
     </div>
-    <div class="col-md-3 col-sm-6">
-      <div class="h-100">
-        <h6>Active Ingredients</h6>
-        <div class="subtitle">ACEPROMAZINE MALEATE</div>
-      </div>
+
+
+    <div class="col-md-3 col-sm-6" *ngIf="_data?.gbrn && getColumnName('active_ingredients')">
+      <h6 class="font-bold text-indigo-900">
+        {{ getColumnName('active_ingredients') }}
+        <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+          (click)="handleCopy(_data?.active_ingredients, copyBtn)">
+          <i class="fas fa-copy"></i>
+        </span>
+      </h6>
+      <p class="text-wrap max-h-12 whitespace-normal">
+        {{ _data?.active_ingredients}}
+      </p>
     </div>
-    <div class="col-md-3 col-sm-6">
-      <div class="h-100">
-        <h6>Trade Name</h6>
-        <div class="subtitle">PROMACE® INJECTABLE</div>
-      </div>
+
+
+    <div class="col-md-3 col-sm-6" *ngIf="_data?.gbrn && getColumnName('trade_name')">
+      <h6 class="font-bold text-indigo-900">
+        {{ getColumnName('trade_name') }}
+        <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+          (click)="handleCopy(_data?.trade_name, copyBtn)">
+          <i class="fas fa-copy"></i>
+        </span>
+      </h6>
+      <p class="text-wrap max-h-12 whitespace-normal">
+        {{ _data?.trade_name }}
+      </p>
     </div>
-    <div class="col-md-3 col-sm-6">
-      <div class="h-100">
-        <h6>Ingredient</h6>
-        <div class="subtitle">ACEPROMAZINE MALEATE</div>
-      </div>
+
+    <div class="col-md-3 col-sm-6" *ngIf="_data?.gbrn && getColumnName('ingredient')">
+      <h6 class="font-bold text-indigo-900">
+        {{ getColumnName('ingredient') }}
+        <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+          (click)="handleCopy(_data?.ingredient, copyBtn)">
+          <i class="fas fa-copy"></i>
+        </span>
+      </h6>
+      <p class="text-wrap max-h-12 whitespace-normal">
+        {{ _data?.ingredient }}
+      </p>
     </div>
   </div>
-
   <!-- Section: NADA ANADA -->
-  <div class="mb-4">
+  <div class="mb-4" >
     <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">NADA ANADA:</h5>
     <div class="table-responsive">
       <table class="table table-sm custom-table-green">
@@ -58,15 +96,23 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>015-030</td>
-            <td>PROMACE® INJECTABLE</td>
-            <td>BOEHRINGER INGELHEIM ANIMAL HEALTH USA INC.</td>
-          </tr>
+          <ng-container *ngIf="_data?.nadaAnadaData?.length > 0; else noDataFound">
+            <tr *ngFor="let item of _data.nadaAnadaData" class="custom-row-bg">
+              <td>{{ item.application_number }}</td>
+              <td>{{ item.trade_name }}</td>
+              <td>{{ item.sponsor_name }}</td>
+            </tr>
+          </ng-container>
+          <ng-template #noDataFound>
+            <tr class="custom-row-bg">
+              <td colspan="3" class="text-muted">No NADA ANADA Data Found!</td>
+            </tr>
+          </ng-template>
         </tbody>
       </table>
     </div>
   </div>
+
 
 
   <!-- Section: Patent Information -->
@@ -83,16 +129,27 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="custom-row-bg">
-            <td colspan="4" class=" text-muted ">No Patent Info Data Found!</td>
-          </tr>
+          <ng-container *ngIf="_data?.patentInfoData?.length > 0; else noDataFound">
+            <tr *ngFor="let item of _data.patentInfoData" class="custom-row-bg">
+              <td>{{ item.application_number }}</td>
+              <td>{{ item.trade_name }}</td>
+              <td>{{ item.trade_name }}</td>
+              <td>{{ item.expiration }}</td>
+            </tr>
+          </ng-container>
+          <ng-template #noDataFound>
+            <tr class="custom-row-bg">
+              <td colspan="4" class="text-center">No Patent Info Data Found!</td>
+            </tr>
+          </ng-template>
+
         </tbody>
       </table>
     </div>
   </div>
 
   <!-- Section: Exclusivity Periods -->
-  <div class="mb-4">
+  <div class="mb-4" >
     <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Exclusivity Periods:</h5>
     <div class="table-responsive">
       <table class="table table-sm custom-table-green">
@@ -106,16 +163,27 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td colspan="5" class="text-left text-muted c">No Exclusivity Periods Data Found!</td>
-          </tr>
+          <ng-container *ngIf="_data?.exclusivityData?.length > 0; else noDataFound">
+            <tr *ngFor="let item of _data.exclusivityData" class="custom-row-bg">
+              <td>{{ item.application_number }}</td>
+              <td>{{ item.trade_name }}</td>
+              <td>{{ item.period }}</td>
+              <td>{{ item.expiration }}</td>
+              <td>{{ item.green_book }}</td>
+            </tr>
+          </ng-container>
+          <ng-template #noDataFound>
+            <tr class="custom-row-bg">
+              <td colspan="4" class="text-center">No Exclusivity Periods Data Found!</td>
+            </tr>
+          </ng-template>
         </tbody>
       </table>
     </div>
   </div>
 
   <!-- Section: Notice of Hearing -->
-  <div class="mb-4">
+  <div class="mb-4" >
     <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Notice of Hearing:</h5>
     <div class="table-responsive">
       <table class="table table-sm custom-table-green">
@@ -128,16 +196,27 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td colspan="4" class="text-left text-muted ">No Exclusivity Periods Data Found!</td>
-          </tr>
-        </tbody>
+            <ng-container *ngIf="_data?.noticeOfHearingData?.length > 0; else noDataFound">
+            <tr *ngFor="let item of _data.noticeOfHearingData" class="custom-row-bg">
+              <td>{{ item.application_number }}</td>
+              <td>{{ item.trade_name }}</td>
+              <td>{{ item.sponsor_name }}</td>
+              <td>{{ item.publication_date }}</td>
+             
+            </tr>
+          </ng-container>
+          <ng-template #noDataFound>
+            <tr class="custom-row-bg">
+              <td colspan="4" class="text-center">No Exclusivity Periods Data Found!</td>
+            </tr>
+          </ng-template>
+            </tbody>
       </table>
     </div>
   </div>
 
   <!-- Section: Voluntary Withdrawal -->
-  <div class="mb-4">
+  <div class="mb-4" >
     <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Voluntary Withdrawal:</h5>
     <div class="table-responsive">
       <table class="table table-sm custom-table-green">
@@ -150,174 +229,20 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td colspan="4" class="text-left text-muted ">No Voluntary Withdrawal Data Found!</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Custom Blue Divider Line -->
-  <div style="
-  height: 8px;
-  background-color: #0056b3;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  width: 100%;
-"></div>
-
-</div>
-<div class="container-fluid p-3 mb-2" style="background-color:#f8faff;">
-  <!-- Title Section -->
-  <div class="mb-3">
-    <h4 class="text-primary mb-1">1. ACEPROMAZINE MALEATE</h4>
-    <h5 class="text-dark">PROMACE® INJECTABLE</h5>
-  </div>
-
-  <!-- Info Grid -->
-  <div class="row g-3 mb-4">
-    <div class="col-md-3 col-sm-6">
-      <div class="h-100">
-        <h6>GBRN</h6>
-        <div class="subtitle">16208</div>
-      </div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-      <div class="h-100">
-        <h6>Application Number</h6>
-        <div class="subtitle">015-030</div>
-      </div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-      <div class="h-100">
-        <h6>Active Ingredients</h6>
-        <div class="subtitle">ACEPROMAZINE MALEATE</div>
-      </div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-      <div class="h-100">
-        <h6>Trade Name</h6>
-        <div class="subtitle">PROMACE® INJECTABLE</div>
-      </div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-      <div class="h-100">
-        <h6>Ingredient</h6>
-        <div class="subtitle">ACEPROMAZINE MALEATE</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Section: NADA ANADA -->
-  <div class="mb-4">
-    <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">NADA ANADA:</h5>
-    <div class="table-responsive">
-      <table class="table table-sm custom-table-green">
-        <thead>
-          <tr>
-            <th>Application No.</th>
-            <th>Trade Name</th>
-            <th>Sponsor Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>015-030</td>
-            <td>PROMACE® INJECTABLE</td>
-            <td>BOEHRINGER INGELHEIM ANIMAL HEALTH USA INC.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-
-  <!-- Section: Patent Information -->
-  <div class="mb-4">
-    <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Patent Information:</h5>
-    <div class="table-responsive">
-      <table class="table table-sm custom-table-green">
-        <thead>
-          <tr>
-            <th>Applicant No.</th>
-            <th>Trade Name</th>
-            <th>Patent</th>
-            <th>Expiration</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="custom-row-bg">
-            <td colspan="4" class=" text-muted ">No Patent Info Data Found!</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Section: Exclusivity Periods -->
-  <div class="mb-4">
-    <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Exclusivity Periods:</h5>
-    <div class="table-responsive">
-      <table class="table table-sm custom-table-green">
-        <thead>
-          <tr>
-            <th>Application No.</th>
-            <th>Trade Name</th>
-            <th>Period</th>
-            <th>Expiration</th>
-            <th>Green Book</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="5" class="text-left text-muted c">No Exclusivity Periods Data Found!</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Section: Notice of Hearing -->
-  <div class="mb-4">
-    <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Notice of Hearing:</h5>
-    <div class="table-responsive">
-      <table class="table table-sm custom-table-green">
-        <thead>
-          <tr>
-            <th>Application No.</th>
-            <th>Trade Name</th>
-            <th>Sponsor Name</th>
-            <th>Publication Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="4" class="text-left text-muted ">No Exclusivity Periods Data Found!</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Section: Voluntary Withdrawal -->
-  <div class="mb-4">
-    <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Voluntary Withdrawal:</h5>
-    <div class="table-responsive">
-      <table class="table table-sm custom-table-green">
-        <thead>
-          <tr>
-            <th>Application No.</th>
-            <th>Date Withdrawn</th>
-            <th>Ingredients</th>
-            <th>Sponsor When Withdrawn</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="4" class="text-left text-muted ">No Voluntary Withdrawal Data Found!</td>
-          </tr>
-        </tbody>
+           <ng-container *ngIf="_data?.voluntaryWithdrawalData?.length > 0; else noDataFound">
+            <tr *ngFor="let item of _data.voluntaryWithdrawalData" class="custom-row-bg">
+              <td>{{ item.application_number }}</td>
+              <td>{{ item.date_withdrawn }}</td>
+              <td>{{ item.ingredients }}</td>
+              <td>{{ item.sponsor_when_withdrawn }}</td>
+            </tr>
+          </ng-container>
+          <ng-template #noDataFound>
+            <tr class="custom-row-bg">
+              <td colspan="4" class="text-center">No Voluntary Withdrawal Data Found!</td>
+            </tr>
+          </ng-template>
+                  </tbody>
       </table>
     </div>
   </div>

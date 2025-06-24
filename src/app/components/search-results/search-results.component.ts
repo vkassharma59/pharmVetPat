@@ -1051,16 +1051,20 @@ console.log('allDataSets:', this.allDataSets);
             this.loadingService.setLoading(this.resultTabs.usApproval.name, resultTabData.index, false);
           },
         });
-    },
-    error: (e) => {
-      console.error('Error fetching column list:', e);
-      this.setLoadingState.emit(false);
-      this.loadingService.setLoading(this.resultTabs.usApproval.name, resultTabData.index, false);
-    },
-  });
-}
+
+
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+        this.loadingService.setLoading(this.resultTabs.usApproval.name, resultTabData.index, false);
+      },
+    });
+  }
+ 
 
   private performveterinaryUsApprovalSearch(resultTabData: any): void {
+
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.veterinaryUsApproval.name] = {};
       this.setLoadingState.emit(false);
@@ -1078,9 +1082,9 @@ console.log('allDataSets:', this.allDataSets);
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
-      // filter_enable: false,
-      // filters: {},
-      // order_by: '',
+      filter_enable: false,
+      filters: {},
+      order_by: '',
       index: resultTabData.index
     }
 
@@ -1093,7 +1097,7 @@ console.log('allDataSets:', this.allDataSets);
         this.mainSearchService.veterinaryusApprovalSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.veterinaryUsApproval.name]).subscribe({
           next: (result: any) => {
             this.childApiBody[resultTabData.index][this.resultTabs.veterinaryUsApproval.name].count = result?.data?.green_book_us_count;
-            this.allDataSets[resultTabData.index][this.resultTabs.veterinaryUsApproval] = result?.data?.green_book_us_data;
+            this.allDataSets[resultTabData.index][this.resultTabs.veterinaryUsApproval.name] = result?.data?.green_book_us_data;
              console.log('main search:', result?.data?.green_book_us_data);
             this.setLoadingState.emit(false);
             this.loadingService.setLoading(this.resultTabs.veterinaryUsApproval.name, resultTabData.index, false);
@@ -1112,6 +1116,7 @@ console.log('allDataSets:', this.allDataSets);
       },
     });
   }
+
 
   private scientificDocsSearch(resultTabData: any,): void {
     const pageSize = 25;

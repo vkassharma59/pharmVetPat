@@ -264,7 +264,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       ...this._currentChildAPIBody,
       page_no: 1,
       start: 0,
-      length: reportLimit,
+           length: reportLimit,
     };
 
     console.log('📦  response body:', requestBody);
@@ -279,6 +279,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       })
     );
   }
+
 
 
 
@@ -301,7 +302,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
   // }
 
   // 3️⃣ Download CSV
-  downloadCSV(): void {
+   downloadCSV(): void {
     this.isExportingCSV = true;
     this.getAllDataFromApi().subscribe(data => {
       // Generate header row with Title Case
@@ -311,7 +312,18 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       data.forEach(row => {
         const rowData = this.displayedColumns.map(col => {
           let value = row[col];
+      data.forEach(row => {
+        const rowData = this.displayedColumns.map(col => {
+          let value = row[col];
 
+          // Apply same formatting as Excel export
+          if (Array.isArray(value)) {
+            value = value.join(', ');
+          } else if (typeof value === 'object' && value !== null) {
+            value = JSON.stringify(value);
+          } else if (value === null || value === undefined) {
+            value = '';
+          }
           // Apply same formatting as Excel export
           if (Array.isArray(value)) {
             value = value.join(', ');
@@ -328,7 +340,16 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
           }
           return cell;
         });
+          // Escape quotes and commas for CSV
+          let cell = String(value).replace(/"/g, '""');
+          if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
+            cell = `"${cell}"`;
+          }
+          return cell;
+        });
 
+        csvContent += rowData.join(',') + '\n';
+      });
         csvContent += rowData.join(',') + '\n';
       });
 
@@ -337,9 +358,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       this.isExportingCSV = false;
     });
   }
-
-
-
+   
   // 4️⃣ Download Excel
   downloadExcel(): void {
      this.isExportingExcel = true;
@@ -348,12 +367,14 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       const worksheet = workbook.addWorksheet('Exported Data');
 
 
+
       // Define header columns
       const columns = this.displayedColumns.map(col => ({
         header: this.toTitleCase(col),
         key: col,
       }));
       worksheet.columns = columns;
+
 
 
       // Add formatted data rows
@@ -372,10 +393,12 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       });
 
 
+
       // ✅ ADD AUTO-WIDTH ADJUSTMENT HERE
       this.displayedColumns.forEach((col, index) => {
         const excelCol = worksheet.getColumn(index + 1);
         let maxLength = col.length;
+
 
 
         excelCol.eachCell({ includeEmpty: true }, cell => {
@@ -386,8 +409,10 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
         });
 
 
+
         excelCol.width = maxLength + 6;
       });
+
 
 
       // Style header row
@@ -411,6 +436,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
           right: { style: 'thin' },
         };
       });
+
 
 
       // Save workbook
