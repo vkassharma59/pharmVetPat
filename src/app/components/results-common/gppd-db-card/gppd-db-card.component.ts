@@ -40,11 +40,10 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     data?: any[]; // Replace `any` with your actual data type
   };
   isExportingCSV: boolean = false;
-  isExportingExcel: boolean = false;
-
+   isExportingExcel: boolean = false;
   _currentChildAPIBody: any;
   loading = false;
-  displayedColumns: string[] = [];
+   displayedColumns: string[] = [];
   columnHeaders: { [key: string]: string } = {};
   filterableColumns: string[] = [];
   openFilter: { [key: string]: boolean } = {};
@@ -280,6 +279,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
   }
 
 
+
   downloadPDF() {
     const doc = new jsPDF();
     const colHeaders = this.displayedColumns.map(col => this.columnHeaders[col]);
@@ -299,7 +299,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
   // }
 
   // 3️⃣ Download CSV
-  downloadCSV(): void {
+ downloadCSV(): void {
     this.isExportingCSV = true;
     this.getAllDataFromApi().subscribe(data => {
       // Generate header row with Title Case
@@ -335,8 +335,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
       this.isExportingCSV = false;
     });
   }
-
-  // 4️⃣ Download Excel
+  
   downloadExcel(): void {
     this.isExportingExcel = true;
       this.getAllDataFromApi().subscribe(data => {
@@ -420,6 +419,6 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     return str.replace(/_/g, ' ')
       .replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
   }
-
+ 
 }
 

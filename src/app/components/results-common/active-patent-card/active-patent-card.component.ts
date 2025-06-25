@@ -287,23 +287,34 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
   // }
 
   // 3️⃣ Download CSV
-  downloadCSV(): void {
+ downloadCSV(): void {
     this.isExportingCSV = true;
     this.getAllDataFromApi().subscribe(data => {
-      // Ensure column headers are properly titled
+      // Generate header row with Title Case
       const headerRow = this.displayedColumns.map(col => this.toTitleCase(col)).join(',') + '\n';
       let csvContent = headerRow;
 
       data.forEach(row => {
         const rowData = this.displayedColumns.map(col => {
-          let cell = row[col] !== undefined ? row[col] : '';
-          // Optional: Escape commas, quotes, and newlines
-          cell = String(cell).replace(/"/g, '""');
+          let value = row[col];
+
+          // Apply same formatting as Excel export
+          if (Array.isArray(value)) {
+            value = value.join(', ');
+          } else if (typeof value === 'object' && value !== null) {
+            value = JSON.stringify(value);
+          } else if (value === null || value === undefined) {
+            value = '';
+          }
+
+          // Escape quotes and commas for CSV
+          let cell = String(value).replace(/"/g, '""');
           if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
             cell = `"${cell}"`;
           }
           return cell;
         });
+
         csvContent += rowData.join(',') + '\n';
       });
 

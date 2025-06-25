@@ -79,9 +79,7 @@
         (handleSetLoading)="handleSetLoading.emit($event)" [tabName]="resultTabWithKeys.usApproval.name"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)">
       </chem-us>
-
-
-    </ng-container>
+   </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.veterinaryUsApproval.name">
       <app-veterinary-us-approval [data]="_dataItem.veterinaryUsApproval"
