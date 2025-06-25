@@ -20,6 +20,8 @@ export class UsApprovalCardComponent {
   pageNo: number = 1;
   us_approval_column: any = {};
   resultTabs: any = {};
+  us_column:any={};
+  us_column2:any={};
   @Input() index: number = 0;
   static apiCallCount: number = 0; // Global static counter
   localCount: number = 0; // Instance-specific count
@@ -42,10 +44,9 @@ export class UsApprovalCardComponent {
 
       const column_list = Auth_operations.getColumnList();
 
-      if (column_list[this.resultTabs.usApproval?.name]?.length > 0) {
-        for (let i = 0; i < column_list[this.resultTabs.usApproval.name].length; i++) {
-          this.us_approval_column[column_list[this.resultTabs.usApproval.name][i].value] =
-            column_list[this.resultTabs.usApproval.name][i].name;
+      if (column_list[this.resultTabs.usApproval?.name]?.patentColumnList?.length > 0) {
+        for (let col of column_list[this.resultTabs.usApproval?.name]?.patentColumnList) {
+          this.us_column[col.value] = col.name;
         }
       }
       const tabName = this.resultTabs?.usApproval?.name || 'US_APPROVAL';
@@ -81,8 +82,12 @@ export class UsApprovalCardComponent {
       this.patentColumns = this.data.patentColumnList;
     }
   }
-
-
+  objectValues(obj: any): any[] {
+    return Object.values(obj);
+  }
+  getColumnName1(value: any) {
+    return this.us_column[value] || value;
+  }
   ngOnDestroy() {
     // Reset counter when navigating away from the component
     UsApprovalCardComponent.apiCallCount = 0;
@@ -91,7 +96,9 @@ export class UsApprovalCardComponent {
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
-
+  getObjectKeys(obj: any): string[] {
+    return obj ? Object.keys(obj) : [];
+  }
   toggleMoreInfo() {
     this.MoreInfo = !this.MoreInfo;
   }
@@ -164,13 +171,19 @@ export class UsApprovalCardComponent {
       });
     }
   isPopupOpen = false;
-
-  openPopup() {
-    this.isPopupOpen = true;
+  selectedPatent: any = null;
+  viewPatent:boolean=false;
+  openPopup(item: any): void {
+    this.selectedPatent = item;
+    // Optionally log for debugging
+    this.selectedPatent=item;
+    this.viewPatent=!this.viewPatent;
+    console.log('Opening popup for:', item);
   }
 
-  closePopup() {
-    this.isPopupOpen = false;
+  closePopup(): void {
+    this.selectedPatent = null;
+    this.viewPatent=false;
   }
 
   // =========================
