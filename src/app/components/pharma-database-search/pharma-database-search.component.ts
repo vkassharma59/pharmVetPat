@@ -464,10 +464,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     const mainInput = this.advanceSearch?.filterInputs?.[0];
     return !(mainInput?.filter?.trim() && mainInput?.keyword?.trim());
   }
-
-
-
-  checkPriviledgeAndHandleSearch(searchType: string = '') {
+ checkPriviledgeAndHandleSearch(searchType: string = '') {
     const { startSales, endSales, filterInputs, simpleSearch, devStage, innovator } = this.advanceSearch;
 
     // 🚨 Validate sales range if only one value is given
