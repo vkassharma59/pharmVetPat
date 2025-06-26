@@ -20,8 +20,8 @@ export class UsApprovalCardComponent {
   pageNo: number = 1;
   us_approval_column: any = {};
   resultTabs: any = {};
-  us_column:any={};
-  us_column2:any={};
+  us_column: any = {};
+  us_column2: any = {};
   @Input() index: number = 0;
   static apiCallCount: number = 0; // Global static counter
   localCount: number = 0; // Instance-specific count
@@ -58,11 +58,11 @@ export class UsApprovalCardComponent {
     }
   }
 
-  constructor(private dialog: MatDialog, private utilityService: UtilityService,private http: HttpClient) { }
+  constructor(private dialog: MatDialog, private utilityService: UtilityService, private http: HttpClient) { }
   isArray(value: any): boolean {
     return Array.isArray(value);
   }
-   patentColumns: any[] = [];
+  patentColumns: any[] = [];
   patentData: any[] = [];
 
   ngOnInit() {
@@ -70,12 +70,12 @@ export class UsApprovalCardComponent {
       this.patentColumns = res?.data?.patentColumnList || [];
       this.patentData = res?.data?.patentData || []; // assuming this is how patent rows come
       if (UsApprovalCardComponent.apiCallCount === 0) {
-      UsApprovalCardComponent.apiCallCount = 0;
-    }
+        UsApprovalCardComponent.apiCallCount = 0;
+      }
     });
   }
-  
- ngOnChanges() {
+
+  ngOnChanges() {
     console.log('📦 US Approval data received:', this.data);
     if (this.data && Array.isArray(this.data.patent_list)) {
       this.patentData = this.data.patent_list;
@@ -96,9 +96,13 @@ export class UsApprovalCardComponent {
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
-  getObjectKeys(obj: any): string[] {
-    return obj ? Object.keys(obj) : [];
+  allowedColumns: string[] = ['patent_no','notes',  'product_no','appl_no', 'patent_expire_date_text','delist_flag','jarvis_rn','drug_substance_flag','drug_product_flag','patent_use_code','submission_date','remark_s']; 
+
+  getObjectKeysOrdered(): string[] {
+    return this.allowedColumns.filter(key => this.us_column?.hasOwnProperty(key));
   }
+  
+  allowedColumns2: string[]=['products','product_no','exclusivity_code','exclusivity_date','appl_no','appl_type',];
   toggleMoreInfo() {
     this.MoreInfo = !this.MoreInfo;
   }
@@ -162,28 +166,28 @@ export class UsApprovalCardComponent {
     const imgElement = event.target as HTMLImageElement;
     imgElement.src = 'assets/components/noimg.png';
   }
-    openImageModal(imageUrl: string): void {
-      this.dialog.open(ImageModalComponent, {
-        width: 'calc(100vw - 5vw)',
-        height: '700px',
-        panelClass: 'full-screen-modal',
-        data: { dataImage: imageUrl },
-      });
-    }
+  openImageModal(imageUrl: string): void {
+    this.dialog.open(ImageModalComponent, {
+      width: 'calc(100vw - 5vw)',
+      height: '700px',
+      panelClass: 'full-screen-modal',
+      data: { dataImage: imageUrl },
+    });
+  }
   isPopupOpen = false;
   selectedPatent: any = null;
-  viewPatent:boolean=false;
+  viewPatent: boolean = false;
   openPopup(item: any): void {
     this.selectedPatent = item;
     // Optionally log for debugging
-    this.selectedPatent=item;
-    this.viewPatent=!this.viewPatent;
+    this.selectedPatent = item;
+    this.viewPatent = !this.viewPatent;
     console.log('Opening popup for:', item);
   }
 
   closePopup(): void {
     this.selectedPatent = null;
-    this.viewPatent=false;
+    this.viewPatent = false;
   }
 
   // =========================
