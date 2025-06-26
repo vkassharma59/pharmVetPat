@@ -192,8 +192,9 @@ patentData: any[] = [];    // optional if you want to extract separately
 
   return (
     section?.View !== 'false' &&
-    section?.Search !== '' &&
-    section?.Search !== 0
+    section?.Search != '' &&
+    section?.Search != "0" &&
+    section?.Search != 0
   );
 }
 

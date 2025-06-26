@@ -41,7 +41,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   advanceSearch: any = {
     autosuggestionList: [],
     dateType: '',
-   developmentStage: '',
+    developmentStage: '',
     innovatorOriginator: '',
     devStage: '',
     innovator: '',
@@ -319,9 +319,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     );
   }
 
-
-
-
   isInputEnabled(): boolean {
     return !!(this.intermediateSearch.filter && this.intermediateSearch.keyword?.trim());
   }
@@ -463,7 +460,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       }
     })
   }
-    isAdvancedInputDisabled(): boolean {
+  isAdvancedInputDisabled(): boolean {
     const mainInput = this.advanceSearch?.filterInputs?.[0];
     return !(mainInput?.filter?.trim() && mainInput?.keyword?.trim());
   }
@@ -482,7 +479,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       this.priviledgeModal.emit('Please enter Start Range.');
       return;
     }
-  
+
     const hasFilledKeyword = filterInputs?.some(input =>
       input.filter?.trim() && input.keyword?.trim()
     );
@@ -535,12 +532,12 @@ export class pharmaDatabaseSearchComponent implements OnInit {
             // console.log("Dailylimit", privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit);
             // console.log("limittodays", todaysLimit?.searchCount);
 
-            // // 🛑 If today's search count is exactly 0, block the search first
-            // if (todaysLimit?.searchCount == 0) {
-            //   this.setLoadingState.emit(false);
-            //   this.priviledgeModal.emit('Your  Search Limit is over for this Platform.Please upgrade the account.');
-            //   return;
-            // }
+            // 🛑 If today's search count is exactly 0, block the search first
+            if (privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit == 0) {
+              this.setLoadingState.emit(false);
+              this.priviledgeModal.emit('Your  Search Limit is over for this Platform.Please upgrade the account.');
+              return;
+            }
 
 
             const remainingLimit = privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit - todaysLimit?.searchCount;
@@ -588,11 +585,13 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   }
   private hasSearchPrivileges(privilegeData: any): boolean {
     if (!privilegeData) return false;
-
     const dbPrivileges = privilegeData?.['pharmvetpat-mongodb'];
+    // ✅ Check if object is assigned
+    if (!dbPrivileges) return false;
     return (
       dbPrivileges?.View !== 'false' &&
       dbPrivileges?.Search !== '' &&
+      dbPrivileges?.Search !== "0" &&
       dbPrivileges?.Search !== 0
     );
   }
@@ -742,30 +741,30 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.productInfo.name, response);
 
-          this.mainSearchService.getAdvanceSearchResults(apiBody).subscribe({
-            next: (res: any) => {
-              this.showResultFunction.emit({
-                apiBody,
-                API_URL: this.apiUrls.basicProductInfo.simpleSearchResults,
-                currentTab: this.resultTabs.productInfo.name,
-                actual_value: '',
-              });
-              this.chemSearchResults.emit(res?.data);
-              this.setLoadingState.emit(false);
-            },
-            error: (e) => {
-              console.error('Error during main search:', e);
-              this.setLoadingState.emit(false);
-            },
-          });
-        },
-        error: (e) => {
-          console.error('Error fetching column list:', e);
-          this.setLoadingState.emit(false);
-        },
-      });
-    }
- 
+        this.mainSearchService.getAdvanceSearchResults(apiBody).subscribe({
+          next: (res: any) => {
+            this.showResultFunction.emit({
+              apiBody,
+              API_URL: this.apiUrls.basicProductInfo.simpleSearchResults,
+              currentTab: this.resultTabs.productInfo.name,
+              actual_value: '',
+            });
+            this.chemSearchResults.emit(res?.data);
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
+
   private performSynthesisSearch(): void {
     Auth_operations.setActiveformValues({
       column: this.column,

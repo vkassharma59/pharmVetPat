@@ -173,15 +173,6 @@ export class HeaderComponent {
 
         this.saveUserDataToLocalStorage(userInfo); // ✅ Save base data
 
-        // ✅ Privilege check
-        if (!this.hasSearchPrivileges(privilegeData)) {
-          this.setLoadingState.emit(false);
-          this.priviledgeModal.emit(
-            'You do not have permission to Search or View. Please upgrade the account.'
-          );
-          return;
-        }
-
         // ✅ Save specific privilege to localStorage after check
         localStorage.setItem(
           'priviledge_json',
@@ -207,16 +198,6 @@ export class HeaderComponent {
   });
 }
 
-private hasSearchPrivileges(privilegeData: any): boolean {
-  if (!privilegeData) return false;
-
-  const dbPrivileges = privilegeData?.['pharmvetpat-mongodb'];
-  return (
-    dbPrivileges?.View !== 'false' &&
-    dbPrivileges?.Search !== '' &&
-    dbPrivileges?.Search !== 0
-  );
-}
  private saveUserDataToLocalStorage(userInfo: any): void {
   const loginToken = this.convertUserIdToBase64(userInfo.user_id);
   localStorage.setItem('userEmail', userInfo.email);
