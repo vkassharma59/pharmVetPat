@@ -44,7 +44,20 @@ export class UserPriviledgeService {
       .get(this.apiUrls.user.privilegeApi, { headers: headers })
       .pipe(catchError(this.handleError));
   }
+ getverticalcategoryData() {
+    let auth_token = Auth_operations.getToken();
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'api-key': env.headerApiKey,
+      'access-token': auth_token,
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
+    });
 
+    return this.http
+      .get(this.apiUrls.vertical.verticalcategory, { headers: headers })
+      .pipe(catchError(this.handleError));
+  }
   getUserTodayPriviledgesData() {
     const body = {
       vertical: 'PharmaVetPat MongoDB',

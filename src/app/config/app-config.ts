@@ -118,6 +118,9 @@ export const AppConfigValues: AppConfig = {
         loginUrl: `${appUrl.apiUrl}/login`,
         accessLoginApi: `${appUrl.apiUrl}/login-user/`,
       },
+     vertical: {
+      verticalcategory: `${appUrl.apiUrl}/vertical-category-info`,
+    },
       pdfGeneration: {
         generatePdf: `${appUrl.apiUrl}/generate-pdf`,
       },

@@ -192,8 +192,9 @@ patentData: any[] = [];    // optional if you want to extract separately
 
   return (
     section?.View !== 'false' &&
-    section?.Search !== '' &&
-    section?.Search !== 0
+    section?.Search != '' &&
+    section?.Search != "0" &&
+    section?.Search != 0
   );
 }
 
@@ -310,7 +311,6 @@ patentData: any[] = [];    // optional if you want to extract separately
         } else {
           this.setLoadingState.emit(false);
         }
-        this.performactivePatentSearch(resultTabData);
         this.performactivePatentSearch(resultTabData);
         break;
       case this.resultTabs?.nonPatentLandscape.name:
@@ -1083,6 +1083,9 @@ console.log('allDataSets:', this.allDataSets);
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
+      // filter_enable: false,
+      // filters: {},
+      // order_by: '',
       // filter_enable: false,
       // filters: {},
       // order_by: '',
