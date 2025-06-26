@@ -15,6 +15,7 @@ import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import * as ExcelJS from 'exceljs';
+import { UserPriviledgeService } from '../../../services/user_priviledges/user-priviledge.service';
 @Component({
   selector: 'app-scientific-docs-card',
   standalone: true,
@@ -72,7 +73,8 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
   searchColumn: string | undefined;
 
   constructor(private cdr: ChangeDetectorRef,
-    private mainSearchService: MainSearchService
+    private mainSearchService: MainSearchService,
+     private UserPriviledgeService: UserPriviledgeService
   ) { }
 
   ngOnChanges(): void {
@@ -252,13 +254,53 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
     this.filterInputs.forEach(inputRef => inputRef.nativeElement.value = '');
     this.fetchData();
   }
-  getAllDataFromApi(): Observable<any[]> {
+  fetchAndStoreVerticalLimits(): void {
+    this.UserPriviledgeService.getverticalcategoryData().subscribe({
+      next: (res: any) => {
+        const verticals = res?.data?.verticals;
+
+        if (Array.isArray(verticals)) {
+          localStorage.setItem('vertical_limits', JSON.stringify(verticals));
+
+          const pharmaVertical = verticals.find(
+            (v: any) => v.slug === 'pharmvetpat-mongodb' && v.report_limit != null
+          );
+
+          if (pharmaVertical) {
+            localStorage.setItem('report_limit', String(pharmaVertical.report_limit));
+          } else {
+            console.warn('PharmVetPat MongoDB vertical not found or report_limit is null');
+          }
+        }
+      },
+      error: err => console.error('Vertical limit fetch failed:', err),
+    });
+  }
+  getReportLimit(): number {
+    // Step 1: Try privilege_json first
     const priv = JSON.parse(localStorage.getItem('priviledge_json') || '{}');
-    const reportLimit = priv['pharmvetpat-mongodb']?.ReportLimit || 500;
+    const privLimit = Number(priv['pharmvetpat-mongodb']?.ReportLimit);
+
+    if (!isNaN(privLimit) && privLimit > 0) {
+      return privLimit;
+    }
+
+    // Step 2: Try vertical report_limit from localStorage
+    const storedLimit = Number(localStorage.getItem('report_limit'));
+
+    if (!isNaN(storedLimit) && storedLimit > 0) {
+      return storedLimit;
+    }
+
+    // Step 3: Default fallback
+    return 500;
+  }
+
+  getAllDataFromApi(): Observable<any[]> {
     const requestBody = {
       ...this._currentChildAPIBody,
       page_no: 1, start: 0,
-      length: reportLimit,
+      length: this.getReportLimit()
     };
 
     console.log('📦  response body:', requestBody);
@@ -287,11 +329,7 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
 
     doc.save('ExportedData.pdf');
   }
-  // // Optional helper to capitalize column names
-  // toTitleCase(str: string): string {
-  //   return str.replace(/_/g, ' ')
-  //     .replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
-  // }
+ 
 
   // 3️⃣ Download CSV
   downloadCSV(): void {
