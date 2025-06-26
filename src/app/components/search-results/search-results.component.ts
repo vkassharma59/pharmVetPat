@@ -311,7 +311,6 @@ patentData: any[] = [];    // optional if you want to extract separately
           this.setLoadingState.emit(false);
         }
         this.performactivePatentSearch(resultTabData);
-        this.performactivePatentSearch(resultTabData);
         break;
       case this.resultTabs?.nonPatentLandscape.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.nonPatentLandscape.name]).length === 0) {
@@ -1083,6 +1082,9 @@ console.log('allDataSets:', this.allDataSets);
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
+      // filter_enable: false,
+      // filters: {},
+      // order_by: '',
       // filter_enable: false,
       // filters: {},
       // order_by: '',

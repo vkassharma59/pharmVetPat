@@ -290,42 +290,42 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
   // }
  
  // 3️⃣ Download CSV
- downloadCSV(): void {
-   this.isExportingCSV =true;
-  this.getAllDataFromApi().subscribe(data => {
-    // Generate header row with Title Case
-    const headerRow = this.displayedColumns.map(col => this.toTitleCase(col)).join(',') + '\n';
-    let csvContent = headerRow;
+downloadCSV(): void {
+    this.isExportingCSV = true;
+    this.getAllDataFromApi().subscribe(data => {
+      // Generate header row with Title Case
+      const headerRow = this.displayedColumns.map(col => this.toTitleCase(col)).join(',') + '\n';
+      let csvContent = headerRow;
 
-    data.forEach(row => {
-      const rowData = this.displayedColumns.map(col => {
-        let value = row[col];
+      data.forEach(row => {
+        const rowData = this.displayedColumns.map(col => {
+          let value = row[col];
 
-        // Apply same formatting as Excel export
-        if (Array.isArray(value)) {
-          value = value.join(', ');
-        } else if (typeof value === 'object' && value !== null) {
-          value = JSON.stringify(value);
-        } else if (value === null || value === undefined) {
-          value = '';
-        }
+          // Apply same formatting as Excel export
+          if (Array.isArray(value)) {
+            value = value.join(', ');
+          } else if (typeof value === 'object' && value !== null) {
+            value = JSON.stringify(value);
+          } else if (value === null || value === undefined) {
+            value = '';
+          }
 
-        // Escape quotes and commas for CSV
-        let cell = String(value).replace(/"/g, '""');
-        if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
-          cell = `"${cell}"`;
-        }
-        return cell;
+          // Escape quotes and commas for CSV
+          let cell = String(value).replace(/"/g, '""');
+          if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
+            cell = `"${cell}"`;
+          }
+          return cell;
+        });
+
+        csvContent += rowData.join(',') + '\n';
       });
 
-      csvContent += rowData.join(',') + '\n';
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      saveAs(blob, 'ExportedData.csv');
+      this.isExportingCSV = false;
     });
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    saveAs(blob, 'ExportedData.csv');
-     this.isExportingCSV =false;
-  });
-}
+  }
 
 
   // 4️⃣ Download Excel
