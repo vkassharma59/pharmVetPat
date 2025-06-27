@@ -60,8 +60,6 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   @ViewChildren('filterInput') filterInputs!: QueryList<ElementRef<HTMLInputElement>>;
 
-
-
   @Input()
   get currentChildAPIBody() {
     return this._currentChildAPIBody;
@@ -71,12 +69,10 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
   }
   searchText: string = '';
   searchColumn: string | undefined;
-
   constructor(private cdr: ChangeDetectorRef,
     private mainSearchService: MainSearchService,
      private UserPriviledgeService: UserPriviledgeService
   ) { }
-
   ngOnChanges(): void {
     //console.log('columnDefs:', this.columnDefs);
     // Reset counter only when the component is first loaded

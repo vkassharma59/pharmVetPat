@@ -3,3 +3,26 @@
   background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
   justify-content: space-between;
 }
+
+.viewpatent {
+  height: 100%;
+  width: 80%;
+  background-color: antiquewhite;
+  color: #020024;
+  font-size: 14px;
+
+}
+
+.button {
+  background: #d6a913;
+  background: linear-gradient(90deg, rgba(214, 169, 19, 1) 8%, rgba(245, 220, 122, 1) 100%);
+}
+.custom-th {
+  white-space: normal;        /* Allow wrapping */
+  word-wrap: break-word;      /* Break long words if needed */
+  max-width: 120px;           /* Adjust width as per your design */
+  text-align: center;
+  vertical-align: middle;
+  font-size: 12px;            /* Optional: adjust font size */
+  padding: 6px;
+}

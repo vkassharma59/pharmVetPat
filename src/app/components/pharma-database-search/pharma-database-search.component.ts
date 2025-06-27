@@ -387,7 +387,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     }
   }
 
-
   handleSuggestionClick(value: any, searchType = '', index: number = 0) {
     this.showSuggestions = false;
     switch (searchType) {
@@ -738,29 +737,29 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.productInfo.name, response);
 
-        this.mainSearchService.getAdvanceSearchResults(apiBody).subscribe({
-          next: (res: any) => {
-            this.showResultFunction.emit({
-              apiBody,
-              API_URL: this.apiUrls.basicProductInfo.simpleSearchResults,
-              currentTab: this.resultTabs.productInfo.name,
-              actual_value: '',
-            });
-            this.chemSearchResults.emit(res?.data);
-            this.setLoadingState.emit(false);
-          },
-          error: (e) => {
-            console.error('Error during main search:', e);
-            this.setLoadingState.emit(false);
-          },
-        });
-      },
-      error: (e) => {
-        console.error('Error fetching column list:', e);
-        this.setLoadingState.emit(false);
-      },
-    });
-  }
+          this.mainSearchService.getAdvanceSearchResults(apiBody).subscribe({
+            next: (res: any) => {
+              this.showResultFunction.emit({
+                apiBody,
+                API_URL: this.apiUrls.basicProductInfo.simpleSearchResults,
+                currentTab: this.resultTabs.productInfo.name,
+                actual_value: '',
+              });
+              this.chemSearchResults.emit(res?.data);
+              this.setLoadingState.emit(false);
+            },
+            error: (e) => {
+              console.error('Error during main search:', e);
+              this.setLoadingState.emit(false);
+            },
+          });
+        },
+        error: (e) => {
+          console.error('Error fetching column list:', e);
+          this.setLoadingState.emit(false);
+        },
+      });
+    }
 
   private performSynthesisSearch(): void {
     Auth_operations.setActiveformValues({
