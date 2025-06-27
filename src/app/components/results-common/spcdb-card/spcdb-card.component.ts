@@ -338,8 +338,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
   //   return str.replace(/_/g, ' ')
   //     .replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
   // }
-
-  // 3️⃣ Download CSV
+    // 3️⃣ Download CSV
   downloadCSV(): void {
     this.isExportingCSV = true;
     this.getAllDataFromApi().subscribe(data => {
@@ -350,7 +349,18 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       data.forEach(row => {
         const rowData = this.displayedColumns.map(col => {
           let value = row[col];
+      data.forEach(row => {
+        const rowData = this.displayedColumns.map(col => {
+          let value = row[col];
 
+          // Apply same formatting as Excel export
+          if (Array.isArray(value)) {
+            value = value.join(', ');
+          } else if (typeof value === 'object' && value !== null) {
+            value = JSON.stringify(value);
+          } else if (value === null || value === undefined) {
+            value = '';
+          }
           // Apply same formatting as Excel export
           if (Array.isArray(value)) {
             value = value.join(', ');
@@ -367,7 +377,16 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
           }
           return cell;
         });
+          // Escape quotes and commas for CSV
+          let cell = String(value).replace(/"/g, '""');
+          if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
+            cell = `"${cell}"`;
+          }
+          return cell;
+        });
 
+        csvContent += rowData.join(',') + '\n';
+      });
         csvContent += rowData.join(',') + '\n';
       });
 
@@ -441,6 +460,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
           type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         });
         saveAs(blob, 'ExportedDataFormatted.xlsx');
+        this.isExportingExcel = false;
         this.isExportingExcel = false;
       });
     });

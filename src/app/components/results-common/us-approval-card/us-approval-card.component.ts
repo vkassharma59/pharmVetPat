@@ -20,6 +20,8 @@ export class UsApprovalCardComponent {
   pageNo: number = 1;
   us_approval_column: any = {};
   resultTabs: any = {};
+  us_column: any = {};
+  us_column2: any = {};
   @Input() index: number = 0;
   static apiCallCount: number = 0; // Global static counter
   localCount: number = 0; // Instance-specific count
@@ -34,55 +36,74 @@ export class UsApprovalCardComponent {
     if (value && Object.keys(value).length > 0) {
       UsApprovalCardComponent.apiCallCount++;
       this.localCount = UsApprovalCardComponent.apiCallCount;
-
-      this._data = value; // ✅ SET FIRST
-      console.log("hnfdjd", this._data);
+    
+      this._data = value;
       this.resultTabs = this.utilityService.getAllTabsName();
-      console.log("result", this.resultTabs);
-
+    
       const column_list = Auth_operations.getColumnList();
-
-      if (column_list[this.resultTabs.usApproval?.name]?.length > 0) {
-        for (let i = 0; i < column_list[this.resultTabs.usApproval.name].length; i++) {
-          this.us_approval_column[column_list[this.resultTabs.usApproval.name][i].value] =
-            column_list[this.resultTabs.usApproval.name][i].name;
+      if (column_list[this.resultTabs.usApproval?.name]?.patentColumnList?.length > 0) {
+        for (let col of column_list[this.resultTabs.usApproval?.name]?.patentColumnList) {
+          this.us_column[col.value] = col.name;
         }
       }
+    
+      if (column_list[this.resultTabs.usApproval?.name]?.productColumnList?.length > 0) {
+        for (let col of column_list[this.resultTabs.usApproval?.name]?.productColumnList) {
+          this.us_column2[col.value] = col.name;
+        }
+      }
+    
       const tabName = this.resultTabs?.usApproval?.name || 'US_APPROVAL';
       this.us_approval_column = column_list?.[tabName];
-
-      console.log('Resolved tabName:', tabName);
-      console.log('us_approval_column:', this.us_approval_column);
-      console.log("data", this._data);
     }
+    
   }
 
-  constructor(private dialog: MatDialog, private utilityService: UtilityService,private http: HttpClient) { }
+  constructor(private dialog: MatDialog, private utilityService: UtilityService, private http: HttpClient) { }
   isArray(value: any): boolean {
     return Array.isArray(value);
   }
-   patentColumns: any[] = [];
+  patentColumns: any[] = [];
   patentData: any[] = [];
-
+  productColumns: any[] = [];
+  productData: any[] = [];
   ngOnInit() {
     this.http.get('API_ENDPOINT_HERE').subscribe((res: any) => {
       this.patentColumns = res?.data?.patentColumnList || [];
       this.patentData = res?.data?.patentData || []; // assuming this is how patent rows come
       if (UsApprovalCardComponent.apiCallCount === 0) {
-      UsApprovalCardComponent.apiCallCount = 0;
-    }
+        UsApprovalCardComponent.apiCallCount = 0;
+      }
+    });
+    this.http.get('API_ENDPOINT_HEREeeee').subscribe((res: any) => {
+      this.productColumns = res?.data?.productColumnList || [];
+      this.productData = res?.data?.productData || []; // assuming this is how product rows come
+      if (UsApprovalCardComponent.apiCallCount === 0) {
+        UsApprovalCardComponent.apiCallCount = 0;
+      }
     });
   }
-  
- ngOnChanges() {
+
+  ngOnChanges() {
     console.log('📦 US Approval data received:', this.data);
     if (this.data && Array.isArray(this.data.patent_list)) {
       this.patentData = this.data.patent_list;
       this.patentColumns = this.data.patentColumnList;
     }
+    if (this.data && Array.isArray(this.data.product_list)) {
+      this.productData = this.data.product_list;
+      this.productColumns = this.data.productColumnList;
+    }
   }
-
-
+  objectValues(obj: any): any[] {
+    return Object.values(obj);
+  }
+  getColumnName1(value: any) {
+    return this.us_column[value] || value;
+  }
+  getColumnName2(value: any) {
+    return this.us_column2[value] || value;
+  }
   ngOnDestroy() {
     // Reset counter when navigating away from the component
     UsApprovalCardComponent.apiCallCount = 0;
@@ -91,7 +112,16 @@ export class UsApprovalCardComponent {
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
+  allowedColumns: string[] = ['patent_no','notes',  'product_no','appl_no', 'patent_expire_date_text','delist_flag','jarvis_rn','drug_substance_flag','drug_product_flag','patent_use_code','submission_date','remark_s']; 
 
+  getObjectKeysOrdered(): string[] {
+    return this.allowedColumns.filter(key => this.us_column?.hasOwnProperty(key));
+  }
+  allowedColumns2: string[]=['products','product_no','exclusivity_code','exclusivity_date','appl_no','appl_type',];
+  getObjectKeysOrdered2(): string[] {
+    return this.allowedColumns2.filter(key => this.us_column2?.hasOwnProperty(key));
+  }
+  
   toggleMoreInfo() {
     this.MoreInfo = !this.MoreInfo;
   }
@@ -155,245 +185,28 @@ export class UsApprovalCardComponent {
     const imgElement = event.target as HTMLImageElement;
     imgElement.src = 'assets/components/noimg.png';
   }
-    openImageModal(imageUrl: string): void {
-      this.dialog.open(ImageModalComponent, {
-        width: 'calc(100vw - 5vw)',
-        height: '700px',
-        panelClass: 'full-screen-modal',
-        data: { dataImage: imageUrl },
-      });
-    }
+  openImageModal(imageUrl: string): void {
+    this.dialog.open(ImageModalComponent, {
+      width: 'calc(100vw - 5vw)',
+      height: '700px',
+      panelClass: 'full-screen-modal',
+      data: { dataImage: imageUrl },
+    });
+  }
   isPopupOpen = false;
-
-  openPopup() {
-    this.isPopupOpen = true;
+  selectedPatent: any = null;
+  viewPatent: boolean = false;
+  openPopup(item: any): void {
+    this.selectedPatent = item;
+    // Optionally log for debugging
+    this.selectedPatent = item;
+    this.viewPatent = !this.viewPatent;
+    console.log('Opening popup for:', item);
   }
 
-  closePopup() {
-    this.isPopupOpen = false;
-  }
-
-  // =========================
-  isPopupOpen2 = false;
-
-  openPopup2() {
-    this.isPopupOpen2 = true;
-  }
-
-  closePopup2() {
-    this.isPopupOpen2 = false;
-  }
-  // ============================
-  isPopupOpen3 = false;
-
-  openPopup3() {
-    this.isPopupOpen3 = true;
-  }
-
-  closePopup3() {
-    this.isPopupOpen3 = false;
-  }
-
-  // ==============================
-
-  isPopupOpen4 = false;
-
-  openPopup4() {
-    this.isPopupOpen4 = true;
-  }
-
-  closePopup4() {
-    this.isPopupOpen4 = false;
-  }
-
-  // ==================================
-
-  isPopupOpen5 = false;
-
-  openPopup5() {
-    this.isPopupOpen5 = true;
-  }
-
-  closePopup5() {
-    this.isPopupOpen5 = false;
-  }
-
-  // ==================================
-
-  isPopupOpen6 = false;
-
-  openPopup6() {
-    this.isPopupOpen6 = true;
-  }
-
-  closePopup6() {
-    this.isPopupOpen6 = false;
-  }
-
-  // ==================================
-
-  isPopupOpen7 = false;
-
-  openPopup7() {
-    this.isPopupOpen7 = true;
-  }
-
-  closePopup7() {
-    this.isPopupOpen7 = false;
-  }
-
-  // ==================================
-
-  isPopupOpen8 = false;
-
-  openPopup8() {
-    this.isPopupOpen8 = true;
-  }
-
-  closePopup8() {
-    this.isPopupOpen8 = false;
-  }
-
-  // ==================================
-
-  isPopupOpen9 = false;
-
-  openPopup9() {
-    this.isPopupOpen9 = true;
-  }
-
-  closePopup9() {
-    this.isPopupOpen9 = false;
-  }
-
-  // ==================================
-
-  isPopupOpen10 = false;
-
-  openPopup10() {
-    this.isPopupOpen10 = true;
-  }
-
-  closePopup10() {
-    this.isPopupOpen10 = false;
-  }
-
-  // ==================================
-
-  isPopupOpen11 = false;
-
-  openPopup11() {
-    this.isPopupOpen11 = true;
-  }
-
-  closePopup11() {
-    this.isPopupOpen11 = false;
-  }
-
-  // ==================================
-
-  isPopupOpen12 = false;
-
-  openPopup12() {
-    this.isPopupOpen12 = true;
-  }
-
-  closePopup12() {
-    this.isPopupOpen12 = false;
-  }
-
-  // ==================================
-
-  isPopupOpen13 = false;
-
-  openPopup13() {
-    this.isPopupOpen13 = true;
-  }
-
-  closePopup13() {
-    this.isPopupOpen13 = false;
-  }
-
-  // ==================================
-
-  isPopupOpen14 = false;
-
-  openPopup14() {
-    this.isPopupOpen14 = true;
-  }
-
-  closePopup14() {
-    this.isPopupOpen14 = false;
-  }
-  // ==================================
-
-  isPopupOpen15 = false;
-
-  openPopup15() {
-    this.isPopupOpen15 = true;
-  }
-
-  closePopup15() {
-    this.isPopupOpen15 = false;
-  }
-  // ==================================
-
-  isPopupOpen16 = false;
-
-  openPopup16() {
-    this.isPopupOpen16 = true;
-  }
-
-  closePopup16() {
-    this.isPopupOpen16 = false;
-  }
-
-  // ==================================
-
-  isPopupOpen17 = false;
-
-  openPopup17() {
-    this.isPopupOpen17 = true;
-  }
-
-  closePopup17() {
-    this.isPopupOpen17 = false;
-  }
-
-  // ==================================
-
-  isPopupOpen18 = false;
-
-  openPopup18() {
-    this.isPopupOpen18 = true;
-  }
-
-  closePopup18() {
-    this.isPopupOpen18 = false;
-  }
-
-  // ==================================
-
-  isPopupOpen19 = false;
-
-  openPopup19() {
-    this.isPopupOpen19 = true;
-  }
-
-  closePopup19() {
-    this.isPopupOpen19 = false;
-  }
-
-  // ==================================
-
-  isPopupOpen20 = false;
-
-  openPopup20() {
-    this.isPopupOpen20 = true;
-  }
-
-  closePopup20() {
-    this.isPopupOpen20 = false;
+  closePopup(): void {
+    this.selectedPatent = null;
+    this.viewPatent = false;
   }
   copyText(elementId: string, event: Event) {
     const el = event.currentTarget as HTMLElement;

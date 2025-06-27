@@ -1086,9 +1086,6 @@ console.log('allDataSets:', this.allDataSets);
       // filter_enable: false,
       // filters: {},
       // order_by: '',
-      // filter_enable: false,
-      // filters: {},
-      // order_by: '',
       index: resultTabData.index
     }
 
@@ -1101,7 +1098,7 @@ console.log('allDataSets:', this.allDataSets);
         this.mainSearchService.veterinaryusApprovalSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.veterinaryUsApproval.name]).subscribe({
           next: (result: any) => {
             this.childApiBody[resultTabData.index][this.resultTabs.veterinaryUsApproval.name].count = result?.data?.green_book_us_count;
-            this.allDataSets[resultTabData.index][this.resultTabs.veterinaryUsApproval.name] = result?.data?.green_book_us_data;
+            this.allDataSets[resultTabData.index][this.resultTabs.veterinaryUsApproval] = result?.data?.green_book_us_data;
              console.log('main search:', result?.data?.green_book_us_data);
             this.setLoadingState.emit(false);
             this.loadingService.setLoading(this.resultTabs.veterinaryUsApproval.name, resultTabData.index, false);
