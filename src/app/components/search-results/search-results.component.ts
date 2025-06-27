@@ -192,8 +192,9 @@ patentData: any[] = [];    // optional if you want to extract separately
 
   return (
     section?.View !== 'false' &&
-    section?.Search !== '' &&
-    section?.Search !== 0
+    section?.Search != '' &&
+    section?.Search != "0" &&
+    section?.Search != 0
   );
 }
 
@@ -1082,22 +1083,22 @@ console.log('allDataSets:', this.allDataSets);
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
-      filter_enable: false,
-      filters: {},
-      order_by: '',
+      // filter_enable: false,
+      // filters: {},
+      // order_by: '',
       index: resultTabData.index
     }
 
     const tech_API = this.apiUrls.veterinaryUsApproval.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
-        const response = res?.data?.columns;
+        const response = res?.data;
         Auth_operations.setColumnList(this.resultTabs.veterinaryUsApproval.name, response);
 
         this.mainSearchService.veterinaryusApprovalSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.veterinaryUsApproval.name]).subscribe({
           next: (result: any) => {
             this.childApiBody[resultTabData.index][this.resultTabs.veterinaryUsApproval.name].count = result?.data?.green_book_us_count;
-            this.allDataSets[resultTabData.index][this.resultTabs.veterinaryUsApproval.name] = result?.data?.green_book_us_data;
+            this.allDataSets[resultTabData.index][this.resultTabs.veterinaryUsApproval] = result?.data?.green_book_us_data;
              console.log('main search:', result?.data?.green_book_us_data);
             this.setLoadingState.emit(false);
             this.loadingService.setLoading(this.resultTabs.veterinaryUsApproval.name, resultTabData.index, false);
@@ -1322,7 +1323,75 @@ console.log('allDataSets:', this.allDataSets);
       },
     });
   }
-  private performactivePatentSearch(resultTabData: any): void {
+  // private performactivePatentSearch(resultTabData: any): void {
+  //   console.log('Search Input:', resultTabData);
+  //   const pageSize = 25;
+  //   const page_no = 1
+  //   if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+  //     this.allDataSets[resultTabData.index][this.resultTabs.activePatent.name] = {};
+  //     this.setLoadingState.emit(false);
+  //     return;
+  //   }
+
+  //   if (this.childApiBody?.[resultTabData.index]) {
+  //     this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name] = {};
+  //   } else {
+  //     this.childApiBody[resultTabData.index] = {};
+  //   }
+
+  //   // Step 1: Prepare API body
+  //   this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name] = {
+  //     api_url: this.apiUrls.activePatent.searchSpecific,
+  //     keyword: resultTabData?.searchWithValue,
+  //     draw: 1,
+  //     page_no: 1,
+  //     start: (page_no - 1) * pageSize,
+  //     length: pageSize
+  //   };
+  //   console.log('Request Body activePatent:', this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name]);
+  //   // Step 2: Fetch Column List First
+  //   this.columnListService.getColumnList(this.apiUrls.activePatent.columnList).subscribe({
+  //     next: (res: any) => {
+  //       const columnList = res?.data?.columns || [];
+  //       Auth_operations.setColumnList(this.resultTabs.activePatent.name, columnList);
+  //       console.log('get colum list activePatent:', columnList);
+
+  //       if (!this.allDataSets[resultTabData.index]) {
+  //         this.allDataSets[resultTabData.index] = {};
+  //       }
+  //       // ✅ SAVE to pass to component
+  //       this.allDataSets[resultTabData.index][this.resultTabs.activePatent.name] = {
+  //         columns: columnList,  // <- for <app-scientific-docs-card>
+  //         rows: []              // <- we’ll fill this after searchSpecific
+  //       };
+  //       // Step 4: Call main search API
+  //       this.mainSearchService.activePatentSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name]).subscribe({
+  //         next: (result: any) => {
+  //           console.log('Search API Result:', result);
+  //           const dataRows = result?.data?.data || [];
+
+  //           // ✅ Append search result (rows) to saved structure
+  //           this.allDataSets[resultTabData.index][this.resultTabs.activePatent.name].rows = dataRows;
+  //           this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name].count = result?.data?.recordsTotal;
+  //           this.allDataSets[resultTabData.index][this.resultTabs.activePatent.name] = result?.data;
+  //           this.setLoadingState.emit(false);
+  //           this.loadingService.setLoading(this.resultTabs.activePatent.name, resultTabData.index, false);
+  //         },
+  //         error: (e) => {
+  //           console.error('Error during main search:', e);
+  //           this.setLoadingState.emit(false);
+  //           this.loadingService.setLoading(this.resultTabs.activePatent.name, resultTabData.index, false);
+  //         },
+  //       });
+  //     },
+  //     error: (e) => {
+  //       console.error('Error fetching column list:', e);
+  //       this.setLoadingState.emit(false);
+  //       this.loadingService.setLoading(this.resultTabs.activePatent.name, resultTabData.index, false);
+  //     },
+  //   });
+  // }
+ private performactivePatentSearch(resultTabData: any): void {
     console.log('Search Input:', resultTabData);
     const pageSize = 25;
     const page_no = 1
@@ -1372,7 +1441,6 @@ console.log('allDataSets:', this.allDataSets);
             // ✅ Append search result (rows) to saved structure
             this.allDataSets[resultTabData.index][this.resultTabs.activePatent.name].rows = dataRows;
             this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name].count = result?.data?.recordsTotal;
-            this.allDataSets[resultTabData.index][this.resultTabs.activePatent.name] = result?.data;
             this.setLoadingState.emit(false);
             this.loadingService.setLoading(this.resultTabs.activePatent.name, resultTabData.index, false);
           },
@@ -1390,7 +1458,6 @@ console.log('allDataSets:', this.allDataSets);
       },
     });
   }
-
   private performNonPatentSearch(resultTabData: any): void {
     console.log('Search Input:', resultTabData);
     const pageSize = 25;
@@ -1422,7 +1489,7 @@ console.log('allDataSets:', this.allDataSets);
       next: (res: any) => {
         const columnList = res?.data?.columns || [];
         Auth_operations.setColumnList(this.resultTabs.nonPatentLandscape.name, columnList);
-        console.log('get colum list activePatent:', columnList);
+        console.log('get colum list nonactivePatent:', columnList);
 
         if (!this.allDataSets[resultTabData.index]) {
           this.allDataSets[resultTabData.index] = {};

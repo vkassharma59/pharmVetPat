@@ -16,6 +16,7 @@ import { map, catchError, tap } from 'rxjs/operators';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { LoaderComponent } from "../../../commons/loader/loader.component";
 import * as ExcelJS from 'exceljs';
+import { UserPriviledgeService } from '../../../services/user_priviledges/user-priviledge.service';
 @Component({
   selector: 'app-gppd-db-card',
   standalone: true,
@@ -40,14 +41,10 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     data?: any[]; // Replace `any` with your actual data type
   };
   isExportingCSV: boolean = false;
-
-  isExportingExcel: boolean = false;
-
-
+   isExportingExcel: boolean = false;
   _currentChildAPIBody: any;
   loading = false;
-
-  displayedColumns: string[] = [];
+   displayedColumns: string[] = [];
   columnHeaders: { [key: string]: string } = {};
   filterableColumns: string[] = [];
   openFilter: { [key: string]: boolean } = {};
@@ -77,7 +74,8 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
   searchColumn: string | undefined;
 
   constructor(private cdr: ChangeDetectorRef,
-    private mainSearchService: MainSearchService
+    private mainSearchService: MainSearchService,
+     private UserPriviledgeService: UserPriviledgeService
   ) { }
 
   ngOnChanges(): void {
@@ -260,14 +258,53 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     this.filterInputs.forEach(inputRef => inputRef.nativeElement.value = '');
     this.fetchData();
   }
-  getAllDataFromApi(): Observable<any[]> {
+  fetchAndStoreVerticalLimits(): void {
+    this.UserPriviledgeService.getverticalcategoryData().subscribe({
+      next: (res: any) => {
+        const verticals = res?.data?.verticals;
+
+        if (Array.isArray(verticals)) {
+          localStorage.setItem('vertical_limits', JSON.stringify(verticals));
+
+          const pharmaVertical = verticals.find(
+            (v: any) => v.slug === 'pharmvetpat-mongodb' && v.report_limit != null
+          );
+
+          if (pharmaVertical) {
+            localStorage.setItem('report_limit', String(pharmaVertical.report_limit));
+          } else {
+            console.warn('PharmVetPat MongoDB vertical not found or report_limit is null');
+          }
+        }
+      },
+      error: err => console.error('Vertical limit fetch failed:', err),
+    });
+  }
+  getReportLimit(): number {
+    // Step 1: Try privilege_json first
     const priv = JSON.parse(localStorage.getItem('priviledge_json') || '{}');
-    const reportLimit = priv['pharmvetpat-mongodb']?.ReportLimit || 500;
-    const requestBody = {
+    const privLimit = Number(priv['pharmvetpat-mongodb']?.ReportLimit);
+
+    if (!isNaN(privLimit) && privLimit > 0) {
+      return privLimit;
+    }
+
+    // Step 2: Try vertical report_limit from localStorage
+    const storedLimit = Number(localStorage.getItem('report_limit'));
+
+    if (!isNaN(storedLimit) && storedLimit > 0) {
+      return storedLimit;
+    }
+
+    // Step 3: Default fallback
+    return 500;
+  }
+
+  getAllDataFromApi(): Observable<any[]> {
+     const requestBody = {
       ...this._currentChildAPIBody,
       page_no: 1, start: 0,
-     
-      length: reportLimit,
+      length: this.getReportLimit()
     };
 
     console.log('📦  response body:', requestBody);
@@ -303,9 +340,8 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
   //     .replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
   // }
 
- 
   // 3️⃣ Download CSV
-  downloadCSV(): void {
+ downloadCSV(): void {
     this.isExportingCSV = true;
     this.getAllDataFromApi().subscribe(data => {
       // Generate header row with Title Case
@@ -361,14 +397,10 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
       this.isExportingCSV = false;
     });
   }
-    
-
-  // 4️⃣ Download Excel
-  // 4️⃣ Download Excel
+  
   downloadExcel(): void {
     this.isExportingExcel = true;
-    
-    this.getAllDataFromApi().subscribe(data => {
+      this.getAllDataFromApi().subscribe(data => {
       const workbook = new ExcelJS.Workbook();
       const worksheet = workbook.addWorksheet('Exported Data');
 
@@ -438,7 +470,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
         });
         saveAs(blob, 'ExportedDataFormatted.xlsx');
         this.isExportingExcel = false;
-       
+    
       });
     });
   }
@@ -449,8 +481,6 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     return str.replace(/_/g, ' ')
       .replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
   }
-
-
-  
+ 
 }
 

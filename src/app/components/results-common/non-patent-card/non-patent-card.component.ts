@@ -15,6 +15,7 @@ import { map, catchError, tap } from 'rxjs/operators';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
+import { UserPriviledgeService } from '../../../services/user_priviledges/user-priviledge.service';
 @Component({
   selector: 'app-non-patent-card',
   standalone: true,
@@ -68,7 +69,8 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
   searchColumn: string | undefined;
 
   constructor(private cdr: ChangeDetectorRef,
-    private mainSearchService: MainSearchService
+    private mainSearchService: MainSearchService,
+     private UserPriviledgeService: UserPriviledgeService
   ) { }
 
   ngOnChanges(): void {
@@ -248,14 +250,54 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
 
     this.fetchData();
   }
+fetchAndStoreVerticalLimits(): void {
+    this.UserPriviledgeService.getverticalcategoryData().subscribe({
+      next: (res: any) => {
+        const verticals = res?.data?.verticals;
+
+        if (Array.isArray(verticals)) {
+          localStorage.setItem('vertical_limits', JSON.stringify(verticals));
+
+          const pharmaVertical = verticals.find(
+            (v: any) => v.slug === 'pharmvetpat-mongodb' && v.report_limit != null
+          );
+
+          if (pharmaVertical) {
+            localStorage.setItem('report_limit', String(pharmaVertical.report_limit));
+          } else {
+            console.warn('PharmVetPat MongoDB vertical not found or report_limit is null');
+          }
+        }
+      },
+      error: err => console.error('Vertical limit fetch failed:', err),
+    });
+  }
+  getReportLimit(): number {
+    // Step 1: Try privilege_json first
+    const priv = JSON.parse(localStorage.getItem('priviledge_json') || '{}');
+    const privLimit = Number(priv['pharmvetpat-mongodb']?.ReportLimit);
+
+    if (!isNaN(privLimit) && privLimit > 0) {
+      return privLimit;
+    }
+
+    // Step 2: Try vertical report_limit from localStorage
+    const storedLimit = Number(localStorage.getItem('report_limit'));
+
+    if (!isNaN(storedLimit) && storedLimit > 0) {
+      return storedLimit;
+    }
+
+    // Step 3: Default fallback
+    return 500;
+  }
 
   getAllDataFromApi(): Observable<any[]> {
-    const priv = JSON.parse(localStorage.getItem('priviledge_json') || '{}');
-    const reportLimit = priv['pharmvetpat-mongodb']?.ReportLimit || 500;
+   
     const requestBody = {
       ...this._currentChildAPIBody,
       page_no: 1, start: 0,
-      length: reportLimit,
+      length: this.getReportLimit()
     };
 
     console.log('📦  response body:', requestBody);
@@ -282,51 +324,49 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
     });
 
     doc.save('ExportedData.pdf');
-  }
-  // // Optional helper to capitalize column names
-  // toTitleCase(str: string): string {
-  //   return str.replace(/_/g, ' ')
-  //     .replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
-  // }
+  } 
+
  
  // 3️⃣ Download CSV
- downloadCSV(): void {
-   this.isExportingCSV =true;
-  this.getAllDataFromApi().subscribe(data => {
-    // Generate header row with Title Case
-    const headerRow = this.displayedColumns.map(col => this.toTitleCase(col)).join(',') + '\n';
-    let csvContent = headerRow;
+downloadCSV(): void {
+    this.isExportingCSV = true;
+    this.getAllDataFromApi().subscribe(data => {
+      // Generate header row with Title Case
+      const headerRow = this.displayedColumns.map(col => this.toTitleCase(col)).join(',') + '\n';
+      let csvContent = headerRow;
 
-    data.forEach(row => {
-      const rowData = this.displayedColumns.map(col => {
-        let value = row[col];
+      data.forEach(row => {
+        const rowData = this.displayedColumns.map(col => {
+          let value = row[col];
 
-        // Apply same formatting as Excel export
-        if (Array.isArray(value)) {
-          value = value.join(', ');
-        } else if (typeof value === 'object' && value !== null) {
-          value = JSON.stringify(value);
-        } else if (value === null || value === undefined) {
-          value = '';
-        }
+          // Apply same formatting as Excel export
+          if (Array.isArray(value)) {
+            value = value.join(', ');
+          } else if (typeof value === 'object' && value !== null) {
+            value = JSON.stringify(value);
+          } else if (value === null || value === undefined) {
+            value = '';
+          }
 
-        // Escape quotes and commas for CSV
-        let cell = String(value).replace(/"/g, '""');
-        if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
-          cell = `"${cell}"`;
-        }
-        return cell;
+          // Escape quotes and commas for CSV
+          let cell = String(value).replace(/"/g, '""');
+          if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
+            cell = `"${cell}"`;
+          }
+          return cell;
+        });
+
+        csvContent += rowData.join(',') + '\n';
       });
 
-      csvContent += rowData.join(',') + '\n';
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      saveAs(blob, 'ExportedData.csv');
+      this.isExportingCSV = false;
     });
+  }
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    saveAs(blob, 'ExportedData.csv');
-     this.isExportingCSV =false;
-  });
-}
 
+  // 4️⃣ Download Excel
 
   // 4️⃣ Download Excel
   downloadExcel(): void {

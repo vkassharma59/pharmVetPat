@@ -12,100 +12,101 @@
 
   <!-- Title Section -->
   <div class="mb-3">
-    <h4 class="text-primary mb-1"> {{ localCount }}. {{_data?.active_ingredients}}</h4>
-    <h5 class="text-dark">{{_data?.trade_name}}</h5>
+    <h4 class="text-primary mb-1" style="font-size: 18px;"> {{ localCount }}. {{_data?.active_ingredients}}</h4>
+    <h5 class="text-dark" style="font-size: 16px;">{{_data?.trade_name}}</h5>
   </div>
-
   <div class="row g-3 mb-4">
     <div class="col-md-3 col-sm-6" *ngIf="_data?.gbrn && getColumnName('gbrn')">
-      <h6 class="font-bold text-indigo-900">
+      <h6 class="font-bold text-indigo-900 overflow-y-auto" style="max-height: 50px;">
         {{ getColumnName('gbrn') }}
         <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.gbrn, copyBtn)">
           <i class="fas fa-copy"></i>
         </span>
       </h6>
-      <p class="text-wrap max-h-12 whitespace-normal">
-        {{ _data?.gbrn }}
-      </p>
+      <p class="text-wrap max-h-12 whitespace-normal overflow-y-auto">
+        {{ _data?.gbrn }} </p>
     </div>
 
     <div class="col-md-3 col-sm-6" *ngIf="_data?.gbrn && getColumnName('application_number')">
-      <h6 class="font-bold text-indigo-900">
+      <h6 class="font-bold text-indigo-900 overflow-y-auto" style="max-height: 50px;">
         {{ getColumnName('application_number') }}
         <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
           (click)="handleCopy(_data?.application_number, copyBtn)">
           <i class="fas fa-copy"></i>
         </span>
       </h6>
-      <p class="text-wrap max-h-12 whitespace-normal">
+      <p class="text-wrap max-h-12 whitespace-normal overflow-y-auto">
         {{ _data?.application_number }}
       </p>
     </div>
 
 
     <div class="col-md-3 col-sm-6" *ngIf="_data?.gbrn && getColumnName('active_ingredients')">
-      <h6 class="font-bold text-indigo-900">
+      <h6 class="font-bold text-indigo-900 overflow-y-auto" style="max-height: 50px;">
         {{ getColumnName('active_ingredients') }}
         <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
           (click)="handleCopy(_data?.active_ingredients, copyBtn)">
           <i class="fas fa-copy"></i>
         </span>
       </h6>
-      <p class="text-wrap max-h-12 whitespace-normal">
+      <p class="text-wrap max-h-12 whitespace-normal overflow-y-auto">
         {{ _data?.active_ingredients}}
       </p>
     </div>
 
 
     <div class="col-md-3 col-sm-6" *ngIf="_data?.gbrn && getColumnName('trade_name')">
-      <h6 class="font-bold text-indigo-900">
+      <h6 class="font-bold text-indigo-900 overflow-y-auto" style="max-height: 50px;">
         {{ getColumnName('trade_name') }}
         <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
           (click)="handleCopy(_data?.trade_name, copyBtn)">
           <i class="fas fa-copy"></i>
         </span>
       </h6>
-      <p class="text-wrap max-h-12 whitespace-normal">
+      <p class="text-wrap max-h-12 whitespace-normal overflow-y-auto">
         {{ _data?.trade_name }}
       </p>
     </div>
 
     <div class="col-md-3 col-sm-6" *ngIf="_data?.gbrn && getColumnName('ingredient')">
-      <h6 class="font-bold text-indigo-900">
+      <h6 class="font-bold text-indigo-900 overflow-y-auto" style="max-height: 50px;">
         {{ getColumnName('ingredient') }}
         <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
           (click)="handleCopy(_data?.ingredient, copyBtn)">
           <i class="fas fa-copy"></i>
         </span>
       </h6>
-      <p class="text-wrap max-h-12 whitespace-normal">
+      <p class="text-wrap max-h-12 whitespace-normal overflow-y-auto">
         {{ _data?.ingredient }}
       </p>
     </div>
   </div>
+
   <!-- Section: NADA ANADA -->
-  <div class="mb-4" >
+  <div class="mb-4">
     <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">NADA ANADA:</h5>
-    <div class="table-responsive">
+    <div class="table-responsive overflow-x-auto">
       <table class="table table-sm custom-table-green">
         <thead>
-          <tr>
-            <th>Application No.</th>
-            <th>Trade Name</th>
-            <th>Sponsor Name</th>
+          <tr class="custom-row-bg overflow-y-auto">
+            <th class="px-2 py-1" *ngFor="let key of getObjectKeys(veterinary_column1)">
+              {{ getColumnName1(key) }}
+            </th>
           </tr>
         </thead>
         <tbody>
           <ng-container *ngIf="_data?.nadaAnadaData?.length > 0; else noDataFound">
-            <tr *ngFor="let item of _data.nadaAnadaData" class="custom-row-bg">
-              <td>{{ item.application_number }}</td>
-              <td>{{ item.trade_name }}</td>
-              <td>{{ item.sponsor_name }}</td>
+            <tr *ngFor="let item of _data.nadaAnadaData" class="custom-row-bg overflow-y-auto">
+              <td class="px-2 py-1" *ngFor="let key of getObjectKeys(veterinary_column1)">
+                {{ item[key] || '-' }}
+              </td>
             </tr>
           </ng-container>
           <ng-template #noDataFound>
             <tr class="custom-row-bg">
-              <td colspan="3" class="text-muted">No NADA ANADA Data Found!</td>
+              <td class="text-left" [attr.colspan]="getObjectKeys(veterinary_column1)?.length">
+                No NADA ANADA Data Found!
+              </td>
             </tr>
           </ng-template>
         </tbody>
@@ -113,33 +114,29 @@
     </div>
   </div>
 
-
-
   <!-- Section: Patent Information -->
   <div class="mb-4">
     <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Patent Information:</h5>
-    <div class="table-responsive">
+    <div class="table-responsive overflow-x-auto">
       <table class="table table-sm custom-table-green">
         <thead>
-          <tr>
-            <th>Applicant No.</th>
-            <th>Trade Name</th>
-            <th>Patent</th>
-            <th>Expiration</th>
-          </tr>
+          <th class="px-2 py-1" *ngFor="let key of getObjectKeys(veterinary_column2)">
+            {{ getColumnName2(key) }}
+          </th>
         </thead>
         <tbody>
-          <ng-container *ngIf="_data?.patentInfoData?.length > 0; else noDataFound">
+          <ng-container *ngIf="_data?.patentInfoData?.length > 0; else noDataFound1">
             <tr *ngFor="let item of _data.patentInfoData" class="custom-row-bg">
-              <td>{{ item.application_number }}</td>
-              <td>{{ item.trade_name }}</td>
-              <td>{{ item.trade_name }}</td>
-              <td>{{ item.expiration }}</td>
+              <td class="px-2 py-1" *ngFor="let key of getObjectKeys(veterinary_column2)">
+                {{ item[key] || '-' }}
+              </td>
             </tr>
           </ng-container>
-          <ng-template #noDataFound>
+          <ng-template #noDataFound1>
             <tr class="custom-row-bg">
-              <td colspan="4" class="text-center">No Patent Info Data Found!</td>
+              <td class="text-left" [attr.colspan]="getObjectKeys(veterinary_column2)?.length">
+                No Patent Info Data Found!
+              </td>
             </tr>
           </ng-template>
 
@@ -149,32 +146,27 @@
   </div>
 
   <!-- Section: Exclusivity Periods -->
-  <div class="mb-4" >
+  <div class="mb-4">
     <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Exclusivity Periods:</h5>
-    <div class="table-responsive">
+    <div class="table-responsive overflow-x-auto">
       <table class="table table-sm custom-table-green">
         <thead>
-          <tr>
-            <th>Application No.</th>
-            <th>Trade Name</th>
-            <th>Period</th>
-            <th>Expiration</th>
-            <th>Green Book</th>
-          </tr>
+          <th class="px-2 py-1" *ngFor="let key of getObjectKeys(veterinary_column3)">
+            {{ getColumnName3(key) }}
+          </th>
         </thead>
         <tbody>
-          <ng-container *ngIf="_data?.exclusivityData?.length > 0; else noDataFound">
+          <ng-container *ngIf="_data?.exclusivityData?.length > 0; else noDataFound2">
             <tr *ngFor="let item of _data.exclusivityData" class="custom-row-bg">
-              <td>{{ item.application_number }}</td>
-              <td>{{ item.trade_name }}</td>
-              <td>{{ item.period }}</td>
-              <td>{{ item.expiration }}</td>
-              <td>{{ item.green_book }}</td>
+              <td class="px-2 py-1" *ngFor="let key of getObjectKeys(veterinary_column3)">
+                {{ item[key] || '-' }}
+              </td>
             </tr>
           </ng-container>
-          <ng-template #noDataFound>
+          <ng-template #noDataFound2>
             <tr class="custom-row-bg">
-              <td colspan="4" class="text-center">No Exclusivity Periods Data Found!</td>
+              <td class="text-left" [attr.colspan]="getObjectKeys(veterinary_column3)?.length">
+                No Exclusivity Periods Data Found!</td>
             </tr>
           </ng-template>
         </tbody>
@@ -183,66 +175,59 @@
   </div>
 
   <!-- Section: Notice of Hearing -->
-  <div class="mb-4" >
+  <div class="mb-4">
     <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Notice of Hearing:</h5>
-    <div class="table-responsive">
+    <div class="table-responsive overflow-x-auto">
       <table class="table table-sm custom-table-green">
         <thead>
-          <tr>
-            <th>Application No.</th>
-            <th>Trade Name</th>
-            <th>Sponsor Name</th>
-            <th>Publication Date</th>
-          </tr>
+          <th class="px-2 py-1" *ngFor="let key of getObjectKeys(veterinary_column4)">
+            {{ getColumnName4(key) }}
+          </th>
         </thead>
         <tbody>
-            <ng-container *ngIf="_data?.noticeOfHearingData?.length > 0; else noDataFound">
+          <ng-container *ngIf="_data?.noticeOfHearingData?.length > 0; else noDataFound3">
             <tr *ngFor="let item of _data.noticeOfHearingData" class="custom-row-bg">
-              <td>{{ item.application_number }}</td>
-              <td>{{ item.trade_name }}</td>
-              <td>{{ item.sponsor_name }}</td>
-              <td>{{ item.publication_date }}</td>
-             
+              <td class="px-2 py-1" *ngFor="let key of getObjectKeys(veterinary_column4)">
+                {{ item[key] || '-' }}
+              </td>
             </tr>
           </ng-container>
-          <ng-template #noDataFound>
+          <ng-template #noDataFound3>
             <tr class="custom-row-bg">
-              <td colspan="4" class="text-center">No Exclusivity Periods Data Found!</td>
+              <td class="text-left" [attr.colspan]="getObjectKeys(veterinary_column4)?.length">
+                No Exclusivity Periods Data Found!</td>
             </tr>
           </ng-template>
-            </tbody>
+        </tbody>
       </table>
     </div>
   </div>
 
   <!-- Section: Voluntary Withdrawal -->
-  <div class="mb-4" >
+  <div class="mb-4">
     <h5 class="fw-bold mb-2" style="color: #0056b3; font-size: 15px;">Voluntary Withdrawal:</h5>
-    <div class="table-responsive">
+    <div class="table-responsive overflow-x-auto">
       <table class="table table-sm custom-table-green">
         <thead>
-          <tr>
-            <th>Application No.</th>
-            <th>Date Withdrawn</th>
-            <th>Ingredients</th>
-            <th>Sponsor When Withdrawn</th>
-          </tr>
+          <th class="px-2 py-1" *ngFor="let key of getObjectKeys(veterinary_column5)">
+            {{ getColumnName5(key) }}
+          </th>
         </thead>
         <tbody>
-           <ng-container *ngIf="_data?.voluntaryWithdrawalData?.length > 0; else noDataFound">
+          <ng-container *ngIf="_data?.voluntaryWithdrawalData?.length > 0; else noDataFound4">
             <tr *ngFor="let item of _data.voluntaryWithdrawalData" class="custom-row-bg">
-              <td>{{ item.application_number }}</td>
-              <td>{{ item.date_withdrawn }}</td>
-              <td>{{ item.ingredients }}</td>
-              <td>{{ item.sponsor_when_withdrawn }}</td>
+              <td class="px-2 py-1" *ngFor="let key of getObjectKeys(veterinary_column5)">
+                {{ item[key] || '-' }}
+              </td>
             </tr>
           </ng-container>
-          <ng-template #noDataFound>
+          <ng-template #noDataFound4>
             <tr class="custom-row-bg">
-              <td colspan="4" class="text-center">No Voluntary Withdrawal Data Found!</td>
+              <td class="text-left" [attr.colspan]="getObjectKeys(veterinary_column5)?.length">
+                No Voluntary Withdrawal Data Found!</td>
             </tr>
           </ng-template>
-                  </tbody>
+        </tbody>
       </table>
     </div>
   </div>

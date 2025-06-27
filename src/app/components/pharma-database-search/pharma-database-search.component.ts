@@ -41,7 +41,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   advanceSearch: any = {
     autosuggestionList: [],
     dateType: '',
-   developmentStage: '',
+    developmentStage: '',
     innovatorOriginator: '',
     devStage: '',
     innovator: '',
@@ -319,9 +319,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     );
   }
 
-
-
-
   isInputEnabled(): boolean {
     return !!(this.intermediateSearch.filter && this.intermediateSearch.keyword?.trim());
   }
@@ -389,7 +386,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         break;
     }
   }
-
 
   handleSuggestionClick(value: any, searchType = '', index: number = 0) {
     this.showSuggestions = false;
@@ -463,14 +459,11 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       }
     })
   }
-    isAdvancedInputDisabled(): boolean {
+  isAdvancedInputDisabled(): boolean {
     const mainInput = this.advanceSearch?.filterInputs?.[0];
     return !(mainInput?.filter?.trim() && mainInput?.keyword?.trim());
   }
-
-
-
-  checkPriviledgeAndHandleSearch(searchType: string = '') {
+ checkPriviledgeAndHandleSearch(searchType: string = '') {
     const { startSales, endSales, filterInputs, simpleSearch, devStage, innovator } = this.advanceSearch;
 
     // 🚨 Validate sales range if only one value is given
@@ -482,7 +475,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       this.priviledgeModal.emit('Please enter Start Range.');
       return;
     }
-  
+
     const hasFilledKeyword = filterInputs?.some(input =>
       input.filter?.trim() && input.keyword?.trim()
     );
@@ -535,12 +528,12 @@ export class pharmaDatabaseSearchComponent implements OnInit {
             // console.log("Dailylimit", privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit);
             // console.log("limittodays", todaysLimit?.searchCount);
 
-            // // 🛑 If today's search count is exactly 0, block the search first
-            // if (todaysLimit?.searchCount == 0) {
-            //   this.setLoadingState.emit(false);
-            //   this.priviledgeModal.emit('Your  Search Limit is over for this Platform.Please upgrade the account.');
-            //   return;
-            // }
+            // 🛑 If today's search count is exactly 0, block the search first
+            if (privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit == 0) {
+              this.setLoadingState.emit(false);
+              this.priviledgeModal.emit('Your  Search Limit is over for this Platform.Please upgrade the account.');
+              return;
+            }
 
 
             const remainingLimit = privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit - todaysLimit?.searchCount;
@@ -588,11 +581,13 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   }
   private hasSearchPrivileges(privilegeData: any): boolean {
     if (!privilegeData) return false;
-
     const dbPrivileges = privilegeData?.['pharmvetpat-mongodb'];
+    // ✅ Check if object is assigned
+    if (!dbPrivileges) return false;
     return (
       dbPrivileges?.View !== 'false' &&
       dbPrivileges?.Search !== '' &&
+      dbPrivileges?.Search !== "0" &&
       dbPrivileges?.Search !== 0
     );
   }

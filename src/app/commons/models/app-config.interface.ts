@@ -113,6 +113,9 @@ export interface AppConfig {
       loginUrl: string;
       accessLoginApi: string;
     };
+    vertical: {
+      verticalcategory: string,
+    },
     pdfGeneration: {
       generatePdf: string;
     };

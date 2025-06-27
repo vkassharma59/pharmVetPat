@@ -22,66 +22,70 @@ export class VeterinaryUsApprovalCardComponent implements OnInit, OnDestroy {
   resultTabs: any = {};
   copied: boolean = false;
   veterinary_column: any = {};
+  veterinary_column1: any = {};
+  veterinary_column2: any = {};
+  veterinary_column3: any = {};
+  veterinary_column4: any = {};
+  veterinary_column5: any = {};
   apiCallInstance: number = 0; // ✅ Instance-specific count
+  // columnMap: { [key: string]: any[] } = {};
+  dataMap: { [key: string]: any[] } = {};
+  columnMap: any = {}; // already being used
 
   localCount: number = 0;
   @Input()
   get data() {
     return this._data;
   }
-  // set data(value: any) {
-  //   if (value) {
-  //     console.log(value);
-  //     this._data = value;
-  //   }
-  // }
+
   set data(value: any) {
     if (value && Object.keys(value).length > 0) {
       VeterinaryUsApprovalCardComponent.apiCallCount++; // Increment global counter
       this.localCount = VeterinaryUsApprovalCardComponent.apiCallCount; // Assign to local instance
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
-      if (column_list[this.resultTabs.veterinaryUsApproval?.name]?.length > 0) {
-        for (let i = 0; i < column_list[this.resultTabs.veterinaryUsApproval.name].length; i++) {
-          this.veterinary_column[column_list[this.resultTabs.veterinaryUsApproval.name][i].value] =
-            column_list[this.resultTabs.veterinaryUsApproval.name][i].name;
+      // ✅ Only get the voluntaryWithdrawalColumnList
+      //  console.log("oluntaryCols?.columns",voluntaryCols[this.resultTabs.veterinaryUsApproval?.name])
+      // const column_list = voluntaryCols?.columns;
+      if (column_list[this.resultTabs.veterinaryUsApproval?.name]?.exclusivityColumnList?.length > 0) {
+        for (let col of column_list[this.resultTabs.veterinaryUsApproval?.name]?.exclusivityColumnList) {
+          this.veterinary_column3[col.value] = col.name;
         }
       }
-
+      if (column_list[this.resultTabs.veterinaryUsApproval?.name]?.columns?.length > 0) {
+        for (let col of column_list[this.resultTabs.veterinaryUsApproval?.name]?.columns) {
+          this.veterinary_column[col.value] = col.name;
+        }
+      }
+      if (column_list[this.resultTabs.veterinaryUsApproval?.name]?.nadaAnadaColumnList?.length > 0) {
+        for (let col of column_list[this.resultTabs.veterinaryUsApproval?.name]?.nadaAnadaColumnList) {
+          this.veterinary_column1[col.value] = col.name;
+        }
+      }
+      if (column_list[this.resultTabs.veterinaryUsApproval?.name]?.noticeOfHearingColumnList?.length > 0) {
+        for (let col of column_list[this.resultTabs.veterinaryUsApproval?.name]?.noticeOfHearingColumnList) {
+          this.veterinary_column4[col.value] = col.name;
+        }
+      }
+      if (column_list[this.resultTabs.veterinaryUsApproval?.name]?.patentInfoColumnList?.length > 0) {
+        for (let col of column_list[this.resultTabs.veterinaryUsApproval?.name]?.patentInfoColumnList) {
+          this.veterinary_column2[col.value] = col.name;
+        }
+      }
+      if (column_list[this.resultTabs.veterinaryUsApproval?.name]?.voluntaryWithdrawalColumnList?.length > 0) {
+        for (let col of column_list[this.resultTabs.veterinaryUsApproval?.name]?.voluntaryWithdrawalColumnList) {
+          this.veterinary_column5[col.value] = col.name;
+        }
+      }
       this._data = value;
     }
   }
-
-
   constructor(private dialog: MatDialog, private utilityService: UtilityService) { }
-
   ngOnInit() {
-    console.log("bydayfhuasg", this._data)
-    // ✅ Assign static mock data
-    // this._data = {
-    //   active_ingredient_biologics_combination: "ATORVASTATIN CALCIUM",
-    //   defendants: "ACEPROMAZINE MALEATE",
-    //   gbrn: "GBR98765",
-    //   patent_numbers: "015-030",
-    //   country: "PROMACE® INJECTABLE",
-    //   uniform_resource_locator_url: "https://chemrobotics.com/litigation/pfizer-vs-ranbaxy",
-    //   plaintiff_logo: "assets/images/pfizer_logo.png",
-    //   defendant_logo: "assets/images/ranbaxy_logo.png"
-    // };
-    // this.litigation_column = {
-    //   gbrn: "GBRN",
-    //   patent_numbers: "Application Number",
-    //   defendants: "Active Ingredient",
-    //   country: "Trade Name",
-    //   uniform_resource_locator_url: "URL"
-    // };
     if (VeterinaryUsApprovalCardComponent.apiCallCount === 0) {
       VeterinaryUsApprovalCardComponent.apiCallCount = 0;
     }
-    // VeterinaryUsApprovalCardComponent.apiCallCount++;
-    // this.localCount = VeterinaryUsApprovalCardComponent.apiCallCount;
   }
-
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
@@ -91,6 +95,27 @@ export class VeterinaryUsApprovalCardComponent implements OnInit, OnDestroy {
     VeterinaryUsApprovalCardComponent.apiCallCount = 0;
   }
 
+  getColumns(sectionName: string): any[] {
+    return this.columnMap[sectionName] || [];
+  }
+  getObjectKeys(obj: any): string[] {
+    return obj ? Object.keys(obj) : [];
+  }
+
+  getSectionTitle(key: string): string {
+    const sectionMap: any = {
+      nadaAnadaData: 'NADA ANADA',
+      exclusivityData: 'Exclusivity Periods',
+      noticeOfHearingData: 'Notice of Hearing',
+      patentInfoData: 'Patent Information',
+      voluntaryWithdrawalData: 'Voluntary Withdrawal'
+    };
+    return sectionMap[key] || key;
+  }
+
+
+
+
   toggleMoreInfo(): void {
     this.MoreInfo = !this.MoreInfo;
   }
@@ -98,7 +123,21 @@ export class VeterinaryUsApprovalCardComponent implements OnInit, OnDestroy {
   getColumnName(value: any) {
     return this.veterinary_column[value] || value;
   }
-
+  getColumnName1(value: any) {
+    return this.veterinary_column1[value] || value;
+  }
+  getColumnName2(value: any) {
+    return this.veterinary_column2[value] || value;
+  }
+  getColumnName3(value: any) {
+    return this.veterinary_column3[value] || value;
+  }
+  getColumnName4(value: any) {
+    return this.veterinary_column4[value] || value;
+  }
+  getColumnName5(value: any) {
+    return this.veterinary_column5[value] || value;
+  }
   getCompanyLogo(value: any): string {
     return `assets/images/${value?.company_logo}`;
   }

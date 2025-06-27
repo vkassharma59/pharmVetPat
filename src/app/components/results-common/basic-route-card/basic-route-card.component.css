@@ -55,3 +55,64 @@ h1 {
     background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
     justify-content: space-between;
   }
+  /* Main container background */
+.product-hilight-section0 {
+  background-color: #F5FBFF;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* Section title */
+.product-hilight-section0 h3.ph-box-main-title {
+  font-weight: 500;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+/* All card boxes */
+.product-hilight-section0 .ph-box {
+  display: inline-block;
+ 
+ 
+  margin: 10px 8px;
+  padding: 10px 12px;
+   vertical-align: top;
+  
+  border: 1px solid  #073599;
+    width: 250px;
+    padding: 5px;
+    background: #fff;
+    text-align: center;
+    font-weight: 600;
+    color: #0032a0;
+    display: inline-block;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px #073599;
+    margin-right: 15px;
+}
+
+/* Heading inside each box */
+.product-hilight-section0 .ph-box:first-child {
+  font-weight: 600;
+}
+
+/* Labels (first line) */
+.product-hilight-section0 .ph-box::first-line {
+  color:  #0032a0;
+  font-weight: 500;
+}
+h5 {
+  display: block;
+  color:black;
+  font-size: 16px;
+  font-weight: 500 !important;
+ margin-left:8px;
+}
+/* Values (second line / spans) */
+.product-hilight-section0 .ph-box span {
+  display: block;
+  color: #254995;
+  font-size: 14px;
+  margin-top: 3px;
+  font-weight: 500;
+}
