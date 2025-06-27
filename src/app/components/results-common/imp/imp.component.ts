@@ -15,7 +15,6 @@ import { ChildPagingComponent } from '../../../commons/child-paging/child-paging
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
 import { Auth_operations } from '../../../Utils/SetToken';
-import { LoadingService } from '../../../services/loading-service/loading.service';
 
 @Component({
   selector: 'chem-imp',
@@ -38,7 +37,8 @@ export class ImpComponent {
   _currentChildAPIBody: any;
   impPatentApiBody: any;
   impPatentFilters: any = {};
-
+ @Input() index: any;
+   @Input() tabName?: string;
   filterConfigs = [
     {
       key: 'product',
@@ -90,13 +90,9 @@ export class ImpComponent {
     }
   }
 
-  @Input() index: any;
-  @Input() tabName?: string;
-
   constructor(
     private utilityService: UtilityService,
-    private mainSearchService: MainSearchService,
-    public loadingService: LoadingService
+    private mainSearchService: MainSearchService
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
@@ -127,54 +123,32 @@ export class ImpComponent {
     });
   }
 
-handleFetchFilters() {
-  this.impPatentApiBody.filter_enable = true;
-  this.loadingService.setLoading(this.resultTabs.impPatents.name, this.index, true);
+  handleFetchFilters() {
+    this.impPatentApiBody.filter_enable = true;
 
-  this.mainSearchService.impPatentsSearchSpecific(this.impPatentApiBody).subscribe({
-    next: (res) => {
-      // RAW FILTERS
-      const productRaw = res?.data?.product || [];
-      const assigneeRaw = res?.data?.assignee || [];
-      const orderByRaw = res?.data?.order_by || [];
-      const patentTypeRaw = res?.data?.patent_type || [];
+    this.mainSearchService.impPatentsSearchSpecific(this.impPatentApiBody).subscribe({
+      next: (res) => {
+        this.impPatentFilters.productFilters = res?.data?.product || [];
+        this.impPatentFilters.orderByFilters = res?.data?.order_by || [];
 
-      // ✅ MAP TO { name, value } FORM
-      this.impPatentFilters.productFilters = productRaw.map((item: string) => ({
-        name: item,
-        value: item
-      }));
+        this.impPatentFilters.patentTypeFilters = (res?.data?.patent_type || []).map((item: any) => {
+          const key = Object.keys(item)[0];
+          const count = item[key]?.length || 0;
+          return {
+            name: `${key} (${count})`,
+            value: key
+          };
+        });
 
-      this.impPatentFilters.assigneeFilters = assigneeRaw.map((item: string) => ({
-        name: item,
-        value: item
-      }));
-
-      this.impPatentFilters.orderByFilters = orderByRaw.map((item: string) => ({
-        name: item,
-        value: item
-      }));
-
-      this.impPatentFilters.patentTypeFilters = patentTypeRaw.map((item: any) => {
-        const key = Object.keys(item)[0];
-        const count = item[key]?.length || 0;
-        return {
-          name: `${key} (${count})`,
-          value: key
-        };
-      });
-
-      this.impPatentApiBody.filter_enable = false;
-      this.loadingService.setLoading(this.resultTabs.impPatents.name, this.index, false);
-    },
-    error: (err) => {
-      console.error(err);
-      this.impPatentApiBody.filter_enable = false;
-    }
-  });
-}
-
-
+        this.impPatentFilters.assigneeFilters = res?.data?.assignee || [];
+        this.impPatentApiBody.filter_enable = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.impPatentApiBody.filter_enable = false;
+      }
+    });
+  }
 
   setFilterLabel(filterKey: string, label: string) {
     this.filterConfigs = this.filterConfigs.map((item) => {
@@ -201,8 +175,7 @@ handleFetchFilters() {
       this.setFilterLabel(filterKey, '');
     } else {
       this.impPatentApiBody.filters[filterKey] = value;
-     this.setFilterLabel(filterKey, name ?? value ?? '');
-
+      this.setFilterLabel(filterKey, name || '');
     }
 
     this._currentChildAPIBody = {
