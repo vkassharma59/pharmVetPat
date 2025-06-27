@@ -100,6 +100,11 @@ export class MainSearchService {
       .get(this.apiUrls.basicProductInfo.filterColumns, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
+  getProductId(): Observable<any> {
+    return this.http
+      .get(this.apiUrls.basicProductInfo.productId, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
 
   technicalRoutesSearchSpecific(props: any): Observable<any> {
     const body = props;

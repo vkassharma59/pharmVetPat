@@ -3,8 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-
+import { AppConfigValues } from '../../config/app-config';
 const RESULT_TABS = [
   { name: 'productInfo', label: 'Product Info', isActive: true },
   { name: 'impPatents', label: 'IMP Patents', isActive: false },
@@ -76,6 +75,10 @@ export class UtilityService {
       }, {})
     );
   }
+  getProductHighlights(productId: string): Observable<any> {
+  const url = `${AppConfigValues.appUrls.basicProductInfo.productId}/${productId}`;
+  return this.http.get<any>(url);
+}
 
   getSomeData(): Observable<any[]> {
     const apiUrl = environment.apiUrl; // replace with actual URL

@@ -30,21 +30,26 @@
               View Updated Patent at Patent Scope (WIPO)
             </a>
           </button>
-          <button class="btn btn-success w-50 w-sm-auto" >View Product Highlight</button>
+          <button (click)="viewProduct()" class="btn btn-success w-50 w-sm-auto">View Product Highlight</button>
         </div>
       </div>
-      <div class="col-md-12 product-hilight-box product-hilight-section0" style="background-color: #F5FBFF;" ng-show="routesList.highlights" style="">
+      <div *ngIf="viewProductHighlight" class="col-md-12 product-hilight-box product-hilight-section0"
+        style="background-color: #F5FBFF;" ng-show="routesList.highlights">
         <h3 class="text-center ph-box-main-title">Product Highlight</h3>
 
         <h5>Competitors</h5>
-        <p class="ph-box">Total no. of Players<br>
-           <span ng-if="routesList.highlights1!=''"
-            class="ng-binding ng-scope">204</span>
+        <p class="ph-box">
+          Total no. of Players<br>
+          <span *ngIf="routesList.total_no_of_players" class="ng-binding ng-scope">
+            {{ routesList.total_no_of_players }}
+          </span>
         </p>
+        <ng-template #nodata>
+          N/A
+        </ng-template>
         <h5>Exclusivity</h5>
         <p class="ph-box">Product Patent Expiry<br>
-          <span ng-if="routesList.GENERIC_CONSTRAINING_DATE"
-            class="ng-binding ng-scope">2022-07-05</span>
+          <span ng-if="routesList.GENERIC_CONSTRAINING_DATE" class="ng-binding ng-scope">2022-07-05</span>
         </p>
         <p class="ph-box">USA-Exclusivity<br>
           <!-- ngIf: routesList.EXCLUSIVITY_NEW_CHEMICAL_ENTITY -->
@@ -63,10 +68,11 @@
           <!-- ngIf: routesList.highlights1=='' -->
         </p>
         <h5>Supplier/Buyer</h5>
-        <p class="ph-box">XIM DB<br>
-          <!-- ngIf: routesList.highlights1!='' --><span ng-if="routesList.highlights1!=''"
-            class="ng-binding ng-scope">1884</span><!-- end ngIf: routesList.highlights1!='' -->
-          <!-- ngIf: routesList.highlights1=='' -->
+        <p class="ph-box">
+          XIM<br>
+          <span *ngIf="routesList.childSectionKey" class="ng-binding ng-scope">
+            {{ routesList.childSectionValue }}
+          </span>
         </p>
         <p class="ph-box">Import<br>
           <!-- ngIf: routesList.highlights2!='' --><span ng-if="routesList.highlights2!=''"
@@ -210,7 +216,7 @@
           <!-- ngIf: routesList.highlights1=='' -->
         </p>
       </div>
-     <div class="col-lg-3" *ngIf="_data?.CHEMICAL_STRUCTURE && getColumnName('CHEMICAL_STRUCTURE')">
+      <div class="col-lg-3" *ngIf="_data?.CHEMICAL_STRUCTURE && getColumnName('CHEMICAL_STRUCTURE')">
         <div class="mt-4">
           <img [src]="getImageUrl(_data)" alt="error" class="ps-7 pe-7 aspect-auto object-contain"
             style="height: 256px" />

@@ -23,6 +23,7 @@ export const AppConfigValues: AppConfig = {
         filterColumns: `${appUrl.apiUrl}/basic-product-info/filter-columns`,
         advanceAutoSuggestions: `${appUrl.apiUrl}/basic-product-info/advance-auto-suggestions`,
         advanceSearchResults: `${appUrl.apiUrl}/basic-product-info/advance-search`,
+        productId:`${appUrl.apiUrl}/basic-product-info/product-highlight`,
       },
       technicalRoutes: {
         filterColumnList: `${appUrl.apiUrl}/technical-routes/filter-column-list`,

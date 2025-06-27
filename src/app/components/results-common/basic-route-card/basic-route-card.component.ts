@@ -23,51 +23,84 @@ export class BasicRouteCardComponent {
 
   static apiCallCount: number = 0; // Global static counter
   localCount: number = 0; // Instance-specific counter
-
+productHighlights: any[] = [];
   resultTabs: any = {};
   processedSynonyms: { number: string; text: string }[] = [];
   basic_column: any = {};
   _data: any = [];
-
+routesList: any = {};
   @Input() 
   get data() {
     return this._data;
   }
-  set data(value: any) {
-    if (value && Object.keys(value).length > 0) {
-      BasicRouteCardComponent.apiCallCount++; // Increment static counter
-      this.localCount = BasicRouteCardComponent.apiCallCount; // Assign to instance
-      this._data = value;
-      this.resultTabs = this.utilityService.getAllTabsName();
-      const column_list = Auth_operations.getColumnList();
-      if (column_list[this.resultTabs.productInfo?.name]?.length > 0) {
-        for (let i = 0; i < column_list[this.resultTabs.productInfo.name].length; i++) {
-          this.basic_column[column_list[this.resultTabs.productInfo.name][i].value] =
-            column_list[this.resultTabs.productInfo.name][i].name;
-        }
-        this.processSynonyms();
+ set data(value: any) {
+  if (value && Object.keys(value).length > 0) {
+    BasicRouteCardComponent.apiCallCount++;
+    this.localCount = BasicRouteCardComponent.apiCallCount;
+    this._data = value;
+
+    this.resultTabs = this.utilityService.getAllTabsName();
+    const column_list = Auth_operations.getColumnList();
+
+    if (column_list[this.resultTabs.productInfo?.name]?.length > 0) {
+      for (let i = 0; i < column_list[this.resultTabs.productInfo.name].length; i++) {
+        this.basic_column[column_list[this.resultTabs.productInfo.name][i].value] =
+          column_list[this.resultTabs.productInfo.name][i].name;
       }
+      this.processSynonyms();
+    }
+
+    // ✅ Fetch Product Highlights from API
+    const productId = value?.PRODUCT_ID || value?.id;
+    if (productId) {
+      this.utilityService.getProductHighlights(productId).subscribe({
+        next: (res: any) => {
+          this.productHighlights = res?.data?.productHighlights || [];
+          this.viewProductHighlight = this.productHighlights.length > 0;
+
+          // ✅ Also convert productHighlights into flat key-value object for span bindings
+          this.routesList = {};
+          this.productHighlights.forEach((section: any) => {
+            section.sectionData?.forEach((item: any) => {
+              const key = this.slugify(item.childSectionKey);
+              this.routesList[key] = item.childSectionValue;
+              console.log("hfbjkdshfsdjf",this.routesList[key]
+                
+              )
+            });
+          });
+        },
+        error: (err) => {
+          console.error('Product highlight fetch failed', err);
+          this.viewProductHighlight = false;
+        }
+      });
     }
   }
+}
 
+  slugify(key: string): string {
+  return key?.toLowerCase().replace(/[^a-z0-9]+/g, '_');
+}
+viewProductHighlight:boolean=false;
   MoreApplicationInfo: any = false;
-  linkdata: any = {
-    SYNONYMSCOMMON_NAME: `1. BROMOACETIC ACID
-                          2. 2-Bromoacetic acid
-                          3. 79-08-3
-                          4. Monobromoacetic acid
-                          5. Bromoethanoic acid
-                          6. Acetic acid, bromo-
-                          7. To NTU
-                          8. Bromoacetate ion
-                          9. Acide bromacetique
-                          10. 2-Bromoacetyl Group
-                          11. 2-bromoethanoic acid
-                          12. Acetic acid, 2-bromo-
-                          13. Bromo-acetic acid
-                          14. Monobromessigsaeure
-                          15. Kyselina bromoctova`,
-  };
+  // linkdata: any = {
+  //   SYNONYMSCOMMON_NAME: `1. BROMOACETIC ACID
+  //                         2. 2-Bromoacetic acid
+  //                         3. 79-08-3
+  //                         4. Monobromoacetic acid
+  //                         5. Bromoethanoic acid
+  //                         6. Acetic acid, bromo-
+  //                         7. To NTU
+  //                         8. Bromoacetate ion
+  //                         9. Acide bromacetique
+  //                         10. 2-Bromoacetyl Group
+  //                         11. 2-bromoethanoic acid
+  //                         12. Acetic acid, 2-bromo-
+  //                         13. Bromo-acetic acid
+  //                         14. Monobromessigsaeure
+  //                         15. Kyselina bromoctova`,
+  // };
 
   constructor(
     private dialog: MatDialog,
@@ -93,6 +126,9 @@ export class BasicRouteCardComponent {
     return `${environment.baseUrl}${environment.domainNameCompanyLogo}${data?.INVENTOR_LOGO}`;
   }
 
+  viewProduct(){
+    this.viewProductHighlight=!this.viewProductHighlight;
+  }
   toggleMoreApplicationInfo() {
     this.MoreApplicationInfo = !this.MoreApplicationInfo;
   }
