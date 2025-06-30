@@ -15,6 +15,7 @@ import { ChildPagingComponent } from '../../../commons/child-paging/child-paging
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
 import { Auth_operations } from '../../../Utils/SetToken';
+import { LoadingService } from '../../../services/loading-service/loading.service';
 
 @Component({
   selector: 'chem-imp',
@@ -92,7 +93,8 @@ export class ImpComponent {
 
   constructor(
     private utilityService: UtilityService,
-    private mainSearchService: MainSearchService
+    private mainSearchService: MainSearchService,
+    public loadingService: LoadingService
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;

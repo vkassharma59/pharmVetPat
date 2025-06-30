@@ -56,7 +56,12 @@
       {{resultTabs.impPatents?.label}}
     </div>
     <div class="card-body">
-      <p>No Data found!</p>
+      <ng-container *ngIf="loadingService.getLoading(resultTabs.impPatents.name, index); else noDataText">
+        <div class="loading-text">Loading<span class="dots"></span></div>
+      </ng-container>
+      <ng-template #noDataText>
+        <p>No Data found!</p>
+      </ng-template>
     </div>
   </div>
 </ng-template>

@@ -24,6 +24,8 @@ export class BasicRouteCardComponent {
   static apiCallCount: number = 0; // Global static counter
   localCount: number = 0; // Instance-specific counter
   productHighlights: any[] = [];
+  isLoading: boolean = false;
+  toggleProductHighlights: boolean = false;
   resultTabs: any = {};
   processedSynonyms: { number: string; text: string }[] = [];
   basic_column: any = {};
@@ -53,23 +55,6 @@ export class BasicRouteCardComponent {
   }
   viewProductHighlight: boolean = false;
   MoreApplicationInfo: any = false;
-  // linkdata: any = {
-  //   SYNONYMSCOMMON_NAME: `1. BROMOACETIC ACID
-  //                         2. 2-Bromoacetic acid
-  //                         3. 79-08-3
-  //                         4. Monobromoacetic acid
-  //                         5. Bromoethanoic acid
-  //                         6. Acetic acid, bromo-
-  //                         7. To NTU
-  //                         8. Bromoacetate ion
-  //                         9. Acide bromacetique
-  //                         10. 2-Bromoacetyl Group
-  //                         11. 2-bromoethanoic acid
-  //                         12. Acetic acid, 2-bromo-
-  //                         13. Bromo-acetic acid
-  //                         14. Monobromessigsaeure
-  //                         15. Kyselina bromoctova`,
-  // };
 
   constructor(
     private dialog: MatDialog,
@@ -80,32 +65,14 @@ export class BasicRouteCardComponent {
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
- ngOnInit() {
-  console.log('ngOnInit called');
 
-  // Reset counter only when the component is first loaded
-  if (BasicRouteCardComponent.apiCallCount === 0) {
-    console.log('Resetting apiCallCount to 0');
-    BasicRouteCardComponent.apiCallCount = 0;
-  }
-
-  console.log('Calling getProductHighlights API...');
-  this.MainSearchService.getProductHighlights().subscribe({
-    next: (response) => {
-      console.log('API response received:', response);
-      if (response.status && response.code === 200) {
-        this.productHighlights = response.data.productHighlights;
-        console.log('Product Highlights:', this.productHighlights);
-      } else {
-        console.warn('API response status not OK:', response.status, response.code);
-      }
-    },
-    error: (err) => {
-      console.error('API Error:', err);
+  ngOnInit() {
+    // Reset counter only when the component is first loaded
+    if (BasicRouteCardComponent.apiCallCount === 0) {
+      console.log('Resetting apiCallCount to 0');
+      BasicRouteCardComponent.apiCallCount = 0;
     }
-  });
-}
-
+  }
 
   ngOnDestroy() {
     // Reset counter when navigating away from the component
@@ -117,7 +84,26 @@ export class BasicRouteCardComponent {
   }
 
   viewProduct() {
-    this.viewProductHighlight = !this.viewProductHighlight;
+    this.toggleProductHighlights = !this.toggleProductHighlights;
+    if(this.toggleProductHighlights && this.productHighlights.length === 0) {
+      this.isLoading = true;
+      this.MainSearchService.getProductHighlights().subscribe({
+        next: (response) => {
+          console.log('API response received:', response);
+          if (response.status) {
+            this.isLoading = false;
+            this.productHighlights = response.data.productHighlights;
+            console.log('Product Highlights:', this.productHighlights);
+          } else {
+            this.isLoading = false;
+            console.warn('API response status not OK:', response.status, response.code);
+          }
+        },
+        error: (err) => {
+          console.error('API Error:', err);
+        }
+      });
+    }
   }
   toggleMoreApplicationInfo() {
     this.MoreApplicationInfo = !this.MoreApplicationInfo;

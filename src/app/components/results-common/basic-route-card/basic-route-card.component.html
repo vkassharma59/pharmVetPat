@@ -7,17 +7,6 @@
 <div class="card-body">
   <div class="pb-3 mb-3 px-2 rounded-lg" *ngIf="!isEmptyObject(_data); else noData">
     <div class="row">
-      <!-- <div class="col-md-12">
-        <div class="d-flex justify-content-between align-items-center py-2">
-          <p class="mb-0 px-3 py-2" style="background-color: #d9dbe4; color: #545454; border-radius: 5px;">
-            <strong>Generic Constraining Date (GCD):</strong> 2013-12-31
-          </p>
-          <div class="d-flex gap-2">
-            <button class="btn btn-primary" [disabled]="!_data?.INCHIKEY" ><a href="https://patentscope.wipo.int/search/en/result.jsf?inchikey={{_data?.INCHIKEY}}" target="_blank">View Updated Patent at Patent Scope (WIPO)</a></button>
-            <button class="btn btn-success">View Product Highlight</button>
-          </div>
-        </div> 
-      </div> -->
       <div class="d-flex justify-content-between align-items-center py-2 flex-sm-row flex-column text-center">
         <p class="mb-2 mb-sm-0 px-3 py-2 w-50 w-sm-auto"
           style="background-color: #d9dbe4; color: #545454; border-radius: 5px;">
@@ -30,191 +19,29 @@
               View Updated Patent at Patent Scope (WIPO)
             </a>
           </button>
-          <button (click)="viewProduct()" class="btn btn-success w-50 w-sm-auto">View Product Highlight</button>
+          <button (click)="viewProduct()" class="btn btn-success w-50 w-sm-auto">{{(toggleProductHighlights) ? 'Hide Product Highlight' : 'View Product Highlight'}}</button>
         </div>
       </div>
-      <div *ngIf="viewProductHighlight" class="col-md-12 product-hilight-box product-hilight-section0"
-        style="background-color: #F5FBFF;" ng-show="routesList.highlights">
+      <div *ngIf="toggleProductHighlights" class="col-md-12 product-hilight-box product-hilight-section0" style="background-color: #F5FBFF;">
         <h3 class="text-center ph-box-main-title">Product Highlight</h3>
-
-        <h5>Competitors</h5>
-        <p class="ph-box">
-          Total no. of Players<br>
-          <span *ngIf="routesList.total_no_of_players" class="ng-binding ng-scope">
-            {{ routesList.total_no_of_players }}
-          </span>
-        </p>
-        <ng-template #nodata>
-          N/A
+        <div *ngIf="isLoading" class="loading-text">Loading<span class="dots"></span></div>
+        <ng-container *ngIf="(productHighlights?.length ?? 0) > 0; else noData">
+          <div *ngFor="let section of productHighlights">
+            <h5>{{ section.sectionTitle }}</h5>
+            <div class="flex-container">
+              <div class="ph-box" *ngFor="let item of section.sectionData">
+                {{ item.childSectionKey }}<br>
+                <span *ngIf="item.childSectionKey !== 'Product Patent Expiry'" class="heighlight-value">{{ item.childSectionValue !== '' ? item.childSectionValue : 'N/A' }}</span>
+                <span *ngIf="item.childSectionKey === 'Product Patent Expiry'" class="heighlight-value qwerty">
+                  {{ item.childSectionValue !== '' ? (item.childSectionValue | date:'mediumDate') : 'N/A' }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #noData>
+          <div *ngIf="!isLoading">No Data Found!</div>
         </ng-template>
-        <h5>Exclusivity</h5>
-        <p class="ph-box">Product Patent Expiry<br>
-          <span ng-if="routesList.GENERIC_CONSTRAINING_DATE" class="ng-binding ng-scope">2022-07-05</span>
-        </p>
-        <p class="ph-box">USA-Exclusivity<br>
-          <!-- ngIf: routesList.EXCLUSIVITY_NEW_CHEMICAL_ENTITY -->
-          <!-- ngIf: routesList.EXCLUSIVITY_NEW_CHEMICAL_ENTITY=='' --><span
-            ng-if="routesList.EXCLUSIVITY_NEW_CHEMICAL_ENTITY==''"
-            class="ng-scope">N/A</span><!-- end ngIf: routesList.EXCLUSIVITY_NEW_CHEMICAL_ENTITY=='' -->
-        </p>
-        <p class="ph-box">NCE MINUS<br>
-          <!-- ngIf: routesList.NCE_MINUS_OR_QIDP_MINUS -->
-          <!-- ngIf: routesList.NCE_MINUS_OR_QIDP_MINUS=='' --><span ng-if="routesList.NCE_MINUS_OR_QIDP_MINUS==''"
-            class="ng-scope">N/A</span><!-- end ngIf: routesList.NCE_MINUS_OR_QIDP_MINUS=='' -->
-        </p>
-        <p class="ph-box">SPC<br>
-          <!-- ngIf: routesList.highlights1!='' --><span ng-if="routesList.highlights1!=''"
-            class="ng-binding ng-scope">200</span><!-- end ngIf: routesList.highlights1!='' -->
-          <!-- ngIf: routesList.highlights1=='' -->
-        </p>
-        <h5>Supplier/Buyer</h5>
-        <p class="ph-box">
-          XIM<br>
-          <span *ngIf="routesList.childSectionKey" class="ng-binding ng-scope">
-            {{ routesList.childSectionValue }}
-          </span>
-        </p>
-        <p class="ph-box">Import<br>
-          <!-- ngIf: routesList.highlights2!='' --><span ng-if="routesList.highlights2!=''"
-            class="ng-binding ng-scope">592</span><!-- end ngIf: routesList.highlights2!='' -->
-          <!-- ngIf: routesList.highlights2=='' -->
-        </p>
-        <p class="ph-box">Export<br>
-          <!-- ngIf: routesList.highlights2!='' --><span ng-if="routesList.highlights2!=''"
-            class="ng-binding ng-scope">1292</span><!-- end ngIf: routesList.highlights2!='' -->
-          <!-- ngIf: routesList.highlights2=='' -->
-        </p>
-        <p class="ph-box">Suppliers<br>
-          <!-- ngIf: routesList.highlights1!='' --><span ng-if="routesList.highlights1!=''"
-            class="ng-binding ng-scope">129</span><!-- end ngIf: routesList.highlights1!='' -->
-          <!-- ngIf: routesList.highlights1=='' -->
-        </p>
-        <h5>Technical Data</h5>
-        <p class="ph-box">Intermediate<br>
-          <!-- ngIf: routesList.highlights1!='' --><span ng-if="routesList.highlights1!=''"
-            class="ng-binding ng-scope">221</span><!-- end ngIf: routesList.highlights1!='' -->
-          <!-- ngIf: routesList.highlights1=='' -->
-        </p>
-        <p class="ph-box">Impurity<br>
-          <!-- ngIf: routesList.highlights1!='' --><span ng-if="routesList.highlights1!=''"
-            class="ng-binding ng-scope">166</span><!-- end ngIf: routesList.highlights1!='' -->
-          <!-- ngIf: routesList.highlights1=='' -->
-        </p>
-        <h5>Route of Synthesis</h5>
-        <p class="ph-box">No of Routes<br>
-          <!-- ngIf: routesList.highlights1!='' --><span ng-if="routesList.highlights1!=''"
-            class="ng-binding ng-scope">364</span><!-- end ngIf: routesList.highlights1!='' -->
-          <!-- ngIf: routesList.highlights1=='' -->
-        </p>
-        <p class="ph-box">Product Patent Route<br>
-          <!-- ngIf: routesList.highlights3!='' --><span ng-if="routesList.highlights3!=''"
-            class="ng-binding ng-scope">0</span><!-- end ngIf: routesList.highlights3!='' -->
-          <!-- ngIf: routesList.highlights3=='' -->
-        </p>
-        <p class="ph-box">Reported Route<br>
-          <!-- ngIf: routesList.highlights3!='' --><span ng-if="routesList.highlights3!=''"
-            class="ng-binding ng-scope">60</span><!-- end ngIf: routesList.highlights3!='' -->
-          <!-- ngIf: routesList.highlights3=='' -->
-        </p>
-        <p class="ph-box">Commercial Route<br>
-          <!-- ngIf: routesList.highlights3!='' --><span ng-if="routesList.highlights3!=''"
-            class="ng-binding ng-scope">3</span><!-- end ngIf: routesList.highlights3!='' -->
-          <!-- ngIf: routesList.highlights3=='' -->
-        </p>
-        <p class="ph-box">Chinese Route<br>
-          <!-- ngIf: routesList.highlights3!='' --><span ng-if="routesList.highlights3!=''"
-            class="ng-binding ng-scope">0</span><!-- end ngIf: routesList.highlights3!='' -->
-          <!-- ngIf: routesList.highlights3=='' -->
-        </p>
-        <h5>DMF Filed</h5>
-        <p class="ph-box">USDMF<br>
-          <!-- ngIf: routesList.highlights2!='' --><span ng-if="routesList.highlights2!=''"
-            class="ng-binding ng-scope">78</span><!-- end ngIf: routesList.highlights2!='' -->
-          <!-- ngIf: routesList.highlights2=='' -->
-        </p>
-        <p class="ph-box">EPDMF<br>
-          <!-- ngIf: routesList.highlights2!='' --><span ng-if="routesList.highlights2!=''"
-            class="ng-binding ng-scope">45</span><!-- end ngIf: routesList.highlights2!='' -->
-          <!-- ngIf: routesList.highlights2=='' -->
-        </p>
-        <p class="ph-box">JDMF<br>
-          <!-- ngIf: routesList.highlights2!='' --><span ng-if="routesList.highlights2!=''"
-            class="ng-binding ng-scope">3</span><!-- end ngIf: routesList.highlights2!='' -->
-          <!-- ngIf: routesList.highlights2=='' -->
-        </p>
-        <p class="ph-box">KDMF<br>
-          <!-- ngIf: routesList.highlights2!='' --><span ng-if="routesList.highlights2!=''"
-            class="ng-binding ng-scope">0</span><!-- end ngIf: routesList.highlights2!='' -->
-          <!-- ngIf: routesList.highlights2=='' -->
-        </p>
-        <h5>Approved &amp; Registration</h5>
-        <p class="ph-box">USA: Approved<br>
-          <!-- ngIf: routesList.highlights1!='' --><span ng-if="routesList.highlights1!=''"
-            class="ng-binding ng-scope">20</span><!-- end ngIf: routesList.highlights1!='' -->
-          <!-- ngIf: routesList.highlights1=='' -->
-        </p>
-        <p class="ph-box">Europe: Approved<br>
-          <!-- ngIf: routesList.highlights1!='' --><span ng-if="routesList.highlights1!=''"
-            class="ng-binding ng-scope">12</span><!-- end ngIf: routesList.highlights1!='' -->
-          <!-- ngIf: routesList.highlights1=='' -->
-        </p>
-        <p class="ph-box">Canada: Approved<br>
-          <!-- ngIf: routesList.highlights1!='' --><span ng-if="routesList.highlights1!=''"
-            class="ng-binding ng-scope">22</span><!-- end ngIf: routesList.highlights1!='' -->
-          <!-- ngIf: routesList.highlights1=='' -->
-        </p>
-        <p class="ph-box">Japan: Approved<br>
-          <!-- ngIf: routesList.highlights1!='' --><span ng-if="routesList.highlights1!=''"
-            class="ng-binding ng-scope">27</span><!-- end ngIf: routesList.highlights1!='' -->
-          <!-- ngIf: routesList.highlights1=='' -->
-        </p>
-        <p class="ph-box">Veterinary US Approval (Green Book) <br>
-          <!-- ngIf: routesList.highlights1!='' --><span ng-if="routesList.highlights1!=''"
-            class="ng-binding ng-scope">0</span><!-- end ngIf: routesList.highlights1!='' -->
-          <!-- ngIf: routesList.highlights1=='' -->
-        </p>
-        <p class="ph-box">Korea: Approved<br>
-          <!-- ngIf: routesList.highlights1!='' --><span ng-if="routesList.highlights1!=''"
-            class="ng-binding ng-scope">332</span><!-- end ngIf: routesList.highlights1!='' -->
-          <!-- ngIf: routesList.highlights1=='' -->
-        </p>
-        <h5>Patents</h5>
-        <p class="ph-box">Total Number of Patents<br>
-          <!-- ngIf: routesList.highlights1!='' --><span ng-if="routesList.highlights1!=''"
-            class="ng-binding ng-scope">1209</span><!-- end ngIf: routesList.highlights1!='' -->
-          <!-- ngIf: routesList.highlights1=='' -->
-        </p>
-        <p class="ph-box">Product Patent<br>
-          <!-- ngIf: routesList.highlights3!='' --><span ng-if="routesList.highlights3!=''"
-            class="ng-binding ng-scope">0</span><!-- end ngIf: routesList.highlights3!='' -->
-          <!-- ngIf: routesList.highlights3=='' -->
-        </p>
-        <p class="ph-box">Combination Patent<br>
-          <!-- ngIf: routesList.highlights3!='' --><span ng-if="routesList.highlights3!=''"
-            class="ng-binding ng-scope">0</span><!-- end ngIf: routesList.highlights3!='' -->
-          <!-- ngIf: routesList.highlights3=='' -->
-        </p>
-        <p class="ph-box">Method of Use (MoU) Patent<br>
-          <!-- ngIf: routesList.highlights3!='' --><span ng-if="routesList.highlights3!=''"
-            class="ng-binding ng-scope">0</span><!-- end ngIf: routesList.highlights3!='' -->
-          <!-- ngIf: routesList.highlights3=='' -->
-        </p>
-        <p class="ph-box">Process Patent<br>
-          <!-- ngIf: routesList.highlights3!='' --><span ng-if="routesList.highlights3!=''"
-            class="ng-binding ng-scope">0</span><!-- end ngIf: routesList.highlights3!='' -->
-          <!-- ngIf: routesList.highlights3=='' -->
-        </p>
-        <p class="ph-box">Polymorph Patent<br>
-          <!-- ngIf: routesList.highlights3!='' --><span ng-if="routesList.highlights3!=''"
-            class="ng-binding ng-scope">0</span><!-- end ngIf: routesList.highlights3!='' -->
-          <!-- ngIf: routesList.highlights3=='' -->
-        </p>
-        <h5>Non-Patents</h5>
-        <p class="ph-box">Total Number of Non-Patents<br>
-          <!-- ngIf: routesList.highlights1!='' --><span ng-if="routesList.highlights1!=''"
-            class="ng-binding ng-scope">67</span><!-- end ngIf: routesList.highlights1!='' -->
-          <!-- ngIf: routesList.highlights1=='' -->
-        </p>
       </div>
       <div class="col-lg-3" *ngIf="_data?.CHEMICAL_STRUCTURE && getColumnName('CHEMICAL_STRUCTURE')">
         <div class="mt-4">
@@ -810,8 +637,7 @@
               <h1 class="font-bold" style="color:#312e81;">
                 {{ getColumnName("EXCLUSIVITY_NEW_CHEMICAL_ENTITY") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
-                  (click)="handleCopy(_data?.EXCLUSIVITY_NEW_CHEMICAL_ENTITY, copyBtn)"><i
-                    class="fas fa-copy"></i></span>
+                  (click)="handleCopy(_data?.EXCLUSIVITY_NEW_CHEMICAL_ENTITY, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <p class="text-justify">
                 {{ _data?.EXCLUSIVITY_NEW_CHEMICAL_ENTITY }}
@@ -1145,8 +971,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.PRODUCT_TYPE }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff"
-                (click)="OpenViewModal(_data?.PRODUCT_TYPE, 'PRODUCT TYPE')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="OpenViewModal(_data?.PRODUCT_TYPE, 'PRODUCT TYPE')">
                 View More
               </p>
             </div>
@@ -1162,8 +987,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.PESTICIDE_TYPE }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff"
-                (click)="OpenViewModal(_data?.PESTICIDE_TYPE, 'PESTICIDE TYPE')">
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="OpenViewModal(_data?.PESTICIDE_TYPE, 'PESTICIDE TYPE')">
                 View More
               </p>
             </div>
