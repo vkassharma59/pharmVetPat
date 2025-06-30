@@ -100,9 +100,9 @@ export class MainSearchService {
       .get(this.apiUrls.basicProductInfo.filterColumns, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
-  getProductId(): Observable<any> {
+ getProductHighlights(): Observable<any> {
     return this.http
-      .get(this.apiUrls.basicProductInfo.productId, { headers: this.headers })
+      .get(this.apiUrls.basicProductInfo.productHighlights, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
 

@@ -75,8 +75,8 @@ export class UtilityService {
       }, {})
     );
   }
-  getProductHighlights(productId: string): Observable<any> {
-  const url = `${AppConfigValues.appUrls.basicProductInfo.productId}/${productId}`;
+  getProductHighlights( productHighlights: string): Observable<any> {
+  const url = `${AppConfigValues.appUrls.basicProductInfo.productHighlights}/${productHighlights}`;
   return this.http.get<any>(url);
 }
 
