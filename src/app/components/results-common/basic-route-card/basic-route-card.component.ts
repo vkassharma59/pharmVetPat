@@ -7,7 +7,7 @@ import { Auth_operations } from '../../../Utils/SetToken';
 import { ChemDiscriptionModelComponent } from '../../../commons/chem-discription-model/chem-discription-model.component';
 import { ChemDiscriptionViewModelComponent } from '../../../commons/chem-discription-viewmodel/chem-discription-viewmodel.component';
 import { UtilityService } from '../../../services/utility-service/utility.service';
-
+import { MainSearchService } from '../../../services/main-search/main-search.service';
 @Component({
   selector: 'chem-product-info-card',
   standalone: true,
@@ -23,23 +23,27 @@ export class BasicRouteCardComponent {
 
   static apiCallCount: number = 0; // Global static counter
   localCount: number = 0; // Instance-specific counter
-
+  productHighlights: any[] = [];
+  isLoading: boolean = false;
+  toggleProductHighlights: boolean = false;
   resultTabs: any = {};
   processedSynonyms: { number: string; text: string }[] = [];
   basic_column: any = {};
   _data: any = [];
-
-  @Input() 
+  routesList: any = {};
+  @Input()
   get data() {
     return this._data;
   }
   set data(value: any) {
     if (value && Object.keys(value).length > 0) {
-      BasicRouteCardComponent.apiCallCount++; // Increment static counter
-      this.localCount = BasicRouteCardComponent.apiCallCount; // Assign to instance
+      BasicRouteCardComponent.apiCallCount++;
+      this.localCount = BasicRouteCardComponent.apiCallCount;
       this._data = value;
+
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
+
       if (column_list[this.resultTabs.productInfo?.name]?.length > 0) {
         for (let i = 0; i < column_list[this.resultTabs.productInfo.name].length; i++) {
           this.basic_column[column_list[this.resultTabs.productInfo.name][i].value] =
@@ -49,37 +53,23 @@ export class BasicRouteCardComponent {
       }
     }
   }
-
+  viewProductHighlight: boolean = false;
   MoreApplicationInfo: any = false;
-  linkdata: any = {
-    SYNONYMSCOMMON_NAME: `1. BROMOACETIC ACID
-                          2. 2-Bromoacetic acid
-                          3. 79-08-3
-                          4. Monobromoacetic acid
-                          5. Bromoethanoic acid
-                          6. Acetic acid, bromo-
-                          7. To NTU
-                          8. Bromoacetate ion
-                          9. Acide bromacetique
-                          10. 2-Bromoacetyl Group
-                          11. 2-bromoethanoic acid
-                          12. Acetic acid, 2-bromo-
-                          13. Bromo-acetic acid
-                          14. Monobromessigsaeure
-                          15. Kyselina bromoctova`,
-  };
 
   constructor(
     private dialog: MatDialog,
-    private utilityService: UtilityService
-  ) {}
+    private utilityService: UtilityService,
+    private MainSearchService: MainSearchService
+  ) { }
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
+
   ngOnInit() {
     // Reset counter only when the component is first loaded
     if (BasicRouteCardComponent.apiCallCount === 0) {
+      console.log('Resetting apiCallCount to 0');
       BasicRouteCardComponent.apiCallCount = 0;
     }
   }
@@ -93,6 +83,28 @@ export class BasicRouteCardComponent {
     return `${environment.baseUrl}${environment.domainNameCompanyLogo}${data?.INVENTOR_LOGO}`;
   }
 
+  viewProduct() {
+    this.toggleProductHighlights = !this.toggleProductHighlights;
+    if(this.toggleProductHighlights && this.productHighlights.length === 0) {
+      this.isLoading = true;
+      this.MainSearchService.getProductHighlights().subscribe({
+        next: (response) => {
+          console.log('API response received:', response);
+          if (response.status) {
+            this.isLoading = false;
+            this.productHighlights = response.data.productHighlights;
+            console.log('Product Highlights:', this.productHighlights);
+          } else {
+            this.isLoading = false;
+            console.warn('API response status not OK:', response.status, response.code);
+          }
+        },
+        error: (err) => {
+          console.error('API Error:', err);
+        }
+      });
+    }
+  }
   toggleMoreApplicationInfo() {
     this.MoreApplicationInfo = !this.MoreApplicationInfo;
   }
@@ -119,13 +131,13 @@ export class BasicRouteCardComponent {
       icon.classList.remove('fa-copy');
       icon.classList.add('fa-check');
 
-    // Step 3: Revert it back after 1.5 seconds
-    setTimeout(() => {
-      icon.classList.remove('fa-check');
-      icon.classList.add('fa-copy');
-    }, 1500);
+      // Step 3: Revert it back after 1.5 seconds
+      setTimeout(() => {
+        icon.classList.remove('fa-check');
+        icon.classList.add('fa-copy');
+      }, 1500);
     }
-}
+  }
 
   getColumnName(value: any) {
     return this.basic_column[value];
@@ -173,10 +185,10 @@ export class BasicRouteCardComponent {
       this.data?.CHEMICAL_STRUCTURE
     );
   };
-//  onImgError(event: Event) {
-//   const imgElement = event.target as HTMLImageElement;
-//   imgElement.src = 'assets/components/noimg.png';
-// }
+  //  onImgError(event: Event) {
+  //   const imgElement = event.target as HTMLImageElement;
+  //   imgElement.src = 'assets/components/noimg.png';
+  // }
   getPatentUrl(data: any) {
     return `https://patentscope.wipo.int/search/en/result.jsf?inchikey=${data?.INCHIKEY}`;
   }

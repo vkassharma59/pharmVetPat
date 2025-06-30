@@ -31,7 +31,7 @@
     </div>
     <div class="card-body">
       <ng-container *ngIf="loadingService.getLoading(resultTabs.activePatent.name, index); else noDataText">
-        Loading...
+        <div class="loading-text">Loading<span class="dots"></span></div>
       </ng-container>
       <ng-template #noDataText>
         <p>No Data found!</p>
