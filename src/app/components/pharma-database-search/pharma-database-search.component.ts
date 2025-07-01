@@ -41,6 +41,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   advanceSearch: any = {
     autosuggestionList: [],
     dateType: '',
+  
     developmentStage: '',
     innovatorOriginator: '',
     devStage: '',
@@ -760,6 +761,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         },
       });
     }
+         
 
   private performSynthesisSearch(): void {
     Auth_operations.setActiveformValues({
