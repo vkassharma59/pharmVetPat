@@ -68,9 +68,9 @@ export class RouteResultComponent {
   @Output() OpenPriviledgeModal: EventEmitter<any> = new EventEmitter<any>();
   @Output() resetPagination: EventEmitter<any> = new EventEmitter<any>();
   @Output() handleROSChange: EventEmitter<any> = new EventEmitter<any>();
-  
+
   _currentChildAPIBody: any;
-   @Input() specialCount: any;
+  @Input() specialCount: any;
   @Input() currentApiData: any;
   @Input() CurrentAPIBody: any;
   @Input() index: number | undefined;
@@ -80,7 +80,7 @@ export class RouteResultComponent {
   get dataItem() {
     return this._dataItem;
   }
-  set dataItem(value: any) {  
+  set dataItem(value: any) {
     this._dataItem = value;
   }
 
@@ -102,7 +102,7 @@ export class RouteResultComponent {
   }
 
   ngOnInit() {
-    console.log("_dataItem.veterinaryUsApproval",this._dataItem.veterinaryUsApproval)
+    console.log("_dataItem.veterinaryUsApproval", this._dataItem.veterinaryUsApproval)
     this.resultTabs = Object.values(this.utilityService.getAllTabsName());
     this.currentTabData = this.resultTabs.find((tab: any) => tab.isActive);
 
@@ -240,7 +240,8 @@ export class RouteResultComponent {
             !priviledge_data ||
             priviledge_data?.['pharmvetpat-mongodb']?.SplitDownload === 'false' ||
             priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == '' ||
-            priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == 0
+            priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == 0 ||
+            priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == '0'
           ) {
             this.handleSetLoading.emit(false);
             this.OpenPriviledgeModal.emit(
@@ -269,6 +270,9 @@ export class RouteResultComponent {
                     todays_limit?.downloadCount >
                     0
                   ) {
+          console.log('priviledge_data?.DownloadCount',priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount);
+
+                    console.log(priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit,'todays_limit?.downloadCount',todays_limit?.downloadCount);
 
                     let id: any = '';
                     const searchThrough = Auth_operations.getActiveformValues().activeForm;
@@ -291,55 +295,122 @@ export class RouteResultComponent {
                     let body_main: any = {
                       id: id,
                       reports: [],
-                    };
-
+                      limit: priviledge_data?.['pharmvetpat-mongodb']?.ReportLimit,
+ };
                     Object.keys(this.SingleDownloadCheckbox).forEach(key => {
                       if (this.SingleDownloadCheckbox[key]) {
                         body_main.reports.push(key);
                       }
                     });
-
+                    // ✅ Add full download flag if needed
+                    if (this.searchThrough === searchTypes.simpleSearch || this.searchThrough === searchTypes.advanceSearch) {
+                      body_main.report_download = true;
+                    }
                     if (body_main?.reports?.length == 0) {
                       alert('please select atleast 1 option');
                       this.handleSetLoading.emit(false);
                       this.generatePDFloader = false;
                       return;
                     } else {
-                      let API_MAIN = {};
+                       let API_MAIN = {};
+                      // console.log("check searchTypes",this.searchThrough)
+                      // if (this.searchThrough === searchTypes.synthesisSearch) {
+                      //   API_MAIN = {
+                      //     api_url: this.apiUrls.technicalRoutes.reportData,
+                      //     body: body_main,
+                      //   };
+                      // } else {
+                      //   API_MAIN = {
+                      //     api_url: this.apiUrls.chemicalDirectory.reportData,
+                      //     body: body_main,
+                      //   };
+                      // }
                       if (this.searchThrough === searchTypes.synthesisSearch) {
                         API_MAIN = {
                           api_url: this.apiUrls.technicalRoutes.reportData,
                           body: body_main,
                         };
-                      } else {
+                      } else if (
+                        this.searchThrough === searchTypes.chemicalStructure ||
+                        this.searchThrough === searchTypes.intermediateSearch
+                      ) {
                         API_MAIN = {
                           api_url: this.apiUrls.chemicalDirectory.reportData,
                           body: body_main,
                         };
+                      } else {
+                        // simpleSearch or advanceSearch
+                        API_MAIN = {
+                          api_url: this.apiUrls.basicProductInfo.reportData,
+                          body: body_main,
+                        };
                       }
 
+                      console.log("scfsdvfsdfgv API_MAIN ", this.apiUrls.basicProductInfo.reportData)
                       try {
-                        this.serviceResultTabFiltersService.getGeneratePDF(
-                          API_MAIN
-                        ).subscribe({
+                        this.serviceResultTabFiltersService.getGeneratePDF(API_MAIN).subscribe({
                           next: (resp: any) => {
-                            const file = new Blob([resp.body], {
-                              type: 'application/pdf',
-                            });
+                            // const blob = new Blob([resp], { type: 'application/pdf' }); // use resp directly, not resp.body
+                            // console.log("-----------scfsdvfsdfgv API_MAIN ", resp)
+                            // const fileURL = URL.createObjectURL(blob);
 
-                            // Create a URL for the Blob
-                            const fileURL = URL.createObjectURL(file);
+                            // // Generate a dynamic timestamped filename
+                            // const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+                            // const filename = `Report_${timestamp}.pdf`;
+                            // console.log(filename, "filename", timestamp)
+                            // const a = document.createElement('a');
+                            // a.href = fileURL;
+                            // a.download = filename;
+                            // document.body.appendChild(a);
+                            // a.click();
+                            // document.body.removeChild(a);
+                            const blob = new Blob([resp.body!], { type: 'application/pdf' });
+                            console.log("-----------scfsdvfsdfgv API_MAIN ", resp)
 
-                            // Create an anchor element and trigger a download
+                            // Extract filename from content-disposition header
+                            const contentDisposition = resp.headers.get('content-disposition');
+                            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+                            let filename = `Report_${timestamp}.pdf`;
+
+                            if (contentDisposition) {
+                              const match = contentDisposition.match(/filename="?([^"]+)"?/);
+                              if (match && match[1]) {
+                                filename = match[1];
+                              }
+                            }
+
+                            // Download logic
+                            const fileURL = URL.createObjectURL(blob);
                             const a = document.createElement('a');
                             a.href = fileURL;
-                            a.download = 'Report_2024-10-22_12-12-07.pdf'; // Specify the filename
-                            document.body.appendChild(a); // Append anchor to body
-                            a.click(); // Trigger download
-                            document.body.removeChild(a); // Remove the anchor from body
+                            console.log(fileURL, "-----------scfsdvfsdfgv API_MAIN ", filename)
+                            a.download = filename;
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+
                             this.generatePDFloader = false;
                             this.handleSetLoading.emit(false);
                           },
+
+                          // next: (resp: any) => {
+                          //   const file = new Blob([resp.body], {
+                          //     type: 'application/pdf',
+                          //   });
+
+                          //   // Create a URL for the Blob
+                          //   const fileURL = URL.createObjectURL(file);
+                          //   console.log("-----------scfsdvfsdfgv API_MAIN ",resp)
+                          //   // Create an anchor element and trigger a download
+                          //   const a = document.createElement('a');
+                          //   a.href = fileURL;
+                          //   a.download = 'Report_2024-10-22_12-12-07.pdf'; // Specify the filename
+                          //   document.body.appendChild(a); // Append anchor to body
+                          //   a.click(); // Trigger download
+                          //   document.body.removeChild(a); // Remove the anchor from body
+                          //   this.generatePDFloader = false;
+                          //   this.handleSetLoading.emit(false);
+                          // },
                           error: (err: any) => {
                             this.generatePDFloader = false;
                             this.handleSetLoading.emit(false);

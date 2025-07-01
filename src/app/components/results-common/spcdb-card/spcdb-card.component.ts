@@ -462,6 +462,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
         saveAs(blob, 'ExportedDataFormatted.xlsx');
         this.isExportingExcel = false;
         this.isExportingExcel = false;
+        this.isExportingExcel = false;
       });
     });
   }
