@@ -189,10 +189,9 @@
 <!-- Download Modal -->
 <div #downloadBtnModal class="modal fade bg_4" id="download_btn" tabindex="-1" aria-labelledby="download_btn"
   aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-xl">
-    <div class="modal-content bg_1 px-4">
+
       <!-- Modal  Header -->
-      <div class="flex justify-between items-center p-3 border-b">
+      <!-- <div class="flex justify-between items-center p-3 border-b">
         <div class="justify-between flex">
           <h1 class="text-lg font-bold">PharmVetPat Platform</h1>
 
@@ -203,8 +202,18 @@
         <br>
         <br>
         <div> Comming Soon......</div>
+      </div> -->
+      <!-- Modal Body -->
+     <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content bg_1 px-4">
+      <!-- Modal Header -->
+      <div class="flex justify-between items-center p-3 border-b">
+        <h1 class="text-lg font-bold">PharmVetPat Platform</h1>
+        <button data-bs-dismiss="modal" class="text-lg font-bold text-black">
+          X
+        </button>
       </div>
-      <!-- Modal Body 
+      <!-- Modal Body -->
       <div class="p-3">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <label class="flex items-center" *ngFor="let tab of resultTabs">
@@ -218,6 +227,7 @@
           Choose any 3 vertical report to download
         </h1>
       </div>
+      <!-- Modal Footer -->
       <div class="p-3 border-t">
         <div class="flex justify-end gap-2">
           <button data-bs-dismiss="modal" class="px-3 py-2 bg-red-500 rounded-md text-white font-bold">
@@ -242,6 +252,6 @@
           </button>
         </div>
       </div>
-    </div> -->
     </div>
   </div>
+</div>

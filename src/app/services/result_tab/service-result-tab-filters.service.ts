@@ -32,7 +32,7 @@ export class ServiceResultTabFiltersService {
     'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
   });
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getGeneratePDF(props: any): Observable<Blob> {
     const generate_PDF_header = {
@@ -40,10 +40,11 @@ export class ServiceResultTabFiltersService {
       accept: 'application/pdf',
       'api-key': environment.headerApiKey,
       'access-token': this.auth_token,
+      'platforms': environment.platforms,
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
     };
-
+    console.log("API_MAIN", props)
     return this.http
       .post(props.api_url, props.body, {
         headers: generate_PDF_header,

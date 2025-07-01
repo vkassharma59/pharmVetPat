@@ -19,6 +19,7 @@ export interface AppConfig {
       advanceAutoSuggestions: string;
       advanceSearchResults: string;
       productHighlights:string;
+      reportData: string;
     };
     technicalRoutes: {
       filterColumnList: string;
