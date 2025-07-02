@@ -3,6 +3,7 @@
   class="w-full flex py-3 justify-center"
   *ngIf="count > 25"
 >
+<div [class.blur]="blurContent">
   <ul class="inline-flex -space-x-px text-sm">
     <li>
       <button
@@ -47,7 +48,7 @@
       </button>
     </li>
   </ul>
-  <div [class.blur]="blurContent">
+  
     <!-- Your data cards, table, etc. -->
   </div>
   

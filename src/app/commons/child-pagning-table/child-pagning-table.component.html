@@ -1,4 +1,6 @@
+
 <!-- Custom Simple Pagination for filtered data helloooo  -->
+
 <nav *ngIf="isFilterApplied && count > 25" aria-label="Filtered page navigation" class="w-full flex py-3 justify-center">
   <ul class="inline-flex -space-x-px text-sm">
     <li>
@@ -70,4 +72,11 @@
       </button>
     </li>
   </ul>
+  <div class="modal-overlay" *ngIf="showAccessDeniedModal">
+    <div class="modal-box">
+      <h3>Access Denied</h3>
+      <p>You are not allowed to access more pages.<br>Please contact administrator.</p>
+      <button (click)="closeAccessDeniedModal()" class="close">Close</button>
+    </div>
+  </div>
 </nav>

@@ -28,7 +28,7 @@ import { Chem_Robotics_QueryModalComponent } from '../Chem_Robotics_QueryModal/C
 import { ScientificDocsComponent } from '../results-common/scientific-docs/scientific-docs.component';
 import { GppdDbComponent } from '../results-common/gppd-db/gppd-db.component';
 import { NonPatentComponent } from '../results-common/non-patent/non-patent.component';
-
+import { MainSearchService } from '../../services/main-search/main-search.service';
 import { VeterinaryUsApprovalComponent } from "../results-common/veterinary-us-approval/veterinary-us-approval.component";
 
 @Component({
@@ -60,6 +60,7 @@ export class RouteResultComponent {
   isSplitDownload: boolean = false;
   isDownloadPermit: boolean = false;
   activeTab: string = '';
+  report_download=true;
 
   @Output() handleSetLoading: EventEmitter<any> = new EventEmitter<any>();
   @Output() backFunction: EventEmitter<any> = new EventEmitter<any>();
@@ -97,6 +98,7 @@ export class RouteResultComponent {
     private serviceResultTabFiltersService: ServiceResultTabFiltersService,
     private utilityService: UtilityService,
     private userPriviledgeService: UserPriviledgeService,
+    private MainsearchService: MainSearchService,
   ) {
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }

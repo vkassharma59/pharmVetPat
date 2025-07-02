@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component,EventEmitter, Input, Output } from '@angular/core';
 import { VeterinaryUsApprovalCardComponent } from '../veterinary-us-approval-card/veterinary-us-approval-card.component';
-import { ChildPagingComponent } from "../../../commons/child-paging/child-paging.component";
+import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { LoadingService } from '../../../services/loading-service/loading.service';

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output,ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectorRef, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
 import { ServiceChildPaginationService } from '../../services/child-pagination/service-child-pagination.service';
@@ -13,7 +13,7 @@ import { MainSearchService } from '../../services/main-search/main-search.servic
   styleUrl: './child-paging.component.css',
 })
 
-export class ChildPagingComponent implements OnInit{
+export class ChildPagingComponent implements OnInit {
   _currentChildAPIBody: any;
   @Input() childPaginationData: any;
   @Output() handleChangeTabData: EventEmitter<any> = new EventEmitter<any>();
@@ -22,11 +22,11 @@ export class ChildPagingComponent implements OnInit{
   PageArray = [1, 2, 3, 4, 5];
   count: any = 0;
   blurContent: boolean = false;
-showAccessDeniedModal: boolean = false;
-reportLimitPages: number = 10;
+  showAccessDeniedModal: boolean = false;
+  reportLimitPages: number = 10;
   @Input()
-  get currentChildAPIBody() {   
-    return this._currentChildAPIBody;   
+  get currentChildAPIBody() {
+    return this._currentChildAPIBody;
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
@@ -44,7 +44,7 @@ reportLimitPages: number = 10;
   }
 
   constructor(
-    private serviceChildPaginationService: ServiceChildPaginationService,private cdr: ChangeDetectorRef,
+    private serviceChildPaginationService: ServiceChildPaginationService, private cdr: ChangeDetectorRef,
     private mainSearchService: MainSearchService
   ) { }
 
@@ -104,11 +104,11 @@ reportLimitPages: number = 10;
       this.blurContent = true;
       return;
     }
-  
+
     this.setLoading.emit(true);
     this._currentChildAPIBody.page_no = page;
     this.MainPageNo = page;
-  
+
     this.serviceChildPaginationService.getNextChildPaginationData(
       this._currentChildAPIBody
     ).subscribe({
@@ -123,39 +123,12 @@ reportLimitPages: number = 10;
       },
     });
   };
-  
+
   closeAccessDeniedModal() {
     this.showAccessDeniedModal = false;
     this.blurContent = false;
   }
-  
-  getAllDataFromApi(): Observable<any[]> {
-    const priv = JSON.parse(localStorage.getItem('priviledge_json') || '{}');
-    const reportLimit = priv['pharmvetpat-mongodb']?.PageLimit ||10;
-  
-    const requestBody = {
-      ...this._currentChildAPIBody,
-      page_no: 1,
-      start: 0,
-      length: reportLimit,
-    };
-  
-    console.log('📦  request body:', requestBody);
-  
-    return this.mainSearchService.spcdbSearchSpecific(requestBody).pipe(
-      tap((response: any) => {
-        console.log('📦 Full API response:', response);
-      }),
-      map((response: any) => {
-        return response?.data?.data || [];
-      }),
-      catchError((error) => {
-        console.error('❌ Error fetching all data:', error);
-        return of([]); // fallback to empty array on error
-      })
-    );
-  }
-  
+
 
   handleChangeData() {
     this.PageArray = [];
@@ -180,15 +153,13 @@ reportLimitPages: number = 10;
   ngOnInit(): void {
     const priv = JSON.parse(localStorage.getItem('priviledge_json') || '{}');
     const reportLimit = priv['pharmvetpat-mongodb']?.PageLimit || 10;
-  
-    // 👇 This is critical: how many pages user is allowed to access
-   this.reportLimitPages = reportLimit;
+    this.reportLimitPages = reportLimit;
 
-  
+
     console.log("Allowed pages based on report limit:", this.reportLimitPages);
   }
-  
-  
+
+
   ngOnChanges(): void {
     this.handleChangeData();
   }

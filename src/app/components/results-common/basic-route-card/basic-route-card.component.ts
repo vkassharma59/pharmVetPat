@@ -100,6 +100,7 @@ export class BasicRouteCardComponent {
           }
         },
         error: (err) => {
+          this.isLoading = false;
           console.error('API Error:', err);
         }
       });
