@@ -16,7 +16,7 @@ import { UtilityService } from '../../services/utility-service/utility.service';
   styleUrl: './result-tab.component.css',
 })
 export class ResultTabComponent {
-
+  @Output() handleSetLoading: EventEmitter<any> = new EventEmitter<any>();
   @Output() downloadPdfEvent = new EventEmitter<void>();
   @Output() showDataResultFunction: EventEmitter<any> = new EventEmitter<any>();
   @Output() handleLoading: EventEmitter<any> = new EventEmitter<any>();
@@ -194,9 +194,8 @@ export class ResultTabComponent {
 
   handleGeneratePdf() {
     this.handlegenerateloading = true;
-
+    this.handleLoading.emit(true);
     const priviledge = localStorage.getItem('priviledge_json');
-
     const priviledge_data = JSON.parse(priviledge || '');
 
     let todays_limit: any = '';
@@ -227,7 +226,9 @@ export class ResultTabComponent {
             !priviledge_data ||
             priviledge_data?.['pharmvetpat-mongodb']?.Download === 'false' ||
             priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == '' ||
-            priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == 0
+            priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == 0 ||
+            priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == '0'
+
           ) {
             this.handleLoading.emit(false);
             this.priviledgeModal.emit(
@@ -263,8 +264,8 @@ export class ResultTabComponent {
 
                     pdf_body.body['report_download'] = true;
                     pdf_body.body['limit'] =
-                      priviledge_data?.['pharmvetpat-mongodb']?.ReportLimit;
-
+                    priviledge_data?.['pharmvetpat-mongodb']?.ReportLimit;
+                    console.log('No s-----------------------earch type selected', pdf_body);
                     this.ServiceResultTabFiltersService.getGeneratePDF(
                       pdf_body
                     ).subscribe({
@@ -272,14 +273,24 @@ export class ResultTabComponent {
                         const file = new Blob([response.body], {
                           type: 'application/pdf',
                         });
+                        const contentDisposition = response.headers.get('content-disposition');
+                        const timestamp = new Date()
+                          .toISOString()
+                          .split('.')[0] // remove milliseconds
+                          .replace(/T/, '_') // replace T with _
+                          .replace(/:/g, '-'); // format time separator
 
-                        // Create a URL for the Blob
+                        let filename = `Report_${timestamp}.pdf`;
+                        if (contentDisposition) {
+                          const match = contentDisposition.match(/filename="?([^"]+)"?/);
+                          if (match && match[1]) {
+                            filename = match[1];
+                          }
+                        }
                         const fileURL = URL.createObjectURL(file);
-
-                        // Create an anchor element and trigger a download
                         const a = document.createElement('a');
                         a.href = fileURL;
-                        a.download = 'Report_2024-10-22_12-12-07.pdf'; // Specify the filename
+                        a.download = filename;
                         document.body.appendChild(a); // Append anchor to body
                         a.click(); // Trigger download
                         document.body.removeChild(a); // Remove the anchor from body
@@ -299,6 +310,7 @@ export class ResultTabComponent {
               },
               error: (err: any) => {
                 this.handlegenerateloading = false;
+                this.handleLoading.emit(false);
                 console.error('Error downloading the PDF', err);
                 // Handle error appropriately, e.g., show a notification to the user
               },
