@@ -33,12 +33,12 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
   @Output() dataFetchRequest = new EventEmitter<any>();
   @Input() columnDefs: any[] = [];
   @Input() rowData: any[] = [];
-  data?: {
+   isExportingCSV: boolean = false;
+  isExportingExcel: boolean = false;
+   data?: {
     data?: any[]; // Replace `any` with your actual data type
   };
-  isExportingCSV: boolean = false;
-   isExportingExcel: boolean = false;
-  _currentChildAPIBody: any;
+   _currentChildAPIBody: any;
   loading = false;
    displayedColumns: string[] = [];
   columnHeaders: { [key: string]: string } = {};
@@ -368,17 +368,21 @@ downloadCSV(): void {
         csvContent += rowData.join(',') + '\n';
       });
 
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      saveAs(blob, 'ExportedData.csv');
-      this.isExportingCSV = false;
-    });
-  }
-  
-  downloadExcel(): void {
-    this.isExportingExcel = true;
-      this.getAllDataFromApi().subscribe(data => {
-      const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet('Exported Data');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, 'ExportedData.csv');
+     this.isExportingCSV =false;
+  });
+}
+
+
+  // 4️⃣ Download Excel
+  // 4️⃣ Download Excel
+ downloadExcel(): void {
+   this.isExportingExcel =true;
+   this.isExportingExcel =true;
+  this.getAllDataFromApi().subscribe(data => {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Exported Data');
 
       // Define header columns
       const columns = this.displayedColumns.map(col => ({
@@ -439,18 +443,17 @@ downloadCSV(): void {
         };
       });
 
-      // Save workbook
-      workbook.xlsx.writeBuffer().then(buffer => {
-        const blob = new Blob([buffer], {
-          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        });
-        saveAs(blob, 'ExportedDataFormatted.xlsx');
-        this.isExportingExcel = false;
-    
+    // Save workbook
+    workbook.xlsx.writeBuffer().then(buffer => {
+      const blob = new Blob([buffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
+      saveAs(blob, 'ExportedDataFormatted.xlsx');
+      this.isExportingExcel =false;
+      this.isExportingExcel =false;
     });
-  }
-
+  });
+}
 
   // ✅ Optional: Capitalize headers
   toTitleCase(str: string): string {

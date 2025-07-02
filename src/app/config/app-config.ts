@@ -1,4 +1,3 @@
-
 import { environment } from "../../environments/environment";
 import { AppConfig } from "../commons/models/app-config.interface";
 export const appUrl = environment;
@@ -24,6 +23,7 @@ export const AppConfigValues: AppConfig = {
         advanceAutoSuggestions: `${appUrl.apiUrl}/basic-product-info/advance-auto-suggestions`,
         advanceSearchResults: `${appUrl.apiUrl}/basic-product-info/advance-search`,
         productHighlights:`${appUrl.devApiUrl}/basic-product-info/product-highlight/683eccdfe449b3512e3ec59b`,//683eccdfe449b3512e3ec59b
+        reportData: `${appUrl.devApiUrl}/basic-product-info/report-data`
       },
       technicalRoutes: {
         filterColumnList: `${appUrl.apiUrl}/technical-routes/filter-column-list`,
