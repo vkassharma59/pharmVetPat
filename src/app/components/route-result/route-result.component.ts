@@ -270,33 +270,35 @@ export class RouteResultComponent {
                     todays_limit?.downloadCount >
                     0
                   ) {
-          console.log('priviledge_data?.DownloadCount',priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount);
-
-                    console.log(priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit,'todays_limit?.downloadCount',todays_limit?.downloadCount);
+                    console.log('priviledge_data?.DownloadCount', priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount);
+                    console.log(priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit, 'todays_limit?.downloadCount', todays_limit?.downloadCount);
 
                     let id: any = '';
                     const searchThrough = Auth_operations.getActiveformValues().activeForm;
+                     console.log('No s-----------------------earch type selected',this.dataItem[this.resultTabWithKeys.technicalRoutes.name]?.ros_data?.[0]._id);
+
                     switch (searchThrough) {
                       case searchTypes.chemicalStructure:
                       case searchTypes.intermediateSearch:
                         id = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name][0]._id;
                         break;
                       case searchTypes.synthesisSearch:
-                        id = this.dataItem[this.resultTabWithKeys.technicalRoutes.name][0]._id;
-                        break;
+                        id = this.dataItem[this.resultTabWithKeys.technicalRoutes.name]?.ros_data?.[0]._id;
+                      break;
                       case searchTypes.simpleSearch:
                       case searchTypes.advanceSearch:
                         id = this.dataItem[this.resultTabWithKeys.productInfo.name][0]._id;
                         break;
                       default:
+                        id = this.dataItem[this.resultTabWithKeys.productInfo.name][0]._id;
                         console.log('No search type selected');
                     }
-
+                      console.log('---------------No search type selected',this.dataItem[this.resultTabWithKeys.productInfo.name]);
                     let body_main: any = {
                       id: id,
                       reports: [],
                       limit: priviledge_data?.['pharmvetpat-mongodb']?.ReportLimit,
- };
+                    };
                     Object.keys(this.SingleDownloadCheckbox).forEach(key => {
                       if (this.SingleDownloadCheckbox[key]) {
                         body_main.reports.push(key);
@@ -312,19 +314,7 @@ export class RouteResultComponent {
                       this.generatePDFloader = false;
                       return;
                     } else {
-                       let API_MAIN = {};
-                      // console.log("check searchTypes",this.searchThrough)
-                      // if (this.searchThrough === searchTypes.synthesisSearch) {
-                      //   API_MAIN = {
-                      //     api_url: this.apiUrls.technicalRoutes.reportData,
-                      //     body: body_main,
-                      //   };
-                      // } else {
-                      //   API_MAIN = {
-                      //     api_url: this.apiUrls.chemicalDirectory.reportData,
-                      //     body: body_main,
-                      //   };
-                      // }
+                      let API_MAIN = {};
                       if (this.searchThrough === searchTypes.synthesisSearch) {
                         API_MAIN = {
                           api_url: this.apiUrls.technicalRoutes.reportData,
@@ -345,32 +335,32 @@ export class RouteResultComponent {
                           body: body_main,
                         };
                       }
-
-                      console.log("scfsdvfsdfgv API_MAIN ", this.apiUrls.basicProductInfo.reportData)
                       try {
                         this.serviceResultTabFiltersService.getGeneratePDF(API_MAIN).subscribe({
                           next: (resp: any) => {
-                            // const blob = new Blob([resp], { type: 'application/pdf' }); // use resp directly, not resp.body
-                            // console.log("-----------scfsdvfsdfgv API_MAIN ", resp)
-                            // const fileURL = URL.createObjectURL(blob);
-
-                            // // Generate a dynamic timestamped filename
-                            // const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-                            // const filename = `Report_${timestamp}.pdf`;
-                            // console.log(filename, "filename", timestamp)
-                            // const a = document.createElement('a');
-                            // a.href = fileURL;
-                            // a.download = filename;
-                            // document.body.appendChild(a);
-                            // a.click();
-                            // document.body.removeChild(a);
                             const blob = new Blob([resp.body!], { type: 'application/pdf' });
                             console.log("-----------scfsdvfsdfgv API_MAIN ", resp)
-
-                            // Extract filename from content-disposition header
                             const contentDisposition = resp.headers.get('content-disposition');
-                            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-                            let filename = `Report_${timestamp}.pdf`;
+                            console.log("-----------contentDispositionscfsdvfsdfgv API_MAIN ", contentDisposition)
+                            const timestamp = new Date()
+                              .toISOString()
+                              .split('.')[0] // remove milliseconds
+                              .replace(/T/, '_') // replace T with _
+                              .replace(/:/g, '-'); // format time separator
+                            // Default name
+                            let filenamePrefix = 'basicProductReport';
+
+                            // Logic to update name based on search type
+                            if (
+                              this.searchThrough === searchTypes.chemicalStructure ||
+                              this.searchThrough === searchTypes.synthesisSearch
+                            ) {
+                              filenamePrefix = 'technicalRouteReport';
+                            }
+
+                            // Final filename
+                            let filename = `${filenamePrefix}_${timestamp}.pdf`;
+                          //  let filename = `${this.searchThrough}Report_${timestamp}.pdf`;
 
                             if (contentDisposition) {
                               const match = contentDisposition.match(/filename="?([^"]+)"?/);
@@ -378,7 +368,6 @@ export class RouteResultComponent {
                                 filename = match[1];
                               }
                             }
-
                             // Download logic
                             const fileURL = URL.createObjectURL(blob);
                             const a = document.createElement('a');
@@ -392,30 +381,10 @@ export class RouteResultComponent {
                             this.generatePDFloader = false;
                             this.handleSetLoading.emit(false);
                           },
-
-                          // next: (resp: any) => {
-                          //   const file = new Blob([resp.body], {
-                          //     type: 'application/pdf',
-                          //   });
-
-                          //   // Create a URL for the Blob
-                          //   const fileURL = URL.createObjectURL(file);
-                          //   console.log("-----------scfsdvfsdfgv API_MAIN ",resp)
-                          //   // Create an anchor element and trigger a download
-                          //   const a = document.createElement('a');
-                          //   a.href = fileURL;
-                          //   a.download = 'Report_2024-10-22_12-12-07.pdf'; // Specify the filename
-                          //   document.body.appendChild(a); // Append anchor to body
-                          //   a.click(); // Trigger download
-                          //   document.body.removeChild(a); // Remove the anchor from body
-                          //   this.generatePDFloader = false;
-                          //   this.handleSetLoading.emit(false);
-                          // },
                           error: (err: any) => {
                             this.generatePDFloader = false;
                             this.handleSetLoading.emit(false);
                             console.error('Error downloading the PDF', err);
-                            // Handle error appropriately, e.g., show a notification to the user
                           },
                         });
                       } catch (err) {
