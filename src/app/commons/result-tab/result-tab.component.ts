@@ -22,6 +22,8 @@ export class ResultTabComponent {
   @Output() handleLoading: EventEmitter<any> = new EventEmitter<any>();
   @Output() makePdf: EventEmitter<any> = new EventEmitter<any>();
   @Output() priviledgeModal: EventEmitter<any> = new EventEmitter<any>();
+  @Output() backFunction: EventEmitter<any> = new EventEmitter<any>();
+
   @Input() MainDataResultShow: any;
   @Input() CurrentAPIBody: any;
 
@@ -154,7 +156,9 @@ export class ResultTabComponent {
       }
     }, 300);
   }
-
+  handleBack() {
+    this.backFunction.emit(false);
+  }
   handleSearchFilter(filterValue: any, StoreFilters: any) {
     this.SearchFilterValues[filterValue] = this.SearchFilterValues[filterValue]
       .trim()

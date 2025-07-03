@@ -38,7 +38,7 @@ import { VeterinaryUsApprovalComponent } from "../results-common/veterinary-us-a
     ImpurityComponent, ChemiTrackerComponent, ImpComponent, IndianComponent, ChemicalDirectoryComponent,
     JapanComponent, CanadaComponent, EuropeApprovalComponent, KoreaComponent, LitigationComponent,
     UsComponent, SpcdbComponent, EximComponent, RouteTabsComponent, ActivePatentComponent,
-    NgSwitch, NgSwitchCase, NgSwitchDefault, ScientificDocsComponent, GppdDbComponent, NonPatentComponent, VeterinaryUsApprovalComponent],
+    NgSwitch, NgSwitchCase, NgSwitchDefault, ScientificDocsComponent, GppdDbComponent, NonPatentComponent,VeterinaryUsApprovalComponent],
   templateUrl: './route-result.component.html',
   styleUrl: './route-result.component.css'
 })
@@ -104,7 +104,7 @@ export class RouteResultComponent {
   }
 
   ngOnInit() {
-    console.log("_dataItem.veterinaryUsApproval", this._dataItem.veterinaryUsApproval)
+    console.log("_dataItem searchThrough",this.searchThrough)
     this.resultTabs = Object.values(this.utilityService.getAllTabsName());
     this.currentTabData = this.resultTabs.find((tab: any) => tab.isActive);
 
@@ -129,7 +129,9 @@ export class RouteResultComponent {
   handleBack() {
     this.backFunction.emit(false);
   }
-
+  isTechnicalRoutesTabActive(): boolean {
+    return this.CurrentAPIBody?.currentTab === this.resultTabs?.technicalRoutes?.name;
+  }
   handleCurrentTab(data: any) {
     const searchThrough = Auth_operations.getActiveformValues().activeForm;
 

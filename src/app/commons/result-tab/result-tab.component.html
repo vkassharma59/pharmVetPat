@@ -1,86 +1,62 @@
-<div class="container mt-4 helloo">
-  <div
-  *ngIf="isTechnicalRoutesTabActive()"
-  class="py-2"
-  >
+<div class="container mt-4 " style="background-color: aliceblue;">
+  <div *ngIf="isTechnicalRoutesTabActive()" class="py-2">
     <div class="h-auto min-h-35 px-2 py-2 lg:px-2">
+      <button class="px-4 py-1 my-1 bg-[#F8FAFF] rounded-md font-semibold border-2 text-[#0032A0] border-[#0032A0] hover:bg-[#0032A0] hover:text-white button" (click)="handleBack()"> Back </button>
       <div class="flex justify-between items-center flex-wrap gap-4 pb-2">
-        <div class="gap-3 flex flex-wrap">
-          <button
-            (click)="handleSearchFilterResults()"
-            class="px-2 py-2 text-xs bg-[#0032A0] text-white font-semibold rounded-full"
-          >
-            Apply Filters 
+        <h1 class="text-2xl font-extrabold gap-1">
+          Total Results :
+          <span class="text-[#0032A0]">{{
+            CurrentAPIBody?.count
+            }}</span>
+        </h1>
+        <div class="flex flex-wrap items-start justify-end gap-2 text-sm leading-relaxed">
+          <button (click)="handleSearchFilterResults()"
+            class="px-2 py-2 text-sm bg-[#0032A0] text-white font-semibold rounded-full">
+            Apply Filters
           </button>
 
-          <button
-            (click)="handleReset()"
-            class="px-2 py-2 text-xs border-2 border-[#0032A0] text-[#0032A0] font-semibold rounded-full"
-          >
+          <button (click)="handleReset()"
+            class="px-2 py-2 text-sm border-2 border-[#0032A0] text-[#0032A0] font-semibold rounded-full">
             Reset Filters
           </button>
-          <button
-            class="px-2 py-2 text-xs bg-[#FFCD04] font-semibold rounded-full"
-            (click)="OpenQueryModal()"
-          >
+          <button class="px-2 py-2 text-sm bg-[#FFCD04] font-semibold rounded-full" (click)="OpenQueryModal()">
             Raise Query
           </button>
           <div *ngIf="isDownloadAvailableFunction()">
-            <button
-              *ngIf="!handlegenerateloading && isDownloadPermit"
-              (click)="handleGeneratePdf()"
-              [disabled]="handlegenerateloading"
-              title="Download Full Report (Max 25 ROS)"
-              class="px-2 py-2 text-xs bg-[#0032A0] text-white font-semibold rounded-full"
-            >
+            <button *ngIf="!handlegenerateloading && isDownloadPermit" (click)="handleGeneratePdf()"
+              [disabled]="handlegenerateloading" title="Download Full Report (Max 25 ROS)"
+              class="px-2 py-2 text-sm bg-[#0032A0] text-white font-semibold rounded-full">
               <i class="fa-solid fa-download px-2"></i>Full Report (max 25 Report
               Download)
             </button>
 
-            <button
-              *ngIf="handlegenerateloading && isDownloadPermit"
-              class="px-2 py-2 text-xs bg-[#0032A0] text-white font-semibold rounded-full flex justify-center items-center gap-2"
-            >
-              <svg
-                aria-hidden="true"
-                class="w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-white"
-                viewBox="0 0 100 101"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+            <button *ngIf="handlegenerateloading && isDownloadPermit"
+              class="px-2 py-2 text-xs bg-[#0032A0] text-white font-semibold rounded-full flex justify-center items-center gap-2">
+              <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-white"
+                viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                  fill="currentColor"
-                />
+                  fill="currentColor" />
                 <path
                   d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                  fill="currentFill"
-                /></svg>
+                  fill="currentFill" />
+              </svg>
               >Downloading...
             </button>
           </div>
         </div>
       </div>
       <div class="gap-3 w-full flex-wrap hidden sm:flex">
-        <div
-          class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]"
-        >
+        <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem] button">
           <h1 class="text-[#0032A0] font-bold text-xs my-1">Order By</h1>
           <div class="custom-select">
-            <div
-              (click)="handleListfilter('openOrderfilter')"
-              class="py-1 w-full flex justify-between items-center bg-transparent text-sm text-gray-500 font-semibold focus:outline-none cursor-pointer"
-            >
+            <div (click)="handleListfilter('openOrderfilter')"
+              class="py-1 w-full flex justify-between items-center bg-transparent text-sm text-gray-500 font-semibold focus:outline-none cursor-pointer">
               <!-- <h1>{{ TabFilters.order_by }}</h1>
               <i class="fa-solid fa-caret-down"></i> -->
-              <div
-                *ngIf="FilterValues.order_by?.length > 0"
-                class="w-full overflow-x-auto text-nowrap flex gap-1"
-              >
-                <div
-                  *ngFor="let value of FilterValues.order_by; let i = index"
-                  class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1"
-                >
+              <div *ngIf="FilterValues.order_by?.length > 0" class="w-full overflow-x-auto text-nowrap flex gap-1">
+                <div *ngFor="let value of FilterValues.order_by; let i = index"
+                  class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1">
                   <h1 class="text-nowrap">{{ value }}</h1>
                   <button (click)="handleRemovefilterElement('order_by', i)">
                     X
@@ -90,10 +66,8 @@
               <h1 *ngIf="FilterValues.order_by?.length <= 0">Select option</h1>
             </div>
           </div>
-          <div
-            *ngIf="filterMap.openOrderfilter && OpenSuggestionBox.order_by"
-            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 max-w-[40vw] w-full lg:w-80 max-h-[42vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md"
-          >
+          <div *ngIf="filterMap.openOrderfilter && OpenSuggestionBox.order_by"
+            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 max-w-[40vw] w-full lg:w-80 max-h-[42vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md">
             <!-- <button
               (click)="handleSelectFilter('order_by', '')"
               class="uppercase px-1 py-2 text-left w-full rounded-md text-xs hover:bg-[#0032A0] hover:text-white"
@@ -108,56 +82,35 @@
               {{ option.name }}
             </button> -->
 
-            <input
-              id="order_by"
-              [(ngModel)]="SearchFilterValues.order_by"
-              (input)="handleSearchFilter('order_by', 'order_filters')"
-              [value]="SearchFilterValues.order_by"
+            <input id="order_by" [(ngModel)]="SearchFilterValues.order_by"
+              (input)="handleSearchFilter('order_by', 'order_filters')" [value]="SearchFilterValues.order_by"
               (blur)="OnBlur('order_by')"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
-              placeholder="Search Filter"
-            />
-            <div
-              *ngIf="order_filters && order_filters?.length > 0"
-              class="overflow-y-auto max-h-[35vh] my-2"
-            >
-              <button
-                (click)="handleCheckFilter('order_by', option.value)"
-                *ngFor="let option of order_filters"
-                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white"
-              >
+              placeholder="Search Filter" />
+            <div *ngIf="order_filters && order_filters?.length > 0" class="overflow-y-auto max-h-[35vh] my-2">
+              <button (click)="handleCheckFilter('order_by', option.value)" *ngFor="let option of order_filters"
+                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white">
                 {{ option.name }}
               </button>
             </div>
           </div>
         </div>
 
-        <div
-          class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]"
-        >
+        <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
           <h1 class="text-[#0032A0] font-bold text-xs my-1">Appl. of Inter.</h1>
           <div class="custom-select">
-            <div
-              (click)="handleListfilter('openActiveIngredientFilter')"
-              class="pb-1 w-full flex items-center bg-transparent text-sm min-w-full text-gray-500 font-semibold focus:outline-none cursor-pointer"
-            >
+            <div (click)="handleListfilter('openActiveIngredientFilter')"
+              class="pb-1 w-full flex items-center bg-transparent text-sm min-w-full text-gray-500 font-semibold focus:outline-none cursor-pointer">
               <!-- <h1>{{ TabFilters.active_ingredient }}</h1>
               <i class="fa-solid fa-caret-down"></i> -->
-              <div
-                *ngIf="FilterValues.active_ingredient?.length > 0"
-                class="w-full overflow-x-auto text-nowrap flex gap-1"
-              >
-                <div
-                  *ngFor="
+              <div *ngIf="FilterValues.active_ingredient?.length > 0"
+                class="w-full overflow-x-auto text-nowrap flex gap-1">
+                <div *ngFor="
                     let value of FilterValues.active_ingredient;
                     let i = index
-                  "
-                  class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1"
-                >
+                  " class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1">
                   <h1 class="text-nowrap">{{ value }}</h1>
-                  <button
-                    (click)="handleRemovefilterElement('active_ingredient', i)"
-                  >
+                  <button (click)="handleRemovefilterElement('active_ingredient', i)">
                     X
                   </button>
                 </div>
@@ -168,13 +121,11 @@
             </div>
           </div>
 
-          <div
-            *ngIf="
+          <div *ngIf="
               filterMap.openActiveIngredientFilter &&
               OpenSuggestionBox.active_ingredient
             "
-            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 max-w-[40vw] w-full lg:w-80 max-h-[42vh] h-auto p-2 border-2 border-gray-200 flex-grow rounded-md"
-          >
+            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 max-w-[40vw] w-full lg:w-80 max-h-[42vh] h-auto p-2 border-2 border-gray-200 flex-grow rounded-md">
             <!-- <button
               (click)="handleSelectFilter('active_ingredient', '')"
               class="uppercase px-1 py-2 text-left w-full rounded-md text-xs hover:bg-[#0032A0] hover:text-white"
@@ -188,65 +139,44 @@
             >
               {{ option.name }}
             </button> -->
-            <input
-              id="active_ingredient"
-              (blur)="OnBlur('active_ingredient')"
-              [(ngModel)]="SearchFilterValues.active_ingredient"
-              (input)="
+            <input id="active_ingredient" (blur)="OnBlur('active_ingredient')"
+              [(ngModel)]="SearchFilterValues.active_ingredient" (input)="
                 handleSearchFilter(
                   'active_ingredient',
                   'active_ingredient_filters'
                 )
-              "
-              [value]="SearchFilterValues.active_ingredient"
+              " [value]="SearchFilterValues.active_ingredient"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
-              placeholder="Search Filter"
-            />
-            <div
-              *ngIf="
+              placeholder="Search Filter" />
+            <div *ngIf="
                 active_ingredient_filters && active_ingredient_filters?.length > 0
-              "
-              class="overflow-y-auto max-h-[35vh] my-2"
-            >
-              <button
-                (click)="handleCheckFilter('active_ingredient', option.value)"
+              " class="overflow-y-auto max-h-[35vh] my-2">
+              <button (click)="handleCheckFilter('active_ingredient', option.value)"
                 *ngFor="let option of active_ingredient_filters"
-                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white"
-              >
+                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white">
                 {{ option.name }}
               </button>
             </div>
           </div>
         </div>
 
-        <div
-          class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]"
-        >
+        <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
           <h1 class="text-[#0032A0] font-bold text-xs my-1">
             Field Of Application
           </h1>
           <div class="custom-select">
-            <div
-              (click)="handleListfilter('openFieldOfApplicationsFilter')"
-              class="py-1 w-full flex justify-between items-center bg-transparent text-sm text-gray-500 font-semibold focus:outline-none cursor-pointer"
-            >
+            <div (click)="handleListfilter('openFieldOfApplicationsFilter')"
+              class="py-1 w-full flex justify-between items-center bg-transparent text-sm text-gray-500 font-semibold focus:outline-none cursor-pointer">
               <!-- <h1>{{ TabFilters.field_of_application }}</h1>
               <i class="fa-solid fa-caret-down"></i> -->
-              <div
-                *ngIf="FilterValues.field_of_application?.length > 0"
-                class="w-full overflow-x-auto text-nowrap flex gap-1"
-              >
-                <div
-                  *ngFor="
+              <div *ngIf="FilterValues.field_of_application?.length > 0"
+                class="w-full overflow-x-auto text-nowrap flex gap-1">
+                <div *ngFor="
                     let value of FilterValues.field_of_application;
                     let i = index
-                  "
-                  class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1"
-                >
+                  " class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1">
                   <h1 class="text-nowrap">{{ value }}</h1>
-                  <button
-                    (click)="handleRemovefilterElement('field_of_application', i)"
-                  >
+                  <button (click)="handleRemovefilterElement('field_of_application', i)">
                     X
                   </button>
                 </div>
@@ -256,13 +186,11 @@
               </h1>
             </div>
           </div>
-          <div
-            *ngIf="
+          <div *ngIf="
               filterMap.openFieldOfApplicationsFilter &&
               OpenSuggestionBox.field_of_application
             "
-            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 max-w-[40vw] w-full lg:w-80 max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md"
-          >
+            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 max-w-[40vw] w-full lg:w-80 max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md">
             <!-- <button
               (click)="handleSelectFilter('field_of_application', '')"
               class="uppercase px-1 py-2 text-left w-full rounded-md text-xs hover:bg-[#0032A0] hover:text-white"
@@ -277,57 +205,38 @@
               {{ option.name }}
             </button> -->
 
-            <input
-              id="field_of_application"
-              (blur)="OnBlur('field_of_application')"
-              [(ngModel)]="SearchFilterValues.field_of_application"
-              (input)="
+            <input id="field_of_application" (blur)="OnBlur('field_of_application')"
+              [(ngModel)]="SearchFilterValues.field_of_application" (input)="
                 handleSearchFilter(
                   'field_of_application',
                   'field_of_applications_filters'
                 )
-              "
-              [value]="SearchFilterValues.field_of_application"
+              " [value]="SearchFilterValues.field_of_application"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
-              placeholder="Search Filter"
-            />
-            <div
-              *ngIf="
+              placeholder="Search Filter" />
+            <div *ngIf="
                 field_of_applications_filters &&
                 field_of_applications_filters?.length > 0
-              "
-              class="overflow-y-auto max-h-[35vh] my-2"
-            >
-              <button
-                (click)="handleCheckFilter('field_of_application', option.value)"
+              " class="overflow-y-auto max-h-[35vh] my-2">
+              <button (click)="handleCheckFilter('field_of_application', option.value)"
                 *ngFor="let option of field_of_applications_filters"
-                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white"
-              >
+                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white">
                 {{ option.name }}
               </button>
             </div>
           </div>
         </div>
 
-        <div
-          class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]"
-        >
+        <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
           <h1 class="text-[#0032A0] font-bold text-xs my-1">Company</h1>
           <div class="custom-select">
-            <div
-              (click)="handleListfilter('openCompanyFilter')"
-              class="py-1 w-full flex justify-between items-center bg-transparent text-sm text-gray-500 font-semibold focus:outline-none cursor-pointer"
-            >
+            <div (click)="handleListfilter('openCompanyFilter')"
+              class="py-1 w-full flex justify-between items-center bg-transparent text-sm text-gray-500 font-semibold focus:outline-none cursor-pointer">
               <!-- <h1>{{ TabFilters.company_name }}</h1>
               <i class="fa-solid fa-caret-down"></i> -->
-              <div
-                *ngIf="FilterValues.company_name?.length > 0"
-                class="w-full overflow-x-auto text-nowrap flex gap-1"
-              >
-                <div
-                  *ngFor="let value of FilterValues.company_name; let i = index"
-                  class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1"
-                >
+              <div *ngIf="FilterValues.company_name?.length > 0" class="w-full overflow-x-auto text-nowrap flex gap-1">
+                <div *ngFor="let value of FilterValues.company_name; let i = index"
+                  class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1">
                   <h1 class="text-nowrap">{{ value }}</h1>
                   <button (click)="handleRemovefilterElement('company_name', i)">
                     X
@@ -339,10 +248,8 @@
               </h1>
             </div>
           </div>
-          <div
-            *ngIf="filterMap.openCompanyFilter && OpenSuggestionBox.company_name"
-            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 max-w-[40vw] md:w-48 w-80 lg:w-80 max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md"
-          >
+          <div *ngIf="filterMap.openCompanyFilter && OpenSuggestionBox.company_name"
+            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 max-w-[40vw] md:w-48 w-80 lg:w-80 max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md">
             <!-- <button
               (click)="handleSelectFilter('company_name', '')"
               class="uppercase px-1 py-2 text-left w-full rounded-md text-xs hover:bg-[#0032A0] hover:text-white"
@@ -356,53 +263,35 @@
             >
               {{ option.name }}
             </button> -->
-            <input
-              id="company_name"
-              (blur)="OnBlur('company_name')"
-              [(ngModel)]="SearchFilterValues.company_name"
+            <input id="company_name" (blur)="OnBlur('company_name')" [(ngModel)]="SearchFilterValues.company_name"
               (input)="handleSearchFilter('company_name', 'company_name_filters')"
               [value]="SearchFilterValues.company_name"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
-              placeholder="Search Filter"
-            />
-            <div
-              *ngIf="company_name_filters && company_name_filters?.length > 0"
-              class="overflow-y-auto max-h-[35vh] my-2"
-            >
-              <button
-                (click)="handleCheckFilter('company_name', option.value)"
+              placeholder="Search Filter" />
+            <div *ngIf="company_name_filters && company_name_filters?.length > 0"
+              class="overflow-y-auto max-h-[35vh] my-2">
+              <button (click)="handleCheckFilter('company_name', option.value)"
                 *ngFor="let option of company_name_filters"
-                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white"
-              >
+                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white">
                 {{ option.name }}
               </button>
             </div>
           </div>
         </div>
 
-        <div
-          class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]"
-        >
+        <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
           <h1 class="text-[#0032A0] font-bold text-xs my-1">All AI/KSM</h1>
           <div class="custom-select">
-            <div
-              (click)="handleListfilter('openTypeOfRouteFilter')"
-              class="py-1 w-full flex justify-between items-center bg-transparent text-sm text-gray-500 font-semibold focus:outline-none cursor-pointer"
-            >
+            <div (click)="handleListfilter('openTypeOfRouteFilter')"
+              class="py-1 w-full flex justify-between items-center bg-transparent text-sm text-gray-500 font-semibold focus:outline-none cursor-pointer">
               <!-- <h1>{{ TabFilters.types_of_route }}</h1>
               <i class="fa-solid fa-caret-down"></i> -->
-              <div
-                *ngIf="FilterValues.types_of_route?.length > 0"
-                class="w-full overflow-x-auto text-nowrap flex gap-1"
-              >
-                <div
-                  *ngFor="let value of FilterValues.types_of_route; let i = index"
-                  class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1"
-                >
+              <div *ngIf="FilterValues.types_of_route?.length > 0"
+                class="w-full overflow-x-auto text-nowrap flex gap-1">
+                <div *ngFor="let value of FilterValues.types_of_route; let i = index"
+                  class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1">
                   <h1 class="text-nowrap">{{ value }}</h1>
-                  <button
-                    (click)="handleRemovefilterElement('types_of_route', i)"
-                  >
+                  <button (click)="handleRemovefilterElement('types_of_route', i)">
                     X
                   </button>
                 </div>
@@ -412,12 +301,10 @@
               </h1>
             </div>
           </div>
-          <div
-            *ngIf="
+          <div *ngIf="
               filterMap.openTypeOfRouteFilter && OpenSuggestionBox.types_of_route
             "
-            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 max-w-[40vw] md:w-48 w-80 lg:w-[21rem] max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md"
-          >
+            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 max-w-[40vw] md:w-48 w-80 lg:w-[21rem] max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md">
             <!-- <button
               (click)="handleSelectFilter('types_of_route', '')"
               class="uppercase px-1 py-2 text-left w-full rounded-md text-xs hover:bg-[#0032A0] hover:text-white"
@@ -432,52 +319,34 @@
               {{ option.name }}
             </button> -->
 
-            <input
-              id="types_of_route"
-              (blur)="OnBlur('types_of_route')"
-              [(ngModel)]="SearchFilterValues.types_of_route"
+            <input id="types_of_route" (blur)="OnBlur('types_of_route')" [(ngModel)]="SearchFilterValues.types_of_route"
               (input)="
                 handleSearchFilter('types_of_route', 'types_of_route_filters')
-              "
-              [value]="SearchFilterValues.types_of_route"
+              " [value]="SearchFilterValues.types_of_route"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
-              placeholder="Search Filter"
-            />
-            <div
-              *ngIf="types_of_route_filters && types_of_route_filters?.length > 0"
-              class="overflow-y-auto max-h-[35vh] my-2"
-            >
-              <button
-                (click)="handleCheckFilter('types_of_route', option.value)"
+              placeholder="Search Filter" />
+            <div *ngIf="types_of_route_filters && types_of_route_filters?.length > 0"
+              class="overflow-y-auto max-h-[35vh] my-2">
+              <button (click)="handleCheckFilter('types_of_route', option.value)"
                 *ngFor="let option of types_of_route_filters"
-                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white"
-              >
+                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white">
                 {{ option.name }}
               </button>
             </div>
           </div>
         </div>
 
-        <div
-          class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]"
-        >
+        <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
           <h1 class="text-[#0032A0] font-bold text-xs my-1">Route Type</h1>
           <div class="custom-select">
-            <div
-              (click)="handleListfilter('openRouteFilter')"
-              class="py-1 w-full flex justify-between items-center bg-transparent text-sm text-gray-500 font-semibold focus:outline-none cursor-pointer"
-            >
+            <div (click)="handleListfilter('openRouteFilter')"
+              class="py-1 w-full flex justify-between items-center bg-transparent text-sm text-gray-500 font-semibold focus:outline-none cursor-pointer">
               <!-- <h1>{{ TabFilters.route_type }}</h1>
               <i class="fa-solid fa-caret-down"></i> -->
 
-              <div
-                *ngIf="FilterValues.route_type?.length > 0"
-                class="w-full overflow-x-auto text-nowrap flex gap-1"
-              >
-                <div
-                  *ngFor="let value of FilterValues.route_type; let i = index"
-                  class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1"
-                >
+              <div *ngIf="FilterValues.route_type?.length > 0" class="w-full overflow-x-auto text-nowrap flex gap-1">
+                <div *ngFor="let value of FilterValues.route_type; let i = index"
+                  class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1">
                   <h1 class="text-nowrap">{{ value }}</h1>
                   <button (click)="handleRemovefilterElement('route_type', i)">
                     X
@@ -487,10 +356,8 @@
               <h1 *ngIf="FilterValues.route_type?.length <= 0">Select option</h1>
             </div>
           </div>
-          <div
-            *ngIf="filterMap.openRouteFilter && OpenSuggestionBox.route_type"
-            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 w-full max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md"
-          >
+          <div *ngIf="filterMap.openRouteFilter && OpenSuggestionBox.route_type"
+            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 w-full max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md">
             <!-- <button
               (click)="handleSelectFilter('route_type', '')"
               class="uppercase px-1 py-2 text-left w-full rounded-md text-xs hover:bg-[#0032A0] hover:text-white"
@@ -505,49 +372,29 @@
               {{ option.name }}
             </button> -->
 
-            <input
-              id="route_type"
-              (blur)="OnBlur('route_type')"
-              [(ngModel)]="SearchFilterValues.route_type"
-              (input)="handleSearchFilter('route_type', 'route_type_filters')"
-              [value]="SearchFilterValues.route_type"
+            <input id="route_type" (blur)="OnBlur('route_type')" [(ngModel)]="SearchFilterValues.route_type"
+              (input)="handleSearchFilter('route_type', 'route_type_filters')" [value]="SearchFilterValues.route_type"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
-              placeholder="Search Filter"
-            />
-            <div
-              *ngIf="route_type_filters && route_type_filters?.length > 0"
-              class="overflow-y-auto max-h-[35vh] my-2"
-            >
-              <button
-                (click)="handleCheckFilter('route_type', option.value)"
-                *ngFor="let option of route_type_filters"
-                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white"
-              >
+              placeholder="Search Filter" />
+            <div *ngIf="route_type_filters && route_type_filters?.length > 0" class="overflow-y-auto max-h-[35vh] my-2">
+              <button (click)="handleCheckFilter('route_type', option.value)" *ngFor="let option of route_type_filters"
+                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white">
                 {{ option.name }}
               </button>
             </div>
           </div>
         </div>
 
-        <div
-          class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]"
-        >
+        <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
           <h1 class="text-[#0032A0] font-bold text-xs my-1">Updation Date</h1>
           <div class="custom-select">
-            <div
-              (click)="handleListfilter('openUpdateDateFilter')"
-              class="py-1 w-full flex justify-between items-center bg-transparent text-sm text-gray-500 font-semibold focus:outline-none cursor-pointer"
-            >
+            <div (click)="handleListfilter('openUpdateDateFilter')"
+              class="py-1 w-full flex justify-between items-center bg-transparent text-sm text-gray-500 font-semibold focus:outline-none cursor-pointer">
               <!-- <h1>{{ TabFilters.updation_date }}</h1>
               <i class="fa-solid fa-caret-down"></i> -->
-              <div
-                *ngIf="FilterValues.updation_date?.length > 0"
-                class="w-full overflow-x-auto text-nowrap flex gap-1"
-              >
-                <div
-                  *ngFor="let value of FilterValues.updation_date; let i = index"
-                  class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1"
-                >
+              <div *ngIf="FilterValues.updation_date?.length > 0" class="w-full overflow-x-auto text-nowrap flex gap-1">
+                <div *ngFor="let value of FilterValues.updation_date; let i = index"
+                  class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1">
                   <h1 class="text-nowrap">{{ getUpdationDate(value) }}</h1>
                   <button (click)="handleRemovefilterElement('updation_date', i)">
                     X
@@ -559,12 +406,10 @@
               </h1>
             </div>
           </div>
-          <div
-            *ngIf="
+          <div *ngIf="
               filterMap.openUpdateDateFilter && OpenSuggestionBox.updation_date
             "
-            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 w-full max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md"
-          >
+            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 w-full max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md">
             <!-- <button
               (click)="handleSelectFilter('updation_date', '')"
               class="uppercase px-1 py-2 text-left w-full rounded-md text-xs hover:bg-[#0032A0] hover:text-white"
@@ -579,24 +424,16 @@
               {{ getUpdationDate(option?.name) }}
             </button> -->
 
-            <input
-              id="updation_date"
-              (blur)="OnBlur('updation_date')"
-              [(ngModel)]="SearchFilterValues.updation_date"
+            <input id="updation_date" (blur)="OnBlur('updation_date')" [(ngModel)]="SearchFilterValues.updation_date"
               (input)="handleSearchFilter('updation_date', 'update_date_filters')"
               [value]="SearchFilterValues.updation_date"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
-              placeholder="Search Filter"
-            />
-            <div
-              *ngIf="update_date_filters && update_date_filters?.length > 0"
-              class="overflow-y-auto max-h-[35vh] my-2"
-            >
-              <button
-                (click)="handleCheckFilter('updation_date', option.value)"
+              placeholder="Search Filter" />
+            <div *ngIf="update_date_filters && update_date_filters?.length > 0"
+              class="overflow-y-auto max-h-[35vh] my-2">
+              <button (click)="handleCheckFilter('updation_date', option.value)"
                 *ngFor="let option of update_date_filters"
-                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white"
-              >
+                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white">
                 {{ getUpdationDate(option.value) }}
               </button>
             </div>
@@ -606,32 +443,21 @@
 
       <!-- filtermobile devicesobile -->
 
-      <button
-        (click)="toogleFilter()"
-        class="sm:hidden text-sm text-white font-bold bg-[#0032A0] px-4 py-2 rounded-full"
-      >
+      <button (click)="toogleFilter()"
+        class="sm:hidden text-sm text-white font-bold bg-[#0032A0] px-4 py-2 rounded-full">
         Filters
       </button>
       <div *ngIf="showFilter" class="gap-3 w-full flex-wrap flex py-2 sm:hidden">
-        <div
-          class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]"
-        >
+        <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
           <h1 class="text-[#0032A0] font-bold text-xs my-1">Order By</h1>
           <div class="custom-select">
-            <div
-              (click)="handleListfilter('openOrderfilter')"
-              class="py-1 w-full flex justify-between items-center bg-transparent text-sm text-gray-500 font-semibold focus:outline-none cursor-pointer"
-            >
+            <div (click)="handleListfilter('openOrderfilter')"
+              class="py-1 w-full flex justify-between items-center bg-transparent text-sm text-gray-500 font-semibold focus:outline-none cursor-pointer">
               <!-- <h1>{{ TabFilters.order_by }}</h1>
               <i class="fa-solid fa-caret-down"></i> -->
-              <div
-                *ngIf="FilterValues.order_by?.length > 0"
-                class="w-full overflow-x-auto text-nowrap flex gap-1"
-              >
-                <div
-                  *ngFor="let value of FilterValues.order_by; let i = index"
-                  class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1"
-                >
+              <div *ngIf="FilterValues.order_by?.length > 0" class="w-full overflow-x-auto text-nowrap flex gap-1">
+                <div *ngFor="let value of FilterValues.order_by; let i = index"
+                  class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1">
                   <h1 class="text-nowrap">{{ value }}</h1>
                   <button (click)="handleRemovefilterElement('order_by', i)">
                     X
@@ -641,10 +467,8 @@
               <h1 *ngIf="FilterValues.order_by?.length <= 0">Select option</h1>
             </div>
           </div>
-          <div
-            *ngIf="filterMap.openOrderfilter && OpenSuggestionBox.order_by"
-            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 max-w-[40vw] w-full lg:w-80 max-h-[40vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md"
-          >
+          <div *ngIf="filterMap.openOrderfilter && OpenSuggestionBox.order_by"
+            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 max-w-[40vw] w-full lg:w-80 max-h-[40vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md">
             <!-- <button
               (click)="handleSelectFilter('order_by', '')"
               class="uppercase px-1 py-2 text-left w-full rounded-md text-xs hover:bg-[#0032A0] hover:text-white"
@@ -658,55 +482,33 @@
             >
               {{ option.name }}
             </button> -->
-            <input
-              id="order_by"
-              (blur)="OnBlur('order_by')"
-              [(ngModel)]="SearchFilterValues.order_by"
-              (input)="handleSearchFilter('order_by', 'order_filters')"
-              [value]="SearchFilterValues.order_by"
+            <input id="order_by" (blur)="OnBlur('order_by')" [(ngModel)]="SearchFilterValues.order_by"
+              (input)="handleSearchFilter('order_by', 'order_filters')" [value]="SearchFilterValues.order_by"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
-              placeholder="Search Filter"
-            />
-            <div
-              *ngIf="order_filters && order_filters?.length > 0"
-              class="overflow-y-auto max-h-[35vh] my-2"
-            >
-              <button
-                (click)="handleCheckFilter('order_by', option.value)"
-                *ngFor="let option of order_filters"
-                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white"
-              >
+              placeholder="Search Filter" />
+            <div *ngIf="order_filters && order_filters?.length > 0" class="overflow-y-auto max-h-[35vh] my-2">
+              <button (click)="handleCheckFilter('order_by', option.value)" *ngFor="let option of order_filters"
+                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white">
                 {{ option.name }}
               </button>
             </div>
           </div>
         </div>
 
-        <div
-          class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]"
-        >
+        <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
           <h1 class="text-[#0032A0] font-bold text-xs my-1">Appl. of Inter.</h1>
-          <div
-            (click)="handleListfilter('openActiveIngredientFilter')"
-            class="py-1 w-full bg-transparent text-sm flex justify-between text-gray-500 font-semibold focus:outline-none cursor-pointer"
-          >
+          <div (click)="handleListfilter('openActiveIngredientFilter')"
+            class="py-1 w-full bg-transparent text-sm flex justify-between text-gray-500 font-semibold focus:outline-none cursor-pointer">
             <!-- <h1>{{ TabFilters.active_ingredient }}</h1>
             <i class="fa-solid fa-caret-down"></i> -->
-            <div
-              *ngIf="FilterValues.active_ingredient?.length > 0"
-              class="w-full overflow-x-auto text-nowrap flex gap-1"
-            >
-              <div
-                *ngFor="
+            <div *ngIf="FilterValues.active_ingredient?.length > 0"
+              class="w-full overflow-x-auto text-nowrap flex gap-1">
+              <div *ngFor="
                   let value of FilterValues.active_ingredient;
                   let i = index
-                "
-                class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1"
-              >
+                " class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1">
                 <h1 class="text-nowrap">{{ value }}</h1>
-                <button
-                  (click)="handleRemovefilterElement('active_ingredient', i)"
-                >
+                <button (click)="handleRemovefilterElement('active_ingredient', i)">
                   X
                 </button>
               </div>
@@ -715,13 +517,11 @@
               Select option
             </h1>
           </div>
-          <div
-            *ngIf="
+          <div *ngIf="
               filterMap.openActiveIngredientFilter &&
               OpenSuggestionBox.active_ingredient
             "
-            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 w-full max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md"
-          >
+            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 w-full max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md">
             <!-- <button
               (click)="handleSelectFilter('active_ingredient', '')"
               class="uppercase px-1 py-2 text-left w-full rounded-md text-xs hover:bg-[#0032A0] hover:text-white"
@@ -735,64 +535,43 @@
             >
               {{ option.name }}
             </button> -->
-            <input
-              id="active_ingredient"
-              (blur)="OnBlur('active_ingredient')"
-              [(ngModel)]="SearchFilterValues.active_ingredient"
-              (input)="
+            <input id="active_ingredient" (blur)="OnBlur('active_ingredient')"
+              [(ngModel)]="SearchFilterValues.active_ingredient" (input)="
                 handleSearchFilter(
                   'active_ingredient',
                   'active_ingredient_filters'
                 )
-              "
-              [value]="SearchFilterValues.active_ingredient"
+              " [value]="SearchFilterValues.active_ingredient"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
-              placeholder="Search Filter"
-            />
-            <div
-              *ngIf="
+              placeholder="Search Filter" />
+            <div *ngIf="
                 active_ingredient_filters && active_ingredient_filters?.length > 0
-              "
-              class="overflow-y-auto max-h-[35vh] my-2"
-            >
-              <button
-                (click)="handleCheckFilter('active_ingredient', option.value)"
+              " class="overflow-y-auto max-h-[35vh] my-2">
+              <button (click)="handleCheckFilter('active_ingredient', option.value)"
                 *ngFor="let option of active_ingredient_filters"
-                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white"
-              >
+                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white">
                 {{ option.name }}
               </button>
             </div>
           </div>
         </div>
 
-        <div
-          class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]"
-        >
+        <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
           <h1 class="text-[#0032A0] font-bold text-xs my-1">
             Field of Application
           </h1>
-          <div
-            (click)="handleListfilter('openFieldOfApplicationsFilter')"
-            class="py-1 w-full bg-transparent text-sm flex justify-between text-gray-500 font-semibold focus:outline-none cursor-pointer"
-          >
+          <div (click)="handleListfilter('openFieldOfApplicationsFilter')"
+            class="py-1 w-full bg-transparent text-sm flex justify-between text-gray-500 font-semibold focus:outline-none cursor-pointer">
             <!-- <h1>{{ TabFilters.field_of_application }}</h1>
             <i class="fa-solid fa-caret-down"></i> -->
-            <div
-              *ngIf="FilterValues.field_of_application?.length > 0"
-              class="w-full overflow-x-auto text-nowrap flex gap-1"
-            >
-              <div
-                *ngFor="
+            <div *ngIf="FilterValues.field_of_application?.length > 0"
+              class="w-full overflow-x-auto text-nowrap flex gap-1">
+              <div *ngFor="
                   let value of FilterValues.field_of_application;
                   let i = index
-                "
-                class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1"
-              >
+                " class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1">
                 <h1 class="text-nowrap">{{ value }}</h1>
-                <button
-                  (click)="handleRemovefilterElement('field_of_application', i)"
-                >
+                <button (click)="handleRemovefilterElement('field_of_application', i)">
                   X
                 </button>
               </div>
@@ -801,13 +580,11 @@
               Select option
             </h1>
           </div>
-          <div
-            *ngIf="
+          <div *ngIf="
               filterMap.openFieldOfApplicationsFilter &&
               OpenSuggestionBox.field_of_application
             "
-            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 w-full max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md"
-          >
+            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 w-full max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md">
             <!-- <button
               (click)="handleSelectFilter('field_of_application', '')"
               class="uppercase px-1 py-2 text-left w-full rounded-md text-xs hover:bg-[#0032A0] hover:text-white"
@@ -822,57 +599,38 @@
               {{ option.name }}
             </button> -->
 
-            <input
-              id="field_of_application"
-              (blur)="OnBlur('field_of_application')"
-              [(ngModel)]="SearchFilterValues.field_of_application"
-              (input)="
+            <input id="field_of_application" (blur)="OnBlur('field_of_application')"
+              [(ngModel)]="SearchFilterValues.field_of_application" (input)="
                 handleSearchFilter(
                   'field_of_application',
                   'field_of_applications_filters'
                 )
-              "
-              [value]="SearchFilterValues.field_of_application"
+              " [value]="SearchFilterValues.field_of_application"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
-              placeholder="Search Filter"
-            />
-            <div
-              *ngIf="
+              placeholder="Search Filter" />
+            <div *ngIf="
                 field_of_applications_filters &&
                 field_of_applications_filters?.length > 0
-              "
-              class="overflow-y-auto max-h-[35vh] my-2"
-            >
-              <button
-                (click)="handleCheckFilter('field_of_application', option.value)"
+              " class="overflow-y-auto max-h-[35vh] my-2">
+              <button (click)="handleCheckFilter('field_of_application', option.value)"
                 *ngFor="let option of field_of_applications_filters"
-                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white"
-              >
+                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white">
                 {{ option.name }}
               </button>
             </div>
           </div>
         </div>
 
-        <div
-          class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]"
-        >
+        <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
           <h1 class="text-[#0032A0] font-bold text-xs my-1">Company</h1>
-          <div
-            (click)="handleListfilter('openCompanyFilter')"
-            class="py-1 w-full bg-transparent text-sm flex justify-between text-gray-500 font-semibold focus:outline-none cursor-pointer"
-          >
+          <div (click)="handleListfilter('openCompanyFilter')"
+            class="py-1 w-full bg-transparent text-sm flex justify-between text-gray-500 font-semibold focus:outline-none cursor-pointer">
             <!-- <h1>{{ TabFilters.company_name }}</h1>
             <i class="fa-solid fa-caret-down"></i> -->
 
-            <div
-              *ngIf="FilterValues.company_name?.length > 0"
-              class="w-full overflow-x-auto text-nowrap flex gap-1"
-            >
-              <div
-                *ngFor="let value of FilterValues.company_name; let i = index"
-                class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1"
-              >
+            <div *ngIf="FilterValues.company_name?.length > 0" class="w-full overflow-x-auto text-nowrap flex gap-1">
+              <div *ngFor="let value of FilterValues.company_name; let i = index"
+                class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1">
                 <h1 class="text-nowrap">{{ value }}</h1>
                 <button (click)="handleRemovefilterElement('company_name', i)">
                   X
@@ -881,10 +639,8 @@
             </div>
             <h1 *ngIf="FilterValues.company_name?.length <= 0">Select option</h1>
           </div>
-          <div
-            *ngIf="filterMap.openCompanyFilter && OpenSuggestionBox.company_name"
-            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 w-full max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md"
-          >
+          <div *ngIf="filterMap.openCompanyFilter && OpenSuggestionBox.company_name"
+            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 w-full max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md">
             <!-- <button
               (click)="handleSelectFilter('company_name', '')"
               class="uppercase px-1 py-2 text-left w-full rounded-md text-xs hover:bg-[#0032A0] hover:text-white"
@@ -899,49 +655,32 @@
               {{ option.name }}
             </button> -->
 
-            <input
-              id="company_name"
-              (blur)="OnBlur('company_name')"
-              [(ngModel)]="SearchFilterValues.company_name"
+            <input id="company_name" (blur)="OnBlur('company_name')" [(ngModel)]="SearchFilterValues.company_name"
               (input)="handleSearchFilter('company_name', 'company_name_filters')"
               [value]="SearchFilterValues.company_name"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
-              placeholder="Search Filter"
-            />
-            <div
-              *ngIf="company_name_filters && company_name_filters?.length > 0"
-              class="overflow-y-auto max-h-[35vh] my-2"
-            >
-              <button
-                (click)="handleCheckFilter('company_name', option.value)"
+              placeholder="Search Filter" />
+            <div *ngIf="company_name_filters && company_name_filters?.length > 0"
+              class="overflow-y-auto max-h-[35vh] my-2">
+              <button (click)="handleCheckFilter('company_name', option.value)"
                 *ngFor="let option of company_name_filters"
-                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white"
-              >
+                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white">
                 {{ option.name }}
               </button>
             </div>
           </div>
         </div>
 
-        <div
-          class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]"
-        >
+        <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
           <h1 class="text-[#0032A0] font-bold text-xs my-1">All AI/KSM</h1>
-          <div
-            (click)="handleListfilter('openTypeOfRouteFilter')"
-            class="py-1 w-full bg-transparent text-sm flex justify-between text-gray-500 font-semibold focus:outline-none cursor-pointer"
-          >
+          <div (click)="handleListfilter('openTypeOfRouteFilter')"
+            class="py-1 w-full bg-transparent text-sm flex justify-between text-gray-500 font-semibold focus:outline-none cursor-pointer">
             <!-- <h1>{{ TabFilters.types_of_route }}</h1>
             <i class="fa-solid fa-caret-down"></i> -->
 
-            <div
-              *ngIf="FilterValues.types_of_route?.length > 0"
-              class="w-full overflow-x-auto text-nowrap flex gap-1"
-            >
-              <div
-                *ngFor="let value of FilterValues.types_of_route; let i = index"
-                class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1"
-              >
+            <div *ngIf="FilterValues.types_of_route?.length > 0" class="w-full overflow-x-auto text-nowrap flex gap-1">
+              <div *ngFor="let value of FilterValues.types_of_route; let i = index"
+                class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1">
                 <h1 class="text-nowrap">{{ value }}</h1>
                 <button (click)="handleRemovefilterElement('types_of_route', i)">
                   X
@@ -952,12 +691,10 @@
               Select option
             </h1>
           </div>
-          <div
-            *ngIf="
+          <div *ngIf="
               filterMap.openTypeOfRouteFilter && OpenSuggestionBox.types_of_route
             "
-            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 w-full max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md"
-          >
+            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 w-full max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md">
             <!-- <button
               (click)="handleSelectFilter('types_of_route', '')"
               class="uppercase px-1 py-2 text-left w-full rounded-md text-xs hover:bg-[#0032A0] hover:text-white"
@@ -972,50 +709,32 @@
               {{ option.name }}
             </button> -->
 
-            <input
-              id="types_of_route"
-              (blur)="OnBlur('types_of_route')"
-              [(ngModel)]="SearchFilterValues.types_of_route"
+            <input id="types_of_route" (blur)="OnBlur('types_of_route')" [(ngModel)]="SearchFilterValues.types_of_route"
               (input)="
                 handleSearchFilter('types_of_route', 'types_of_route_filters')
-              "
-              [value]="SearchFilterValues.types_of_route"
+              " [value]="SearchFilterValues.types_of_route"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
-              placeholder="Search Filter"
-            />
-            <div
-              *ngIf="types_of_route_filters && types_of_route_filters?.length > 0"
-              class="overflow-y-auto max-h-[35vh] my-2"
-            >
-              <button
-                (click)="handleCheckFilter('types_of_route', option.value)"
+              placeholder="Search Filter" />
+            <div *ngIf="types_of_route_filters && types_of_route_filters?.length > 0"
+              class="overflow-y-auto max-h-[35vh] my-2">
+              <button (click)="handleCheckFilter('types_of_route', option.value)"
                 *ngFor="let option of types_of_route_filters"
-                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white"
-              >
+                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white">
                 {{ option.name }}
               </button>
             </div>
           </div>
         </div>
 
-        <div
-          class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]"
-        >
+        <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
           <h1 class="text-[#0032A0] font-bold text-xs my-1">Route Type</h1>
-          <div
-            (click)="handleListfilter('openRouteFilter')"
-            class="py-1 w-full bg-transparent text-sm flex justify-between text-gray-500 font-semibold focus:outline-none cursor-pointer"
-          >
+          <div (click)="handleListfilter('openRouteFilter')"
+            class="py-1 w-full bg-transparent text-sm flex justify-between text-gray-500 font-semibold focus:outline-none cursor-pointer">
             <!-- <h1>{{ TabFilters.route_type }}</h1>
             <i class="fa-solid fa-caret-down"></i> -->
-            <div
-              *ngIf="FilterValues.route_type?.length > 0"
-              class="w-full overflow-x-auto text-nowrap flex gap-1"
-            >
-              <div
-                *ngFor="let value of FilterValues.route_type; let i = index"
-                class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1"
-              >
+            <div *ngIf="FilterValues.route_type?.length > 0" class="w-full overflow-x-auto text-nowrap flex gap-1">
+              <div *ngFor="let value of FilterValues.route_type; let i = index"
+                class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1">
                 <h1 class="text-nowrap">{{ value }}</h1>
                 <button (click)="handleRemovefilterElement('route_type', i)">
                   X
@@ -1024,10 +743,8 @@
             </div>
             <h1 *ngIf="FilterValues.route_type?.length <= 0">Select option</h1>
           </div>
-          <div
-            *ngIf="filterMap.openRouteFilter && OpenSuggestionBox.route_type"
-            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 w-full max-h-[40vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md"
-          >
+          <div *ngIf="filterMap.openRouteFilter && OpenSuggestionBox.route_type"
+            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 w-full max-h-[40vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md">
             <!-- <button
               (click)="handleSelectFilter('route_type', '')"
               class="uppercase px-1 py-2 text-left w-full rounded-md text-xs hover:bg-[#0032A0] hover:text-white"
@@ -1041,48 +758,28 @@
             >
               {{ option.name }}
             </button> -->
-            <input
-              id="route_type"
-              (blur)="OnBlur('route_type')"
-              [(ngModel)]="SearchFilterValues.route_type"
-              (input)="handleSearchFilter('route_type', 'route_type_filters')"
-              [value]="SearchFilterValues.route_type"
+            <input id="route_type" (blur)="OnBlur('route_type')" [(ngModel)]="SearchFilterValues.route_type"
+              (input)="handleSearchFilter('route_type', 'route_type_filters')" [value]="SearchFilterValues.route_type"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
-              placeholder="Search Filter"
-            />
-            <div
-              *ngIf="route_type_filters && route_type_filters?.length > 0"
-              class="overflow-y-auto max-h-[35vh] my-2"
-            >
-              <button
-                (click)="handleCheckFilter('route_type', option.value)"
-                *ngFor="let option of route_type_filters"
-                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white"
-              >
+              placeholder="Search Filter" />
+            <div *ngIf="route_type_filters && route_type_filters?.length > 0" class="overflow-y-auto max-h-[35vh] my-2">
+              <button (click)="handleCheckFilter('route_type', option.value)" *ngFor="let option of route_type_filters"
+                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white">
                 {{ option.name }}
               </button>
             </div>
           </div>
         </div>
 
-        <div
-          class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]"
-        >
+        <div class="relative bg-white flex-grow border py-2 px-2 border-gray-300 rounded-md w-44 h-[4rem]">
           <h1 class="text-[#0032A0] font-bold text-xs my-1">Updation Date</h1>
-          <div
-            (click)="handleListfilter('openUpdateDateFilter')"
-            class="py-1 w-full bg-transparent text-sm flex justify-between text-gray-500 font-semibold focus:outline-none cursor-pointer"
-          >
+          <div (click)="handleListfilter('openUpdateDateFilter')"
+            class="py-1 w-full bg-transparent text-sm flex justify-between text-gray-500 font-semibold focus:outline-none cursor-pointer">
             <!-- <h1>{{ TabFilters.updation_date }}</h1>
             <i class="fa-solid fa-caret-down"></i> -->
-            <div
-              *ngIf="FilterValues.updation_date?.length > 0"
-              class="w-full overflow-x-auto text-nowrap flex gap-1"
-            >
-              <div
-                *ngFor="let value of FilterValues.updation_date; let i = index"
-                class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1"
-              >
+            <div *ngIf="FilterValues.updation_date?.length > 0" class="w-full overflow-x-auto text-nowrap flex gap-1">
+              <div *ngFor="let value of FilterValues.updation_date; let i = index"
+                class="px-2 py-1 flex items-center gap-2 bg-[#0032A0] rounded-full text-xs text-white m-1">
                 <h1 class="text-nowrap">{{ getUpdationDate(value) }}</h1>
                 <button (click)="handleRemovefilterElement('updation_date', i)">
                   X
@@ -1091,12 +788,10 @@
             </div>
             <h1 *ngIf="FilterValues.updation_date?.length <= 0">Select option</h1>
           </div>
-          <div
-            *ngIf="
+          <div *ngIf="
               filterMap.openUpdateDateFilter && OpenSuggestionBox.updation_date
             "
-            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 w-full max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md"
-          >
+            class="absolute z-30 left-0 sm:right-10 top-20 bg-white max-md:h-80 w-full max-h-[45vh] h-auto overflow-y-auto p-2 border-2 border-gray-200 flex-grow rounded-md">
             <!-- <button
               (click)="handleSelectFilter('updation_date', '')"
               class="uppercase px-1 py-2 text-left w-full rounded-md text-xs hover:bg-[#0032A0] hover:text-white"
@@ -1110,24 +805,16 @@
             >
               {{ getUpdationDate(option?.name) }}
             </button> -->
-            <input
-              id="updation_date"
-              (blur)="OnBlur('updation_date')"
-              [(ngModel)]="SearchFilterValues.updation_date"
+            <input id="updation_date" (blur)="OnBlur('updation_date')" [(ngModel)]="SearchFilterValues.updation_date"
               (input)="handleSearchFilter('updation_date', 'update_date_filters')"
               [value]="SearchFilterValues.updation_date"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
-              placeholder="Search Filter"
-            />
-            <div
-              *ngIf="update_date_filters && update_date_filters?.length > 0"
-              class="overflow-y-auto max-h-[35vh] my-2"
-            >
-              <button
-                (click)="handleCheckFilter('updation_date', option.value)"
+              placeholder="Search Filter" />
+            <div *ngIf="update_date_filters && update_date_filters?.length > 0"
+              class="overflow-y-auto max-h-[35vh] my-2">
+              <button (click)="handleCheckFilter('updation_date', option.value)"
                 *ngFor="let option of update_date_filters"
-                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white"
-              >
+                class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white">
                 {{ getUpdationDate(option?.name) }}
               </button>
             </div>
@@ -1137,57 +824,39 @@
     </div>
   </div>
 
-  <div
-    *ngIf="
+  <div *ngIf="
       CurrentAPIBody.currentTab == 'chemical_structure' ||
       CurrentAPIBody.currentTab == 'intermediate_application'
-    "
-    class="py-2"
-  >
+    " class="py-2">
     <div class="flex justify-between items-center flex-wrap gap-4">
       <h1 class="text-2xl font-extrabold">
         Total Results :
         <span class="text-[#0032A0]">{{
           MainDataResultShow?.ros_count || MainDataResultShow?.chem_dir_count
-        }}</span>
+          }}</span>
       </h1>
       <div class="gap-3 flex flex-wrap">
-        <button
-          class="px-2 py-2 text-xs bg-[#FFCD04] font-semibold rounded-full"
-          (click)="OpenQueryModal()"
-        >
+        <button class="px-2 py-2 text-xs bg-[#FFCD04] font-semibold rounded-full" (click)="OpenQueryModal()">
           Raise Query
         </button>
         <div *ngIf="isDownloadAvailableFunction()">
-          <button
-            *ngIf="!handlegenerateloading && isDownloadPermit"
-            (click)="handleGeneratePdf()"
-            [disabled]="handlegenerateloading"
-            title="Download Full Report (Max 25 ROS)"
-            class="px-2 py-2 text-xs bg-[#0032A0] text-white font-semibold rounded-full"
-          >
+          <button *ngIf="!handlegenerateloading && isDownloadPermit" (click)="handleGeneratePdf()"
+            [disabled]="handlegenerateloading" title="Download Full Report (Max 25 ROS)"
+            class="px-2 py-2 text-xs bg-[#0032A0] text-white font-semibold rounded-full">
             <i class="fa-solid fa-download px-2"></i>Full Report (max 25 Report
             Download)
           </button>
-          <button
-            *ngIf="handlegenerateloading && isDownloadPermit"
-            class="px-2 py-2 text-xs bg-[#0032A0] text-white font-semibold rounded-full flex justify-center items-center gap-2"
-          >
-            <svg
-              aria-hidden="true"
-              class="w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-white"
-              viewBox="0 0 100 101"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+          <button *ngIf="handlegenerateloading && isDownloadPermit"
+            class="px-2 py-2 text-xs bg-[#0032A0] text-white font-semibold rounded-full flex justify-center items-center gap-2">
+            <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-white"
+              viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                fill="currentColor"
-              />
+                fill="currentColor" />
               <path
                 d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                fill="currentFill"
-              /></svg>
+                fill="currentFill" />
+            </svg>
             >Downloading...
           </button>
         </div>
