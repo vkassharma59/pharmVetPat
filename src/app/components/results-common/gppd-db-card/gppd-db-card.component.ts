@@ -14,7 +14,6 @@ import { FormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
-import { LoaderComponent } from "../../../commons/loader/loader.component";
 import * as ExcelJS from 'exceljs';
 import { UserPriviledgeService } from '../../../services/user_priviledges/user-priviledge.service';
 @Component({
@@ -26,7 +25,7 @@ import { UserPriviledgeService } from '../../../services/user_priviledges/user-p
     MatSortModule,
     MatInputModule,
     MatFormFieldModule,
-    MatPaginatorModule, LoaderComponent],
+    MatPaginatorModule],
   templateUrl: './gppd-db-card.component.html',
   styleUrl: './gppd-db-card.component.css'
 
