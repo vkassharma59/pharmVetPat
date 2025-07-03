@@ -41,7 +41,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   advanceSearch: any = {
     autosuggestionList: [],
     dateType: '',
-  
     developmentStage: '',
     innovatorOriginator: '',
     devStage: '',
@@ -290,35 +289,38 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         error: (e) => console.error(e),
       });
   }
-  isSearchEnabled(): boolean {
-    const {
-      filterInputs,
-      devStage,
-      innovator,
-      startSales,
-      endSales,
-      dateType,
-      startDate,
-      endDate
-    } = this.advanceSearch;
+ isSearchEnabled(): boolean {
+  const {
+    filterInputs,
+    devStage,
+    innovator,
+    startSales,
+    endSales,
+    dateType,
+    startDate,
+    endDate
+  } = this.advanceSearch;
 
-    const hasFilterKeyword = filterInputs?.some(
-      (input: any) => input.filter?.trim() && input.keyword?.trim()
-    );
+  const hasFilterKeyword = filterInputs?.some(
+    (input: any) => input.filter?.trim() && input.keyword?.trim()
+  );
 
-    const hasDateFilters =
-      dateType?.trim() !== '' &&
-      this.isValidDate(startDate) &&
-      this.isValidDate(endDate);
+  const hasDateFilters =
+    dateType?.trim() !== '' &&
+    this.isValidDate(startDate) &&
+    this.isValidDate(endDate);
 
-    return (
-      hasFilterKeyword ||
-      hasDateFilters ||
-      devStage?.trim() !== '' ||
-      innovator?.trim() !== '' ||
-      (startSales && endSales)
-    );
-  }
+  return (
+    hasFilterKeyword ||
+    hasDateFilters ||
+    devStage?.trim() !== '' ||
+    innovator?.trim() !== '' ||
+    (startSales && endSales)
+  );
+}
+
+
+
 
   isInputEnabled(): boolean {
     return !!(this.intermediateSearch.filter && this.intermediateSearch.keyword?.trim());
@@ -464,7 +466,10 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     const mainInput = this.advanceSearch?.filterInputs?.[0];
     return !(mainInput?.filter?.trim() && mainInput?.keyword?.trim());
   }
- checkPriviledgeAndHandleSearch(searchType: string = '') {
+
+
+
+  checkPriviledgeAndHandleSearch(searchType: string = '') {
     const { startSales, endSales, filterInputs, simpleSearch, devStage, innovator } = this.advanceSearch;
 
     // 🚨 Validate sales range if only one value is given
@@ -477,6 +482,17 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       return;
     }
 
+    // // ✅ New check: Proceed if any advanced filter input is filled
+    // // ✅ Check if any valid input is filled: simple search, advanced filters, sales range, etc.
+    // const hasFilledKeyword = filterInputs?.some((input: any) => input.keyword && input.keyword.trim() !== '');
+    // const hasSimpleKeyword = simpleSearch?.keyword?.trim() !== '';
+    // // const hasDevStage = devStage?.trim() !== '';
+    // // const hasInnovator = innovator?.trim() !== '';
+
+    // if (!hasFilledKeyword && !hasSimpleKeyword && !startSales && !endSales ) {
+    //   this.priviledgeModal.emit('Please enter at least one search input to continue.');
+    //   return;
+    // }
     const hasFilledKeyword = filterInputs?.some(input =>
       input.filter?.trim() && input.keyword?.trim()
     );
@@ -526,27 +542,14 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
           next: (res: any) => {
             todaysLimit = res?.data;
-            // console.log("Dailylimit", privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit);
-            // console.log("limittodays", todaysLimit?.searchCount);
-
-            // 🛑 If today's search count is exactly 0, block the search first
-            if (privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit == 0) {
-              this.setLoadingState.emit(false);
-              this.priviledgeModal.emit('Your  Search Limit is over for this Platform.Please upgrade the account.');
-              return;
-            }
-
 
             const remainingLimit = privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit - todaysLimit?.searchCount;
             console.log("Dailylimit", privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit);
             console.log("limittodays", todaysLimit?.searchCount);
             console.log("remaining limt", remainingLimit)
-            console.log("limittodays", todaysLimit?.searchCount);
-            console.log("remaining limt", remainingLimit)
             if (remainingLimit <= 0) {
               this.setLoadingState.emit(false);
               this.priviledgeModal.emit('Your Daily Search Limit is over for this Platform.');
-
 
               return;
             }
@@ -592,7 +595,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       dbPrivileges?.Search !== 0
     );
   }
-
 
 
   private searchBasedOnTypes(searchType: string) {
@@ -674,10 +676,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     //   alert("filterInputs must be a non-empty array.");
     //   return;
     // }
-    // if (!Array.isArray(this.advanceSearch?.filterInputs) || this.advanceSearch?.filterInputs.length === 0) {
-    //   alert("filterInputs must be a non-empty array.");
-    //   return;
-    // }
 
     Auth_operations.setActiveformValues({
       column: this.column,
@@ -718,25 +716,25 @@ export class pharmaDatabaseSearchComponent implements OnInit {
           start_date: this.advanceSearch.startDate,
           end_date: this.advanceSearch.endDate
         }
-      }),
-      ...(this.advanceSearch?.devStage && { development_stage: this.advanceSearch.devStage }),
-      ...(this.advanceSearch?.innovator && { innovators: this.advanceSearch.innovator }),
-      ...(this.advanceSearch?.startSales !== null &&
-        this.advanceSearch?.startSales !== undefined &&
-        this.advanceSearch?.endSales !== null &&
-        this.advanceSearch?.endSales !== undefined && {
-        sale_range: {
-          start: this.advanceSearch.startSales,
-          end: this.advanceSearch.endSales
-        }
-      }),
-      page_no: 1
-    };
-    const tech_API = this.apiUrls.basicProductInfo.columnList;
-    this.columnListService.getColumnList(tech_API).subscribe({
-      next: (res: any) => {
-        const response = res?.data?.columns;
-        Auth_operations.setColumnList(this.resultTabs.productInfo.name, response);
+            }),
+        ...(this.advanceSearch?.devStage && { development_stage: this.advanceSearch.devStage }),
+        ...(this.advanceSearch?.innovator && { innovators: this.advanceSearch.innovator }),
+        ...(this.advanceSearch?.startSales !== null &&
+          this.advanceSearch?.startSales !== undefined &&
+          this.advanceSearch?.endSales !== null &&
+          this.advanceSearch?.endSales !== undefined && {
+          sale_range: {
+            start: this.advanceSearch.startSales,
+            end: this.advanceSearch.endSales
+          }
+        }),
+        page_no: 1
+      };
+        const tech_API = this.apiUrls.basicProductInfo.columnList;
+      this.columnListService.getColumnList(tech_API).subscribe({
+        next: (res: any) => {
+          const response = res?.data?.columns;
+          Auth_operations.setColumnList(this.resultTabs.productInfo.name, response);
 
           this.mainSearchService.getAdvanceSearchResults(apiBody).subscribe({
             next: (res: any) => {
@@ -761,7 +759,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         },
       });
     }
-         
 
   private performSynthesisSearch(): void {
     Auth_operations.setActiveformValues({
