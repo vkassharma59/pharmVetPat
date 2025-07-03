@@ -129,7 +129,9 @@ export class RouteResultComponent {
   handleBack() {
     this.backFunction.emit(false);
   }
-
+  isTechnicalRoutesTabActive(): boolean {
+    return this.CurrentAPIBody?.currentTab === this.resultTabs?.technicalRoutes?.name;
+  }
   handleCurrentTab(data: any) {
     const searchThrough = Auth_operations.getActiveformValues().activeForm;
 
