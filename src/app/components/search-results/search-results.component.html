@@ -3,6 +3,7 @@
 <app-result-tab
   *ngIf="searchThrough === searchTypes.synthesisSearch"
   (makePdf)="generatePdf.emit($event)"
+  (backFunction)="handleBack()"
   [MainDataResultShow]="allDataSets"
   [CurrentAPIBody]="CurrentAPIBody"
   (showDataResultFunction)="showDataResultFunction.emit($event)"
