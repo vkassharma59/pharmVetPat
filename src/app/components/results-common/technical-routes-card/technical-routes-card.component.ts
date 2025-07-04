@@ -1,5 +1,7 @@
 import { CommonModule, NgFor } from '@angular/common';
+import { CommonModule, NgFor } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
@@ -12,15 +14,26 @@ import { ServiceResultTabFiltersService } from '../../../services/result_tab/ser
 import { UserPriviledgeService } from '../../../services/user_priviledges/user-priviledge.service';
 import { AppConfigValues } from '../../../config/app-config';
 import { FormsModule, NgModel } from '@angular/forms';
+import { searchTypes, UtilityService } from '../../../services/utility-service/utility.service';
+import { RouteResultComponent } from '../../route-result/route-result.component';
+import { MainSearchService } from '../../../services/main-search/main-search.service';
+import { ServiceResultTabFiltersService } from '../../../services/result_tab/service-result-tab-filters.service';
+import { UserPriviledgeService } from '../../../services/user_priviledges/user-priviledge.service';
+import { AppConfigValues } from '../../../config/app-config';
+import { FormsModule, NgModel } from '@angular/forms';
 
 @Component({
   selector: 'chem-technical-route-card',
   standalone: true,
   imports: [CommonModule, RouteResultComponent, NgFor, FormsModule],
+  imports: [CommonModule, RouteResultComponent, NgFor, FormsModule],
   templateUrl: './technical-routes-card.component.html',
   styleUrl: './technical-routes-card.component.css',
 })
 export class TechnicalRoutesCardComponent {
+  @Output() handleSetLoading: EventEmitter<any> = new EventEmitter<any>();
+  @Output() OpenPriviledgeModal: EventEmitter<any> = new EventEmitter<any>();
+
   @Output() handleSetLoading: EventEmitter<any> = new EventEmitter<any>();
   @Output() OpenPriviledgeModal: EventEmitter<any> = new EventEmitter<any>();
 
@@ -31,6 +44,7 @@ export class TechnicalRoutesCardComponent {
   doc_values: any = [];
   tech_column: any = {};
   resultTabs: any = {};
+  resultTabs1: any = {};
   resultTabs1: any = {};
   _data: any = [];
 
@@ -48,29 +62,17 @@ export class TechnicalRoutesCardComponent {
   isDownloadPermit: boolean = false;
   activeTab: string = '';
   report_download = true;
-  allDataSets: any = [];
-  selectedIndexForDownload: number | null = null;
-  tabNameToReportKey: { [key: string]: string } = {
-    productInfo: 'basicProduct',
-    chemicalDirectory: 'chemDirectory',
-    chemiTracker: 'chemiTracker',
-    technicalRoutes: 'techRoute',
-    impurity: 'impurity',
-  };
+ allDataSets: any = [];
   @Input() CurrentAPIBody: any;
   @Input() index: any;
-   _itemid: any= {};
-
-@Input()
-get itemid() {
-  return this._itemid;
-}
-
-set itemid(value: any) {
-  this._itemid = value;
-}
-
-
+  @Input()
+  get dataItem() {
+    return this._dataItem;
+  }
+  set dataItem(value: any) {
+    this._dataItem = value;
+  }
+ 
   @Input()
   get data() {
     return this._data;
@@ -99,6 +101,11 @@ set itemid(value: any) {
     private userPriviledgeService: UserPriviledgeService,
     private MainsearchService: MainSearchService,
   ) { }
+    private serviceResultTabFiltersService: ServiceResultTabFiltersService,
+    private utilityService: UtilityService,
+    private userPriviledgeService: UserPriviledgeService,
+    private MainsearchService: MainSearchService,
+  ) { }
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
@@ -107,10 +114,34 @@ set itemid(value: any) {
     this.resultTabs1 = Object.values(this.utilityService.getAllTabsName());
     this.currentTabData = this.resultTabs1.find((tab: any) => tab.isActive);
     this.resultTabWithKeys = this.utilityService.getAllTabsName();
+  ngOnInit() {
+    this.resultTabs1 = Object.values(this.utilityService.getAllTabsName());
+    this.currentTabData = this.resultTabs1.find((tab: any) => tab.isActive);
+    this.resultTabWithKeys = this.utilityService.getAllTabsName();
     // Reset counter only when the component is first loaded
     if (TechnicalRoutesCardComponent.apiCallCount === 0) {
       TechnicalRoutesCardComponent.apiCallCount = 0;
     }
+    this.resultTabs1.forEach(tab => {
+      this.SingleDownloadCheckbox[tab.name] = false;
+    });
+
+    //
+    const Account_type = localStorage.getItem('account_type');
+    const Userdata = JSON.parse(localStorage.getItem('priviledge_json') || '');
+
+    this.isSplitDownload =
+      Userdata?.['pharmvetpat-mongodb']?.SplitDownload == 'true' ? true : false;
+
+    this.isDownloadPermit = Account_type == 'premium' ? true : false;
+  }
+  isDisabled() {
+    // Count the number of selected checkboxes
+    const selectedCount = Object.values(this.SingleDownloadCheckbox).filter(
+      (checked) => checked
+    ).length;
+    return selectedCount >= 3;
+  }
     this.resultTabs1.forEach(tab => {
       this.SingleDownloadCheckbox[tab.name] = false;
     });
@@ -151,11 +182,22 @@ set itemid(value: any) {
 
     // Step 2: Find the icon inside the clicked span and swap classes
     const icon = el.querySelector('i');
+    // Step 2: Find the icon inside the clicked span and swap classes
+    const icon = el.querySelector('i');
 
     if (icon?.classList.contains('fa-copy')) {
       icon.classList.remove('fa-copy');
       icon.classList.add('fa-check');
+    if (icon?.classList.contains('fa-copy')) {
+      icon.classList.remove('fa-copy');
+      icon.classList.add('fa-check');
 
+      // Step 3: Revert it back after 1.5 seconds
+      setTimeout(() => {
+        icon.classList.remove('fa-check');
+        icon.classList.add('fa-copy');
+      }, 1500);
+    }
       // Step 3: Revert it back after 1.5 seconds
       setTimeout(() => {
         icon.classList.remove('fa-check');
@@ -177,6 +219,7 @@ set itemid(value: any) {
     if (this.isDateTimeString(data)) {
       const date = new Date(data);
       return date.toISOString().split('T')[0];
+    }
     }
     return data;
   }
@@ -205,10 +248,6 @@ set itemid(value: any) {
     this.downloadable_values = downloadable_docs.split(';');
     return true;
   }
-  prepareToDownload(index: number) {
-    this.selectedIndexForDownload = index;
-  }
-
   handleGeneratePDF() {
     this.generatePDFloader = true;
     this.handleSetLoading.emit(true);
@@ -276,30 +315,28 @@ set itemid(value: any) {
                   ) {
                     console.log('priviledge_data?.DownloadCount', priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount);
                     console.log(priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit, 'todays_limit?.downloadCount', todays_limit?.downloadCount);
+
                     let id: any = '';
                     const searchThrough = Auth_operations.getActiveformValues().activeForm;
-                   
-                     console.log('this.CurrentAPIBody', this._itemid[this.resultTabWithKeys.productInfo.name]);
-                     console.log('this.CurrentAPIBody---------', this.resultTabWithKeys.productInfo.name); 
-                     this.searchThrough = searchThrough;
-                      switch (searchThrough) {
+                    console.log('No s-----------------------earch type selected', this.dataItem);
+
+                    switch (searchThrough) {
                       case searchTypes.chemicalStructure:
                       case searchTypes.intermediateSearch:
-                        id = this._itemid[this.resultTabWithKeys.chemicalDirectory.name][0]._id;
+                        id = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name][0]._id;
                         break;
                       case searchTypes.synthesisSearch:
-                        id = this._itemid[this.resultTabWithKeys.technicalRoutes.name]?.ros_data?.[0]._id;
+                        id = this.dataItem[this.resultTabWithKeys.technicalRoutes.name]?.ros_data?.[0]._id;
                         break;
                       case searchTypes.simpleSearch:
                       case searchTypes.advanceSearch:
-                        id = this._itemid[this.resultTabWithKeys.productInfo.name][0]._id;
+                        id = this.dataItem[this.resultTabWithKeys.productInfo.name][0]._id;
                         break;
                       default:
-                        id = this._itemid[this.resultTabWithKeys.productInfo.name][0]._id;
+                        id = this.dataItem[this.resultTabWithKeys.productInfo.name][0]._id;
                         console.log('No search type selected');
                     }
-
-                    console.log('id', id);
+                    console.log('---------------No search type selected', this.dataItem[this.resultTabWithKeys.productInfo.name]);
                     let body_main: any = {
                       id: id,
                       reports: [],
@@ -307,11 +344,9 @@ set itemid(value: any) {
                     };
                     Object.keys(this.SingleDownloadCheckbox).forEach(key => {
                       if (this.SingleDownloadCheckbox[key]) {
-                        const mappedName = this.tabNameToReportKey[key];
-                        body_main.reports.push(mappedName || key);
+                        body_main.reports.push(key);
                       }
                     });
-
                     if (body_main?.reports?.length == 0) {
                       alert('please select atleast 1 option');
                       this.handleSetLoading.emit(false);
@@ -339,7 +374,7 @@ set itemid(value: any) {
                           body: body_main,
                         };
                       }
-                      console.log('---------------No api MAIN', API_MAIN);
+                       console.log('---------------No api MAIN', API_MAIN);
                       try {
                         this.serviceResultTabFiltersService.getGeneratePDF(API_MAIN).subscribe({
                           next: (resp: any) => {
@@ -358,8 +393,7 @@ set itemid(value: any) {
                             // Logic to update name based on search type
                             if (
                               this.searchThrough === searchTypes.chemicalStructure ||
-                              this.searchThrough === searchTypes.synthesisSearch ||
-                              this.searchThrough === searchTypes.intermediateSearch
+                              this.searchThrough === searchTypes.synthesisSearch
                             ) {
                               filenamePrefix = 'technicalRouteReport';
                             }
@@ -443,5 +477,7 @@ set itemid(value: any) {
     });
   }
 }
+
+
 
 
