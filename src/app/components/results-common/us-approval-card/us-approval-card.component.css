@@ -12,6 +12,10 @@
   font-size: 14px;
 
 }
+img{
+  height: 6rem;
+  width: 12rem;
+}
 
 .button {
   background: #d6a913;
