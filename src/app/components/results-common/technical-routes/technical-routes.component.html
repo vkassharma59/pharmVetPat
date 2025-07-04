@@ -78,7 +78,7 @@
             </span>
           </div>
         </div>
-        <chem-technical-route-card class="card" [data]="dataItem"></chem-technical-route-card>
+        <chem-technical-route-card class="card" [data]="dataItem" [CurrentAPIBody]="CurrentAPIBody"></chem-technical-route-card>
       </ng-container>
       <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"
         (handleChangeTabData)="handleResultTabData.emit($event)"
