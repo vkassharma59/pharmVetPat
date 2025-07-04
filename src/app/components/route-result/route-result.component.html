@@ -214,7 +214,7 @@
           <button data-bs-dismiss="modal" class="px-3 py-2 bg-red-500 rounded-md text-white font-bold">
             Close
           </button>
-          <button *ngIf="!generatePDFloader" [disabled]="generatePDFloader" 
+          <button *ngIf="!generatePDFloader" [disabled]="generatePDFloader"   (click)="handleGeneratePDF()"
             class="px-3 py-2 bg-green-500 rounded-md text-white font-bold">
             Generate
           </button>
