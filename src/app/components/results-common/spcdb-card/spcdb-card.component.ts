@@ -17,6 +17,7 @@ import { MainSearchService } from '../../../services/main-search/main-search.ser
 import { AppConfigValues } from '../../../config/app-config';
 import * as ExcelJS from 'exceljs';
 import { UserPriviledgeService } from '../../../services/user_priviledges/user-priviledge.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-spcdb-card',
@@ -118,7 +119,9 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
 
     this.cdr.detectChanges();
   }
-
+ getCountryUrl(value: any) {
+    return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country}.png`;
+  }
   scrollTable(direction: 'left' | 'right'): void {
     const container = document.querySelector('.scroll-container');
     if (container) {

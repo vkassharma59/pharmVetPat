@@ -12,14 +12,15 @@
 
     <!-- Right Section -->
     <div style="display: flex;">
-      <button *ngIf="isDownloadPermit && isSplitDownload" data-bs-toggle="modal" title="Download Single Route"
-        data-bs-target="#download_btn" class="btn btn-outline-primary btn-sm me-2"><i class="fas fa-download"></i>
-        Download Single Route</button>
-        <div  *ngIf="searchThrough != 'synthesis-search'">
-      <button *ngIf="index==0" (click)="OpenQueryModal()" class="btn btn-outline-primary btn-sm me-2">Raise
-        Query</button>
-      <button *ngIf="index==0" (click)="handleBack()" class="btn btn-outline-primary btn-sm">Back to Search</button>
-    </div>
+      <button *ngIf="!generatePDFloader && isDownloadPermit" (click)="handleGeneratePDF()"
+        [disabled]="generatePDFloader" title="Download Single Route" class="btn btn-outline-primary btn-sm me-2"><i
+          class="fas fa-download"></i>
+        Full Report (max 25 Report Download)</button>
+      <div *ngIf="searchThrough != 'synthesis-search'">
+        <button *ngIf="index==0" (click)="OpenQueryModal()" class="btn btn-outline-primary btn-sm me-2">Raise
+          Query</button>
+        <button *ngIf="index==0" (click)="handleBack()" class="btn btn-outline-primary btn-sm">Back to Search</button>
+      </div>
     </div>
   </div>
 
@@ -39,6 +40,7 @@
     <ng-container *ngSwitchCase="resultTabWithKeys.technicalRoutes.name">
       <chem-technical-route [data]="_dataItem.technicalRoutes" [CurrentAPIBody]="CurrentAPIBody"
         [specialCount]="_dataItem?.technicalRoutes?.special_count"
+        [itemid]="_dataItem"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.technicalRoutes.name]" [index]="index"
         [tabName]="resultTabWithKeys.technicalRoutes.name" (handleSetLoading)="handleSetLoading.emit($event)"
         (resetPagination)="resetPagination.emit($event)"
@@ -81,7 +83,7 @@
         (handleSetLoading)="handleSetLoading.emit($event)" [tabName]="resultTabWithKeys.usApproval.name"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)">
       </chem-us>
-   </ng-container>
+    </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.veterinaryUsApproval.name">
       <app-veterinary-us-approval [data]="_dataItem.veterinaryUsApproval"

@@ -38,7 +38,7 @@ import { VeterinaryUsApprovalComponent } from "../results-common/veterinary-us-a
     ImpurityComponent, ChemiTrackerComponent, ImpComponent, IndianComponent, ChemicalDirectoryComponent,
     JapanComponent, CanadaComponent, EuropeApprovalComponent, KoreaComponent, LitigationComponent,
     UsComponent, SpcdbComponent, EximComponent, RouteTabsComponent, ActivePatentComponent,
-    NgSwitch, NgSwitchCase, NgSwitchDefault, ScientificDocsComponent, GppdDbComponent, NonPatentComponent,VeterinaryUsApprovalComponent],
+    NgSwitch, NgSwitchCase, NgSwitchDefault, ScientificDocsComponent, GppdDbComponent, NonPatentComponent, VeterinaryUsApprovalComponent],
   templateUrl: './route-result.component.html',
   styleUrl: './route-result.component.css'
 })
@@ -46,6 +46,13 @@ import { VeterinaryUsApprovalComponent } from "../results-common/veterinary-us-a
 export class RouteResultComponent {
 
   public scientificDocsPayload: any[] = [];
+  tabNameToReportKey: { [key: string]: string } = {
+    productInfo: 'basicProduct',
+    chemicalDirectory: 'chemDirectory',
+    chemiTracker: 'chemiTracker',
+    technicalRoutes: 'techRoute',
+    impurity: 'impurity',
+  };
 
   currentTabData: any = {}
   resultTabs: any = [];
@@ -60,8 +67,8 @@ export class RouteResultComponent {
   isSplitDownload: boolean = false;
   isDownloadPermit: boolean = false;
   activeTab: string = '';
-  report_download=true;
-
+  report_download = true;
+  isDownloadAvailable: any = false;
   @Output() handleSetLoading: EventEmitter<any> = new EventEmitter<any>();
   @Output() backFunction: EventEmitter<any> = new EventEmitter<any>();
   @Output() onResultTabChange: EventEmitter<any> = new EventEmitter<any>();
@@ -79,6 +86,8 @@ export class RouteResultComponent {
 
   @Input()
   get dataItem() {
+    console.log("dataItem---", this._dataItem);
+    return this._dataItem;
     return this._dataItem;
   }
   set dataItem(value: any) {
@@ -104,7 +113,7 @@ export class RouteResultComponent {
   }
 
   ngOnInit() {
-    console.log("_dataItem searchThrough",this.dataItem)
+    console.log("_dataItem searchThrough", this.dataItem)
     this.resultTabs = Object.values(this.utilityService.getAllTabsName());
     this.currentTabData = this.resultTabs.find((tab: any) => tab.isActive);
 
@@ -131,6 +140,9 @@ export class RouteResultComponent {
   }
   isTechnicalRoutesTabActive(): boolean {
     return this.CurrentAPIBody?.currentTab === this.resultTabs?.technicalRoutes?.name;
+  }
+  isDownloadAvailableFunction() {
+    return this.isDownloadAvailable === 'true';
   }
   handleCurrentTab(data: any) {
     const searchThrough = Auth_operations.getActiveformValues().activeForm;
@@ -279,7 +291,7 @@ export class RouteResultComponent {
 
                     let id: any = '';
                     const searchThrough = Auth_operations.getActiveformValues().activeForm;
-                     console.log('No s-----------------------earch type selected',this.dataItem);
+                    console.log('No s-----------------------earch type selected', this.dataItem);
 
                     switch (searchThrough) {
                       case searchTypes.chemicalStructure:
@@ -288,7 +300,7 @@ export class RouteResultComponent {
                         break;
                       case searchTypes.synthesisSearch:
                         id = this.dataItem[this.resultTabWithKeys.technicalRoutes.name]?.ros_data?.[0]._id;
-                      break;
+                        break;
                       case searchTypes.simpleSearch:
                       case searchTypes.advanceSearch:
                         id = this.dataItem[this.resultTabWithKeys.productInfo.name][0]._id;
@@ -297,17 +309,25 @@ export class RouteResultComponent {
                         id = this.dataItem[this.resultTabWithKeys.productInfo.name][0]._id;
                         console.log('No search type selected');
                     }
-                      console.log('---------------No search type selected',this.dataItem[this.resultTabWithKeys.productInfo.name]);
+                    console.log('---------------No search type selected', this.dataItem[this.resultTabWithKeys.productInfo.name]);
                     let body_main: any = {
                       id: id,
+                      report_download: true,
                       reports: [],
                       limit: priviledge_data?.['pharmvetpat-mongodb']?.ReportLimit,
                     };
-                    Object.keys(this.SingleDownloadCheckbox).forEach(key => {
-                      if (this.SingleDownloadCheckbox[key]) {
-                        body_main.reports.push(key);
-                      }
-                    });
+                    // ✅ Push only the active tab name as the selected report
+                    // if (this.currentTabData?.name) {
+                    //   body_main.reports.push(this.currentTabData.name);
+                    // }
+                    if (this.currentTabData?.name) {
+                      const tabName = this.currentTabData.name;
+                      const reportKey = this.tabNameToReportKey[tabName];
+                      const finalName = reportKey ? reportKey : tabName; // mapped OR original
+                      body_main.reports.push(finalName);
+                    }
+
+
                     // ✅ Add full download flag if needed
                     if (this.searchThrough === searchTypes.simpleSearch || this.searchThrough === searchTypes.advanceSearch) {
                       body_main.report_download = true;
@@ -339,6 +359,7 @@ export class RouteResultComponent {
                           body: body_main,
                         };
                       }
+                      console.log("api_main", API_MAIN)
                       try {
                         this.serviceResultTabFiltersService.getGeneratePDF(API_MAIN).subscribe({
                           next: (resp: any) => {
@@ -357,14 +378,15 @@ export class RouteResultComponent {
                             // Logic to update name based on search type
                             if (
                               this.searchThrough === searchTypes.chemicalStructure ||
-                              this.searchThrough === searchTypes.synthesisSearch
+                              this.searchThrough === searchTypes.synthesisSearch || 
+                              this.searchThrough === searchTypes.intermediateSearch
                             ) {
                               filenamePrefix = 'technicalRouteReport';
                             }
 
                             // Final filename
                             let filename = `${filenamePrefix}_${timestamp}.pdf`;
-                          //  let filename = `${this.searchThrough}Report_${timestamp}.pdf`;
+                            //  let filename = `${this.searchThrough}Report_${timestamp}.pdf`;
 
                             if (contentDisposition) {
                               const match = contentDisposition.match(/filename="?([^"]+)"?/);
