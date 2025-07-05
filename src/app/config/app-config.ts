@@ -22,8 +22,8 @@ export const AppConfigValues: AppConfig = {
         filterColumns: `${appUrl.apiUrl}/basic-product-info/filter-columns`,
         advanceAutoSuggestions: `${appUrl.apiUrl}/basic-product-info/advance-auto-suggestions`,
         advanceSearchResults: `${appUrl.apiUrl}/basic-product-info/advance-search`,
-        productHighlights:`${appUrl.devApiUrl}/basic-product-info/product-highlight/683eccdfe449b3512e3ec59b`,//683eccdfe449b3512e3ec59b
-        reportData: `${appUrl.devApiUrl}/basic-product-info/report-data`
+        productHighlights:`${appUrl.apiUrl}/basic-product-info/product-highlight/683eccdfe449b3512e3ec59b`,//683eccdfe449b3512e3ec59b
+        reportData: `${appUrl.apiUrl}/basic-product-info/report-data`
       },
       technicalRoutes: {
         filterColumnList: `${appUrl.apiUrl}/technical-routes/filter-column-list`,

@@ -4,9 +4,9 @@
       *ngIf="_data?.ACTIVE_INGREDIENT">{{_data?.ACTIVE_INGREDIENT}}</span><span
       *ngIf="_data?.active_ingredient">{{_data?.active_ingredient}}</span>
   </div>
-  <button class="btn btn-warning" ><i class="fa-solid fa-download"></i></button>
-    <!-- *ngIf="isDownloadPermit && isSplitDownload" data-bs-toggle="modal" title="Download Single Route"
-    data-bs-target="#download_btn" -->
+  <button class="btn btn-warning"  *ngIf="isDownloadPermit && isSplitDownload" data-bs-toggle="modal" title="Download Single Route"
+    data-bs-target="#download_btn"  (click)="prepareToDownload(index)"><i class="fa-solid fa-download"></i></button>
+    <!-- -->
 </div>
 <div class="card-body">
   <div class="pb-3 mb-3 px-2 rounded-lg" *ngIf="!isEmptyObject(_data); else noData">
@@ -630,8 +630,7 @@
   <ng-template #noData>
     <p>No data found</p>
   </ng-template>
-</div>
-<!-- Download Modal -->
+  <!-- Download Modal -->
 <div #downloadBtnModal class="modal fade bg_4" id="download_btn" tabindex="-1" aria-labelledby="download_btn" style="margin-top: 2rem;"
   aria-hidden="true">
 
@@ -678,4 +677,5 @@
       </div>
     </div>
   </div>
+</div>
 </div>
