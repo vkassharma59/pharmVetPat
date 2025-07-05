@@ -300,7 +300,11 @@
           <td class="px-2 py-1">{{ item.appl_no }}</td>
           <td class="px-2 py-1">{{ item.patent_expire_date_text }}</td>
           <td class="px-2 py-1">{{ item.delist_flag }}</td>
-          <td class="px-2 py-1 overflow auto">{{ item.jarvis_rn }}</td>
+          <td class="px-2 py-1">
+            <div style="max-height: 50px; overflow-y: scroll; text-align: left;">
+              {{ item.jarvis_rn }}
+            </div>
+          </td>
           <td class="px-2 py-1">{{ item.drug_substance_flag }}</td>
           <td class="px-2 py-1">{{ item.drug_product_flag }}</td>
           <td class="px-2 py-1">{{ item.patent_use_code }}</td>
