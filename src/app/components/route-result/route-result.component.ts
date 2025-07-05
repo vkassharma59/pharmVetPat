@@ -104,7 +104,7 @@ export class RouteResultComponent {
   }
 
   ngOnInit() {
-    console.log("_dataItem searchThrough",this.searchThrough)
+    console.log("_dataItem searchThrough",this.dataItem)
     this.resultTabs = Object.values(this.utilityService.getAllTabsName());
     this.currentTabData = this.resultTabs.find((tab: any) => tab.isActive);
 
@@ -279,7 +279,7 @@ export class RouteResultComponent {
 
                     let id: any = '';
                     const searchThrough = Auth_operations.getActiveformValues().activeForm;
-                     console.log('No s-----------------------earch type selected',this.dataItem[this.resultTabWithKeys.technicalRoutes.name]?.ros_data?.[0]._id);
+                     console.log('No s-----------------------earch type selected',this.dataItem);
 
                     switch (searchThrough) {
                       case searchTypes.chemicalStructure:

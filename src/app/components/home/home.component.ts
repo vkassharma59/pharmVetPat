@@ -16,7 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 
 export class HomeComponent implements OnInit {
-
+  playVideo:boolean=false;
   LimitValue = '';
   user: any = null;
   showResult: boolean = false;
@@ -201,5 +201,8 @@ openCloseAccordion(key: string, event?: Event): void {
       height: '800px',
       panelClass: 'full-screen-modal',
     });
+  }
+  videoTutorial(){
+    this.playVideo=!this.playVideo;
   }
 }
