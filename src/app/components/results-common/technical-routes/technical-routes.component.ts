@@ -27,20 +27,30 @@ export class TechnicalRoutesComponent {
   @Input() index: any;
   @Input() tabName: string | undefined;
   searchThrough: string = '';
-rosCounts: { agrochemical: number; pharmaceutical: number } = {
-  agrochemical: 0,
-  pharmaceutical: 0
-};
+  rosCounts: { agrochemical: number; pharmaceutical: number } = {
+    agrochemical: 0,
+    pharmaceutical: 0
+  };
 
 
   resultTabs: any = {};
   _data: any = [];
+  _itemid: any = {};
+
+  @Input()
+  get itemid() {
+    return this._itemid;
+  }
+
+  set itemid(value: any) {
+    this._itemid = value;
+  }
   @Input()
   get data() {
     return this._data;
   }
   set data(value: any) {
-    if(value) {
+    if (value) {
       this._data = value;
     }
   }
