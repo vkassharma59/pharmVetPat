@@ -61,6 +61,24 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   @ViewChild('intermediateSearchKeywordInput') intermediateSearchKeywordInput!: ElementRef;
 
   // Dropdown lists
+  suggestionsList = [
+    { label: 'Active Ingredient (AI)', value: 'Mancozeb' },
+    { label: 'Company Name', value: 'BASF' },
+    { label: 'RC Meeting Number', value: '460 RC Meeting' },
+     { label: 'Product Type', value: 'Fungicide' },
+  ];
+
+  selectedFilters: { label: string; value: string }[] = [];
+
+  selectSuggestion(suggestion: { label: string; value: string }) {
+    const alreadySelected = this.selectedFilters.some(
+      (f) => f.label === suggestion.label && f.value === suggestion.value
+    );
+
+    if (!alreadySelected) {
+      this.selectedFilters.push(suggestion);
+    }
+  }
   allDevelopmentStages: string[] = ['Preclinical', 'Phase I', 'Phase II', 'Phase III', 'Approved'];
   allInnovators: string[] = ['Pfizer', 'Moderna', 'Cipla', 'Sun Pharma', 'Dr. Reddy\'s'];
   devStages: string[] = ['Stage 1', 'Stage 2', 'Stage 3'];

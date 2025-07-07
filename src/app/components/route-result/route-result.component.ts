@@ -113,10 +113,9 @@ export class RouteResultComponent {
   }
 
   ngOnInit() {
-    console.log("_dataItem searchThrough", this.dataItem)
+
     this.resultTabs = Object.values(this.utilityService.getAllTabsName());
     this.currentTabData = this.resultTabs.find((tab: any) => tab.isActive);
-
     //
     this.resultTabWithKeys = this.utilityService.getAllTabsName();
     this.raise_query_object = this.CurrentAPIBody?.body;
@@ -124,6 +123,7 @@ export class RouteResultComponent {
     this.resultTabs.forEach(tab => {
       this.SingleDownloadCheckbox[tab.name] = false;
     });
+    console.log("_dataItem searchThrough", this.CurrentAPIBody?.currentTab === this.resultTabWithKeys.technicalRoutes.name,)
 
     //
     const Account_type = localStorage.getItem('account_type');
@@ -378,7 +378,7 @@ export class RouteResultComponent {
                             // Logic to update name based on search type
                             if (
                               this.searchThrough === searchTypes.chemicalStructure ||
-                              this.searchThrough === searchTypes.synthesisSearch || 
+                              this.searchThrough === searchTypes.synthesisSearch ||
                               this.searchThrough === searchTypes.intermediateSearch
                             ) {
                               filenamePrefix = 'technicalRouteReport';
