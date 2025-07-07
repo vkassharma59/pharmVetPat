@@ -3,6 +3,36 @@
     <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
       Total Records : {{currentChildAPIBody?.count }}
     </button>
+    <div class="d-flex">
+      <button class="clear btn btn-outline-primary">
+        <i class="fa-solid fa-rotate" aria-hidden="true"></i>
+      </button>
+  
+      <select
+        class="form-select dropdown-width mx-1 dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
+        <option>Sorting by Date</option>
+        <option>Oldest</option>
+        <option>Newest</option>
+  
+      </select>
+      <select
+        class="form-select dropdown-width mx-1 dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
+        <option>View All NonPatent Concept</option>
+        <option>Biotech</option>
+        <option>Combination</option>
+        <option>Device</option>
+        <option>Discovery Active Ingredient</option>
+        <option>Formulation</option>
+        <option>Hydrate</option>
+        <option>MOU</option>
+        <option>Partical Size</option>
+        <option>Plant Variety</option>
+        <option>Polymorph</option>
+        <option>Process</option>
+        <option>Test</option>
+  
+      </select>
+    </div>
   </div>
   <div class="card-header text-white fs-5" style="  background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
  padding: 10px;">
