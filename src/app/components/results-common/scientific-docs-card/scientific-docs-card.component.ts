@@ -16,6 +16,7 @@ import { map, catchError, tap } from 'rxjs/operators';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import * as ExcelJS from 'exceljs';
 import { UserPriviledgeService } from '../../../services/user_priviledges/user-priviledge.service';
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-scientific-docs-card',
   standalone: true,
@@ -138,7 +139,9 @@ export class ScientificDocsCardComponent implements OnChanges, AfterViewInit {
 
     this.fetchData();
   }
-
+getCountryUrl(value: any) {
+    return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country}.png`;
+  }
   clearFilter(column: string, input: HTMLInputElement) {
     input.value = '';
     delete this.columnsSearch[column];

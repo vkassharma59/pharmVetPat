@@ -16,6 +16,7 @@ import { map, catchError, tap } from 'rxjs/operators';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import * as ExcelJS from 'exceljs';
 import { UserPriviledgeService } from '../../../services/user_priviledges/user-priviledge.service';
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-active-patent-card',
   standalone: true,
@@ -71,7 +72,7 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
 
   constructor(private cdr: ChangeDetectorRef,
     private mainSearchService: MainSearchService,
-     private UserPriviledgeService: UserPriviledgeService
+    private UserPriviledgeService: UserPriviledgeService
   ) { }
 
   ngOnChanges(): void {
@@ -120,7 +121,9 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
       container.scrollBy({ left: direction === 'left' ? -150 : 150, behavior: 'smooth' });
     }
   }
-
+  getCountryUrl(value: any) {
+    return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country}.png`;
+  }
   searchInColumn(column: any, filterInput: HTMLInputElement, event: MouseEvent): void {
     event.stopPropagation(); // prevent sort from triggering
 
@@ -292,7 +295,7 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
   }
 
   getAllDataFromApi(): Observable<any[]> {
-    
+
     const requestBody = {
       ...this._currentChildAPIBody,
       page_no: 1, start: 0,
@@ -330,7 +333,7 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
   // }
 
   // 3️⃣ Download CSV
- downloadCSV(): void {
+  downloadCSV(): void {
     this.isExportingCSV = true;
     this.getAllDataFromApi().subscribe(data => {
       // Generate header row with Title Case

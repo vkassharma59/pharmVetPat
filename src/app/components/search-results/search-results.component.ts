@@ -42,7 +42,7 @@ export class SearchResultsComponent {
   @Output() backFunction: EventEmitter<any> = new EventEmitter<any>();
   @Output() generatePdf: EventEmitter<any> = new EventEmitter<any>();
   @Output() setLoadingState: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() allDataSets: any = [];  
+  @Input() allDataSets: any = [];
   @Input()
   get searchData() {
     return this._searchData;
@@ -79,8 +79,8 @@ export class SearchResultsComponent {
     this.searchTypes = searchTypes;
     this.childApiBody = [];
   }
-patentColumns: any[] = []; // to store column headers
-patentData: any[] = [];    // optional if you want to extract separately
+  patentColumns: any[] = []; // to store column headers
+  patentData: any[] = [];    // optional if you want to extract separately
 
   ngOnChanges(_changes: any) {
     this.paginationRerenderTrigger = !this.paginationRerenderTrigger;
@@ -185,18 +185,18 @@ patentData: any[] = [];    // optional if you want to extract separately
   }
 
   private hasSearchPrivileges(privilegeData: any): boolean {
-  if (!privilegeData) return false;
+    if (!privilegeData) return false;
 
-  const key = 'pharmvetpat-mongodb'; // dynamic key
-  const section = privilegeData[key];
+    const key = 'pharmvetpat-mongodb'; // dynamic key
+    const section = privilegeData[key];
 
-  return (
-    section?.View !== 'false' &&
-    section?.Search != '' &&
-    section?.Search != "0" &&
-    section?.Search != 0
-  );
-}
+    return (
+      section?.View !== 'false' &&
+      section?.Search != '' &&
+      section?.Search != "0" &&
+      section?.Search != 0
+    );
+  }
 
   onResultTabChange(resultTabData: any) {
     this.setLoadingState.emit(true);
@@ -298,7 +298,7 @@ patentData: any[] = [];    // optional if you want to extract separately
           this.setLoadingState.emit(false);
         }
         break;
-        case this.resultTabs?.veterinaryUsApproval.name:
+      case this.resultTabs?.veterinaryUsApproval.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.veterinaryUsApproval.name]).length === 0) {
           this.performveterinaryUsApprovalSearch(resultTabData);
         } else {
@@ -360,7 +360,9 @@ patentData: any[] = [];    // optional if you want to extract separately
       this.setLoadingState.emit(false);
       return;
     }
-
+    console.log("resultTabData.index]", resultTabData.index)
+    console.log("resultTabData", resultTabData)
+    console.log("this.allDataSets", this.allDataSets)
     if (this.childApiBody?.[resultTabData.index]) {
       this.childApiBody[resultTabData.index][this.resultTabs.technicalRoutes.name] = {};
     } else {
@@ -990,68 +992,68 @@ patentData: any[] = [];    // optional if you want to extract separately
   }
 
   private performUsApprovalSearch(resultTabData: any): void {
-  if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
-    this.allDataSets[resultTabData.index][this.resultTabs.usApproval.name] = {};
-    this.setLoadingState.emit(false);
-    return;
-  }
+    if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+      this.allDataSets[resultTabData.index][this.resultTabs.usApproval.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
 
-  // 🛠 Setup childApiBody if not already present
-  if (!this.childApiBody?.[resultTabData.index]) {
-    this.childApiBody[resultTabData.index] = {};
-  }
+    // 🛠 Setup childApiBody if not already present
+    if (!this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index] = {};
+    }
 
-  // 🛠 Setup request body for search
-  this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name] = {
-    api_url: this.apiUrls.usApproval.searchSpecific,
-    search_type: resultTabData?.searchWith,
-    keyword: resultTabData?.searchWithValue,
-    page_no: 1,
-    filter_enable: false,
-    filters: {},
-    order_by: '',
-    index: resultTabData.index
-  };
+    // 🛠 Setup request body for search
+    this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name] = {
+      api_url: this.apiUrls.usApproval.searchSpecific,
+      search_type: resultTabData?.searchWith,
+      keyword: resultTabData?.searchWithValue,
+      page_no: 1,
+      filter_enable: false,
+      filters: {},
+      order_by: '',
+      index: resultTabData.index
+    };
 
-  const tech_API = this.apiUrls.usApproval.columnList;
+    const tech_API = this.apiUrls.usApproval.columnList;
 
-  // ✅ Step 1: Get Column List
-  this.columnListService.getColumnList(tech_API).subscribe({
-    next: (res: any) => {
-      const response = res?.data;
+    // ✅ Step 1: Get Column List
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data;
 
-      // ✅ Extract patentColumnList
-      const patentColumns = response?.patentColumnList || [];
-      this.patentColumns = patentColumns;  // You need to define this.patentColumns in component
+        // ✅ Extract patentColumnList
+        const patentColumns = response?.patentColumnList || [];
+        this.patentColumns = patentColumns;  // You need to define this.patentColumns in component
 
-      // 🔐 Optionally store in Auth if needed globally
-      Auth_operations.setColumnList(this.resultTabs.usApproval.name, response);
+        // 🔐 Optionally store in Auth if needed globally
+        Auth_operations.setColumnList(this.resultTabs.usApproval.name, response);
 
-      // ✅ Step 2: Call Main Search API
-      this.mainSearchService.usApprovalSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name])
-        .subscribe({
-          next: (result: any) => {
-            // ✅ Log to verify
-            console.log('API result:', result);
+        // ✅ Step 2: Call Main Search API
+        this.mainSearchService.usApprovalSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name])
+          .subscribe({
+            next: (result: any) => {
+              // ✅ Log to verify
+              console.log('API result:', result);
 
-            // ✅ Extract data and count
-            const data = result?.data?.orange_book_us_data || [];
-            const count = result?.data?.orange_book_us_count || 0;
+              // ✅ Extract data and count
+              const data = result?.data?.orange_book_us_data || [];
+              const count = result?.data?.orange_book_us_count || 0;
 
-            this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name].count = count;
-            this.allDataSets[resultTabData.index][this.resultTabs.usApproval.name] = data;
-console.log('patentColumns:', this.patentColumns);
-console.log('allDataSets:', this.allDataSets);
+              this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name].count = count;
+              this.allDataSets[resultTabData.index][this.resultTabs.usApproval.name] = data;
+              console.log('patentColumns:', this.patentColumns);
+              console.log('allDataSets:', this.allDataSets);
 
-            this.setLoadingState.emit(false);
-            this.loadingService.setLoading(this.resultTabs.usApproval.name, resultTabData.index, false);
-          },
-          error: (e) => {
-            console.error('Error during main search:', e);
-            this.setLoadingState.emit(false);
-            this.loadingService.setLoading(this.resultTabs.usApproval.name, resultTabData.index, false);
-          },
-        });
+              this.setLoadingState.emit(false);
+              this.loadingService.setLoading(this.resultTabs.usApproval.name, resultTabData.index, false);
+            },
+            error: (e) => {
+              console.error('Error during main search:', e);
+              this.setLoadingState.emit(false);
+              this.loadingService.setLoading(this.resultTabs.usApproval.name, resultTabData.index, false);
+            },
+          });
 
 
       },
@@ -1062,7 +1064,7 @@ console.log('allDataSets:', this.allDataSets);
       },
     });
   }
- 
+
 
   private performveterinaryUsApprovalSearch(resultTabData: any): void {
 
@@ -1099,7 +1101,7 @@ console.log('allDataSets:', this.allDataSets);
           next: (result: any) => {
             this.childApiBody[resultTabData.index][this.resultTabs.veterinaryUsApproval.name].count = result?.data?.green_book_us_count;
             this.allDataSets[resultTabData.index][this.resultTabs.veterinaryUsApproval] = result?.data?.green_book_us_data;
-             console.log('main search:', result?.data?.green_book_us_data);
+            console.log('main search:', result?.data?.green_book_us_data);
             this.setLoadingState.emit(false);
             this.loadingService.setLoading(this.resultTabs.veterinaryUsApproval.name, resultTabData.index, false);
           },
@@ -1391,7 +1393,7 @@ console.log('allDataSets:', this.allDataSets);
   //     },
   //   });
   // }
- private performactivePatentSearch(resultTabData: any): void {
+  private performactivePatentSearch(resultTabData: any): void {
     console.log('Search Input:', resultTabData);
     const pageSize = 25;
     const page_no = 1
@@ -1592,76 +1594,76 @@ console.log('allDataSets:', this.allDataSets);
       },
     });
   }
- 
-ButtonROSSearch(SearchKey: any, index: number): void {
-  
-  this.setLoadingState.emit(true);
-  this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, index, true);
 
-  const isROS = SearchKey === 'ROS_search';
-  const searchValue = this.allDataSets[index]?.[this.resultTabs?.chemicalDirectory.name][0].trrn;
+  ButtonROSSearch(SearchKey: any, index: number): void {
 
-  if (!searchValue) {
-    console.warn('⚠️ No search value found for technical route.');
-    this.setLoadingState.emit(false);
-    this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, index, false);
-    return;
-  }
+    this.setLoadingState.emit(true);
+    this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, index, true);
 
-  const body = {
-    api_url: this.apiUrls.technicalRoutes.searchSpecific,
-    search_type: 'TRRN',
-    keyword: this.allDataSets[index]?.[this.resultTabs?.chemicalDirectory.name][0].trrn,
-    page_no: 1,
-    filter_enable: false,
-    filters: isROS ? {} : { types_of_route: 'KSM' },
-    order_by: '',
-    index: index,
-  };
+    const isROS = SearchKey === 'ROS_search';
+    const searchValue = this.allDataSets[index]?.[this.resultTabs?.chemicalDirectory.name][0].trrn;
 
-  if (!Array.isArray(this.childApiBody)) {
-    this.childApiBody = [];
-  }
-
-  if (!this.childApiBody[index]) {
-    this.childApiBody[index] = {};
-  }
-  
-  this.childApiBody[index][this.resultTabs.technicalRoutes.name] = body;
-  const tech_API = this.apiUrls.technicalRoutes.columnList;
-  this.columnListService.getColumnList(tech_API).subscribe({
-    next: (res: any) => {
-      const columns = res?.data?.columns;
-      Auth_operations.setColumnList(this.resultTabs.technicalRoutes.name, columns);
-
-      this.mainSearchService.technicalRoutesSearchSpecific(body).subscribe({
-        next: (result: any) => {
-          this.childApiBody[index][this.resultTabs?.technicalRoutes.name].count = result?.data?.ros_count;
-          this.allDataSets[index][this.resultTabs.technicalRoutes.name] = result?.data;
-          this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, index, false);
-          this.utilityService.setActiveTab(this.resultTabs.technicalRoutes.name);
-          this.currentTabData = {
-            isActive: true,
-            label: this.resultTabs.technicalRoutes.label,
-            name: this.resultTabs.technicalRoutes.name
-          };
-          this.setLoadingState.emit(false);
-          this.CurrentAPIBody.currentTab = this.resultTabs.technicalRoutes.name;
-          this.cdr.detectChanges();
-          console.log('✅ Data set and tab updated, loading stopped.');
-        },
-        error: (e) => {
-          console.error('❌ ROS API error:', e);
-          this.setLoadingState.emit(false);
-        }
-      });
-    },
-    error: (err) => {
-      console.error('❌ Column list fetch error:', err);
+    if (!searchValue) {
+      console.warn('⚠️ No search value found for technical route.');
       this.setLoadingState.emit(false);
+      this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, index, false);
+      return;
     }
-  });
-}
+
+    const body = {
+      api_url: this.apiUrls.technicalRoutes.searchSpecific,
+      search_type: 'TRRN',
+      keyword: this.allDataSets[index]?.[this.resultTabs?.chemicalDirectory.name][0].trrn,
+      page_no: 1,
+      filter_enable: false,
+      filters: isROS ? {} : { types_of_route: 'KSM' },
+      order_by: '',
+      index: index,
+    };
+
+    if (!Array.isArray(this.childApiBody)) {
+      this.childApiBody = [];
+    }
+
+    if (!this.childApiBody[index]) {
+      this.childApiBody[index] = {};
+    }
+
+    this.childApiBody[index][this.resultTabs.technicalRoutes.name] = body;
+    const tech_API = this.apiUrls.technicalRoutes.columnList;
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const columns = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.technicalRoutes.name, columns);
+
+        this.mainSearchService.technicalRoutesSearchSpecific(body).subscribe({
+          next: (result: any) => {
+            this.childApiBody[index][this.resultTabs?.technicalRoutes.name].count = result?.data?.ros_count;
+            this.allDataSets[index][this.resultTabs.technicalRoutes.name] = result?.data;
+            this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, index, false);
+            this.utilityService.setActiveTab(this.resultTabs.technicalRoutes.name);
+            this.currentTabData = {
+              isActive: true,
+              label: this.resultTabs.technicalRoutes.label,
+              name: this.resultTabs.technicalRoutes.name
+            };
+            this.setLoadingState.emit(false);
+            this.CurrentAPIBody.currentTab = this.resultTabs.technicalRoutes.name;
+            this.cdr.detectChanges();
+            console.log('✅ Data set and tab updated, loading stopped.');
+          },
+          error: (e) => {
+            console.error('❌ ROS API error:', e);
+            this.setLoadingState.emit(false);
+          }
+        });
+      },
+      error: (err) => {
+        console.error('❌ Column list fetch error:', err);
+        this.setLoadingState.emit(false);
+      }
+    });
+  }
 
 
   onChildPaginationChange(data: any, index) {

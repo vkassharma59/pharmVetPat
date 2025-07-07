@@ -16,6 +16,7 @@ import { MainSearchService } from '../../../services/main-search/main-search.ser
 import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import { UserPriviledgeService } from '../../../services/user_priviledges/user-priviledge.service';
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-non-patent-card',
   standalone: true,
@@ -70,7 +71,7 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
 
   constructor(private cdr: ChangeDetectorRef,
     private mainSearchService: MainSearchService,
-     private UserPriviledgeService: UserPriviledgeService
+    private UserPriviledgeService: UserPriviledgeService
   ) { }
 
   ngOnChanges(): void {
@@ -118,7 +119,9 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
       container.scrollBy({ left: direction === 'left' ? -150 : 150, behavior: 'smooth' });
     }
   }
-
+  getCountryUrl(value: any) {
+    return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country}.png`;
+  }
   searchInColumn(column: any, filterInput: HTMLInputElement, event: MouseEvent): void {
     event.stopPropagation(); // prevent sort from triggering
 
@@ -250,7 +253,7 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
 
     this.fetchData();
   }
-fetchAndStoreVerticalLimits(): void {
+  fetchAndStoreVerticalLimits(): void {
     this.UserPriviledgeService.getverticalcategoryData().subscribe({
       next: (res: any) => {
         const verticals = res?.data?.verticals;
@@ -293,7 +296,7 @@ fetchAndStoreVerticalLimits(): void {
   }
 
   getAllDataFromApi(): Observable<any[]> {
-   
+
     const requestBody = {
       ...this._currentChildAPIBody,
       page_no: 1, start: 0,
@@ -324,11 +327,11 @@ fetchAndStoreVerticalLimits(): void {
     });
 
     doc.save('ExportedData.pdf');
-  } 
+  }
 
- 
- // 3️⃣ Download CSV
-downloadCSV(): void {
+
+  // 3️⃣ Download CSV
+  downloadCSV(): void {
     this.isExportingCSV = true;
     this.getAllDataFromApi().subscribe(data => {
       // Generate header row with Title Case
@@ -370,7 +373,7 @@ downloadCSV(): void {
 
   // 4️⃣ Download Excel
   downloadExcel(): void {
-     this.isExportingExcel = true;
+    this.isExportingExcel = true;
     this.getAllDataFromApi().subscribe(data => {
       const workbook = new ExcelJS.Workbook();
       const worksheet = workbook.addWorksheet('Exported Data');
@@ -440,7 +443,7 @@ downloadCSV(): void {
           type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         });
         saveAs(blob, 'ExportedDataFormatted.xlsx');
-        this.isExportingExcel =false;
+        this.isExportingExcel = false;
       });
     });
   }

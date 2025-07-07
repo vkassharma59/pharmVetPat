@@ -16,6 +16,7 @@ import { MainSearchService } from '../../../services/main-search/main-search.ser
 import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import { UserPriviledgeService } from '../../../services/user_priviledges/user-priviledge.service';
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-exim-card',
   standalone: true,
@@ -33,14 +34,14 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
   @Output() dataFetchRequest = new EventEmitter<any>();
   @Input() columnDefs: any[] = [];
   @Input() rowData: any[] = [];
-   isExportingCSV: boolean = false;
+  isExportingCSV: boolean = false;
   isExportingExcel: boolean = false;
-   data?: {
+  data?: {
     data?: any[]; // Replace `any` with your actual data type
   };
-   _currentChildAPIBody: any;
+  _currentChildAPIBody: any;
   loading = false;
-   displayedColumns: string[] = [];
+  displayedColumns: string[] = [];
   columnHeaders: { [key: string]: string } = {};
   filterableColumns: string[] = [];
   openFilter: { [key: string]: boolean } = {};
@@ -71,7 +72,7 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
 
   constructor(private cdr: ChangeDetectorRef,
     private mainSearchService: MainSearchService,
-     private UserPriviledgeService: UserPriviledgeService
+    private UserPriviledgeService: UserPriviledgeService
   ) { }
 
   ngOnChanges(): void {
@@ -174,7 +175,12 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
     this.multiSortOrder.push({ column: index, dir: newDir });
     this.fetchData();
   }
-
+  onFlagError(event: any) {
+  event.target.src = 'assets/images/flag.png';
+}
+  getCountryUrl(value: any) {
+    return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.COUNTRY_OF_ORIGIN}.png`;
+  }
   getSortIcon(index: number): string {
     const column = this.displayedColumns[index];
     const sort = this.multiSortOrder.find(s => s.column === index);
@@ -297,7 +303,7 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
   }
 
   getAllDataFromApi(): Observable<any[]> {
-       const requestBody = {
+    const requestBody = {
       ...this._currentChildAPIBody,
       page_no: 1, start: 0,
       length: this.getReportLimit()
@@ -305,7 +311,7 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
 
     console.log('📦  response body:', requestBody);
     return this.mainSearchService.EximDataSearchSpecific(requestBody).pipe(
-      tap((result:EximCardComponent) => {
+      tap((result: EximCardComponent) => {
         console.log('📦 Full API response:', result);
       }),
       map((result: EximCardComponent) => result?.data?.data || []),
@@ -337,7 +343,7 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
   // }
 
   // 3️⃣ Download CSV
-downloadCSV(): void {
+  downloadCSV(): void {
     this.isExportingCSV = true;
     this.getAllDataFromApi().subscribe(data => {
       // Generate header row with Title Case
@@ -368,21 +374,21 @@ downloadCSV(): void {
         csvContent += rowData.join(',') + '\n';
       });
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    saveAs(blob, 'ExportedData.csv');
-     this.isExportingCSV =false;
-  });
-}
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      saveAs(blob, 'ExportedData.csv');
+      this.isExportingCSV = false;
+    });
+  }
 
 
   // 4️⃣ Download Excel
   // 4️⃣ Download Excel
- downloadExcel(): void {
-   this.isExportingExcel =true;
-   this.isExportingExcel =true;
-  this.getAllDataFromApi().subscribe(data => {
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('Exported Data');
+  downloadExcel(): void {
+    this.isExportingExcel = true;
+    this.isExportingExcel = true;
+    this.getAllDataFromApi().subscribe(data => {
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet('Exported Data');
 
       // Define header columns
       const columns = this.displayedColumns.map(col => ({
@@ -443,23 +449,23 @@ downloadCSV(): void {
         };
       });
 
-    // Save workbook
-    workbook.xlsx.writeBuffer().then(buffer => {
-      const blob = new Blob([buffer], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      // Save workbook
+      workbook.xlsx.writeBuffer().then(buffer => {
+        const blob = new Blob([buffer], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        });
+        saveAs(blob, 'ExportedDataFormatted.xlsx');
+        this.isExportingExcel = false;
+        this.isExportingExcel = false;
       });
-      saveAs(blob, 'ExportedDataFormatted.xlsx');
-      this.isExportingExcel =false;
-      this.isExportingExcel =false;
     });
-  });
-}
+  }
 
   // ✅ Optional: Capitalize headers
   toTitleCase(str: string): string {
     return str.replace(/_/g, ' ')
       .replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
   }
- 
+
 }
 

@@ -16,6 +16,7 @@ import { map, catchError, tap } from 'rxjs/operators';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import * as ExcelJS from 'exceljs';
 import { UserPriviledgeService } from '../../../services/user_priviledges/user-priviledge.service';
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-gppd-db-card',
   standalone: true,
@@ -40,10 +41,10 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     data?: any[]; // Replace `any` with your actual data type
   };
   isExportingCSV: boolean = false;
-   isExportingExcel: boolean = false;
+  isExportingExcel: boolean = false;
   _currentChildAPIBody: any;
   loading = false;
-   displayedColumns: string[] = [];
+  displayedColumns: string[] = [];
   columnHeaders: { [key: string]: string } = {};
   filterableColumns: string[] = [];
   openFilter: { [key: string]: boolean } = {};
@@ -74,7 +75,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
 
   constructor(private cdr: ChangeDetectorRef,
     private mainSearchService: MainSearchService,
-     private UserPriviledgeService: UserPriviledgeService
+    private UserPriviledgeService: UserPriviledgeService
   ) { }
 
   ngOnChanges(): void {
@@ -143,10 +144,11 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     } else {
       delete this.columnsSearch[columnKey];
     }
-
     this.fetchData();
   }
-
+  getCountryUrl(value: any) {
+    return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country}.png`;
+  }
   clearFilter(column: string, input: HTMLInputElement) {
     input.value = '';
     delete this.columnsSearch[column];
@@ -300,7 +302,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
   }
 
   getAllDataFromApi(): Observable<any[]> {
-     const requestBody = {
+    const requestBody = {
       ...this._currentChildAPIBody,
       page_no: 1, start: 0,
       length: this.getReportLimit()
@@ -340,7 +342,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
   // }
 
   // 3️⃣ Download CSV
- downloadCSV(): void {
+  downloadCSV(): void {
     this.isExportingCSV = true;
     this.getAllDataFromApi().subscribe(data => {
       // Generate header row with Title Case
@@ -350,44 +352,44 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
       data.forEach(row => {
         const rowData = this.displayedColumns.map(col => {
           let value = row[col];
-      data.forEach(row => {
-        const rowData = this.displayedColumns.map(col => {
-          let value = row[col];
+          data.forEach(row => {
+            const rowData = this.displayedColumns.map(col => {
+              let value = row[col];
 
-          // Apply same formatting as Excel export
-          if (Array.isArray(value)) {
-            value = value.join(', ');
-          } else if (typeof value === 'object' && value !== null) {
-            value = JSON.stringify(value);
-          } else if (value === null || value === undefined) {
-            value = '';
-          }
-          // Apply same formatting as Excel export
-          if (Array.isArray(value)) {
-            value = value.join(', ');
-          } else if (typeof value === 'object' && value !== null) {
-            value = JSON.stringify(value);
-          } else if (value === null || value === undefined) {
-            value = '';
-          }
+              // Apply same formatting as Excel export
+              if (Array.isArray(value)) {
+                value = value.join(', ');
+              } else if (typeof value === 'object' && value !== null) {
+                value = JSON.stringify(value);
+              } else if (value === null || value === undefined) {
+                value = '';
+              }
+              // Apply same formatting as Excel export
+              if (Array.isArray(value)) {
+                value = value.join(', ');
+              } else if (typeof value === 'object' && value !== null) {
+                value = JSON.stringify(value);
+              } else if (value === null || value === undefined) {
+                value = '';
+              }
 
-          // Escape quotes and commas for CSV
-          let cell = String(value).replace(/"/g, '""');
-          if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
-            cell = `"${cell}"`;
-          }
-          return cell;
+              // Escape quotes and commas for CSV
+              let cell = String(value).replace(/"/g, '""');
+              if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
+                cell = `"${cell}"`;
+              }
+              return cell;
+            });
+            // Escape quotes and commas for CSV
+            let cell = String(value).replace(/"/g, '""');
+            if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
+              cell = `"${cell}"`;
+            }
+            return cell;
+          });
+
+          csvContent += rowData.join(',') + '\n';
         });
-          // Escape quotes and commas for CSV
-          let cell = String(value).replace(/"/g, '""');
-          if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
-            cell = `"${cell}"`;
-          }
-          return cell;
-        });
-
-        csvContent += rowData.join(',') + '\n';
-      });
         csvContent += rowData.join(',') + '\n';
       });
 
@@ -396,10 +398,10 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
       this.isExportingCSV = false;
     });
   }
-  
+
   downloadExcel(): void {
     this.isExportingExcel = true;
-      this.getAllDataFromApi().subscribe(data => {
+    this.getAllDataFromApi().subscribe(data => {
       const workbook = new ExcelJS.Workbook();
       const worksheet = workbook.addWorksheet('Exported Data');
 
@@ -469,7 +471,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
         });
         saveAs(blob, 'ExportedDataFormatted.xlsx');
         this.isExportingExcel = false;
-    
+
       });
     });
   }
@@ -480,6 +482,6 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     return str.replace(/_/g, ' ')
       .replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
   }
- 
+
 }
 
