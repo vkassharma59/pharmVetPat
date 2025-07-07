@@ -1,4 +1,3 @@
-
 <div class="table-container">
   <div class="search-container" style="display: flex; justify-content: space-between; align-items: center;">
     <div>
@@ -6,7 +5,7 @@
       color:#fff" (click)="downloadPDF()">
         Download PDF <i class="fa-solid fa-download"></i>
       </button> -->
-       <button mat-raised-button [disabled]="isExportingCSV"
+      <button mat-raised-button [disabled]="isExportingCSV"
         style="background: linear-gradient(192deg, rgb(131, 164, 236) 0%, rgb(79, 154, 240) 50%, rgba(0, 58, 219, 1) 100%); color:#fff"
         (click)="downloadCSV()">
         <span *ngIf="!isExportingCSV">Download CSV <i class="fa-solid fa-download"></i></span>
@@ -79,8 +78,7 @@
                       </button>
                       <div class="filter_container">
                         <button class="filterIcon"
-                          (click)="clearFilter(column.value, filterInput); $event.stopPropagation()"
-                          >
+                          (click)="clearFilter(column.value, filterInput); $event.stopPropagation()">
                           <i class="fa-solid fa-filter-circle-xmark"></i>
                         </button>
                         <div *ngIf="openFilter[column.value] && false" class="dropdown-item" #dropdownRef>
@@ -99,12 +97,27 @@
 
             <td mat-cell *matCellDef="let element">
               <ng-container [ngSwitch]="column.value">
-                <img *ngSwitchCase="'flag'" [src]="element[column.value]" alt="flag" class="flag-img" />
-                <span *ngSwitchDefault [style.width.px]="150" class="fixed-cell" style="display:block;">
+                 <img *ngSwitchCase="'flag'" [src]="element[column.value]" alt="flag" class="flag-img" />
+                <!-- <span *ngSwitchDefault [style.width.px]="150" class="fixed-cell" style="display:block;">
                   <div class="scrollable-text">
                     {{element[column.value]}}
                   </div>
+                </span> -->
+                <span *ngSwitchDefault [style.width.px]="150" class="fixed-cell" style="display:block;">
+                  <div class="scrollable-text" *ngIf="column.value === 'country'; else defaultCell"
+                    style="display: flex; align-items: center;">
+                    {{ element[column.value] }}
+                    <img *ngIf="element[column.value]" [src]="getCountryUrl(element)" alt="flag" width="20" height="15"
+                      style="margin-left: 6px;" />
+                  </div>
+                  <ng-template #defaultCell>
+                    <div class="scrollable-text">
+                      {{ element[column.value] }}
+                    </div>
+                  </ng-template>
                 </span>
+
+
               </ng-container>
             </td>
           </ng-container>
