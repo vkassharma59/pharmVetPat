@@ -52,6 +52,7 @@
             *ngIf="simpleSearch?.autosuggestionList?.length"
             class="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto"
             > -->
+
             <ul *ngIf="simpleSearch?.autosuggestionList?.length"
               class="absolute z-10 left-0 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto suggestions-dropdown">
 
@@ -61,6 +62,7 @@
                 {{ suggestion }}
               </li>
             </ul>
+
           </div>
 
           <div class="col-md-2 col-6 mb-2 mb-md-0">
@@ -73,6 +75,16 @@
               (click)="clearInputAndSuggetions(searchTypes.simpleSearch)">Clear</button>
           </div>
         </div>
+        <div class="col-md-12">
+          <div class="d-flex flex-wrap gap-2">
+            <button class="suggestion-btn" *ngFor="let suggestion of suggestionsList"
+              (click)="selectSuggestion(suggestion)">
+              {{ suggestion.label }}: <strong>{{ suggestion.value }}</strong>
+            </button>
+          </div>
+        </div>
+
+
       </div>
 
       <div class="divider"></div>

@@ -98,11 +98,26 @@
             <td mat-cell *matCellDef="let element">
               <ng-container [ngSwitch]="column.value">
                 <img *ngSwitchCase="'flag'" [src]="element[column.value]" alt="flag" class="flag-img" />
-                <span *ngSwitchDefault [style.width.px]="150" class="fixed-cell">
-                  <div class="scrollable-text" style="display:block; width: 160px;">
+                <!-- <span *ngSwitchDefault [style.width.px]="150" class="fixed-cell" style="display:block;">
+                  <div class="scrollable-text">
                     {{element[column.value]}}
                   </div>
+                </span> -->
+                <span *ngSwitchDefault [style.width.px]="150" class="fixed-cell" style="display:block;">
+                  <div class="scrollable-text" *ngIf="column.value === 'COUNTRY_OF_ORIGIN'; else defaultCell"
+                    style="display: flex; align-items: center;">
+                    {{ element[column.value] }}
+                    <img *ngIf="element[column.value]" [src]="getCountryUrl(element)" alt="flag" width="20" height="15"
+                      style="margin-left: 6px;" (error)="onFlagError($event)" />
+                 </div>
+                  <ng-template #defaultCell>
+                    <div class="scrollable-text">
+                      {{ element[column.value] }}
+                    </div>
+                  </ng-template>
                 </span>
+
+
               </ng-container>
             </td>
           </ng-container>

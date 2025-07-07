@@ -12,6 +12,38 @@
 .dropdown-item {
   cursor: pointer;
 }
+.suggestion-btn {
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  border: 1px solid #0032a0;
+  color: #0032a0;
+  background-color: #f8faff;
+  border-radius: 6px;
+  flex: 0 1 auto;             /* prevent stretching */
+  max-width: calc(33.33% - 12px); /* 3 per row, adjust as needed */
+  min-width: 220px;           /* optional: for readability */
+  text-align: left;
+}
+@media (max-width: 768px) {
+  .suggestion-btn {
+    max-width: 100%;
+    min-width: 100%;
+  }
+}
+
+.selected-tag {
+  background-color: #ec7c14; /* your image orange */
+  color: #fff;
+  font-size: 14px;
+  border-radius: 8px;
+}
+
+.selected-tag i {
+  font-size: 12px;
+  margin-left: 8px;
+  cursor: pointer;
+}
 
 
   /* Title / Top Section */
