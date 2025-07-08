@@ -1,7 +1,6 @@
 <div class="card-header text-white" >
   <div style="padding-top:7px; justify-content:space-between; display:flex;">
   {{ apiCallInstance }}. {{resultTabs?.impurity?.label}} >> {{_data?.name}}
-  <button class="btn btn-warning"><i class="fa-solid fa-download"></i></button>
   </div>
 </div>
 <div class="card-body" style="background-color: #F5FBFF;" *ngIf="!isEmptyObject(_data); else noData">
