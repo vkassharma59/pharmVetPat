@@ -6,6 +6,8 @@ import { environment } from '../../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
 import { HttpClient } from '@angular/common/http';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-us-approval-card',
   standalone: true,
@@ -58,9 +60,19 @@ export class UsApprovalCardComponent {
     }
     
   }
+  convertNewlinesToBr(text: string): string {
+    return text?.replace(/\n/g, '<br>');
+  }
+  
+  formattedNotes: SafeHtml = '';
 
-  constructor(private dialog: MatDialog, private utilityService: UtilityService, private http: HttpClient) { }
-  isArray(value: any): boolean {
+  constructor(
+    private dialog: MatDialog,
+    private utilityService: UtilityService,
+    private http: HttpClient,
+    private sanitizer: DomSanitizer // ← ADD THIS
+  ) {}
+    isArray(value: any): boolean {
     return Array.isArray(value);
   }
   patentColumns: any[] = [];
@@ -198,11 +210,20 @@ export class UsApprovalCardComponent {
   viewPatent: boolean = false;
   openPopup(item: any): void {
     this.selectedPatent = item;
-    // Optionally log for debugging
-    this.selectedPatent = item;
     this.viewPatent = !this.viewPatent;
+  
+    // Format notes safely for innerHTML
+    if (item?.notes) {
+      this.formattedNotes = this.sanitizer.bypassSecurityTrustHtml(
+        item.notes.replace(/\n/g, '<br>')
+      );
+    } else {
+      this.formattedNotes = '';
+    }
+  
     console.log('Opening popup for:', item);
   }
+  
 
   closePopup(): void {
     this.selectedPatent = null;
