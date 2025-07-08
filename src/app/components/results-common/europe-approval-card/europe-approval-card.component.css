@@ -11,11 +11,11 @@ h1
 }
 .custom-card-body {
   background-color: #fff; /* अपनी पसंद का रंग चुनें */
-  padding: 1rem;
+  padding: 0rem;
   border-radius: 0.5rem;
 }
 p{
-  padding-bottom: 20px;
+  padding-bottom: 15px;
   white-space: pre;
   text-wrap: wrap;
   font-size: 14px;

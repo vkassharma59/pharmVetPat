@@ -62,25 +62,57 @@ export class pharmaDatabaseSearchComponent implements OnInit {
 
   // Dropdown lists
   suggestionsList = [
-    { label: 'Active Ingredient (AI)', value: 'Mancozeb' },
-    { label: 'Company Name', value: 'BASF' },
-    { label: 'RC Meeting Number', value: '460 RC Meeting' },
-     { label: 'Product Type', value: 'Fungicide' },
+    { type: 'Active Ingredient (AI)', type_label: "ACTIVE_INGREDIENT", value: 'SITAGLIPTIN', label: 'SITAGLIPTIN PHOSPHATE' },
+    { type: 'Company Name', type_label: "INNOVATOR_ORIGINATOR", value: 'Pfizer', label: 'Pfizer' },
+  ];
+  intersuggestionsList = [
+    { type: 'Chemical Name', type_label: 'chemical_name', value: 'ethyne', label: 'ethyne' },
+    { type: 'Smiles Code', type_label: 'smiles_code', value: 'C#C', label: 'C#C' },
+    { type: 'CAS RN', type_label: 'cas_rn', value: '74-86-2', label: '74-86-2' }
+  ];
+  synthsuggestionsList = [
+    { type: 'Chemical Name', value: 'Sitagliptin', label: 'Sitagliptin' },
+    { type: 'CAS RN', value: 'CAS RN: 41429-16-7', label: 'CAS RN: 41429-16-7' },
+    { type: 'Chemical Name', value: 'ethyne', label: 'ethyne' }
   ];
 
-  selectedFilters: { label: string; value: string }[] = [];
 
-  selectSuggestion(suggestion: { label: string; value: string }) {
-    const alreadySelected = this.selectedFilters.some(
-      (f) => f.label === suggestion.label && f.value === suggestion.value
-    );
-
-    if (!alreadySelected) {
-      this.selectedFilters.push(suggestion);
-    }
+  selectSuggestionSearch(suggestion: { type_label: string, value: string, label: string }) {
+    const { type_label, value, label } = suggestion;
+    this.simpleSearch.keyword = label;
+    this.simpleSearch.filter = type_label;
+    this.checkPriviledgeAndHandleSearch(searchTypes.simpleSearch);
   }
-  allDevelopmentStages: string[] = ['Preclinical', 'Phase I', 'Phase II', 'Phase III', 'Approved'];
-  allInnovators: string[] = ['Pfizer', 'Moderna', 'Cipla', 'Sun Pharma', 'Dr. Reddy\'s'];
+
+  advanceSearchSuggestion(suggestion: { type_label: string, value: string, label: string }) {
+    const { type_label, value, label } = suggestion;
+
+    // Initialize filterInputs array if not already
+    if (!Array.isArray(this.advanceSearch.filterInputs)) {
+      this.advanceSearch.filterInputs = [];
+    }
+    // Push the suggestion into filterInputs array
+    this.advanceSearch.filterInputs.push({
+      filter: type_label,
+      keyword: label
+    });
+
+    this.checkPriviledgeAndHandleSearch(searchTypes.advanceSearch);
+
+  }
+  synthesisSearchSuggestionSearch(synthsuggestion: { type: string, value: string, label: string }) {
+    const { type, value, label } = synthsuggestion;
+    this.synthesisSearch.keyword = label;
+    this.synthesisSearch.filter = type;
+    this.checkPriviledgeAndHandleSearch(searchTypes.synthesisSearch);
+  }
+  intermediateSearchSuggestionSearch(intersuggestion: { type_label: string, value: string, label: string }) {
+    const { type_label, value, label } = intersuggestion;
+    this.intermediateSearch.keyword = label;
+    this.intermediateSearch.filter = type_label;
+    this.checkPriviledgeAndHandleSearch(searchTypes.intermediateSearch);
+  }
+
   devStages: string[] = ['Stage 1', 'Stage 2', 'Stage 3'];
   innovators: string[] = ['Pfizer', 'Roche', 'Novartis'];
 
@@ -190,7 +222,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     if (column === 'DEVELOPMENT_STAGE') keyword = this.advanceSearch.devStage;
     if (column === 'INNOVATOR_ORIGINATOR') keyword = this.advanceSearch.innovator;
 
-    if (!keyword || keyword.length < 3) {
+    if (!keyword || keyword.length < 2) {
       if (column === 'DEVELOPMENT_STAGE') this.filteredDevStages = [];
       if (column === 'INNOVATOR_ORIGINATOR') this.filteredInnovators = [];
       return;
@@ -307,35 +339,35 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         error: (e) => console.error(e),
       });
   }
- isSearchEnabled(): boolean {
-  const {
-    filterInputs,
-    devStage,
-    innovator,
-    startSales,
-    endSales,
-    dateType,
-    startDate,
-    endDate
-  } = this.advanceSearch;
+  isSearchEnabled(): boolean {
+    const {
+      filterInputs,
+      devStage,
+      innovator,
+      startSales,
+      endSales,
+      dateType,
+      startDate,
+      endDate
+    } = this.advanceSearch;
 
-  const hasFilterKeyword = filterInputs?.some(
-    (input: any) => input.filter?.trim() && input.keyword?.trim()
-  );
+    const hasFilterKeyword = filterInputs?.some(
+      (input: any) => input.filter?.trim() && input.keyword?.trim()
+    );
 
-  const hasDateFilters =
-    dateType?.trim() !== '' &&
-    this.isValidDate(startDate) &&
-    this.isValidDate(endDate);
+    const hasDateFilters =
+      dateType?.trim() !== '' &&
+      this.isValidDate(startDate) &&
+      this.isValidDate(endDate);
 
-  return (
-    hasFilterKeyword ||
-    hasDateFilters ||
-    devStage?.trim() !== '' ||
-    innovator?.trim() !== '' ||
-    (startSales && endSales)
-  );
-}
+    return (
+      hasFilterKeyword ||
+      hasDateFilters ||
+      devStage?.trim() !== '' ||
+      innovator?.trim() !== '' ||
+      (startSales && endSales)
+    );
+  }
 
 
 
@@ -701,6 +733,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       screenColumn: this.screenColumn,
       activeForm: searchTypes.advanceSearch,
     });
+    console.log("Advance search inputs", this.advanceSearch?.filterInputs);
     const validFilters = this.advanceSearch?.filterInputs
       ?.filter(input => input.filter?.trim() && input.keyword?.trim());
 
@@ -734,49 +767,50 @@ export class pharmaDatabaseSearchComponent implements OnInit {
           start_date: this.advanceSearch.startDate,
           end_date: this.advanceSearch.endDate
         }
-            }),
-        ...(this.advanceSearch?.devStage && { development_stage: this.advanceSearch.devStage }),
-        ...(this.advanceSearch?.innovator && { innovators: this.advanceSearch.innovator }),
-        ...(this.advanceSearch?.startSales !== null &&
-          this.advanceSearch?.startSales !== undefined &&
-          this.advanceSearch?.endSales !== null &&
-          this.advanceSearch?.endSales !== undefined && {
-          sale_range: {
-            start: this.advanceSearch.startSales,
-            end: this.advanceSearch.endSales
-          }
-        }),
-        page_no: 1
-      };
-        const tech_API = this.apiUrls.basicProductInfo.columnList;
-      this.columnListService.getColumnList(tech_API).subscribe({
-        next: (res: any) => {
-          const response = res?.data?.columns;
-          Auth_operations.setColumnList(this.resultTabs.productInfo.name, response);
+      }),
+      ...(this.advanceSearch?.devStage && { development_stage: this.advanceSearch.devStage }),
+      ...(this.advanceSearch?.innovator && { innovators: this.advanceSearch.innovator }),
+      ...(this.advanceSearch?.startSales !== null &&
+        this.advanceSearch?.startSales !== undefined &&
+        this.advanceSearch?.endSales !== null &&
+        this.advanceSearch?.endSales !== undefined && {
+        sale_range: {
+          start: this.advanceSearch.startSales,
+          end: this.advanceSearch.endSales
+        }
+      }),
+      page_no: 1
+    };
+    console.log("Advance search body", apiBody);
+    const tech_API = this.apiUrls.basicProductInfo.columnList;
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.productInfo.name, response);
 
-          this.mainSearchService.getAdvanceSearchResults(apiBody).subscribe({
-            next: (res: any) => {
-              this.showResultFunction.emit({
-                apiBody,
-                API_URL: this.apiUrls.basicProductInfo.simpleSearchResults,
-                currentTab: this.resultTabs.productInfo.name,
-                actual_value: '',
-              });
-              this.chemSearchResults.emit(res?.data);
-              this.setLoadingState.emit(false);
-            },
-            error: (e) => {
-              console.error('Error during main search:', e);
-              this.setLoadingState.emit(false);
-            },
-          });
-        },
-        error: (e) => {
-          console.error('Error fetching column list:', e);
-          this.setLoadingState.emit(false);
-        },
-      });
-    }
+        this.mainSearchService.getAdvanceSearchResults(apiBody).subscribe({
+          next: (res: any) => {
+            this.showResultFunction.emit({
+              apiBody,
+              API_URL: this.apiUrls.basicProductInfo.simpleSearchResults,
+              currentTab: this.resultTabs.productInfo.name,
+              actual_value: '',
+            });
+            this.chemSearchResults.emit(res?.data);
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
 
   private performSynthesisSearch(): void {
     Auth_operations.setActiveformValues({
@@ -794,7 +828,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       order_by: '',
       keyword: this.synthesisSearch?.keyword
     };
-
     const tech_API = this.apiUrls.technicalRoutes.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
@@ -938,7 +971,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       keyword: this.intermediateSearch?.keyword,
       criteria: this.intermediateSearch?.filter
     };
-
+    console.log("Intermediate search body", body);
     const tech_API = this.apiUrls.chemicalDirectory.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
