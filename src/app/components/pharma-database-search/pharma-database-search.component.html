@@ -78,8 +78,8 @@
         <div class="col-md-12">
           <div class="d-flex flex-wrap gap-2">
             <button class="suggestion-btn" *ngFor="let suggestion of suggestionsList"
-              (click)="selectSuggestion(suggestion)">
-              {{ suggestion.label }}: <strong>{{ suggestion.value }}</strong>
+              (click)="selectSuggestionSearch(suggestion)">
+              {{ suggestion.type }}:<strong>{{ suggestion.value }}</strong>
             </button>
           </div>
         </div>
@@ -138,7 +138,7 @@
                 <button _ngcontent-ng-c3105717028="" class="btn btn-outline-secondary px-2 py-1 w-100 small-btn"> Add
                   filter + </button>
               </div>
-              <div style="/* border: 2px solid red; */" class="col-md-1 col-1 d-flex" _ngcontent-ng-c3105717028="">
+              <div class="col-md-1 col-1 d-flex" _ngcontent-ng-c3105717028="">
                 <button _ngcontent-ng-c3105717028="" *ngIf="i > 0" (click)="removeFilter(i)"
                   class="btn btn-outline-secondary px-2 py-1 w-100 small-btn"> Remove
                   - </button>
@@ -192,39 +192,12 @@
       <!-- End Advanced Search -->
       <!-- Additional Filters Row in One Line (4 Columns) -->
       <div class="row mb-3 align-items-center">
-        <!-- Development Stage -->
-        <!-- <div class="col-md-3 col-12 mb-2 mb-md-0 dev-stage-container">
-          <label class="form-label">Select Development Stage</label>
-          
-          <div class="position-relative">
-            <input type="text"   class="form-control" placeholder="Select Development Stage"
-              [(ngModel)]="advanceSearch.keyword" [value]="advanceSearch.keyword"
-               (focus)="openDevStageDropdown()"
-              (input)="handleChangeKeyword(searchTypes.advanceSearch)" />
-
-            <div *ngIf="showDevStageDropdown"
-              class="position-absolute bg-white border border-gray-300 rounded shadow p-2 z-10"
-              style="width: 100%; max-height: 250px; overflow-y: auto">
-              <input type="text" class="form-control mb-2" placeholder="Search" 
-              [(ngModel)]="intermediateSearch.keyword" [value]="intermediateSearch.keyword"
-                (input)="handleChangeKeyword(searchTypes.advanceSearch)" />
-              <div *ngFor="let stage of filteredDevStages" class="px-2 py-1 hover:bg-light cursor-pointer"
-                (click)="selectDevStage(stage)">
-                {{ stage }}
-              </div>
-            </div>
-          </div>
-        </div> -->
 
         <!-- Development Stage -->
         <div class="col-md-3 col-12 mb-2 mb-md-0 dev-stage-container" #devStageWrapper>
           <label class="form-label">Select Development Stage</label>
 
           <div class="position-relative">
-            <!-- <input type="text" class="form-control" placeholder="Select Development Stage"
-              [(ngModel)]="advanceSearch.devStage" (focus)="!isAdvancedInputDisabled() && (showDevStageDropdown = true)"
-              (input)="!isAdvancedInputDisabled() && handleChangeKeywordDL('DEVELOPMENT_STAGE')"
-              [disabled]="isAdvancedInputDisabled() && false" /> -->
             <input type="text" class="form-control" placeholder="Select Development Stage"
               [(ngModel)]="advanceSearch.devStage" (focus)="showDevStageDropdown = true"
               (input)="handleChangeKeywordDL('DEVELOPMENT_STAGE')" />
@@ -307,7 +280,14 @@
           </button>
         </div>
       </div>
-
+      <div class="col-md-12">
+        <div class="d-flex flex-wrap gap-2">
+          <button class="suggestion-btn" *ngFor="let suggestion of suggestionsList"
+            (click)="advanceSearchSuggestion(suggestion)">
+            {{ suggestion.type }}: <strong>{{ suggestion.value }}</strong>
+          </button>
+        </div>
+      </div>
       <div class="divider"></div>
     </div>
 
@@ -342,8 +322,7 @@
 
             <!-- Suggestions Dropdown -->
             <ul *ngIf="intermediateSearch?.autosuggestionList?.length"
-              class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto"
-              style="width: 70%">
+             class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto whitespace-normal break-words w-64">
               <li *ngFor="let suggestion of intermediateSearch?.autosuggestionList"
                 class="px-4 py-2 cursor-pointer hover:bg-blue-100"
                 (click)="handleSuggestionClick(suggestion, searchTypes.intermediateSearch)">
@@ -360,7 +339,16 @@
             <button (click)="clearInputAndSuggetions(searchTypes.intermediateSearch)"
               class="btn btn-outline-secondary w-100">Clear</button>
           </div>
+          
         </div>
+        <div class="col-md-12">
+            <div class="d-flex flex-wrap gap-2">
+              <button class="suggestion-btn" *ngFor="let intersuggestion of intersuggestionsList"
+             (click)="intermediateSearchSuggestionSearch(intersuggestion)">
+                {{ intersuggestion.type }}: <strong>{{ intersuggestion.value }}</strong>
+              </button>
+            </div>
+          </div>
       </div>
 
       <div class="divider"></div>
@@ -398,9 +386,17 @@
             <button (click)="clearInputAndSuggetions(searchTypes.synthesisSearch)"
               class="btn btn-outline-secondary w-100">Clear</button>
           </div>
+
         </div>
       </div>
-
+      <div class="col-md-12">
+        <div class="d-flex flex-wrap gap-2">
+          <button class="suggestion-btn" *ngFor="let synthsuggestion of synthsuggestionsList"
+            (click)="synthesisSearchSuggestionSearch(synthsuggestion)">
+            {{ synthsuggestion.type }}: <strong>{{ synthsuggestion.value }}</strong>
+          </button>
+        </div>
+      </div>
       <div class="divider"></div>
 
       <!-- (C) OR Chemical Structure - Identifier Search -->
@@ -428,8 +424,7 @@
 
             <!-- Suggestions Dropdown -->
             <ul *ngIf="chemicalStructure?.autosuggestionList?.length"
-              class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto"
-              style="width: 70%">
+              class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto whitespace-normal break-words w-64">
               <li *ngFor="let suggestion of chemicalStructure?.autosuggestionList"
                 class="px-4 py-2 cursor-pointer hover:bg-blue-100"
                 (click)="handleSuggestionClick(suggestion, searchTypes.chemicalStructure)">
