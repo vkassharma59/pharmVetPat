@@ -1,7 +1,6 @@
 <div class="card-header text-white">
     <div style="padding-top: 7px; display:flex;">{{ localCount }}. {{resultTabs?.chemiTracker?.label}} >> <span
             *ngIf="_data?.chemical_name">{{_data?.chemical_name}}</span></div>
-    <button class="btn btn-warning"><i class="fa-solid fa-download"></i></button>
 </div>
 <div class="card-body" style="background-color: #F5FBFF;" *ngIf="!isEmptyObject(_data); else noData">
     <div class="row">
