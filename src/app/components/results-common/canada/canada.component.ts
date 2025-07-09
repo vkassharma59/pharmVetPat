@@ -140,62 +140,43 @@ export class CanadaComponent implements OnInit {
   }
 
   handleFetchFilters() {
-    console.log('[handleFetchFilters] Invoked');
-  
     this.canadaPatentApiBody.filter_enable = true;
-    console.log('[handleFetchFilters] Set filter_enable to true in API body:', JSON.stringify(this.canadaPatentApiBody, null, 2));
+    
   
     this.mainSearchService.canadaApprovalSearchSpecific(this.canadaPatentApiBody).subscribe({
-      next: (res) => {
-        console.log('[handleFetchFilters] API call success. Raw response:', res);
-        console.log('[handleFetchFilters] res.status:', res?.status);
-        console.log('[handleFetchFilters] res.message:', res?.message);
-        console.log('[handleFetchFilters] res.data keys:', Object.keys(res?.data || {}));
-        console.log('[handleFetchFilters] res.data:', JSON.stringify(res?.data, null, 2));
+      next: (res: any) => {
+        const hcData = res?.data?.health_canada_data || [];
   
-        const productFilters = res?.data?.product_name || [];
-        const strengthFilters = res?.data?.strength || [];
-        const rawCompanyFilters = res?.data?.company || [];
-        const dosageFilters = res?.data?.dosage_forms || [];
+        const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
   
-        console.log('[handleFetchFilters] Parsed productFilters:', productFilters);
-        console.log('[handleFetchFilters] Parsed strengthFilters:', strengthFilters);
-        console.log('[handleFetchFilters] Parsed rawCompanyFilters:', rawCompanyFilters);
-        console.log('[handleFetchFilters] Parsed dosageFilters:', dosageFilters);
-  
-        const formattedCompanyFilters = rawCompanyFilters.map((item: any) => {
-          const key = Object.keys(item)[0];
-          const count = item[key]?.length || 0;
-          const obj = {
-            name: `${key} (${count})`,
-            value: key
-          };
-          console.log('[handleFetchFilters] Processed company item:', item, '=>', obj);
-          return obj;
-        });
-        
+        const productFilters = getUnique(hcData.map(item => item.product_name));
+        const strengthFilters = getUnique(hcData.map(item => item.strength));
+        const companyFiltersRaw = getUnique(hcData.map(item => item.company));
+        const dosageFilters = getUnique(hcData.map(item => item.dosage_forms));
+        console.log("23425435647d",dosageFilters)
+        console.log("-------s------",strengthFilters)
+        console.log("-------c------",companyFiltersRaw)
+        console.log("-------p------",productFilters)
   
         this.canadaPatentFilters = {
           productFilters,
           strengthFilters,
-          CompanyFilters: formattedCompanyFilters,
+          CompanyFilters: companyFiltersRaw.map(name => ({ name, value: name })),
           DosageFilters: dosageFilters
         };
   
-        console.log('[handleFetchFilters] Final canadaPatentFilters object:', this.canadaPatentFilters);
-  
         this.canadaPatentApiBody.filter_enable = false;
-        console.log('[handleFetchFilters] Reset filter_enable to false');
+        
+        
       },
       error: (err) => {
-        console.error('[handleFetchFilters] API call failed:', err);
+        console.error('Error fetching Health Canada filters:', err);
         this.canadaPatentApiBody.filter_enable = false;
-        console.log('[handleFetchFilters] Reset filter_enable to false (on error)');
+
       }
     });
   }
-  
-  
+    
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     this.handleSetLoading.emit(true);
@@ -219,10 +200,6 @@ export class CanadaComponent implements OnInit {
     this.mainSearchService.canadaApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         let resultData = res?.data || {};
-        const sortValue = this.canadaPatentApiBody.filters['order_by'];
-
-        resultData.health_canada_data = this.sortPatentData(resultData.health_canada_data, sortValue);
-
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
           count: resultData?.health_canada_count
@@ -240,21 +217,6 @@ export class CanadaComponent implements OnInit {
     });
   }
 
-  sortPatentData(data: any[], order: string): any[] {
-    if (!Array.isArray(data)) return [];
-
-    if (order === 'Newest') {
-      return data.sort((a, b) =>
-        new Date(b.APPLICATION_DATE).getTime() - new Date(a.APPLICATION_DATE).getTime()
-      );
-    } else if (order === 'Oldest') {
-      return data.sort((a, b) =>
-        new Date(a.APPLICATION_DATE).getTime() - new Date(b.APPLICATION_DATE).getTime()
-      );
-    }
-
-    return data;
-  }
 
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
