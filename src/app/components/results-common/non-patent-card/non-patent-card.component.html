@@ -1,3 +1,4 @@
+
 <div class="table-container">
   <div class="search-container" style="display: flex; justify-content: space-between; align-items: center;">
     <div>
@@ -78,7 +79,8 @@
                       </button>
                       <div class="filter_container">
                         <button class="filterIcon"
-                          (click)="clearFilter(column.value, filterInput); $event.stopPropagation()">
+                          (click)="clearFilter(column.value, filterInput); $event.stopPropagation()"
+                          >
                           <i class="fa-solid fa-filter-circle-xmark"></i>
                         </button>
                         <div *ngIf="openFilter[column.value] && false" class="dropdown-item" #dropdownRef>

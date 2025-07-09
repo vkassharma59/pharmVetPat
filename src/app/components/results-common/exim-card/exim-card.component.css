@@ -6,9 +6,7 @@
   margin-top: 5px;
   margin-bottom: 5px;
 }
-.filter{
-  width:70px;
-}
+
 /* ✅ Card-style Table */
 .mat-elevation-z8 {
   padding: 20px;
@@ -102,7 +100,7 @@ header background #e02b33*/
 button {
   text-transform: none;
   margin: 5px;
-  padding: 8px 12px;
+  padding: 4px 9px;
   font-size: 14px;
   border-radius: 5px;
 }
@@ -121,6 +119,9 @@ button[color="accent"] {
 button[color="warn"] {
   background-color: #07a2f0;
   color: white;
+}
+.filter{
+  width: 70%;
 }
 
 
@@ -293,6 +294,7 @@ button[color="warn"] {
 .table-scroll-container {
   overflow-y: auto;
   height: 100%;
+ 
 }
 
 .mat-header-row {
@@ -314,8 +316,8 @@ mat-header-cell {
   left: 0;
   width: 100%;
   display: flex;
-  justify-content: space-between;
-  /* padding: 0 0px; */
+    justify-content: space-between;
+  /* padding: 0 8px; */
   z-index: 5;
   pointer-events: none; /* Pass clicks except for buttons */
 }
@@ -407,4 +409,6 @@ th.mat-header-cell.volume-cell {
   height: 40px;
   line-height: 40px;
 }
+
+
 

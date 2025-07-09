@@ -82,6 +82,7 @@ export class VeterinaryUsApprovalCardComponent implements OnInit, OnDestroy {
   }
   constructor(private dialog: MatDialog, private utilityService: UtilityService) { }
   ngOnInit() {
+     console.log('get data called--------------',this._data);
     if (VeterinaryUsApprovalCardComponent.apiCallCount === 0) {
       VeterinaryUsApprovalCardComponent.apiCallCount = 0;
     }

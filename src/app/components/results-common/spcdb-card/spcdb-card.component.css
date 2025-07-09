@@ -29,9 +29,6 @@ mat-form-field {
   font-size: 12px; /* Smaller text */
 }
 
-.filter{
-  width: 70px;
-}
 .filter-field input {
   height: 24px;  /* Decreased height */
   font-size: 12px;
@@ -103,7 +100,7 @@ header background #e02b33*/
 button {
   text-transform: none;
   margin: 5px;
-  padding: 8px 12px;
+  padding: 4px 9px;
   font-size: 14px;
   border-radius: 5px;
 }
@@ -122,6 +119,9 @@ button[color="accent"] {
 button[color="warn"] {
   background-color: #07a2f0;
   color: white;
+}
+.filter{
+  width: 70%;
 }
 
 
@@ -294,6 +294,7 @@ button[color="warn"] {
 .table-scroll-container {
   overflow-y: auto;
   height: 100%;
+ 
 }
 
 .mat-header-row {
@@ -315,8 +316,8 @@ mat-header-cell {
   left: 0;
   width: 100%;
   display: flex;
-  justify-content: space-between;
-  /* padding: 0 0px; */
+    justify-content: space-between;
+  /* padding: 0 8px; */
   z-index: 5;
   pointer-events: none; /* Pass clicks except for buttons */
 }
@@ -408,20 +409,6 @@ th.mat-header-cell.volume-cell {
   height: 40px;
   line-height: 40px;
 }
-.gbrn-column {
-  max-width: 150px !important;
-  min-width: 150px !important;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 
-.scrollable-text {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  display: block;
 
-  width: 100px;
-}
 

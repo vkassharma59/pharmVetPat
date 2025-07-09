@@ -35,8 +35,6 @@ export class EuropeApprovalCardComponent implements OnInit, OnDestroy {
       this._data = value; // ✅ SET FIRST
 
       this.resultTabs = this.utilityService.getAllTabsName();
-      console.log("result", this.resultTabs);
-
       const column_list = Auth_operations.getColumnList();
 
       if (column_list[this.resultTabs.europeApproval?.name]?.length > 0) {
@@ -47,10 +45,6 @@ export class EuropeApprovalCardComponent implements OnInit, OnDestroy {
       }
       const tabName = this.resultTabs?.europeApproval?.name || 'EUROPE_APPROVAL';
       this.europe_approval_column = column_list?.[tabName];
-
-      console.log('Resolved tabName:', tabName);
-      console.log('europe_approval_column:', this.europe_approval_column);
-      console.log("data", this._data);
     }
   }
 
@@ -77,7 +71,6 @@ export class EuropeApprovalCardComponent implements OnInit, OnDestroy {
   }
   getColumnName(field: string): string {
     const colName = this.europe_approval_column?.[field];
-    console.log(`getColumnName(${field}) =>`, colName);
     return colName || field.replace(/_/g, ' ').toUpperCase(); // fallback display
   }
 

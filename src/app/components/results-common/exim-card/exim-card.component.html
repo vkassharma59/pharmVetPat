@@ -103,6 +103,9 @@
                     {{element[column.value]}}
                   </div>
                 </span> -->
+                <span *ngSwitchCase="'date_of_approval'">
+                  {{ element[column.value] | date:'yyyy-MM-dd' }}
+                </span>
                 <span *ngSwitchDefault [style.width.px]="150" class="fixed-cell" style="display:block;">
                   <div class="scrollable-text" *ngIf="column.value === 'COUNTRY_OF_ORIGIN'; else defaultCell"
                     style="display: flex; align-items: center;">
