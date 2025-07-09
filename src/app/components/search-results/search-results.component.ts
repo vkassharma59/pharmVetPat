@@ -1101,6 +1101,7 @@ export class SearchResultsComponent {
           next: (result: any) => {
             this.childApiBody[resultTabData.index][this.resultTabs.veterinaryUsApproval.name].count = result?.data?.green_book_us_count;
             this.allDataSets[resultTabData.index][this.resultTabs.veterinaryUsApproval.name] = result?.data?.green_book_us_data;
+
             console.log('main search:', result?.data?.green_book_us_data);
             this.setLoadingState.emit(false);
             this.loadingService.setLoading(this.resultTabs.veterinaryUsApproval.name, resultTabData.index, false);
