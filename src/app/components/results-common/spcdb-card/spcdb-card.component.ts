@@ -112,6 +112,10 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       this.noMatchingData = this.rowData.length === 0;
     }
   }
+  isISODate(value: any): boolean {
+  // Checks if value is a valid ISO datetime string
+  return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value);
+}
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;

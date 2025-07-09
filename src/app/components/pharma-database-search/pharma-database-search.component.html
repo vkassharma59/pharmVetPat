@@ -174,7 +174,6 @@
             <label for="seeAllDataType" class="form-label">Select Data Type (Optional):</label>
             <select class="form-control" [(ngModel)]="advanceSearch.dateType">
               <option value="" disabled selected hidden>Date Type</option>
-              <option value="" disabled selected hidden>Date Type</option>
               <option *ngFor="let filter of advanceSearch.date_columns" [value]="filter.value">
                 {{ filter.name }}
               </option>
@@ -225,7 +224,6 @@
           <div class="position-relative">
             <input type="text" class="form-control" placeholder="Select Innovator Originator"
               [(ngModel)]="advanceSearch.innovator" (focus)="showInnovatorDropdown = true"
-              (input)="handleChangeKeywordDL('INNOVATOR_ORIGINATOR')" />
               (input)="handleChangeKeywordDL('INNOVATOR_ORIGINATOR')" />
 
 
