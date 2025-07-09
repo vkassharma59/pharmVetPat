@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component,EventEmitter, Input, Output } from '@angular/core';
+import { Component,EventEmitter, Input, Output } from '@angular/core';
 import { VeterinaryUsApprovalCardComponent } from '../veterinary-us-approval-card/veterinary-us-approval-card.component';
 import { ChildPagingComponent } from "../../../commons/child-paging/child-paging.component";
 import { UtilityService } from '../../../services/utility-service/utility.service';
@@ -292,12 +293,14 @@ export class VeterinaryUsApprovalComponent {
     const el = event.currentTarget as HTMLElement;
     const textToCopy = document.getElementById(elementId)?.innerText;
 
+
     if (textToCopy) {
       navigator.clipboard.writeText(textToCopy).then(() => {
         // el is already the <i> element, no need for querySelector
         if (el.classList.contains('fa-copy')) {
           el.classList.remove('fa-copy');
           el.classList.add('fa-check');
+
 
           setTimeout(() => {
             el.classList.remove('fa-check');
@@ -309,5 +312,6 @@ export class VeterinaryUsApprovalComponent {
       });
     }
   }
+
 
 }

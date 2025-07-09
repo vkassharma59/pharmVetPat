@@ -174,6 +174,7 @@
             <label for="seeAllDataType" class="form-label">Select Data Type (Optional):</label>
             <select class="form-control" [(ngModel)]="advanceSearch.dateType">
               <option value="" disabled selected hidden>Date Type</option>
+              <option value="" disabled selected hidden>Date Type</option>
               <option *ngFor="let filter of advanceSearch.date_columns" [value]="filter.value">
                 {{ filter.name }}
               </option>
@@ -203,6 +204,7 @@
               (input)="handleChangeKeywordDL('DEVELOPMENT_STAGE')" />
 
             <div *ngIf="showDevStageDropdown "
+            <div *ngIf="showDevStageDropdown "
               class="position-absolute bg-white border border-gray-300 rounded shadow p-2 z-10 Dropdown"
               style="width: 100%; max-height: 250px; overflow-y: auto">
 
@@ -224,6 +226,7 @@
           <div class="position-relative">
             <input type="text" class="form-control" placeholder="Select Innovator Originator"
               [(ngModel)]="advanceSearch.innovator" (focus)="showInnovatorDropdown = true"
+              (input)="handleChangeKeywordDL('INNOVATOR_ORIGINATOR')" />
               (input)="handleChangeKeywordDL('INNOVATOR_ORIGINATOR')" />
 
 
