@@ -86,8 +86,7 @@ export class RouteResultComponent {
 
   @Input()
   get dataItem() {
-    console.log("dataItem---", this._dataItem);
-    return this._dataItem;
+    console.log("dataItem---hkjh", this._dataItem);
     return this._dataItem;
   }
   set dataItem(value: any) {
@@ -113,7 +112,6 @@ export class RouteResultComponent {
   }
 
   ngOnInit() {
-
     this.resultTabs = Object.values(this.utilityService.getAllTabsName());
     this.currentTabData = this.resultTabs.find((tab: any) => tab.isActive);
     //
@@ -224,14 +222,14 @@ export class RouteResultComponent {
   handleGeneratePDF() {
     this.generatePDFloader = true;
     this.handleSetLoading.emit(true);
-    const priviledge = localStorage.getItem('priviledge_json');
 
-    const priviledge_data = JSON.parse(priviledge || '');
+    const localPrivilege = localStorage.getItem('priviledge_json');
+    const parsedPrivilege = JSON.parse(localPrivilege || '');
     let todays_limit: any = '';
 
     this.userPriviledgeService.getUserPriviledgesData().subscribe({
       next: (res: any) => {
-        if (res && res?.data && res?.data?.user_info) {
+        if (res?.data?.user_info) {
           const userInfo = res.data.user_info;
           this.userAuth = {
             name: userInfo.name,
@@ -239,204 +237,143 @@ export class RouteResultComponent {
             user_id: userInfo.user_id,
             auth_token: userInfo.auth_token,
           };
-          let priviledge = `user_${this.userAuth?.user_id}`;
 
-          if (
-            typeof window !== 'undefined' &&
-            window.localStorage &&
-            userInfo?.priviledge_json
-          ) {
-            localStorage.setItem(
-              'priviledge_json',
-              JSON.stringify(userInfo?.privilege_json[priviledge])
-            );
+          const privilegeKey = `user_${this.userAuth.user_id}`;
+          const userPrivilege = userInfo?.privilege_json?.[privilegeKey];
+
+          if (typeof window !== 'undefined' && window.localStorage && userPrivilege) {
+            localStorage.setItem('priviledge_json', JSON.stringify(userPrivilege));
           }
-          let priviledge_data = userInfo?.privilege_json[priviledge];
+
+          const pharmaPrivilege = userPrivilege?.['pharmvetpat-mongodb'];
           if (
-            !priviledge_data ||
-            priviledge_data?.['pharmvetpat-mongodb']?.SplitDownload === 'false' ||
-            priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == '' ||
-            priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == 0 ||
-            priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == '0'
+            !pharmaPrivilege ||
+            pharmaPrivilege?.SplitDownload === 'false' ||
+            !pharmaPrivilege?.DownloadCount ||
+            pharmaPrivilege?.DownloadCount == 0
           ) {
             this.handleSetLoading.emit(false);
             this.OpenPriviledgeModal.emit(
-              'Report download is only allowed with premium ID, please updgrade to premium account.'
+              'Report download is only allowed with premium ID, please upgrade to a premium account.'
             );
             this.generatePDFloader = false;
             return;
-          } else {
-            this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
-              next: (res: any) => {
-                if (res && res?.data) {
-                  todays_limit = res.data;
-                  if (
-                    priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit -
-                    todays_limit?.downloadCount <= 0
-                  ) {
-                    this.handleSetLoading.emit(false);
-                    this.OpenPriviledgeModal.emit(
-                      'Your daily download limit is over for this platform.'
-                    );
-                    this.generatePDFloader = false;
-                    return;
-                  }
-                  if (
-                    priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit -
-                    todays_limit?.downloadCount >
-                    0
-                  ) {
-                    console.log('priviledge_data?.DownloadCount', priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount);
-                    console.log(priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit, 'todays_limit?.downloadCount', todays_limit?.downloadCount);
-
-                    let id: any = '';
-                    const searchThrough = Auth_operations.getActiveformValues().activeForm;
-                    console.log('No s-----------------------earch type selected', this.dataItem);
-
-                    switch (searchThrough) {
-                      case searchTypes.chemicalStructure:
-                      case searchTypes.intermediateSearch:
-                        id = this.dataItem[this.resultTabWithKeys.chemicalDirectory.name][0]._id;
-                        break;
-                      case searchTypes.synthesisSearch:
-                        id = this.dataItem[this.resultTabWithKeys.technicalRoutes.name]?.ros_data?.[0]._id;
-                        break;
-                      case searchTypes.simpleSearch:
-                      case searchTypes.advanceSearch:
-                        id = this.dataItem[this.resultTabWithKeys.productInfo.name][0]._id;
-                        break;
-                      default:
-                        id = this.dataItem[this.resultTabWithKeys.productInfo.name][0]._id;
-                        console.log('No search type selected');
-                    }
-                    console.log('---------------No search type selected', this.dataItem[this.resultTabWithKeys.productInfo.name]);
-                    let body_main: any = {
-                      id: id,
-                      report_download: true,
-                      reports: [],
-                      limit: priviledge_data?.['pharmvetpat-mongodb']?.ReportLimit,
-                    };
-                    // ✅ Push only the active tab name as the selected report
-                    // if (this.currentTabData?.name) {
-                    //   body_main.reports.push(this.currentTabData.name);
-                    // }
-                    if (this.currentTabData?.name) {
-                      const tabName = this.currentTabData.name;
-                      const reportKey = this.tabNameToReportKey[tabName];
-                      const finalName = reportKey ? reportKey : tabName; // mapped OR original
-                      body_main.reports.push(finalName);
-                    }
-
-
-                    // ✅ Add full download flag if needed
-                    if (this.searchThrough === searchTypes.simpleSearch || this.searchThrough === searchTypes.advanceSearch) {
-                      body_main.report_download = true;
-                    }
-                    if (body_main?.reports?.length == 0) {
-                      alert('please select atleast 1 option');
-                      this.handleSetLoading.emit(false);
-                      this.generatePDFloader = false;
-                      return;
-                    } else {
-                      let API_MAIN = {};
-                      if (this.searchThrough === searchTypes.synthesisSearch) {
-                        API_MAIN = {
-                          api_url: this.apiUrls.technicalRoutes.reportData,
-                          body: body_main,
-                        };
-                      } else if (
-                        this.searchThrough === searchTypes.chemicalStructure ||
-                        this.searchThrough === searchTypes.intermediateSearch
-                      ) {
-                        API_MAIN = {
-                          api_url: this.apiUrls.chemicalDirectory.reportData,
-                          body: body_main,
-                        };
-                      } else {
-                        // simpleSearch or advanceSearch
-                        API_MAIN = {
-                          api_url: this.apiUrls.basicProductInfo.reportData,
-                          body: body_main,
-                        };
-                      }
-                      console.log("api_main", API_MAIN)
-                      try {
-                        this.serviceResultTabFiltersService.getGeneratePDF(API_MAIN).subscribe({
-                          next: (resp: any) => {
-                            const blob = new Blob([resp.body!], { type: 'application/pdf' });
-                            console.log("-----------scfsdvfsdfgv API_MAIN ", resp)
-                            const contentDisposition = resp.headers.get('content-disposition');
-                            console.log("-----------contentDispositionscfsdvfsdfgv API_MAIN ", contentDisposition)
-                            const timestamp = new Date()
-                              .toISOString()
-                              .split('.')[0] // remove milliseconds
-                              .replace(/T/, '_') // replace T with _
-                              .replace(/:/g, '-'); // format time separator
-                            // Default name
-                            let filenamePrefix = 'basicProductReport';
-
-                            // Logic to update name based on search type
-                            if (
-                              this.searchThrough === searchTypes.chemicalStructure ||
-                              this.searchThrough === searchTypes.synthesisSearch ||
-                              this.searchThrough === searchTypes.intermediateSearch
-                            ) {
-                              filenamePrefix = 'technicalRouteReport';
-                            }
-
-                            // Final filename
-                            let filename = `${filenamePrefix}_${timestamp}.pdf`;
-                            //  let filename = `${this.searchThrough}Report_${timestamp}.pdf`;
-
-                            if (contentDisposition) {
-                              const match = contentDisposition.match(/filename="?([^"]+)"?/);
-                              if (match && match[1]) {
-                                filename = match[1];
-                              }
-                            }
-                            // Download logic
-                            const fileURL = URL.createObjectURL(blob);
-                            const a = document.createElement('a');
-                            a.href = fileURL;
-                            console.log(fileURL, "-----------scfsdvfsdfgv API_MAIN ", filename)
-                            a.download = filename;
-                            document.body.appendChild(a);
-                            a.click();
-                            document.body.removeChild(a);
-
-                            this.generatePDFloader = false;
-                            this.handleSetLoading.emit(false);
-                          },
-                          error: (err: any) => {
-                            this.generatePDFloader = false;
-                            this.handleSetLoading.emit(false);
-                            console.error('Error downloading the PDF', err);
-                          },
-                        });
-                      } catch (err) {
-                        this.handleSetLoading.emit(false);
-                        this.generatePDFloader = false;
-                      }
-                    }
-                  }
-                }
-              },
-              error: (e) => {
-                this.generatePDFloader = false;
-                this.handleSetLoading.emit(false);
-                console.error('Error:', e);
-              },
-            });
           }
+
+          this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
+            next: (res: any) => {
+              if (res?.data) {
+                todays_limit = res.data;
+
+                const remaining = pharmaPrivilege.DailyDownloadLimit - todays_limit.downloadCount;
+                if (remaining <= 0) {
+                  this.handleSetLoading.emit(false);
+                  this.OpenPriviledgeModal.emit(
+                    'Your daily download limit is over for this platform.'
+                  );
+                  this.generatePDFloader = false;
+                  return;
+                }
+
+                const searchThrough = Auth_operations.getActiveformValues()?.activeForm;
+                const dataItem = this.dataItem?.[this.resultTabWithKeys.productInfo.name];
+
+                let body_main: any = {
+                  report_download: true,
+                  reports: [],
+                  limit: pharmaPrivilege.ReportLimit,
+                };
+
+                // Push report key if tab available
+                if (this.currentTabData?.name) {
+                  const tabName = this.currentTabData.name;
+                  const reportKey = this.tabNameToReportKey?.[tabName] || tabName;
+                  body_main.reports.push(reportKey);
+                }
+
+                if (body_main.reports.length === 0) {
+                  alert('Please select at least 1 option');
+                  this.handleSetLoading.emit(false);
+                  this.generatePDFloader = false;
+                  return;
+                }
+
+                // Clone CurrentAPIBody and add required flags
+                const pdf_body = {
+                  ...this.CurrentAPIBody,
+                  body: {
+                    ...this.CurrentAPIBody?.body, // preserve existing search fields
+                    reports: [...body_main.reports],
+                    report_download: true,
+                    limit: pharmaPrivilege.ReportLimit,
+                  },
+                };
+
+                console.log('📄 Final PDF Request Body:', pdf_body);
+
+                this.serviceResultTabFiltersService.getGeneratePDF(pdf_body).subscribe({
+                  next: (resp: any) => {
+                    const blob = new Blob([resp.body!], { type: 'application/pdf' });
+                    const contentDisposition = resp.headers.get('content-disposition');
+
+                    // Generate dynamic filename
+                    const timestamp = new Date()
+                      .toISOString()
+                      .split('.')[0]
+                      .replace('T', '_')
+                      .replace(/:/g, '-');
+
+                    let filename = 'basicProductReport_' + timestamp + '.pdf';
+                    if (
+                      searchThrough === searchTypes.chemicalStructure ||
+                      searchThrough === searchTypes.synthesisSearch ||
+                      searchThrough === searchTypes.intermediateSearch
+                    ) {
+                      filename = 'technicalRouteReport_' + timestamp + '.pdf';
+                    }
+
+                    // Override if filename is present in response headers
+                    if (contentDisposition) {
+                      const match = contentDisposition.match(/filename="?([^"]+)"?/);
+                      if (match?.[1]) filename = match[1];
+                    }
+
+                    // Download PDF
+                    const fileURL = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = fileURL;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+
+                    this.generatePDFloader = false;
+                    this.handleSetLoading.emit(false);
+                  },
+                  error: (err: any) => {
+                    this.generatePDFloader = false;
+                    this.handleSetLoading.emit(false);
+                    console.error('Error downloading the PDF', err);
+                  },
+                });
+              }
+            },
+            error: (e) => {
+              this.generatePDFloader = false;
+              this.handleSetLoading.emit(false);
+              console.error('Error getting today\'s privileges:', e);
+            },
+          });
         }
       },
       error: (e) => {
-        this.handleSetLoading.emit(false);
         this.generatePDFloader = false;
-        console.error('Error:', e);
+        this.handleSetLoading.emit(false);
+        console.error('Error getting privileges:', e);
       },
     });
   }
+
 
   onChemicalDirectoryActiveTabChange(tabName: string) {
     this.activeTab = tabName;

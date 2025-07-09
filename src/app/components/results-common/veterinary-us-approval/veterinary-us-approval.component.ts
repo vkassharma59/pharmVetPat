@@ -30,6 +30,7 @@ export class VeterinaryUsApprovalComponent {
    @Input() tabName?: string;
   @Input()
   get data() {
+    console.log('get data called',this._data);
     return this._data;
   }
   set data(value: any) {
@@ -59,6 +60,7 @@ export class VeterinaryUsApprovalComponent {
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
   ngOnInit(): void {
+     console.log('get data called',this._data);
     this.vetenaryusApiBody = { ...this.currentChildAPIBody };
     this.vetenaryusApiBody.filters = this.vetenaryusApiBody.filters || {};
   
@@ -137,6 +139,7 @@ export class VeterinaryUsApprovalComponent {
     this.vetenaryusApiBody.filter_enable = true;
   
     this.mainSearchService.veterinaryusApprovalSearchSpecific(this.vetenaryusApiBody).subscribe({
+ 
       next: (res:any) => {  
         const hcData = res?.data?.health_canada_data || [];
   
@@ -149,7 +152,7 @@ export class VeterinaryUsApprovalComponent {
         console.log('[handleFetchFilters] Parsed activeIngredientFilters:', activeIngredientFilters);
         console.log('[handleFetchFilters] Parsed tradeFilters:', tradeFilters);
         
-  
+
         const formattedtradeFilters = tradeFilters.map((item: any) => {
           const key = Object.keys(item)[0];
           const count = item[key]?.length || 0;
@@ -270,12 +273,14 @@ export class VeterinaryUsApprovalComponent {
     const el = event.currentTarget as HTMLElement;
     const textToCopy = document.getElementById(elementId)?.innerText;
 
+
     if (textToCopy) {
       navigator.clipboard.writeText(textToCopy).then(() => {
         // el is already the <i> element, no need for querySelector
         if (el.classList.contains('fa-copy')) {
           el.classList.remove('fa-copy');
           el.classList.add('fa-check');
+
 
           setTimeout(() => {
             el.classList.remove('fa-check');
@@ -287,5 +292,6 @@ export class VeterinaryUsApprovalComponent {
       });
     }
   }
+
 
 }

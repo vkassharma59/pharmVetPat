@@ -38,8 +38,8 @@ export class ImpComponent {
   _currentChildAPIBody: any;
   impPatentApiBody: any;
   impPatentFilters: any = {};
- @Input() index: any;
-   @Input() tabName?: string;
+  @Input() index: any;
+  @Input() tabName?: string;
   filterConfigs = [
     {
       key: 'product',
@@ -100,19 +100,19 @@ export class ImpComponent {
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
 
-@HostListener('document:mousedown', ['$event'])
- onClickOutside(event: MouseEvent) {
-  const clickedInsideAny = this.dropdownRefs?.some((dropdown: ElementRef) =>
-    dropdown.nativeElement.contains(event.target)
-  );
+  @HostListener('document:mousedown', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const clickedInsideAny = this.dropdownRefs?.some((dropdown: ElementRef) =>
+      dropdown.nativeElement.contains(event.target)
+    );
 
-  if (!clickedInsideAny) {
-    this.filterConfigs = this.filterConfigs.map(config => ({
-      ...config,
-      dropdownState: false
-    }));
+    if (!clickedInsideAny) {
+      this.filterConfigs = this.filterConfigs.map(config => ({
+        ...config,
+        dropdownState: false
+      }));
+    }
   }
-}
 
   onFilterButtonClick(filterKey: string) {
     this.lastClickedFilterKey = filterKey;
@@ -176,7 +176,33 @@ export class ImpComponent {
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     this.handleSetLoading.emit(true);
+    
+  //    if (filterKey === 'order_by') {
+  //   this.impPatentApiBody.order_by = value;
+  // } else {
+  //   if (value === '') {
+  //     delete this.impPatentApiBody.filters[filterKey];
+  //     this.setFilterLabel(filterKey, '');
+  //   } else {
+  //     this.impPatentApiBody.filters[filterKey] = value;
+  //     this.setFilterLabel(filterKey, name || '');
+  //   }
+  // }
+   // Handle `order_by` separately
+  if (filterKey === 'order_by') {
+    // Map display label to backend value
+    let mappedOrderBy = '';
+    if (value === 'Newest') {
+       mappedOrderBy = 'ASC';
+    } else if (value === 'Oldest') {
+       mappedOrderBy = 'DESC';
+    } else {
+      mappedOrderBy = value; // in case future filters have direct values like ASC/DESC
+    }
 
+    this.impPatentApiBody.order_by = mappedOrderBy;
+    this.setFilterLabel(filterKey, name || value);
+  } else {
     if (value === '') {
       delete this.impPatentApiBody.filters[filterKey];
       this.setFilterLabel(filterKey, '');
@@ -184,29 +210,22 @@ export class ImpComponent {
       this.impPatentApiBody.filters[filterKey] = value;
       this.setFilterLabel(filterKey, name || '');
     }
+  }
+
+
 
     this._currentChildAPIBody = {
       ...this.impPatentApiBody,
-      filters: { ...this.impPatentApiBody.filters }
+      filters: { ...this.impPatentApiBody.filters },
+       order_by: this.impPatentApiBody.order_by || ''
     };
+    console.log('📦 API BODY sent =>', this._currentChildAPIBody);
 
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
     this.mainSearchService.impPatentsSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         let resultData = res?.data || {};
-        const sortValue = this.impPatentApiBody.filters['order_by'];
-
-        if (sortValue === 'Newest') {
-          resultData.imp_patent_data = resultData.imp_patent_data?.sort(
-            (a: any, b: any) => new Date(b.APPLICATION_DATE).getTime() - new Date(a.APPLICATION_DATE).getTime()
-          );
-        } else if (sortValue === 'Oldest') {
-          resultData.imp_patent_data = resultData.imp_patent_data?.sort(
-            (a: any, b: any) => new Date(a.APPLICATION_DATE).getTime() - new Date(b.APPLICATION_DATE).getTime()
-          );
-        }
-
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
           count: resultData?.imp_patent_count

@@ -36,7 +36,7 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
   @Input() rowData: any[] = [];
   isExportingCSV: boolean = false;
   isExportingExcel: boolean = false;
-  data?: {
+   data?: {
     data?: any[]; // Replace `any` with your actual data type
   };
   _currentChildAPIBody: any;
