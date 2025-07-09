@@ -41,12 +41,12 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     data?: any[]; // Replace `any` with your actual data type
   };
   isExportingCSV: boolean = false;
-  isExportingCSV: boolean = false;
+ 
   isExportingExcel: boolean = false;
 
   _currentChildAPIBody: any;
   loading = false;
-  loading = false;
+ 
   displayedColumns: string[] = [];
   columnHeaders: { [key: string]: string } = {};
   filterableColumns: string[] = [];
@@ -351,15 +351,6 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
       // Generate header row with Title Case
       const headerRow = this.displayedColumns.map(col => this.toTitleCase(col)).join(',') + '\n';
       let csvContent = headerRow;
-
-  // 3️⃣ Download CSV
-  downloadCSV(): void {
-    this.isExportingCSV = true;
-    this.getAllDataFromApi().subscribe(data => {
-      // Generate header row with Title Case
-      const headerRow = this.displayedColumns.map(col => this.toTitleCase(col)).join(',') + '\n';
-      let csvContent = headerRow;
-
       data.forEach(row => {
         const rowData = this.displayedColumns.map(col => {
           let value = row[col];
@@ -403,12 +394,6 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
         });
         csvContent += rowData.join(',') + '\n';
       });
-
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      saveAs(blob, 'ExportedData.csv');
-      this.isExportingCSV = false;
-    });
-  }
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       saveAs(blob, 'ExportedData.csv');
       this.isExportingCSV = false;
@@ -492,19 +477,12 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     });
   }
 
-
   // ✅ Optional: Capitalize headers
   toTitleCase(str: string): string {
     return str.replace(/_/g, ' ')
       .replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
   }
 
-
-  // ✅ Optional: Capitalize headers
-  toTitleCase(str: string): string {
-    return str.replace(/_/g, ' ')
-      .replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
-  }
 
 }
 

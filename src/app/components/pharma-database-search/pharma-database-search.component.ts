@@ -41,7 +41,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   advanceSearch: any = {
     autosuggestionList: [],
     dateType: '',
-    dateType: '',
     developmentStage: '',
     innovatorOriginator: '',
     devStage: '',
@@ -517,10 +516,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     const mainInput = this.advanceSearch?.filterInputs?.[0];
     return !(mainInput?.filter?.trim() && mainInput?.keyword?.trim());
   }
-  isAdvancedInputDisabled(): boolean {
-    const mainInput = this.advanceSearch?.filterInputs?.[0];
-    return !(mainInput?.filter?.trim() && mainInput?.keyword?.trim());
-  }
 
 
 
@@ -557,32 +552,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     const hasFilledKeyword = filterInputs?.some(input =>
       input.filter?.trim() && input.keyword?.trim()
     );
-    // const hasOtherInput =
-    //   devStage?.trim() !== '' ||
-    //   innovator?.trim() !== '' ||
-    //   (startSales && endSales);
-
-    // if (!hasFilledKeyword && !hasOtherInput) {
-    //   this.priviledgeModal.emit('Please fill at least one field like Filter, Development Stage, Innovator or Sales Range.');
-    //   return;
-    // }
-    // if (!hasFilledKeyword && !hasSimpleKeyword && !startSales && !endSales ) {
-    //   this.priviledgeModal.emit('Please enter at least one search input to continue.');
-    //   return;
-    // }
-    const hasFilledKeyword = filterInputs?.some(input =>
-      input.filter?.trim() && input.keyword?.trim()
-    );
-    // const hasOtherInput =
-    //   devStage?.trim() !== '' ||
-    //   innovator?.trim() !== '' ||
-    //   (startSales && endSales);
-
-    // if (!hasFilledKeyword && !hasOtherInput) {
-    //   this.priviledgeModal.emit('Please fill at least one field like Filter, Development Stage, Innovator or Sales Range.');
-    //   return;
-    // }
-
+  
 
     let todaysLimit: any = '';
     this.setLoadingState.emit(true);
