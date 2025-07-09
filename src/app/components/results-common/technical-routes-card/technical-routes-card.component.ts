@@ -104,6 +104,7 @@ set itemid(value: any) {
     return Object.keys(obj).length === 0;
   }
   ngOnInit() {
+    console.log('TechnicalRoutesCardComponent apiCallCount',this.index);
     this.resultTabs1 = Object.values(this.utilityService.getAllTabsName());
     this.currentTabData = this.resultTabs1.find((tab: any) => tab.isActive);
     this.resultTabWithKeys = this.utilityService.getAllTabsName();
@@ -285,20 +286,20 @@ set itemid(value: any) {
                       switch (searchThrough) {
                       case searchTypes.chemicalStructure:
                       case searchTypes.intermediateSearch:
-                        id = this._itemid[this.resultTabWithKeys.chemicalDirectory.name][0]._id;
+                        id = this._itemid[this.resultTabWithKeys.chemicalDirectory.name][this.index]._id;
                         break;
                       case searchTypes.synthesisSearch:
-                        id = this._itemid[this.resultTabWithKeys.technicalRoutes.name]?.ros_data?.[0]._id;
+                        id = this._itemid[this.resultTabWithKeys.technicalRoutes.name]?.ros_data?.[this.index]._id;
                         break;
                       case searchTypes.simpleSearch:
                       case searchTypes.advanceSearch:
-                        id = this._itemid[this.resultTabWithKeys.productInfo.name][0]._id;
+                        id = this._itemid[this.resultTabWithKeys.productInfo.name][this.index]._id;
                         break;
                       default:
-                        id = this._itemid[this.resultTabWithKeys.productInfo.name][0]._id;
-                        console.log('No search type selected');
-                    }
+                        id = this._itemid[this.resultTabWithKeys.productInfo.name][this.index]._id;
 
+                    }
+ console.log('No search type selected',this.index);
                     console.log('id', id);
                     let body_main: any = {
                       id: id,
@@ -443,5 +444,3 @@ set itemid(value: any) {
     });
   }
 }
-
-

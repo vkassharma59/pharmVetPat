@@ -312,6 +312,7 @@ export class SearchResultsComponent {
           this.setLoadingState.emit(false);
         }
         this.performactivePatentSearch(resultTabData);
+        this.performactivePatentSearch(resultTabData);
         break;
       case this.resultTabs?.nonPatentLandscape.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.nonPatentLandscape.name]).length === 0) {
@@ -1088,6 +1089,9 @@ export class SearchResultsComponent {
       // filter_enable: false,
       // filters: {},
       // order_by: '',
+      // filter_enable: false,
+      // filters: {},
+      // order_by: '',
       index: resultTabData.index
     }
 
@@ -1099,9 +1103,14 @@ export class SearchResultsComponent {
 
         this.mainSearchService.veterinaryusApprovalSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.veterinaryUsApproval.name]).subscribe({
           next: (result: any) => {
+         
             this.childApiBody[resultTabData.index][this.resultTabs.veterinaryUsApproval.name].count = result?.data?.green_book_us_count;
-            this.allDataSets[resultTabData.index][this.resultTabs.veterinaryUsApproval] = result?.data?.green_book_us_data;
+            this.allDataSets[resultTabData.index][this.resultTabs.veterinaryUsApproval.name] = result?.data?.green_book_us_data;
+ 
+
             console.log('main search:', result?.data?.green_book_us_data);
+
+ 
             this.setLoadingState.emit(false);
             this.loadingService.setLoading(this.resultTabs.veterinaryUsApproval.name, resultTabData.index, false);
           },
@@ -1721,6 +1730,9 @@ export class SearchResultsComponent {
         }
         break;
       case this.resultTabs?.canadaApproval.name:
+        console.log('✅ Canada tab data received:', data);
+        console.log('✅ health_canada_data:', data?.health_canada_data);
+        console.log('✅ health_canada_count:', data?.health_canada_count);
         if (data?.health_canada_data.length > 0) {
           this.childApiBody[index][this.resultTabs?.canadaApproval.name].count = data?.health_canada_count;
           if (!this.allDataSets[index]) {

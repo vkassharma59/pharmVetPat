@@ -142,57 +142,39 @@ onFilterButtonClick(filterKey: string) {
 }
 
 handleFetchFilters() {
-  console.log('[handleFetchFilters] Invoked');
-
   this.usApiBody.filter_enable = true;
-  console.log('[handleFetchFilters] Set filter_enable to true in API body:', JSON.stringify(this.usApiBody, null, 2));
+  
 
   this.mainSearchService.canadaApprovalSearchSpecific(this.usApiBody).subscribe({
-    next: (res) => {
-      console.log('[handleFetchFilters] API call success. Raw response:', res);
-      console.log('[handleFetchFilters] res.status:', res?.status);
-      console.log('[handleFetchFilters] res.message:', res?.message);
-      console.log('[handleFetchFilters] res.data keys:', Object.keys(res?.data || {}));
-      console.log('[handleFetchFilters] res.data:', JSON.stringify(res?.data, null, 2));
+    next: (res: any) => {
+      const hcData = res?.data?.health_canada_data || [];
 
-      const productFilters = res?.data?.product_name || [];
-      const strengthFilters = res?.data?.strength || [];
-      const rawCompanyFilters = res?.data?.company || [];
-      const dosageFilters = res?.data?.dosage_forms || [];
+      const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
 
-      console.log('[handleFetchFilters] Parsed productFilters:', productFilters);
-      console.log('[handleFetchFilters] Parsed strengthFilters:', strengthFilters);
-      console.log('[handleFetchFilters] Parsed rawCompanyFilters:', rawCompanyFilters);
-      console.log('[handleFetchFilters] Parsed dosageFilters:', dosageFilters);
-
-      const formattedCompanyFilters = rawCompanyFilters.map((item: any) => {
-        const key = Object.keys(item)[0];
-        const count = item[key]?.length || 0;
-        const obj = {
-          name: `${key} (${count})`,
-          value: key
-        };
-        console.log('[handleFetchFilters] Processed company item:', item, '=>', obj);
-        return obj;
-      });
-      
+      const productFilters = getUnique(hcData.map(item => item.product_name));
+      const strengthFilters = getUnique(hcData.map(item => item.strength));
+      const companyFiltersRaw = getUnique(hcData.map(item => item.company));
+      const dosageFilters = getUnique(hcData.map(item => item.dosage_forms));
+      console.log("23425435647d",dosageFilters)
+      console.log("-------s------",strengthFilters)
+      console.log("-------c------",companyFiltersRaw)
+      console.log("-------p------",productFilters)
 
       this.usFilters = {
         productFilters,
         strengthFilters,
-        CompanyFilters: formattedCompanyFilters,
+        CompanyFilters: companyFiltersRaw.map(name => ({ name, value: name })),
         DosageFilters: dosageFilters
       };
 
-      console.log('[handleFetchFilters] Final usFilters object:', this.usFilters);
-
       this.usApiBody.filter_enable = false;
-      console.log('[handleFetchFilters] Reset filter_enable to false');
+      
+      
     },
     error: (err) => {
-      console.error('[handleFetchFilters] API call failed:', err);
+      console.error('Error fetching Health Canada filters:', err);
       this.usApiBody.filter_enable = false;
-      console.log('[handleFetchFilters] Reset filter_enable to false (on error)');
+
     }
   });
 }

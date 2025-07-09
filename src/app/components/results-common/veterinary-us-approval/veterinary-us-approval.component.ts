@@ -30,6 +30,7 @@ export class VeterinaryUsApprovalComponent {
    @Input() tabName?: string;
   @Input()
   get data() {
+    console.log('get data called',this._data);
     return this._data;
   }
   set data(value: any) {
@@ -59,6 +60,7 @@ export class VeterinaryUsApprovalComponent {
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
   ngOnInit(): void {
+     console.log('get data called',this._data);
     this.vetenaryusApiBody = { ...this.currentChildAPIBody };
     this.vetenaryusApiBody.filters = this.vetenaryusApiBody.filters || {};
   
@@ -134,29 +136,23 @@ export class VeterinaryUsApprovalComponent {
   }
 
   handleFetchFilters() {
-    console.log('[handleFetchFilters] Invoked');
-  
     this.vetenaryusApiBody.filter_enable = true;
-    console.log('[handleFetchFilters] Set filter_enable to true in API body:', JSON.stringify(this.vetenaryusApiBody, null, 2));
   
     this.mainSearchService.veterinaryusApprovalSearchSpecific(this.vetenaryusApiBody).subscribe({
-      next: (res) => {
-        console.log('[handleFetchFilters] API call success. Raw response:', res);
-        console.log('[handleFetchFilters] res.status:', res?.status);
-        console.log('[handleFetchFilters] res.message:', res?.message);
-        console.log('[handleFetchFilters] res.data keys:', Object.keys(res?.data || {}));
-        console.log('[handleFetchFilters] res.data:', JSON.stringify(res?.data, null, 2));
+ 
+      next: (res:any) => {  
+        const hcData = res?.data?.health_canada_data || [];
   
-        const ingredientFilters = res?.data?.ingredient || [];
-        const strengthFilters = res?.data?.strength || [];
-        const tradeFilters = res?.data?.trade_name || [];
-        const dosageFilters = res?.data?.active_ingredients || [];
+        const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
+        const ingredientFilters = getUnique(hcData.map(item => item.ingredient));
+        const tradeFilters = getUnique(hcData.map(item => item.trade_name));
+        const activeIngredientFilters = getUnique(hcData.map(item => item.active_ingredients));
   
         console.log('[handleFetchFilters] Parsed ingredientFilters:', ingredientFilters);
-        console.log('[handleFetchFilters] Parsed strengthFilters:', strengthFilters);
-        console.log('[handleFetchFilters] Parsed rawradeFilters:', tradeFilters);
-        console.log('[handleFetchFilters] Parsed dosageFilters:', dosageFilters);
-  
+        console.log('[handleFetchFilters] Parsed activeIngredientFilters:', activeIngredientFilters);
+        console.log('[handleFetchFilters] Parsed tradeFilters:', tradeFilters);
+        
+
         const formattedtradeFilters = tradeFilters.map((item: any) => {
           const key = Object.keys(item)[0];
           const count = item[key]?.length || 0;
@@ -171,9 +167,8 @@ export class VeterinaryUsApprovalComponent {
   
         this.vetenaryusFilters = {
           ingredientFilters,
-          strengthFilters,
+          activeIngredientFilters,
           tradeFilters: formattedtradeFilters,
-          DosageFilters: dosageFilters
         };
   
         console.log('[handleFetchFilters] Final vetenaryusFilters object:', this.vetenaryusFilters);
@@ -215,7 +210,7 @@ export class VeterinaryUsApprovalComponent {
         let resultData = res?.data || {};
         const sortValue = this.vetenaryusApiBody.filters['order_by'];
 
-        resultData.health_canada_data = this.sortPatentData(resultData.health_canada_data, sortValue);
+       
 
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
@@ -234,21 +229,7 @@ export class VeterinaryUsApprovalComponent {
     });
   }
 
-  sortPatentData(data: any[], order: string): any[] {
-    if (!Array.isArray(data)) return [];
-
-    if (order === 'Newest') {
-      return data.sort((a, b) =>
-        new Date(b.APPLICATION_DATE).getTime() - new Date(a.APPLICATION_DATE).getTime()
-      );
-    } else if (order === 'Oldest') {
-      return data.sort((a, b) =>
-        new Date(a.APPLICATION_DATE).getTime() - new Date(b.APPLICATION_DATE).getTime()
-      );
-    }
-
-    return data;
-  }
+ 
 
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
@@ -292,12 +273,14 @@ export class VeterinaryUsApprovalComponent {
     const el = event.currentTarget as HTMLElement;
     const textToCopy = document.getElementById(elementId)?.innerText;
 
+
     if (textToCopy) {
       navigator.clipboard.writeText(textToCopy).then(() => {
         // el is already the <i> element, no need for querySelector
         if (el.classList.contains('fa-copy')) {
           el.classList.remove('fa-copy');
           el.classList.add('fa-check');
+
 
           setTimeout(() => {
             el.classList.remove('fa-check');
@@ -309,5 +292,6 @@ export class VeterinaryUsApprovalComponent {
       });
     }
   }
+
 
 }
