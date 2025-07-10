@@ -1,11 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { UtilityService } from '../../../services/utility-service/utility.service';
-import { HttpClient } from '@angular/common/http';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Auth_operations } from '../../../Utils/SetToken';
-import { environment } from '../../../../environments/environment';
-import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
+import { UtilityService } from '../services/utility-service/utility.service';
+import { Auth_operations } from '../Utils/SetToken';
+import { environment } from '../../environments/environment';
+import { ImageModalComponent } from '../commons/image-modal/image-modal.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
