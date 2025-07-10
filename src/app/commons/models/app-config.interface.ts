@@ -30,6 +30,10 @@ export interface AppConfig {
       searchSpecific: string;
       reportData: string;
     };
+    dmf: {
+      searchSpecific: string;
+      columnList: string;
+    };
     chemicalDirectory: {
       filterColumns: string;
       searchSpecific: string;

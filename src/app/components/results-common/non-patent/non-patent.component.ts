@@ -3,7 +3,10 @@ import {
   EventEmitter,
   Input,
   Output,
-  OnChanges
+  OnChanges,
+  HostListener,
+  ElementRef,
+  ViewChildren,QueryList
 } from '@angular/core';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { CommonModule } from '@angular/common';
@@ -11,11 +14,12 @@ import { MainSearchService } from '../../../services/main-search/main-search.ser
 import { ChildPagningTableComponent } from '../../../commons/child-pagning-table/child-pagning-table.component';
 import { NonPatentCardComponent } from '../non-patent-card/non-patent-card.component';
 import { LoadingService } from '../../../services/loading-service/loading.service';
+import { TruncatePipe } from '../../../pipes/truncate.pipe';
 
 @Component({
   selector: 'app-non-patent',
   standalone: true,
-  imports: [ChildPagningTableComponent, CommonModule, NonPatentCardComponent],
+  imports: [ChildPagningTableComponent, CommonModule, NonPatentCardComponent,TruncatePipe],
   templateUrl: './non-patent.component.html',
   styleUrl: './non-patent.component.css'
 })
@@ -32,7 +36,7 @@ export class NonPatentComponent implements OnChanges {
   get pageSize(): number {
     return this._currentChildAPIBody?.length || 25;
   }
-
+  @ViewChildren('dropdownRef') dropdownRefs!: QueryList<ElementRef>;
   @Input() index: any;
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
@@ -68,7 +72,15 @@ export class NonPatentComponent implements OnChanges {
     console.log('scientificDocs received data:', this._data);
     this.handleResultTabData.emit(this._data);
   }
-
+  ngOnInit(): void {
+    console.log('get data called',this._data);
+   this.nonPatentApiBody = { ...this.currentChildAPIBody };
+   this.nonPatentApiBody.filters = this.nonPatentApiBody.filters || {};
+ 
+   console.log('[ngOnInit] Initial vetenaryusApiBody:', JSON.stringify(this.nonPatentApiBody, null, 2));
+ 
+   this.handleFetchFilters();
+ }
   onDataFetchRequest(payload: any) {
     this.isFilterApplied = !!(payload?.search || payload?.columns);
     // Remove stale filters from _currentChildAPIBody if they are not in payload
@@ -106,6 +118,182 @@ export class NonPatentComponent implements OnChanges {
       }
     });
   }
+  nonPatentApiBody: any;
+  nonPatentFilters: any = {};
+  lastClickedFilterKey: string | null = null;
+
+  filterConfigs = [
+    {
+      key: 'order',
+      label: 'Order By',
+      dataKey: 'order',
+      filterType: 'order',
+      dropdownState: false
+    },
+    {
+      key: 'concepts',
+      label: 'View All Non Patent Concepts',
+      dataKey: 'conceptFilters',
+      filterType: 'concepts',
+      dropdownState: false
+    }
+  ];
+
+  @HostListener('document:mousedown', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const clickedInsideAny = this.dropdownRefs?.some((dropdown: ElementRef) =>
+      dropdown.nativeElement.contains(event.target)
+    );
+
+    if (!clickedInsideAny) {
+      this.filterConfigs = this.filterConfigs.map(config => ({
+        ...config,
+        dropdownState: false
+      }));
+    }
+  }
+
+  setFilterLabel(filterKey: string, label: string) {
+    this.filterConfigs = this.filterConfigs.map((item) => {
+      if (item.key === filterKey) {
+        if (label === '') {
+          switch (filterKey) {
+            case 'order': label = 'Order By'; break;
+            case 'concepts': label = 'Concept Filter'; break;
+          }
+        }
+        return { ...item, label: label };
+      }
+      return item;
+    });
+  }
+
+  onFilterButtonClick(filterKey: string) {
+    this.lastClickedFilterKey = filterKey;
+    this.filterConfigs = this.filterConfigs.map((item) => ({
+      ...item,
+      dropdownState: item.key === filterKey ? !item.dropdownState : false
+    }));
+  }
+
+  handleFetchFilters() {
+    console.log('[handleFetchFilters] Starting to fetch Non-Patent filters...');
+    this.nonPatentApiBody.filter_enable = true;
+  
+    this.mainSearchService.NonPatentSearchSpecific(this.nonPatentApiBody).subscribe({
+      next: (res: any) => {
+        const hcData = res?.data?.green_book_us_data || [];
+        console.log('[handleFetchFilters] Extracted green_book_us_data:', hcData);
+  
+        const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
+  
+        const order = ['Latest First', 'Oldest First'];
+  
+        // Handling concepts as comma-separated values
+        const conceptFilters = getUnique(
+          hcData
+            .flatMap(item => item.concepts ? item.concepts.split(',').map(c => c.trim()) : [])
+            .filter(Boolean)
+        );
+  
+        console.log('[handleFetchFilters] Unique concept filters:', conceptFilters);
+  
+        this.nonPatentFilters = {
+          order,
+          conceptFilters
+        };
+  
+        this.nonPatentApiBody.filter_enable = false;
+      },
+      error: (err) => {
+        console.error('[handleFetchFilters] API call failed:', err);
+        this.nonPatentApiBody.filter_enable = false;
+      }
+    });
+  }
+  
+  
+
+  handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    this.handleSetLoading.emit(true);
+    this.nonPatentApiBody.filters = this.nonPatentApiBody.filters || {};
+
+    if (value === '') {
+      delete this.nonPatentApiBody.filters[filterKey];
+      this.setFilterLabel(filterKey, '');
+    } else {
+      this.nonPatentApiBody.filters[filterKey] = value;
+      this.setFilterLabel(filterKey, name || '');
+    }
+
+    // Close dropdown
+    this.filterConfigs = this.filterConfigs.map((item) => ({
+      ...item,
+      dropdownState: item.key === filterKey ? false : item.dropdownState
+    }));
+
+    this._currentChildAPIBody = {
+      ...this.nonPatentApiBody,
+      filters: { ...this.nonPatentApiBody.filters }
+    };
+
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    this.mainSearchService.NonPatentSearchSpecific(this._currentChildAPIBody).subscribe({
+      next: (res) => {
+        const resultData = res?.data || {};
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          count: resultData?.green_book_us_count
+        };
+        this.handleResultTabData.emit(resultData);
+        this.handleSetLoading.emit(false);
+        window.scrollTo(0, scrollTop);
+      },
+      error: () => {
+        this._currentChildAPIBody.filter_enable = false;
+        this.handleSetLoading.emit(false);
+        window.scrollTo(0, scrollTop);
+      }
+    });
+  }
+
+  clear() {
+    this.filterConfigs = this.filterConfigs.map(config => {
+      let defaultLabel = '';
+      switch (config.key) {
+        case 'order': defaultLabel = 'Order By'; break;
+        case 'concepts': defaultLabel = 'Concept Filter'; break;
+      }
+      return { ...config, label: defaultLabel, dropdownState: false };
+    });
+
+    this.nonPatentApiBody.filters = {};
+    this._currentChildAPIBody = {
+      ...this.nonPatentApiBody,
+      filters: {}
+    };
+
+    this.handleSetLoading.emit(true);
+    this.mainSearchService.NonPatentSearchSpecific(this._currentChildAPIBody).subscribe({
+      next: (res) => {
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          count: res?.data?.green_book_us_count
+        };
+        this.handleResultTabData.emit(res.data);
+        this.handleSetLoading.emit(false);
+      },
+      error: (err) => {
+        console.error(err);
+        this._currentChildAPIBody.filter_enable = false;
+        this.handleSetLoading.emit(false);
+      }
+    });
+
+    window.scrollTo(0, 0);
+  }
+
 
 
 }
