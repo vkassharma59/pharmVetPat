@@ -533,6 +533,15 @@
     align-items: center;
     flex-direction: column;
 }
+/* styles.css */
+.custom-image-modal .mat-dialog-container {
+  margin-top: 50px !important;
+  border-radius: 8px;
+  padding: 0;
+  background-color: white; /* or transparent if needed */
+  box-shadow: none;
+}
+
 .dis-flex-4 {
     display: flex;
     justify-content: start;
