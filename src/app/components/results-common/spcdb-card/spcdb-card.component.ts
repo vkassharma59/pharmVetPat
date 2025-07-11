@@ -112,10 +112,18 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       this.noMatchingData = this.rowData.length === 0;
     }
   }
+  onFlagError(event: any) {
+    event.target.src = 'assets/images/flag.png';
+  }
   isISODate(value: any): boolean {
-  // Checks if value is a valid ISO datetime string
-  return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value);
+  if (typeof value !== 'string') return false;
+
+  // ISO format flexible pattern (with optional milliseconds/timezone)
+  const isoPattern = /^\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
+
+  return isoPattern.test(value) && !isNaN(Date.parse(value.replace(' ', 'T')));
 }
+
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -123,7 +131,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
 
     this.cdr.detectChanges();
   }
- getCountryUrl(value: any) {
+  getCountryUrl(value: any) {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country}.png`;
   }
   scrollTable(direction: 'left' | 'right'): void {
@@ -345,7 +353,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
   //   return str.replace(/_/g, ' ')
   //     .replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
   // }
-    // 3️⃣ Download CSV
+  // 3️⃣ Download CSV
   downloadCSV(): void {
     this.isExportingCSV = true;
     this.getAllDataFromApi().subscribe(data => {
@@ -356,44 +364,44 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       data.forEach(row => {
         const rowData = this.displayedColumns.map(col => {
           let value = row[col];
-      data.forEach(row => {
-        const rowData = this.displayedColumns.map(col => {
-          let value = row[col];
+          data.forEach(row => {
+            const rowData = this.displayedColumns.map(col => {
+              let value = row[col];
 
-          // Apply same formatting as Excel export
-          if (Array.isArray(value)) {
-            value = value.join(', ');
-          } else if (typeof value === 'object' && value !== null) {
-            value = JSON.stringify(value);
-          } else if (value === null || value === undefined) {
-            value = '';
-          }
-          // Apply same formatting as Excel export
-          if (Array.isArray(value)) {
-            value = value.join(', ');
-          } else if (typeof value === 'object' && value !== null) {
-            value = JSON.stringify(value);
-          } else if (value === null || value === undefined) {
-            value = '';
-          }
+              // Apply same formatting as Excel export
+              if (Array.isArray(value)) {
+                value = value.join(', ');
+              } else if (typeof value === 'object' && value !== null) {
+                value = JSON.stringify(value);
+              } else if (value === null || value === undefined) {
+                value = '';
+              }
+              // Apply same formatting as Excel export
+              if (Array.isArray(value)) {
+                value = value.join(', ');
+              } else if (typeof value === 'object' && value !== null) {
+                value = JSON.stringify(value);
+              } else if (value === null || value === undefined) {
+                value = '';
+              }
 
-          // Escape quotes and commas for CSV
-          let cell = String(value).replace(/"/g, '""');
-          if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
-            cell = `"${cell}"`;
-          }
-          return cell;
+              // Escape quotes and commas for CSV
+              let cell = String(value).replace(/"/g, '""');
+              if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
+                cell = `"${cell}"`;
+              }
+              return cell;
+            });
+            // Escape quotes and commas for CSV
+            let cell = String(value).replace(/"/g, '""');
+            if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
+              cell = `"${cell}"`;
+            }
+            return cell;
+          });
+
+          csvContent += rowData.join(',') + '\n';
         });
-          // Escape quotes and commas for CSV
-          let cell = String(value).replace(/"/g, '""');
-          if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
-            cell = `"${cell}"`;
-          }
-          return cell;
-        });
-
-        csvContent += rowData.join(',') + '\n';
-      });
         csvContent += rowData.join(',') + '\n';
       });
 

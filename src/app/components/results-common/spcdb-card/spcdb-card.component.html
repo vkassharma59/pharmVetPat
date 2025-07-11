@@ -117,37 +117,37 @@
               </ng-container>
             </td> -->
             <td mat-cell *matCellDef="let element">
-  <ng-container [ngSwitch]="column.value">
-    
-    <!-- Flag column -->
-    <img *ngSwitchCase="'flag'" [src]="element[column.value]" alt="flag" class="flag-img" />
+              <ng-container [ngSwitch]="column.value">
 
-    <!-- Default dynamic check for ISO Date -->
-    <ng-container *ngSwitchDefault>
-      <span *ngIf="isISODate(element[column.value]); else normalCell">
-        {{ element[column.value] | date:'yyyy-MM-dd' }}
-      </span>
+                <!-- Flag column -->
+                <img *ngSwitchCase="'flag'" [src]="element[column.value]" alt="flag" class="flag-img" />
 
-      <!-- Fallback if not date -->
-      <ng-template #normalCell>
-        <span [style.width.px]="150" class="fixed-cell" style="display:block;">
-          <div class="scrollable-text" *ngIf="column.value === 'country'; else defaultCell"
-               style="display: flex; align-items: center;">
-            {{ element[column.value] }}
-            <img *ngIf="element[column.value]" [src]="getCountryUrl(element)" alt="flag" width="20" height="15"
-                 style="margin-left: 6px;" />
-          </div>
-          <ng-template #defaultCell>
-            <div class="scrollable-text">
-              {{ element[column.value] }}
-            </div>
-          </ng-template>
-        </span>
-      </ng-template>
-    </ng-container>
+                <!-- Default dynamic check for ISO Date -->
+                <ng-container *ngSwitchDefault>
+                  <span *ngIf="isISODate(element[column.value]); else normalCell">
+                    {{ element[column.value] | date:'yyyy-MM-dd' }}
+                  </span>
 
-  </ng-container>
-</td>
+                  <!-- Fallback if not date -->
+                  <ng-template #normalCell>
+                    <span [style.width.px]="150" class="fixed-cell" style="display:block;">
+                      <div class="scrollable-text" *ngIf="column.value === 'country'; else defaultCell"
+                        style="display: flex; align-items: center;">
+                        {{ element[column.value] }}
+                        <img *ngIf="element[column.value]" [src]="getCountryUrl(element)" alt="flag" width="20"
+                          height="15" style="margin-left: 6px;" (error)="onFlagError($event)"/>
+                      </div>
+                      <ng-template #defaultCell>
+                        <div style="word-break:break-word;width:150" class="scrollable-text">
+                          {{ element[column.value] }}
+                        </div>
+                      </ng-template>
+                    </span>
+                  </ng-template>
+                </ng-container>
+
+              </ng-container>
+            </td>
 
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="displayedColumns" style="background-color: #def1ff;"></tr>
@@ -163,4 +163,3 @@
   </div>
 </div>
 
-<!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
