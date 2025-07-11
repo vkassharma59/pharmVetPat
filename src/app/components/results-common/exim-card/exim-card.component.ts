@@ -36,7 +36,7 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
   @Input() rowData: any[] = [];
   isExportingCSV: boolean = false;
   isExportingExcel: boolean = false;
-   data?: {
+  data?: {
     data?: any[]; // Replace `any` with your actual data type
   };
   _currentChildAPIBody: any;
@@ -175,9 +175,7 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
     this.multiSortOrder.push({ column: index, dir: newDir });
     this.fetchData();
   }
-  onFlagError(event: any) {
-  event.target.src = 'assets/images/flag.png';
-}
+
   getCountryUrl(value: any) {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.COUNTRY_OF_ORIGIN}.png`;
   }
@@ -251,6 +249,18 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
       this.noMatchingData = currentData.length === 0;
     }, 300);
   }
+  onFlagError(event: any) {
+    event.target.src = 'assets/images/flag.png';
+  }
+isISODate(value: any): boolean {
+  if (typeof value !== 'string') return false;
+
+  // ISO format flexible pattern (with optional milliseconds/timezone)
+  const isoPattern = /^\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
+
+  return isoPattern.test(value) && !isNaN(Date.parse(value.replace(' ', 'T')));
+}
+
 
   resetToDefault() {
     this.multiSortOrder = [];
