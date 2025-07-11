@@ -8,6 +8,7 @@ const RESULT_TABS = [
   { name: 'productInfo', label: 'Product Info', isActive: true },
   { name: 'impPatents', label: 'IMP Patents', isActive: false },
   { name: 'technicalRoutes', label: 'Technical Routes', isActive: false },
+  { name: 'dmf', label: 'DMF or Suppliers', isActive: false },
   { name: 'chemiTracker', label: 'ChemiTracker', isActive: false },
   { name: 'chemicalDirectory', label: 'Chemical Directory (Building Block)', isActive: false },
   { name: 'impurity', label: 'Impurity', isActive: false },
@@ -25,6 +26,7 @@ const RESULT_TABS = [
   { name: 'scientificDocs', label: 'Scientific Docs', isActive: false },
   { name: 'spcDb', label: 'SPC DB', isActive: false },
   { name: 'eximData', label: 'EXIM Data', isActive: false }
+  
 ];
 
 @Injectable({

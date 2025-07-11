@@ -269,7 +269,17 @@ export class MainSearchService {
       .get(this.apiUrls.eximData.columnList, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
-
+  dmfSearchSpecific(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.dmf.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
+  getdmfColumnList(): Observable<any> {
+    return this.http
+      .get(this.apiUrls.dmf.columnList, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     if (error.error instanceof ErrorEvent) {
