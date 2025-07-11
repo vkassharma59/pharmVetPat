@@ -439,7 +439,7 @@ set itemid(value: any) {
     this.dialog.open(ImageModalComponent, {
       width: 'auto',
       height: 'auto',
-      panelClass: 'full-screen-modal',
+      panelClass: 'custom-image-modal',
       data: { dataImage: imageUrl },
     });
   }

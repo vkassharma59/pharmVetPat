@@ -111,8 +111,8 @@ export class ChemiTrackerCardComponent implements OnDestroy {
 
   openImageModal(imageUrl: string): void {
     this.dialog.open(ImageModalComponent, {
-      width: 'calc(100vw - 5vw)',
-      height: '700px',
+       width: 'auto',
+      height: 'auto',
       panelClass: 'full-screen-modal',
       data: { dataImage: imageUrl },
     });
