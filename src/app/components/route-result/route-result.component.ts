@@ -30,7 +30,7 @@ import { GppdDbComponent } from '../results-common/gppd-db/gppd-db.component';
 import { NonPatentComponent } from '../results-common/non-patent/non-patent.component';
 import { MainSearchService } from '../../services/main-search/main-search.service';
 import { VeterinaryUsApprovalComponent } from "../results-common/veterinary-us-approval/veterinary-us-approval.component";
-
+import { DmfComponent } from '../../dmf/dmf.component';
 @Component({
   selector: 'chem-route-results',
   standalone: true,
@@ -38,7 +38,7 @@ import { VeterinaryUsApprovalComponent } from "../results-common/veterinary-us-a
     ImpurityComponent, ChemiTrackerComponent, ImpComponent, IndianComponent, ChemicalDirectoryComponent,
     JapanComponent, CanadaComponent, EuropeApprovalComponent, KoreaComponent, LitigationComponent,
     UsComponent, SpcdbComponent, EximComponent, RouteTabsComponent, ActivePatentComponent,
-    NgSwitch, NgSwitchCase, NgSwitchDefault, ScientificDocsComponent, GppdDbComponent, NonPatentComponent, VeterinaryUsApprovalComponent],
+    NgSwitch, NgSwitchCase, NgSwitchDefault, ScientificDocsComponent, GppdDbComponent, NonPatentComponent, VeterinaryUsApprovalComponent,DmfComponent],
   templateUrl: './route-result.component.html',
   styleUrl: './route-result.component.css'
 })
@@ -86,7 +86,7 @@ export class RouteResultComponent {
 
   @Input()
   get dataItem() {
-    console.log("dataItem---hkjh", this._dataItem);
+    console.log("dataItem---hkjh", this._dataItem.dmf);
     return this._dataItem;
   }
   set dataItem(value: any) {
@@ -112,6 +112,8 @@ export class RouteResultComponent {
   }
 
   ngOnInit() {
+    console.log("_dataItem h_dataItem.dmf", this._dataItem.dmf)
+
     this.resultTabs = Object.values(this.utilityService.getAllTabsName());
     this.currentTabData = this.resultTabs.find((tab: any) => tab.isActive);
     //
@@ -121,7 +123,7 @@ export class RouteResultComponent {
     this.resultTabs.forEach(tab => {
       this.SingleDownloadCheckbox[tab.name] = false;
     });
-    console.log("_dataItem searchThrough", this.CurrentAPIBody?.currentTab === this.resultTabWithKeys.technicalRoutes.name,)
+    console.log("_dataItem h_dataItem.dmf", this._dataItem.dmf)
 
     //
     const Account_type = localStorage.getItem('account_type');

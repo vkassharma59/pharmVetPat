@@ -118,10 +118,14 @@ export class ImpurityCardComponent implements OnInit, OnDestroy {
 }
   openImageModal(imageUrl: string): void {
     this.dialog.open(ImageModalComponent, {
-      width: 'calc(100vw - 5vw)',
-      height: '700px',
+      // width: 'calc(100vw - 5vw)',
+      // height: '700px',
+       width: 'auto',
+      height: 'auto',
       panelClass: 'full-screen-modal',
       data: { dataImage: imageUrl },
     });
   }
 }
+
+

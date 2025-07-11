@@ -1,28 +1,19 @@
-import {
-  Component, EventEmitter, Input, Output, ViewChildren,
-  QueryList,
-  ElementRef, HostListener
-} from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { UtilityService } from '../../../services/utility-service/utility.service';
-import { Auth_operations } from '../../../Utils/SetToken';
-import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output, QueryList, ViewChildren } from '@angular/core';
+import { LoadingService } from '../services/loading-service/loading.service';
+import { MainSearchService } from '../services/main-search/main-search.service';
+import { Auth_operations } from '../Utils/SetToken';
+import { TruncatePipe } from '../pipes/truncate.pipe';
 import { CommonModule } from '@angular/common';
-import { environment } from '../../../../environments/environment';
-import { UsApprovalCardComponent } from '../us-approval-card/us-approval-card.component';
-import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
-import { LoadingService } from '../../../services/loading-service/loading.service';
-import { MainSearchService } from '../../../services/main-search/main-search.service';
-import { TruncatePipe } from '../../../pipes/truncate.pipe';
-
+import { DmfCardComponent } from '../dmf-card/dmf-card.component';
+import { UtilityService } from '../services/utility-service/utility.service';
 @Component({
-  selector: 'chem-us',
+  selector: 'app-dmf',
   standalone: true,
-  imports: [CommonModule, UsApprovalCardComponent, ChildPagingComponent, TruncatePipe],
-  templateUrl: './us.component.html',
-  styleUrl: './us.component.css'
+  imports: [CommonModule,TruncatePipe,DmfCardComponent],
+  templateUrl: './dmf.component.html',
+  styleUrl: './dmf.component.css'
 })
-export class UsComponent {
+export class DmfComponent {
   @ViewChildren('dropdownRef') dropdownRefs!: QueryList<ElementRef>;
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
@@ -32,25 +23,24 @@ export class UsComponent {
   _data: any = [];
   @Input()
   get data() {
-    console.log("hfkjhf", this.data);
+    
     return this._data;
   }
   set data(name: any) {
+   
     this._data = name;
-    console.log("hfngefenhdd", this._data)
     this.handleResultTabData.emit(this._data);
   }
   @Input()
   get currentChildAPIBody() {
+    
     return this._currentChildAPIBody;
   }
   set currentChildAPIBody(value: any) {
+  
     this._currentChildAPIBody = value;
-    // if (value) {
-    //   this.ImpurityBody = JSON.parse(JSON.stringify(this._currentChildAPIBody)) || this._currentChildAPIBody;
-    //   this.handleFetchFilters();
-    // }
   }
+
   @Input() index: any;
   @Input() tabName?: string;
   usApiBody: any;
@@ -113,29 +103,27 @@ export class UsComponent {
   patentData: any[] = [];    // Data from @Input() data
 
   ngOnChanges() {
-    console.log('incoming _data', this._data);
-    console.log('currentChildAPIBody', this._currentChildAPIBody);
-
-    // Fix 1: Wrap _data in array if it's not one already
+    
     if (this._data && !Array.isArray(this._data)) {
       this.patentData = [this._data];
-      console.log('✅ Wrapped object in array:', this.patentData);
+     
     } else if (Array.isArray(this._data)) {
       this.patentData = this._data;
-      console.log('✅ patentData is array:', this.patentData);
+      
     } else {
-      console.warn('⚠️ patentData is missing or not valid');
+      console.warn("⚠️ No valid _data received");
     }
 
-    // Fix 2: Handle column definitions
     if (this.currentChildAPIBody?.columnList?.patentColumnList?.length) {
       this.patentColumns = this.currentChildAPIBody.columnList.patentColumnList;
-      console.log('✅ patentColumns set:', this.patentColumns);
+     
     } else {
-      console.warn('⚠️ patentColumns not available from currentChildAPIBody');
+      console.warn("⚠️ No column list found in currentChildAPIBody");
     }
   }
+
   onFilterButtonClick(filterKey: string) {
+  
     this.lastClickedFilterKey = filterKey;
     this.filterConfigs = this.filterConfigs.map((item) => ({
       ...item,
@@ -144,49 +132,34 @@ export class UsComponent {
   }
 
   handleFetchFilters() {
+    
     this.usApiBody.filter_enable = true;
-  
-    this.mainSearchService.usApprovalSearchSpecific(this.usApiBody).subscribe({
+
+    this.mainSearchService.dmfSearchSpecific(this.usApiBody).subscribe({
       next: (res: any) => {
         const hcData = res?.data?.orange_book_us_data || [];
-        console.log("✅ Full hcData length:", hcData.length);
-        console.log("✅ Sample hcData[0]:", hcData[0]);
-  
+       
         const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
-  
-        // 🟨 Extract top-level appl_type
+
         const applFilters = getUnique(hcData.map(item => item.appl_type));
-        console.log("✅ applFilters:", applFilters);
-  
-        // 🟨 Flatten nested productData
         const flattenedProductData = hcData.flatMap(item => item.productData || []);
-        console.log("✅ Flattened productData length:", flattenedProductData.length);
-        console.log("✅ Sample productData[0]:", flattenedProductData[0]);
-  
-        // 🟨 Extract nested filters
         const strengthFilters = getUnique(flattenedProductData.map(item => item.strength));
-        console.log("✅ strengthFilters:", strengthFilters);
-  
         const rldFilters = getUnique(flattenedProductData.map(item => item.rld));
-        console.log("✅ rldFilters:", rldFilters);
-  
         const applicantFilters = getUnique(flattenedProductData.map(item => item.applicant));
-        console.log("✅ applicantFilters:", applicantFilters);
-  
-        // 🟩 Assign filters
+
         this.usFilters = {
           applFilters,
           strengthFilters,
           rldFilters: rldFilters.map(name => ({ name, value: name })),
           ApplicantFilters: applicantFilters
         };
-  
-        console.log("✅ Final this.usFilters:", this.usFilters);
-  
+
+       
+
         this.usApiBody.filter_enable = false;
       },
       error: (err) => {
-        console.error('❌ Error fetching us approval orange filters:', err);
+        console.error("❌ Error while fetching filters:", err);
         this.usApiBody.filter_enable = false;
       }
     });
@@ -196,9 +169,6 @@ export class UsComponent {
   ngOnInit(): void {
     this.usApiBody = { ...this.currentChildAPIBody };
     this.usApiBody.filters = this.usApiBody.filters || {};
-
-    console.log('[ngOnInit] Initial usApiBody:', JSON.stringify(this.usApiBody, null, 2));
-
     this.handleFetchFilters();
   }
 
@@ -221,15 +191,18 @@ export class UsComponent {
   }
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    
     this.handleSetLoading.emit(true);
     this.usApiBody.filters = this.usApiBody.filters || {};
 
     if (value === '') {
       delete this.usApiBody.filters[filterKey];
       this.setFilterLabel(filterKey, '');
+      
     } else {
       this.usApiBody.filters[filterKey] = value;
       this.setFilterLabel(filterKey, name || '');
+     
     }
 
     this._currentChildAPIBody = {
@@ -239,11 +212,10 @@ export class UsComponent {
 
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    this.mainSearchService.usApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
+    this.mainSearchService.dmfSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         let resultData = res?.data || {};
         const sortValue = this.usApiBody.filters['order_by'];
-
         resultData.orange_book_us_data = this.sortPatentData(resultData.orange_book_us_data, sortValue);
 
         this._currentChildAPIBody = {
@@ -251,11 +223,13 @@ export class UsComponent {
           count: resultData?.orange_book_us_count
         };
 
+       
         this.handleResultTabData.emit(resultData);
         this.handleSetLoading.emit(false);
         window.scrollTo(0, scrollTop);
       },
       error: () => {
+        console.error("❌ Error while filtering data");
         this._currentChildAPIBody.filter_enable = false;
         this.handleSetLoading.emit(false);
         window.scrollTo(0, scrollTop);
@@ -263,6 +237,7 @@ export class UsComponent {
     });
   }
   sortPatentData(data: any[], order: string): any[] {
+   
     if (!Array.isArray(data)) return [];
 
     if (order === 'Newest') {
@@ -279,6 +254,8 @@ export class UsComponent {
   }
 
   clear() {
+  
+
     this.filterConfigs = this.filterConfigs.map(config => {
       let defaultLabel = '';
       switch (config.key) {
@@ -297,8 +274,9 @@ export class UsComponent {
     };
 
     this.handleSetLoading.emit(true);
-    this.mainSearchService.usApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
+    this.mainSearchService.dmfSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
+       
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
           count: res?.data?.orange_book_us_count
@@ -307,7 +285,7 @@ export class UsComponent {
         this.handleSetLoading.emit(false);
       },
       error: (err) => {
-        console.error(err);
+        console.error("❌ Error while refetching after clear:", err);
         this._currentChildAPIBody.filter_enable = false;
         this.handleSetLoading.emit(false);
       }
@@ -322,20 +300,18 @@ export class UsComponent {
 
     if (textToCopy) {
       navigator.clipboard.writeText(textToCopy).then(() => {
-        // el is already the <i> element, no need for querySelector
+        
         if (el.classList.contains('fa-copy')) {
           el.classList.remove('fa-copy');
           el.classList.add('fa-check');
-
           setTimeout(() => {
             el.classList.remove('fa-check');
             el.classList.add('fa-copy');
           }, 1500);
         }
       }).catch(err => {
-        console.error('Failed to copy text: ', err);
+        console.error('[copyText] ❌ Failed to copy text:', err);
       });
     }
   }
-
 }

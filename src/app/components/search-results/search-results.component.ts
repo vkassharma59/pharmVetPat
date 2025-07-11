@@ -349,6 +349,13 @@ export class SearchResultsComponent {
           this.setLoadingState.emit(false);
         }
         break;
+        case this.resultTabs?.dmf.name:
+        if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.dmf.name]).length === 0) {
+          this.performDMFSearch(resultTabData);
+        } else {
+          this.setLoadingState.emit(false);
+        }
+        break;
       default:
         this.setLoadingState.emit(false);
     }
@@ -1603,7 +1610,59 @@ export class SearchResultsComponent {
       },
     });
   }
+  private performDMFSearch(resultTabData: any): void {
 
+    if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+      this.allDataSets[resultTabData.index][this.resultTabs.dmf.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
+
+    if (this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index][this.resultTabs.dmf.name] = {};
+    } else {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
+    this.childApiBody[resultTabData.index][this.resultTabs.dmf.name] = {
+      api_url: this.apiUrls.dmf.searchSpecific,
+      search_type: resultTabData?.searchWith,
+      keyword: resultTabData?.searchWithValue,
+      page_no: 1,
+      filter_enable: false,
+      filters: {},
+      order_by: '',
+      index: resultTabData.index
+    }
+
+    const tech_API = this.apiUrls.dmf.columnList;
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data?.columns;
+        Auth_operations.setColumnList(this.resultTabs.dmf.name, response);
+
+        this.mainSearchService.dmfSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.dmf.name]).subscribe({
+          next: (result: any) => {
+            this.childApiBody[resultTabData.index][this.resultTabs.dmf.name].count = result?.data?.tech_supplier_count;
+            this.allDataSets[resultTabData.index][this.resultTabs.dmf.name] = result?.data?.tech_supplier_data;
+            this.setLoadingState.emit(false);
+            this.loadingService.setLoading(this.resultTabs.dmf.name, resultTabData.index, false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+            this.loadingService.setLoading(this.resultTabs.dmf.name, resultTabData.index, false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+        this.loadingService.setLoading(this.resultTabs.dmf.name, resultTabData.index, false);
+      },
+    });
+  }
+  
   ButtonROSSearch(SearchKey: any, index: number): void {
 
     this.setLoadingState.emit(true);

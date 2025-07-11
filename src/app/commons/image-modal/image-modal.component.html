@@ -1,9 +1,9 @@
-<div class="flex w-full max-h-screen overflow-auto">
+<!-- <div class="flex w-full max-h-screen overflow-auto">
   <div class="relative flex items-center justify-center">
-    <!-- Added flex and justify-center -->
+ 
     <div class="relative">
       <div class="maindiv z-10 flex items-center justify-center" #mainDiv>
-        <!-- Added justify-center -->
+       
         <img
           [src]="data.dataImage"
           alt="Zoomable Image"
@@ -26,5 +26,35 @@
     >
       Zoom Out
     </button>
+  </div>
+</div> -->
+<div class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
+  <div class="bg-white rounded-md max-w-[90vw] max-h-[90vh] overflow-auto p-4 relative">
+
+    <!-- Close Button -->
+    <button class="absolute top-2 right-2 text-sm px-3 py-1 bg-red-500 text-white rounded" (click)="closeModal()">
+      Close
+    </button>
+
+    <!-- Zoom Buttons -->
+    <div class="absolute top-2 left-2 flex gap-2 z-10">
+      <button class="bg-blue-800 text-white px-4 py-1 rounded" (click)="zoomIn()">
+        Zoom In
+      </button>
+      <button class="bg-blue-800 text-white px-4 py-1 rounded" (click)="zoomOut()">
+        Zoom Out
+      </button>
+    </div>
+
+    <!-- Image container -->
+    <div class="flex items-center justify-center mt-10 overflow-auto">
+      <div #mainDiv class="transition-transform duration-300 ease-in-out">
+        <!-- <img [src]="data.dataImage" alt="Zoomable Image" class="max-w-full max-h-[75vh] object-contain" /> -->
+        <img [src]="data.dataImage" alt="Zoomable Image" [style.transform]="'scale(' + currentZoom + ')'"
+          [style.transition]="'transform 0.3s ease-in-out'" class="object-contain max-w-full max-h-[75vh]"
+          style="width: auto; height: auto;" />
+      </div>
+    </div>
+
   </div>
 </div>

@@ -1,0 +1,168 @@
+<ng-container>
+    <div class="card-header text-white rounded-lg">
+        <div style="padding:7px; justify-content:space-between; display:flex;">
+            {{resultTabs?.dmf?.label}} >> {{_data?.name}}
+        </div>
+    </div>
+    <div class="card body" style="background-color:#f8faff;">
+        <div class="pb-3 mb-3 px-2 rounded-lg">
+            <div class="row">
+
+                <!-- Column 1 -->
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+                    <!-- GBRN -->
+                    <div *ngIf="_data?.gbrn">
+                        <h6 class="font-bold text-indigo-900">
+                            {{ getColumnName('gbrn') }}
+                            <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                (click)="handleCopy(_data?.gbrn, $event)">
+                                <i class="fas fa-copy"></i>
+                            </span>
+                        </h6>
+                        <p>{{ _data?.gbrn }}</p>
+                    </div>
+
+                    <!-- CTSRN -->
+                    <div *ngIf="_data?.chemrobotics_technical_supplier_registration_number">
+                        <h6 class="font-bold text-indigo-900">
+                            {{ getColumnName('chemrobotics_technical_supplier_registration_number') }}
+                            <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                (click)="handleCopy(_data?.chemrobotics_technical_supplier_registration_number, $event)">
+                                <i class="fas fa-copy"></i>
+                            </span>
+                        </h6>
+                        <p>{{ _data?.chemrobotics_technical_supplier_registration_number }}</p>
+                    </div>
+
+                    <!-- DMF Holder -->
+                    <div *ngIf="_data?.dmf_holder">
+                        <h6 class="font-bold text-indigo-900">
+                            {{ getColumnName('dmf_holder') }}
+                            <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                (click)="handleCopy(_data?.dmf_holder, $event)">
+                                <i class="fas fa-copy"></i>
+                            </span>
+                        </h6>
+                        <p>{{ _data?.dmf_holder }}</p>
+                    </div>
+
+                    <!-- Active Ingredient -->
+                    <div *ngIf="_data?.active_ingredient">
+                        <h6 class="font-bold text-indigo-900">
+                            {{ getColumnName('active_ingredient') }}
+                            <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                (click)="handleCopy(_data?.active_ingredient, $event)">
+                                <i class="fas fa-copy"></i>
+                            </span>
+                        </h6>
+                        <p>{{ _data?.active_ingredient }}</p>
+                    </div>
+                </div>
+                <!-- Trade Name -->
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                    <div *ngIf="_data?.trade_name">
+                        <h6 class="font-bold text-indigo-900">
+                            {{ getColumnName('trade_name') }}
+                            <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                (click)="handleCopy(_data?.trade_name, $event)">
+                                <i class="fas fa-copy"></i>
+                            </span>
+                        </h6>
+                        <p>{{ _data?.trade_name }}</p>
+                    </div>
+
+                    <!-- Alternate Name -->
+                    <div *ngIf="_data?.alternate_name">
+                        <h6 class="font-bold text-indigo-900">
+                            {{ getColumnName('alternate_name') }}
+                            <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                (click)="handleCopy(_data?.alternate_name, $event)">
+                                <i class="fas fa-copy"></i>
+                            </span>
+                        </h6>
+                        <p>{{ _data?.alternate_name }}</p>
+                    </div>
+
+                    <!-- Type of Product -->
+                    <div *ngIf="_data?.type_of_product">
+                        <h6 class="font-bold text-indigo-900">
+                            {{ getColumnName('type_of_product') }}
+                            <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                (click)="handleCopy(_data?.type_of_product, $event)">
+                                <i class="fas fa-copy"></i>
+                            </span>
+                        </h6>
+                        <p>{{ _data?.type_of_product }}</p>
+                    </div>
+
+                    <!-- Country -->
+                    <div *ngIf="_data?.country_dmf_holder">
+                        <h6 class="font-bold text-indigo-900">
+                            {{ getColumnName('country_dmf_holder') }}
+                            <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                (click)="handleCopy(_data?.country_dmf_holder, $event)">
+                                <i class="fas fa-copy"></i>
+                            </span>
+                        </h6>
+                        <p>{{ _data?.country_dmf_holder }}</p>
+                    </div>
+
+                </div>
+
+                <!-- Column 2 -->
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+                    <!-- DMF Type -->
+                    <div *ngIf="_data?.dmf_type">
+                        <h6 class="font-bold text-indigo-900">
+                            {{ getColumnName('dmf_type') }}
+                            <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                (click)="handleCopy(_data?.dmf_type, $event)">
+                                <i class="fas fa-copy"></i>
+                            </span>
+                        </h6>
+                        <p>{{ _data?.dmf_type }}</p>
+                    </div>
+
+                    <!-- DMF Number -->
+                    <div *ngIf="_data?.dmf_or_asmf_number">
+                        <h6 class="font-bold text-indigo-900">
+                            {{ getColumnName('dmf_or_asmf_number') }}
+                            <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                (click)="handleCopy(_data?.dmf_or_asmf_number, $event)">
+                                <i class="fas fa-copy"></i>
+                            </span>
+                        </h6>
+                        <p>{{ _data?.dmf_or_asmf_number }}</p>
+                    </div>
+
+                    <!-- Filled Date -->
+                    <div *ngIf="_data?.dmf_or_asmf_filled_date">
+                        <h6 class="font-bold text-indigo-900">
+                            {{ getColumnName('dmf_or_asmf_filled_date') }}
+                            <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                (click)="handleCopy(_data?.dmf_or_asmf_filled_date, $event)">
+                                <i class="fas fa-copy"></i>
+                            </span>
+                        </h6>
+                        <p>{{ _data?.dmf_or_asmf_filled_date }}</p>
+                    </div>
+
+                    <!-- DMF Status -->
+                    <div *ngIf="_data?.dmf_status">
+                        <h6 class="font-bold text-indigo-900">
+                            {{ getColumnName('dmf_status') }}
+                            <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
+                                (click)="handleCopy(_data?.dmf_status, $event)">
+                                <i class="fas fa-copy"></i>
+                            </span>
+                        </h6>
+                        <p>{{ _data?.dmf_status }}</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
