@@ -31,7 +31,6 @@ export class UsApprovalCardComponent {
   column: any = {};
   @Input()
   get data() {
-    console.log("hnfdjd", this._data);
     return this._data;
   }
   set data(value: any) {
