@@ -118,7 +118,6 @@ export class VeterinaryUsApprovalComponent {
             case 'ingredient': label = 'All Ingredients'; break;
             case 'trade_name': label = 'Company'; break;
             case 'active_ingredients': label = 'activeIngredientFilters'; break;
-            case 'strength': label = 'Strengths'; break;
           }
         }
         return { ...item, label: label };
@@ -141,34 +140,22 @@ export class VeterinaryUsApprovalComponent {
     this.mainSearchService.veterinaryusApprovalSearchSpecific(this.vetenaryusApiBody).subscribe({
  
       next: (res:any) => {  
-        const hcData = res?.data?.health_canada_data || [];
-  
+        const hcData = res?.data?.green_book_us_data || [];
+        console.log("✅ Full hcData length:", hcData.length);
         const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
         const ingredientFilters = getUnique(hcData.map(item => item.ingredient));
         const tradeFilters = getUnique(hcData.map(item => item.trade_name));
         const activeIngredientFilters = getUnique(hcData.map(item => item.active_ingredients));
-  
-        console.log('[handleFetchFilters] Parsed ingredientFilters:', ingredientFilters);
-        console.log('[handleFetchFilters] Parsed activeIngredientFilters:', activeIngredientFilters);
-        console.log('[handleFetchFilters] Parsed tradeFilters:', tradeFilters);
         
-
-        const formattedtradeFilters = tradeFilters.map((item: any) => {
-          const key = Object.keys(item)[0];
-          const count = item[key]?.length || 0;
-          const obj = {
-            name: `${key} (${count})`,
-            value: key
-          };
-          console.log('[handleFetchFilters] Processed trade_name item:', item, '=>', obj);
-          return obj;
-        });
+        const formattedtradeFilters = tradeFilters.map((item: string) => ({
+          name: item,
+          value: item
+        }));
         
-  
         this.vetenaryusFilters = {
           ingredientFilters,
           activeIngredientFilters,
-          tradeFilters: formattedtradeFilters,
+          tradeFilters: formattedtradeFilters
         };
   
         console.log('[handleFetchFilters] Final vetenaryusFilters object:', this.vetenaryusFilters);
@@ -183,8 +170,6 @@ export class VeterinaryUsApprovalComponent {
       }
     });
   }
-  
-  
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     this.handleSetLoading.emit(true);
@@ -214,7 +199,7 @@ export class VeterinaryUsApprovalComponent {
 
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
-          count: resultData?.health_canada_count
+          count: resultData?.green_book_us_count
         };
 
         this.handleResultTabData.emit(resultData);
@@ -228,8 +213,6 @@ export class VeterinaryUsApprovalComponent {
       }
     });
   }
-
- 
 
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
@@ -254,7 +237,7 @@ export class VeterinaryUsApprovalComponent {
       next: (res) => {
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
-          count: res?.data?.health_canada_count
+          count: res?.data?.green_book_us_count
         };
         this.handleResultTabData.emit(res.data);
         this.handleSetLoading.emit(false);
