@@ -159,23 +159,35 @@ export class pharmaDatabaseSearchComponent implements OnInit {
 
   // ✅ Unified HostListener to close dropdowns
   @HostListener('document:click', ['$event'])
-  onOutsideClick(event: MouseEvent) {
+  onClickOutside(event: MouseEvent): void {
     const target = event.target as HTMLElement;
-    const devContainer = this.elementRef.nativeElement.querySelector('.dev-stage-container');
-    const innovatorContainer = this.elementRef.nativeElement.querySelector('.innovator-container');
-
-    if (devContainer && !devContainer.contains(target)) {
+  
+    // Assuming you're using ViewChild for wrapper elements like devStageWrapper
+    if (!target.closest('.dev-stage-container')) {
       this.showDevStageDropdown = false;
     }
-
-    if (innovatorContainer && !innovatorContainer.contains(target)) {
+  
+    if (!target.closest('.innovator-container')) {
       this.showInnovatorDropdown = false;
     }
-
-    if (!this.elementRef.nativeElement.contains(target)) {
-      this.showSuggestions = false;
+  
+    // Add similar checks for other dropdowns
+    // If you have autosuggestions lists:
+    if (!target.closest('.suggestions-dropdown')) {
+      this.simpleSearch.autosuggestionList = [];
+      this.intermediateSearch.autosuggestionList = [];
+      this.advanceSearch.autosuggestionList = [];
     }
+  
+    // For dynamically generated filters
+    this.advanceSearch.autosuggestionList.forEach((_, i) => {
+      if (!target.closest(`#filter-input-${i}`)) {
+        this.advanceSearch.autosuggestionList[i] = [];
+      }
+    });
   }
+  
+  
 
   getAllFilters() {
     this.getChemicalStructureFilters();
@@ -538,12 +550,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     // const hasSimpleKeyword = simpleSearch?.keyword?.trim() !== '';
     // // const hasDevStage = devStage?.trim() !== '';
     // // const hasInnovator = innovator?.trim() !== '';
-    // // ✅ New check: Proceed if any advanced filter input is filled
-    // // ✅ Check if any valid input is filled: simple search, advanced filters, sales range, etc.
-    // const hasFilledKeyword = filterInputs?.some((input: any) => input.keyword && input.keyword.trim() !== '');
-    // const hasSimpleKeyword = simpleSearch?.keyword?.trim() !== '';
-    // // const hasDevStage = devStage?.trim() !== '';
-    // // const hasInnovator = innovator?.trim() !== '';
 
     // if (!hasFilledKeyword && !hasSimpleKeyword && !startSales && !endSales ) {
     //   this.priviledgeModal.emit('Please enter at least one search input to continue.');
@@ -552,7 +558,16 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     const hasFilledKeyword = filterInputs?.some(input =>
       input.filter?.trim() && input.keyword?.trim()
     );
-  
+    // const hasOtherInput =
+    //   devStage?.trim() !== '' ||
+    //   innovator?.trim() !== '' ||
+    //   (startSales && endSales);
+
+    // if (!hasFilledKeyword && !hasOtherInput) {
+    //   this.priviledgeModal.emit('Please fill at least one field like Filter, Development Stage, Innovator or Sales Range.');
+    //   return;
+    // }
+
 
     let todaysLimit: any = '';
     this.setLoadingState.emit(true);
@@ -590,17 +605,13 @@ export class pharmaDatabaseSearchComponent implements OnInit {
           next: (res: any) => {
             todaysLimit = res?.data;
 
-
             const remainingLimit = privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit - todaysLimit?.searchCount;
             console.log("Dailylimit", privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit);
-            console.log("limittodays", todaysLimit?.searchCount);
-            console.log("remaining limt", remainingLimit)
             console.log("limittodays", todaysLimit?.searchCount);
             console.log("remaining limt", remainingLimit)
             if (remainingLimit <= 0) {
               this.setLoadingState.emit(false);
               this.priviledgeModal.emit('Your Daily Search Limit is over for this Platform.');
-
 
               return;
             }
@@ -646,7 +657,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       dbPrivileges?.Search !== 0
     );
   }
-
 
 
   private searchBasedOnTypes(searchType: string) {
@@ -728,10 +738,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     //   alert("filterInputs must be a non-empty array.");
     //   return;
     // }
-    // if (!Array.isArray(this.advanceSearch?.filterInputs) || this.advanceSearch?.filterInputs.length === 0) {
-    //   alert("filterInputs must be a non-empty array.");
-    //   return;
-    // }
 
     Auth_operations.setActiveformValues({
       column: this.column,
@@ -794,29 +800,29 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.productInfo.name, response);
 
-          this.mainSearchService.getAdvanceSearchResults(apiBody).subscribe({
-            next: (res: any) => {
-              this.showResultFunction.emit({
-                apiBody,
-                API_URL: this.apiUrls.basicProductInfo.simpleSearchResults,
-                currentTab: this.resultTabs.productInfo.name,
-                actual_value: '',
-              });
-              this.chemSearchResults.emit(res?.data);
-              this.setLoadingState.emit(false);
-            },
-            error: (e) => {
-              console.error('Error during main search:', e);
-              this.setLoadingState.emit(false);
-            },
-          });
-        },
-        error: (e) => {
-          console.error('Error fetching column list:', e);
-          this.setLoadingState.emit(false);
-        },
-      });
-    }
+        this.mainSearchService.getAdvanceSearchResults(apiBody).subscribe({
+          next: (res: any) => {
+            this.showResultFunction.emit({
+              apiBody,
+              API_URL: this.apiUrls.basicProductInfo.simpleSearchResults,
+              currentTab: this.resultTabs.productInfo.name,
+              actual_value: '',
+            });
+            this.chemSearchResults.emit(res?.data);
+            this.setLoadingState.emit(false);
+          },
+          error: (e) => {
+            console.error('Error during main search:', e);
+            this.setLoadingState.emit(false);
+          },
+        });
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+      },
+    });
+  }
 
   private performSynthesisSearch(): void {
     Auth_operations.setActiveformValues({
@@ -866,25 +872,8 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   showContent(searchTab: string) {
     this.activeSearchTab = searchTab;
     this.showSuggestions = false;
-
-    // Reset all search input states when switching tabs
-    this.simpleSearch = {};
-    this.chemicalStructure = { filter: '' };
-    this.synthesisSearch = {};
-    this.intermediateSearch = { filter: '' };
-    this.advanceSearch = {
-      autosuggestionList: [],
-      dateType: '',
-      developmentStage: '',
-      innovatorOriginator: '',
-      devStage: '',
-      innovator: '',
-      startSales: null,
-      endSales: null,
-      filterInputs: [{ filter: '', keyword: '' }]
-    };
-
-    // Optionally: refocus the input of the selected tab
+  
+    // Do NOT reset input values — just optionally refocus the relevant input
     setTimeout(() => {
       switch (searchTab) {
         case searchTypes.simpleSearch:
@@ -899,18 +888,10 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         case searchTypes.intermediateSearch:
           this.intermediateSearchKeywordInput?.nativeElement?.focus();
           break;
-        case searchTypes.advanceSearch:
-          this.devStageSearch = '';
-          this.innovatorSearch = '';
-          this.filteredDevStages = [];
-          this.filteredInnovators = [];
-          break;
       }
-
-      // Get all the filters again
-      this.getAllFilters();
-    }, 100);
+    }, 0);
   }
+  
 
   private performChemicalStructureSearch(): void {
 
