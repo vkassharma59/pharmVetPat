@@ -1589,7 +1589,7 @@ export class SearchResultsComponent {
             console.log('Search API Result:', result);
 
             const dataRows = result?.data?.data || [];
-
+            console.log("4588766",dataRows);
             // ✅ Append search result (rows) to saved structure
             this.allDataSets[resultTabData.index][this.resultTabs.eximData.name].rows = dataRows;
             this.childApiBody[resultTabData.index][this.resultTabs.eximData.name].count = result?.data?.recordsTotal;

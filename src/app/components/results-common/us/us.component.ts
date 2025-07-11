@@ -154,31 +154,23 @@ export class UsComponent {
   
         const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
   
-        // 🟨 Extract top-level appl_type
+        // Extract top-level filters
         const applFilters = getUnique(hcData.map(item => item.appl_type));
+        const strengthFilters = getUnique(hcData.map(item => item.strength));
+        const rldFilters = getUnique(hcData.map(item => item.rld));
+        const applicantFilters = getUnique(hcData.map(item => item.applicant));
+  
         console.log("✅ applFilters:", applFilters);
-  
-        // 🟨 Flatten nested productData
-        const flattenedProductData = hcData.flatMap(item => item.productData || []);
-        console.log("✅ Flattened productData length:", flattenedProductData.length);
-        console.log("✅ Sample productData[0]:", flattenedProductData[0]);
-  
-        // 🟨 Extract nested filters
-        const strengthFilters = getUnique(flattenedProductData.map(item => item.strength));
         console.log("✅ strengthFilters:", strengthFilters);
-  
-        const rldFilters = getUnique(flattenedProductData.map(item => item.rld));
         console.log("✅ rldFilters:", rldFilters);
-  
-        const applicantFilters = getUnique(flattenedProductData.map(item => item.applicant));
         console.log("✅ applicantFilters:", applicantFilters);
   
-        // 🟩 Assign filters
+        // Assign filters
         this.usFilters = {
           applFilters,
           strengthFilters,
           rldFilters: rldFilters.map(name => ({ name, value: name })),
-          ApplicantFilters: applicantFilters
+          applicantFilters: applicantFilters
         };
   
         console.log("✅ Final this.usFilters:", this.usFilters);
@@ -192,15 +184,16 @@ export class UsComponent {
     });
   }
   
+  
 
   ngOnInit(): void {
+    if (!this.currentChildAPIBody) return;  // 🔐 guard clause
     this.usApiBody = { ...this.currentChildAPIBody };
     this.usApiBody.filters = this.usApiBody.filters || {};
-
-    console.log('[ngOnInit] Initial usApiBody:', JSON.stringify(this.usApiBody, null, 2));
-
+  
     this.handleFetchFilters();
   }
+  
 
 
   setFilterLabel(filterKey: string, label: string) {

@@ -14,16 +14,16 @@
 }
 .suggestion-btn {
   white-space: nowrap;
-  padding: 6px 12px;
-  font-size: 14px;
-  border: 1px solid #0032a0;
-  color: #0032a0;
-  background-color: #f8faff;
-  border-radius: 6px;
-  flex: 0 1 auto;             /* prevent stretching */
-  max-width: calc(33.33% - 12px); /* 3 per row, adjust as needed */
-  min-width: 220px;           /* optional: for readability */
-  text-align: left;
+    padding: 6px 12px;
+    font-size: 14px;
+    border: 1px solid #0032a0;
+    color: #0032a0;
+    background-color: #f8faff;
+    border-radius: 6px;
+    flex: 0 1 auto;
+    max-width: calc(40.33% - 15px);
+    min-width: 237px;
+    text-align: center;
 }
 @media (max-width: 768px) {
   .suggestion-btn {
