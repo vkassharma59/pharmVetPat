@@ -127,25 +127,24 @@ export class ImpComponent {
 
   handleFetchFilters() {
     this.impPatentApiBody.filter_enable = true;
-  
+
     this.mainSearchService.impPatentsSearchSpecific(this.impPatentApiBody).subscribe({
       next: (res) => {
         console.log('📦 Raw patent_type data:', res?.data?.patent_type);
-  
+
         this.impPatentFilters.productFilters = res?.data?.product || [];
         this.impPatentFilters.orderByFilters = res?.data?.order_by || [];
-  
-        this.impPatentFilters.patentTypeFilters = (res?.data?.patent_type || []).map((item: any) => {
-          const key = Object.keys(item)[0];
-          const count = item[key]?.length || 0;
-          return {
-            name: `${key} (${count})`,
-            value: key
-          };
-        });
-  
+
+        this.impPatentFilters.patentTypeFilters = Array.isArray(res?.data?.patent_type)
+          ? res.data.patent_type.map((item: any) => ({
+            name: item.name || item.value,
+            value: item.value
+          }))
+          : [];
+
+
         console.log('✅ Mapped patentTypeFilters:', this.impPatentFilters.patentTypeFilters);
-  
+
         this.impPatentFilters.assigneeFilters = res?.data?.assignee || [];
         this.impPatentApiBody.filter_enable = false;
       },
@@ -155,7 +154,7 @@ export class ImpComponent {
       }
     });
   }
-  
+
 
   setFilterLabel(filterKey: string, label: string) {
     this.filterConfigs = this.filterConfigs.map((item) => {
@@ -176,48 +175,48 @@ export class ImpComponent {
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     this.handleSetLoading.emit(true);
-    
-  //    if (filterKey === 'order_by') {
-  //   this.impPatentApiBody.order_by = value;
-  // } else {
-  //   if (value === '') {
-  //     delete this.impPatentApiBody.filters[filterKey];
-  //     this.setFilterLabel(filterKey, '');
-  //   } else {
-  //     this.impPatentApiBody.filters[filterKey] = value;
-  //     this.setFilterLabel(filterKey, name || '');
-  //   }
-  // }
-   // Handle `order_by` separately
-  if (filterKey === 'order_by') {
-    // Map display label to backend value
-    let mappedOrderBy = '';
-    if (value === 'Newest') {
-       mappedOrderBy = 'ASC';
-    } else if (value === 'Oldest') {
-       mappedOrderBy = 'DESC';
-    } else {
-      mappedOrderBy = value; // in case future filters have direct values like ASC/DESC
-    }
 
-    this.impPatentApiBody.order_by = mappedOrderBy;
-    this.setFilterLabel(filterKey, name || value);
-  } else {
-    if (value === '') {
-      delete this.impPatentApiBody.filters[filterKey];
-      this.setFilterLabel(filterKey, '');
+    //    if (filterKey === 'order_by') {
+    //   this.impPatentApiBody.order_by = value;
+    // } else {
+    //   if (value === '') {
+    //     delete this.impPatentApiBody.filters[filterKey];
+    //     this.setFilterLabel(filterKey, '');
+    //   } else {
+    //     this.impPatentApiBody.filters[filterKey] = value;
+    //     this.setFilterLabel(filterKey, name || '');
+    //   }
+    // }
+    // Handle `order_by` separately
+    if (filterKey === 'order_by') {
+      // Map display label to backend value
+      let mappedOrderBy = '';
+      if (value === 'Newest') {
+        mappedOrderBy = 'ASC';
+      } else if (value === 'Oldest') {
+        mappedOrderBy = 'DESC';
+      } else {
+        mappedOrderBy = value; // in case future filters have direct values like ASC/DESC
+      }
+
+      this.impPatentApiBody.order_by = mappedOrderBy;
+      this.setFilterLabel(filterKey, name || value);
     } else {
-      this.impPatentApiBody.filters[filterKey] = value;
-      this.setFilterLabel(filterKey, name || '');
+      if (value === '') {
+        delete this.impPatentApiBody.filters[filterKey];
+        this.setFilterLabel(filterKey, '');
+      } else {
+        this.impPatentApiBody.filters[filterKey] = value;
+        this.setFilterLabel(filterKey, name || '');
+      }
     }
-  }
 
 
 
     this._currentChildAPIBody = {
       ...this.impPatentApiBody,
       filters: { ...this.impPatentApiBody.filters },
-       order_by: this.impPatentApiBody.order_by || ''
+      order_by: this.impPatentApiBody.order_by || ''
     };
     console.log('📦 API BODY sent =>', this._currentChildAPIBody);
 

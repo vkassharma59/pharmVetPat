@@ -182,18 +182,17 @@ export class NonPatentComponent implements OnChanges {
   
     this.mainSearchService.NonPatentSearchSpecific(this.nonPatentApiBody).subscribe({
       next: (res: any) => {
-        const hcData = res?.data?.green_book_us_data || [];
-        console.log('[handleFetchFilters] Extracted green_book_us_data:', hcData);
+        const hcData = res?.data?.data || [];
+        console.log('[handleFetchFilters] Extracted records:', hcData);
   
         const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
   
         const order = ['Latest First', 'Oldest First'];
   
-        // Handling concepts as comma-separated values
+        // Safely handle comma-separated or single-value 'concepts'
         const conceptFilters = getUnique(
           hcData
             .flatMap(item => item.concepts ? item.concepts.split(',').map(c => c.trim()) : [])
-            .filter(Boolean)
         );
   
         console.log('[handleFetchFilters] Unique concept filters:', conceptFilters);
@@ -211,6 +210,7 @@ export class NonPatentComponent implements OnChanges {
       }
     });
   }
+  
   
   
 
