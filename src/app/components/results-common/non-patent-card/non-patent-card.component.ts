@@ -119,6 +119,17 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
       container.scrollBy({ left: direction === 'left' ? -150 : 150, behavior: 'smooth' });
     }
   }
+    onFlagError(event: any) {
+    event.target.src = 'assets/images/flag.png';
+  }
+  isISODate(value: any): boolean {
+  if (typeof value !== 'string') return false;
+
+  // ISO format flexible pattern (with optional milliseconds/timezone)
+  const isoPattern = /^\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
+
+  return isoPattern.test(value) && !isNaN(Date.parse(value.replace(' ', 'T')));
+}
   getCountryUrl(value: any) {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country}.png`;
   }

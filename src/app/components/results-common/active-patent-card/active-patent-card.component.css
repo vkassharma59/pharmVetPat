@@ -1,6 +1,6 @@
-/* ✅ Search Container */
-.search-container {
+.filter-pagination {
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 10px;
   margin-top: 5px;
@@ -254,15 +254,11 @@ button[color="warn"] {
   background-color: #73d4ff !important;
   color: black !important;
   border: none;
+  padding: 8px 16px;
   border-radius: 4px;
-  padding: 4px 6px;
-  margin-top: 4px;
-  width: 100%;
-}
-
-/* Optional: Make the sort icon white too */
-:host ::ng-deep .mat-sort-header-arrow {
-  color: white !important;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
 }
 
 
@@ -346,7 +342,6 @@ th{
   max-height: 4.5em; /* Approx. 3 lines */
   overflow-y: auto;
   display: -webkit-box;
-  -webkit-line-clamp:3;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   white-space: normal;
@@ -366,42 +361,4 @@ margin: 10px;
 /* Track */
 .scrollable-text::-webkit-scrollbar-track {
   background: #f1f1f1e7;
-}
-/* Fix width and ellipsis for Volume column */
-td.mat-cell.volume-cell,
-th.mat-header-cell.volume-cell {
-  width: 120px;             /* Fixed width */
-  max-width: 120px;
-  white-space: nowrap;      /* Prevent wrapping */
-  overflow: hidden;         /* Hide overflow */
-  text-overflow: ellipsis;  /* Show ... if overflow */
-}
-.volume-cell {
-  white-space: nowrap;       /* Keep text in one line */
-  overflow: hidden;          /* Hide overflow */
-  text-overflow: ellipsis;   /* Show ... at end */
-  width: 150px;              /* Adjust as needed */
-  height: 40px;              /* Fix height */
-  line-height: 40px;         /* Vertically center text */
-  display: block;
-  padding: 0 8px;
-}
-.fixed-header-cell {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: left;  /* optional: keeps label aligned nicely */
-  height: 40px;
-  padding: 0 8px;
-}
-.fixed-cell {
-  padding: 0 8px;
-}
-
-.cell-content {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  height: 40px;
-  line-height: 40px;
 }

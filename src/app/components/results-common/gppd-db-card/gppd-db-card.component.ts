@@ -113,6 +113,18 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
 
     }
   }
+    onFlagError(event: any) {
+    event.target.src = 'assets/images/flag.png';
+  }
+ isISODate(value: any): boolean {
+  if (typeof value !== 'string') return false;
+
+  // ISO format flexible pattern (with optional milliseconds/timezone)
+  const isoPattern = /^\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
+
+  return isoPattern.test(value) && !isNaN(Date.parse(value.replace(' ', 'T')));
+}
+
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
