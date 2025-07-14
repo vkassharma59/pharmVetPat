@@ -38,7 +38,7 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
   localCount: number;
   showAppIntermediates: boolean = false;
   _currentChildAPIBody: any;
-
+ searchThrough: string = '';
   @Input() CurrentAPIBody: any;
   @Input() index: any;
   @Output() ROSChange: EventEmitter<any> = new EventEmitter<any>();
@@ -59,11 +59,12 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.localCount = ++ChemicalDirectoryDataCardComponent.counter; // ✅ Assign unique count to each instance
-    const searchThrough = Auth_operations.getActiveformValues().activeForm;
-    this.showAppIntermediates = (searchThrough === searchTypes.chemicalStructure);
+     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
+     this.showAppIntermediates = (this.searchThrough === searchTypes.chemicalStructure);
   }
 
   ngOnInit() {
+    console.log("searchThrough",this.searchThrough)
     if (ChemicalDirectoryDataCardComponent.counter === 0) {
       ChemicalDirectoryDataCardComponent.counter = 0;
     }
