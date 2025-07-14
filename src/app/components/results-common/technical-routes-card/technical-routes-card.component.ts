@@ -59,16 +59,16 @@ export class TechnicalRoutesCardComponent {
   };
   @Input() CurrentAPIBody: any;
   @Input() index: any;
-   _itemid: any= {};
+  _itemid: any = {};
 
-@Input()
-get itemid() {
-  return this._itemid;
-}
+  @Input()
+  get itemid() {
+    return this._itemid;
+  }
 
-set itemid(value: any) {
-  this._itemid = value;
-}
+  set itemid(value: any) {
+    this._itemid = value;
+  }
 
 
   @Input()
@@ -104,7 +104,7 @@ set itemid(value: any) {
     return Object.keys(obj).length === 0;
   }
   ngOnInit() {
-    console.log('TechnicalRoutesCardComponent apiCallCount',this.index);
+    console.log('TechnicalRoutesCardComponent apiCallCount', this.index);
     this.resultTabs1 = Object.values(this.utilityService.getAllTabsName());
     this.currentTabData = this.resultTabs1.find((tab: any) => tab.isActive);
     this.resultTabWithKeys = this.utilityService.getAllTabsName();
@@ -279,11 +279,11 @@ set itemid(value: any) {
                     console.log(priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit, 'todays_limit?.downloadCount', todays_limit?.downloadCount);
                     let id: any = '';
                     const searchThrough = Auth_operations.getActiveformValues().activeForm;
-                   
-                     console.log('this.CurrentAPIBody', this._itemid[this.resultTabWithKeys.productInfo.name]);
-                     console.log('this.CurrentAPIBody---------', this.resultTabWithKeys.productInfo.name); 
-                     this.searchThrough = searchThrough;
-                      switch (searchThrough) {
+
+                    console.log('this.CurrentAPIBody', this._itemid[this.resultTabWithKeys.productInfo.name]);
+                    console.log('this.CurrentAPIBody---------', this.resultTabWithKeys.productInfo.name);
+                    this.searchThrough = searchThrough;
+                    switch (searchThrough) {
                       case searchTypes.chemicalStructure:
                       case searchTypes.intermediateSearch:
                         id = this._itemid[this.resultTabWithKeys.chemicalDirectory.name][this.index]._id;
@@ -299,7 +299,7 @@ set itemid(value: any) {
                         id = this._itemid[this.resultTabWithKeys.productInfo.name][this.index]._id;
 
                     }
- console.log('No search type selected',this.index);
+                    console.log('No search type selected', this.index);
                     console.log('id', id);
                     let body_main: any = {
                       id: id,
