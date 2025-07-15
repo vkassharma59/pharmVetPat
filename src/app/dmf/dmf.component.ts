@@ -6,10 +6,11 @@ import { TruncatePipe } from '../pipes/truncate.pipe';
 import { CommonModule } from '@angular/common';
 import { DmfCardComponent } from '../dmf-card/dmf-card.component';
 import { UtilityService } from '../services/utility-service/utility.service';
+import { ChildPagingComponent } from '../commons/child-paging/child-paging.component';
 @Component({
   selector: 'app-dmf',
   standalone: true,
-  imports: [CommonModule,TruncatePipe,DmfCardComponent],
+  imports: [CommonModule,TruncatePipe,DmfCardComponent,ChildPagingComponent],
   templateUrl: './dmf.component.html',
   styleUrl: './dmf.component.css'
 })
@@ -43,37 +44,30 @@ export class DmfComponent {
 
   @Input() index: any;
   @Input() tabName?: string;
-  usApiBody: any;
-  usFilters: any = {};
+  dmfApiBody: any;
+  dmfFilters: any = {};
   lastClickedFilterKey: string | null = null;
 
   filterConfigs = [
     {
-      key: 'rld',
-      label: 'Select RLD',
-      dataKey: 'rldFilters',
-      filterType: 'rld',
+      key: 'country_dmf_holder',
+      label: 'Select Country',
+      dataKey: 'CountryFilters',
+      filterType: 'country_dmf_holder',
       dropdownState: false
     },
     {
-      key: 'appl_type',
-      label: 'Select Appl Type',
-      dataKey: 'applFilters',
-      filterType: 'appl_type',
+      key: 'dmf_status',
+      label: 'Select DMF',
+      dataKey: 'dmfFilters',
+      filterType: 'dmf_status',
       dropdownState: false
     },
     {
-      key: 'applicant',
-      label: 'Select Applicant',
-      dataKey: 'applicantFilters',
-      filterType: 'applicant',
-      dropdownState: false
-    },
-    {
-      key: 'strength',
-      label: 'Select Strength',
-      dataKey: 'strengthFilters',
-      filterType: 'strength',
+      key: 'tech',
+      label: 'Select TECH/API & FORMULATION',
+      dataKey: 'techFilters',
+      filterType: 'tech',
       dropdownState: false
     }
   ];
@@ -131,44 +125,54 @@ export class DmfComponent {
     }));
   }
 
-  handleFetchFilters() {
-    
-    this.usApiBody.filter_enable = true;
+handleFetchFilters() {
+  console.log("🔄 Fetching filter data...");
+  this.dmfApiBody.filter_enable = true;
 
-    this.mainSearchService.dmfSearchSpecific(this.usApiBody).subscribe({
-      next: (res: any) => {
-        const hcData = res?.data?.orange_book_us_data || [];
-       
-        const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
+  this.mainSearchService.dmfSearchSpecific(this.dmfApiBody).subscribe({
+    next: (res: any) => {
+      console.log("✅ API response received:", res);
 
-        const applFilters = getUnique(hcData.map(item => item.appl_type));
-        const flattenedProductData = hcData.flatMap(item => item.productData || []);
-        const strengthFilters = getUnique(flattenedProductData.map(item => item.strength));
-        const rldFilters = getUnique(flattenedProductData.map(item => item.rld));
-        const applicantFilters = getUnique(flattenedProductData.map(item => item.applicant));
+      const rawData = res?.data || {};
+      const techData = rawData.tech_supplier_data || [];
+      const rawCountry = rawData.country || [];
 
-        this.usFilters = {
-          applFilters,
-          strengthFilters,
-          rldFilters: rldFilters.map(name => ({ name, value: name })),
-          ApplicantFilters: applicantFilters
-        };
+      console.log("📦 Extracted tech_supplier_data:", techData);
+      console.log("🌐 Raw Country:", rawCountry);
 
-       
+      const getUnique = (arr: any[]) =>
+        [...new Set(arr.filter(val => typeof val === 'string' && val.trim() && val !== 'undefined'))];
 
-        this.usApiBody.filter_enable = false;
-      },
-      error: (err) => {
-        console.error("❌ Error while fetching filters:", err);
-        this.usApiBody.filter_enable = false;
-      }
-    });
-  }
-  
+      const CountryFilters = ['View All', ...getUnique(
+        rawCountry.map(item => item?.value)
+      )];
+
+      const dmfFilters = getUnique(techData.map(item => item?.dmf_status));
+      const techFilters = getUnique(techData.map(item => item?.tech));
+
+      console.log("🌍 Country Filters:", CountryFilters);
+      console.log("📄 DMF Status Filters:", dmfFilters);
+      console.log("🧪 Tech/API Filters:", techFilters);
+
+      this.dmfFilters = {
+        CountryFilters,
+        dmfFilters,
+        techFilters
+      };
+
+      this.dmfApiBody.filter_enable = false;
+      console.log("✅ Filters populated successfully.");
+    },
+    error: (err) => {
+      console.error("❌ Error while fetching filters:", err);
+      this.dmfApiBody.filter_enable = false;
+    }
+  });
+}
 
   ngOnInit(): void {
-    this.usApiBody = { ...this.currentChildAPIBody };
-    this.usApiBody.filters = this.usApiBody.filters || {};
+    this.dmfApiBody = { ...this.currentChildAPIBody };
+    this.dmfApiBody.filters = this.dmfApiBody.filters || {};
     this.handleFetchFilters();
   }
 
@@ -178,10 +182,9 @@ export class DmfComponent {
       if (item.key === filterKey) {
         if (label === '') {
           switch (filterKey) {
-            case 'appl_type': label = 'Application Type'; break;
-            case 'rld': label = 'Select RLD'; break;
-            case 'applicant': label = 'Applicant Filters'; break;
-            case 'strength': label = 'Strengths'; break;
+            case 'country_dmf_holder': label = 'Country'; break;
+            case 'dmf_status': label = 'Select DMF'; break;
+            case 'tech': label = 'tech Filters'; break;
           }
         }
         return { ...item, label: label };
@@ -193,21 +196,21 @@ export class DmfComponent {
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     
     this.handleSetLoading.emit(true);
-    this.usApiBody.filters = this.usApiBody.filters || {};
+    this.dmfApiBody.filters = this.dmfApiBody.filters || {};
 
     if (value === '') {
-      delete this.usApiBody.filters[filterKey];
+      delete this.dmfApiBody.filters[filterKey];
       this.setFilterLabel(filterKey, '');
       
     } else {
-      this.usApiBody.filters[filterKey] = value;
+      this.dmfApiBody.filters[filterKey] = value;
       this.setFilterLabel(filterKey, name || '');
      
     }
 
     this._currentChildAPIBody = {
-      ...this.usApiBody,
-      filters: { ...this.usApiBody.filters }
+      ...this.dmfApiBody,
+      filters: { ...this.dmfApiBody.filters }
     };
 
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -215,12 +218,12 @@ export class DmfComponent {
     this.mainSearchService.dmfSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         let resultData = res?.data || {};
-        const sortValue = this.usApiBody.filters['order_by'];
-        resultData.orange_book_us_data = this.sortPatentData(resultData.orange_book_us_data, sortValue);
+        const sortValue = this.dmfApiBody.filters['order_by'];
+        resultData.tech_supplier_data = this.sortPatentData(resultData.tech_supplier_data, sortValue);
 
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
-          count: resultData?.orange_book_us_count
+          count: resultData?.tech_supplier_count
         };
 
        
@@ -259,17 +262,16 @@ export class DmfComponent {
     this.filterConfigs = this.filterConfigs.map(config => {
       let defaultLabel = '';
       switch (config.key) {
-        case 'appl_type': defaultLabel = 'Application Type'; break;
-        case 'rld': defaultLabel = 'Select RLD'; break;
-        case 'applicant': defaultLabel = 'Applicant Filters'; break;
-        case 'strength': defaultLabel = 'Strengths'; break;
+        case 'country_dmf_holder': defaultLabel = 'Country'; break;
+        case 'dmf_status': defaultLabel = 'Select DMF'; break;
+        case 'tech': defaultLabel = 'tech Filters'; break
       }
       return { ...config, label: defaultLabel, dropdownState: false };
     });
 
-    this.usApiBody.filters = {};
+    this.dmfApiBody.filters = {};
     this._currentChildAPIBody = {
-      ...this.usApiBody,
+      ...this.dmfApiBody,
       filters: {}
     };
 
@@ -279,7 +281,7 @@ export class DmfComponent {
        
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
-          count: res?.data?.orange_book_us_count
+          count: res?.data?.tech_supplier_count
         };
         this.handleResultTabData.emit(res.data);
         this.handleSetLoading.emit(false);
