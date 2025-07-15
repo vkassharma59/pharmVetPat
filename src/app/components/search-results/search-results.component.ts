@@ -1636,6 +1636,7 @@ export class SearchResultsComponent {
     }
 
     const tech_API = this.apiUrls.dmf.columnList;
+    console.log("techapi",this.childApiBody[resultTabData.index][this.resultTabs.dmf.name]);
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
         const response = res?.data?.columns;
@@ -1645,6 +1646,7 @@ export class SearchResultsComponent {
           next: (result: any) => {
             this.childApiBody[resultTabData.index][this.resultTabs.dmf.name].count = result?.data?.tech_supplier_count;
             this.allDataSets[resultTabData.index][this.resultTabs.dmf.name] = result?.data?.tech_supplier_data;
+            console.log("dataaaaa",result?.data?.tech_supplier_data)
             this.setLoadingState.emit(false);
             this.loadingService.setLoading(this.resultTabs.dmf.name, resultTabData.index, false);
           },
