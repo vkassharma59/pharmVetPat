@@ -172,6 +172,7 @@ export class VeterinaryUsApprovalComponent {
   }
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    console.log('🎯 handleSelectFilter: key=', filterKey, 'value=', value, 'name=', name);
     this.handleSetLoading.emit(true);
     this.vetenaryusApiBody.filters = this.vetenaryusApiBody.filters || {};
 
@@ -192,10 +193,8 @@ export class VeterinaryUsApprovalComponent {
 
     this.mainSearchService.veterinaryusApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
-        let resultData = res?.data || {};
-        const sortValue = this.vetenaryusApiBody.filters['order_by'];
-
-       
+        console.log('📥 [handleSelectFilter] Filtered result received:', res?.data);
+        const resultData = res?.data || {};
 
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
@@ -215,13 +214,13 @@ export class VeterinaryUsApprovalComponent {
   }
 
   clear() {
+    console.log('🧹 Clearing filters...');
     this.filterConfigs = this.filterConfigs.map(config => {
       let defaultLabel = '';
       switch (config.key) {
         case 'ingredient': defaultLabel = 'All Ingredients'; break;
         case 'trade_name': defaultLabel = 'Company'; break;
-        case 'active_ingredients': defaultLabel = 'activeIngredientFilters'; break;
-        case 'strength': defaultLabel = 'Strengths'; break;
+        case 'active_ingredients': defaultLabel = 'Active Ingredients'; break;
       }
       return { ...config, label: defaultLabel, dropdownState: false };
     });
@@ -239,6 +238,7 @@ export class VeterinaryUsApprovalComponent {
           ...this._currentChildAPIBody,
           count: res?.data?.green_book_us_count
         };
+        console.log('📦 [clear] Refreshed data:', res.data);
         this.handleResultTabData.emit(res.data);
         this.handleSetLoading.emit(false);
       },

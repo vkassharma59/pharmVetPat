@@ -98,7 +98,7 @@
               {{ _data?.green_book_registration_number }}
             </p>
           </div>
-          <div class="col-md-5 col-sm-6" *ngIf="_data?.product_no">
+          <div class="col-md-9 col-sm-8" *ngIf="_data?.product_no">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('product_no') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -110,7 +110,7 @@
               {{ _data?.product_no }}
             </p>
           </div>
-          <div class="col-md-5 col-sm-6" *ngIf="_data?.trade_name">
+          <div class="col-md-9 col-sm-8" *ngIf="_data?.trade_name">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('trade_name') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -122,25 +122,47 @@
               {{ _data?.trade_name }}
             </p>
           </div>
-
+          <div class="col-md-9 col-sm-8" *ngIf="_data?.company_logo">
+            <h6 class="font-bold text-indigo-900">
+              {{ getColumnName('company_logo') }}
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.company_logo, copyBtn)">
+                <i class="fas fa-copy"></i>
+              </span>
+            </h6>
+            <p class="text-wrap max-h-12 whitespace-normal">
+              {{ _data?.company_logo }}
+            </p>
+          </div>
           <h6 class="font-bold text-indigo-900">COMPANY LOGO:</h6>
           <img src="assets/components/Merck.png" class="image1">
 
-          <h6 class="font-bold text-indigo-900">ACTIVE INGREDIENT/COMBITION: <i
-              class="fa-solid fa-copy hover:cursor-pointer" (click)="copyText('ACTIVE',$event)"
-              title="Copy to clipboard"></i></h6>
-          <p id="ACTIVE">ERTUGLIFLOZIN;SITAGLIPTIN PHOSPHATE</p>
-
-          <h6 class="font-bold text-indigo-900">STRENGTH: <i class="fa-solid fa-copy hover:cursor-pointer"
-              (click)="copyText('STRENGTH',$event)" title="Copy to clipboard"></i></h6>
-          <p id="STRENGTH">15MG;EQ 100MG BASE</p>
-
-          <h6 class="font-bold text-indigo-900">REFERENCE LISTED DRUG(RLD): <i
-              class="fa-solid fa-copy hover:cursor-pointer" (click)="copyText('REFERENCE',$event)"
-              title="Copy to clipboard"></i></h6>
-          <p id="REFERENCE">Yes</p>
-
-          <div class="col-md-5 col-sm-6" *ngIf="_data?.rs">
+          
+          <div class="col-md-9 col-sm-8" *ngIf="_data?.strength">
+            <h6 class="font-bold text-indigo-900">
+              {{ getColumnName('strength') }}
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                (click)="handleCopy(_data?.strength, copyBtn)">
+                <i class="fas fa-copy"></i>
+              </span>
+            </h6>
+            <p class="text-wrap max-h-12 whitespace-normal">
+              {{ _data?.strength }}
+            </p>
+          </div>
+          <div class="col-md-9 col-sm-8" *ngIf="_data?.rld">
+          <h6 class="font-bold text-indigo-900">
+            {{ getColumnName('rld') }}
+            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+              (click)="handleCopy(_data?.rld, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="text-wrap max-h-12 whitespace-normal">
+            {{ _data?.rld }}
+          </p>
+        </div>
+          <div class="col-md-9 col-sm-8" *ngIf="_data?.rs">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('rs') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.rs, copyBtn)">
@@ -156,8 +178,7 @@
 
         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" style="background-color: #f8faff;">
 
-
-          <div class="col-md-5 col-sm-6" *ngIf="_data?.df">
+          <div class="col-md-9 col-sm-8" *ngIf="_data?.df">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('df') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.df, copyBtn)">
@@ -169,7 +190,7 @@
             </p>
           </div>
 
-          <div class="col-md-5 col-sm-6" *ngIf="_data?.route">
+          <div class="col-md-9 col-sm-8" *ngIf="_data?.route">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('route') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -181,7 +202,29 @@
               {{ _data?.route }}
             </p>
           </div>
-          <div class="col-md-5 col-sm-6" *ngIf="_data?.exclusivity_date">
+          <div class="col-md-9 col-sm-8" *ngIf="_data?.applicant">
+            <h6 class="font-bold text-indigo-900">
+              {{ getColumnName('applicant') }}
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.applicant, copyBtn)">
+                <i class="fas fa-copy"></i>
+              </span>
+            </h6>
+            <p class="text-wrap max-h-12 whitespace-normal">
+              {{ _data?.applicant }}
+            </p>
+          </div>
+          <div class="col-md-9 col-sm-8" *ngIf="_data?.applicant_full_name">
+            <h6 class="font-bold text-indigo-900">
+              {{ getColumnName('applicant_full_name') }}
+              <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.applicant_full_name, copyBtn)">
+                <i class="fas fa-copy"></i>
+              </span>
+            </h6>
+            <p class="text-wrap max-h-12 whitespace-normal">
+              {{ _data?.applicant_full_name }}
+            </p>
+          </div>
+          <div class="col-md-9 col-sm-8" *ngIf="_data?.exclusivity_date">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('exclusivity_date') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -194,7 +237,7 @@
             </p>
           </div>
 
-          <div class="col-md-5 col-sm-6" *ngIf="_data?.exclusivity_code">
+          <div class="col-md-9 col-sm-8" *ngIf="_data?.exclusivity_code">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('exclusivity_code') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -217,7 +260,7 @@
 
         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" style="background-color: #f8faff;">
 
-          <div class="col-md-5 col-sm-6" *ngIf="_data?.appl_no">
+          <div class="col-md-9 col-sm-8" *ngIf="_data?.appl_no">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('appl_no') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -230,7 +273,7 @@
             </p>
           </div>
 
-          <div class="col-md-5 col-sm-6" *ngIf="_data?.appl_type">
+          <div class="col-md-9 col-sm-8" *ngIf="_data?.appl_type">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('appl_type') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn

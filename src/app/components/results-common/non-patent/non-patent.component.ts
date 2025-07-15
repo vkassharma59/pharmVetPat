@@ -6,7 +6,7 @@ import {
   OnChanges,
   HostListener,
   ElementRef,
-  ViewChildren,QueryList
+  ViewChildren, QueryList
 } from '@angular/core';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { CommonModule } from '@angular/common';
@@ -19,7 +19,7 @@ import { TruncatePipe } from '../../../pipes/truncate.pipe';
 @Component({
   selector: 'app-non-patent',
   standalone: true,
-  imports: [ChildPagningTableComponent, CommonModule, NonPatentCardComponent,TruncatePipe],
+  imports: [ChildPagningTableComponent, CommonModule, NonPatentCardComponent, TruncatePipe],
   templateUrl: './non-patent.component.html',
   styleUrl: './non-patent.component.css'
 })
@@ -30,7 +30,7 @@ export class NonPatentComponent implements OnChanges {
   searchByTable: boolean = false;
   isFilterApplied: boolean = false; // agar filter lagana hai to true karenge
   count: number = 0;
-  totalPages: number = 0;    
+  totalPages: number = 0;
   @Input() tabName?: string;
 
   get pageSize(): number {
@@ -73,14 +73,14 @@ export class NonPatentComponent implements OnChanges {
     this.handleResultTabData.emit(this._data);
   }
   ngOnInit(): void {
-    console.log('get data called',this._data);
-   this.nonPatentApiBody = { ...this.currentChildAPIBody };
-   this.nonPatentApiBody.filters = this.nonPatentApiBody.filters || {};
- 
-   console.log('[ngOnInit] Initial vetenaryusApiBody:', JSON.stringify(this.nonPatentApiBody, null, 2));
- 
-   this.handleFetchFilters();
- }
+    console.log('get data called', this._data);
+    this.nonPatentApiBody = { ...this.currentChildAPIBody };
+    this.nonPatentApiBody.filters = this.nonPatentApiBody.filters || {};
+
+    console.log('[ngOnInit] Initial vetenaryusApiBody:', JSON.stringify(this.nonPatentApiBody, null, 2));
+
+    this.handleFetchFilters();
+  }
   onDataFetchRequest(payload: any) {
     this.isFilterApplied = !!(payload?.search || payload?.columns);
     // Remove stale filters from _currentChildAPIBody if they are not in payload
@@ -179,29 +179,29 @@ export class NonPatentComponent implements OnChanges {
   handleFetchFilters() {
     console.log('[handleFetchFilters] Starting to fetch Non-Patent filters...');
     this.nonPatentApiBody.filter_enable = true;
-  
+
     this.mainSearchService.NonPatentSearchSpecific(this.nonPatentApiBody).subscribe({
       next: (res: any) => {
         const hcData = res?.data?.data || [];
         console.log('[handleFetchFilters] Extracted records:', hcData);
-  
+
         const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
-  
+
         const order = ['Latest First', 'Oldest First'];
-  
+
         // Safely handle comma-separated or single-value 'concepts'
         const conceptFilters = getUnique(
           hcData
             .flatMap(item => item.concepts ? item.concepts.split(',').map(c => c.trim()) : [])
         );
-  
+
         console.log('[handleFetchFilters] Unique concept filters:', conceptFilters);
-  
+
         this.nonPatentFilters = {
           order,
           conceptFilters
         };
-  
+
         this.nonPatentApiBody.filter_enable = false;
       },
       error: (err) => {
@@ -210,9 +210,9 @@ export class NonPatentComponent implements OnChanges {
       }
     });
   }
-  
-  
-  
+
+
+
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     this.handleSetLoading.emit(true);
@@ -231,10 +231,24 @@ export class NonPatentComponent implements OnChanges {
       ...item,
       dropdownState: item.key === filterKey ? false : item.dropdownState
     }));
+    // ✅ Maintain columns array properly
+    const existingColumns = this._currentChildAPIBody.columns || [];
 
+    const updatedColumns = existingColumns.filter((col: any) => col.data !== filterKey);
+
+    if (value) {
+      updatedColumns.push({
+        data: filterKey,
+        searchable: 'true',
+        search: {
+          value: value
+        }
+      });
+    }
     this._currentChildAPIBody = {
       ...this.nonPatentApiBody,
-      filters: { ...this.nonPatentApiBody.filters }
+      columns: updatedColumns,
+      draw: 1
     };
 
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -242,11 +256,15 @@ export class NonPatentComponent implements OnChanges {
     this.mainSearchService.NonPatentSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         const resultData = res?.data || {};
-        this._currentChildAPIBody = {
-          ...this._currentChildAPIBody,
-          count: resultData?.green_book_us_count
+        this.count = resultData?.recordsFiltered ?? resultData?.recordsTotal;
+        this.totalPages = Math.ceil(this.count / this.pageSize);
+        this._currentChildAPIBody.count = this.count;
+        this._data = {
+          ...this._data,
+          rows: resultData?.data || []
         };
-        this.handleResultTabData.emit(resultData);
+        this.searchByTable = true;
+        this.handleResultTabData.emit(this._data.rows);
         this.handleSetLoading.emit(false);
         window.scrollTo(0, scrollTop);
       },
@@ -279,7 +297,7 @@ export class NonPatentComponent implements OnChanges {
       next: (res) => {
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
-          count: res?.data?.green_book_us_count
+          count: res?.data?.recordsTotal
         };
         this.handleResultTabData.emit(res.data);
         this.handleSetLoading.emit(false);

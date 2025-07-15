@@ -31,18 +31,16 @@ export class ChildPagingComponent implements OnInit {
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
     this.PageArray = [];
-    this.count = 0;
-
-
-    if (this._currentChildAPIBody?.count) {
-      this.count = this._currentChildAPIBody?.count;
-    }
-
-    for (let i = 1; i <= Math.min(Math.ceil(this.count / 25), 5); i++) {
+  
+    // ✅ Defensive: use 0 if invalid
+    const incomingCount = Number(value?.count);
+    this.count = !isNaN(incomingCount) && incomingCount > 0 ? incomingCount : 0;
+  
+    const pageCount = Math.ceil(this.count / 25);
+    for (let i = 1; i <= Math.min(pageCount, 5); i++) {
       this.PageArray.push(i);
     }
-  }
-
+  }  
   constructor(
     private serviceChildPaginationService: ServiceChildPaginationService, private cdr: ChangeDetectorRef,
     private mainSearchService: MainSearchService
@@ -132,24 +130,19 @@ export class ChildPagingComponent implements OnInit {
 
   handleChangeData() {
     this.PageArray = [];
-    if (this._currentChildAPIBody?.count) {
-      this.count = this._currentChildAPIBody?.count;
-    }
-
-    this.PageArray = [];
+  
+    const validCount = Number(this._currentChildAPIBody?.count);
+    this.count = !isNaN(validCount) && validCount > 0 ? validCount : 0;
+  
     const pageCount = Math.ceil(this.count / 25);
-    const currentPageindex = this._currentChildAPIBody?.page_no;
-    const PageSetStartIndex = currentPageindex % 5;
-
-    const startIndex =
-      PageSetStartIndex != 0
-        ? currentPageindex - PageSetStartIndex + 1
-        : currentPageindex - 4;
-
-    for (let i = startIndex; i <= Math.min(pageCount, startIndex + 4); i++) {
+    const currentPageindex = this._currentChildAPIBody?.page_no || 1;
+    const pageSetStartIndex = (currentPageindex - 1) - ((currentPageindex - 1) % 5) + 1;
+  
+    for (let i = pageSetStartIndex; i <= Math.min(pageCount, pageSetStartIndex + 4); i++) {
       this.PageArray.push(i);
     }
   }
+  
   ngOnInit(): void {
     const priv = JSON.parse(localStorage.getItem('priviledge_json') || '{}');
     const reportLimit = priv['pharmvetpat-mongodb']?.PageLimit || 10;

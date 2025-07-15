@@ -188,10 +188,10 @@ export class ActivePatentComponent implements OnChanges {
       next: (res: any) => {
         console.log('[handleFetchFilters] API Response:', res);
   
-        const hcData = res?.data?.green_book_us_data || [];
+        const hcData = res?.data?.data || [];
         console.log('[handleFetchFilters] Extracted green_book_us_data:', hcData);
   
-        const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
+        const getUnique = (arr: any[]) => [...new Set(arr.filter(v => !!v && typeof v === 'string' && v.trim().length > 0))];
   
         const order = ['Latest First', 'Oldest First']; // Static sort options
         const patentFilters = getUnique(hcData.map(item => item.patent_type));
