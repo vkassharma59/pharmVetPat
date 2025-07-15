@@ -69,6 +69,7 @@ export class GppdDbComponent implements OnChanges {
   gppdFilters: any = {};
   lastClickedFilterKey: string | null = null;
 
+
   filterConfigs = [
     {
       key: 'country',
@@ -159,11 +160,10 @@ export class GppdDbComponent implements OnChanges {
     this.mainSearchService.gppdDbSearchSpecific(this.gppdApiBody).subscribe({
       next: (res: any) => {
         const hcData = res?.data?.data || [];
+        console.log(res?.data?.data, "-------hacdat-----", hcData)
         const getUnique = (arr: any[]) => [...new Set(arr.filter(v => !!v && typeof v === 'string' && v.trim().length > 0))];
-
-        const countryFilters = getUnique(hcData.map(item => item?.CHAPTER));
-        const companyFilters = getUnique(hcData.map(item => item?.TYPE));
-
+        const countryFilters = getUnique(hcData.map(item => item?.country));
+        const companyFilters = getUnique(hcData.map(item => item?.company));
         this.gppdFilters = {
           countryFilters: countryFilters.map(value => ({ name: value, value })),
           companyFilters: companyFilters.map(value => ({ name: value, value }))
@@ -213,24 +213,50 @@ export class GppdDbComponent implements OnChanges {
       this.setFilterLabel(filterKey, name || '');
     }
 
+    // ✅ Close dropdowns
+    this.filterConfigs = this.filterConfigs.map(item => ({
+      ...item,
+      dropdownState: false
+    }));
+
+    // ✅ Maintain columns array properly
+    const existingColumns = this._currentChildAPIBody.columns || [];
+
+    const updatedColumns = existingColumns.filter((col: any) => col.data !== filterKey);
+
+    if (value) {
+      updatedColumns.push({
+        data: filterKey,
+        searchable: 'true',
+        search: {
+          value: value
+        }
+      });
+    }
+
     this._currentChildAPIBody = {
       ...this.gppdApiBody,
-      filters: { ...this.gppdApiBody.filters }
+      columns: updatedColumns,
+      draw: 1
     };
+
+    console.log("final API body", this._currentChildAPIBody);
 
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
     this.mainSearchService.gppdDbSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
-        let resultData = res?.data || {};
-        this._currentChildAPIBody.count = resultData?.recordsTotal;
+        const resultData = res?.data;
+        this.count = resultData?.recordsFiltered ?? resultData?.recordsTotal;
+        this.totalPages = Math.ceil(this.count / this.pageSize);
+        this._currentChildAPIBody.count = this.count;
 
         this._data = {
           ...this._data,
           rows: resultData?.data || []
         };
-
-        this.handleResultTabData.emit(this._data);
+        this.searchByTable = true;
+        this.handleResultTabData.emit(this._data.rows);
         this.handleSetLoading.emit(false);
         window.scrollTo(0, scrollTop);
       },
@@ -242,37 +268,49 @@ export class GppdDbComponent implements OnChanges {
     });
   }
 
-  clear() {
-    this.filterConfigs = this.filterConfigs.map(config => {
-      let defaultLabel = '';
-      switch (config.key) {
-        case 'company': defaultLabel = 'All Company'; break;
-        case 'country': defaultLabel = 'All Country'; break;
-      }
-      return { ...config, label: defaultLabel, dropdownState: false };
-    });
 
-    this.gppdApiBody.filters = {};
-    this._currentChildAPIBody = {
-      ...this.gppdApiBody,
-      filters: {}
-    };
 
-    this.handleSetLoading.emit(true);
-    this.mainSearchService.gppdDbSearchSpecific(this._currentChildAPIBody).subscribe({
-      next: (res) => {
-        this._currentChildAPIBody.count = res?.data?.recordsTotal;
-        this._data.rows = res?.data?.data || [];
-        this.handleResultTabData.emit(this._data);
-        this.handleSetLoading.emit(false);
-      },
-      error: (err) => {
-        console.error(err);
-        this._currentChildAPIBody.filter_enable = false;
-        this.handleSetLoading.emit(false);
-      }
-    });
+ clear() {
+  // Reset filter labels
+  this.filterConfigs = this.filterConfigs.map(config => {
+    let defaultLabel = '';
+    switch (config.key) {
+      case 'company': defaultLabel = 'All Company'; break;
+      case 'country': defaultLabel = 'All Country'; break;
+    }
+    return { ...config, label: defaultLabel, dropdownState: false };
+  });
 
-    window.scrollTo(0, 0);
-  }
+  // Clear filters
+  this.gppdApiBody.filters = {};
+
+  // Reset page number and start
+  this._currentChildAPIBody = {
+    ...this.gppdApiBody,
+    filters: {},
+    page_no: 1,
+    start: 0
+  };
+
+  this.handleSetLoading.emit(true);
+  this.mainSearchService.gppdDbSearchSpecific(this._currentChildAPIBody).subscribe({
+    next: (res) => {
+      this._currentChildAPIBody.count = res?.data?.recordsTotal;
+      this._data.rows = res?.data?.data || [];
+      this.count = this._currentChildAPIBody.count;
+      this.totalPages = Math.ceil(this.count / this.pageSize); // Recalculate pagination
+      this.searchByTable = false;
+      this.handleResultTabData.emit(this._data.rows);
+      this.handleSetLoading.emit(false);
+    },
+    error: (err) => {
+      console.error(err);
+      this._currentChildAPIBody.filter_enable = false;
+      this.handleSetLoading.emit(false);
+    }
+  });
+
+  window.scrollTo(0, 0);
+}
+
 }

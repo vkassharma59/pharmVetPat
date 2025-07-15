@@ -118,13 +118,12 @@ export class DmfComponent {
       console.warn("⚠️ No column list found in currentChildAPIBody");
     }
   }
-
-
-  ngOnInit(): void {
+ngOnInit(): void {
     this.dmfApiBody = { ...this.currentChildAPIBody };
     this.dmfApiBody.filters = this.dmfApiBody.filters || {};
     this.handleFetchFilters();
   }
+
   onFilterButtonClick(filterKey: string) {
 
     this.lastClickedFilterKey = filterKey;
@@ -164,6 +163,7 @@ export class DmfComponent {
       error: (err) => {
         console.error('Error fetching dmf filters:', err);
         this.dmfApiBody.filter_enable = false;
+
 
       }
     });

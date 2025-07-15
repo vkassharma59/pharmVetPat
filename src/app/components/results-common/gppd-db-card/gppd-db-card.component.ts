@@ -311,7 +311,6 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     if (!isNaN(storedLimit) && storedLimit > 0) {
       return storedLimit;
     }
-
     // Step 3: Default fallback
     return 500;
   }
@@ -335,8 +334,6 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
       })
     );
   }
-
-
 
   downloadPDF() {
     const doc = new jsPDF();
