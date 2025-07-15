@@ -228,13 +228,6 @@ export class EximComponent implements OnChanges {
         const ImporterFilters = getUnique(hcData.map(item => item?.importer_name));
         console.log('All CHAPTER values:', hcData.map(item => item?.CHAPTER));
 
-        console.log("-------y------", yearmonthFilters)
-        console.log("-------t------", typeFilters)
-        console.log("-------o------", orderFilters)
-        console.log("-------chapter------", chapterFilters)
-        console.log("-------e------", exporterFilters)
-        console.log("-------i------", ImporterFilters)
-
         this.eximFilters = {
           chapterFilters: chapterFilters.map(value => ({ name: value, value })),
           typeFilters: typeFilters.map(value => ({ name: value, value })),
@@ -269,10 +262,30 @@ export class EximComponent implements OnChanges {
       this.eximApiBody.filters[filterKey] = value;
       this.setFilterLabel(filterKey, name || '');
     }
+    // ✅ Close dropdowns
+    this.filterConfigs = this.filterConfigs.map(item => ({
+      ...item,
+      dropdownState: false
+    }));
+  
+    // ✅ Maintain columns array properly
+    const existingColumns = this._currentChildAPIBody.columns || [];
 
+    const updatedColumns = existingColumns.filter((col: any) => col.data !== filterKey);
+
+    if (value) {
+      updatedColumns.push({
+        data: filterKey,
+        searchable: 'true',
+        search: {
+          value: value
+        }
+      });
+    }
     this._currentChildAPIBody = {
       ...this.eximApiBody,
-      filters: { ...this.eximApiBody.filters }
+       columns: updatedColumns,
+      draw: 1
     };
 
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -280,12 +293,16 @@ export class EximComponent implements OnChanges {
     this.mainSearchService.EximDataSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         let resultData = res?.data || {};
-        this._currentChildAPIBody = {
-          ...this._currentChildAPIBody,
-          count: resultData?.recordsTotal
-        };
+        this.count = resultData?.recordsFiltered ?? resultData?.recordsTotal;
+        this.totalPages = Math.ceil(this.count / this.pageSize);
+        this._currentChildAPIBody.count = this.count;
 
-        this.handleResultTabData.emit(resultData);
+        this._data = {
+          ...this._data,
+          rows: resultData?.data || []
+        };
+        this.searchByTable = true;
+        this.handleResultTabData.emit(this._data.rows);
         this.handleSetLoading.emit(false);
         window.scrollTo(0, scrollTop);
       },

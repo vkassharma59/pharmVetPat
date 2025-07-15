@@ -115,6 +115,11 @@ export class DmfComponent {
       console.warn("⚠️ No column list found in currentChildAPIBody");
     }
   }
+ngOnInit(): void {
+    this.dmfApiBody = { ...this.currentChildAPIBody };
+    this.dmfApiBody.filters = this.dmfApiBody.filters || {};
+    this.handleFetchFilters();
+  }
 
   onFilterButtonClick(filterKey: string) {
   
@@ -170,12 +175,7 @@ handleFetchFilters() {
   });
 }
 
-  ngOnInit(): void {
-    this.dmfApiBody = { ...this.currentChildAPIBody };
-    this.dmfApiBody.filters = this.dmfApiBody.filters || {};
-    this.handleFetchFilters();
-  }
-
+  
 
   setFilterLabel(filterKey: string, label: string) {
     this.filterConfigs = this.filterConfigs.map((item) => {
