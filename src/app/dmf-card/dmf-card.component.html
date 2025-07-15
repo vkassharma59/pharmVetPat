@@ -5,14 +5,14 @@
         </div>
     </div>
     <div class="card body" style="background-color:#f8faff;">
-        <div class="pb-3 mb-3 px-2 rounded-lg">
+        <div class="pb-3 mb-3 px-2 rounded-lg" style="margin-top: 1rem;">
             <div class="row">
 
                 <!-- Column 1 -->
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
 
                     <!-- GBRN -->
-                    <div *ngIf="_data?.gbrn">
+                    <div *ngIf="_data?.gbrn" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('gbrn') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -36,7 +36,7 @@
                     </div>
 
                     <!-- DMF Holder -->
-                    <div *ngIf="_data?.dmf_holder">
+                    <div *ngIf="_data?.dmf_holder" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('dmf_holder') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -48,7 +48,7 @@
                     </div>
 
                     <!-- Active Ingredient -->
-                    <div *ngIf="_data?.active_ingredient">
+                    <div *ngIf="_data?.active_ingredient" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('active_ingredient') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -61,7 +61,7 @@
                 </div>
                 <!-- Trade Name -->
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                    <div *ngIf="_data?.trade_name">
+                    <div *ngIf="_data?.trade_name" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('trade_name') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -73,7 +73,7 @@
                     </div>
 
                     <!-- Alternate Name -->
-                    <div *ngIf="_data?.alternate_name">
+                    <div *ngIf="_data?.alternate_name" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('alternate_name') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -85,7 +85,7 @@
                     </div>
 
                     <!-- Type of Product -->
-                    <div *ngIf="_data?.type_of_product">
+                    <div *ngIf="_data?.type_of_product" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('type_of_product') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -97,7 +97,7 @@
                     </div>
 
                     <!-- Country -->
-                    <div *ngIf="_data?.country_dmf_holder">
+                    <div *ngIf="_data?.country_dmf_holder" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('country_dmf_holder') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -114,7 +114,7 @@
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
 
                     <!-- DMF Type -->
-                    <div *ngIf="_data?.dmf_type">
+                    <div *ngIf="_data?.dmf_type"style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('dmf_type') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -126,7 +126,7 @@
                     </div>
 
                     <!-- DMF Number -->
-                    <div *ngIf="_data?.dmf_or_asmf_number">
+                    <div *ngIf="_data?.dmf_or_asmf_number" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('dmf_or_asmf_number') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -138,7 +138,7 @@
                     </div>
 
                     <!-- Filled Date -->
-                    <div *ngIf="_data?.dmf_or_asmf_filled_date">
+                    <div *ngIf="_data?.dmf_or_asmf_filled_date" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('dmf_or_asmf_filled_date') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -150,7 +150,7 @@
                     </div>
 
                     <!-- DMF Status -->
-                    <div *ngIf="_data?.dmf_status">
+                    <div *ngIf="_data?.dmf_status"style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('dmf_status') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
