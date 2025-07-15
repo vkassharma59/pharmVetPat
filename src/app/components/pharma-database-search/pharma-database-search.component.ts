@@ -210,6 +210,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   selectDevStage(stage: string) {
     this.advanceSearch.devStage = stage;
     this.showDevStageDropdown = false;
+
   }
 
   selectInnovator(name: string) {
@@ -458,6 +459,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       case searchTypes.simpleSearch:
         this.simpleSearch.keyword = value;
         this.simpleSearch.autosuggestionList = [];
+        this.checkPriviledgeAndHandleSearch(this.searchTypes.simpleSearch)
         setTimeout(() => {
           this.simpleSearchkeywordInput.nativeElement.focus();
         }, 0);
@@ -465,6 +467,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       case searchTypes.chemicalStructure:
         this.chemicalStructure.keyword = value;
         this.chemicalStructure.autosuggestionList = [];
+         this.checkPriviledgeAndHandleSearch(this.searchTypes.chemicalStructure)
         setTimeout(() => {
           this.chemicalStructureKeywordInput.nativeElement.focus();
         }, 0);
@@ -472,6 +475,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       case searchTypes.synthesisSearch:
         this.synthesisSearch.keyword = value;
         this.synthesisSearch.autosuggestionList = [];
+        this.checkPriviledgeAndHandleSearch(this.searchTypes.synthesisSearch)
         setTimeout(() => {
           this.synthesisSearchkeywordInput.nativeElement.focus();
         }, 0);
@@ -479,6 +483,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       case searchTypes.intermediateSearch:
         this.intermediateSearch.keyword = value;
         this.intermediateSearch.autosuggestionList = [];
+          this.checkPriviledgeAndHandleSearch(this.searchTypes.intermediateSearch)
         setTimeout(() => {
           this.intermediateSearchKeywordInput.nativeElement.focus();
         }, 0);
