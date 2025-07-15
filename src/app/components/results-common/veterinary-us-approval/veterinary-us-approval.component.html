@@ -104,7 +104,7 @@
 
 <ng-container *ngIf="_data.length > 0; else noData">
   <ng-container *ngFor="let dataItem of _data; let i = index">
-    <app-veterinary-us-approval-card class="card" [data]="dataItem"></app-veterinary-us-approval-card>
+    <app-veterinary-us-approval-card (handleChangeTabData)="handleResultTabData.emit($event)" class="card" [data]="dataItem"></app-veterinary-us-approval-card>
   </ng-container>
 
   <app-child-paging

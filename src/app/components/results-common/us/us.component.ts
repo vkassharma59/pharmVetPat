@@ -232,16 +232,12 @@ export class UsComponent {
 
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    this.mainSearchService.usApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
+    this.mainSearchService.canadaApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         let resultData = res?.data || {};
-        const sortValue = this.usApiBody.filters['order_by'];
-
-        resultData.orange_book_us_data = this.sortPatentData(resultData.orange_book_us_data, sortValue);
-
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
-          count: resultData?.orange_book_us_count
+          count: resultData?.health_canada_count
         };
 
         this.handleResultTabData.emit(resultData);
