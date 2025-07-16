@@ -89,10 +89,10 @@ export class EximComponent implements OnChanges {
       dropdownState: false
     },
     {
-      key: 'order',
-      label: 'Sort By',
-      dataKey: 'orderFilters',
-      filterType: 'order',
+      key: 'order_by',
+      label: 'Order By',
+      dataKey: 'orderByFilters',
+      filterType: 'order_by',
       dropdownState: false
     },
     {
@@ -193,7 +193,7 @@ export class EximComponent implements OnChanges {
             case 'yearmonth': label = 'All Year-Month'; break;
             case 'exporter_name': label = 'All Exporter'; break;
             case 'importer_name': label = 'All Importer'; break;
-            case 'order': label = 'Sort By'; break;
+            case 'order_by': label = 'Order By'; break;
           }
         }
         return { ...item, label: label };
@@ -222,21 +222,21 @@ export class EximComponent implements OnChanges {
 
         const chapterFilters = hcData.map(item => item?.CHAPTER);
         const typeFilters = getUnique(hcData.map(item => item?.TYPE));
-        const orderFilters = getUnique(hcData.map(item => item?.order));
         const yearmonthFilters = getUnique(hcData.map(item => item?.yearmonth));
         const exporterFilters = getUnique(hcData.map(item => item?.exporter_name));
         const ImporterFilters = getUnique(hcData.map(item => item?.importer_name));
+        const orderFilters = ['Latest First', 'Oldest First'];
+
         console.log('All CHAPTER values:', hcData.map(item => item?.CHAPTER));
 
         this.eximFilters = {
           chapterFilters: chapterFilters.map(value => ({ name: value, value })),
           typeFilters: typeFilters.map(value => ({ name: value, value })),
-          orderFilters: orderFilters.map(value => ({ name: value, value })),
+          orderByFilters: orderFilters.map(value => ({ name: value, value })),
           yearmonthFilters: yearmonthFilters.map(value => ({ name: value, value })),
           exporterFilters: exporterFilters.map(value => ({ name: value, value })),
           ImporterFilters: ImporterFilters.map(value => ({ name: value, value }))
         };
-
 
         this.eximApiBody.filter_enable = false;
 
@@ -267,92 +267,106 @@ export class EximComponent implements OnChanges {
       ...item,
       dropdownState: false
     }));
-  
+
     // ✅ Maintain columns array properly
     const existingColumns = this._currentChildAPIBody.columns || [];
 
     const updatedColumns = existingColumns.filter((col: any) => col.data !== filterKey);
+    if (filterKey === 'order') {
+      const orderDataKey = value.split('_')[0];
+      const dir = value.endsWith('desc') ? 'desc' : 'asc';
 
-    if (value) {
-      updatedColumns.push({
-        data: filterKey,
-        searchable: 'true',
-        search: {
-          value: value
+      const orderColumnIndex = updatedColumns.findIndex(col => col.data === orderDataKey);
+
+      if (value) {
+        updatedColumns.push({
+          data: filterKey,
+          searchable: 'true',
+          search: {
+            value: value
+          }
+        });
+      }
+      this._currentChildAPIBody = {
+        ...this.eximApiBody,
+        filters: { ...this.eximApiBody.filters },
+        columns: updatedColumns,
+        order: [
+          {
+            column: 0,  // numeric index of the column you want to sort
+            dir: 'asc'                 // or 'desc'
+          }
+        ],
+
+        draw: 1
+      };
+    }
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+      this.mainSearchService.EximDataSearchSpecific(this._currentChildAPIBody).subscribe({
+        next: (res) => {
+          let resultData = res?.data || {};
+          this.count = resultData?.recordsFiltered ?? resultData?.recordsTotal;
+          this.totalPages = Math.ceil(this.count / this.pageSize);
+          this._currentChildAPIBody.count = this.count;
+
+          this._data = {
+            ...this._data,
+            rows: resultData?.data || []
+          };
+          this.searchByTable = true;
+          this.handleResultTabData.emit(this._data.rows);
+          this.handleSetLoading.emit(false);
+          window.scrollTo(0, scrollTop);
+        },
+        error: () => {
+          this._currentChildAPIBody.filter_enable = false;
+          this.handleSetLoading.emit(false);
+          window.scrollTo(0, scrollTop);
         }
       });
     }
-    this._currentChildAPIBody = {
-      ...this.eximApiBody,
-       columns: updatedColumns,
-      draw: 1
-    };
 
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    this.mainSearchService.EximDataSearchSpecific(this._currentChildAPIBody).subscribe({
-      next: (res) => {
-        let resultData = res?.data || {};
-        this.count = resultData?.recordsFiltered ?? resultData?.recordsTotal;
-        this.totalPages = Math.ceil(this.count / this.pageSize);
-        this._currentChildAPIBody.count = this.count;
+    clear() {
+      this.filterConfigs = this.filterConfigs.map(config => {
+        let defaultLabel = '';
+        switch (config.key) {
+          case 'CHAPTER': defaultLabel = 'All Chapter'; break;
+          case 'TYPE': defaultLabel = 'All Type'; break;
+          case 'yearmonth': defaultLabel = 'All Year-Month'; break;
+          case 'exporter_name': defaultLabel = 'All Exporter'; break;
+          case 'importer_name': defaultLabel = 'All Importer'; break;
+          case 'order': defaultLabel = 'Sort By'; break;
+        }
+        return { ...config, label: defaultLabel, dropdownState: false };
+      });
 
-        this._data = {
-          ...this._data,
-          rows: resultData?.data || []
-        };
-        this.searchByTable = true;
-        this.handleResultTabData.emit(this._data.rows);
-        this.handleSetLoading.emit(false);
-        window.scrollTo(0, scrollTop);
-      },
-      error: () => {
-        this._currentChildAPIBody.filter_enable = false;
-        this.handleSetLoading.emit(false);
-        window.scrollTo(0, scrollTop);
-      }
-    });
+      this.eximApiBody.filters = {};
+      this._currentChildAPIBody = {
+        ...this.eximApiBody,
+        filters: {}
+      };
+
+      this.handleSetLoading.emit(true);
+      this.mainSearchService.EximDataSearchSpecific(this._currentChildAPIBody).subscribe({
+        next: (res) => {
+     this._currentChildAPIBody.count = res?.data?.recordsTotal;
+      this._data.rows = res?.data?.data || [];
+      this.count = this._currentChildAPIBody.count;
+      this.totalPages = Math.ceil(this.count / this.pageSize); // Recalculate pagination
+      this.searchByTable = false;
+      this.handleResultTabData.emit(this._data.rows);
+     this.handleSetLoading.emit(false);
+        },
+        error: (err) => {
+          console.error(err);
+          this._currentChildAPIBody.filter_enable = false;
+          this.handleSetLoading.emit(false);
+        }
+      });
+
+      window.scrollTo(0, 0);
+    }
+
   }
-
-
-  clear() {
-    this.filterConfigs = this.filterConfigs.map(config => {
-      let defaultLabel = '';
-      switch (config.key) {
-        case 'CHAPTER': defaultLabel = 'All Chapter'; break;
-        case 'TYPE': defaultLabel = 'All Type'; break;
-        case 'yearmonth': defaultLabel = 'All Year-Month'; break;
-        case 'exporter_name': defaultLabel = 'All Exporter'; break;
-        case 'importer_name': defaultLabel = 'All Importer'; break;
-        case 'order': defaultLabel = 'Sort By'; break;
-      }
-      return { ...config, label: defaultLabel, dropdownState: false };
-    });
-
-    this.eximApiBody.filters = {};
-    this._currentChildAPIBody = {
-      ...this.eximApiBody,
-      filters: {}
-    };
-
-    this.handleSetLoading.emit(true);
-    this.mainSearchService.EximDataSearchSpecific(this._currentChildAPIBody).subscribe({
-      next: (res) => {
-        this._currentChildAPIBody = {
-          ...this._currentChildAPIBody,
-          count: res?.data?.recordsTotal
-        };
-        this.handleResultTabData.emit(res.data);
-        this.handleSetLoading.emit(false);
-      },
-      error: (err) => {
-        console.error(err);
-        this._currentChildAPIBody.filter_enable = false;
-        this.handleSetLoading.emit(false);
-      }
-    });
-
-    window.scrollTo(0, 0);
-  }
-
-}

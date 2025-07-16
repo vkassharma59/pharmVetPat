@@ -134,6 +134,7 @@ export class ImpComponent {
 
         this.impPatentFilters.productFilters = res?.data?.product || [];
         this.impPatentFilters.orderByFilters = res?.data?.order_by || [];
+        console.log('📦 Raw patent_type data:', res?.data?.order_by);
 
         this.impPatentFilters.patentTypeFilters = Array.isArray(res?.data?.patent_type)
           ? res.data.patent_type.map((item: any) => ({

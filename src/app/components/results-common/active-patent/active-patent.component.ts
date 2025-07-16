@@ -75,14 +75,14 @@ export class ActivePatentComponent implements OnChanges {
     this.handleResultTabData.emit(this._data);
   }
   ngOnInit(): void {
-    console.log('get data called',this._data);
-   this.activePatentApiBody = { ...this.currentChildAPIBody };
-   this.activePatentApiBody.filters = this.activePatentApiBody.filters || {};
- 
-   console.log('[ngOnInit] Initial vetenaryusApiBody:', JSON.stringify(this.activePatentApiBody, null, 2));
- 
-   this.handleFetchFilters();
- }
+    console.log('get data called', this._data);
+    this.activePatentApiBody = { ...this.currentChildAPIBody };
+    this.activePatentApiBody.filters = this.activePatentApiBody.filters || {};
+
+    console.log('[ngOnInit] Initial vetenaryusApiBody:', JSON.stringify(this.activePatentApiBody, null, 2));
+
+    this.handleFetchFilters();
+  }
   onDataFetchRequest(payload: any) {
     this.isFilterApplied = !!(payload?.search || payload?.columns);
 
@@ -180,28 +180,28 @@ export class ActivePatentComponent implements OnChanges {
 
   handleFetchFilters() {
     console.log('[handleFetchFilters] Fetching filters...');
-  
+
     this.activePatentApiBody.filter_enable = true;
     console.log('[handleFetchFilters] API Body before request:', this.activePatentApiBody);
-  
+
     this.mainSearchService.activePatentSearchSpecific(this.activePatentApiBody).subscribe({
       next: (res: any) => {
         console.log('[handleFetchFilters] API Response:', res);
-  
+
         const hcData = res?.data?.data || [];
         console.log('[handleFetchFilters] Extracted green_book_us_data:', hcData);
-  
+
         const getUnique = (arr: any[]) => [...new Set(arr.filter(v => !!v && typeof v === 'string' && v.trim().length > 0))];
-  
+
         const order = ['Latest First', 'Oldest First']; // Static sort options
         const patentFilters = getUnique(hcData.map(item => item.patent_type));
         console.log('[handleFetchFilters] Unique patent types:', patentFilters);
-  
+
         this.activePatentFilters = {
           order,
           patentFilters
         };
-  
+
         this.activePatentApiBody.filter_enable = false;
         console.log('[handleFetchFilters] Filter options set:', this.activePatentFilters);
       },
@@ -211,7 +211,7 @@ export class ActivePatentComponent implements OnChanges {
       }
     });
   }
-  
+
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     this.handleSetLoading.emit(true);
@@ -230,10 +230,27 @@ export class ActivePatentComponent implements OnChanges {
       ...item,
       dropdownState: item.key === filterKey ? false : item.dropdownState
     }));
+    const existingColumns = this._currentChildAPIBody.columns || [];
+
+    const updatedColumns = existingColumns.filter((col: any) => col.data !== filterKey);
+
+    if (value) {
+      updatedColumns.push({
+        data: filterKey,
+        searchable: 'true',
+        search: {
+          value: value
+        }
+      });
+    }
 
     this._currentChildAPIBody = {
       ...this.activePatentApiBody,
-      filters: { ...this.activePatentApiBody.filters }
+      filters: { ...this.activePatentApiBody.filters },
+      columns: updatedColumns,
+      draw: 1,
+      start: 0,
+      pageno: 1,
     };
 
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -241,11 +258,15 @@ export class ActivePatentComponent implements OnChanges {
     this.mainSearchService.activePatentSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         const resultData = res?.data || {};
-        this._currentChildAPIBody = {
-          ...this._currentChildAPIBody,
-          count: resultData?.green_book_us_count
+        this.count = resultData?.recordsFiltered ?? resultData?.recordsTotal;
+        this.totalPages = Math.ceil(this.count / this.pageSize);
+        this._currentChildAPIBody.count = this.count;
+        this._data = {
+          ...this._data,
+          rows: resultData?.data || []
         };
-        this.handleResultTabData.emit(resultData);
+        this.searchByTable = true;
+        this.handleResultTabData.emit(this._data.rows);
         this.handleSetLoading.emit(false);
         window.scrollTo(0, scrollTop);
       },
@@ -276,12 +297,13 @@ export class ActivePatentComponent implements OnChanges {
     this.handleSetLoading.emit(true);
     this.mainSearchService.activePatentSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
-        this._currentChildAPIBody = {
-          ...this._currentChildAPIBody,
-          count: res?.data?.green_book_us_count
-        };
-        this.handleResultTabData.emit(res.data);
-        this.handleSetLoading.emit(false);
+         this._currentChildAPIBody.count = res?.data?.recordsTotal;
+      this._data.rows = res?.data?.data || [];
+      this.count = this._currentChildAPIBody.count;
+      this.totalPages = Math.ceil(this.count / this.pageSize); // Recalculate pagination
+      this.searchByTable = false;
+      this.handleResultTabData.emit(this._data.rows);
+     this.handleSetLoading.emit(false);
       },
       error: (err) => {
         console.error(err);

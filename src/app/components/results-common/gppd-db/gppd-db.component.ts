@@ -235,7 +235,8 @@ export class GppdDbComponent implements OnChanges {
     }
 
     this._currentChildAPIBody = {
-      ...this.gppdApiBody,
+    ...this.gppdApiBody,
+     filters: { ...this.gppdApiBody.filters },
       columns: updatedColumns,
       draw: 1
     };
@@ -294,6 +295,7 @@ export class GppdDbComponent implements OnChanges {
 
   this.handleSetLoading.emit(true);
   this.mainSearchService.gppdDbSearchSpecific(this._currentChildAPIBody).subscribe({
+
     next: (res) => {
       this._currentChildAPIBody.count = res?.data?.recordsTotal;
       this._data.rows = res?.data?.data || [];
