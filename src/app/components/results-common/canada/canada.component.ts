@@ -153,10 +153,7 @@ export class CanadaComponent implements OnInit {
         const strengthFilters = getUnique(hcData.map(item => item.strength));
         const companyFiltersRaw = getUnique(hcData.map(item => item.company));
         const dosageFilters = getUnique(hcData.map(item => item.dosage_forms));
-        console.log("23425435647d",dosageFilters)
-        console.log("-------s------",strengthFilters)
-        console.log("-------c------",companyFiltersRaw)
-        console.log("-------p------",productFilters)
+       
   
         this.canadaPatentFilters = {
           productFilters,

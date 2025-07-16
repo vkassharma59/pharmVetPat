@@ -247,10 +247,13 @@ export class NonPatentComponent implements OnChanges {
     }
     this._currentChildAPIBody = {
       ...this.nonPatentApiBody,
+      filters: { ...this.nonPatentApiBody.filters },
       columns: updatedColumns,
-      draw: 1
-    };
+      draw: 1, start: 0,
+      pageno: 1,
 
+    };
+    console.log('Updated _currentChildAPIBody:', this._currentChildAPIBody);
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
     this.mainSearchService.NonPatentSearchSpecific(this._currentChildAPIBody).subscribe({
@@ -295,11 +298,12 @@ export class NonPatentComponent implements OnChanges {
     this.handleSetLoading.emit(true);
     this.mainSearchService.NonPatentSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
-        this._currentChildAPIBody = {
-          ...this._currentChildAPIBody,
-          count: res?.data?.recordsTotal
-        };
-        this.handleResultTabData.emit(res.data);
+        this._currentChildAPIBody.count = res?.data?.recordsTotal;
+        this._data.rows = res?.data?.data || [];
+        this.count = this._currentChildAPIBody.count;
+        this.totalPages = Math.ceil(this.count / this.pageSize); // Recalculate pagination
+        this.searchByTable = false;
+        this.handleResultTabData.emit(this._data.rows);
         this.handleSetLoading.emit(false);
       },
       error: (err) => {
