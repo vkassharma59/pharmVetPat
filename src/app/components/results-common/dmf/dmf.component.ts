@@ -22,6 +22,8 @@ export class DmfComponent {
   _currentChildAPIBody: any;
   searchThrough: string = '';
   resultTabs: any = {};
+  searchByTable: boolean = false;
+
   _data: any = [];
   @Input()
   get data() {
@@ -198,7 +200,12 @@ ngOnInit(): void {
       this.dmfApiBody.filters[filterKey] = value;
       this.setFilterLabel(filterKey, name || '');
     }
-  
+     // ✅ Close dropdowns
+    this.filterConfigs = this.filterConfigs.map(item => ({
+      ...item,
+      dropdownState: false
+    }));
+
     // Log constructed filter object
     console.log('📦 Final Filters:', this.dmfApiBody.filters);
   
@@ -228,7 +235,8 @@ ngOnInit(): void {
         };
   
         this.cdr.detectChanges(); // ✅ ensure view updates
-  
+
+        this.searchByTable = true; // ✅ Set searchByTable to tru
         // ✅ Emit updated data to parent (optional)
         this.handleResultTabData.emit(this._data);
         this.handleSetLoading.emit(false);
@@ -262,8 +270,6 @@ ngOnInit(): void {
   }
 
   clear() {
-
-
     this.filterConfigs = this.filterConfigs.map(config => {
       let defaultLabel = '';
       switch (config.key) {
@@ -288,6 +294,7 @@ ngOnInit(): void {
           ...this._currentChildAPIBody,
           count: res?.data?.tech_supplier_count
         };
+        this.searchByTable = true;
         this.handleResultTabData.emit(res.data);
         this.handleSetLoading.emit(false);
       },

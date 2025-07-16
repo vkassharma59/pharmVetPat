@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 })
 export class DmfCardComponent {
   _data: any = [];
+  noMatchingData: boolean = false;
   MoreInfo: boolean = false;
   pageNo: number = 1;
   dmf_column: Record<string, string> = {};
@@ -28,15 +29,18 @@ export class DmfCardComponent {
 
   }
 
+
+  
   @Input()
   get data() {
     return this._data;
   }
 
   set data(value: any) {
-    
+ 
 
     if (value && Object.keys(value).length > 0) {
+     // this.noMatchingData = false;
       DmfCardComponent.apiCallCount++;
       this.localCount = DmfCardComponent.apiCallCount;
       this.resultTabs = this.utilityService.getAllTabsName();
@@ -52,6 +56,8 @@ export class DmfCardComponent {
       this._data = value;
     } else {
       console.warn('[DmfCardComponent] ⚠️ No valid data received.');
+    //  this.noMatchingData = true;
+    // this._data = [];
     }
   }
 
@@ -64,6 +70,7 @@ export class DmfCardComponent {
     const list = this._data?.tech_supplier_data ?? [];
     return list;
   }
+
 
   ngOnInit() {
     if (DmfCardComponent.apiCallCount === 0) {
