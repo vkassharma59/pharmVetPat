@@ -1,5 +1,4 @@
  <ng-container *ngIf="(_data?.length ?? 0) > 0 || searchByTable; else noData">
-
   <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper justify-between">
     <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
       Total Records : {{ currentChildAPIBody?.count }}
@@ -39,12 +38,12 @@
       <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
         <span
           class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-normal h-[37px] flex justify-center items-center">
-          Sub Route
-          {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
+         Sub Route {{ getSubRouteNumber(i) }}
+
         </span>
       </div>
     </div>
-    <app-dmf-card [data]="dataItem"></app-dmf-card>
+    <app-dmf-card (handleChangeTabData)="handleResultTabData.emit($event)" [data]="dataItem"></app-dmf-card>
   </ng-container>
   <!-- <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"
       (handleChangeTabData)="handleResultTabData.emit($event)"
