@@ -1496,6 +1496,7 @@ export class SearchResultsComponent {
     this.childApiBody[resultTabData.index][this.resultTabs.nonPatentLandscape.name] = {
       api_url: this.apiUrls.nonPatentLandscape.searchSpecific,
       keyword: resultTabData?.searchWithValue,
+      search_type: resultTabData?.searchWith,
       draw: 1,
       page_no: 1,
       start: (page_no - 1) * pageSize,

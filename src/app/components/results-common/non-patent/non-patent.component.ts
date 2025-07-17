@@ -131,10 +131,10 @@ export class NonPatentComponent implements OnChanges {
       dropdownState: false
     },
     {
-      key: 'concepts',
+      key: "concepts",
       label: 'View All Non Patent Concepts',
       dataKey: 'conceptFilters',
-      filterType: 'concepts',
+      filterType: "concepts",
       dropdownState: false
     }
   ];
@@ -251,7 +251,6 @@ export class NonPatentComponent implements OnChanges {
       columns: updatedColumns,
       draw: 1, start: 0,
       pageno: 1,
-
     };
     console.log('Updated _currentChildAPIBody:', this._currentChildAPIBody);
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -259,6 +258,8 @@ export class NonPatentComponent implements OnChanges {
     this.mainSearchService.NonPatentSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         const resultData = res?.data || {};
+        console.log('res data:', res.data);
+
         this.count = resultData?.recordsFiltered ?? resultData?.recordsTotal;
         this.totalPages = Math.ceil(this.count / this.pageSize);
         this._currentChildAPIBody.count = this.count;
