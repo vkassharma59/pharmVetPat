@@ -297,76 +297,77 @@ export class EximComponent implements OnChanges {
             dir: 'asc'                 // or 'desc'
           }
         ],
-
         draw: 1
       };
     }
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    console.log('All CHAPTER values:', this._currentChildAPIBody);
 
-      this.mainSearchService.EximDataSearchSpecific(this._currentChildAPIBody).subscribe({
-        next: (res) => {
-          let resultData = res?.data || {};
-          this.count = resultData?.recordsFiltered ?? resultData?.recordsTotal;
-          this.totalPages = Math.ceil(this.count / this.pageSize);
-          this._currentChildAPIBody.count = this.count;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-          this._data = {
-            ...this._data,
-            rows: resultData?.data || []
-          };
-          this.searchByTable = true;
-          this.handleResultTabData.emit(this._data.rows);
-          this.handleSetLoading.emit(false);
-          window.scrollTo(0, scrollTop);
-        },
-        error: () => {
-          this._currentChildAPIBody.filter_enable = false;
-          this.handleSetLoading.emit(false);
-          window.scrollTo(0, scrollTop);
-        }
-      });
-    }
+    this.mainSearchService.EximDataSearchSpecific(this._currentChildAPIBody).subscribe({
+      next: (res) => {
+        let resultData = res?.data || {};
+        this.count = resultData?.recordsFiltered ?? resultData?.recordsTotal;
+        this.totalPages = Math.ceil(this.count / this.pageSize);
+        this._currentChildAPIBody.count = this.count;
 
-
-    clear() {
-      this.filterConfigs = this.filterConfigs.map(config => {
-        let defaultLabel = '';
-        switch (config.key) {
-          case 'CHAPTER': defaultLabel = 'All Chapter'; break;
-          case 'TYPE': defaultLabel = 'All Type'; break;
-          case 'yearmonth': defaultLabel = 'All Year-Month'; break;
-          case 'exporter_name': defaultLabel = 'All Exporter'; break;
-          case 'importer_name': defaultLabel = 'All Importer'; break;
-          case 'order': defaultLabel = 'Sort By'; break;
-        }
-        return { ...config, label: defaultLabel, dropdownState: false };
-      });
-
-      this.eximApiBody.filters = {};
-      this._currentChildAPIBody = {
-        ...this.eximApiBody,
-        filters: {}
-      };
-
-      this.handleSetLoading.emit(true);
-      this.mainSearchService.EximDataSearchSpecific(this._currentChildAPIBody).subscribe({
-        next: (res) => {
-     this._currentChildAPIBody.count = res?.data?.recordsTotal;
-      this._data.rows = res?.data?.data || [];
-      this.count = this._currentChildAPIBody.count;
-      this.totalPages = Math.ceil(this.count / this.pageSize); // Recalculate pagination
-      this.searchByTable = false;
-      this.handleResultTabData.emit(this._data.rows);
-     this.handleSetLoading.emit(false);
-        },
-        error: (err) => {
-          console.error(err);
-          this._currentChildAPIBody.filter_enable = false;
-          this.handleSetLoading.emit(false);
-        }
-      });
-
-      window.scrollTo(0, 0);
-    }
-
+        this._data = {
+          ...this._data,
+          rows: resultData?.data || []
+        };
+        this.searchByTable = true;
+        this.handleResultTabData.emit(this._data.rows);
+        this.handleSetLoading.emit(false);
+        window.scrollTo(0, scrollTop);
+      },
+      error: () => {
+        this._currentChildAPIBody.filter_enable = false;
+        this.handleSetLoading.emit(false);
+        window.scrollTo(0, scrollTop);
+      }
+    });
   }
+
+
+  clear() {
+    this.filterConfigs = this.filterConfigs.map(config => {
+      let defaultLabel = '';
+      switch (config.key) {
+        case 'CHAPTER': defaultLabel = 'All Chapter'; break;
+        case 'TYPE': defaultLabel = 'All Type'; break;
+        case 'yearmonth': defaultLabel = 'All Year-Month'; break;
+        case 'exporter_name': defaultLabel = 'All Exporter'; break;
+        case 'importer_name': defaultLabel = 'All Importer'; break;
+        case 'order': defaultLabel = 'Sort By'; break;
+      }
+      return { ...config, label: defaultLabel, dropdownState: false };
+    });
+
+    this.eximApiBody.filters = {};
+    this._currentChildAPIBody = {
+      ...this.eximApiBody,
+      filters: {}
+    };
+
+    this.handleSetLoading.emit(true);
+    this.mainSearchService.EximDataSearchSpecific(this._currentChildAPIBody).subscribe({
+      next: (res) => {
+        this._currentChildAPIBody.count = res?.data?.recordsTotal;
+        this._data.rows = res?.data?.data || [];
+        this.count = this._currentChildAPIBody.count;
+        this.totalPages = Math.ceil(this.count / this.pageSize); // Recalculate pagination
+        this.searchByTable = false;
+        this.handleResultTabData.emit(this._data.rows);
+        this.handleSetLoading.emit(false);
+      },
+      error: (err) => {
+        console.error(err);
+        this._currentChildAPIBody.filter_enable = false;
+        this.handleSetLoading.emit(false);
+      }
+    });
+
+    window.scrollTo(0, 0);
+  }
+
+}
