@@ -194,12 +194,15 @@ export class ActivePatentComponent implements OnChanges {
         const getUnique = (arr: any[]) => [...new Set(arr.filter(v => !!v && typeof v === 'string' && v.trim().length > 0))];
 
         const order = ['Latest First', 'Oldest First']; // Static sort options
-        const patentFilters = getUnique(hcData.map(item => item.patent_type));
-        console.log('[handleFetchFilters] Unique patent types:', patentFilters);
-
+        // const patentFilters = getUnique(hcData.map(item => item.patent_type));
+        //   console.log('[handleFetchFilters] Unique patent types:', patentFilters);
+        const patentFilters = res?.data?.patent_type?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
         this.activePatentFilters = {
           order,
-          patentFilters
+          patentFilters: patentFilters,
         };
 
         this.activePatentApiBody.filter_enable = false;
@@ -247,7 +250,7 @@ export class ActivePatentComponent implements OnChanges {
     this._currentChildAPIBody = {
       ...this.activePatentApiBody,
       filters: { ...this.activePatentApiBody.filters },
-      columns: updatedColumns,
+      // columns: updatedColumns,
       draw: 1,
       start: 0,
       pageno: 1,
@@ -297,13 +300,13 @@ export class ActivePatentComponent implements OnChanges {
     this.handleSetLoading.emit(true);
     this.mainSearchService.activePatentSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
-         this._currentChildAPIBody.count = res?.data?.recordsTotal;
-      this._data.rows = res?.data?.data || [];
-      this.count = this._currentChildAPIBody.count;
-      this.totalPages = Math.ceil(this.count / this.pageSize); // Recalculate pagination
-      this.searchByTable = false;
-      this.handleResultTabData.emit(this._data.rows);
-     this.handleSetLoading.emit(false);
+        this._currentChildAPIBody.count = res?.data?.recordsTotal;
+        this._data.rows = res?.data?.data || [];
+        this.count = this._currentChildAPIBody.count;
+        this.totalPages = Math.ceil(this.count / this.pageSize); // Recalculate pagination
+        this.searchByTable = false;
+        this.handleResultTabData.emit(this._data.rows);
+        this.handleSetLoading.emit(false);
       },
       error: (err) => {
         console.error(err);

@@ -311,8 +311,6 @@ export class SearchResultsComponent {
         } else {
           this.setLoadingState.emit(false);
         }
-        this.performactivePatentSearch(resultTabData);
-        this.performactivePatentSearch(resultTabData);
         break;
       case this.resultTabs?.nonPatentLandscape.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.nonPatentLandscape.name]).length === 0) {
@@ -1341,74 +1339,6 @@ export class SearchResultsComponent {
       },
     });
   }
-  // private performactivePatentSearch(resultTabData: any): void {
-  //   console.log('Search Input:', resultTabData);
-  //   const pageSize = 25;
-  //   const page_no = 1
-  //   if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
-  //     this.allDataSets[resultTabData.index][this.resultTabs.activePatent.name] = {};
-  //     this.setLoadingState.emit(false);
-  //     return;
-  //   }
-
-  //   if (this.childApiBody?.[resultTabData.index]) {
-  //     this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name] = {};
-  //   } else {
-  //     this.childApiBody[resultTabData.index] = {};
-  //   }
-
-  //   // Step 1: Prepare API body
-  //   this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name] = {
-  //     api_url: this.apiUrls.activePatent.searchSpecific,
-  //     keyword: resultTabData?.searchWithValue,
-  //     draw: 1,
-  //     page_no: 1,
-  //     start: (page_no - 1) * pageSize,
-  //     length: pageSize
-  //   };
-  //   console.log('Request Body activePatent:', this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name]);
-  //   // Step 2: Fetch Column List First
-  //   this.columnListService.getColumnList(this.apiUrls.activePatent.columnList).subscribe({
-  //     next: (res: any) => {
-  //       const columnList = res?.data?.columns || [];
-  //       Auth_operations.setColumnList(this.resultTabs.activePatent.name, columnList);
-  //       console.log('get colum list activePatent:', columnList);
-
-  //       if (!this.allDataSets[resultTabData.index]) {
-  //         this.allDataSets[resultTabData.index] = {};
-  //       }
-  //       // ✅ SAVE to pass to component
-  //       this.allDataSets[resultTabData.index][this.resultTabs.activePatent.name] = {
-  //         columns: columnList,  // <- for <app-scientific-docs-card>
-  //         rows: []              // <- we’ll fill this after searchSpecific
-  //       };
-  //       // Step 4: Call main search API
-  //       this.mainSearchService.activePatentSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name]).subscribe({
-  //         next: (result: any) => {
-  //           console.log('Search API Result:', result);
-  //           const dataRows = result?.data?.data || [];
-
-  //           // ✅ Append search result (rows) to saved structure
-  //           this.allDataSets[resultTabData.index][this.resultTabs.activePatent.name].rows = dataRows;
-  //           this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name].count = result?.data?.recordsTotal;
-  //           this.allDataSets[resultTabData.index][this.resultTabs.activePatent.name] = result?.data;
-  //           this.setLoadingState.emit(false);
-  //           this.loadingService.setLoading(this.resultTabs.activePatent.name, resultTabData.index, false);
-  //         },
-  //         error: (e) => {
-  //           console.error('Error during main search:', e);
-  //           this.setLoadingState.emit(false);
-  //           this.loadingService.setLoading(this.resultTabs.activePatent.name, resultTabData.index, false);
-  //         },
-  //       });
-  //     },
-  //     error: (e) => {
-  //       console.error('Error fetching column list:', e);
-  //       this.setLoadingState.emit(false);
-  //       this.loadingService.setLoading(this.resultTabs.activePatent.name, resultTabData.index, false);
-  //     },
-  //   });
-  // }
   private performactivePatentSearch(resultTabData: any): void {
     console.log('Search Input:', resultTabData);
     const pageSize = 25;
@@ -1611,6 +1541,7 @@ export class SearchResultsComponent {
       },
     });
   }
+ 
   private performDMFSearch(resultTabData: any): void {
 
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
@@ -1637,7 +1568,6 @@ export class SearchResultsComponent {
     }
 
     const tech_API = this.apiUrls.dmf.columnList;
-    console.log("techapi",this.childApiBody[resultTabData.index][this.resultTabs.dmf.name]);
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
         const response = res?.data?.columns;
@@ -1647,7 +1577,7 @@ export class SearchResultsComponent {
           next: (result: any) => {
             this.childApiBody[resultTabData.index][this.resultTabs.dmf.name].count = result?.data?.tech_supplier_count;
             this.allDataSets[resultTabData.index][this.resultTabs.dmf.name] = result?.data?.tech_supplier_data;
-            console.log("dataaaaa",result?.data?.tech_supplier_data)
+           console.log('DMF Search Result:', this.allDataSets[resultTabData.index][this.resultTabs.dmf.name]);
             this.setLoadingState.emit(false);
             this.loadingService.setLoading(this.resultTabs.dmf.name, resultTabData.index, false);
           },
@@ -1665,7 +1595,7 @@ export class SearchResultsComponent {
       },
     });
   }
-  
+
   ButtonROSSearch(SearchKey: any, index: number): void {
 
     this.setLoadingState.emit(true);
