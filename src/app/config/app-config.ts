@@ -35,8 +35,8 @@ export const AppConfigValues: AppConfig = {
         reportData: `${appUrl.apiUrl}/technical-routes/report-data`,
       },
       dmf: {
-        searchSpecific: `${appUrl.devApiUrl}/tech-supplier/search-specific`,
-        columnList: `${appUrl.devApiUrl}/tech-supplier/column-list`,
+        searchSpecific: `${appUrl.apiUrl}/tech-supplier/search-specific`,
+        columnList: `${appUrl.apiUrl}/tech-supplier/column-list`,
       },
       chemicalDirectory: {
         filterColumns: `${appUrl.apiUrl}/chemical-directory/filter-columns`,

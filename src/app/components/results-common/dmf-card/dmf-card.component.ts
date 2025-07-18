@@ -37,9 +37,7 @@ export class DmfCardComponent {
   }
 
   set data(value: any) {
- 
-
-    if (value && Object.keys(value).length > 0) {
+ if (value && Object.keys(value).length > 0) {
      // this.noMatchingData = false;
       DmfCardComponent.apiCallCount++;
       this.localCount = DmfCardComponent.apiCallCount;
@@ -52,24 +50,19 @@ export class DmfCardComponent {
           this.dmf_column[col.value] = col.name;
         }
       }
-
       this._data = value;
-    } else {
-      console.warn('[DmfCardComponent] ⚠️ No valid data received.');
-    //  this.noMatchingData = true;
-    // this._data = [];
-    }
+    } 
   }
 
-  get dataKeys(): string[] {
-    const keys = this._data ? Object.keys(this._data) : [];
-    return keys;
-  }
+  // get dataKeys(): string[] {
+  //   const keys = this._data ? Object.keys(this._data) : [];
+  //   return keys;
+  // }
 
-  get techSupplierList() {
-    const list = this._data?.tech_supplier_data ?? [];
-    return list;
-  }
+  // get techSupplierList() {
+  //   const list = this._data?.tech_supplier_data ?? [];
+  //   return list;
+  // }
 
 
   ngOnInit() {
