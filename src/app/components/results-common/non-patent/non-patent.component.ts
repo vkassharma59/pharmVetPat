@@ -182,24 +182,21 @@ export class NonPatentComponent implements OnChanges {
 
     this.mainSearchService.NonPatentSearchSpecific(this.nonPatentApiBody).subscribe({
       next: (res: any) => {
-        const hcData = res?.data?.data || [];
+        const hcData = res?.data || [];
         console.log('[handleFetchFilters] Extracted records:', hcData);
 
         const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
 
         const order = ['Latest First', 'Oldest First'];
-
-        // Safely handle comma-separated or single-value 'concepts'
-        const conceptFilters = getUnique(
-          hcData
-            .flatMap(item => item.concepts ? item.concepts.split(',').map(c => c.trim()) : [])
-        );
+        const conceptFilters = res?.data?.concepts?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
 
         console.log('[handleFetchFilters] Unique concept filters:', conceptFilters);
-
         this.nonPatentFilters = {
           order,
-          conceptFilters
+          conceptFilters:conceptFilters,
         };
 
         this.nonPatentApiBody.filter_enable = false;
@@ -248,7 +245,7 @@ export class NonPatentComponent implements OnChanges {
     this._currentChildAPIBody = {
       ...this.nonPatentApiBody,
       filters: { ...this.nonPatentApiBody.filters },
-      columns: updatedColumns,
+      // columns: updatedColumns,
       draw: 1, start: 0,
       pageno: 1,
     };

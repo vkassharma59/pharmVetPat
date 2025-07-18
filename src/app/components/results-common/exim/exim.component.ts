@@ -212,32 +212,47 @@ export class EximComponent implements OnChanges {
 
   handleFetchFilters() {
     this.eximApiBody.filter_enable = true;
-
-
     this.mainSearchService.EximDataSearchSpecific(this.eximApiBody).subscribe({
       next: (res: any) => {
         const hcData = res?.data?.data || [];
 
         const getUnique = (arr: any[]) => [...new Set(arr.filter(v => !!v && typeof v === 'string' && v.trim().length > 0))];
 
-        const chapterFilters = hcData.map(item => item?.CHAPTER);
-        const typeFilters = getUnique(hcData.map(item => item?.TYPE));
-        const yearmonthFilters = getUnique(hcData.map(item => item?.yearmonth));
-        const exporterFilters = getUnique(hcData.map(item => item?.exporter_name));
-        const ImporterFilters = getUnique(hcData.map(item => item?.importer_name));
+        const chapterFilters = res?.data?.CHAPTER?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+      
+        const typeFilters = res?.data?.TYPE?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+       
+        const yearmonthFilters =
+         res?.data?.yearmonth?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || []; 
+        const exporterFilters = res?.data?.exporter_name?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || []; 
+        
+        const ImporterFilters = res?.data?.importer_name?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
         const orderFilters = ['Latest First', 'Oldest First'];
 
-        console.log('All CHAPTER values:', hcData.map(item => item?.CHAPTER));
 
         this.eximFilters = {
-          chapterFilters: chapterFilters.map(value => ({ name: value, value })),
-          typeFilters: typeFilters.map(value => ({ name: value, value })),
-          orderByFilters: orderFilters.map(value => ({ name: value, value })),
-          yearmonthFilters: yearmonthFilters.map(value => ({ name: value, value })),
-          exporterFilters: exporterFilters.map(value => ({ name: value, value })),
-          ImporterFilters: ImporterFilters.map(value => ({ name: value, value }))
-        };
-
+          chapterFilters: chapterFilters,
+          typeFilters: typeFilters,
+          orderByFilters: orderFilters,
+          yearmonthFilters: yearmonthFilters,
+          exporterFilters: exporterFilters,
+          ImporterFilters: ImporterFilters,
+        }
         this.eximApiBody.filter_enable = false;
 
 
@@ -290,7 +305,7 @@ export class EximComponent implements OnChanges {
       this._currentChildAPIBody = {
         ...this.eximApiBody,
         filters: { ...this.eximApiBody.filters },
-        columns: updatedColumns,
+      //  columns: updatedColumns,
         order: [
           {
             column: 0,  // numeric index of the column you want to sort
