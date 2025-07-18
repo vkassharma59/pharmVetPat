@@ -120,7 +120,7 @@ export class DmfComponent {
       console.warn("⚠️ No column list found in currentChildAPIBody");
     }
   }
-ngOnInit(): void {
+  ngOnInit(): void {
     this.dmfApiBody = { ...this.currentChildAPIBody };
     this.dmfApiBody.filters = this.dmfApiBody.filters || {};
     this.handleFetchFilters();
@@ -136,21 +136,28 @@ ngOnInit(): void {
   }
 
   handleFetchFilters() {
-    // this.dmfApiBody.filter_enable = true;
+    this.dmfApiBody.filter_enable = true;
     // console.log("apibody", this.dmfApiBody)
 
     this.mainSearchService.dmfSearchSpecific(this.dmfApiBody).subscribe({
       next: (result: any) => {
-        const hcData = result?.data?.tech_supplier_data || [];
+        const hcData = result?.data?.data || [];
+        console.log("-------dmf------", result?.data)
         const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
-
-        const countryFilters = getUnique(hcData.map(item => item.country_dmf_holder));
+        // const countryFilters = getUnique(hcData.map(item => item.country_dmf_holder));
         const dmfFilters = getUnique(hcData.map(item => item.dmf_status));
         const techFilters = getUnique(hcData.map(item => item.tech));
         console.log("-------dmf------", dmfFilters)
         console.log("-------t------", techFilters)
-        console.log("-------c------", countryFilters)
 
+        const countryFilters = result?.data?.country_dmf_holder?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+
+        // const countryFilters = result?.data?.country_dmf_holder?.map(item => item.name) || [];
+
+        console.log("-------c------", countryFilters)
         this.dmfFilters = {
           countryFilters: countryFilters.map(name => ({ name, value: name })),
           dmfFilters: dmfFilters.map(name => ({ name, value: name })),
@@ -188,17 +195,19 @@ ngOnInit(): void {
   }
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    console.log('🔍 Filter clicked:', { filterKey, value, name });
+
     this.handleSetLoading.emit(true);
     this.dmfApiBody.filters = this.dmfApiBody.filters || {};
-  
     if (value === '') {
       delete this.dmfApiBody.filters[filterKey];
       this.setFilterLabel(filterKey, '');
     } else {
-      this.dmfApiBody.filters[filterKey] = value;
+      this.dmfApiBody.filters[filterKey] = value;  // ✅ Only value goes in filters
       this.setFilterLabel(filterKey, name || '');
     }
-     // ✅ Close dropdowns
+
+    // ✅ Close dropdowns
     this.filterConfigs = this.filterConfigs.map(item => ({
       ...item,
       dropdownState: false
@@ -206,24 +215,24 @@ ngOnInit(): void {
 
     // Log constructed filter object
     console.log('📦 Final Filters:', this.dmfApiBody.filters);
-  
+
     this._currentChildAPIBody = {
       ...this.dmfApiBody,
       filters: { ...this.dmfApiBody.filters }
     };
-  
+
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  
+
     console.log('📤 Sending API Request:', this._currentChildAPIBody);
-  
+
     this.mainSearchService.dmfSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         const resultData = res?.data || {};
         console.log('✅ API Response Received:', resultData);
-  
+
         const sortValue = this.dmfApiBody.filters['order_by'];
         const sortedData = this.sortPatentData(resultData.tech_supplier_data, sortValue);
-  
+
         // ✅ Update internal state
         this._data = sortedData || [];
         this.patentData = this._data; // optional if used separately
@@ -231,7 +240,7 @@ ngOnInit(): void {
           ...this._currentChildAPIBody,
           count: resultData?.tech_supplier_count
         };
-  
+
         this.cdr.detectChanges(); // ✅ ensure view updates
 
         this.searchByTable = true; // ✅ Set searchByTable to tru
@@ -248,7 +257,7 @@ ngOnInit(): void {
       }
     });
   }
-  
+
 
   sortPatentData(data: any[], order: string): any[] {
 
