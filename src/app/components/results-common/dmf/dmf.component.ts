@@ -39,17 +39,17 @@ export class DmfComponent {
       dropdownState: false
     },
     {
-      key: 'dmf_status',
-      label: 'Select DMF',
+      key: 'stock_status',
+      label: 'Select Stock Status',
       dataKey: 'dmfFilters',
-      filterType: 'dmf_status',
+      filterType: 'stock_status',
       dropdownState: false
     },
     {
-      key: 'tech',
-      label: 'Select TECH/API & FORMULATION',
+      key: 'dmf_holder',
+      label: 'Select DMF Holder',
       dataKey: 'techFilters',
-      filterType: 'tech',
+      filterType: 'dmf_holder',
       dropdownState: false
     }
   ];
@@ -126,7 +126,7 @@ export class DmfComponent {
         const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
         // const countryFilters = getUnique(hcData.map(item => item.country_dmf_holder));
         const dmfFilters = getUnique(hcData.map(item => item.dmf_status));
-        const techFilters = getUnique(hcData.map(item => item.tech));
+        const techFilters = getUnique(hcData.map(item => item.dmf_holder));
         console.log("-------dmf------", dmfFilters)
         console.log("-------t------", techFilters)
 
@@ -150,8 +150,6 @@ export class DmfComponent {
       error: (err) => {
         console.error('Error fetching dmf filters:', err);
         this.dmfApiBody.filter_enable = false;
-
-
       }
     });
   }
@@ -162,8 +160,8 @@ export class DmfComponent {
         if (label === '') {
           switch (filterKey) {
             case 'country_dmf_holder': label = 'Country'; break;
-            case 'dmf_status': label = 'Select DMF'; break;
-            case 'tech': label = 'tech Filters'; break;
+            case 'stock_status': label = 'Select Stock Status'; break;
+            case 'dmf_holder': label = 'DMF Holder Filters'; break;
           }
         }
         return { ...item, label: label };
@@ -173,6 +171,8 @@ export class DmfComponent {
   }
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    console.log('🔍 Filter clicked:', { filterKey, value, name });
+
     this.handleSetLoading.emit(true);
     this.dmfApiBody.filters = this.dmfApiBody.filters || {};
     if (value === '') {
@@ -206,7 +206,6 @@ export class DmfComponent {
           ...this._currentChildAPIBody,
           count: resultData?.tech_supplier_count
         };
-
         this.searchByTable = true; // ✅ Set searchByTable to tru
         // ✅ Emit updated data to parent (optional)
         this.handleResultTabData.emit(resultData);
@@ -227,8 +226,8 @@ export class DmfComponent {
       let defaultLabel = '';
       switch (config.key) {
         case 'country_dmf_holder': defaultLabel = 'Select Country'; break;
-        case 'dmf_status': defaultLabel = 'Select DMF'; break;
-        case 'tech': defaultLabel = 'Select TECH/API Filters'; break
+        case 'stock_status': defaultLabel = 'Select Stock Status'; break;
+        case 'dmf_holder': defaultLabel = 'Select DMF Holder'; break
       }
       return { ...config, label: defaultLabel, dropdownState: false };
     });

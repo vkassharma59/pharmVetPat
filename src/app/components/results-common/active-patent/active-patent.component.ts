@@ -32,6 +32,7 @@ export class ActivePatentComponent implements OnChanges {
   isFilterApplied: boolean = false;
   count: number = 0;
   totalPages: number = 0;
+  filterLoading: { [key: string]: boolean } = {};
 
   get pageSize(): number {
     return this._currentChildAPIBody?.length || 25;
@@ -57,6 +58,10 @@ export class ActivePatentComponent implements OnChanges {
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
+    if (value) {
+      this.activePatentApiBody = JSON.parse(JSON.stringify(value)) || value;
+      this.handleFetchFilters();
+    }
   }
 
   @Input() index: any;
@@ -75,13 +80,13 @@ export class ActivePatentComponent implements OnChanges {
     this.handleResultTabData.emit(this._data);
   }
   ngOnInit(): void {
-    console.log('get data called', this._data);
-    this.activePatentApiBody = { ...this.currentChildAPIBody };
-    this.activePatentApiBody.filters = this.activePatentApiBody.filters || {};
+    // console.log('get data called', this._data);
+    // this.activePatentApiBody = { ...this.currentChildAPIBody };
+    // this.activePatentApiBody.filters = this.activePatentApiBody.filters || {};
 
-    console.log('[ngOnInit] Initial vetenaryusApiBody:', JSON.stringify(this.activePatentApiBody, null, 2));
+    // console.log('[ngOnInit] Initial vetenaryusApiBody:', JSON.stringify(this.activePatentApiBody, null, 2));
 
-    this.handleFetchFilters();
+   // this.handleFetchFilters();
   }
   onDataFetchRequest(payload: any) {
     this.isFilterApplied = !!(payload?.search || payload?.columns);
@@ -179,41 +184,34 @@ export class ActivePatentComponent implements OnChanges {
   }
 
   handleFetchFilters() {
-    console.log('[handleFetchFilters] Fetching filters...');
+  this.filterLoading['patentFilters'] = true;
+  this.activePatentApiBody.filter_enable = true;
 
-    this.activePatentApiBody.filter_enable = true;
-    console.log('[handleFetchFilters] API Body before request:', this.activePatentApiBody);
+  this.mainSearchService.activePatentSearchSpecific(this.activePatentApiBody).subscribe({
+    next: (res: any) => {
+      const resultData = res?.data || {};
 
-    this.mainSearchService.activePatentSearchSpecific(this.activePatentApiBody).subscribe({
-      next: (res: any) => {
-        console.log('[handleFetchFilters] API Response:', res);
+      const order = ['Latest First', 'Oldest First'];
+      const patentFilters = resultData?.patent_type?.map(item => ({
+        name: item.name,
+        value: item.value
+      })) || [];
 
-        const hcData = res?.data?.data || [];
-        console.log('[handleFetchFilters] Extracted green_book_us_data:', hcData);
+      this.activePatentFilters = {
+        order,
+        patentFilters
+      };
 
-        const getUnique = (arr: any[]) => [...new Set(arr.filter(v => !!v && typeof v === 'string' && v.trim().length > 0))];
-
-        const order = ['Latest First', 'Oldest First']; // Static sort options
-        // const patentFilters = getUnique(hcData.map(item => item.patent_type));
-        //   console.log('[handleFetchFilters] Unique patent types:', patentFilters);
-        const patentFilters = res?.data?.patent_type?.map(item => ({
-          name: item.name,
-          value: item.value
-        })) || [];
-        this.activePatentFilters = {
-          order,
-          patentFilters: patentFilters,
-        };
-
-        this.activePatentApiBody.filter_enable = false;
-        console.log('[handleFetchFilters] Filter options set:', this.activePatentFilters);
-      },
-      error: (err) => {
-        console.error('[handleFetchFilters] API call failed:', err);
-        this.activePatentApiBody.filter_enable = false;
-      }
-    });
-  }
+      this.activePatentApiBody.filter_enable = false;
+      this.filterLoading['patentFilters'] = false;
+    },
+    error: (err) => {
+      console.error('[handleFetchFilters] API call failed:', err);
+      this.activePatentApiBody.filter_enable = false;
+      this.filterLoading['patentFilters'] = false;
+    }
+  });
+}
 
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
