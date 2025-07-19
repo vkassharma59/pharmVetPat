@@ -57,6 +57,8 @@ export class TechnicalRoutesComponent {
   viewProduct: boolean = false;
 
   ngOnInit() {
+
+  // console.log('CurrentAPIBody in TechnicalRoutesComponent', this._data.ros_data[0]._id);
     this.sharedROS.rosCount$.subscribe(count => {
       if (count && count?.index === this.index) {
         this.rosCounts = count;

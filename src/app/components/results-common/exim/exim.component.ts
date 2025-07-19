@@ -18,6 +18,7 @@ import { EximCardComponent } from '../exim-card/exim-card.component';
 import { LoadingService } from '../../../services/loading-service/loading.service';
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
 
+
 @Component({
   selector: 'chem-exim',
   standalone: true,
@@ -59,6 +60,10 @@ export class EximComponent implements OnChanges {
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
+    if (value) {
+      this.eximApiBody = JSON.parse(JSON.stringify(value)) || value;
+      this.handleFetchFilters();
+    }
   }
   @Input() index: any;
   @Input() tabName?: string;
@@ -173,14 +178,6 @@ export class EximComponent implements OnChanges {
     });
   }
 
-  ngOnInit(): void {
-    this.eximApiBody = { ...this.currentChildAPIBody };
-    this.eximApiBody.filters = this.eximApiBody.filters || {};
-
-    console.log('[ngOnInit] Initial eximApiBody:', JSON.stringify(this.eximApiBody, null, 2));
-
-    this.handleFetchFilters();
-  }
 
 
   setFilterLabel(filterKey: string, label: string) {
@@ -222,22 +219,22 @@ export class EximComponent implements OnChanges {
           name: item.name,
           value: item.value
         })) || [];
-      
+
         const typeFilters = res?.data?.TYPE?.map(item => ({
           name: item.name,
           value: item.value
         })) || [];
-       
+
         const yearmonthFilters =
-         res?.data?.yearmonth?.map(item => ({
-          name: item.name,
-          value: item.value
-        })) || []; 
+          res?.data?.yearmonth?.map(item => ({
+            name: item.name,
+            value: item.value
+          })) || [];
         const exporterFilters = res?.data?.exporter_name?.map(item => ({
           name: item.name,
           value: item.value
-        })) || []; 
-        
+        })) || [];
+
         const ImporterFilters = res?.data?.importer_name?.map(item => ({
           name: item.name,
           value: item.value
@@ -252,7 +249,7 @@ export class EximComponent implements OnChanges {
           yearmonthFilters: yearmonthFilters,
           exporterFilters: exporterFilters,
           ImporterFilters: ImporterFilters,
-        }
+        };
         this.eximApiBody.filter_enable = false;
 
 
@@ -264,84 +261,103 @@ export class EximComponent implements OnChanges {
       }
     });
   }
+ handleSelectFilter(filterKey: string, value: any, name?: string): void {
+  console.log('🔍 Filter change detected:', { filterKey, value, name });
 
+  this.handleSetLoading.emit(true);
+  this.eximApiBody.filters = this.eximApiBody.filters || {};
 
-  handleSelectFilter(filterKey: string, value: any, name?: string): void {
-    this.handleSetLoading.emit(true);
-    this.eximApiBody.filters = this.eximApiBody.filters || {};
+  // ✅ Update filters
+  if (value === '') {
+    console.log(`🧹 Clearing filter for key: ${filterKey}`);
+    delete this.eximApiBody.filters[filterKey];
+    this.setFilterLabel(filterKey, '');
+  } else {
+    console.log(`✅ Applying filter - ${filterKey}:`, value);
+    this.eximApiBody.filters[filterKey] = value;
+    this.setFilterLabel(filterKey, name || '');
+  }
 
-    if (value === '') {
-      delete this.eximApiBody.filters[filterKey];
-      this.setFilterLabel(filterKey, '');
-    } else {
-      this.eximApiBody.filters[filterKey] = value;
-      this.setFilterLabel(filterKey, name || '');
-    }
-    // ✅ Close dropdowns
-    this.filterConfigs = this.filterConfigs.map(item => ({
-      ...item,
-      dropdownState: false
-    }));
+  // ✅ Close all dropdowns
+  this.filterConfigs = this.filterConfigs.map(item => ({
+    ...item,
+    dropdownState: false
+  }));
 
-    // ✅ Maintain columns array properly
-    const existingColumns = this._currentChildAPIBody.columns || [];
+  // ✅ Maintain updated columns (no duplicates)
+  const existingColumns = this._currentChildAPIBody?.columns || [];
+  const updatedColumns = existingColumns.filter((col: any) => col.data !== filterKey);
 
-    const updatedColumns = existingColumns.filter((col: any) => col.data !== filterKey);
-    if (filterKey === 'order') {
-      const orderDataKey = value.split('_')[0];
-      const dir = value.endsWith('desc') ? 'desc' : 'asc';
-
-      const orderColumnIndex = updatedColumns.findIndex(col => col.data === orderDataKey);
-
-      if (value) {
-        updatedColumns.push({
-          data: filterKey,
-          searchable: 'true',
-          search: {
-            value: value
-          }
-        });
-      }
-      this._currentChildAPIBody = {
-        ...this.eximApiBody,
-        filters: { ...this.eximApiBody.filters },
-      //  columns: updatedColumns,
-        order: [
-          {
-            column: 0,  // numeric index of the column you want to sort
-            dir: 'asc'                 // or 'desc'
-          }
-        ],
-        draw: 1
-      };
-    }
-    console.log('All CHAPTER values:', this._currentChildAPIBody);
-
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-    this.mainSearchService.EximDataSearchSpecific(this._currentChildAPIBody).subscribe({
-      next: (res) => {
-        let resultData = res?.data || {};
-        this.count = resultData?.recordsFiltered ?? resultData?.recordsTotal;
-        this.totalPages = Math.ceil(this.count / this.pageSize);
-        this._currentChildAPIBody.count = this.count;
-
-        this._data = {
-          ...this._data,
-          rows: resultData?.data || []
-        };
-        this.searchByTable = true;
-        this.handleResultTabData.emit(this._data.rows);
-        this.handleSetLoading.emit(false);
-        window.scrollTo(0, scrollTop);
-      },
-      error: () => {
-        this._currentChildAPIBody.filter_enable = false;
-        this.handleSetLoading.emit(false);
-        window.scrollTo(0, scrollTop);
+  if (value) {
+    updatedColumns.push({
+      data: filterKey,
+      searchable: 'true',
+      search: {
+        value: value
       }
     });
   }
+
+  console.log('🧾 Updated Columns:', updatedColumns);
+
+  // ✅ Optional: Sorting (only if filterKey is 'order')
+  let order: any[] = [];
+  if (filterKey === 'order') {
+    const orderDataKey = value.split('_')[0];
+    const dir = value.endsWith('desc') ? 'desc' : 'asc';
+    order = [
+      {
+        column: 0, // Make dynamic if needed
+        dir: dir
+      }
+    ];
+    console.log('🔃 Order applied:', order);
+  }
+
+  // ✅ Prepare updated API body
+  this._currentChildAPIBody = {
+    ...this.eximApiBody,
+ filters: { ...this.eximApiBody.filters },
+   // columns: updatedColumns,
+    order: order,
+    draw: 1
+  };
+
+  console.log('📦 Final API Body:', this._currentChildAPIBody);
+
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+  // ✅ Make API call
+  this.mainSearchService.EximDataSearchSpecific(this._currentChildAPIBody).subscribe({
+    next: (res) => {
+      const resultData = res?.data || {};
+      console.log('📥 API Response:', resultData);
+
+      this.count = resultData?.recordsFiltered ?? resultData?.recordsTotal;
+      this.totalPages = Math.ceil(this.count / this.pageSize);
+      this._currentChildAPIBody.count = this.count;
+
+      this._data = {
+        ...this._data,
+        rows: resultData?.data || []
+      };
+
+      console.log('📊 Final Data Rows:', this._data.rows);
+
+      this.searchByTable = true;
+      this.handleResultTabData.emit(this._data.rows);
+      this.handleSetLoading.emit(false);
+      window.scrollTo(0, scrollTop);
+    },
+    error: (err) => {
+      console.error('❌ API Error:', err);
+      this._currentChildAPIBody.filter_enable = false;
+      this.handleSetLoading.emit(false);
+      window.scrollTo(0, scrollTop);
+    }
+  });
+}
+
 
 
   clear() {
@@ -353,7 +369,7 @@ export class EximComponent implements OnChanges {
         case 'yearmonth': defaultLabel = 'All Year-Month'; break;
         case 'exporter_name': defaultLabel = 'All Exporter'; break;
         case 'importer_name': defaultLabel = 'All Importer'; break;
-        case 'order': defaultLabel = 'Sort By'; break;
+        case 'order_by': defaultLabel = 'Order  By'; break;
       }
       return { ...config, label: defaultLabel, dropdownState: false };
     });

@@ -104,7 +104,9 @@ export class TechnicalRoutesCardComponent {
     return Object.keys(obj).length === 0;
   }
   ngOnInit() {
-    console.log('TechnicalRoutesCardComponent apiCallCount', this.index);
+
+    this.allDataSets = this.utilityService.getDataStates();
+    console.log('Technical', this.allDataSets);
     this.resultTabs1 = Object.values(this.utilityService.getAllTabsName());
     this.currentTabData = this.resultTabs1.find((tab: any) => tab.isActive);
     this.resultTabWithKeys = this.utilityService.getAllTabsName();
@@ -275,28 +277,25 @@ export class TechnicalRoutesCardComponent {
                     todays_limit?.downloadCount >
                     0
                   ) {
-                    console.log('priviledge_data?.DownloadCount', priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount);
-                    console.log(priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit, 'todays_limit?.downloadCount', todays_limit?.downloadCount);
                     let id: any = '';
                     const searchThrough = Auth_operations.getActiveformValues().activeForm;
-
-                    console.log('this.CurrentAPIBody', this._itemid[this.resultTabWithKeys.productInfo.name]);
-                    console.log('this.CurrentAPIBody---------', this.resultTabWithKeys.productInfo.name);
+                    console.log('this.CurrentAPIBody---------', this._data[this.index]);
+                    console.log('searchThrough', this._data._id);
                     this.searchThrough = searchThrough;
                     switch (searchThrough) {
                       case searchTypes.chemicalStructure:
                       case searchTypes.intermediateSearch:
-                        id = this._itemid[this.resultTabWithKeys.chemicalDirectory.name][this.index]._id;
+                        id = this._data[this.resultTabWithKeys.chemicalDirectory.name][this.index]._id;
                         break;
                       case searchTypes.synthesisSearch:
-                        id = this._itemid[this.resultTabWithKeys.technicalRoutes.name]?.ros_data?.[this.index]._id;
+                        id = this._data._id;
                         break;
                       case searchTypes.simpleSearch:
                       case searchTypes.advanceSearch:
-                        id = this._itemid[this.resultTabWithKeys.productInfo.name][this.index]._id;
+                        id = this._data[this.resultTabWithKeys.productInfo.name][this.index]._id;
                         break;
                       default:
-                        id = this._itemid[this.resultTabWithKeys.productInfo.name][this.index]._id;
+                        id = this._data[this.resultTabWithKeys.productInfo.name][this.index]._id;
 
                     }
                     console.log('No search type selected', this.index);
@@ -340,14 +339,11 @@ export class TechnicalRoutesCardComponent {
                           body: body_main,
                         };
                       }
-                      console.log('---------------No api MAIN', API_MAIN);
                       try {
                         this.serviceResultTabFiltersService.getGeneratePDF(API_MAIN).subscribe({
                           next: (resp: any) => {
                             const blob = new Blob([resp.body!], { type: 'application/pdf' });
-                            console.log("-----------scfsdvfsdfgv API_MAIN ", resp)
                             const contentDisposition = resp.headers.get('content-disposition');
-                            console.log("-----------contentDispositionscfsdvfsdfgv API_MAIN ", contentDisposition)
                             const timestamp = new Date()
                               .toISOString()
                               .split('.')[0] // remove milliseconds
@@ -379,11 +375,15 @@ export class TechnicalRoutesCardComponent {
                             const fileURL = URL.createObjectURL(blob);
                             const a = document.createElement('a');
                             a.href = fileURL;
-                            console.log(fileURL, "-----------scfsdvfsdfgv API_MAIN ", filename)
                             a.download = filename;
                             document.body.appendChild(a);
                             a.click();
                             document.body.removeChild(a);
+                            // Clean up after successful download
+                            this.SingleDownloadCheckbox = {};
+                            this.index = 0;
+                            this._data = {};
+                            this.searchThrough = '';
 
                             this.generatePDFloader = false;
                             this.handleSetLoading.emit(false);

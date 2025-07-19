@@ -347,7 +347,7 @@ export class SearchResultsComponent {
           this.setLoadingState.emit(false);
         }
         break;
-        case this.resultTabs?.dmf.name:
+      case this.resultTabs?.dmf.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.dmf.name]).length === 0) {
           this.performDMFSearch(resultTabData);
         } else {
@@ -360,7 +360,6 @@ export class SearchResultsComponent {
   }
 
   private performTechnicalRouteSearch(resultTabData: any): void {
-
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.technicalRoutes.name] = {};
       this.setLoadingState.emit(false);
@@ -1040,17 +1039,12 @@ export class SearchResultsComponent {
           .subscribe({
             next: (result: any) => {
               // ✅ Log to verify
-              console.log('API result:', result);
-
-              // ✅ Extract data and count
-              const data = result?.data?.orange_book_us_data || [];
+               const data = result?.data?.orange_book_us_data || [];
               const count = result?.data?.orange_book_us_count || 0;
 
               this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name].count = count;
               this.allDataSets[resultTabData.index][this.resultTabs.usApproval.name] = data;
-              console.log('patentColumns:', this.patentColumns);
-              console.log('allDataSets:', this.allDataSets);
-
+             
               this.setLoadingState.emit(false);
               this.loadingService.setLoading(this.resultTabs.usApproval.name, resultTabData.index, false);
             },
@@ -1108,14 +1102,9 @@ export class SearchResultsComponent {
 
         this.mainSearchService.veterinaryusApprovalSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.veterinaryUsApproval.name]).subscribe({
           next: (result: any) => {
-         
+
             this.childApiBody[resultTabData.index][this.resultTabs.veterinaryUsApproval.name].count = result?.data?.green_book_us_count;
             this.allDataSets[resultTabData.index][this.resultTabs.veterinaryUsApproval.name] = result?.data?.green_book_us_data;
- 
-
-            console.log('main search:', result?.data?.green_book_us_data);
-
- 
             this.setLoadingState.emit(false);
             this.loadingService.setLoading(this.resultTabs.veterinaryUsApproval.name, resultTabData.index, false);
           },
@@ -1200,7 +1189,6 @@ export class SearchResultsComponent {
     });
   }
   private spcDbSearch(resultTabData: any): void {
-    console.log('Search Input:', resultTabData);
     const pageSize = 25;
     const page_no = 1
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
@@ -1225,7 +1213,6 @@ export class SearchResultsComponent {
       length: pageSize
     };
 
-    console.log('Request Body spcdb:', this.childApiBody[resultTabData.index][this.resultTabs.spcDb.name]);
 
     // Step 2: Fetch Column List First
     this.columnListService.getColumnList(this.apiUrls.spcDb.columnList).subscribe({
@@ -1245,7 +1232,6 @@ export class SearchResultsComponent {
         // Step 4: Call main search API
         this.mainSearchService.spcdbSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.spcDb.name]).subscribe({
           next: (result: any) => {
-            console.log('Search API Result:', result);
 
             const dataRows = result?.data?.data || [];
 
@@ -1272,7 +1258,6 @@ export class SearchResultsComponent {
 
 
   private gppdDbSearch(resultTabData: any): void {
-    console.log('Search Input:', resultTabData);
     const pageSize = 25;
     const page_no = 1
     this.setLoadingState.emit(true);
@@ -1297,13 +1282,11 @@ export class SearchResultsComponent {
       start: (page_no - 1) * pageSize,
       length: pageSize
     };
-    console.log('Request Body activePatent:', this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name]);
     // Step 2: Fetch Column List First
     this.columnListService.getColumnList(this.apiUrls.gppdDb.columnList).subscribe({
       next: (res: any) => {
         const columnList = res?.data?.columns || [];
         Auth_operations.setColumnList(this.resultTabs.gppdDb.name, columnList);
-        console.log('get colum list activePatent:', columnList);
 
         if (!this.allDataSets[resultTabData.index]) {
           this.allDataSets[resultTabData.index] = {};
@@ -1316,9 +1299,7 @@ export class SearchResultsComponent {
         // Step 4: Call main search API
         this.mainSearchService.gppdDbSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name]).subscribe({
           next: (result: any) => {
-            console.log('Search API Result:', result);
             const dataRows = result?.data?.data || [];
-
             // ✅ Append search result (rows) to saved structure
             this.allDataSets[resultTabData.index][this.resultTabs.gppdDb.name].rows = dataRows;
             this.childApiBody[resultTabData.index][this.resultTabs.gppdDb.name].count = result?.data?.recordsTotal;
@@ -1340,7 +1321,6 @@ export class SearchResultsComponent {
     });
   }
   private performactivePatentSearch(resultTabData: any): void {
-    console.log('Search Input:', resultTabData);
     const pageSize = 25;
     const page_no = 1
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
@@ -1364,14 +1344,11 @@ export class SearchResultsComponent {
       start: (page_no - 1) * pageSize,
       length: pageSize
     };
-    console.log('Request Body activePatent:', this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name]);
     // Step 2: Fetch Column List First
     this.columnListService.getColumnList(this.apiUrls.activePatent.columnList).subscribe({
       next: (res: any) => {
         const columnList = res?.data?.columns || [];
         Auth_operations.setColumnList(this.resultTabs.activePatent.name, columnList);
-        console.log('get colum list activePatent:', columnList);
-
         if (!this.allDataSets[resultTabData.index]) {
           this.allDataSets[resultTabData.index] = {};
         }
@@ -1383,9 +1360,7 @@ export class SearchResultsComponent {
         // Step 4: Call main search API
         this.mainSearchService.activePatentSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name]).subscribe({
           next: (result: any) => {
-            console.log('Search API Result:', result);
             const dataRows = result?.data?.data || [];
-
             // ✅ Append search result (rows) to saved structure
             this.allDataSets[resultTabData.index][this.resultTabs.activePatent.name].rows = dataRows;
             this.childApiBody[resultTabData.index][this.resultTabs.activePatent.name].count = result?.data?.recordsTotal;
@@ -1432,13 +1407,11 @@ export class SearchResultsComponent {
       start: (page_no - 1) * pageSize,
       length: pageSize
     };
-    console.log('Request Body activePatent:', this.childApiBody[resultTabData.index][this.resultTabs.nonPatentLandscape.name]);
     // Step 2: Fetch Column List First
     this.columnListService.getColumnList(this.apiUrls.nonPatentLandscape.columnList).subscribe({
       next: (res: any) => {
         const columnList = res?.data?.columns || [];
         Auth_operations.setColumnList(this.resultTabs.nonPatentLandscape.name, columnList);
-        console.log('get colum list nonactivePatent:', columnList);
 
         if (!this.allDataSets[resultTabData.index]) {
           this.allDataSets[resultTabData.index] = {};
@@ -1451,7 +1424,6 @@ export class SearchResultsComponent {
         // Step 4: Call main search API
         this.mainSearchService.NonPatentSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.nonPatentLandscape.name]).subscribe({
           next: (result: any) => {
-            console.log('Search API Result:', result);
             const dataRows = result?.data?.data || [];
 
             // ✅ Append search result (rows) to saved structure
@@ -1475,7 +1447,7 @@ export class SearchResultsComponent {
     });
   }
   private eximDataSearch(resultTabData: any): void {
-    console.log('Search Input:', resultTabData);
+
     const pageSize = 25;
     const page_no = 1
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
@@ -1517,10 +1489,7 @@ export class SearchResultsComponent {
         // Step 4: Call main search API
         this.mainSearchService.EximDataSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.eximData.name]).subscribe({
           next: (result: any) => {
-            console.log('Search API Result:', result);
-
             const dataRows = result?.data?.data || [];
-            console.log("4588766",dataRows);
             // ✅ Append search result (rows) to saved structure
             this.allDataSets[resultTabData.index][this.resultTabs.eximData.name].rows = dataRows;
             this.childApiBody[resultTabData.index][this.resultTabs.eximData.name].count = result?.data?.recordsTotal;
@@ -1541,7 +1510,7 @@ export class SearchResultsComponent {
       },
     });
   }
- 
+
   private performDMFSearch(resultTabData: any): void {
 
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
@@ -1577,7 +1546,6 @@ export class SearchResultsComponent {
           next: (result: any) => {
             this.childApiBody[resultTabData.index][this.resultTabs.dmf.name].count = result?.data?.tech_supplier_count;
             this.allDataSets[resultTabData.index][this.resultTabs.dmf.name] = result?.data?.tech_supplier_data;
-           console.log('DMF Search Result:', this.allDataSets[resultTabData.index][this.resultTabs.dmf.name]);
             this.setLoadingState.emit(false);
             this.loadingService.setLoading(this.resultTabs.dmf.name, resultTabData.index, false);
           },
@@ -1605,7 +1573,6 @@ export class SearchResultsComponent {
     const searchValue = this.allDataSets[index]?.[this.resultTabs?.chemicalDirectory.name][0].trrn;
 
     if (!searchValue) {
-      console.warn('⚠️ No search value found for technical route.');
       this.setLoadingState.emit(false);
       this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, index, false);
       return;
@@ -1651,7 +1618,7 @@ export class SearchResultsComponent {
             this.setLoadingState.emit(false);
             this.CurrentAPIBody.currentTab = this.resultTabs.technicalRoutes.name;
             this.cdr.detectChanges();
-            console.log('✅ Data set and tab updated, loading stopped.');
+            
           },
           error: (e) => {
             console.error('❌ ROS API error:', e);
@@ -1722,9 +1689,6 @@ export class SearchResultsComponent {
         }
         break;
       case this.resultTabs?.canadaApproval.name:
-        console.log('✅ Canada tab data received:', data);
-        console.log('✅ health_canada_data:', data?.health_canada_data);
-        console.log('✅ health_canada_count:', data?.health_canada_count);
         if (data?.health_canada_data.length > 0) {
           this.childApiBody[index][this.resultTabs?.canadaApproval.name].count = data?.health_canada_count;
           if (!this.allDataSets[index]) {

@@ -57,10 +57,12 @@ export class NonPatentComponent implements OnChanges {
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
+    if (value) {
+      this.nonPatentApiBody = JSON.parse(JSON.stringify(value)) || value;
+      this.handleFetchFilters();
+    }
   }
-
   resultTabs: any = {};
-
   constructor(private utilityService: UtilityService,
     private mainSearchService: MainSearchService,
     public loadingService: LoadingService
@@ -72,15 +74,7 @@ export class NonPatentComponent implements OnChanges {
     console.log('scientificDocs received data:', this._data);
     this.handleResultTabData.emit(this._data);
   }
-  ngOnInit(): void {
-    console.log('get data called', this._data);
-    this.nonPatentApiBody = { ...this.currentChildAPIBody };
-    this.nonPatentApiBody.filters = this.nonPatentApiBody.filters || {};
-
-    console.log('[ngOnInit] Initial vetenaryusApiBody:', JSON.stringify(this.nonPatentApiBody, null, 2));
-
-    this.handleFetchFilters();
-  }
+ 
   onDataFetchRequest(payload: any) {
     this.isFilterApplied = !!(payload?.search || payload?.columns);
     // Remove stale filters from _currentChildAPIBody if they are not in payload
@@ -196,7 +190,7 @@ export class NonPatentComponent implements OnChanges {
         console.log('[handleFetchFilters] Unique concept filters:', conceptFilters);
         this.nonPatentFilters = {
           order,
-          conceptFilters:conceptFilters,
+          conceptFilters: conceptFilters,
         };
 
         this.nonPatentApiBody.filter_enable = false;
@@ -207,9 +201,6 @@ export class NonPatentComponent implements OnChanges {
       }
     });
   }
-
-
-
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     this.handleSetLoading.emit(true);
@@ -313,7 +304,5 @@ export class NonPatentComponent implements OnChanges {
 
     window.scrollTo(0, 0);
   }
-
-
 
 }
