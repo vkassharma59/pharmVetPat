@@ -96,7 +96,7 @@ export class UsApprovalCardComponent {
   }
 
   ngOnChanges() {
-    console.log('📦 US Approval data received:', this.data);
+  
     if (this.data && Array.isArray(this.data.patent_list)) {
       this.patentData = this.data.patent_list;
       this.patentColumns = this.data.patentColumnList;

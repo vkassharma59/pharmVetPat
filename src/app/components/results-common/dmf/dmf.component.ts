@@ -172,7 +172,6 @@ export class DmfComponent {
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     console.log('🔍 Filter clicked:', { filterKey, value, name });
-
     this.handleSetLoading.emit(true);
     this.dmfApiBody.filters = this.dmfApiBody.filters || {};
     if (value === '') {
@@ -259,6 +258,15 @@ export class DmfComponent {
 
     window.scrollTo(0, 0);
   }
+getSubRouteNumber(index: number): number {
+  if (!this._data?.length) return 0;
+
+  const maxCount = Math.min(this._data.length, this._currentChildAPIBody?.count || 0);
+
+  return (((this._currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (index + 1) <= maxCount
+    ? (((this._currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (index + 1)
+    : maxCount;
+}
 
   copyText(elementId: string, event: Event) {
     const el = event.currentTarget as HTMLElement;

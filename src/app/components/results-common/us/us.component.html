@@ -24,7 +24,6 @@
               {{ data?.name || data?.value || data }}
             </span>
           </li>
-
         </ul>
       </div>
 
@@ -46,7 +45,7 @@
       </div>
     </div>
 
-    <app-us-approval-card [data]="dataItem"></app-us-approval-card>
+    <app-us-approval-card (handleChangeTabData)="handleResultTabData.emit($event)" [data]="dataItem"></app-us-approval-card>
 
 
   </ng-container>

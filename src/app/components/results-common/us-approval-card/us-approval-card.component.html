@@ -137,19 +137,19 @@
           <h6 class="font-bold text-indigo-900">COMPANY LOGO:</h6>
           <img src="assets/components/Merck.png" class="image1">
 
-          
-          <div class="col-md-9 col-sm-8" *ngIf="_data?.strength">
+          <div class="col-md-9 col-sm-8" *ngIf="_data?.ingredient">
             <h6 class="font-bold text-indigo-900">
-              {{ getColumnName('strength') }}
+              {{ getColumnName('ingredient') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
-                (click)="handleCopy(_data?.strength, copyBtn)">
+                (click)="handleCopy(_data?.ingredient, copyBtn)">
                 <i class="fas fa-copy"></i>
               </span>
             </h6>
             <p class="text-wrap max-h-12 whitespace-normal">
-              {{ _data?.strength }}
+              {{ _data?.ingredient }}
             </p>
           </div>
+          
           <div class="col-md-9 col-sm-8" *ngIf="_data?.rld">
           <h6 class="font-bold text-indigo-900">
             {{ getColumnName('rld') }}
