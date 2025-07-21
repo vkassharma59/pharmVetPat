@@ -5,6 +5,7 @@ import { Auth_operations } from '../../../Utils/SetToken';
 import { environment } from '../../../../environments/environment';
 import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
 import { CommonModule } from '@angular/common';
+import { MainSearchService } from '../../../services/main-search/main-search.service';
 
 @Component({
   selector: 'app-dmf-card',
@@ -21,44 +22,38 @@ export class DmfCardComponent {
   dmf_column: Record<string, string> = {};
   resultTabs: any = {};
   columns: any[] = [];
+  dmfApiBody: any;
+  _currentChildAPIBody: any;
+  filteredCountries: any[] = [];
 
   static apiCallCount: number = 0;
   localCount: number = 0;
 
-  constructor(private dialog: MatDialog, private utilityService: UtilityService) {
+  constructor(private dialog: MatDialog,
+    private utilityService: UtilityService,
+    private mainSearchService: MainSearchService,
+
+  ) {
 
   }
 
-routesList = {
-  countries: [
-    { key: 'USA', total: 78 },
-    { key: 'Europe', total: 45 },
-    { key: 'Japan', total: 3 },
-  
-  ]
-};
+  routesList = {
+    countries: [
+      { key: 'USA', total: 78 },
+      { key: 'Europe', total: 45 },
+      { key: 'Japan', total: 3 },
 
-getDMFLabel(key: string): string {
-  switch (key) {
-    case 'USA': return 'USDMF';
-    case 'Europe': return 'EPDMF';
-    case 'Japan': return 'JDMF';
-   
-    default: return key;
-  }
-}
+    ]
+  };
 
-
-
-  
   @Input()
   get data() {
     return this._data;
   }
 
   set data(value: any) {
- if (value && Object.keys(value).length > 0) {
-     // this.noMatchingData = false;
+    if (value && Object.keys(value).length > 0) {
+      // this.noMatchingData = false;
       DmfCardComponent.apiCallCount++;
       this.localCount = DmfCardComponent.apiCallCount;
       this.resultTabs = this.utilityService.getAllTabsName();
@@ -71,9 +66,19 @@ getDMFLabel(key: string): string {
         }
       }
       this._data = value;
-    } 
+    }
   }
-
+  @Input()
+  get currentChildAPIBody() {
+    return this._currentChildAPIBody;
+  }
+  set currentChildAPIBody(value: any) {
+    this._currentChildAPIBody = value;
+    if (value) {
+      this.dmfApiBody = JSON.parse(JSON.stringify(value)) || value;
+      this.processCountryData();
+    }
+  }
   // get dataKeys(): string[] {
   //   const keys = this._data ? Object.keys(this._data) : [];
   //   return keys;
@@ -86,9 +91,42 @@ getDMFLabel(key: string): string {
 
 
   ngOnInit() {
+    this.processCountryData();
     if (DmfCardComponent.apiCallCount === 0) {
       DmfCardComponent.apiCallCount = 0;
     }
+  }
+  processCountryData() { 
+    this.dmfApiBody.filter_enable = true;
+    this.mainSearchService.dmfSearchSpecific(this.dmfApiBody).subscribe({
+      next: (result: any) => {
+      
+        const rawCountries = result?.data?.country_dmf_holder || [];
+
+        this.filteredCountries = rawCountries
+          .filter(item => item.name && item.value != null)
+          .map(item => ({
+            key: item.name,       // Cleaned country name
+            total: item.value            // Total DMFs or whatever value is
+          }));
+        this.dmfApiBody.filter_enable = false;
+      },
+      error: (err) => {
+        console.error('Error fetching dmf filters:', err);
+        this.dmfApiBody.filter_enable = false;
+      }
+    });
+  }
+  getDmfPrefix(country: string): string {
+    const upperKey = (country || '').toUpperCase();
+    const prefixMap: { [key: string]: string } = {
+      'USA': 'USDMF',
+      'EUROPE': 'EPDMF',
+      'JAPAN': 'JDMF',
+      'KOREA': 'KDMF',
+      'BRAZIL': 'BDMF'
+    };
+    return prefixMap[upperKey] || 'DMF';
   }
 
   ngOnDestroy() {
@@ -130,20 +168,20 @@ getDMFLabel(key: string): string {
   }
 
   handleCopy(text: string, event: MouseEvent) {
-  
+
     const textArea = document.createElement('textarea');
     textArea.value = text;
     document.body.appendChild(textArea);
-  
+
     textArea.select();
     textArea.setSelectionRange(0, 99999);
     document.execCommand('copy');
     document.body.removeChild(textArea);
-  
+
     // Get the clicked element from event
     const target = event.currentTarget as HTMLElement;
     const icon = target.querySelector('i');
-  
+
     if (icon?.classList.contains('fa-copy')) {
       icon.classList.remove('fa-copy');
       icon.classList.add('fa-check');
@@ -153,7 +191,7 @@ getDMFLabel(key: string): string {
       }, 1500);
     }
   }
-  
+
 
   getImageUrl(): string {
     const url = this._data?.company_logo ? `${environment.baseUrl}${environment.domainNameCompanyLogo}${this._data.company_logo}` : '';

@@ -43,7 +43,7 @@
         </span>
       </div>
     </div>
-    <app-dmf-card [data]="dataItem" ></app-dmf-card>
+    <app-dmf-card [data]="dataItem" [currentChildAPIBody]="currentChildAPIBody"></app-dmf-card>
   </ng-container>
 
  <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"

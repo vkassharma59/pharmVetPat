@@ -8,15 +8,15 @@
 
     <div class="card body" style="background-color:#f8faff;">
         <div class="pb-3 mb-3 px-2 rounded-lg" style="margin-top: 1rem;">
-            <div class="col-md-12 dmf-country-box "   style="flex-direction: row;">
-                <span class="dmf-block" *ngFor="let country of routesList.countries"
-                    ng-repeat="country in routesList.countries | orderBy:'-total'"
-                    ng-if="['USA', 'Europe', 'Japan'].includes(country.key)">
+            <div  *ngIf="localCount === 1" class="col-md-12 dmf-country-box" style="display: flex; flex-direction: row; flex-wrap: wrap;">
+                <span class="dmf-block" *ngFor="let country of filteredCountries"
+                   >
                     <span class="ng-binding">
-                        {{ getDMFLabel(country.key) }}: {{ country.key }} ({{ country.total }})
+                        {{ getDmfPrefix(country.total) }}: {{ country.key }} 
                     </span>
                 </span>
             </div>
+
             <div class="row">
 
                 <!-- Column 1 -->

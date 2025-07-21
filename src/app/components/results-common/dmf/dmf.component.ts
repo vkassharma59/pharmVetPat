@@ -23,13 +23,13 @@ export class DmfComponent {
   searchThrough: string = '';
   resultTabs: any = {};
   searchByTable: boolean = false;
- @Input() index: any;
+  @Input() index: any;
   @Input() tabName?: string;
   dmfApiBody: any;
   dmfFilters: any = {};
   lastClickedFilterKey: string | null = null;
   _data: any = [];
-  
+
   filterConfigs = [
     {
       key: 'country_dmf_holder',
@@ -41,14 +41,14 @@ export class DmfComponent {
     {
       key: 'stock_status',
       label: 'Select Stock Status',
-      dataKey: 'dmfFilters',
+      dataKey: 'stockstatusFilters',
       filterType: 'stock_status',
       dropdownState: false
     },
     {
       key: 'dmf_holder',
       label: 'Select DMF Holder',
-      dataKey: 'techFilters',
+      dataKey: 'dmfholderFilters',
       filterType: 'dmf_holder',
       dropdownState: false
     }
@@ -68,13 +68,13 @@ export class DmfComponent {
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
-     if (value) {
+    if (value) {
       this.dmfApiBody = JSON.parse(JSON.stringify(value)) || value;
       this.handleFetchFilters();
     }
   }
 
- 
+
   @HostListener('document:mousedown', ['$event'])
   onClickOutside(event: MouseEvent) {
     const clickedInsideAny = this.dropdownRefs?.some((dropdown: ElementRef) =>
@@ -93,20 +93,12 @@ export class DmfComponent {
     private utilityService: UtilityService,
     public loadingService: LoadingService,
     private mainSearchService: MainSearchService,
-   ) {
+  ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
-
-  // onFilterButtonClick(filterKey: string) {
-
-  //   this.lastClickedFilterKey = filterKey;
-  //   this.filterConfigs = this.filterConfigs.map((item) => ({
-  //     ...item,
-  //     dropdownState: item.key === filterKey ? !item.dropdownState : false
-  //   }));
-  // }
- onFilterButtonClick(filterKey: string) {
+ 
+  onFilterButtonClick(filterKey: string) {
     this.lastClickedFilterKey = filterKey;
 
     this.filterConfigs = this.filterConfigs.map((item) => {
@@ -119,33 +111,27 @@ export class DmfComponent {
 
   handleFetchFilters() {
     this.dmfApiBody.filter_enable = true;
-       this.mainSearchService.dmfSearchSpecific(this.dmfApiBody).subscribe({
+    this.mainSearchService.dmfSearchSpecific(this.dmfApiBody).subscribe({
       next: (result: any) => {
-        const hcData = result?.data?.data || [];
-        console.log("-------dmf------", result?.data)
-        const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
-        // const countryFilters = getUnique(hcData.map(item => item.country_dmf_holder));
-        const dmfFilters = getUnique(hcData.map(item => item.dmf_status));
-        const techFilters = getUnique(hcData.map(item => item.dmf_holder));
-        console.log("-------dmf------", dmfFilters)
-        console.log("-------t------", techFilters)
-
+       
         const countryFilters = result?.data?.country_dmf_holder?.map(item => ({
           name: item.name,
           value: item.value
         })) || [];
-
-        // const countryFilters = result?.data?.country_dmf_holder?.map(item => item.name) || [];
-
-        console.log("-------c------", countryFilters)
+        const stockstatusFilters = result?.data?.stock_status?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const dmfholderFilters = result?.data?.dmf_holder?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
         this.dmfFilters = {
           countryFilters: countryFilters, // ← Fix here
-          dmfFilters: dmfFilters.map(name => ({ name, value: name })),
-          techFilters: techFilters.map(name => ({ name, value: name })),
+          stockstatusFilters: stockstatusFilters,
+          dmfholderFilters: dmfholderFilters,
         };
-         this.dmfApiBody.filter_enable = false;
-
-
+        this.dmfApiBody.filter_enable = false;
       },
       error: (err) => {
         console.error('Error fetching dmf filters:', err);
@@ -172,7 +158,6 @@ export class DmfComponent {
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     console.log('🔍 Filter clicked:', { filterKey, value, name });
-
     this.handleSetLoading.emit(true);
     this.dmfApiBody.filters = this.dmfApiBody.filters || {};
     if (value === '') {
@@ -201,7 +186,7 @@ export class DmfComponent {
       next: (res) => {
         const resultData = res?.data || {};
         console.log('✅ API Response Received:', resultData);
-     
+
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
           count: resultData?.tech_supplier_count

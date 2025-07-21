@@ -18,6 +18,7 @@ import { searchTypes, UtilityService } from '../../services/utility-service/util
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../../dialog/dialog.component';
 import { VideoTutorialComponent } from '../video-tutorial/video-tutorial.component';
+import { coerceStringArray } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'chem-pharma-database-search',
@@ -743,7 +744,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       screenColumn: this.screenColumn,
       activeForm: searchTypes.advanceSearch,
     });
-    console.log("Advance search inputs", this.advanceSearch?.filterInputs);
+  
     const validFilters = this.advanceSearch?.filterInputs
       ?.filter(input => input.filter?.trim() && input.keyword?.trim());
 
@@ -784,7 +785,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       }),
       page_no: 1
     };
-    console.log("Advance search body", apiBody);
+    
     const tech_API = this.apiUrls.basicProductInfo.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
@@ -885,7 +886,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   
 
   private performChemicalStructureSearch(): void {
-
     Auth_operations.setActiveformValues({
       column: this.column,
       keyword: this.chemicalStructure?.keyword,
