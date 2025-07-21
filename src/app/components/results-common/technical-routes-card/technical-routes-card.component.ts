@@ -279,8 +279,8 @@ export class TechnicalRoutesCardComponent {
                   ) {
                     let id: any = '';
                     const searchThrough = Auth_operations.getActiveformValues().activeForm;
-                    console.log('this.CurrentAPIBody---------', this._data[this.index]);
-                    console.log('searchThrough', this._data._id);
+                    console.log('this.CurrentAPIBody---------', this._data);
+                    console.log('searchThrough', this._data.id);
                     this.searchThrough = searchThrough;
                     switch (searchThrough) {
                       case searchTypes.chemicalStructure:
@@ -292,7 +292,7 @@ export class TechnicalRoutesCardComponent {
                         break;
                       case searchTypes.simpleSearch:
                       case searchTypes.advanceSearch:
-                        id = this._data[this.resultTabWithKeys.productInfo.name][this.index]._id;
+                        id = this._data[this.resultTabWithKeys.productInfo.name][this.index].id;
                         break;
                       default:
                         id = this._data[this.resultTabWithKeys.productInfo.name][this.index]._id;

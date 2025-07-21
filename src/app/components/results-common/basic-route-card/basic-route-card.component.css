@@ -27,7 +27,7 @@
     text-overflow: ellipsis;
 }
 p{
-    white-space: pre;
+    /* white-space: pre; */
     text-wrap: wrap; 
      font-size: 14px;
 
