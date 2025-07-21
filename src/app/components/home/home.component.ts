@@ -16,7 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 
 export class HomeComponent implements OnInit {
-  playVideo:boolean=false;
+  playVideo: boolean = false;
   LimitValue = '';
   user: any = null;
   showResult: boolean = false;
@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
   searchData: any = {};
   accordionData: any = {
     "accordionItem1": true,
-    "accordionItem2": false, 
+    "accordionItem2": false,
     "accordionItem3": false,
   };
   allDataSets: any = [];
@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
     actual_value: '',
   };
 
-  
+
   @ViewChild('priviledgeModal') priviledgeModal!: ElementRef;
   resultTabs: any = {};
 
@@ -45,14 +45,14 @@ export class HomeComponent implements OnInit {
     private dialog: MatDialog,
     private cdr: ChangeDetectorRef,
     private utilityService: UtilityService
-  ) {}
+  ) { }
 
   ngOnInit() {
     const auth = localStorage.getItem('auth');
     this.allDataSets = this.utilityService.getDataStates();
     this.resultTabs = this.utilityService.getAllTabsName();
     this.CurrentAPIBody.count = 0;
-    
+
     try {
       this.user = auth ? JSON.parse(auth) : null; // Safely parse only if `auth` exists
     } catch (error) {
@@ -63,16 +63,16 @@ export class HomeComponent implements OnInit {
 
   activeAccordion: string | null = null;
 
-openCloseAccordion(key: string, event?: Event): void {
-  this.activeAccordion = this.activeAccordion === key ? null : key;
+  openCloseAccordion(key: string, event?: Event): void {
+    this.activeAccordion = this.activeAccordion === key ? null : key;
 
-  // If event exists, toggle 'active' class on clicked button
-  if (event) {
-    const buttons = document.querySelectorAll(".btn-link");
-    buttons.forEach((btn) => btn.classList.remove("active"));
-    (event.target as HTMLElement).classList.add("active");
+    // If event exists, toggle 'active' class on clicked button
+    if (event) {
+      const buttons = document.querySelectorAll(".btn-link");
+      buttons.forEach((btn) => btn.classList.remove("active"));
+      (event.target as HTMLElement).classList.add("active");
+    }
   }
-}
 
 
   disableRightClick(event: MouseEvent) {
@@ -86,20 +86,21 @@ openCloseAccordion(key: string, event?: Event): void {
   handleLoading(event: boolean) {
     setTimeout(() => {
       this.loading = event;
-    }, 100);  
+    }, 100);
   }
 
   handleSetLoading(data: any) {
     setTimeout(() => {
       this.loading = data;
-    }, 100);    
+    }, 100);
   }
 
   handleSearchResults(data: any) {
     this.allDataSets = this.utilityService.getDataStates();
     this.searchData = { ...data };
-
-    switch(this.CurrentAPIBody.currentTab) {
+    console.log('Search Data:', this.searchData);
+    console.log('All Data Sets:', this.allDataSets);
+    switch (this.CurrentAPIBody.currentTab) {
       case this.resultTabs.productInfo.name:
         if (
           this.searchData?.basic_product_count &&
@@ -145,7 +146,7 @@ openCloseAccordion(key: string, event?: Event): void {
           });
 
         } else {
-            this.allDataSets = [];
+          this.allDataSets = [];
         }
         break;
       case this.resultTabs.chemicalDirectory.name:
@@ -159,9 +160,9 @@ openCloseAccordion(key: string, event?: Event): void {
           this.allDataSets = this.allDataSets.slice(0, this.searchData?.chem_dir_data?.length);
           for (let i = 0; i < this.searchData?.chem_dir_data?.length; i++) {
             this.allDataSets[i][this.resultTabs.chemicalDirectory.name][0] =
-              this.searchData?.chem_dir_data[i];              
+              this.searchData?.chem_dir_data[i];
           }
-        }  else {
+        } else {
           this.allDataSets = [];
         }
         break;
@@ -202,7 +203,7 @@ openCloseAccordion(key: string, event?: Event): void {
       panelClass: 'full-screen-modal',
     });
   }
-  videoTutorial(){
-    this.playVideo=!this.playVideo;
+  videoTutorial() {
+    this.playVideo = !this.playVideo;
   }
 }

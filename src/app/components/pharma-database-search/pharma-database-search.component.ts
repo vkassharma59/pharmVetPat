@@ -737,13 +737,6 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   }
 
   private performAdvancedSearch(): void {
-
-    // Validations and transformations
-    // if (!Array.isArray(this.advanceSearch?.filterInputs) || this.advanceSearch?.filterInputs.length === 0) {
-    //   alert("filterInputs must be a non-empty array.");
-    //   return;
-    // }
-
     Auth_operations.setActiveformValues({
       column: this.column,
       keyword: '',
@@ -770,14 +763,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       this.isValidDate(this.advanceSearch?.endDate);
 
     const apiBody = {
-
-      // date_filters: {
-      //   ...(this.advanceSearch?.dateType ? { column: this.advanceSearch?.dateType } : {}),
-      //   ...(this.isValidDate(this.advanceSearch?.startDate) ? { start_date: this.advanceSearch?.startDate } : {}),
-      //   ...(this.isValidDate(this.advanceSearch?.endDate) ? { end_date: this.advanceSearch?.endDate } : {})
-      // },
       ...(hasValidCriteria && { criteria }),
-
       ...(hasValidDateFilters && {
         date_filters: {
           column: this.advanceSearch.dateType,

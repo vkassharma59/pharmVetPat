@@ -20,7 +20,7 @@
           </li>
   
           <li *ngFor="let data of nonPatentFilters[configData.dataKey]"
-              (click)="handleSelectFilter(configData.key, data?.value || data, data?.name || data)"
+              (click)="handleSelectFilter(configData.key, data?.value , data?.name )"
               class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
             <span class="block text-sm whitespace-normal break-words leading-snug text-gray-800">
               {{ data?.name || data?.value || data }}

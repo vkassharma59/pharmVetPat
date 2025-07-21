@@ -57,10 +57,12 @@ export class NonPatentComponent implements OnChanges {
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
+    if (value) {
+      this.nonPatentApiBody = JSON.parse(JSON.stringify(value)) || value;
+      this.handleFetchFilters();
+    }
   }
-
   resultTabs: any = {};
-
   constructor(private utilityService: UtilityService,
     private mainSearchService: MainSearchService,
     public loadingService: LoadingService
@@ -72,15 +74,7 @@ export class NonPatentComponent implements OnChanges {
     console.log('scientificDocs received data:', this._data);
     this.handleResultTabData.emit(this._data);
   }
-  ngOnInit(): void {
-    console.log('get data called', this._data);
-    this.nonPatentApiBody = { ...this.currentChildAPIBody };
-    this.nonPatentApiBody.filters = this.nonPatentApiBody.filters || {};
-
-    console.log('[ngOnInit] Initial vetenaryusApiBody:', JSON.stringify(this.nonPatentApiBody, null, 2));
-
-    this.handleFetchFilters();
-  }
+ 
   onDataFetchRequest(payload: any) {
     this.isFilterApplied = !!(payload?.search || payload?.columns);
     // Remove stale filters from _currentChildAPIBody if they are not in payload
@@ -182,24 +176,21 @@ export class NonPatentComponent implements OnChanges {
 
     this.mainSearchService.NonPatentSearchSpecific(this.nonPatentApiBody).subscribe({
       next: (res: any) => {
-        const hcData = res?.data?.data || [];
+        const hcData = res?.data || [];
         console.log('[handleFetchFilters] Extracted records:', hcData);
 
         const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
 
         const order = ['Latest First', 'Oldest First'];
-
-        // Safely handle comma-separated or single-value 'concepts'
-        const conceptFilters = getUnique(
-          hcData
-            .flatMap(item => item.concepts ? item.concepts.split(',').map(c => c.trim()) : [])
-        );
+        const conceptFilters = res?.data?.concepts?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
 
         console.log('[handleFetchFilters] Unique concept filters:', conceptFilters);
-
         this.nonPatentFilters = {
           order,
-          conceptFilters
+          conceptFilters: conceptFilters,
         };
 
         this.nonPatentApiBody.filter_enable = false;
@@ -210,9 +201,6 @@ export class NonPatentComponent implements OnChanges {
       }
     });
   }
-
-
-
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     this.handleSetLoading.emit(true);
@@ -248,7 +236,7 @@ export class NonPatentComponent implements OnChanges {
     this._currentChildAPIBody = {
       ...this.nonPatentApiBody,
       filters: { ...this.nonPatentApiBody.filters },
-      columns: updatedColumns,
+      // columns: updatedColumns,
       draw: 1, start: 0,
       pageno: 1,
     };
@@ -316,7 +304,5 @@ export class NonPatentComponent implements OnChanges {
 
     window.scrollTo(0, 0);
   }
-
-
 
 }

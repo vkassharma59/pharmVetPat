@@ -1,11 +1,22 @@
 <ng-container>
     <div class="card-header text-white rounded-lg">
         <div style="padding:7px; justify-content:space-between; display:flex;">
-            {{resultTabs?.dmf?.label}} >> {{_data?.name}}
+            {{ localCount }}. {{resultTabs?.dmf?.label}} >> {{_data?.name}}
         </div>
     </div>
+    <!-- HTML Template -->
+
     <div class="card body" style="background-color:#f8faff;">
         <div class="pb-3 mb-3 px-2 rounded-lg" style="margin-top: 1rem;">
+            <div class="col-md-12 dmf-country-box "   style="flex-direction: row;">
+                <span class="dmf-block" *ngFor="let country of routesList.countries"
+                    ng-repeat="country in routesList.countries | orderBy:'-total'"
+                    ng-if="['USA', 'Europe', 'Japan'].includes(country.key)">
+                    <span class="ng-binding">
+                        {{ getDMFLabel(country.key) }}: {{ country.key }} ({{ country.total }})
+                    </span>
+                </span>
+            </div>
             <div class="row">
 
                 <!-- Column 1 -->
@@ -114,7 +125,7 @@
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
 
                     <!-- DMF Type -->
-                    <div *ngIf="_data?.dmf_type"style="margin: 0.8rem;">
+                    <div *ngIf="_data?.dmf_type" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('dmf_type') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -150,7 +161,7 @@
                     </div>
 
                     <!-- DMF Status -->
-                    <div *ngIf="_data?.dmf_status"style="margin: 0.8rem;">
+                    <div *ngIf="_data?.dmf_status" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('dmf_status') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"

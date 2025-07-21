@@ -30,3 +30,17 @@
     font-size: 12px;            /* Optional: adjust font size */
     padding: 6px;
   }
+  .dmf-country-box{
+    background: #d4ffd6;
+    display: flex;
+    justify-content: center;
+  }
+  .dmf-country-box .dmf-block {
+    padding: 7.5px;
+    margin: 5px;
+    border-radius: 5px;
+    color: #00b507;
+    font-size: 15px;
+    font-weight: 500;
+    background: #bafdbdd6;
+}

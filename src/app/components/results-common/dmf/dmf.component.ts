@@ -23,35 +23,13 @@ export class DmfComponent {
   searchThrough: string = '';
   resultTabs: any = {};
   searchByTable: boolean = false;
-
-  _data: any = [];
-  @Input()
-  get data() {
-
-    return this._data;
-  }
-  set data(name: any) {
-    this._data = name;
-    this.patentData = Array.isArray(name) ? name : [name];
-    this.handleResultTabData.emit(this._data);
-  }
-
-  @Input()
-  get currentChildAPIBody() {
-
-    return this._currentChildAPIBody;
-  }
-  set currentChildAPIBody(value: any) {
-
-    this._currentChildAPIBody = value;
-  }
-
-  @Input() index: any;
+ @Input() index: any;
   @Input() tabName?: string;
   dmfApiBody: any;
   dmfFilters: any = {};
   lastClickedFilterKey: string | null = null;
-
+  _data: any = [];
+  
   filterConfigs = [
     {
       key: 'country_dmf_holder',
@@ -61,20 +39,42 @@ export class DmfComponent {
       dropdownState: false
     },
     {
-      key: 'dmf_status',
-      label: 'Select DMF',
+      key: 'stock_status',
+      label: 'Select Stock Status',
       dataKey: 'dmfFilters',
-      filterType: 'dmf_status',
+      filterType: 'stock_status',
       dropdownState: false
     },
     {
-      key: 'tech',
-      label: 'Select TECH/API & FORMULATION',
+      key: 'dmf_holder',
+      label: 'Select DMF Holder',
       dataKey: 'techFilters',
-      filterType: 'tech',
+      filterType: 'dmf_holder',
       dropdownState: false
     }
   ];
+
+  @Input()
+  get data() {
+    return this._data;
+  }
+  set data(value: any) {
+    this._data = value;
+  }
+
+  @Input()
+  get currentChildAPIBody() {
+    return this._currentChildAPIBody;
+  }
+  set currentChildAPIBody(value: any) {
+    this._currentChildAPIBody = value;
+     if (value) {
+      this.dmfApiBody = JSON.parse(JSON.stringify(value)) || value;
+      this.handleFetchFilters();
+    }
+  }
+
+ 
   @HostListener('document:mousedown', ['$event'])
   onClickOutside(event: MouseEvent) {
     const clickedInsideAny = this.dropdownRefs?.some((dropdown: ElementRef) =>
@@ -93,80 +93,63 @@ export class DmfComponent {
     private utilityService: UtilityService,
     public loadingService: LoadingService,
     private mainSearchService: MainSearchService,
-    private cdr: ChangeDetectorRef
-  ) {
+   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
-  patentColumns: any[] = []; // Column list from currentChildAPIBody
-  patentData: any[] = [];    // Data from @Input() data
 
-  ngOnChanges() {
+  // onFilterButtonClick(filterKey: string) {
 
-    if (this._data && !Array.isArray(this._data)) {
-      this.patentData = [this._data];
-
-    } else if (Array.isArray(this._data)) {
-      this.patentData = this._data;
-
-    } else {
-      console.warn("⚠️ No valid _data received");
-    }
-
-    if (this.currentChildAPIBody?.columnList?.patentColumnList?.length) {
-      this.patentColumns = this.currentChildAPIBody.columnList.patentColumnList;
-
-    } else {
-      console.warn("⚠️ No column list found in currentChildAPIBody");
-    }
-  }
-ngOnInit(): void {
-    this.dmfApiBody = { ...this.currentChildAPIBody };
-    this.dmfApiBody.filters = this.dmfApiBody.filters || {};
-    this.handleFetchFilters();
-  }
-
-  onFilterButtonClick(filterKey: string) {
-
+  //   this.lastClickedFilterKey = filterKey;
+  //   this.filterConfigs = this.filterConfigs.map((item) => ({
+  //     ...item,
+  //     dropdownState: item.key === filterKey ? !item.dropdownState : false
+  //   }));
+  // }
+ onFilterButtonClick(filterKey: string) {
     this.lastClickedFilterKey = filterKey;
-    this.filterConfigs = this.filterConfigs.map((item) => ({
-      ...item,
-      dropdownState: item.key === filterKey ? !item.dropdownState : false
-    }));
+
+    this.filterConfigs = this.filterConfigs.map((item) => {
+      if (item.key === filterKey) {
+        return { ...item, dropdownState: !item.dropdownState };
+      }
+      return { ...item, dropdownState: false };
+    });
   }
 
   handleFetchFilters() {
-    // this.dmfApiBody.filter_enable = true;
-    // console.log("apibody", this.dmfApiBody)
-
-    this.mainSearchService.dmfSearchSpecific(this.dmfApiBody).subscribe({
+    this.dmfApiBody.filter_enable = true;
+       this.mainSearchService.dmfSearchSpecific(this.dmfApiBody).subscribe({
       next: (result: any) => {
-        const hcData = result?.data?.tech_supplier_data || [];
+        const hcData = result?.data?.data || [];
+        console.log("-------dmf------", result?.data)
         const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
-
-        const countryFilters = getUnique(hcData.map(item => item.country_dmf_holder));
+        // const countryFilters = getUnique(hcData.map(item => item.country_dmf_holder));
         const dmfFilters = getUnique(hcData.map(item => item.dmf_status));
-        const techFilters = getUnique(hcData.map(item => item.tech));
+        const techFilters = getUnique(hcData.map(item => item.dmf_holder));
         console.log("-------dmf------", dmfFilters)
         console.log("-------t------", techFilters)
-        console.log("-------c------", countryFilters)
 
+        const countryFilters = result?.data?.country_dmf_holder?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+
+        // const countryFilters = result?.data?.country_dmf_holder?.map(item => item.name) || [];
+
+        console.log("-------c------", countryFilters)
         this.dmfFilters = {
-          countryFilters: countryFilters.map(name => ({ name, value: name })),
+          countryFilters: countryFilters, // ← Fix here
           dmfFilters: dmfFilters.map(name => ({ name, value: name })),
           techFilters: techFilters.map(name => ({ name, value: name })),
         };
-
-        this.cdr.detectChanges();
-        // this.dmfApiBody.filter_enable = false;
+         this.dmfApiBody.filter_enable = false;
 
 
       },
       error: (err) => {
         console.error('Error fetching dmf filters:', err);
         this.dmfApiBody.filter_enable = false;
-
-
       }
     });
   }
@@ -177,8 +160,8 @@ ngOnInit(): void {
         if (label === '') {
           switch (filterKey) {
             case 'country_dmf_holder': label = 'Country'; break;
-            case 'dmf_status': label = 'Select DMF'; break;
-            case 'tech': label = 'tech Filters'; break;
+            case 'stock_status': label = 'Select Stock Status'; break;
+            case 'dmf_holder': label = 'DMF Holder Filters'; break;
           }
         }
         return { ...item, label: label };
@@ -188,55 +171,43 @@ ngOnInit(): void {
   }
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    console.log('🔍 Filter clicked:', { filterKey, value, name });
     this.handleSetLoading.emit(true);
     this.dmfApiBody.filters = this.dmfApiBody.filters || {};
-  
     if (value === '') {
       delete this.dmfApiBody.filters[filterKey];
       this.setFilterLabel(filterKey, '');
     } else {
-      this.dmfApiBody.filters[filterKey] = value;
+      this.dmfApiBody.filters[filterKey] = value;  // ✅ Only value goes in filters
       this.setFilterLabel(filterKey, name || '');
     }
-     // ✅ Close dropdowns
+    // ✅ Close dropdowns
     this.filterConfigs = this.filterConfigs.map(item => ({
       ...item,
       dropdownState: false
     }));
-
     // Log constructed filter object
     console.log('📦 Final Filters:', this.dmfApiBody.filters);
-  
     this._currentChildAPIBody = {
       ...this.dmfApiBody,
       filters: { ...this.dmfApiBody.filters }
     };
-  
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  
+
     console.log('📤 Sending API Request:', this._currentChildAPIBody);
-  
+
     this.mainSearchService.dmfSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         const resultData = res?.data || {};
         console.log('✅ API Response Received:', resultData);
-  
-        const sortValue = this.dmfApiBody.filters['order_by'];
-        const sortedData = this.sortPatentData(resultData.tech_supplier_data, sortValue);
-  
-        // ✅ Update internal state
-        this._data = sortedData || [];
-        this.patentData = this._data; // optional if used separately
+     
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
           count: resultData?.tech_supplier_count
         };
-  
-        this.cdr.detectChanges(); // ✅ ensure view updates
-
         this.searchByTable = true; // ✅ Set searchByTable to tru
         // ✅ Emit updated data to parent (optional)
-        this.handleResultTabData.emit(this._data);
+        this.handleResultTabData.emit(resultData);
         this.handleSetLoading.emit(false);
         window.scrollTo(0, scrollTop);
       },
@@ -248,32 +219,14 @@ ngOnInit(): void {
       }
     });
   }
-  
-
-  sortPatentData(data: any[], order: string): any[] {
-
-    if (!Array.isArray(data)) return [];
-
-    if (order === 'Newest') {
-      return data.sort((a, b) =>
-        new Date(b.APPLICATION_DATE).getTime() - new Date(a.APPLICATION_DATE).getTime()
-      );
-    } else if (order === 'Oldest') {
-      return data.sort((a, b) =>
-        new Date(a.APPLICATION_DATE).getTime() - new Date(b.APPLICATION_DATE).getTime()
-      );
-    }
-
-    return data;
-  }
 
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
       let defaultLabel = '';
       switch (config.key) {
-        case 'country_dmf_holder': defaultLabel = 'Country'; break;
-        case 'dmf_status': defaultLabel = 'Select DMF'; break;
-        case 'tech': defaultLabel = 'tech Filters'; break
+        case 'country_dmf_holder': defaultLabel = 'Select Country'; break;
+        case 'stock_status': defaultLabel = 'Select Stock Status'; break;
+        case 'dmf_holder': defaultLabel = 'Select DMF Holder'; break
       }
       return { ...config, label: defaultLabel, dropdownState: false };
     });
