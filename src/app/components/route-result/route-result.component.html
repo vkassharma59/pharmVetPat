@@ -16,17 +16,24 @@
         [disabled]="generatePDFloader" title="Download Single Route" class="btn btn-outline-primary btn-sm me-2"><i
           class="fas fa-download"></i>
         Full Report (max 25 Report Download)</button>
-      <div *ngIf="searchThrough != 'synthesis-search' || this.CurrentAPIBody?.currentTab != this.resultTabWithKeys.technicalRoutes.name,">
+      <div
+        *ngIf="searchThrough != 'synthesis-search' || this.CurrentAPIBody?.currentTab != this.resultTabWithKeys.technicalRoutes.name,">
         <button *ngIf="index==0" (click)="OpenQueryModal()" class="btn btn-outline-primary btn-sm me-2">Raise
           Query</button>
         <button *ngIf="index==0" (click)="handleBack()" class="btn btn-outline-primary btn-sm">Back to Search</button>
       </div>
     </div>
+
   </div>
 
   <chem-route-tabs (handleCurrentTab)="handleCurrentTab($event)" [resultTabs]="resultTabs"
     [activeTab]="activeTab"></chem-route-tabs>
-
+    
+  <div style="display: flex; justify-content: flex-end; margin-top: 5px;">
+    <button *ngIf="isDownloadPermit && isSplitDownload" data-bs-toggle="modal" title="Download Single Route"
+      data-bs-target="#download_btn" class="btn btn-outline-primary btn-sm me-2"><i class="fas fa-download"></i>
+      Download Single Route</button>
+  </div>
   <!-- Main Content Section -->
   <div class="mt-3" [ngSwitch]="activeTab || currentTabData?.name">
     <ng-container *ngSwitchCase="resultTabWithKeys.productInfo.name">
@@ -39,17 +46,15 @@
 
     <ng-container *ngSwitchCase="resultTabWithKeys.technicalRoutes.name">
       <chem-technical-route [data]="_dataItem.technicalRoutes" [CurrentAPIBody]="CurrentAPIBody"
-        [specialCount]="_dataItem?.technicalRoutes?.special_count"
-        [itemid]="_dataItem"
+        [specialCount]="_dataItem?.technicalRoutes?.special_count" [itemid]="_dataItem"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.technicalRoutes.name]" [index]="index"
         [tabName]="resultTabWithKeys.technicalRoutes.name" (handleSetLoading)="handleSetLoading.emit($event)"
         (resetPagination)="resetPagination.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-technical-route>
     </ng-container>
     <ng-container *ngSwitchCase="resultTabWithKeys.dmf.name">
-      <app-dmf [data]="_dataItem.dmf" 
-        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.dmf.name]" [index]="index"
-        [tabName]="resultTabWithKeys.dmf.name" (handleSetLoading)="handleSetLoading.emit($event)"
+      <app-dmf [data]="_dataItem.dmf" [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.dmf.name]"
+        [index]="index" [tabName]="resultTabWithKeys.dmf.name" (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></app-dmf>
     </ng-container>
     <ng-container *ngSwitchCase="resultTabWithKeys.chemicalDirectory.name">
@@ -182,10 +187,6 @@
       </chem-exim>
     </ng-container>
 
-    <ng-container *ngSwitchCase="'US'">
-      <!-- <chem-us-approval></chem-us-approval> -->
-    </ng-container>
-
     <ng-container *ngSwitchDefault>
       <div class="card">
         <div class="card-header text-white bg-primary">Comming Soon..</div>
@@ -193,11 +194,12 @@
       </div>
     </ng-container>
   </div>
+
 </div>
 
 <!-- Download Modal -->
-<div #downloadBtnModal class="modal fade bg_4" id="download_btn" tabindex="-1" aria-labelledby="download_btn" style="margin-top: 2rem;"
-  aria-hidden="true">
+<div #downloadBtnModal class="modal fade bg_4" id="download_btn" tabindex="-1" aria-labelledby="download_btn"
+  style="margin-top: 2rem;" aria-hidden="true">
 
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content bg_1 px-4">
@@ -222,7 +224,7 @@
             Close
           </button>
 
-          <button *ngIf="!generatePDFloader" [disabled]="generatePDFloader"   (click)="handleGeneratePDF()"
+          <button *ngIf="!generatePDFloader" [disabled]="generatePDFloader" (click)="handleGeneratePDF1()"
             class="px-3 py-2 bg-green-500 rounded-md text-white font-bold">
             Generate
           </button>
