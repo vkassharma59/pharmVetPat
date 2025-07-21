@@ -4,8 +4,8 @@
     *ngIf="_data?.ACTIVE_INGREDIENT">{{_data?.ACTIVE_INGREDIENT}}</span><span
     *ngIf="_data?.active_ingredient">{{_data?.active_ingredient}}</span>
   </div>
-  <button class="btn btn-warning"  *ngIf="isDownloadPermit && isSplitDownload" data-bs-toggle="modal" title="Download Single Route"
-    data-bs-target="#download_btn"  (click)="prepareToDownload(index)"><i class="fa-solid fa-download"></i></button>
+  <!-- <button class="btn btn-warning"  *ngIf="isDownloadPermit && isSplitDownload" data-bs-toggle="modal" title="Download Single Route"
+    data-bs-target="#download_btn"  (click)="prepareToDownload(index)"><i class="fa-solid fa-download"></i></button> -->
     <!-- -->
 </div>
 <div class="card-body">
@@ -631,12 +631,12 @@
     <p>No data found</p>
   </ng-template>
   <!-- Download Modal -->
-<div #downloadBtnModal class="modal fade bg_4" id="download_btn" tabindex="-1" aria-labelledby="download_btn" style="margin-top: 2rem;"
+<!-- <div #downloadBtnModal class="modal fade bg_4" id="download_btn" tabindex="-1" aria-labelledby="download_btn" style="margin-top: 2rem;"
   aria-hidden="true">
 
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content bg_1 px-4">
-      <!-- Modal Body -->
+      <!-- Modal Body 
       <div class="p-3">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <label class="flex items-center" *ngFor="let tab of resultTabs1">
@@ -650,7 +650,7 @@
           Choose any 3 vertical report to download
         </h1>
       </div>
-      <!-- Modal Footer -->
+      <!-- Modal Footer 
       <div class="p-3 border-t">
         <div class="flex justify-end gap-2">
           <button data-bs-dismiss="modal" class="px-3 py-2 bg-red-500 rounded-md text-white font-bold">
@@ -677,5 +677,5 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 </div>
