@@ -162,16 +162,16 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
     const target = event.target as HTMLElement;
-  
+
     // Assuming you're using ViewChild for wrapper elements like devStageWrapper
     if (!target.closest('.dev-stage-container')) {
       this.showDevStageDropdown = false;
     }
-  
+
     if (!target.closest('.innovator-container')) {
       this.showInnovatorDropdown = false;
     }
-  
+
     // Add similar checks for other dropdowns
     // If you have autosuggestions lists:
     if (!target.closest('.suggestions-dropdown')) {
@@ -179,7 +179,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       this.intermediateSearch.autosuggestionList = [];
       this.advanceSearch.autosuggestionList = [];
     }
-  
+
     // For dynamically generated filters
     this.advanceSearch.autosuggestionList.forEach((_, i) => {
       if (!target.closest(`#filter-input-${i}`)) {
@@ -187,8 +187,8 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       }
     });
   }
-  
-  
+
+
 
   getAllFilters() {
     this.getChemicalStructureFilters();
@@ -231,21 +231,28 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     );
   }
 
-  handleChangeKeywordDL(column: 'DEVELOPMENT_STAGE' | 'INNOVATOR_ORIGINATOR') {
+  handleChangeKeywordDL(column: 'DEVELOPMENT_STAGE' | 'INNOVATOR_ORIGINATOR', isFocus: boolean = false) {
     let keyword = '';
     if (column === 'DEVELOPMENT_STAGE') keyword = this.advanceSearch.devStage;
     if (column === 'INNOVATOR_ORIGINATOR') keyword = this.advanceSearch.innovator;
-
-    if (!keyword || keyword.length < 2) {
-      if (column === 'DEVELOPMENT_STAGE') this.filteredDevStages = [];
-      if (column === 'INNOVATOR_ORIGINATOR') this.filteredInnovators = [];
-      return;
-    }
-
+    console.log("keyword", keyword, "column", column, "isFocus", isFocus);
+    // if (!keyword || keyword.length < 2) {
+    //   if (column === 'DEVELOPMENT_STAGE') this.filteredDevStages = [];
+    //   if (column === 'INNOVATOR_ORIGINATOR') this.filteredInnovators = [];
+    //   return;
+    // }
+    // Clear suggestions if input is empty or very short
+   if (!isFocus && (!keyword || keyword.length < 3)) {
+    if (column === 'DEVELOPMENT_STAGE') this.filteredDevStages = [];
+    if (column === 'INNOVATOR_ORIGINATOR') this.filteredInnovators = [];
+    return;
+  }
     const payload = { column, keyword };
+    console.log("payload", payload);
     this.mainSearchService.getAdvanceSearchSuggestions(payload).subscribe({
       next: (res: any) => {
         const list = res?.data?.suggestions || [];
+        console.log("list", list);
         if (column === 'DEVELOPMENT_STAGE') this.filteredDevStages = list;
         if (column === 'INNOVATOR_ORIGINATOR') this.filteredInnovators = list;
       },
@@ -468,7 +475,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       case searchTypes.chemicalStructure:
         this.chemicalStructure.keyword = value;
         this.chemicalStructure.autosuggestionList = [];
-         this.checkPriviledgeAndHandleSearch(this.searchTypes.chemicalStructure)
+        this.checkPriviledgeAndHandleSearch(this.searchTypes.chemicalStructure)
         setTimeout(() => {
           this.chemicalStructureKeywordInput.nativeElement.focus();
         }, 0);
@@ -484,7 +491,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       case searchTypes.intermediateSearch:
         this.intermediateSearch.keyword = value;
         this.intermediateSearch.autosuggestionList = [];
-          this.checkPriviledgeAndHandleSearch(this.searchTypes.intermediateSearch)
+        this.checkPriviledgeAndHandleSearch(this.searchTypes.intermediateSearch)
         setTimeout(() => {
           this.intermediateSearchKeywordInput.nativeElement.focus();
         }, 0);
@@ -744,7 +751,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       screenColumn: this.screenColumn,
       activeForm: searchTypes.advanceSearch,
     });
-  
+
     const validFilters = this.advanceSearch?.filterInputs
       ?.filter(input => input.filter?.trim() && input.keyword?.trim());
 
@@ -785,7 +792,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       }),
       page_no: 1
     };
-    
+
     const tech_API = this.apiUrls.basicProductInfo.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
@@ -864,7 +871,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   showContent(searchTab: string) {
     this.activeSearchTab = searchTab;
     this.showSuggestions = false;
-  
+
     // Do NOT reset input values — just optionally refocus the relevant input
     setTimeout(() => {
       switch (searchTab) {
@@ -883,7 +890,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       }
     }, 0);
   }
-  
+
 
   private performChemicalStructureSearch(): void {
     Auth_operations.setActiveformValues({

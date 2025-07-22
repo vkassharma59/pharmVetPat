@@ -431,8 +431,12 @@ export class RouteResultComponent {
                   ) {
                     let id: any = '';
                     const searchThrough = Auth_operations.getActiveformValues().activeForm;
-                    console.log('this.CurrentAPIBody---------', this._dataItem
+                    console.log('this.CurrentAPIBody---------', this._dataItem.productInfo
                     );
+                     console.log('this.CurrentAPIBody---------', this._dataItem.productInfo[0]
+                    )
+                     console.log('this.CurrentAPIBody---------', this._dataItem.productInfo[0]._id
+                    )
                     //console.log('searchThrough', this._data._id);
                     this.searchThrough = searchThrough;
                     switch (searchThrough) {
@@ -449,7 +453,6 @@ export class RouteResultComponent {
                         break;
                       default:
                         id = this._dataItem[this.resultTabWithKeys.productInfo.name][0]._id;
-
                     }
                     console.log('No search type selected');
                     console.log('id', id);

@@ -1,18 +1,44 @@
 <!-- <pre>{{_data | json}}</pre>  -->
 <div class="card-header text-white ">
-    <div style="padding-top:7px; justify-content:space-between;display:flex;">
-        {{ localCount }}. {{resultTabs?.impPatents?.label}} >> {{_data?.product}}
+    <div style="padding-top:7px; justify-content:space-between; display:flex; flex-wrap: wrap;">
+        <span>
+            {{ localCount }}. {{ resultTabs?.impPatents?.label }} >>
+            <span>
+                {{ showFull['header'] ? (_data?.product || '') : (_data?.product | slice:0:200) }}
+                <ng-container *ngIf="_data?.product?.length > 200">
+                    <span (click)="toggleView('header')"
+                        style="color: black; cursor: pointer; text-decoration: underline;">
+                        {{ showFull['header'] ? '...less' : '...View more' }}
+                    </span>
+                </ng-container>
+            </span>
+        </span>
     </div>
 </div>
+
 
 <div class="card-body" style="background-color: #F5FBFF;">
     <div class="pb-3 mb-3 px-2 rounded-lg">
         <div class="row">
 
-            <p class="text-wrap  whitespace-normal"
+            <!-- <p class="text-wrap  whitespace-normal"
                 style="color: #1351cc; font-size: 20px; font-weight: bold; padding-bottom: 15px;">
                 {{ _data?.product }}
+            </p> -->
+            <p class="text-wrap whitespace-normal"
+                style="color: #1351cc; font-size: 16px; font-weight: bold; padding-bottom: 15px;">
+                <span>
+                    {{ showFull['body'] ? (_data?.product || '') : (_data?.product | slice:0:100) }}
+                    <ng-container *ngIf="_data?.product?.length > 100">
+                        <span (click)="toggleView('body')"
+                            style="color: red; cursor: pointer; text-decoration: underline;">
+                            {{ showFull['body'] ? ' ...less' : '...View more' }}
+                        </span>
+                    </ng-container>
+                </span>
             </p>
+
+
 
             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 ">
 
@@ -24,7 +50,7 @@
                             <i class="fas fa-copy"></i>
                         </span>
                     </h1>
-                    <p class="text-wrap max-h-18 overflow-y-auto break-words whitespace-normal">
+                    <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
                         {{ _data?.product }}
                     </p>
                 </div>
@@ -39,7 +65,7 @@
                             <i class="fas fa-copy"></i>
                         </span>
                     </h1>
-                    <p class="text-wrap max-h-12 whitespace-normal">
+                    <p class="text-wrap max-h-12 overflow-y-auto whitespace-normal">
                         {{ _data?.gbrn }}
                     </p>
                 </div>
@@ -52,7 +78,7 @@
                             <i class="fas fa-copy"></i>
                         </span>
                     </h1>
-                    <p class="text-wrap max-h-12 whitespace-normal">
+                    <p class="text-wrap max-h-12 overflow-y-auto whitespace-normal">
                         {{ _data?.ob_spc_patents }}
                     </p>
                 </div>
@@ -69,18 +95,22 @@
                             <i class="fas fa-copy"></i>
                         </span>
                     </h1>
-                    <p class="ng-binding text-wrap max-h-12 whitespace-normal">  {{ _data?.patent_publication_number }} <br>
-                                          <a target="_blank" href="https://patents.google.com/patent/WO2012166420" style="color: blue;font-weight: 600;">
-                                            <span><i class="fa-brands fa-google"></i> </span>
-                                            Google Patent Search  <br>
-                                          </a>
-                                          <a target="_blank" href="https://worldwide.espacenet.com/patent/search/family/058735584/publication/AU2017202401A1?q=WO2012166420" style="color: red;font-weight: 600;">
-                                            <span><i class="fa-solid fa-e"></i> </span>
-                                             Espacenet Patent Search  <br>
-                                          </a>
-                                        </p>
-                                        <br>
-                                        <br>
+                    <p class="ng-binding text-wrap max-h-12 whitespace-normal"> {{ _data?.patent_publication_number }}
+                        <br>
+                        <a target="_blank" href="https://patents.google.com/patent/WO2012166420"
+                            style="color: blue;font-weight: 600;">
+                            <span><i class="fa-brands fa-google"></i> </span>
+                            Google Patent Search <br>
+                        </a>
+                        <a target="_blank"
+                            href="https://worldwide.espacenet.com/patent/search/family/058735584/publication/AU2017202401A1?q=WO2012166420"
+                            style="color: red;font-weight: 600;">
+                            <span><i class="fa-solid fa-e"></i> </span>
+                            Espacenet Patent Search <br>
+                        </a>
+                    </p>
+                    <br>
+                    <br>
                     <!-- <p class="text-wrap max-h-12 whitespace-normal">
                         {{ _data?.patent_publication_number }}
                     

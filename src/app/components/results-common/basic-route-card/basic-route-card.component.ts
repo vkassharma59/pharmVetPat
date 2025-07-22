@@ -65,6 +65,10 @@ export class BasicRouteCardComponent {
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
+  showFull = false;
+  toggleView() {
+    this.showFull = !this.showFull;
+  }
 
   ngOnInit() {
     // Reset counter only when the component is first loaded
@@ -85,7 +89,7 @@ export class BasicRouteCardComponent {
 
   viewProduct() {
     this.toggleProductHighlights = !this.toggleProductHighlights;
-    if(this.toggleProductHighlights && this.productHighlights.length === 0) {
+    if (this.toggleProductHighlights && this.productHighlights.length === 0) {
       this.isLoading = true;
       this.MainSearchService.getProductHighlights().subscribe({
         next: (response) => {

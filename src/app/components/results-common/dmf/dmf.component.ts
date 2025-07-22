@@ -30,6 +30,7 @@ export class DmfComponent {
   lastClickedFilterKey: string | null = null;
   _data: any = [];
 
+
   filterConfigs = [
     {
       key: 'country_dmf_holder',
@@ -75,6 +76,7 @@ export class DmfComponent {
   }
 
 
+
   @HostListener('document:mousedown', ['$event'])
   onClickOutside(event: MouseEvent) {
     const clickedInsideAny = this.dropdownRefs?.some((dropdown: ElementRef) =>
@@ -113,7 +115,7 @@ export class DmfComponent {
     this.dmfApiBody.filter_enable = true;
     this.mainSearchService.dmfSearchSpecific(this.dmfApiBody).subscribe({
       next: (result: any) => {
-       
+ 
         const countryFilters = result?.data?.country_dmf_holder?.map(item => ({
           name: item.name,
           value: item.value
@@ -187,6 +189,7 @@ export class DmfComponent {
         const resultData = res?.data || {};
         console.log('✅ API Response Received:', resultData);
 
+
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
           count: resultData?.tech_supplier_count
@@ -250,7 +253,6 @@ export class DmfComponent {
 
     if (textToCopy) {
       navigator.clipboard.writeText(textToCopy).then(() => {
-
         if (el.classList.contains('fa-copy')) {
           el.classList.remove('fa-copy');
           el.classList.add('fa-check');
