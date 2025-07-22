@@ -206,7 +206,8 @@
 
           <div class="position-relative">
             <input type="text" class="form-control" placeholder="Select Development Stage"
-              [(ngModel)]="advanceSearch.devStage" (focus)="showDevStageDropdown = true"
+              [(ngModel)]="advanceSearch.devStage" 
+              (focus)="showDevStageDropdown = true; handleChangeKeywordDL('DEVELOPMENT_STAGE', true)"
               (input)="handleChangeKeywordDL('DEVELOPMENT_STAGE')" />
 
             <div *ngIf="showDevStageDropdown "
@@ -230,7 +231,8 @@
 
           <div class="position-relative">
             <input type="text" class="form-control" placeholder="Select Innovator Originator"
-              [(ngModel)]="advanceSearch.innovator" (focus)="showInnovatorDropdown = true"
+              [(ngModel)]="advanceSearch.innovator"
+              (focus)="showInnovatorDropdown = true; handleChangeKeywordDL('INNOVATOR_ORIGINATOR', true)"
               (input)="handleChangeKeywordDL('INNOVATOR_ORIGINATOR')" />
 
 
@@ -329,7 +331,7 @@
 
             <!-- Suggestions Dropdown -->
             <ul *ngIf="intermediateSearch?.autosuggestionList?.length"
-             class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto whitespace-normal break-words w-64">
+              class="absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md max-h-48 overflow-y-auto whitespace-normal break-words w-64">
               <li *ngFor="let suggestion of intermediateSearch?.autosuggestionList"
                 class="px-4 py-2 cursor-pointer hover:bg-blue-100"
                 (click)="handleSuggestionClick(suggestion, searchTypes.intermediateSearch)">
@@ -346,16 +348,16 @@
             <button (click)="clearInputAndSuggetions(searchTypes.intermediateSearch)"
               class="btn btn-outline-secondary w-100">Clear</button>
           </div>
-          
+
         </div>
         <div class="col-md-12">
-            <div class="d-flex flex-wrap gap-2">
-              <button class="suggestion-btn" *ngFor="let intersuggestion of intersuggestionsList"
-             (click)="intermediateSearchSuggestionSearch(intersuggestion)">
-                {{ intersuggestion.type }}: <strong>{{ intersuggestion.value }}</strong>
-              </button>
-            </div>
+          <div class="d-flex flex-wrap gap-2">
+            <button class="suggestion-btn" *ngFor="let intersuggestion of intersuggestionsList"
+              (click)="intermediateSearchSuggestionSearch(intersuggestion)">
+              {{ intersuggestion.type }}: <strong>{{ intersuggestion.value }}</strong>
+            </button>
           </div>
+        </div>
       </div>
 
       <div class="divider"></div>
