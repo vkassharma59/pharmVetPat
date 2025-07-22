@@ -3,6 +3,7 @@ import {
   ElementRef,
   EventEmitter,
   HostListener,
+  Input,
   OnInit,
   Output,
   ViewChild
@@ -34,7 +35,14 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   userAuth: any = {};
   column = '';
   searchTypes: any;
-
+  username: string = '';
+  password: string = '';
+  tabvalue = 'Active Ingredient - ROS Search';
+  showTab = false;
+  LimitValue = '';
+  auth: boolean = false;
+  accountType: string = 'test';
+  selectedItem: number = 0;
   chemicalStructure: any = { filter: '' }
   simpleSearch: any = {}
   synthesisSearch: any = {}
@@ -55,7 +63,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   @Output() chemSearchResults = new EventEmitter<any>();
   @Output() priviledgeModal = new EventEmitter<any>();
   @Output() showResultFunction = new EventEmitter<any>();
-
+  @Input() CurrentAPIBody: any;
   @ViewChild('simpleSearchkeywordInput') simpleSearchkeywordInput!: ElementRef;
   @ViewChild('chemicalStructureKeywordInput') chemicalStructureKeywordInput!: ElementRef;
   @ViewChild('synthesisSearchkeywordInput') synthesisSearchkeywordInput!: ElementRef;
@@ -156,6 +164,26 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     this.utilityService.resetTabs();
     this.resultTabs = this.utilityService.getAllTabsName();
     this.getAllFilters();
+    const user = localStorage.getItem('auth');
+    this.auth = user ? true : false;
+
+    const accountType = localStorage.getItem('account_type');
+    this.accountType = accountType ? accountType : '';
+    
+    if (this.CurrentAPIBody.currentTab) {
+      if (this.CurrentAPIBody.currentTab === 'active_ingredient') {
+        this.selectedItem = 0;
+      } else if (
+        this.CurrentAPIBody.currentTab === 'intermediate_application'
+      ) {
+        this.selectedItem = 1;
+      } else if (this.CurrentAPIBody.currentTab === 'intermediate_synthesis') {
+        this.selectedItem = 2;
+      } else {
+        this.selectedItem = 3;
+      }
+    }
+
   }
 
   // ✅ Unified HostListener to close dropdowns
