@@ -418,6 +418,7 @@ export class TechnicalRoutesCardComponent {
   //     },
   //   });
   // }
+
   getDownloadableValues(downloadable_docs: any) {
     this.doc_values = downloadable_docs.split(';');
     return true;
