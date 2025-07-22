@@ -44,7 +44,12 @@ import { DmfComponent } from '../results-common/dmf/dmf.component';
 })
 
 export class RouteResultComponent {
-
+  userIsLoggedIn: boolean = false;
+  loading = false;
+  FilterObjectLength = false;
+  LimitValue = '';
+  isBackHidden: boolean = true;
+  accountType: string = '';
   public scientificDocsPayload: any[] = [];
   tabNameToReportKey: { [key: string]: string } = {
     productInfo: 'basicProduct',
@@ -122,6 +127,8 @@ export class RouteResultComponent {
     });
 
     //
+    const accountType = localStorage.getItem('account_type');
+    this.accountType = accountType ? accountType : '';
     const Account_type = localStorage.getItem('account_type');
     const Userdata = JSON.parse(localStorage.getItem('priviledge_json') || '');
 
