@@ -14,7 +14,7 @@ export class MainSearchService {
   private auth_token = Auth_operations.getToken();
   private apiUrls = AppConfigValues.appUrls;
   private ip = Auth_operations.getIp();
-
+  public simpleSearchKeyword: string = '';
   constructor(private http: HttpClient) { }
 
   private headers = new HttpHeaders({
