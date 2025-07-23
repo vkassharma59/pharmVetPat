@@ -23,12 +23,21 @@ export class ImpPatentsCardComponent implements OnInit, OnDestroy {
   static apiCallCount: number = 0; // Global static counter
   localCount: number = 0; // Instance-specific count
 
-  constructor(private dialog: MatDialog, private utilityService: UtilityService) {}
+  constructor(private dialog: MatDialog, private utilityService: UtilityService) { }
+  showFull: { [key: string]: boolean } = {
+    header: false,
+    body: false
+  };
+
+  toggleView(section: 'header' | 'body') {
+    this.showFull[section] = !this.showFull[section];
+  }
+
 
   @Input()
   get data() {
     return this._data;
-    
+
   }
   set data(value: any) {
     if (value && Object.keys(value).length > 0) {
@@ -60,7 +69,7 @@ export class ImpPatentsCardComponent implements OnInit, OnDestroy {
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
-  
+
   toggleMoreInfo(): void {
     this.MoreInfo = !this.MoreInfo;
   }
@@ -96,19 +105,19 @@ export class ImpPatentsCardComponent implements OnInit, OnDestroy {
 
     document.body.removeChild(textArea);
 
-  // Step 2: Find the icon inside the clicked span and swap classes
-  const icon = el.querySelector('i');
+    // Step 2: Find the icon inside the clicked span and swap classes
+    const icon = el.querySelector('i');
 
-  if (icon?.classList.contains('fa-copy')) {
-    icon.classList.remove('fa-copy');
-    icon.classList.add('fa-check');
+    if (icon?.classList.contains('fa-copy')) {
+      icon.classList.remove('fa-copy');
+      icon.classList.add('fa-check');
 
-    // Step 3: Revert it back after 1.5 seconds
-    setTimeout(() => {
-      icon.classList.remove('fa-check');
-      icon.classList.add('fa-copy');
-    }, 1500);
-  }
+      // Step 3: Revert it back after 1.5 seconds
+      setTimeout(() => {
+        icon.classList.remove('fa-check');
+        icon.classList.add('fa-copy');
+      }, 1500);
+    }
   }
 
   getImageUrl(): string {
