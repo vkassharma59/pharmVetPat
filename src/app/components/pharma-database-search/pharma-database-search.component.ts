@@ -8,7 +8,7 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule } from '@angular/forms';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { MainSearchService } from '../../services/main-search/main-search.service';
 import { UserPriviledgeService } from '../../services/user_priviledges/user-priviledge.service';
@@ -29,7 +29,7 @@ import { coerceStringArray } from '@angular/cdk/coercion';
   styleUrl: './pharma-database-search.component.css'
 })
 export class pharmaDatabaseSearchComponent implements OnInit {
-
+  keyword = new FormControl('');
   screenColumn = 'Select Filter';
   criteria = '';
   userAuth: any = {};
@@ -164,18 +164,38 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     this.utilityService.resetTabs();
     this.resultTabs = this.utilityService.getAllTabsName();
     this.getAllFilters();
+  
     const user = localStorage.getItem('auth');
     this.auth = user ? true : false;
-
+  
     const accountType = localStorage.getItem('account_type');
     this.accountType = accountType ? accountType : '';
-    
+  
+    // Get saved keyword for each type from sessionStorage
+    const savedSimpleKeyword = sessionStorage.getItem('simpleSearch.keyword');
+    if (savedSimpleKeyword) {
+      this.simpleSearch.keyword = savedSimpleKeyword;
+    }
+  
+    const savedChemicalKeyword = sessionStorage.getItem('chemicalStructure.keyword');
+    if (savedChemicalKeyword) {
+      this.chemicalStructure.keyword = savedChemicalKeyword;
+    }
+  
+    const savedSynthesisKeyword = sessionStorage.getItem('synthesisSearch.keyword');
+    if (savedSynthesisKeyword) {
+      this.synthesisSearch.keyword = savedSynthesisKeyword;
+    }
+  
+    const savedIntermediateKeyword = sessionStorage.getItem('intermediateSearch.keyword');
+    if (savedIntermediateKeyword) {
+      this.intermediateSearch.keyword = savedIntermediateKeyword;
+    }
+  
     if (this.CurrentAPIBody.currentTab) {
       if (this.CurrentAPIBody.currentTab === 'active_ingredient') {
         this.selectedItem = 0;
-      } else if (
-        this.CurrentAPIBody.currentTab === 'intermediate_application'
-      ) {
+      } else if (this.CurrentAPIBody.currentTab === 'intermediate_application') {
         this.selectedItem = 1;
       } else if (this.CurrentAPIBody.currentTab === 'intermediate_synthesis') {
         this.selectedItem = 2;
@@ -183,8 +203,8 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         this.selectedItem = 3;
       }
     }
-
   }
+  
 
   // ✅ Unified HostListener to close dropdowns
   @HostListener('document:click', ['$event'])
@@ -481,49 +501,61 @@ export class pharmaDatabaseSearchComponent implements OnInit {
         break;
     }
   }
-
   handleSuggestionClick(value: any, searchType = '', index: number = 0) {
     this.showSuggestions = false;
+  
+    // Set value to sessionStorage (persist across reloads)
+    sessionStorage.setItem('searchKeyword', value);
+  
     switch (searchType) {
       case searchTypes.simpleSearch:
         this.simpleSearch.keyword = value;
         this.simpleSearch.autosuggestionList = [];
-        this.checkPriviledgeAndHandleSearch(this.searchTypes.simpleSearch)
+        this.checkPriviledgeAndHandleSearch(this.searchTypes.simpleSearch);
+  
+        // Restore input focus
         setTimeout(() => {
-          this.simpleSearchkeywordInput.nativeElement.focus();
+          this.simpleSearchkeywordInput?.nativeElement?.focus();
         }, 0);
+  
+        // Update FormControl if you're using reactive form
+        this.keyword.setValue(value);
         break;
+  
       case searchTypes.chemicalStructure:
         this.chemicalStructure.keyword = value;
         this.chemicalStructure.autosuggestionList = [];
-         this.checkPriviledgeAndHandleSearch(this.searchTypes.chemicalStructure)
+        this.checkPriviledgeAndHandleSearch(this.searchTypes.chemicalStructure);
         setTimeout(() => {
-          this.chemicalStructureKeywordInput.nativeElement.focus();
+          this.chemicalStructureKeywordInput?.nativeElement?.focus();
         }, 0);
         break;
+  
       case searchTypes.synthesisSearch:
         this.synthesisSearch.keyword = value;
         this.synthesisSearch.autosuggestionList = [];
-        this.checkPriviledgeAndHandleSearch(this.searchTypes.synthesisSearch)
+        this.checkPriviledgeAndHandleSearch(this.searchTypes.synthesisSearch);
         setTimeout(() => {
-          this.synthesisSearchkeywordInput.nativeElement.focus();
+          this.synthesisSearchkeywordInput?.nativeElement?.focus();
         }, 0);
         break;
+  
       case searchTypes.intermediateSearch:
         this.intermediateSearch.keyword = value;
         this.intermediateSearch.autosuggestionList = [];
-          this.checkPriviledgeAndHandleSearch(this.searchTypes.intermediateSearch)
+        this.checkPriviledgeAndHandleSearch(this.searchTypes.intermediateSearch);
         setTimeout(() => {
-          this.intermediateSearchKeywordInput.nativeElement.focus();
+          this.intermediateSearchKeywordInput?.nativeElement?.focus();
         }, 0);
         break;
+  
       case searchTypes.advanceSearch:
         this.advanceSearch.filterInputs[index].keyword = value;
         this.advanceSearch.autosuggestionList[index] = [];
         break;
     }
   }
-
+  
   getChemicalStructureFilters() {
     this.mainSearchService.getChemicalStructureFilters().subscribe({
       next: (res: any) => {
