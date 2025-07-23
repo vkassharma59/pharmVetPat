@@ -1,18 +1,18 @@
 <div class="container mt-4">
   <!--logo -->
-<div class="logo">
-  <div class="pharma-logo" style="margin-left: 10px;">
-    <img src="assets/images/home/PharmVetPat.svg" alt="PharmVetPat" class="img">
+  <div class="logo">
+    <div class="pharma-logo" style="margin-left: 10px;">
+      <img src="assets/images/home/PharmVetPat.svg" alt="PharmVetPat" class="img">
+    </div>
+    <!--right logo-->
+    <div class="flex justify-end" *ngIf="accountType === 'premium'">
+      <img src="assets/premium.png" alt="Technical Routes Logo" class="h-10" />
+    </div>
+    <div class="flex justify-end mb-2" *ngIf="accountType === 'free'">
+      <img src="assets/evaluation-version.png" alt="Technical Routes Logo" class="h-10" />
+    </div>
   </div>
-  <!--right logo-->
-  <div class="flex justify-end" *ngIf="accountType === 'premium'">
-    <img src="assets/premium.png" alt="Technical Routes Logo" class="h-10" />
-  </div>
-  <div class="flex justify-end mb-2" *ngIf="accountType === 'free'">
-    <img src="assets/evaluation-version.png" alt="Technical Routes Logo" class="h-10" />
-  </div>
-</div>
-  
+
   <!-- Header Section -->
   <div class="d-flex justify-content-between align-items-center">
     <!-- Left Section -->
@@ -42,11 +42,15 @@
 
   <chem-route-tabs (handleCurrentTab)="handleCurrentTab($event)" [resultTabs]="resultTabs"
     [activeTab]="activeTab"></chem-route-tabs>
-    
-  <div style="display: flex; justify-content: flex-end; margin-top: 5px;">
-    <button *ngIf="isDownloadPermit && isSplitDownload" data-bs-toggle="modal" title="Download Single Route"
-      data-bs-target="#download_btn" class="btn btn-outline-primary btn-sm me-2"><i class="fas fa-download"></i>
-      Download Single Route</button>
+  <div>
+   
+      <div style="display: flex; justify-content: flex-end; margin-top: 5px;">
+        <button *ngIf="isDownloadPermit && isSplitDownload" data-bs-toggle="modal"   (click)="openDownloadModal(index)"
+          title="Download Single Route" data-bs-target="#download_btn" class="btn btn-outline-primary btn-sm me-2"><i
+            class="fas fa-download"></i>
+          Download Single Route</button>
+      </div>
+  
   </div>
   <!-- Main Content Section -->
   <div class="mt-3" [ngSwitch]="activeTab || currentTabData?.name">
@@ -238,7 +242,7 @@
             Close
           </button>
 
-          <button *ngIf="!generatePDFloader" [disabled]="generatePDFloader" (click)="handleGeneratePDF1()"
+          <button *ngIf="!generatePDFloader" [disabled]="generatePDFloader" (click)="handleGeneratePDF1(selectedIndex)"
             class="px-3 py-2 bg-green-500 rounded-md text-white font-bold">
             Generate
           </button>

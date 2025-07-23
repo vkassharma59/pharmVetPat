@@ -2,8 +2,6 @@ import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { Auth_operations } from '../../../Utils/SetToken';
-import { environment } from '../../../../environments/environment';
-import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
 import { CommonModule } from '@angular/common';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 
@@ -25,7 +23,7 @@ export class DmfCardComponent {
   dmfApiBody: any;
   _currentChildAPIBody: any;
   filteredCountries: any[] = [];
-
+  @Input() countryConfig: any[] = [];
   static apiCallCount: number = 0;
   localCount: number = 0;
 
@@ -45,7 +43,7 @@ export class DmfCardComponent {
 
     ]
   };
-
+  @Input() selectedCountry: any;
   @Input()
   get data() {
     return this._data;
@@ -74,49 +72,17 @@ export class DmfCardComponent {
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
-    if (value) {
-      this.dmfApiBody = JSON.parse(JSON.stringify(value)) || value;
-      this.processCountryData();
-    }
-  }
-  // get dataKeys(): string[] {
-  //   const keys = this._data ? Object.keys(this._data) : [];
-  //   return keys;
-  // }
+   }
 
-  // get techSupplierList() {
-  //   const list = this._data?.tech_supplier_data ?? [];
-  //   return list;
-  // }
-
+  @Input() countryList: any[] = []; // ← This replaces processCountryData
 
   ngOnInit() {
-    this.processCountryData();
+    //this.processCountryData();
     if (DmfCardComponent.apiCallCount === 0) {
       DmfCardComponent.apiCallCount = 0;
     }
   }
-  processCountryData() { 
-    this.dmfApiBody.filter_enable = true;
-    this.mainSearchService.dmfSearchSpecific(this.dmfApiBody).subscribe({
-      next: (result: any) => {
-      
-        const rawCountries = result?.data?.country_dmf_holder || [];
 
-        this.filteredCountries = rawCountries
-          .filter(item => item.name && item.value != null)
-          .map(item => ({
-            key: item.name,       // Cleaned country name
-            total: item.value            // Total DMFs or whatever value is
-          }));
-        this.dmfApiBody.filter_enable = false;
-      },
-      error: (err) => {
-        console.error('Error fetching dmf filters:', err);
-        this.dmfApiBody.filter_enable = false;
-      }
-    });
-  }
   getDmfPrefix(country: string): string {
     const upperKey = (country || '').toUpperCase();
     const prefixMap: { [key: string]: string } = {
@@ -133,10 +99,6 @@ export class DmfCardComponent {
     DmfCardComponent.apiCallCount = 0;
   }
 
-  isEmptyObject(obj: any): boolean {
-    const isEmpty = Object.keys(obj).length === 0;
-    return isEmpty;
-  }
 
   toggleMoreInfo(): void {
     this.MoreInfo = !this.MoreInfo;
@@ -147,25 +109,6 @@ export class DmfCardComponent {
     return name;
   }
 
-  getPubchemId(value: any): string {
-    const url = `https://pubchem.ncbi.nlm.nih.gov/#query=${encodeURIComponent(value)}`;
-    return url;
-  }
-
-  getCompanyLogo(value: any): string {
-    const url = value?.company_logo ? `${environment.baseUrl}${environment.domainNameCompanyLogo}${value.company_logo}` : '';
-    return url;
-  }
-
-  getCountryUrl(value: any): string {
-    const url = value?.country_of_company ? `${environment.baseUrl}${environment.countryNameLogoDomain}${value.country_of_company}.png` : '';
-    return url;
-  }
-
-  getCompanyWebsite(value: any): string {
-    const url = value ? `https://${value}` : '#';
-    return url;
-  }
 
   handleCopy(text: string, event: MouseEvent) {
 
@@ -190,12 +133,6 @@ export class DmfCardComponent {
         icon.classList.add('fa-copy');
       }, 1500);
     }
-  }
-
-
-  getImageUrl(): string {
-    const url = this._data?.company_logo ? `${environment.baseUrl}${environment.domainNameCompanyLogo}${this._data.company_logo}` : '';
-    return url;
   }
 
   copyText(elementId: string, event: Event) {
