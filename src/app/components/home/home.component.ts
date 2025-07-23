@@ -6,6 +6,7 @@ import { LoaderComponent } from '../../commons/loader/loader.component';
 import { UtilityService } from '../../services/utility-service/utility.service';
 import { DemoRequestComponent } from '../demo-request/demo-request.component';
 import { MatDialog } from '@angular/material/dialog';
+import { SharedRosService } from '../../shared-ros.service';
 
 @Component({
   selector: 'chem-home',
@@ -43,6 +44,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
+    private sharedRosService: SharedRosService,
     private cdr: ChangeDetectorRef,
     private utilityService: UtilityService
   ) { }
@@ -98,7 +100,7 @@ export class HomeComponent implements OnInit {
   handleSearchResults(data: any) {
     this.allDataSets = this.utilityService.getDataStates();
     this.searchData = { ...data };
-    console.log('Search Data:', this.searchData);
+    this.sharedRosService.setAllDataSets(this.allDataSets);
     console.log('All Data Sets:', this.allDataSets);
     switch (this.CurrentAPIBody.currentTab) {
       case this.resultTabs.productInfo.name:
