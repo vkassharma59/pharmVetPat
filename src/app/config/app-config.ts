@@ -35,8 +35,8 @@ export const AppConfigValues: AppConfig = {
         reportData: `${appUrl.apiUrl}/technical-routes/report-data`,
       },
       dmf: {
-        searchSpecific: `${appUrl.devApiUrl}/tech-supplier/search-specific`,
-        columnList: `${appUrl.devApiUrl}/tech-supplier/column-list`,
+        searchSpecific: `${appUrl.apiUrl}/tech-supplier/search-specific`,
+        columnList: `${appUrl.apiUrl}/tech-supplier/column-list`,
       },
       chemicalDirectory: {
         filterColumns: `${appUrl.apiUrl}/chemical-directory/filter-columns`,
@@ -80,12 +80,12 @@ export const AppConfigValues: AppConfig = {
         columnList: `${appUrl.apiUrl}/green-book-us/column-list`,
       },
       activePatent: {
-        searchSpecific: `${appUrl.devApiUrl}/active-patent/search-specific`,
-        columnList: `${appUrl.devApiUrl}/active-patent/column-list`,
+        searchSpecific: `${appUrl.apiUrl}/active-patent/search-specific`,
+        columnList: `${appUrl.apiUrl}/active-patent/column-list`,
       },
       nonPatentLandscape: {
-        searchSpecific: `${appUrl.devApiUrl}/non-patent/search-specific`,
-        columnList: `${appUrl.devApiUrl}/non-patent/column-list`,
+        searchSpecific: `${appUrl.apiUrl}/non-patent/search-specific`,
+        columnList: `${appUrl.apiUrl}/non-patent/column-list`,
       },
       indianMedicine: {
         searchSpecific: `${appUrl.apiUrl}/indian-medicine/search-specific`,
@@ -100,8 +100,8 @@ export const AppConfigValues: AppConfig = {
         columnList: `${appUrl.apiUrl}/spc/column-list`,
       },
       gppdDb: {
-        searchSpecific: `${appUrl.devApiUrl}/gppd/search-specific`,
-        columnList: `${appUrl.devApiUrl}/gppd/column-list`,
+        searchSpecific: `${appUrl.apiUrl}/gppd/search-specific`,
+        columnList: `${appUrl.apiUrl}/gppd/column-list`,
       },
       chemiTracker: {
         searchSpecific: `${appUrl.apiUrl}/chemi-tracker/search-specific`,
@@ -112,8 +112,8 @@ export const AppConfigValues: AppConfig = {
         columnList: `${appUrl.apiUrl}/scientific-docs/column-list`,
       },
       eximData: {
-        searchSpecific: `${appUrl.devApiUrl}/ximm/search-specific`,
-        columnList: `${appUrl.devApiUrl}/ximm/column-list`,
+        searchSpecific: `${appUrl.apiUrl}/ximm/search-specific`,
+        columnList: `${appUrl.apiUrl}/ximm/column-list`,
       },
       user: {
         privilegeApi: `${appUrl.apiUrl}/user-info`,

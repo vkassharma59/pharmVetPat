@@ -1,7 +1,7 @@
 <ng-container>
     <div class="card-header text-white rounded-lg">
         <div style="padding:7px; justify-content:space-between; display:flex;">
-            {{ localCount }}. {{resultTabs?.dmf?.label}} >> {{_data?.name}}
+            {{ localCount }}. {{resultTabs?.dmf?.label}} >> {{_data?.name}} 
         </div>
     </div>
     <!-- HTML Template -->
@@ -9,10 +9,10 @@
     <div class="card body" style="background-color:#f8faff;">
         <div class="pb-3 mb-3 px-2 rounded-lg" style="margin-top: 1rem;">
             <div  *ngIf="localCount === 1" class="col-md-12 dmf-country-box" style="display: flex; flex-direction: row; flex-wrap: wrap;">
-                <span class="dmf-block" *ngFor="let country of filteredCountries"
+                <span class="dmf-block" *ngFor="let country of countryConfig"
                    >
                     <span class="ng-binding">
-                        {{ getDmfPrefix(country.total) }}: {{ country.key }} 
+                        {{ getDmfPrefix(country.value) }}: {{ country.name }} 
                     </span>
                 </span>
             </div>
