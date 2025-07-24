@@ -62,7 +62,7 @@ export class DmfComponent {
   set data(value: any) {
     this._data = value;
   }
-
+  countryConfigRaw: any[] = [];
   @Input()
   get currentChildAPIBody() {
     return this._currentChildAPIBody;
@@ -99,7 +99,7 @@ export class DmfComponent {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
- 
+
   onFilterButtonClick(filterKey: string) {
     this.lastClickedFilterKey = filterKey;
 
@@ -110,12 +110,13 @@ export class DmfComponent {
       return { ...item, dropdownState: false };
     });
   }
-
   handleFetchFilters() {
-    this.dmfApiBody.filter_enable = true;
+     this.dmfApiBody.filter_enable = true;
     this.mainSearchService.dmfSearchSpecific(this.dmfApiBody).subscribe({
       next: (result: any) => {
- 
+        const countryConfig = result?.data?.country_dmf_holder || [];
+        this.countryConfigRaw = countryConfig;
+
         const countryFilters = result?.data?.country_dmf_holder?.map(item => ({
           name: item.name,
           value: item.value
@@ -124,6 +125,8 @@ export class DmfComponent {
           name: item.name,
           value: item.value
         })) || [];
+
+
         const dmfholderFilters = result?.data?.dmf_holder?.map(item => ({
           name: item.name,
           value: item.value
@@ -141,7 +144,6 @@ export class DmfComponent {
       }
     });
   }
-
   setFilterLabel(filterKey: string, label: string) {
     this.filterConfigs = this.filterConfigs.map((item) => {
       if (item.key === filterKey) {
@@ -157,11 +159,10 @@ export class DmfComponent {
       return item;
     });
   }
-
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     console.log('🔍 Filter clicked:', { filterKey, value, name });
     this.handleSetLoading.emit(true);
-    this.dmfApiBody.filters = this.dmfApiBody.filters || {};
+    // this.dmfApiBody.filters = this.dmfApiBody.filters || {};
     if (value === '') {
       delete this.dmfApiBody.filters[filterKey];
       this.setFilterLabel(filterKey, '');
@@ -188,13 +189,12 @@ export class DmfComponent {
       next: (res) => {
         const resultData = res?.data || {};
         console.log('✅ API Response Received:', resultData);
-
-
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
           count: resultData?.tech_supplier_count
         };
-        this.searchByTable = true; // ✅ Set searchByTable to tru
+        this._data = resultData?.tech_supplier_data || [];
+
         // ✅ Emit updated data to parent (optional)
         this.handleResultTabData.emit(resultData);
         this.handleSetLoading.emit(false);
@@ -202,20 +202,23 @@ export class DmfComponent {
       },
       error: (err) => {
         console.error("❌ Error while filtering data", err);
-        this._currentChildAPIBody.filter_enable = false;
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          filter_enable: false
+        };
         this.handleSetLoading.emit(false);
         window.scrollTo(0, scrollTop);
       }
     });
   }
-
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
       let defaultLabel = '';
       switch (config.key) {
-        case 'country_dmf_holder': defaultLabel = 'Select Country'; break;
+        case 'country_dmf_holder': defaultLabel = 'Country'; break;
         case 'stock_status': defaultLabel = 'Select Stock Status'; break;
-        case 'dmf_holder': defaultLabel = 'Select DMF Holder'; break
+        case 'dmf_holder': defaultLabel = 'DMF Holder Filters'; break;
+
       }
       return { ...config, label: defaultLabel, dropdownState: false };
     });
@@ -234,7 +237,8 @@ export class DmfComponent {
           ...this._currentChildAPIBody,
           count: res?.data?.tech_supplier_count
         };
-        this.searchByTable = true;
+        this._data = res?.data?.tech_supplier_data || [];
+
         this.handleResultTabData.emit(res.data);
         this.handleSetLoading.emit(false);
       },
@@ -247,16 +251,6 @@ export class DmfComponent {
 
     window.scrollTo(0, 0);
   }
-getSubRouteNumber(index: number): number {
-  if (!this._data?.length) return 0;
-
-  const maxCount = Math.min(this._data.length, this._currentChildAPIBody?.count || 0);
-
-  return (((this._currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (index + 1) <= maxCount
-    ? (((this._currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (index + 1)
-    : maxCount;
-}
-
   copyText(elementId: string, event: Event) {
     const el = event.currentTarget as HTMLElement;
     const textToCopy = document.getElementById(elementId)?.innerText;

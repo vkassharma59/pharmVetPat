@@ -4,11 +4,11 @@
         <span>
             {{ localCount }}. {{ resultTabs?.impPatents?.label }} >>
             <span>
-                {{ showFull['header'] ? (_data?.product || '') : (_data?.product | slice:0:200) }}
-                <ng-container *ngIf="_data?.product?.length > 200">
+                {{ showFull['header'] ? (_data?.product || '') : (_data?.product | slice:0:130) }}
+                <ng-container *ngIf="_data?.product?.length > 130">
                     <span (click)="toggleView('header')"
-                        style="color: black; cursor: pointer; text-decoration: underline;">
-                        {{ showFull['header'] ? '...less' : '...View more' }}
+                       style="color: black; cursor: pointer;border-bottom: 1px dotted;">
+                        {{ showFull['header'] ? '...View Less' : '...View More' }}
                     </span>
                 </ng-container>
             </span>
@@ -28,11 +28,11 @@
             <p class="text-wrap whitespace-normal"
                 style="color: #1351cc; font-size: 16px; font-weight: bold; padding-bottom: 15px;">
                 <span>
-                    {{ showFull['body'] ? (_data?.product || '') : (_data?.product | slice:0:100) }}
-                    <ng-container *ngIf="_data?.product?.length > 100">
+                    {{ showFull['body'] ? (_data?.product || '') : (_data?.product | slice:0:125) }}
+                    <ng-container *ngIf="_data?.product?.length > 125">
                         <span (click)="toggleView('body')"
-                            style="color: red; cursor: pointer; text-decoration: underline;">
-                            {{ showFull['body'] ? ' ...less' : '...View more' }}
+                            style="color: black; cursor: pointer; border-bottom: 1px dotted;">
+                            {{ showFull['body'] ? '...View Less' : '...View More' }}
                         </span>
                     </ng-container>
                 </span>
