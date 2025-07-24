@@ -62,7 +62,7 @@ export class DmfComponent {
   set data(value: any) {
     this._data = value;
   }
-countryConfigRaw: any[] = [];
+  countryConfigRaw: any[] = [];
   @Input()
   get currentChildAPIBody() {
     return this._currentChildAPIBody;
@@ -70,7 +70,6 @@ countryConfigRaw: any[] = [];
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
     if (value) {
-
       this.dmfApiBody = JSON.parse(JSON.stringify(value)) || value;
       this.handleFetchFilters();
     }
@@ -111,12 +110,11 @@ countryConfigRaw: any[] = [];
       return { ...item, dropdownState: false };
     });
   }
-
   handleFetchFilters() {
-    this.dmfApiBody.filter_enable = true;
+     this.dmfApiBody.filter_enable = true;
     this.mainSearchService.dmfSearchSpecific(this.dmfApiBody).subscribe({
       next: (result: any) => {
- const countryConfig = result?.data?.country_dmf_holder || [];
+        const countryConfig = result?.data?.country_dmf_holder || [];
         this.countryConfigRaw = countryConfig;
 
         const countryFilters = result?.data?.country_dmf_holder?.map(item => ({
@@ -146,9 +144,6 @@ countryConfigRaw: any[] = [];
       }
     });
   }
- 
-
-
   setFilterLabel(filterKey: string, label: string) {
     this.filterConfigs = this.filterConfigs.map((item) => {
       if (item.key === filterKey) {
