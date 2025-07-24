@@ -32,7 +32,8 @@ import { MainSearchService } from '../../services/main-search/main-search.servic
 import { VeterinaryUsApprovalComponent } from "../results-common/veterinary-us-approval/veterinary-us-approval.component";
 import { DmfComponent } from '../results-common/dmf/dmf.component';
 import { SharedRosService } from '../../shared-ros.service';
-
+import { AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+declare var bootstrap: any; // ✅ Add this here
 @Component({
   selector: 'chem-route-results',
   standalone: true,
@@ -84,6 +85,7 @@ export class RouteResultComponent {
   @Output() OpenPriviledgeModal: EventEmitter<any> = new EventEmitter<any>();
   @Output() resetPagination: EventEmitter<any> = new EventEmitter<any>();
   @Output() handleROSChange: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild('downloadModal') downloadModalRef!: ElementRef;
 
   _MainDataResultShow: any;
   _currentChildAPIBody: any;
@@ -151,8 +153,29 @@ export class RouteResultComponent {
   handleBack() {
     this.backFunction.emit(false);
   }
+  shouldShowDownloadButton(): boolean {
+    const searchType = this.searchThrough;
+    const currentTabName = this.CurrentAPIBody?.currentTab;
+     // ✅ Use string keys, not dynamic types with `typeof this`
+  const searchToTabKeyMap: { [key: string]: string } = {
+      'synthesis-search': 'technicalRoutes',
+      'chemical-structure':'chemicalDirectory',
+      'intermediate-search': 'chemicalDirectory',
+      'simple-search': 'productInfo',
+      'advance-search': 'productInfo',
+    };
+
+   const expectedTabKey = searchToTabKeyMap[searchType];
+  const expectedTabName = this.resultTabWithKeys?.[expectedTabKey]?.name;
+    // console.log('Search type:', searchType);
+    // console.log('Expected tab key:', expectedTabKey);
+    // console.log('Expected tab name:', expectedTabName);
+    // console.log('Current tab name:', currentTabName);
+    return currentTabName === expectedTabName;
+  }
+
   isTechnicalRoutesTabActive(): boolean {
-    return this.CurrentAPIBody?.currentTab === this.resultTabs?.technicalRoutes?.name;
+    return this.CurrentAPIBody?.currentTab === this.resultTabWithKeys?.technicalRoutes?.name;
   }
   isDownloadAvailableFunction() {
     return this.isDownloadAvailable === 'true';
@@ -233,7 +256,28 @@ export class RouteResultComponent {
     ).length;
     return selectedCount >= 3;
   }
+  fetchAndStoreVerticalLimits(): void {
+    this.userPriviledgeService.getverticalcategoryData().subscribe({
+      next: (res: any) => {
+        const verticals = res?.data?.verticals;
 
+        if (Array.isArray(verticals)) {
+          localStorage.setItem('vertical_limits', JSON.stringify(verticals));
+
+          const pharmaVertical = verticals.find(
+            (v: any) => v.slug === 'pharmvetpat-mongodb' && v.report_limit != null
+          );
+
+          if (pharmaVertical) {
+            localStorage.setItem('report_limit', String(pharmaVertical.report_limit));
+          } else {
+            console.warn('PharmVetPat MongoDB vertical not found or report_limit is null');
+          }
+        }
+      },
+      error: err => console.error('Vertical limit fetch failed:', err),
+    });
+  }
   handleGeneratePDF() {
     this.generatePDFloader = true;
     this.handleSetLoading.emit(true);
@@ -297,7 +341,6 @@ export class RouteResultComponent {
                   const reportKey = this.tabNameToReportKey?.[tabName] || tabName;
                   body_main.reports.push(reportKey);
                 }
-
                 if (body_main.reports.length === 0) {
                   alert('Please select at least 1 option');
                   this.handleSetLoading.emit(false);
@@ -380,14 +423,24 @@ export class RouteResultComponent {
       },
     });
   }
+
   openDownloadModal(index: number | undefined) {
     console.log('openDownloadModal called with index:', index);
-    if (index === undefined) return; // Optional safety
-    //  check
+    if (index === undefined) return;
+
     this.selectedIndex = index;
+    console.log('✔️ selectedIndex set to:', this.selectedIndex);
+
+    // Open modal manually after selectedIndex is set
+    setTimeout(() => {
+      const modalEl = this.downloadModalRef.nativeElement;
+      const modalInstance = new bootstrap.Modal(modalEl);
+      modalInstance.show();
+    }, 0);
   }
 
   handleGeneratePDF1(index: number) {
+    console.log('Selected index in generatePDF1:', index); // ✅ Debug check
     this.generatePDFloader = true;
     this.handleSetLoading.emit(true);
     const priviledge = localStorage.getItem('priviledge_json');
@@ -454,25 +507,6 @@ export class RouteResultComponent {
                   ) {
                     let id: any = '';
                     const searchThrough = Auth_operations.getActiveformValues().activeForm;
-
-                    //console.log('searchThrough', this._data._id);
-                    // this.searchThrough = searchThrough;
-                    // switch (searchThrough) {
-                    //   case searchTypes.chemicalStructure:
-                    //   case searchTypes.intermediateSearch:
-                    //     id = this.AllSetData[this.resultTabWithKeys.chemicalDirectory.name][0]._id;
-                    //     break;
-                    //   case searchTypes.synthesisSearch:
-                    //     id = this.AllSetData[this.resultTabWithKeys.technicalRoutes.name].ros_data[0]._id;;
-                    //     break;
-                    //   case searchTypes.simpleSearch:
-                    //   case searchTypes.advanceSearch:
-                    //     id = this.AllSetData[this.resultTabWithKeys.productInfo.name][0]._id;
-                    //     break;
-                    //   default:
-                    //     id = this.AllSetData[this.resultTabWithKeys.productInfo.name][0]._id;
-                    // }
-                   
                     const currentData = this.AllSetData[index];
                     console.log('this.CurrentAPIBody---------', this.AllSetData[index]
                     );
@@ -494,8 +528,6 @@ export class RouteResultComponent {
                         id = currentData[this.resultTabWithKeys.productInfo.name]?.[0]?._id;
                         break;
                     }
-
-                    console.log('No search type selected');
                     console.log('id', id);
                     let body_main: any = {
                       id: id,
