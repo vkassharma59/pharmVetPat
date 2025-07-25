@@ -161,53 +161,53 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Reset tabs and get initial filters
     this.utilityService.resetTabs();
     this.resultTabs = this.utilityService.getAllTabsName();
     this.getAllFilters();
-    const isReload = this.isPageReload();
-    if (isReload) {
-      this.onPageReload();
-    }
+
+    // Load user auth and account type from localStorage
     const user = localStorage.getItem('auth');
-    this.auth = user ? true : false;
-  
+    this.auth = !!user;
+
     const accountType = localStorage.getItem('account_type');
-    this.accountType = accountType ? accountType : '';
-  
-    // Get saved keyword for each type from sessionStorage
+    this.accountType = accountType ?? '';
+
+    // Restore previous simple search values
     const savedSimpleKeyword = sessionStorage.getItem('simpleSearch.keyword');
     if (savedSimpleKeyword) {
       this.simpleSearch.keyword = savedSimpleKeyword;
+      console.log('Loaded simple keyword:', savedSimpleKeyword);
     }
-  
-    const savedChemicalKeyword = sessionStorage.getItem('chemicalStructure.keyword');
-    if (savedChemicalKeyword) {
-      this.chemicalStructure.keyword = savedChemicalKeyword;
+
+    const savedSimpleFilter = sessionStorage.getItem('simpleSearch.filter');
+    if (savedSimpleFilter) {
+      this.simpleSearch.filter = savedSimpleFilter;
+      console.log('Loaded filter:', savedSimpleFilter);
     }
-  
-    const savedSynthesisKeyword = sessionStorage.getItem('synthesisSearch.keyword');
-    if (savedSynthesisKeyword) {
-      this.synthesisSearch.keyword = savedSynthesisKeyword;
-    }
-  
-    const savedIntermediateKeyword = sessionStorage.getItem('intermediateSearch.keyword');
-    if (savedIntermediateKeyword) {
-      this.intermediateSearch.keyword = savedIntermediateKeyword;
-    }
-  
-    if (this.CurrentAPIBody.currentTab) {
-      if (this.CurrentAPIBody.currentTab === 'active_ingredient') {
-        this.selectedItem = 0;
-      } else if (this.CurrentAPIBody.currentTab === 'intermediate_application') {
-        this.selectedItem = 1;
-      } else if (this.CurrentAPIBody.currentTab === 'intermediate_synthesis') {
-        this.selectedItem = 2;
-      } else {
-        this.selectedItem = 3;
+
+    // Restore other search states
+    this.chemicalStructure.keyword = sessionStorage.getItem('chemicalStructure.keyword') || '';
+    this.synthesisSearch.keyword = sessionStorage.getItem('synthesisSearch.keyword') || '';
+    this.intermediateSearch.keyword = sessionStorage.getItem('intermediateSearch.keyword') || '';
+
+    // Set selected tab index based on API tab
+    if (this.CurrentAPIBody?.currentTab) {
+      switch (this.CurrentAPIBody.currentTab) {
+        case 'active_ingredient':
+          this.selectedItem = 0;
+          break;
+        case 'intermediate_application':
+          this.selectedItem = 1;
+          break;
+        case 'intermediate_synthesis':
+          this.selectedItem = 2;
+          break;
+        default:
+          this.selectedItem = 3;
       }
     }
   }
-  
 
   // ✅ Unified HostListener to close dropdowns
   @HostListener('document:click', ['$event'])
@@ -293,11 +293,11 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     //   return;
     // }
     // Clear suggestions if input is empty or very short
-   if (!isFocus && (!keyword || keyword.length < 3)) {
-    if (column === 'DEVELOPMENT_STAGE') this.filteredDevStages = [];
-    if (column === 'INNOVATOR_ORIGINATOR') this.filteredInnovators = [];
-    return;
-  }
+    if (!isFocus && (!keyword || keyword.length < 3)) {
+      if (column === 'DEVELOPMENT_STAGE') this.filteredDevStages = [];
+      if (column === 'INNOVATOR_ORIGINATOR') this.filteredInnovators = [];
+      return;
+    }
     const payload = { column, keyword };
     console.log("payload", payload);
     this.mainSearchService.getAdvanceSearchSuggestions(payload).subscribe({
@@ -487,6 +487,8 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     switch (searchType) {
       case searchTypes.simpleSearch:
         this.simpleSearch = {};
+        sessionStorage.removeItem('simpleSearch.keyword');
+        sessionStorage.removeItem('simpleSearch.filter');
         break;
       case searchTypes.chemicalStructure:
         this.chemicalStructure = { filter: '' };
@@ -514,29 +516,29 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   handleSuggestionClick(value: any, searchType = '', index: number = 0) {
     this.showSuggestions = false;
 
-  // Common save for all types (optional global)
-  sessionStorage.setItem('searchKeyword', value);
+    // Common save for all types (optional global)
+    sessionStorage.setItem('searchKeyword', value);
 
-  switch (searchType) {
-    case searchTypes.simpleSearch:
-      this.simpleSearch.keyword = value;
-      this.simpleSearch.autosuggestionList = [];
+    switch (searchType) {
+      case searchTypes.simpleSearch:
+        this.simpleSearch.keyword = value;
+        this.simpleSearch.autosuggestionList = [];
 
-      // ✅ Save both keyword and filter for persistence
-      sessionStorage.setItem('simpleSearch.keyword', this.simpleSearch.keyword || '');
-      sessionStorage.setItem('simpleSearch.filter', this.simpleSearch.filter || '');
+        // ✅ Save both keyword and filter for persistence
+        sessionStorage.setItem('simpleSearch.keyword', value);
+        sessionStorage.setItem('simpleSearch.filter', this.simpleSearch.filter || '');
 
-      this.checkPriviledgeAndHandleSearch(this.searchTypes.simpleSearch);
+        this.checkPriviledgeAndHandleSearch(this.searchTypes.simpleSearch);
 
-      // Restore input focus
-      setTimeout(() => {
-        this.simpleSearchkeywordInput?.nativeElement?.focus();
-      }, 0);
+        // Restore input focus
+        setTimeout(() => {
+          this.simpleSearchkeywordInput?.nativeElement?.focus();
+        }, 0);
 
-      // Update FormControl if you're using reactive form
-      this.keyword.setValue(value);
-      break;
-  
+        // Update FormControl if you're using reactive form
+        this.keyword.setValue(value);
+        break;
+
       case searchTypes.chemicalStructure:
         this.chemicalStructure.keyword = value;
         this.chemicalStructure.autosuggestionList = [];
@@ -546,7 +548,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
           this.chemicalStructureKeywordInput?.nativeElement?.focus();
         }, 0);
         break;
-  
+
       case searchTypes.synthesisSearch:
         this.synthesisSearch.keyword = value;
         this.synthesisSearch.autosuggestionList = [];
@@ -555,7 +557,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
           this.synthesisSearchkeywordInput?.nativeElement?.focus();
         }, 0);
         break;
-  
+
       case searchTypes.intermediateSearch:
         this.intermediateSearch.keyword = value;
         this.intermediateSearch.autosuggestionList = [];
@@ -566,14 +568,14 @@ export class pharmaDatabaseSearchComponent implements OnInit {
           this.intermediateSearchKeywordInput?.nativeElement?.focus();
         }, 0);
         break;
-  
+
       case searchTypes.advanceSearch:
         this.advanceSearch.filterInputs[index].keyword = value;
         this.advanceSearch.autosuggestionList[index] = [];
         break;
     }
   }
-  
+
   getChemicalStructureFilters() {
     this.mainSearchService.getChemicalStructureFilters().subscribe({
       next: (res: any) => {
@@ -617,13 +619,13 @@ export class pharmaDatabaseSearchComponent implements OnInit {
 
   checkPriviledgeAndHandleSearch(searchType: string = '') {
     const { startSales, endSales, filterInputs, simpleSearch, devStage, innovator } = this.advanceSearch;
-  
+
     // ✅ Save simpleSearch values if this is a simple search
     if (searchType === this.searchTypes.simpleSearch) {
       sessionStorage.setItem('simpleSearch.keyword', this.simpleSearch.keyword || '');
       sessionStorage.setItem('simpleSearch.filter', this.simpleSearch.filter || '');
     }
-  
+
     // 🚨 Validate sales range if only one value is given
     if (startSales && !endSales) {
       this.priviledgeModal.emit('Please enter End Range.');
@@ -633,14 +635,14 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       this.priviledgeModal.emit('Please enter Start Range.');
       return;
     }
-  
+
     const hasFilledKeyword = filterInputs?.some(input =>
       input.filter?.trim() && input.keyword?.trim()
     );
-  
+
     let todaysLimit: any = '';
     this.setLoadingState.emit(true);
-  
+
     this.userPriviledgeService.getUserPriviledgesData().subscribe({
       next: (res: any) => {
         const userInfo = res?.data?.user_info;
@@ -648,43 +650,43 @@ export class pharmaDatabaseSearchComponent implements OnInit {
           this.setLoadingState.emit(false);
           return;
         }
-  
+
         const { account_type, expired_date, privilege_json } = userInfo;
         const currentDate = new Date();
         const endTargetDate = new Date(expired_date);
         endTargetDate.setFullYear(endTargetDate.getFullYear() + 1);
-  
+
         if (account_type === 'premium' && currentDate > endTargetDate) {
           this.setLoadingState.emit(false);
           this.priviledgeModal.emit('Your Premium Account is expired. Please renew your account');
           return;
         }
-  
+
         this.saveUserDataToLocalStorage(userInfo);
         const userPrivilegeKey = `user_${userInfo.user_id}`;
         const privilegeData = privilege_json?.[userPrivilegeKey];
-  
+
         if (!this.hasSearchPrivileges(privilegeData)) {
           this.setLoadingState.emit(false);
           this.priviledgeModal.emit('You do not have permission to Search or View. Please upgrade the account.');
           return;
         }
-  
+
         this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
           next: (res: any) => {
             todaysLimit = res?.data;
-  
+
             const remainingLimit = privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit - todaysLimit?.searchCount;
             console.log("Dailylimit", privilegeData?.['pharmvetpat-mongodb']?.DailySearchLimit);
             console.log("limittodays", todaysLimit?.searchCount);
             console.log("remaining limit", remainingLimit);
-  
+
             if (remainingLimit <= 0) {
               this.setLoadingState.emit(false);
               this.priviledgeModal.emit('Your Daily Search Limit is over for this Platform.');
               return;
             }
-  
+
             // ✅ All checks passed, perform the actual search
             this.searchBasedOnTypes(searchType);
           },
@@ -700,7 +702,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       },
     });
   }
-  
+
   private saveUserDataToLocalStorage(userInfo: any): void {
     const { account_type, start_date, expired_date, privilege_json, user_id, name, email, auth_token } = userInfo;
 
@@ -1056,23 +1058,5 @@ export class pharmaDatabaseSearchComponent implements OnInit {
     this.chemicalStructure.filter = type;
     this.checkPriviledgeAndHandleSearch(searchTypes.chemicalStructure);
   }
-  onPageReload(){
-    sessionStorage.removeItem(this.simpleSearch.keyword);
-    sessionStorage.removeItem(this.simpleSearch.filter);
-  }
-  isPageReload(): boolean {
-    // Modern browsers
-    const navEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-    if (navEntry && navEntry.type === 'reload') return true;
-  
-    // Fallback (deprecated in modern browsers)
-    // @ts-ignore
-    if (performance.navigation && performance.navigation.type === 1){
-      sessionStorage.removeItem(this.simpleSearch.keyword);
-    sessionStorage.removeItem(this.simpleSearch.filter);
-    return true 
-    } ;
-    
-    return false;
-}
+
 }
