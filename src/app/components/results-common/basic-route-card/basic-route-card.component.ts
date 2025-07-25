@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -31,6 +31,9 @@ export class BasicRouteCardComponent {
   basic_column: any = {};
   _data: any = [];
   routesList: any = {};
+  showViewMore: boolean = false;
+  @ViewChild('synonymBlock') synonymBlock!: ElementRef;
+  isOverflowing = false;
   @Input()
   get data() {
     return this._data;
@@ -75,6 +78,18 @@ export class BasicRouteCardComponent {
     if (BasicRouteCardComponent.apiCallCount === 0) {
       console.log('Resetting apiCallCount to 0');
       BasicRouteCardComponent.apiCallCount = 0;
+    }
+  }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.checkOverflow();
+    });
+  }
+
+  checkOverflow() {
+    const el = this.synonymBlock?.nativeElement;
+    if (el) {
+      this.isOverflowing = el.scrollHeight > el.clientHeight;
     }
   }
 
