@@ -160,8 +160,7 @@ export class DmfComponent {
     });
   }
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
-    console.log('🔍 Filter clicked:', { filterKey, value, name });
-    this.handleSetLoading.emit(true);
+       this.handleSetLoading.emit(true);
     // this.dmfApiBody.filters = this.dmfApiBody.filters || {};
     if (value === '') {
       delete this.dmfApiBody.filters[filterKey];

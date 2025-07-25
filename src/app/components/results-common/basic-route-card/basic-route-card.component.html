@@ -461,13 +461,15 @@
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                 (click)="handleCopy(_data?.SYNONYMSCOMMON_NAME, copyBtn)"><i class="fas fa-copy"></i></span>
             </h1>
-            <div class="max-h-28 overflow-y-auto">
+            <div class="max-h-28 overflow-y-auto" #synonymBlock>
               <div *ngFor="let synonym of processedSynonyms; let i = index" class="pt-2 text-justify">
                 <p class="">{{ synonym.number }}. {{ synonym.text }}</p>
               </div>
             </div>
           </div>
-          <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+          <p class="para pt-2 cursor-pointer" style="color:#2f45ff"
+              *ngIf="isOverflowing"
+           style="color:#2f45ff" (click)="
               OpenViewModal(_data?.SYNONYMSCOMMON_NAME, 'SYNONYMS/COMMON NAME')">
             View More
           </p>
@@ -697,10 +699,11 @@
                   (click)="handleCopy(_data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE, copyBtn)"><i
                     class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify">
+              <p class="text-justify max-h-20 overflow-y-auto"  #synonymBlock >
                 {{ _data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer"   *ngIf="isOverflowing"
+              style="color:#2f45ff" style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE,
                     'PEDIATRIC DRUG EXCLUSIVITY (PDE)'

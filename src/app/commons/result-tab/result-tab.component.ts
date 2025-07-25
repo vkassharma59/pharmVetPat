@@ -195,7 +195,44 @@ export class ResultTabComponent {
     ExtraValue.splice(index, 1);
     this.FilterValues[filter] = ExtraValue;
   }
+fetchAndStoreVerticalLimits(): void {
+    this.UserPriviledgeService.getverticalcategoryData().subscribe({
+      next: (res: any) => {
+        const verticals = res?.data?.verticals;
 
+        if (Array.isArray(verticals)) {
+          localStorage.setItem('vertical_limits', JSON.stringify(verticals));
+
+          const pharmaVertical = verticals.find(
+            (v: any) => v.slug === 'pharmvetpat-mongodb' && v.report_limit != null
+          );
+
+          if (pharmaVertical) {
+            localStorage.setItem('report_limit', String(pharmaVertical.report_limit));
+          } else {
+            console.warn('PharmVetPat MongoDB vertical not found or report_limit is null');
+          }
+        }
+      },
+      error: err => console.error('Vertical limit fetch failed:', err),
+    });
+  }
+ getReportLimit(): number {
+  // Step 1: Try privilege_json first
+  const privRaw = localStorage.getItem('priviledge_json');
+  const priv = JSON.parse(privRaw || '{}');
+  const privLimit = Number(priv['pharmvetpat-mongodb']?.ReportLimit);
+   if (!isNaN(privLimit) && privLimit > 0) {
+       return privLimit;
+  }
+  // Step 2: Try vertical report_limit from localStorage
+  const storedLimitRaw = localStorage.getItem('report_limit');
+  const storedLimit = Number(storedLimitRaw);
+   if (!isNaN(storedLimit) && storedLimit > 0) {
+       return storedLimit;
+  }
+  return 25;
+}
   handleGeneratePdf() {
     this.handlegenerateloading = true;
     this.handleLoading.emit(true);
@@ -267,9 +304,9 @@ export class ResultTabComponent {
                     let pdf_body = this.CurrentAPIBody;
 
                     pdf_body.body['report_download'] = true;
-                    pdf_body.body['limit'] =
-                    priviledge_data?.['pharmvetpat-mongodb']?.ReportLimit;
-                    console.log('No s-----------------------earch type selected', pdf_body);
+                    pdf_body.body['limit'] =this.getReportLimit();
+                  //  priviledge_data?.['pharmvetpat-mongodb']?.ReportLimit;
+
                     this.ServiceResultTabFiltersService.getGeneratePDF(
                       pdf_body
                     ).subscribe({

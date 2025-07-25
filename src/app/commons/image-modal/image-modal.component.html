@@ -28,8 +28,8 @@
     </button>
   </div>
 </div> -->
-<div class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
-  <div class="bg-white rounded-md max-w-[90vw] max-h-[90vh] overflow-auto p-4 relative">
+<div class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center" (click)="closeModal()">
+  <div class="bg-white rounded-md max-w-[90vw] max-h-[90vh] overflow-auto p-4 relative"  (click)="$event.stopPropagation()">
 
     <!-- Close Button -->
     <button class="absolute top-2 right-2 text-sm px-3 py-1 bg-red-500 text-white rounded" (click)="closeModal()">

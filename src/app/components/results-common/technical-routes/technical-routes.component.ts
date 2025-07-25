@@ -57,12 +57,7 @@ export class TechnicalRoutesComponent {
   viewProduct: boolean = false;
 
   ngOnInit() {
-    // console.log('CurrentAPIBody in TechnicalRoutesComponent', this._data);
-    // console.log('CurrentAPIBody in TechnicalRoutesComponent', this.currentChildAPIBody)
-    // console.log('CurrentAPIBody in TechnicalRoutesComponent', this.CurrentAPIBody);
-    // console.log('CurrentAPIBody in TechnicalRoutesComponent', this._itemid);
-    // console.log('CurrentAPIBody in TechnicalRoutesComponent', this.MainDataResultShow);
-    this.sharedROS.rosCount$.subscribe(count => {
+     this.sharedROS.rosCount$.subscribe(count => {
       if (count && count?.index === this.index) {
         this.rosCounts = count;
       }
