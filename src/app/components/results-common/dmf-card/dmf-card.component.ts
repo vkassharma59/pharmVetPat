@@ -98,7 +98,10 @@ export class DmfCardComponent {
   ngOnDestroy() {
     DmfCardComponent.apiCallCount = 0;
   }
-
+ showFull = false;
+  toggleView() {
+    this.showFull = !this.showFull;
+  }
 
   toggleMoreInfo(): void {
     this.MoreInfo = !this.MoreInfo;

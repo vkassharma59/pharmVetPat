@@ -161,6 +161,10 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     }
     this.fetchData();
   }
+  getCompanyLogo(value: any): string {
+    return `${environment.baseUrl}${environment.domainNameCompanyLogo}${value?.company_logo}`;
+  }
+
   getCountryUrl(value: any) {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country}.png`;
   }

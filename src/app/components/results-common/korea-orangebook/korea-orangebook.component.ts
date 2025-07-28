@@ -21,7 +21,10 @@ export class KoreaOrangebookComponent implements OnInit, OnDestroy {
   resultTabs: any = {};
   @Input() currentChildAPIBody: any;
   @Input() index: number = 0;
-
+ showFull = false;
+  toggleView() {
+    this.showFull = !this.showFull;
+  }
   static apiCallCount: number = 0; // Global static counter
   localCount: number = 0; // Instance-specific count
 

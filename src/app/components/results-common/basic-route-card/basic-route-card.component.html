@@ -10,7 +10,7 @@
           </span>
         </ng-container>
       </span>
-      </span>
+    </span>
   </div>
 </div>
 <div class="card-body">
@@ -461,20 +461,18 @@
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                 (click)="handleCopy(_data?.SYNONYMSCOMMON_NAME, copyBtn)"><i class="fas fa-copy"></i></span>
             </h1>
-            <div class="max-h-28 overflow-y-auto" #synonymBlock>
+            <div class="max-h-28 ">
               <div *ngFor="let synonym of processedSynonyms; let i = index" class="pt-2 text-justify">
                 <p class="">{{ synonym.number }}. {{ synonym.text }}</p>
               </div>
             </div>
           </div>
-          <p class="para pt-2 cursor-pointer" style="color:#2f45ff"
-              *ngIf="isOverflowing"
-           style="color:#2f45ff" (click)="
+          <p class="para pt-2 cursor-pointer"  *ngIf="_data?.SYNONYMSCOMMON_NAME?.length > 200" style="color:#2f45ff"
+           (click)="
               OpenViewModal(_data?.SYNONYMSCOMMON_NAME, 'SYNONYMS/COMMON NAME')">
             View More
           </p>
         </div>
-
         <div class="flex justify-center">
           <button (click)="toggleMoreApplicationInfo()" class="py-2 px-3 mt-3 btnchemical rounded-md"
             style="background:linear-gradient(to right, #efb303,#fff087); color: black;">
@@ -494,11 +492,11 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.DESCRIPTION, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <div class="h-28 overflow-y-auto overflow-x-hidden">
-                <p class="pt-2 text-justify">{{ _data?.DESCRIPTION }}</p>
+              <div class="overflow-x-hidden overflow-y-auto">
+                <p class="pt-2 text-justify">{{_data?.DESCRIPTION | slice:0:250}}</p>
               </div>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff"
-                (click)="OpenViewModal(_data?.DESCRIPTION, 'DESCRIPTION')">
+              <p class="para pt-2 cursor-pointer" *ngIf="_data?.DESCRIPTION?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" (click)="OpenViewModal(_data?.DESCRIPTION, 'DESCRIPTION')">
                 View More
               </p>
             </div>
@@ -536,7 +534,8 @@
               <p class="pt-2 text-justify max-h-28 overflow-y-auto">
                 {{ _data?.SUMMARY_PHYSICOCHEM_PROP_COMP }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" *ngIf="_data?.SUMMARY_PHYSICOCHEM_PROP_COMP?.length > 200"
+                style="color:#2f45ff" style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.SUMMARY_PHYSICOCHEM_PROP_COMP,
                     'SUMMARY PHYSICOCHEMICAL PROPERTITIES(COMPUTED)'
@@ -558,7 +557,8 @@
               <p class="pt-2 text-justify max-h-28 overflow-y-auto">
                 {{ _data?.SUMMARY_PHYSICOCHEM_PROP_EXPERI }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" *ngIf="_data?.SUMMARY_PHYSICOCHEM_PROP_EXPERI?.length > 200"
+                style="color:#2f45ff" style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.SUMMARY_PHYSICOCHEM_PROP_EXPERI,
                     'SUMMARY PHYSICOCHEMICAL PROPERTITIES(EXPERIMENT)'
@@ -578,7 +578,8 @@
               <p class="pt-2 text-justify max-h-28 overflow-y-auto">
                 {{ _data?.HIST_DEV_LICN_COMM }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.HIST_DEV_LICN_COMM?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.HIST_DEV_LICN_COMM,
                     'HISTORY/DEVELOPMENT/LICENCING/COMMERCIALISATION'
@@ -598,8 +599,8 @@
               <div class="h-28 overflow-y-auto overflow-x-hidden">
                 <p class="pt-2 text-justify">{{ _data?.INVENT_INFO }}</p>
               </div>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" style="color:#2f45ff"
-                (click)="
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.INVENT_INFO?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.INVENT_INFO,
                     'INVENT INFO(COMPOUND PATENT/1ST DISCLOSURE)'
@@ -616,8 +617,8 @@
                   (click)="handleCopy(_data?.NOTES, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <p class="text-justify">{{ _data?.NOTES }}</p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff"
-                (click)="OpenViewModal(_data?.NOTES, 'NOTES')">
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.NOTES?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" (click)="OpenViewModal(_data?.NOTES, 'NOTES')">
                 View More
               </p>
             </div>
@@ -634,7 +635,8 @@
               <p class="text-justify">
                 {{ _data?.LITIGATION_OPP_IPR_MH_REEXAM }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.LITIGATION_OPP_IPR_MH_REEXAM?.length > 200"
+                style="color:#2f45ff" style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.LITIGATION_OPP_IPR_MH_REEXAM,
                     'LITIGATION / OPPOSITION / INTER PARTIES REVIEW / MARKSMAN HEARING / REEXAMINATION'
@@ -657,7 +659,8 @@
               <p class="text-justify">
                 {{ _data?.EXCLUSIVITY_NEW_CHEMICAL_ENTITY }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.EXCLUSIVITY_NEW_CHEMICAL_ENTITY?.length > 200"
+                style="color:#2f45ff" style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.EXCLUSIVITY_NEW_CHEMICAL_ENTITY,
                     'EXCLUSIVITY: NEW CHEMICAL ENTITY (NCE) / NEW BIOLOGICAL ENTITY (NBE) / 505(B)(2) NEW DRUG APPLICATION (NDA)'
@@ -679,7 +682,8 @@
               <p class="text-justify">
                 {{ _data?.ORPHAN_DRUG_EXCLUSIVITY_ODE }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.ORPHAN_DRUG_EXCLUSIVITY_ODE?.length > 200"
+                style="color:#2f45ff" style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.ORPHAN_DRUG_EXCLUSIVITY_ODE,
                     'ORPHAN DRUG EXCLUSIVITY (ODE)'
@@ -699,16 +703,12 @@
                   (click)="handleCopy(_data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE, copyBtn)"><i
                     class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-20 overflow-y-auto"  #synonymBlock >
+              <p class="text-justify max-h-20 overflow-y-auto" #synonymBlock>
                 {{ _data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE }}
               </p>
-              <p class="para pt-2 cursor-pointer"   *ngIf="isOverflowing"
-              style="color:#2f45ff" style="color:#2f45ff" (click)="
-                  OpenViewModal(
-                    _data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE,
-                    'PEDIATRIC DRUG EXCLUSIVITY (PDE)'
-                  )
-                ">
+              <p *ngIf="_data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE?.length > 200" class="para pt-2 cursor-pointer"
+                style="color:#2f45ff"
+                (click)="OpenViewModal(_data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE, 'PEDIATRIC DRUG EXCLUSIVITY (PDE)')">
                 View More
               </p>
             </div>
@@ -724,7 +724,8 @@
               <p class="text-justify">
                 {{ _data?.NCE_MINUS_OR_QIDP_MINUS }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+              <p *ngIf="_data?.NCE_MINUS_OR_QIDP_MINUS?.length > 200" class="para pt-2 cursor-pointer"
+                style="color:#2f45ff" style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.NCE_MINUS_OR_QIDP_MINUS,
                     'NCE MINUS 1 (N-1 DATE) / OR QIDP MINUS-1 (QIDP-1 DATE)'
@@ -745,7 +746,8 @@
               <p class="text-justify">
                 {{ _data?.EUROPE_EXCLUSIVITY }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.EUROPE_EXCLUSIVITY?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" (click)="
                   OpenViewModal(_data?.EUROPE_EXCLUSIVITY, 'EUROPE EXCLUSIVITY')
                 ">
                 View More
@@ -763,7 +765,8 @@
               <p class="text-justify">
                 {{ _data?.CANADA_EXCLUSIVITY }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.CANADA_EXCLUSIVITY?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" (click)="
                   OpenViewModal(_data?.CANADA_EXCLUSIVITY, 'CANADA EXCLUSIVITY')
                 ">
                 View More
@@ -782,7 +785,8 @@
               <p class="text-justify">
                 {{ _data?.OTHER_COUNTRIES_EXCLUSIVITIES }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.OTHER_COUNTRIES_EXCLUSIVITIES?.length > 200"
+                style="color:#2f45ff" style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.OTHER_COUNTRIES_EXCLUSIVITIES,
                     'OTHER COUNTRIES EXCLUSIVITY'
@@ -803,8 +807,8 @@
               <p class="text-justify">
                 {{ _data?.COMMENTRY }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff"
-                (click)="OpenViewModal(_data?.COMMENTRY, 'COMMENTRY')">
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.COMMENTRY?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" (click)="OpenViewModal(_data?.COMMENTRY, 'COMMENTRY')">
                 View More
               </p>
             </div>
@@ -820,8 +824,8 @@
               <p class="text-justify">
                 {{ _data?.REMARKS }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff"
-                (click)="OpenViewModal(_data?.REMARKS, 'REMARKS')">
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.REMARKS?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" (click)="OpenViewModal(_data?.REMARKS, 'REMARKS')">
                 View More
               </p>
             </div>
@@ -837,8 +841,8 @@
               <p class="text-justify">
                 {{ _data?.LITERATURE }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff"
-                (click)="OpenViewModal(_data?.LITERATURE, 'LITERATURE')">
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.LITERATURE?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" (click)="OpenViewModal(_data?.LITERATURE, 'LITERATURE')">
                 View More
               </p>
             </div>
@@ -854,7 +858,8 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.INFORMATION_SOURCES }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.INFORMATION_SOURCES?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.INFORMATION_SOURCES,
                     'INFORMATION_SOURCES'
@@ -875,7 +880,8 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.PDF_MULTIPLE_PDF }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.PDF_MULTIPLE_PDF?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" (click)="
                   OpenViewModal(_data?.PDF_MULTIPLE_PDF, 'PDF MULTIPLE PDF')
                 ">
                 View More
@@ -893,7 +899,8 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.ORANGE_BOOK_PATENTS }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.ORANGE_BOOK_PATENTS?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.ORANGE_BOOK_PATENTS,
                     'ORANGE BOOK PATENTS'
@@ -914,8 +921,8 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.USDMF_HOLDER }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff"
-                (click)="OpenViewModal(_data?.USDMF_HOLDER, 'USDMF HOLDER')">
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.USDMF_HOLDER?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" (click)="OpenViewModal(_data?.USDMF_HOLDER, 'USDMF HOLDER')">
                 View More
               </p>
             </div>
@@ -931,8 +938,8 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.EP_DMF_HOLDER }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff"
-                (click)="OpenViewModal(_data?.EP_DMF_HOLDER, 'EP DMF HOLDER')">
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.EP_DMF_HOLDER?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" (click)="OpenViewModal(_data?.EP_DMF_HOLDER, 'EP DMF HOLDER')">
                 View More
               </p>
             </div>
@@ -948,7 +955,8 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.OTHER_DMF_HOLDER }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.OTHER_DMF_HOLDER?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" (click)="
                   OpenViewModal(_data?.OTHER_DMF_HOLDER, 'OTHER DMF HOLDER')
                 ">
                 View More
@@ -966,7 +974,8 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.PRODUCT_CLASSIFICATION }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.PRODUCT_CLASSIFICATION?.length > 200"
+                style="color:#2f45ff" style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.PRODUCT_CLASSIFICATION,
                     'PRODUCT_CLASSIFICATION'
@@ -987,8 +996,8 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.PRODUCT_TYPE }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff"
-                (click)="OpenViewModal(_data?.PRODUCT_TYPE, 'PRODUCT TYPE')">
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.PRODUCT_TYPE?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" (click)="OpenViewModal(_data?.PRODUCT_TYPE, 'PRODUCT TYPE')">
                 View More
               </p>
             </div>
@@ -1004,8 +1013,8 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.PESTICIDE_TYPE }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff"
-                (click)="OpenViewModal(_data?.PESTICIDE_TYPE, 'PESTICIDE TYPE')">
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.PESTICIDE_TYPE?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" (click)="OpenViewModal(_data?.PESTICIDE_TYPE, 'PESTICIDE TYPE')">
                 View More
               </p>
             </div>
@@ -1021,7 +1030,8 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.RELEATED_COMPOUNDS_AIS }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.RELEATED_COMPOUNDS_AIS?.length > 200"
+                style="color:#2f45ff" style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.RELEATED_COMPOUNDS_AIS,
                     'RELEATED COMPOUNDS AIS'
@@ -1042,7 +1052,8 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.SUBSTANCE_ORIGIN }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.SUBSTANCE_ORIGIN?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" (click)="
                   OpenViewModal(_data?.SUBSTANCE_ORIGIN, 'SUBSTANCE ORIGIN')
                 ">
                 View More
@@ -1060,8 +1071,8 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.LAUNCH_STATUS }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff"
-                (click)="OpenViewModal(_data?.LAUNCH_STATUS, 'LAUNCH STATUS')">
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.LAUNCH_STATUS?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" (click)="OpenViewModal(_data?.LAUNCH_STATUS, 'LAUNCH STATUS')">
                 View More
               </p>
             </div>
@@ -1077,8 +1088,8 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.ISO_STATUS }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff"
-                (click)="OpenViewModal(_data?.ISO_STATUS, 'ISO STATUS')">
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.ISO_STATUS?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" (click)="OpenViewModal(_data?.ISO_STATUS, 'ISO STATUS')">
                 View More
               </p>
             </div>
@@ -1094,7 +1105,8 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.US_EPA_CHEMICAL_CODE }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.US_EPA_CHEMICAL_CODE?.length > 200" style="color:#2f45ff"
+                style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.US_EPA_CHEMICAL_CODE,
                     'US EPA CHEMICAL CODE'
@@ -1115,7 +1127,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.UN_NUMBER }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.UN_NUMBER?.length > 200" style="color:#2f45ff"
                 (click)="OpenViewModal(_data?.UN_NUMBER, 'UN NUMBER')">
                 View More
               </p>
@@ -1132,7 +1144,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.STRAIN_NO }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.STRAIN_NO?.length > 200" style="color:#2f45ff"
                 (click)="OpenViewModal(_data?.STRAIN_NO, 'STRAIN NO')">
                 View More
               </p>
@@ -1152,7 +1164,8 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.GOOGLEPATENTHYPERLINKOFPATENTINVENTINFO }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.GOOGLEPATENTHYPERLINKOFPATENTINVENTINFO?.length > 200"
+                style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.GOOGLEPATENTHYPERLINKOFPATENTINVENTINFO,
                     'GOOGLEPATENTHYPERLINKOFPATENT(INVENTINFO)'
@@ -1173,7 +1186,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.INVENT_INFO2 }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.INVENT_INFO2?.length > 200" style="color:#2f45ff"
                 (click)="OpenViewModal(_data?.INVENT_INFO2, 'INVENT INFO2')">
                 View More
               </p>
@@ -1190,7 +1203,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.INVENT_INFO3 }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.INVENT_INFO3?.length > 200" style="color:#2f45ff"
                 (click)="OpenViewModal(_data?.INVENT_INFO3, 'INVENT INFO3')">
                 View More
               </p>
@@ -1207,7 +1220,7 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.year_wise_iso }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.year_wise_iso?.length > 200" style="color:#2f45ff"
                 (click)="OpenViewModal(_data?.year_wise_iso, 'year wise iso')">
                 View More
               </p>
@@ -1225,7 +1238,8 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.company_registration_number }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.company_registration_number?.length > 200"
+                style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.company_registration_number,
                     'company registration number'
@@ -1246,7 +1260,8 @@
               <p class="text-justify max-h-28 overflow-auto">
                 {{ _data?.developmental_code }}
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.developmental_code?.length > 200" style="color:#2f45ff"
+                (click)="
                   OpenViewModal(_data?.developmental_code, 'developmental code')
                 ">
                 View More
@@ -1443,7 +1458,7 @@
                   (click)="handleCopy(_data?.LINK_1, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <p class="text-justify overflow-auto" style="color:#2f45ff">{{ _data?.LINK_1 }}</p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.LINK_1?.length > 200" style="color:#2f45ff"
                 (click)="OpenViewModal(_data?.LINK_1, 'LINK-1')">
                 View More
               </p>
@@ -1456,7 +1471,7 @@
                   (click)="handleCopy(_data?.LINK_2, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <a href="{{ _data?.LINK_2 }}" target="_blank" class="para pt-2 overflow-auto">{{ _data?.LINK_2 }}</a>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.LINK_2?.length > 200" style="color:#2f45ff"
                 (click)="OpenViewModal(_data?.LINK_2, 'LINK-2')">
                 View More
               </p>
@@ -1469,7 +1484,7 @@
                   (click)="handleCopy(_data?.LINK_3, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <p class="text-justify overflow-auto">{{ _data?.LINK_3 }}</p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.LINK_3?.length > 200" style="color:#2f45ff"
                 (click)="OpenViewModal(_data?.LINK_3, 'LINK-3')">
                 View More
               </p>
@@ -1483,7 +1498,7 @@
                   (click)="handleCopy(_data?.LINK_4, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <p class="text-justify overflow-auto">{{ _data?.LINK_4 }}</p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.LINK_4?.length > 200" style="color:#2f45ff"
                 (click)="OpenViewModal(_data?.LINK_4, 'LINK-4')">
                 View More
               </p>
@@ -1496,7 +1511,7 @@
                   (click)="handleCopy(_data?.LINK_5, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <p class="text-justify overflow-auto">{{ _data?.LINK_5 }}</p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"
+              <p class="para pt-2 cursor-pointer" ngIf="_data?.LINK_5?.length > 200" style="color:#2f45ff"
                 (click)="OpenViewModal(_data?.LINK_5, 'LINK-5')">
                 View More
               </p>
@@ -1509,7 +1524,7 @@
                   (click)="handleCopy(_data?.LINK_6, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <p class="text-justify overflow-auto">{{ _data?.LINK_6 }}</p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff"
+              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" ngIf="_data?.LINK_6?.length > 200"
                 (click)="OpenViewModal(_data?.LINK_6, 'LINK-6')">
                 View More
               </p>

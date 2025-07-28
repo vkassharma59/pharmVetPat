@@ -70,7 +70,7 @@ export class DmfComponent {
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
     if (value) {
-      this.dmfApiBody = JSON.parse(JSON.stringify(value)) || value;
+        this.dmfApiBody = JSON.parse(JSON.stringify(value)) || value;
       this.handleFetchFilters();
     }
   }

@@ -3,6 +3,12 @@ p {
   text-wrap: wrap;
   font-size: 14px;
 }
+.para {
+    color: blue;
+    font-weight: bold;
+    margin-top: 10px;
+     margin-bottom: 10px;
+}
 h1{
   font-size: 14px;
 }

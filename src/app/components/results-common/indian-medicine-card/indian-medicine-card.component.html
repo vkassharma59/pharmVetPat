@@ -1,7 +1,15 @@
 <!-- <pre>{{_data | json}}</pre>  -->
 <div class="card-header text-white ">
-    <div style="padding-top:7px; justify-content:space-between; display:flex;">
-        {{ localCount }}. {{resultTabs?.indianMedicine?.label}} >> {{_data?.medicine_name_trade_name}}
+    <div style="padding-top:7px; display:flex;">
+        {{ localCount }}. {{resultTabs?.indianMedicine?.label}} >>
+        <span>
+            {{showFull ? (_data?.medicine_name_trade_name || '' ) : (_data?.medicine_name_trade_name | slice:0:200) }}
+            <ng-container *ngIf="_data?.medicine_name_trade_name?.length > 200">
+                <span (click)="toggleView()" style="color: black; cursor: pointer; border-bottom: 1px dotted;">
+                    {{ showFull ? '... View Less' : '... View More' }}
+                </span>
+            </ng-container>
+        </span>
     </div>
 </div>
 
@@ -17,7 +25,7 @@
 
                 <div>
                     <img *ngIf="_data?.product_image1" class="product_image1" [src]="getImageUrl(_data)" alt="error"
-                    style="height: 150px; width: 100%; padding: 20px; object-fit: contain;">
+                        style="height: 150px; width: 100%; padding: 20px; object-fit: contain;">
 
                 </div>
 
@@ -69,7 +77,7 @@
 
         <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
             <img *ngIf="_data?.product_image2" class="product_image1" [src]="getImageUrl(_data)" alt="error"
-              style="height: 150px; width: 100%; max-width: 200px; padding: 20px; object-fit: contain;">
+                style="height: 150px; width: 100%; max-width: 200px; padding: 20px; object-fit: contain;">
 
             <img *ngIf="_data?.product_image2" class="product_image2" [src]="getImageUrl(_data)" alt="error"
                 style="height: 150px; width: 100%; max-width: 200px; padding: 20px; object-fit: contain;">
@@ -82,8 +90,7 @@
 </div>
 <div class="flex justify-center">
     <button (click)="toggleMoreInfo()" class="py-2 px-3 mt-3 mb-3 btnchemical rounded-md btn"
-    style="background:linear-gradient(to right, #efb303,#fff087); color: black;"
-    >
+        style="background:linear-gradient(to right, #efb303,#fff087); color: black;">
         {{
         MoreInfo
         ? "Less Information"
