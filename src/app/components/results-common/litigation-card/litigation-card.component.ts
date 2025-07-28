@@ -20,7 +20,10 @@ export class LitigationCardComponent implements OnInit, OnDestroy {
   litigation_column: any = {};
   resultTabs: any = {};
   copied: boolean = false;
-
+ showFull = false;
+  toggleView() {
+    this.showFull = !this.showFull;
+  }
   static apiCallCount: number = 0; // Global static counter
   localCount: number = 0; // Stores instance-specific count
 

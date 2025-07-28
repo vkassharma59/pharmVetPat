@@ -1,7 +1,15 @@
 <!-- <pre>{{_data | json}}</pre>  -->
  <div class="card-header text-white ">
-  <div style="padding-top:7px; justify-content:space-between;display:flex;">
-    {{ localCount }}. {{resultTabs?.europeApproval?.label}} >> {{_data?.medicine_name}}
+  <div style="padding-top:7px;display:flex;">
+    {{ localCount }}. {{resultTabs?.europeApproval?.label}} >> 
+     <span>
+     {{showFull ? (_data?.medicine_name || '' ) : (_data?.medicine_name | slice:0:200) }} 
+    <ng-container *ngIf="_data?.medicine_name?.length > 200">
+      <span (click)="toggleView()" style="color: black; cursor: pointer; border-bottom: 1px dotted;">
+        {{ showFull ? '... View Less' : '... View More' }}
+      </span>
+      </ng-container>
+    </span>
   </div>
 </div>
 
@@ -13,9 +21,9 @@
                 <p style="font-size: 14px; padding-bottom: 5px; color:#312e81;; font-weight: bold;">
                     {{ _data?.medicine_name }}
                 </p>
-                
+   
 
-                <p style="font-size: 14px; padding-bottom: 10px;">
+                <p style="font-size: 14px; padding-bottom: 10px;overflow-y: hidden;">
                     {{ _data?.active_substance }}
                 </p>
 

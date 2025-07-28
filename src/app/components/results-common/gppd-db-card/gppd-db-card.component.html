@@ -131,12 +131,27 @@
                   <!-- Fallback if not date -->
                   <ng-template #normalCell>
                     <span [style.width.px]="150" class="fixed-cell" style="display:block;">
-                      <div class="scrollable-text" *ngIf="column.value === 'country'; else defaultCell"
+                      <!-- <div class="scrollable-text" *ngIf="column.value === 'country'; else defaultCell"
                         style="display: flex; align-items: center;">
                         {{ element[column.value] }}
                         <img *ngIf="element[column.value]" [src]="getCountryUrl(element)" alt="flag" width="20"
                           height="15" style="margin-left: 6px;" (error)="onFlagError($event)"/>
+                      </div> -->
+                      <div *ngIf="column.value === 'country'; else checkCompanyLogo" class="scrollable-text"
+                        style="display: flex; align-items: center;">
+                        {{ element[column.value] }}
+                        <img *ngIf="element[column.value]" [src]="getCountryUrl(element)" alt="flag" width="20"
+                          height="15" style="margin-left: 6px;" (error)="onFlagError($event)" />
                       </div>
+
+                      <!-- Company Logo Column -->
+                      <ng-template #checkCompanyLogo>
+                        <div *ngIf="column.value === 'company_logo'; else defaultCell"
+                          style="display: flex; align-items: center;">
+                          <img [src]="getCompanyLogo(element)" alt=" not found" width="60" height="40"
+                            style="object-fit: contain;" />
+                        </div>
+                      </ng-template>
                       <ng-template #defaultCell>
                         <div style="word-break:break-word;width:150" class="scrollable-text">
                           {{ element[column.value] }}
@@ -162,4 +177,3 @@
     </div>
   </div>
 </div>
-

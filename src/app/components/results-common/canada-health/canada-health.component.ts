@@ -79,7 +79,10 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
   getCompanyLogo(value: any): string {
     return `${environment.baseUrl}${environment.domainNameCompanyLogo}${value?.company_logo}`;
   }
-
+ showFull = false;
+  toggleView() {
+    this.showFull = !this.showFull;
+  }
   getCountryUrl(value: any): string {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country_of_company}.png`;
   }

@@ -1,8 +1,15 @@
 <!-- <pre>{{_data | json}}</pre>  -->
 
 <div class="card-header text-white ">
-    <div style="padding-top:7px; justify-content:space-between; display:flex;">
-        {{ localCount }}. {{resultTabs?.japanApproval?.label}} >> {{_data?.strength}}
+    <div style="padding-top:7px;  display:flex;">
+        {{ localCount }}. {{resultTabs?.japanApproval?.label}} >> <span>
+            {{showFull ? (_data?.strength || '' ) : (_data?.strength | slice:0:200) }}
+            <ng-container *ngIf="_data?.strength?.length > 200">
+                <span (click)="toggleView()" style="color: black; cursor: pointer; border-bottom: 1px dotted;">
+                    {{ showFull ? '... View Less' : '... View More' }}
+                </span>
+            </ng-container>
+        </span>
     </div>
 </div>
 <div class="card-body" style="background-color: #F5FBFF;">
@@ -43,8 +50,7 @@
                     </p>
                 </div>
 
-                <img *ngIf="_data?.company_logo" class="company_logo" 
-                 [src]="getImageUrl(_data)" alt="error"
+                <img *ngIf="_data?.company_logo" class="company_logo" [src]="getImageUrl(_data)" alt="error"
                     style="height: 150px; width: 150px; padding: 10px;padding-left: 0; object-fit: contain;">
 
                 <!-- ✅ Moved inside the Second Column -->
@@ -127,8 +133,7 @@
                 </p>
             </div>
 
-            <img *ngIf="data?.company_logo" class="company_logo" [src]="getImageUrl(data)" 
-                alt="error" style="
+            <img *ngIf="data?.company_logo" class="company_logo" [src]="getImageUrl(data)" alt="error" style="
         height: 200px;
         width: 200px;
         padding: 20px 20px;

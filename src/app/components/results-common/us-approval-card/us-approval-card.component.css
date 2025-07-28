@@ -3,7 +3,23 @@
   background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
   justify-content: space-between;
 }
-
+p {
+  /* white-space: pre; */
+  text-wrap: wrap;
+  font-size: 14px;
+}
+.para {
+    color: blue;
+    font-weight: bold;
+    margin-top: 10px;
+     margin-bottom: 10px;
+}
+h6{
+  font-size: 14px;
+}
+h2{
+  font-size: 14px;
+}
 .viewpatent {
   height: 100%;
   width: 80%;

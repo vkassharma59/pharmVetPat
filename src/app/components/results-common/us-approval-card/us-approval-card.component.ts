@@ -62,7 +62,10 @@ export class UsApprovalCardComponent {
   convertNewlinesToBr(text: string): string {
     return text?.replace(/\n/g, '<br>');
   }
-  
+   showFull = false;
+  toggleView() {
+    this.showFull = !this.showFull;
+  }
   formattedNotes: SafeHtml = '';
 
   constructor(

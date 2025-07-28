@@ -1,12 +1,18 @@
 <div class="card-header text-white">
   <div style="padding-top: 7px; justify-content:space-between;display:flex;">
-   {{ localCount }}. {{resultTabs?.technicalRoes?.label}} >> <span
-    *ngIf="_data?.ACTIVE_INGREDIENT">{{_data?.ACTIVE_INGREDIENT}}</span><span
-    *ngIf="_data?.active_ingredient">{{_data?.active_ingredient}}</span>
+    {{ localCount }}. {{resultTabs?.technicalRoes?.label}} >>
+    <span> {{ showFull ? (_data?.ACTIVE_INGREDIENT || _data?.active_ingredient || '')
+      : (_data?.ACTIVE_INGREDIENT || _data?.active_ingredient | slice: 0:200)}}
+      <ng-container *ngIf="_data?.ACTIVE_INGREDIENT?.length|| _data?.active_ingredient?.length > 200">
+        <span (click)="toggleView()" style="color: black; cursor: pointer;border-bottom: 1px dotted;">
+          {{ showFull ? '... View Less' : '...View More' }}
+        </span>
+      </ng-container>
+    </span>
   </div>
   <!-- <button class="btn btn-warning"  *ngIf="isDownloadPermit && isSplitDownload" data-bs-toggle="modal" title="Download Single Route"
     data-bs-target="#download_btn"  (click)="prepareToDownload(index)"><i class="fa-solid fa-download"></i></button> -->
-    <!-- -->
+  <!-- -->
 </div>
 <div class="card-body">
   <div class="pb-3 mb-3 px-2 rounded-lg" *ngIf="!isEmptyObject(_data); else noData">
@@ -320,10 +326,12 @@
             <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
               (click)="handleCopy(_data?.description, copyBtn)"><i class="fas fa-copy"></i></span>
           </h2>
-          <p [ngClass]="{ desc: getStringLength(_data?.description) }" class="text-justify">
+          <p [ngClass]="{
+              res: getStringLength(_data?.description)
+            }" class="text-justify">
             {{ _data?.description }}
           </p>
-          <h2 *ngIf="getStringLength(_data?.description)" class="para"
+          <h2 *ngIf="_data?.description?.length >= 450" class="para"
             (click)="OpenViewModal(_data?.description, 'Description')" style="cursor: pointer">
             View more
           </h2>
@@ -343,7 +351,7 @@
             {{ _data?.present_invention_patent_disclosure }}
           </p>
 
-          <h2 *ngIf="getStringLength(_data?.present_invention_patent_disclosure)" class="para" (click)="
+          <h2 *ngIf="_data?.present_invention_patent_disclosure?.length > 450" class="para" (click)="
               OpenViewModal(
                 _data?.present_invention_patent_disclosure,
                 'present invention OR patent disclosure'
@@ -362,7 +370,7 @@
           <p [ngClass]="{ res: getStringLength(_data?.reactants_cas_rn) }" class="pb-4">
             {{ _data?.reactants_cas_rn }}
           </p>
-          <h2 *ngIf="getStringLength(_data?.reactants_cas_rn)" class="para"
+          <h2 *ngIf="_data?.reactants_cas_rn?.length > 450" class="para"
             (click)="OpenViewModal(_data?.reactants_cas_rn, 'REACTANTS CAS RN:')" style="cursor: pointer">
             View more
           </h2>
@@ -377,7 +385,7 @@
           <p [ngClass]="{ res: getStringLength(_data?.smilies_of_reactants) }" class="pb-4">
             {{ _data?.smilies_of_reactants }}
           </p>
-          <h2 *ngIf="getStringLength(_data?.smilies_of_reactants)" class="para" (click)="
+          <h2 *ngIf="_data?.smilies_of_reactants?.length > 450" class="para" (click)="
               OpenViewModal(_data?.smilies_of_reactants, 'Smilies of Reactants')
             " style="cursor: pointer">
             View more
@@ -393,7 +401,7 @@
           <p [ngClass]="{ res: getStringLength(_data?.solvent_and_reagents) }" class="pb-4">
             {{ _data?.solvent_and_reagents }}
           </p>
-          <h2 *ngIf="getStringLength(_data?.solvent_and_reagents)" class="para" (click)="
+          <h2 *ngIf="_data?.solvent_and_reagents?.length > 450" class="para" (click)="
               OpenViewModal(_data?.solvent_and_reagents, 'SOLVENTS AND REAGENTS')
             " style="cursor: pointer">
             View more
@@ -412,7 +420,7 @@
             }" class="pb-1">
             {{ _data?.patent_or_non_patent_references }}
           </p>
-          <h2 *ngIf="getStringLength(_data?.patent_or_non_patent_references)" class="para" (click)="
+          <h2 *ngIf="_data?.patent_or_non_patent_references?.length > 450" class="para" (click)="
               OpenViewModal(
                 _data?.patent_or_non_patent_references,
                 'PATENT OR NON-PATENT REFERENCE(S)'
@@ -431,7 +439,7 @@
           <p [ngClass]="{ res: getStringLength(_data?.technical_field) }" class="res">
             {{ _data?.technical_field }}
           </p>
-          <h2 *ngIf="getStringLength(_data?.technical_field)" class="para"
+          <h2 *ngIf="_data?.technical_field?.length > 450" class="para"
             (click)="OpenViewModal(_data?.technical_field, 'Technical field')" style="cursor: pointer">
             View more
           </h2>
@@ -446,7 +454,7 @@
           <p [ngClass]="{ res: getStringLength(_data?.notes) }" class="pb-4">
             {{ _data?.notes }}
           </p>
-          <h2 *ngIf="getStringLength(_data?.notes)" class="para" (click)="OpenViewModal(_data?.notes, 'Notes')"
+          <h2 *ngIf="_data?.notes?.length > 450" class="para" (click)="OpenViewModal(_data?.notes, 'Notes')"
             style="cursor: pointer">
             View more
           </h2>
@@ -461,7 +469,7 @@
           <p [ngClass]="{ res: getStringLength(_data?.remarks) }" class="py-1">
             {{ _data?.remarks }}
           </p>
-          <h2 *ngIf="getStringLength(_data?.remarks)" class="para" (click)="OpenViewModal(_data?.remarks, 'Remarks')"
+          <h2 *ngIf="_data?.remarks?.length > 450" class="para" (click)="OpenViewModal(_data?.remarks, 'Remarks')"
             style="cursor: pointer">
             View more
           </h2>
@@ -477,7 +485,7 @@
             {{ _data?.comments }}
           </p>
 
-          <h2 *ngIf="getStringLength(_data?.comments)" class="para" (click)="OpenViewModal(_data?.comments, 'Comments')"
+          <h2 *ngIf="_data?.comments?.length > 450" class="para" (click)="OpenViewModal(_data?.comments, 'Comments')"
             style="cursor: pointer">
             View more
           </h2>
@@ -492,7 +500,7 @@
           <p [ngClass]="{ res: getStringLength(_data?.applications) }" class="pb-4">
             {{ _data?.applications }}
           </p>
-          <h2 *ngIf="getStringLength(_data?.applications)" class="para"
+          <h2 *ngIf="_data?.applications?.length > 450" class="para"
             (click)="OpenViewModal(_data?.applications, 'Applications')" style="cursor: pointer">
             View more
           </h2>
@@ -510,7 +518,7 @@
             }" class="pb-4">
             {{ _data?.intermediate_reactants_cas_rn }}
           </p>
-          <h2 *ngIf="getStringLength(_data?.intermediate_reactants_cas_rn)" class="para" (click)="
+          <h2 *ngIf="_data?.intermediate_reactants_cas_rn?.length > 450" class="para" (click)="
               OpenViewModal(
                 _data?.intermediate_reactants_cas_rn,
                 ' Intermediate Reactants CAS RN'
@@ -630,4 +638,3 @@
   <ng-template #noData>
     <p>No data found</p>
   </ng-template>
- 

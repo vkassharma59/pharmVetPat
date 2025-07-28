@@ -8,6 +8,7 @@ import { ChemDiscriptionModelComponent } from '../../../commons/chem-discription
 import { ChemDiscriptionViewModelComponent } from '../../../commons/chem-discription-viewmodel/chem-discription-viewmodel.component';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 @Component({
   selector: 'chem-product-info-card',
   standalone: true,
@@ -52,7 +53,7 @@ export class BasicRouteCardComponent {
           this.basic_column[column_list[this.resultTabs.productInfo.name][i].value] =
             column_list[this.resultTabs.productInfo.name][i].name;
         }
-        this.processSynonyms();
+          this.processSynonyms();
       }
     }
   }
@@ -62,7 +63,8 @@ export class BasicRouteCardComponent {
   constructor(
     private dialog: MatDialog,
     private utilityService: UtilityService,
-    private MainSearchService: MainSearchService
+    private MainSearchService: MainSearchService,
+    private sanitizer: DomSanitizer
   ) { }
 
   isEmptyObject(obj: any): boolean {
@@ -96,6 +98,23 @@ export class BasicRouteCardComponent {
   ngOnDestroy() {
     // Reset counter when navigating away from the component
     BasicRouteCardComponent.apiCallCount = 0;
+  }
+  formattedNotes: SafeHtml = '';
+
+  openFormattedView(content: any, title: string): void {
+    const formatted = this.sanitizer.bypassSecurityTrustHtml(
+      content.replace(/\n/g, '<br>')
+    );
+
+    this.dialog.open(ChemDiscriptionViewModelComponent, {
+      width: 'calc(100vw - 50px)',
+      height: 'auto',
+      panelClass: 'full-screen-modal',
+      data: {
+        dataRecord: formatted,
+        title: title,
+      },
+    });
   }
 
   getInventorLogo(data: any) {
@@ -158,7 +177,19 @@ export class BasicRouteCardComponent {
       }, 1500);
     }
   }
-
+  processSynonyms() {
+    if (this.data?.SYNONYMSCOMMON_NAME) {
+      const synonymList = this.data.SYNONYMSCOMMON_NAME.split('\n').map(
+        (synonym: string) => synonym.trim()
+      );
+      this.processedSynonyms = synonymList.map((synonym: string) => {
+        const match = synonym.match(/^(\d+)\.\s*(.*)$/);
+        return match
+          ? { number: match[1], text: match[2] }
+          : { number: '', text: synonym };
+      });
+    }
+  }
   getColumnName(value: any) {
     return this.basic_column[value];
   }
@@ -184,20 +215,6 @@ export class BasicRouteCardComponent {
     } else return data;
   }
 
-  processSynonyms() {
-    if (this.data?.SYNONYMSCOMMON_NAME) {
-      const synonymList = this.data.SYNONYMSCOMMON_NAME.split('\n').map(
-        (synonym: string) => synonym.trim()
-      );
-      this.processedSynonyms = synonymList.map((synonym: string) => {
-        const match = synonym.match(/^(\d+)\.\s*(.*)$/);
-        return match
-          ? { number: match[1], text: match[2] }
-          : { number: '', text: synonym };
-      });
-    }
-  }
-
   getImageUrl = (props: any) => {
     return (
       environment.baseUrl +
@@ -205,10 +222,7 @@ export class BasicRouteCardComponent {
       this.data?.CHEMICAL_STRUCTURE
     );
   };
-  //  onImgError(event: Event) {
-  //   const imgElement = event.target as HTMLImageElement;
-  //   imgElement.src = 'assets/components/noimg.png';
-  // }
+
   getPatentUrl(data: any) {
     return `https://patentscope.wipo.int/search/en/result.jsf?inchikey=${data?.INCHIKEY}`;
   }

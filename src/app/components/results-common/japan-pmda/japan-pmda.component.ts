@@ -22,7 +22,10 @@ export class JapanPMDAComponent implements OnInit, OnDestroy {
 
   static apiCallCount: number = 0;
   localCount: number = 0;
-
+ showFull = false;
+  toggleView() {
+    this.showFull = !this.showFull;
+  }
   @Input()
   get data() {
     return this._data;

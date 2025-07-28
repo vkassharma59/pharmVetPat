@@ -1,8 +1,16 @@
 <!-- <pre>{{_data | json}}</pre>  -->
-<ng-container>
+
   <div class="card-header text-white rounded-lg">
-    <div style="padding:7px; justify-content:space-between; display:flex;">
-      {{resultTabs?.usApproval?.label}} >> {{_data?.name}}
+    <div style="padding:7px; display:flex;">
+      {{resultTabs?.usApproval?.label}} >> 
+       <span>
+     {{showFull ? (_data?.name || '' ) : (_data?.name | slice:0:200) }} 
+    <ng-container *ngIf="_data?.name?.length > 200">
+      <span (click)="toggleView()" style="color: black; cursor: pointer; border-bottom: 1px dotted;">
+        {{ showFull ? '... View Less' : '... View More' }}
+      </span>
+      </ng-container>
+    </span>
     </div>
   </div>
 
@@ -79,7 +87,7 @@
   </div> -->
 
 
-  <div class="card body" style="background-color:#f8faff;">
+  <div class="card body" style="background-color:#f8faff; padding:5px;">
     <div class="pb-3 mb-3 px-2 rounded-lg">
 
       <div class="row">
@@ -458,5 +466,3 @@
     </div>
   </div>
 </div>
-
-</ng-container>

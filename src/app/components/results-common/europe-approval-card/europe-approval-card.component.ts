@@ -19,7 +19,10 @@ export class EuropeApprovalCardComponent implements OnInit, OnDestroy {
   pageNo: number = 1;
   europe_approval_column: any = {};
   resultTabs: any = {};
-
+ showFull = false;
+  toggleView() {
+    this.showFull = !this.showFull;
+  }
   static apiCallCount: number = 0; // Global static counter
   localCount: number = 0; // Instance-specific count
 
