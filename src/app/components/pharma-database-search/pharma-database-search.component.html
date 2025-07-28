@@ -11,10 +11,10 @@
   <div class="top_section">
     <div class="pharma-logo">
       <div class="flex justify-center items-center mt-[100px] mb-[5px]" *ngIf="accountType === 'premium'">
-        <img src="assets/premium.png" title="Premium User" alt="Premium User" class="h-[50px]"/>
+        <img src="assets/premium.png" title="Premium User" alt="Premium User" class="h-[50px]" />
       </div>
       <div class="flex justify-center items-center mt-[100px] mb-[5px]" *ngIf="accountType === 'free'">
-        <img src="assets/images/evaluation-version.png" title="Trial User" alt="Trial User" class="h-[50px]"/>
+        <img src="assets/images/evaluation-version.png" title="Trial User" alt="Trial User" class="h-[50px]" />
       </div>
       <img src="assets/images/home/PharmVetPat.svg" alt="PharmVetPat" class="img">
     </div>
@@ -49,12 +49,9 @@
             <label for="textSearch" class="form-label">Text Search</label>
           </div>
           <div class="col-md-8 col-12 mb-2 mb-md-0">
-            <input  #simpleSearchkeywordInput
-            type="text"
-            placeholder="Please enter your text"
-            class="form-control"
-            (input)="handleChangeKeyword(searchTypes.simpleSearch)"
-            [(ngModel)]="simpleSearch.keyword" />
+            <input #simpleSearchkeywordInput type="text" placeholder="Please enter your text" class="form-control"
+              (input)="handleChangeKeyword(searchTypes.simpleSearch)" [value]="simpleSearch.keyword"
+              [(ngModel)]="simpleSearch.keyword" />
 
             <!-- Suggestions Dropdown -->
             <!-- <ul
@@ -209,7 +206,7 @@
 
           <div class="position-relative">
             <input type="text" class="form-control" placeholder="Select Development Stage"
-              [(ngModel)]="advanceSearch.devStage" 
+              [(ngModel)]="advanceSearch.devStage"
               (focus)="showDevStageDropdown = true; handleChangeKeywordDL('DEVELOPMENT_STAGE', true)"
               (input)="handleChangeKeywordDL('DEVELOPMENT_STAGE')" />
 
