@@ -60,6 +60,10 @@ export class TechnicalRoutesCardComponent {
   @Input() CurrentAPIBody: any;
   @Input() index: any;
   _itemid: any = {};
+ showFull = false;
+  toggleView() {
+    this.showFull = !this.showFull;
+  }
 
   @Input()
   get itemid() {
@@ -167,7 +171,7 @@ export class TechnicalRoutesCardComponent {
   }
 
   getStringLength(value: any) {
-    return value.length > 800;
+    return value.length > 450;
   }
 
   isDateTimeString(dateString: any) {

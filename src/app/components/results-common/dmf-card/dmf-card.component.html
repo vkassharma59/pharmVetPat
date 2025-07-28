@@ -1,7 +1,15 @@
 <ng-container>
     <div class="card-header text-white rounded-lg">
         <div style="padding:7px; justify-content:space-between; display:flex;">
-            {{ localCount }}. {{resultTabs?.dmf?.label}} >> {{_data?.name}} 
+            {{ localCount }}. {{resultTabs?.dmf?.label}} >>
+            <span>
+            {{showFull ? (_data?.name || '' ) :(_data?.name | slice:0:200) }}
+            <ng-container *ngIf="_data?.name?.length > 200">
+                <span (click)="toggleView()" style="color: black; cursor: pointer; border-bottom: 1px dotted;">
+                    {{ showFull ? '... View Less' : '... View More' }}
+                </span>
+            </ng-container>
+        </span>
         </div>
     </div>
     <!-- HTML Template -->

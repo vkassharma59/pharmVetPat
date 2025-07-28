@@ -22,7 +22,10 @@ export class IndianMedicineCardComponent implements OnInit, OnDestroy {
 
   static apiCallCount: number = 0; // Global static counter
   localCount: number = 0; // Stores the instance-specific count
-
+ showFull = false;
+  toggleView() {
+    this.showFull = !this.showFull;
+  }
   @Input()
   get data() {
     return this._data;

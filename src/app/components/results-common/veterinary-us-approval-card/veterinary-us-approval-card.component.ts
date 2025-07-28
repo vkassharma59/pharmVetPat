@@ -31,7 +31,10 @@ export class VeterinaryUsApprovalCardComponent implements OnInit, OnDestroy {
   // columnMap: { [key: string]: any[] } = {};
   dataMap: { [key: string]: any[] } = {};
   columnMap: any = {}; // already being used
-
+  showFull = false;
+  toggleView() {
+    this.showFull = !this.showFull;
+  }
   localCount: number = 0;
   @Input()
   get data() {
