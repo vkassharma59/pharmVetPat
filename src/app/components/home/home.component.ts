@@ -101,7 +101,6 @@ export class HomeComponent implements OnInit {
     this.allDataSets = this.utilityService.getDataStates();
     this.searchData = { ...data };
     this.sharedRosService.setAllDataSets(this.allDataSets);
-    console.log('All Data Sets:', this.allDataSets);
     switch (this.CurrentAPIBody.currentTab) {
       case this.resultTabs.productInfo.name:
         if (

@@ -128,7 +128,6 @@ export class RouteResultComponent {
   }
   ngOnInit() {
     this.AllSetData = this.sharedRosService.getAllDataSets();
-    console.log('RouteResultComponent initialized', this.AllSetData);
     this.resultTabs = Object.values(this.utilityService.getAllTabsName());
     this.currentTabData = this.resultTabs.find((tab: any) => tab.isActive);
     this.resultTabWithKeys = this.utilityService.getAllTabsName();
@@ -156,21 +155,17 @@ export class RouteResultComponent {
   shouldShowDownloadButton(): boolean {
     const searchType = this.searchThrough;
     const currentTabName = this.CurrentAPIBody?.currentTab;
-     // ✅ Use string keys, not dynamic types with `typeof this`
-  const searchToTabKeyMap: { [key: string]: string } = {
+    // ✅ Use string keys, not dynamic types with `typeof this`
+    const searchToTabKeyMap: { [key: string]: string } = {
       'synthesis-search': 'technicalRoutes',
-      'chemical-structure':'chemicalDirectory',
+      'chemical-structure': 'chemicalDirectory',
       'intermediate-search': 'chemicalDirectory',
       'simple-search': 'productInfo',
       'advance-search': 'productInfo',
     };
 
-   const expectedTabKey = searchToTabKeyMap[searchType];
-  const expectedTabName = this.resultTabWithKeys?.[expectedTabKey]?.name;
-    // console.log('Search type:', searchType);
-    // console.log('Expected tab key:', expectedTabKey);
-    // console.log('Expected tab name:', expectedTabName);
-    // console.log('Current tab name:', currentTabName);
+    const expectedTabKey = searchToTabKeyMap[searchType];
+    const expectedTabName = this.resultTabWithKeys?.[expectedTabKey]?.name;
     return currentTabName === expectedTabName;
   }
 
@@ -278,6 +273,23 @@ export class RouteResultComponent {
       error: err => console.error('Vertical limit fetch failed:', err),
     });
   }
+  getReportLimit(): number {
+    // Step 1: Try privilege_json first
+    const privRaw = localStorage.getItem('priviledge_json');
+    const priv = JSON.parse(privRaw || '{}');
+    const privLimit = Number(priv['pharmvetpat-mongodb']?.ReportLimit);
+    if (!isNaN(privLimit) && privLimit > 0) {
+      return privLimit;
+    }
+    // Step 2: Try vertical report_limit from localStorage
+    const storedLimitRaw = localStorage.getItem('report_limit');
+    const storedLimit = Number(storedLimitRaw);
+    if (!isNaN(storedLimit) && storedLimit > 0) {
+      return storedLimit;
+    }
+    return 25;
+  }
+
   handleGeneratePDF() {
     this.generatePDFloader = true;
     this.handleSetLoading.emit(true);
@@ -355,7 +367,7 @@ export class RouteResultComponent {
                     ...this.CurrentAPIBody?.body, // preserve existing search fields
                     reports: [...body_main.reports],
                     report_download: true,
-                    limit: pharmaPrivilege.ReportLimit,
+                    limit: this.getReportLimit(), //pharmaPrivilege.ReportLimit,
                   },
                 };
 
@@ -425,12 +437,8 @@ export class RouteResultComponent {
   }
 
   openDownloadModal(index: number | undefined) {
-    console.log('openDownloadModal called with index:', index);
     if (index === undefined) return;
-
     this.selectedIndex = index;
-    console.log('✔️ selectedIndex set to:', this.selectedIndex);
-
     // Open modal manually after selectedIndex is set
     setTimeout(() => {
       const modalEl = this.downloadModalRef.nativeElement;
@@ -440,7 +448,6 @@ export class RouteResultComponent {
   }
 
   handleGeneratePDF1(index: number) {
-    console.log('Selected index in generatePDF1:', index); // ✅ Debug check
     this.generatePDFloader = true;
     this.handleSetLoading.emit(true);
     const priviledge = localStorage.getItem('priviledge_json');
@@ -508,9 +515,7 @@ export class RouteResultComponent {
                     let id: any = '';
                     const searchThrough = Auth_operations.getActiveformValues().activeForm;
                     const currentData = this.AllSetData[index];
-                    console.log('this.CurrentAPIBody---------', this.AllSetData[index]
-                    );
-                    console.log('index---------', index);
+
                     switch (this.searchThrough) {
                       case searchTypes.chemicalStructure:
                       case searchTypes.intermediateSearch:
@@ -518,7 +523,6 @@ export class RouteResultComponent {
                         break;
 
                       case searchTypes.synthesisSearch:
-                        console.log('currentData', currentData[this.resultTabWithKeys.technicalRoutes.name]?.ros_data?.[0]?._id);
                         id = currentData[this.resultTabWithKeys.technicalRoutes.name]?.ros_data?.[0]?._id;
                         break;
 
@@ -528,11 +532,11 @@ export class RouteResultComponent {
                         id = currentData[this.resultTabWithKeys.productInfo.name]?.[0]?._id;
                         break;
                     }
-                    console.log('id', id);
                     let body_main: any = {
                       id: id,
                       reports: [],
-                      limit: priviledge_data?.['pharmvetpat-mongodb']?.ReportLimit,
+                      limit: this.getReportLimit(),
+                      // limit: priviledge_data?.['pharmvetpat-mongodb']?.ReportLimit,
                     };
                     Object.keys(this.SingleDownloadCheckbox).forEach(key => {
                       if (this.SingleDownloadCheckbox[key]) {
