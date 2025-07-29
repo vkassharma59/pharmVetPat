@@ -146,9 +146,9 @@
 
                       <!-- Company Logo Column -->
                       <ng-template #checkCompanyLogo>
-                        <div *ngIf="column.value === 'company_logo'; else defaultCell"
+                        <div *ngIf="column.value === 'company_logo' && element?.company_logo; else defaultCell"
                           style="display: flex; align-items: center;">
-                          <img [src]="getCompanyLogo(element)" alt=" not found" width="60" height="40"
+                          <img [src]="getCompanyLogo(element)" alt=" " width="60" height="40"
                             style="object-fit: contain;" />
                         </div>
                       </ng-template>
