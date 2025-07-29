@@ -158,11 +158,7 @@ export class GppdDbComponent implements OnChanges {
 
     this.mainSearchService.gppdDbSearchSpecific(this.gppdApiBody).subscribe({
       next: (res: any) => {
-        const hcData = res?.data?.data || [];
-        console.log(res?.data?.data, "-------hacdat-----", hcData)
-        const getUnique = (arr: any[]) => [...new Set(arr.filter(v => !!v && typeof v === 'string' && v.trim().length > 0))];
-        // const countryFilters = getUnique(hcData.map(item => item?.country));
-        // const companyFilters = getUnique(hcData.map(item => item?.company));
+        
         const countryFilters = res?.data?.country?.map(item => ({
           name: item.name,
           value: item.value
@@ -276,54 +272,6 @@ export class GppdDbComponent implements OnChanges {
       }
     });
   }
-  clear() {
-    // Reset filter labels
-    this.filterConfigs = this.filterConfigs.map(config => {
-      let defaultLabel = '';
-      switch (config.key) {
-        case 'company': defaultLabel = 'All Company'; break;
-        case 'country': defaultLabel = 'All Country'; break;
-      }
-      return { ...config, label: defaultLabel, dropdownState: false };
-    });
-
-    // Clear filters
-    this.gppdApiBody.filters = {};
-
-    // Reset page number and start
-    this._currentChildAPIBody = {
-      ...this.gppdApiBody,
-      filters: {},
-      page_no: 1,
-      start: 0
-    };
-    console.log("final API body", this._currentChildAPIBody);
-    this.handleSetLoading.emit(true);
-    this.mainSearchService.gppdDbSearchSpecific(this._currentChildAPIBody).subscribe({
-
-      next: (res) => {
-        this._currentChildAPIBody.count = res?.data?.recordsTotal;
-        this._data.rows = res?.data?.data || [];
-        // const resultData = res?.data.data;
-        // this._data = {
-        //   columns: resultData?.columns ,   // <-- Ensure this is set
-        //   rows: resultData?.data 
-        // };
-        this.count = this._currentChildAPIBody.count;
-        this.totalPages = Math.ceil(this.count / this.pageSize); // Recalculate pagination
-        this.searchByTable = true;
-        this.handleResultTabData.emit(this._data.rows);
-        this.handleSetLoading.emit(false);
-      },
-      error: (err) => {
-        console.error(err);
-        this._currentChildAPIBody.filter_enable = false;
-        this.handleSetLoading.emit(false);
-      }
-    });
-
-    window.scrollTo(0, 0);
-  }
   // clear() {
   //   // Reset filter labels
   //   this.filterConfigs = this.filterConfigs.map(config => {
@@ -338,18 +286,66 @@ export class GppdDbComponent implements OnChanges {
   //   // Clear filters
   //   this.gppdApiBody.filters = {};
 
-  //   const payload = {
+  //   // Reset page number and start
+  //   this._currentChildAPIBody = {
   //     ...this.gppdApiBody,
   //     filters: {},
   //     page_no: 1,
-  //     start: 0,
+  //     start: 0
   //   };
+  //   console.log("final API body", this._currentChildAPIBody);
+  //   this.handleSetLoading.emit(true);
+  //   this.mainSearchService.gppdDbSearchSpecific(this._currentChildAPIBody).subscribe({
 
-  //   console.log("final API body from clear:", payload);
+  //     next: (res) => {
+  //       this._currentChildAPIBody.count = res?.data?.recordsTotal;
+  //       this._data.rows = res?.data?.data || [];
+  //       // const resultData = res?.data.data;
+  //       // this._data = {
+  //       //   columns: resultData?.columns ,   // <-- Ensure this is set
+  //       //   rows: resultData?.data 
+  //       // };
+  //       this.count = this._currentChildAPIBody.count;
+  //       this.totalPages = Math.ceil(this.count / this.pageSize); // Recalculate pagination
+  //       this.searchByTable = true;
+  //       this.handleResultTabData.emit(this._data.rows);
+  //       this.handleSetLoading.emit(false);
+  //     },
+  //     error: (err) => {
+  //       console.error(err);
+  //       this._currentChildAPIBody.filter_enable = false;
+  //       this.handleSetLoading.emit(false);
+  //     }
+  //   });
 
-  //   this.onDataFetchRequest(payload); // This will fetch data and update pagination
   //   window.scrollTo(0, 0);
   // }
+  clear() {
+    // Reset filter labels
+    this.filterConfigs = this.filterConfigs.map(config => {
+      let defaultLabel = '';
+      switch (config.key) {
+        case 'company': defaultLabel = 'All Company'; break;
+        case 'country': defaultLabel = 'All Country'; break;
+      }
+      return { ...config, label: defaultLabel, dropdownState: false };
+    });
+
+   // Clear filters
+    this.gppdApiBody.filters = {};
+
+    const payload = {
+      ...this.gppdApiBody,
+      filters: {},
+      page_no: 1,
+      start: 0,
+    };
+
+    console.log("final API body from clear:", payload);
+
+    this.onDataFetchRequest(payload); // This will fetch data and update pagination
+    window.scrollTo(0, 0);
+  }
 
 
 }

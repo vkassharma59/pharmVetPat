@@ -128,13 +128,16 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
     event.target.src = 'assets/images/flag.png';
   }
   isISODate(value: any): boolean {
-  if (typeof value !== 'string') return false;
+    if (typeof value !== 'string') return false;
 
-  // ISO format flexible pattern (with optional milliseconds/timezone)
-  const isoPattern = /^\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
+    // ISO format flexible pattern (with optional milliseconds/timezone)
+    const isoPattern = /^\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
 
-  return isoPattern.test(value) && !isNaN(Date.parse(value.replace(' ', 'T')));
-}
+    return isoPattern.test(value) && !isNaN(Date.parse(value.replace(' ', 'T')));
+  }
+  getCompanyLogo(value: any): string {
+    return `${environment.baseUrl}${environment.domainNameCompanyLogo}${value?.company_logo}`;
+  }
   searchInColumn(column: any, filterInput: HTMLInputElement, event: MouseEvent): void {
     event.stopPropagation(); // prevent sort from triggering
 
