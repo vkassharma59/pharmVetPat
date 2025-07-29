@@ -96,6 +96,7 @@ export class DmfComponent {
     public loadingService: LoadingService,
     private mainSearchService: MainSearchService,
   ) {
+ 
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
