@@ -7,7 +7,7 @@
                 {{ showFull['header'] ? (_data?.product || '') : (_data?.product | slice:0:130) }}
                 <ng-container *ngIf="_data?.product?.length > 130">
                     <span (click)="toggleView('header')"
-                       style="color: black; cursor: pointer;border-bottom: 1px dotted;">
+                        style="color: black; cursor: pointer;border-bottom: 1px dotted;">
                         {{ showFull['header'] ? '...View Less' : '...View More' }}
                     </span>
                 </ng-container>
@@ -95,7 +95,7 @@
                             <i class="fas fa-copy"></i>
                         </span>
                     </h1>
-                    <p class="ng-binding text-wrap max-h-12 whitespace-normal"> {{ _data?.patent_publication_number }}
+                    <!-- <p class="ng-binding text-wrap max-h-12 whitespace-normal"> {{ _data?.patent_publication_number }}
                         <br>
                         <a target="_blank" href="https://patents.google.com/patent/WO2012166420"
                             style="color: blue;font-weight: 600;">
@@ -108,27 +108,28 @@
                             <span><i class="fa-solid fa-e"></i> </span>
                             Espacenet Patent Search <br>
                         </a>
-                    </p>
-                    <br>
-                    <br>
-                    <!-- <p class="text-wrap max-h-12 whitespace-normal">
+                    </p> -->
+
+                    <p class="text-wrap max-h-12 whitespace-normal">
                         {{ _data?.patent_publication_number }}
-                    
-                        <a [href]="'https://patents.google.com/patent/' + _data?.patent_publication_number"
-                            target="_blank" rel="noopener noreferrer">
+                        <br>
+                        <a target="_blank"
+                            [href]="'https://patents.google.com/patent/' + _data?.patent_publication_number"
+                            target="_blank" rel="noopener noreferrer" style="color: blue;font-weight: 600;">
                             <i class="fa-brands fa-google"></i>
                             Google Patent Search
                         </a>
-                                   
-                        <a [href]="'https://worldwide.espacenet.com/patent/search?q=' + _data?.patent_publication_number"
-                            target="_blank" rel="noopener noreferrer">
+                        <br>
+                        <a target="_blank"
+                            [href]="'https://worldwide.espacenet.com/patent/search?q=' + _data?.patent_publication_number"
+                            target="_blank" rel="noopener noreferrer" style="color: red;font-weight: 600;">
                             <i class="fa-solid fa-e"></i>
                             Espacenet Patent Search
                         </a>
-                    </p> -->
+                    </p>
                 </div>
-
-
+                <br>
+                <br>
                 <div *ngIf="_data?.publication_date && getColumnName('publication_date')">
                     <h1 class="font-bold" style="color:#312e81;">
                         {{ getColumnName("publication_date") }}
