@@ -25,7 +25,6 @@ export class ChemiTrackerCardComponent implements OnDestroy {
 
   constructor(private dialog: MatDialog, private utilityService: UtilityService) {
     this.localCount = ++ChemiTrackerCardComponent.counter; // ✅ Assign unique count per instance
-    console.log(`Instance Created: ${this.localCount}, Total Count: ${ChemiTrackerCardComponent.counter}`);
   }
 
   ngOnDestroy() {

@@ -29,6 +29,7 @@ export class ChildPagingComponent implements OnInit {
     return this._currentChildAPIBody;
   }
   set currentChildAPIBody(value: any) {
+    console.log("childodyApi000000000000", value)
     this._currentChildAPIBody = value;
     this.PageArray = [];
   

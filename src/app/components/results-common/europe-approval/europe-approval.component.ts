@@ -13,7 +13,7 @@ import { TruncatePipe } from '../../../pipes/truncate.pipe';
 @Component({
   selector: 'chem-europe-approval',
   standalone: true,
-  imports: [CommonModule, EuropeApprovalCardComponent, ChildPagingComponent,TruncatePipe],
+  imports: [CommonModule, EuropeApprovalCardComponent, ChildPagingComponent, TruncatePipe],
   templateUrl: './europe-approval.component.html',
   styleUrl: './europe-approval.component.css'
 })
@@ -43,29 +43,29 @@ export class EuropeApprovalComponent {
   filterConfigs = [
     {
       key: 'marketing_authorisation_holder',
-      label: 'Select Marketing Authorisation Holder',
+      label: 'Marketing Authorisation Holder',
       dataKey: 'marketFilters',
       filterType: 'marketing_authorisation_holder',
       dropdownState: false
     }];
-     @HostListener('document:mousedown', ['$event'])
-      onClickOutside(event: MouseEvent) {
-        const clickedInsideAny = this.dropdownRefs?.some((dropdown: ElementRef) =>
-          dropdown.nativeElement.contains(event.target)
-        );
-    
-        if (!clickedInsideAny) {
-          this.filterConfigs = this.filterConfigs.map(config => ({
-            ...config,
-            dropdownState: false
-          }));
-        }
-      }
+  @HostListener('document:mousedown', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const clickedInsideAny = this.dropdownRefs?.some((dropdown: ElementRef) =>
+      dropdown.nativeElement.contains(event.target)
+    );
+
+    if (!clickedInsideAny) {
+      this.filterConfigs = this.filterConfigs.map(config => ({
+        ...config,
+        dropdownState: false
+      }));
+    }
+  }
   constructor(
     private utilityService: UtilityService,
     public loadingService: LoadingService,
-     private mainSearchService: MainSearchService,
-        private cdr: ChangeDetectorRef
+    private mainSearchService: MainSearchService,
+    private cdr: ChangeDetectorRef
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
@@ -73,22 +73,22 @@ export class EuropeApprovalComponent {
   ngOnChanges() {
     console.log('europeApproval received data:', this._data);
     this.handleResultTabData.emit(this._data);
-    
+
   }
   //  updateDataFromPagination(newData: any) {
   //   this._data = newData; // or this.data = newData; if you want setter to trigger
   //   this.handleResultTabData.emit(newData);
   //   console.log("✅ Updated data from pagination:", newData);
   // }
-   ngOnInit(): void {
+  ngOnInit(): void {
     this.emaApiBody = { ...this.currentChildAPIBody };
     this.emaApiBody.filters = this.emaApiBody.filters || {};
-  
+
     console.log('[ngOnInit] Initial emaApiBody:', JSON.stringify(this.emaApiBody, null, 2));
-  
+
     this.handleFetchFilters();
   }
-  
+
 
   setFilterLabel(filterKey: string, label: string) {
     this.filterConfigs = this.filterConfigs.map((item) => {
@@ -96,7 +96,7 @@ export class EuropeApprovalComponent {
         if (label === '') {
           switch (filterKey) {
             case 'marketing_authorisation_holder': label = 'Select Marketing Authorization Holder'; break;
-            
+
           }
         }
         return { ...item, label: label };
@@ -115,23 +115,18 @@ export class EuropeApprovalComponent {
 
   handleFetchFilters() {
     this.emaApiBody.filter_enable = true;
-    
-  
     this.mainSearchService.europeApprovalSearchSpecific(this.emaApiBody).subscribe({
       next: (res: any) => {
         const hcData = res?.data?.ema_data || [];
-  
         const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
         const marketFilters = getUnique(hcData.map(item => item.marketing_authorisation_holder));
-       
-  
         this.emaFilters = {
           marketFilters
         };
-  
+
         this.emaApiBody.filter_enable = false;
-        
-        
+
+
       },
       error: (err) => {
         console.error('Error fetching ema filters:', err);
@@ -140,56 +135,56 @@ export class EuropeApprovalComponent {
       }
     });
   }
-    
 
- handleSelectFilter(filterKey: string, value: any, name?: string): void {
-  this.handleSetLoading.emit(true);
-  this.emaApiBody.filters = this.emaApiBody.filters || {};
 
-  if (value === '') {
-    delete this.emaApiBody.filters[filterKey];
-    this.setFilterLabel(filterKey, '');
-  } else {
-    this.emaApiBody.filters[filterKey] = value;
-    this.setFilterLabel(filterKey, name || '');
-  }
+  handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    this.handleSetLoading.emit(true);
+    this.emaApiBody.filters = this.emaApiBody.filters || {};
 
-  this._currentChildAPIBody = {
-    ...this.emaApiBody,
-    filters: { ...this.emaApiBody.filters }
-  };
-
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-  this.mainSearchService.europeApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
-    next: (res) => {
-      let resultData = res?.data || {};
-      this._currentChildAPIBody = {
-        ...this._currentChildAPIBody,
-        count: resultData?.ema_count
-      };
-
-      // ✅ Update _data directly!
-      this._data = resultData.ema_data || [];
-      this.handleResultTabData.emit(this._data);
-      this.handleSetLoading.emit(false);
-
-      this.cdr.detectChanges();
-      window.scrollTo(0, scrollTop);
-    },
-    error: () => {
-      this._currentChildAPIBody.filter_enable = false;
-      this.handleSetLoading.emit(false);
-      window.scrollTo(0, scrollTop);
+    if (value === '') {
+      delete this.emaApiBody.filters[filterKey];
+      this.setFilterLabel(filterKey, '');
+    } else {
+      this.emaApiBody.filters[filterKey] = value;
+      this.setFilterLabel(filterKey, name || '');
     }
-  });
-}
+
+    this._currentChildAPIBody = {
+      ...this.emaApiBody,
+      filters: { ...this.emaApiBody.filters }
+    };
+
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    this.mainSearchService.europeApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
+      next: (res) => {
+        let resultData = res?.data || {};
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          count: resultData?.ema_count
+        };
+
+        // ✅ Update _data directly!
+        this._data = resultData.ema_data || [];
+        this.handleResultTabData.emit(this._data);
+        this.handleSetLoading.emit(false);
+
+        this.cdr.detectChanges();
+        window.scrollTo(0, scrollTop);
+      },
+      error: () => {
+        this._currentChildAPIBody.filter_enable = false;
+        this.handleSetLoading.emit(false);
+        window.scrollTo(0, scrollTop);
+      }
+    });
+  }
 
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
       let defaultLabel = '';
       switch (config.key) {
-        case 'marketing_authorisation_holder': defaultLabel = 'Select Marketing Authorization Holder'; break;
+        case 'marketing_authorisation_holder': defaultLabel = 'Marketing Authorisation Holder'; break;
       }
       return { ...config, label: defaultLabel, dropdownState: false };
     });

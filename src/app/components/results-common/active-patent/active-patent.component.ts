@@ -86,7 +86,7 @@ export class ActivePatentComponent implements OnChanges {
 
     // console.log('[ngOnInit] Initial vetenaryusApiBody:', JSON.stringify(this.activePatentApiBody, null, 2));
 
-   // this.handleFetchFilters();
+    // this.handleFetchFilters();
   }
   onDataFetchRequest(payload: any) {
     this.isFilterApplied = !!(payload?.search || payload?.columns);
@@ -184,34 +184,34 @@ export class ActivePatentComponent implements OnChanges {
   }
 
   handleFetchFilters() {
-  this.filterLoading['patentFilters'] = true;
-  this.activePatentApiBody.filter_enable = true;
+    this.filterLoading['patentFilters'] = true;
+    this.activePatentApiBody.filter_enable = true;
 
-  this.mainSearchService.activePatentSearchSpecific(this.activePatentApiBody).subscribe({
-    next: (res: any) => {
-      const resultData = res?.data || {};
+    this.mainSearchService.activePatentSearchSpecific(this.activePatentApiBody).subscribe({
+      next: (res: any) => {
+        const resultData = res?.data || {};
 
-      const order = ['Latest First', 'Oldest First'];
-      const patentFilters = resultData?.patent_type?.map(item => ({
-        name: item.name,
-        value: item.value
-      })) || [];
+        const order = ['Latest First', 'Oldest First'];
+        const patentFilters = resultData?.patent_type?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
 
-      this.activePatentFilters = {
-        order,
-        patentFilters
-      };
+        this.activePatentFilters = {
+          order,
+          patentFilters
+        };
 
-      this.activePatentApiBody.filter_enable = false;
-      this.filterLoading['patentFilters'] = false;
-    },
-    error: (err) => {
-      console.error('[handleFetchFilters] API call failed:', err);
-      this.activePatentApiBody.filter_enable = false;
-      this.filterLoading['patentFilters'] = false;
-    }
-  });
-}
+        this.activePatentApiBody.filter_enable = false;
+        this.filterLoading['patentFilters'] = false;
+      },
+      error: (err) => {
+        console.error('[handleFetchFilters] API call failed:', err);
+        this.activePatentApiBody.filter_enable = false;
+        this.filterLoading['patentFilters'] = false;
+      }
+    });
+  }
 
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
@@ -225,6 +225,7 @@ export class ActivePatentComponent implements OnChanges {
       this.activePatentApiBody.filters[filterKey] = value;
       this.setFilterLabel(filterKey, name || '');
     }
+    this.isFilterApplied = Object.keys(this.activePatentApiBody.filters).length > 0;
 
     // Close dropdown
     this.filterConfigs = this.filterConfigs.map((item) => ({
@@ -290,28 +291,31 @@ export class ActivePatentComponent implements OnChanges {
     });
 
     this.activePatentApiBody.filters = {};
-    this._currentChildAPIBody = {
+    this.isFilterApplied = false;
+    const payload  = {
       ...this.activePatentApiBody,
-      filters: {}
+      filters: {},
+      page_no: 1,
+      start: 0,
     };
-
-    this.handleSetLoading.emit(true);
-    this.mainSearchService.activePatentSearchSpecific(this._currentChildAPIBody).subscribe({
-      next: (res) => {
-        this._currentChildAPIBody.count = res?.data?.recordsTotal;
-        this._data.rows = res?.data?.data || [];
-        this.count = this._currentChildAPIBody.count;
-        this.totalPages = Math.ceil(this.count / this.pageSize); // Recalculate pagination
-        this.searchByTable = false;
-        this.handleResultTabData.emit(this._data.rows);
-        this.handleSetLoading.emit(false);
-      },
-      error: (err) => {
-        console.error(err);
-        this._currentChildAPIBody.filter_enable = false;
-        this.handleSetLoading.emit(false);
-      }
-    });
+    this.onDataFetchRequest(payload);
+    // this.handleSetLoading.emit(true);
+    // this.mainSearchService.activePatentSearchSpecific(this._currentChildAPIBody).subscribe({
+    //   next: (res) => {
+    //     this._currentChildAPIBody.count = res?.data?.recordsTotal;
+    //     this._data.rows = res?.data?.data || [];
+    //     this.count = this._currentChildAPIBody.count;
+    //     this.totalPages = Math.ceil(this.count / this.pageSize); // Recalculate pagination
+    //     this.searchByTable = false;
+    //     this.handleResultTabData.emit(this._data.rows);
+    //     this.handleSetLoading.emit(false);
+    //   },
+    // error: (err) => {
+    //   console.error(err);
+    //   this._currentChildAPIBody.filter_enable = false;
+    //   this.handleSetLoading.emit(false);
+    // }
+    //});
 
     window.scrollTo(0, 0);
   }
