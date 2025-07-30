@@ -42,12 +42,16 @@
        </span>
       </div>
     </div>
-    <app-dmf-card [data]="dataItem"    [countryConfig]="countryConfigRaw" [currentChildAPIBody]="currentChildAPIBody" (handleChangeTabData)="handleResultTabData.emit($event)"></app-dmf-card>
+    <app-dmf-card [data]="dataItem"   [countryConfig]="countryConfigRaw" 
+     ></app-dmf-card>
   </ng-container>
 
- <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"
+ <app-child-paging
+    *ngIf="currentChildAPIBody?.count > 25"
+    [currentChildAPIBody]="_currentChildAPIBody"
     (handleChangeTabData)="handleResultTabData.emit($event)"
-    (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
+    (setLoading)="handleSetLoading.emit($event)"
+  ></app-child-paging>
 </ng-container>
 
 <ng-template #noData>

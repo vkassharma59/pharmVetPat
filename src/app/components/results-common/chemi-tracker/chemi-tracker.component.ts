@@ -69,21 +69,21 @@ export class ChemiTrackerComponent {
 
   }
   toggleCountryDropdown(event: MouseEvent) {
-  event.stopPropagation();
-  this.isCountryDropdownOpen = !this.isCountryDropdownOpen;
-  this.isOpen = false; // close other dropdown
-}
+    event.stopPropagation();
+    this.isCountryDropdownOpen = !this.isCountryDropdownOpen;
+    this.isOpen = false; // close other dropdown
+  }
 
-toggleFormulationDropdown(event: MouseEvent) {
-  event.stopPropagation();
-  this.isOpen = !this.isOpen;
-  this.isCountryDropdownOpen = false; // close other dropdown
-}
+  toggleFormulationDropdown(event: MouseEvent) {
+    event.stopPropagation();
+    this.isOpen = !this.isOpen;
+    this.isCountryDropdownOpen = false; // close other dropdown
+  }
   handleFetchFilters() {
     this.DMFAPIBody.filter_enable = true;
     this.mainSearchService.chemiTrackerSearchSpecific(this.DMFAPIBody).subscribe({
       next: (res) => {
-        console.log('🔍 Formulation Filter Values (dummy_6):', res?.data?.dummy_6); 
+        console.log('🔍 Formulation Filter Values (dummy_6):', res?.data?.dummy_6);
         this.countryFilters = res?.data?.country_of_company;
         this.foundationsFilters = res?.data?.dummy_6;
         this.DMFAPIBody.filter_enable = false;
@@ -98,21 +98,21 @@ toggleFormulationDropdown(event: MouseEvent) {
     this.isCountryDropdownOpen = !this.isCountryDropdownOpen;
   }
   @HostListener('document:click', ['$event'])
-handleClickOutside(event: MouseEvent): void {
-  const target = event.target as HTMLElement;
-  if (
-    this.countryDropdownRef &&
-    !this.countryDropdownRef.nativeElement.contains(target)
-  ) {
-    this.isCountryDropdownOpen = false;
+  handleClickOutside(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (
+      this.countryDropdownRef &&
+      !this.countryDropdownRef.nativeElement.contains(target)
+    ) {
+      this.isCountryDropdownOpen = false;
+    }
+    if (
+      this.formulationDropdownRef &&
+      !this.formulationDropdownRef.nativeElement.contains(target)
+    ) {
+      this.isOpen = false;
+    }
   }
-  if (
-    this.formulationDropdownRef &&
-    !this.formulationDropdownRef.nativeElement.contains(target)
-  ) {
-    this.isOpen = false;
-  }
-}
   dropdown() {
     this.isOpen = !this.isOpen;
   }

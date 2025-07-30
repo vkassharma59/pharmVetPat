@@ -261,104 +261,98 @@ export class EximComponent implements OnChanges {
       }
     });
   }
- handleSelectFilter(filterKey: string, value: any, name?: string): void {
-  console.log('🔍 Filter change detected:', { filterKey, value, name });
+  handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    console.log('🔍 Filter change detected:', { filterKey, value, name });
 
-  this.handleSetLoading.emit(true);
-  this.eximApiBody.filters = this.eximApiBody.filters || {};
+    this.handleSetLoading.emit(true);
+    this.eximApiBody.filters = this.eximApiBody.filters || {};
 
-  // ✅ Update filters
-  if (value === '') {
-    console.log(`🧹 Clearing filter for key: ${filterKey}`);
-    delete this.eximApiBody.filters[filterKey];
-    this.setFilterLabel(filterKey, '');
-  } else {
-    console.log(`✅ Applying filter - ${filterKey}:`, value);
-    this.eximApiBody.filters[filterKey] = value;
-    this.setFilterLabel(filterKey, name || '');
-  }
+    // ✅ Update filters
+    if (value === '') {
+      console.log(`🧹 Clearing filter for key: ${filterKey}`);
+      delete this.eximApiBody.filters[filterKey];
+      this.setFilterLabel(filterKey, '');
+    } else {
+      console.log(`✅ Applying filter - ${filterKey}:`, value);
+      this.eximApiBody.filters[filterKey] = value;
+      this.setFilterLabel(filterKey, name || '');
+    }
+    this.isFilterApplied = Object.keys(this.eximApiBody.filters).length > 0;
 
-  // ✅ Close all dropdowns
-  this.filterConfigs = this.filterConfigs.map(item => ({
-    ...item,
-    dropdownState: false
-  }));
+    // ✅ Close all dropdowns
+    this.filterConfigs = this.filterConfigs.map(item => ({
+      ...item,
+      dropdownState: false
+    }));
 
-  // ✅ Maintain updated columns (no duplicates)
-  const existingColumns = this._currentChildAPIBody?.columns || [];
-  const updatedColumns = existingColumns.filter((col: any) => col.data !== filterKey);
+    // ✅ Maintain updated columns (no duplicates)
+    const existingColumns = this._currentChildAPIBody?.columns || [];
+    const updatedColumns = existingColumns.filter((col: any) => col.data !== filterKey);
 
-  if (value) {
-    updatedColumns.push({
-      data: filterKey,
-      searchable: 'true',
-      search: {
-        value: value
+    if (value) {
+      updatedColumns.push({
+        data: filterKey,
+        searchable: 'true',
+        search: {
+          value: value
+        }
+      });
+    }
+
+    console.log('🧾 Updated Columns:', updatedColumns);
+
+    // ✅ Optional: Sorting (only if filterKey is 'order')
+    let order: any[] = [];
+    if (filterKey === 'order') {
+      const orderDataKey = value.split('_')[0];
+      const dir = value.endsWith('desc') ? 'desc' : 'asc';
+      order = [
+        {
+          column: 0, // Make dynamic if needed
+          dir: dir
+        }
+      ];
+      console.log('🔃 Order applied:', order);
+    }
+
+    // ✅ Prepare updated API body
+    this._currentChildAPIBody = {
+      ...this.eximApiBody,
+      filters: { ...this.eximApiBody.filters },
+      // columns: updatedColumns,
+      order: order,
+      draw: 1
+    };
+
+    console.log('📦 Final API Body:', this._currentChildAPIBody);
+
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    // ✅ Make API call
+    this.mainSearchService.EximDataSearchSpecific(this._currentChildAPIBody).subscribe({
+      next: (res) => {
+        const resultData = res?.data || {};
+        this.count = resultData?.recordsFiltered ?? resultData?.recordsTotal;
+        this.totalPages = Math.ceil(this.count / this.pageSize);
+        this._currentChildAPIBody.count = this.count;
+
+        this._data = {
+          ...this._data,
+          rows: resultData?.data || []
+        };
+        this.searchByTable = true;
+        this.handleResultTabData.emit(this._data.rows);
+        this.handleSetLoading.emit(false);
+        window.scrollTo(0, scrollTop);
+      },
+      error: (err) => {
+        console.error('❌ API Error:', err);
+        this._currentChildAPIBody.filter_enable = false;
+        this.handleSetLoading.emit(false);
+        window.scrollTo(0, scrollTop);
       }
     });
   }
-
-  console.log('🧾 Updated Columns:', updatedColumns);
-
-  // ✅ Optional: Sorting (only if filterKey is 'order')
-  let order: any[] = [];
-  if (filterKey === 'order') {
-    const orderDataKey = value.split('_')[0];
-    const dir = value.endsWith('desc') ? 'desc' : 'asc';
-    order = [
-      {
-        column: 0, // Make dynamic if needed
-        dir: dir
-      }
-    ];
-    console.log('🔃 Order applied:', order);
-  }
-
-  // ✅ Prepare updated API body
-  this._currentChildAPIBody = {
-    ...this.eximApiBody,
- filters: { ...this.eximApiBody.filters },
-   // columns: updatedColumns,
-    order: order,
-    draw: 1
-  };
-
-  console.log('📦 Final API Body:', this._currentChildAPIBody);
-
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-  // ✅ Make API call
-  this.mainSearchService.EximDataSearchSpecific(this._currentChildAPIBody).subscribe({
-    next: (res) => {
-      const resultData = res?.data || {};
-      console.log('📥 API Response:', resultData);
-
-      this.count = resultData?.recordsFiltered ?? resultData?.recordsTotal;
-      this.totalPages = Math.ceil(this.count / this.pageSize);
-      this._currentChildAPIBody.count = this.count;
-
-      this._data = {
-        ...this._data,
-        rows: resultData?.data || []
-      };
-
-      console.log('📊 Final Data Rows:', this._data.rows);
-
-      this.searchByTable = true;
-      this.handleResultTabData.emit(this._data.rows);
-      this.handleSetLoading.emit(false);
-      window.scrollTo(0, scrollTop);
-    },
-    error: (err) => {
-      console.error('❌ API Error:', err);
-      this._currentChildAPIBody.filter_enable = false;
-      this.handleSetLoading.emit(false);
-      window.scrollTo(0, scrollTop);
-    }
-  });
-}
-
-
 
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
@@ -375,28 +369,29 @@ export class EximComponent implements OnChanges {
     });
 
     this.eximApiBody.filters = {};
-    this._currentChildAPIBody = {
+    const payload = {
       ...this.eximApiBody,
       filters: {}
     };
+    this.onDataFetchRequest(payload); // This will fetch data and update pagination
 
-    this.handleSetLoading.emit(true);
-    this.mainSearchService.EximDataSearchSpecific(this._currentChildAPIBody).subscribe({
-      next: (res) => {
-        this._currentChildAPIBody.count = res?.data?.recordsTotal;
-        this._data.rows = res?.data?.data || [];
-        this.count = this._currentChildAPIBody.count;
-        this.totalPages = Math.ceil(this.count / this.pageSize); // Recalculate pagination
-        this.searchByTable = false;
-        this.handleResultTabData.emit(this._data.rows);
-        this.handleSetLoading.emit(false);
-      },
-      error: (err) => {
-        console.error(err);
-        this._currentChildAPIBody.filter_enable = false;
-        this.handleSetLoading.emit(false);
-      }
-    });
+    // this.handleSetLoading.emit(true);
+    // this.mainSearchService.EximDataSearchSpecific(this._currentChildAPIBody).subscribe({
+    //   next: (res) => {
+    //     this._currentChildAPIBody.count = res?.data?.recordsTotal;
+    //     this._data.rows = res?.data?.data || [];
+    //     this.count = this._currentChildAPIBody.count;
+    //     this.totalPages = Math.ceil(this.count / this.pageSize); // Recalculate pagination
+    //     this.searchByTable = false;
+    //     this.handleResultTabData.emit(this._data.rows);
+    //     this.handleSetLoading.emit(false);
+    //   },
+    //   error: (err) => {
+    //     console.error(err);
+    //     this._currentChildAPIBody.filter_enable = false;
+    //     this.handleSetLoading.emit(false);
+    //   }
+    // });
 
     window.scrollTo(0, 0);
   }

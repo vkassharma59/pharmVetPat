@@ -1039,12 +1039,12 @@ export class SearchResultsComponent {
           .subscribe({
             next: (result: any) => {
               // ✅ Log to verify
-               const data = result?.data?.orange_book_us_data || [];
+              const data = result?.data?.orange_book_us_data || [];
               const count = result?.data?.orange_book_us_count || 0;
 
               this.childApiBody[resultTabData.index][this.resultTabs.usApproval.name].count = count;
               this.allDataSets[resultTabData.index][this.resultTabs.usApproval.name] = data;
-             
+
               this.setLoadingState.emit(false);
               this.loadingService.setLoading(this.resultTabs.usApproval.name, resultTabData.index, false);
             },
@@ -1535,7 +1535,7 @@ export class SearchResultsComponent {
       order_by: '',
       index: resultTabData.index
     }
-
+    console.log('DMF Search Input:', this.childApiBody[resultTabData.index][this.resultTabs.dmf.name]);
     const tech_API = this.apiUrls.dmf.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
@@ -1546,6 +1546,7 @@ export class SearchResultsComponent {
           next: (result: any) => {
             this.childApiBody[resultTabData.index][this.resultTabs.dmf.name].count = result?.data?.tech_supplier_count;
             this.allDataSets[resultTabData.index][this.resultTabs.dmf.name] = result?.data?.tech_supplier_data;
+            console.log('DMF Search Result:', this.allDataSets[resultTabData.index][this.resultTabs.dmf.name]);
             this.setLoadingState.emit(false);
             this.loadingService.setLoading(this.resultTabs.dmf.name, resultTabData.index, false);
           },
@@ -1618,7 +1619,7 @@ export class SearchResultsComponent {
             this.setLoadingState.emit(false);
             this.CurrentAPIBody.currentTab = this.resultTabs.technicalRoutes.name;
             this.cdr.detectChanges();
-            
+
           },
           error: (e) => {
             console.error('❌ ROS API error:', e);
