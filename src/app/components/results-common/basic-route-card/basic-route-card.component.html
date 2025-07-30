@@ -493,7 +493,7 @@
                   (click)="handleCopy(_data?.DESCRIPTION, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <div class="overflow-x-hidden overflow-y-auto">
-                <p class="pt-2 text-justify">{{_data?.DESCRIPTION | slice:0:250}}</p>
+                <p class="pt-2 text-justify" [innerHTML]="convertNewlinesToBreaks(_data?.DESCRIPTION ,200)"></p>
               </div>
               <p class="para pt-2 cursor-pointer" *ngIf="_data?.DESCRIPTION?.length > 200" style="color:#2f45ff"
                 style="color:#2f45ff" (click)="OpenViewModal(_data?.DESCRIPTION, 'DESCRIPTION')">
@@ -509,10 +509,10 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.TRADE_NAMEPROPRIETARY_NAME, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="pt-2 text-justify max-h-28 overflow-y-auto">
-                {{ _data?.TRADE_NAMEPROPRIETARY_NAME }}
+              <p class="pt-2 text-justify "
+                 [innerHTML]="convertNewlinesToBreaks(_data?.TRADE_NAMEPROPRIETARY_NAME,100)" >
               </p>
-              <p class="para pt-2 cursor-pointer" style="color:#2f45ff" style="color:#2f45ff" (click)="
+              <p class="para pt-2 cursor-pointer" *ngIf="_data?.TRADE_NAMEPROPRIETARY_NAME?.length > 100" style="color:#2f45ff" style="color:#2f45ff" (click)="
                   OpenViewModal(
                     _data?.TRADE_NAMEPROPRIETARY_NAME,
                     'TRADE NAME /PROPRIETARY NAME'
@@ -531,8 +531,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.SUMMARY_PHYSICOCHEM_PROP_COMP, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="pt-2 text-justify max-h-28 overflow-y-auto">
-                {{ _data?.SUMMARY_PHYSICOCHEM_PROP_COMP }}
+              <p class="pt-2 text-justify "
+                [innerHTML]="convertNewlinesToBreaks(_data?.SUMMARY_PHYSICOCHEM_PROP_COMP,200)"> 
               </p>
               <p class="para pt-2 cursor-pointer" *ngIf="_data?.SUMMARY_PHYSICOCHEM_PROP_COMP?.length > 200"
                 style="color:#2f45ff" style="color:#2f45ff" (click)="
@@ -554,8 +554,8 @@
                   (click)="handleCopy(_data?.SUMMARY_PHYSICOCHEM_PROP_EXPERI, copyBtn)"><i
                     class="fas fa-copy"></i></span>
               </h1>
-              <p class="pt-2 text-justify max-h-28 overflow-y-auto">
-                {{ _data?.SUMMARY_PHYSICOCHEM_PROP_EXPERI }}
+              <p class="pt-2 text-justify "
+                [innerHTML]="convertNewlinesToBreaks(_data?.SUMMARY_PHYSICOCHEM_PROP_EXPERI,200)">
               </p>
               <p class="para pt-2 cursor-pointer" *ngIf="_data?.SUMMARY_PHYSICOCHEM_PROP_EXPERI?.length > 200"
                 style="color:#2f45ff" style="color:#2f45ff" (click)="
@@ -575,8 +575,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.HIST_DEV_LICN_COMM, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="pt-2 text-justify max-h-28 overflow-y-auto">
-                {{ _data?.HIST_DEV_LICN_COMM }}
+              <p class="pt-2 text-justify max-h-28 overflow-y-auto"
+                [innerHTML]="convertNewlinesToBreaks( _data?.HIST_DEV_LICN_COMM,200)">
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.HIST_DEV_LICN_COMM?.length > 200" style="color:#2f45ff"
                 style="color:#2f45ff" (click)="
@@ -596,8 +596,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.INVENT_INFO, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <div class="h-28 overflow-y-auto overflow-x-hidden">
-                <p class="pt-2 text-justify">{{ _data?.INVENT_INFO }}</p>
+              <div class="h-28  overflow-x-hidden">
+                <p class="pt-2 text-justify" [innerHTML]="convertNewlinesToBreaks(_data?.INVENT_INFO,200)" ></p>
               </div>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.INVENT_INFO?.length > 200" style="color:#2f45ff"
                 style="color:#2f45ff" style="color:#2f45ff" (click)="
@@ -616,7 +616,7 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.NOTES, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify">{{ _data?.NOTES }}</p>
+              <p class="text-justify" [innerHTML]="convertNewlinesToBreaks(_data?.NOTES ,200)"></p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.NOTES?.length > 200" style="color:#2f45ff"
                 style="color:#2f45ff" (click)="OpenViewModal(_data?.NOTES, 'NOTES')">
                 View More
@@ -632,8 +632,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.LITIGATION_OPP_IPR_MH_REEXAM, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify">
-                {{ _data?.LITIGATION_OPP_IPR_MH_REEXAM }}
+              <p class="text-justify"
+                [innerHTML]="convertNewlinesToBreaks(_data?.LITIGATION_OPP_IPR_MH_REEXAM,200)">
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.LITIGATION_OPP_IPR_MH_REEXAM?.length > 200"
                 style="color:#2f45ff" style="color:#2f45ff" (click)="
@@ -656,8 +656,8 @@
                   (click)="handleCopy(_data?.EXCLUSIVITY_NEW_CHEMICAL_ENTITY, copyBtn)"><i
                     class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify">
-                {{ _data?.EXCLUSIVITY_NEW_CHEMICAL_ENTITY }}
+              <p class="text-justify"
+                [innerHTML]="convertNewlinesToBreaks(_data?.EXCLUSIVITY_NEW_CHEMICAL_ENTITY,200)">
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.EXCLUSIVITY_NEW_CHEMICAL_ENTITY?.length > 200"
                 style="color:#2f45ff" style="color:#2f45ff" (click)="
@@ -679,8 +679,9 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.ORPHAN_DRUG_EXCLUSIVITY_ODE, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify">
-                {{ _data?.ORPHAN_DRUG_EXCLUSIVITY_ODE }}
+              <p class="text-justify"
+                [innerHTML]="convertNewlinesToBreaks(_data?.ORPHAN_DRUG_EXCLUSIVITY_ODE,200)">
+                
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.ORPHAN_DRUG_EXCLUSIVITY_ODE?.length > 200"
                 style="color:#2f45ff" style="color:#2f45ff" (click)="

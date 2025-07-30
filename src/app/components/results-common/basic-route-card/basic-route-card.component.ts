@@ -53,7 +53,7 @@ export class BasicRouteCardComponent {
           this.basic_column[column_list[this.resultTabs.productInfo.name][i].value] =
             column_list[this.resultTabs.productInfo.name][i].name;
         }
-          this.processSynonyms();
+        this.processSynonyms();
       }
     }
   }
@@ -66,6 +66,12 @@ export class BasicRouteCardComponent {
     private MainSearchService: MainSearchService,
     private sanitizer: DomSanitizer
   ) { }
+  convertNewlinesToBreaks(text: string, sliceLength?: number): string {
+  if (!text) return '';
+  const slicedText = sliceLength ? text.slice(0, sliceLength) : text;
+  return slicedText.replace(/(?:\r\n|\r|\n)/g, '<br>');
+}
+
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;

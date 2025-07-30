@@ -74,7 +74,7 @@ export class NonPatentComponent implements OnChanges {
     console.log('scientificDocs received data:', this._data);
     this.handleResultTabData.emit(this._data);
   }
- 
+
   onDataFetchRequest(payload: any) {
     this.isFilterApplied = !!(payload?.search || payload?.columns);
     // Remove stale filters from _currentChildAPIBody if they are not in payload
@@ -213,6 +213,7 @@ export class NonPatentComponent implements OnChanges {
       this.nonPatentApiBody.filters[filterKey] = value;
       this.setFilterLabel(filterKey, name || '');
     }
+    this.isFilterApplied = Object.keys(this.nonPatentApiBody.filters).length > 0;
 
     // Close dropdown
     this.filterConfigs = this.filterConfigs.map((item) => ({
@@ -237,8 +238,7 @@ export class NonPatentComponent implements OnChanges {
       ...this.nonPatentApiBody,
       filters: { ...this.nonPatentApiBody.filters },
       // columns: updatedColumns,
-      draw: 1, start: 0,
-      pageno: 1,
+      draw: 1, 
     };
     console.log('Updated _currentChildAPIBody:', this._currentChildAPIBody);
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -279,29 +279,32 @@ export class NonPatentComponent implements OnChanges {
     });
 
     this.nonPatentApiBody.filters = {};
-    this._currentChildAPIBody = {
+     this.isFilterApplied = false;
+    const payload = {
       ...this.nonPatentApiBody,
-      filters: {}
+      filters: {},
+      page_no: 1,
+      start: 0,
     };
 
-    this.handleSetLoading.emit(true);
-    this.mainSearchService.NonPatentSearchSpecific(this._currentChildAPIBody).subscribe({
-      next: (res) => {
-        this._currentChildAPIBody.count = res?.data?.recordsTotal;
-        this._data.rows = res?.data?.data || [];
-        this.count = this._currentChildAPIBody.count;
-        this.totalPages = Math.ceil(this.count / this.pageSize); // Recalculate pagination
-        this.searchByTable = false;
-        this.handleResultTabData.emit(this._data.rows);
-        this.handleSetLoading.emit(false);
-      },
-      error: (err) => {
-        console.error(err);
-        this._currentChildAPIBody.filter_enable = false;
-        this.handleSetLoading.emit(false);
-      }
-    });
-
+    // this.handleSetLoading.emit(true);
+    // this.mainSearchService.NonPatentSearchSpecific(this._currentChildAPIBody).subscribe({
+    //   next: (res) => {
+    //     this._currentChildAPIBody.count = res?.data?.recordsTotal;
+    //     this._data.rows = res?.data?.data || [];
+    //     this.count = this._currentChildAPIBody.count;
+    //     this.totalPages = Math.ceil(this.count / this.pageSize); // Recalculate pagination
+    //     this.searchByTable = false;
+    //     this.handleResultTabData.emit(this._data.rows);
+    //     this.handleSetLoading.emit(false);
+    //   },
+    //   error: (err) => {
+    //     console.error(err);
+    //     this._currentChildAPIBody.filter_enable = false;
+    //     this.handleSetLoading.emit(false);
+    //   }
+    // });
+    this.onDataFetchRequest(payload);
     window.scrollTo(0, 0);
   }
 

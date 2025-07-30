@@ -84,6 +84,7 @@ export class ChildPagningTableComponent implements OnChanges {
   previousAPIBody: any = null; // Add this to your component to track previous request
 
   ngOnChanges(changes: SimpleChanges): void {
+ console.log('isFilterApplied:', this.isFilterApplied);
     const currentBody = this.currentChildAPIBody;
     const hasBodyChanged = JSON.stringify(currentBody) !== JSON.stringify(this.previousAPIBody);
 

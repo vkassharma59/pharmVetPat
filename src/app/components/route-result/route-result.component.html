@@ -72,9 +72,11 @@
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-technical-route>
     </ng-container>
     <ng-container *ngSwitchCase="resultTabWithKeys.dmf.name">
-      <app-dmf [data]="_dataItem.dmf" [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.dmf.name]"
-        [index]="index" [tabName]="resultTabWithKeys.dmf.name" (handleSetLoading)="handleSetLoading.emit($event)"
-        (handleResultTabData)="handleChildPaginationSearch.emit($event)"></app-dmf>
+      <app-dmf  [data]="_dataItem.dmf"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.dmf.name]" [index]="index"
+        [tabName]="resultTabWithKeys.dmf.name" (handleSetLoading)="handleSetLoading.emit($event)"
+        (handleResultTabData)="handleChildPaginationSearch.emit($event)"
+        ></app-dmf>
     </ng-container>
     <ng-container *ngSwitchCase="resultTabWithKeys.chemicalDirectory.name">
       <chemical-directory [data]="_dataItem.chemicalDirectory"
