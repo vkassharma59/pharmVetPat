@@ -41,14 +41,14 @@ export class DmfComponent {
     },
     {
       key: 'stock_status',
-      label: 'Select Stock Status',
+      label: 'DMF TYPE ',
       dataKey: 'stockstatusFilters',
       filterType: 'stock_status',
       dropdownState: false
     },
     {
       key: 'dmf_holder',
-      label: 'Select DMF Holder',
+      label: 'DMF Holder',
       dataKey: 'dmfholderFilters',
       filterType: 'dmf_holder',
       dropdownState: false
@@ -177,19 +177,19 @@ export class DmfComponent {
       dropdownState: false
     }));
     // Log constructed filter object
-    console.log('📦 Final Filters:', this.dmfApiBody.filters);
+    
     this._currentChildAPIBody = {
       ...this.dmfApiBody,
       filters: { ...this.dmfApiBody.filters }
     };
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    console.log('📤 Sending API Request:', this._currentChildAPIBody);
+    
 
     this.mainSearchService.dmfSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         const resultData = res?.data || {};
-        console.log('✅ API Response Received:', resultData);
+       
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
           count: resultData?.tech_supplier_count
@@ -271,4 +271,5 @@ export class DmfComponent {
       });
     }
   }
+  
 }
