@@ -32,16 +32,16 @@ export class ChildPagingComponent implements OnInit {
     console.log("childodyApi000000000000", value)
     this._currentChildAPIBody = value;
     this.PageArray = [];
-  
+
     // ✅ Defensive: use 0 if invalid
     const incomingCount = Number(value?.count);
     this.count = !isNaN(incomingCount) && incomingCount > 0 ? incomingCount : 0;
-  
+
     const pageCount = Math.ceil(this.count / 25);
     for (let i = 1; i <= Math.min(pageCount, 5); i++) {
       this.PageArray.push(i);
     }
-  }  
+  }
   constructor(
     private serviceChildPaginationService: ServiceChildPaginationService, private cdr: ChangeDetectorRef,
     private mainSearchService: MainSearchService
@@ -127,12 +127,13 @@ export class ChildPagingComponent implements OnInit {
     this.setLoading.emit(true);
     this._currentChildAPIBody.page_no = page;
     this.MainPageNo = page;
-
+    console.log("Current Child API Body:", this._currentChildAPIBody);
     this.serviceChildPaginationService.getNextChildPaginationData(
       this._currentChildAPIBody
     ).subscribe({
       next: (res) => {
         this.handleChangeData();
+        console.log("Child Paging Data:", res?.data);
         this.handleChangeTabData.emit(res?.data);
         this.setLoading.emit(false);
       },
@@ -151,19 +152,19 @@ export class ChildPagingComponent implements OnInit {
 
   handleChangeData() {
     this.PageArray = [];
-  
+
     const validCount = Number(this._currentChildAPIBody?.count);
     this.count = !isNaN(validCount) && validCount > 0 ? validCount : 0;
-  
+
     const pageCount = Math.ceil(this.count / 25);
     const currentPageindex = this._currentChildAPIBody?.page_no || 1;
     const pageSetStartIndex = (currentPageindex - 1) - ((currentPageindex - 1) % 5) + 1;
-  
+
     for (let i = pageSetStartIndex; i <= Math.min(pageCount, pageSetStartIndex + 4); i++) {
       this.PageArray.push(i);
     }
   }
-  
+
   ngOnInit(): void {
     const priv = JSON.parse(localStorage.getItem('priviledge_json') || '{}');
     const reportLimit = priv['pharmvetpat-mongodb']?.PageLimit || 10;
