@@ -30,7 +30,6 @@ export class DmfCardComponent implements OnDestroy{
   constructor(private dialog: MatDialog,
     private utilityService: UtilityService,
     private mainSearchService: MainSearchService,
-
   ) {
 
   }
@@ -40,7 +39,6 @@ export class DmfCardComponent implements OnDestroy{
       { key: 'USA', total: 78 },
       { key: 'Europe', total: 45 },
       { key: 'Japan', total: 3 },
-
     ]
   };
   @Input() selectedCountry: any;
@@ -56,7 +54,6 @@ export class DmfCardComponent implements OnDestroy{
       this.localCount = DmfCardComponent.apiCallCount;
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
-
       if (column_list[this.resultTabs.dmf?.name]?.length > 0) {
         for (let i = 0; i < column_list[this.resultTabs.dmf.name].length; i++) {
           const col = column_list[this.resultTabs.dmf.name][i];
@@ -76,15 +73,13 @@ export class DmfCardComponent implements OnDestroy{
 
   @Input() countryList: any[] = []; // ← This replaces processCountryData
 
-  // ngOnInit() {
-  //   if (DmfCardComponent.apiCallCount === 0) {
-  //     DmfCardComponent.apiCallCount = 0;
-  //   }
-  // }
+  ngOnInit() {
+    console.log('📥 ---------------sdjisgjishjd---------', this._data);
+  }
 
-  //  ngOnChanges(): void {
-  //   //  console.log('📥 ------------------------', this._data);
-  // }
+   ngOnChanges(): void {
+      console.log('📥 ------------------------', this._data);
+  }
   getDmfPrefix(country: string): string {
     const upperKey = (country || '').toUpperCase();
     const prefixMap: { [key: string]: string } = {

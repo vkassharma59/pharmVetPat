@@ -275,12 +275,7 @@ export class MainSearchService {
       .post(this.apiUrls.dmf.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
-  getdmfColumnList(): Observable<any> {
-    return this.http
-      .get(this.apiUrls.dmf.columnList, { headers: this.headers })
-      .pipe(catchError(this.handleError));
-  }
-
+ 
   private handleError(error: HttpErrorResponse): Observable<never> {
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred:', error.error.message);
