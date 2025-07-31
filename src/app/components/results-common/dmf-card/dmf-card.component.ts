@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { Auth_operations } from '../../../Utils/SetToken';
@@ -12,7 +12,7 @@ import { MainSearchService } from '../../../services/main-search/main-search.ser
   templateUrl: './dmf-card.component.html',
   styleUrl: './dmf-card.component.css'
 })
-export class DmfCardComponent {
+export class DmfCardComponent implements OnDestroy{
   _data: any = [];
   noMatchingData: boolean = false;
   MoreInfo: boolean = false;
@@ -21,7 +21,6 @@ export class DmfCardComponent {
   resultTabs: any = {};
   columns: any[] = [];
   dmfApiBody: any;
-  _currentChildAPIBody: any;
   filteredCountries: any[] = [];
   @Input() countryConfig: any[] = [];
   static apiCallCount: number = 0;
@@ -66,23 +65,25 @@ export class DmfCardComponent {
       this._data = value;
     }
   }
-  @Input()
-  get currentChildAPIBody() {
-    return this._currentChildAPIBody;
-  }
-  set currentChildAPIBody(value: any) {
-    this._currentChildAPIBody = value;
-   }
+  // @Input()
+  // get currentChildAPIBody() {
+  //   return this._currentChildAPIBody;
+  // }
+  // set currentChildAPIBody(value: any) {
+  //   this._currentChildAPIBody = value;
+  //  }
 
   @Input() countryList: any[] = []; // ← This replaces processCountryData
 
-  ngOnInit() {
-    //this.processCountryData();
-    if (DmfCardComponent.apiCallCount === 0) {
-      DmfCardComponent.apiCallCount = 0;
-    }
-  }
+  // ngOnInit() {
+  //   if (DmfCardComponent.apiCallCount === 0) {
+  //     DmfCardComponent.apiCallCount = 0;
+  //   }
+  // }
 
+  //  ngOnChanges(): void {
+  //   //  console.log('📥 ------------------------', this._data);
+  // }
   getDmfPrefix(country: string): string {
     const upperKey = (country || '').toUpperCase();
     const prefixMap: { [key: string]: string } = {
@@ -98,7 +99,10 @@ export class DmfCardComponent {
   ngOnDestroy() {
     DmfCardComponent.apiCallCount = 0;
   }
-
+ showFull = false;
+  toggleView() {
+    this.showFull = !this.showFull;
+  }
 
   toggleMoreInfo(): void {
     this.MoreInfo = !this.MoreInfo;

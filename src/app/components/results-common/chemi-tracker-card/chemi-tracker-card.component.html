@@ -1,6 +1,13 @@
 <div class="card-header text-white">
-    <div style="padding-top: 7px; display:flex;">{{ localCount }}. {{resultTabs?.chemiTracker?.label}} >> <span
-            *ngIf="_data?.chemical_name">{{_data?.chemical_name}}</span></div>
+    <div style="padding-top: 7px; display:flex;">{{ localCount }}. {{resultTabs?.chemiTracker?.label}} >> <span >
+    {{showFull ? (_data?.chemical_name || '' ) : (_data?.chemical_name | slice:0:200) }} 
+            <ng-container
+            *ngIf="_data?.chemical_name?.length > 200">
+            <span (click)="toggleView()" style="color: black; cursor: pointer;border-bottom: 1px dotted;">
+                {{ showFull ? '... View Less' : '...View More' }}
+            </span>
+            </ng-container>
+        </span></div>
 </div>
 <div class="card-body" style="background-color: #F5FBFF;" *ngIf="!isEmptyObject(_data); else noData">
     <div class="row">
@@ -12,7 +19,7 @@
                             <div *ngIf="data?.chemical_structure && getColumnName('chemical_structure')"
                                 class="col-lg-2 col-md-8 col-sm-12">
                                 <img *ngIf="data?.chemical_structure" class="aspect-auto" [src]="getChemicalImage()"
-                         alt="Chemical Structure" style="
+                                    alt="Chemical Structure" style="
                           height: 270px;
                           width: 470px;
                           padding: 20px 20px;
@@ -193,14 +200,10 @@
                                         class="col-lg-3 col-md-6 col-sm-12">
                                         <div class="ps-3">
                                             <h1 class="font-bold" style="color:#312e81;">
-                                                {{ getColumnName("company_logo") }}:
-                                                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
-                                                    (click)="handleCopy(_data?.company_logo, copyBtn)"><i
-                                                        class="fas fa-copy"></i></span>
+                                                {{ getColumnName("company_logo") }}   
                                             </h1>
                                             <div *ngIf="data?.company_logo">
-                                                <img [src]="getCompanyLogo(data)"
-                                                    alt="error" class="object-contain"
+                                                <img [src]="getCompanyLogo(data)" alt="error" class="object-contain"
                                                     style="height: 75px" />
                                             </div>
                                         </div>
@@ -233,8 +236,7 @@
                                             </p>
                                         </div>
                                         <div *ngIf="data?.country_of_company" class="">
-                                            <img [src]="getCountryUrl(data)" 
-                                            class="ps-3" alt="error" style="
+                                            <img [src]="getCountryUrl(data)" class="ps-3" alt="error" style="
                                     width: 100px;
                                     object-fit: contain;
                                     margin-bottom: 12px;
@@ -476,8 +478,7 @@
     </div>
     <div class="flex justify-center">
         <button (click)="toggleMoreInfo()" class="py-2 px-3 mt-5 btnchemical rounded-md btn"
-        style="background:linear-gradient(to right, #efb303,#fff087); color: black;"
-        >
+            style="background:linear-gradient(to right, #efb303,#fff087); color: black;">
             {{
             MoreInfo
             ? "Less Information"
@@ -654,7 +655,7 @@
                     </div>
                     <div *ngIf="data?.quantity && getColumnName('quantity')"
                         class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
-                        <h1 class="p-2 font-bold" style="color:#312e81;" >{{ getColumnName("quantity") }}:
+                        <h1 class="p-2 font-bold" style="color:#312e81;">{{ getColumnName("quantity") }}:
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                                 (click)="handleCopy(_data?.quantity, copyBtn)"><i class="fas fa-copy"></i></span>
                         </h1>

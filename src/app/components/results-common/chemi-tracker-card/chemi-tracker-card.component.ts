@@ -25,18 +25,21 @@ export class ChemiTrackerCardComponent implements OnDestroy {
 
   constructor(private dialog: MatDialog, private utilityService: UtilityService) {
     this.localCount = ++ChemiTrackerCardComponent.counter; // ✅ Assign unique count per instance
-    console.log(`Instance Created: ${this.localCount}, Total Count: ${ChemiTrackerCardComponent.counter}`);
   }
 
   ngOnDestroy() {
     ChemiTrackerCardComponent.counter = 0; // ✅ Reset counter on component destruction
   }
+  showFull = false;
+  toggleView() {
+    this.showFull = !this.showFull;
+  }
 
   @Input()
-  get data() {  
-    return this._data;  
+  get data() {
+    return this._data;
   }
-  set data(value) {    
+  set data(value) {
     if (value && Object.keys(value).length > 0) {
       this._data = value;
       this.resultTabs = this.utilityService.getAllTabsName();
@@ -53,7 +56,7 @@ export class ChemiTrackerCardComponent implements OnDestroy {
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
-  
+
   toggleMoreInfo() {
     this.MoreInfo = !this.MoreInfo;
   }
@@ -73,7 +76,7 @@ export class ChemiTrackerCardComponent implements OnDestroy {
   getCountryUrl(value: any): string {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country_of_company}.png`;
   }
-  
+
   getCompanyWebsite(value: string) {
     return `https://${value}`;
   }
@@ -89,19 +92,19 @@ export class ChemiTrackerCardComponent implements OnDestroy {
 
     document.body.removeChild(textArea);
 
-  // Step 2: Find the icon inside the clicked span and swap classes
-  const icon = el.querySelector('i');
+    // Step 2: Find the icon inside the clicked span and swap classes
+    const icon = el.querySelector('i');
 
-  if (icon?.classList.contains('fa-copy')) {
-    icon.classList.remove('fa-copy');
-    icon.classList.add('fa-check');
+    if (icon?.classList.contains('fa-copy')) {
+      icon.classList.remove('fa-copy');
+      icon.classList.add('fa-check');
 
-    // Step 3: Revert it back after 1.5 seconds
-    setTimeout(() => {
-      icon.classList.remove('fa-check');
-      icon.classList.add('fa-copy');
-    }, 1500);
-  }
+      // Step 3: Revert it back after 1.5 seconds
+      setTimeout(() => {
+        icon.classList.remove('fa-check');
+        icon.classList.add('fa-copy');
+      }, 1500);
+    }
   }
 
   getChemicalImage(): string {
@@ -111,7 +114,7 @@ export class ChemiTrackerCardComponent implements OnDestroy {
 
   openImageModal(imageUrl: string): void {
     this.dialog.open(ImageModalComponent, {
-       width: 'auto',
+      width: 'auto',
       height: 'auto',
       panelClass: 'full-screen-modal',
       data: { dataImage: imageUrl },

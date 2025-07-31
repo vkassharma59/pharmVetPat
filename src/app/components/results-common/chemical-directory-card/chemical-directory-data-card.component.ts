@@ -38,7 +38,7 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
   localCount: number;
   showAppIntermediates: boolean = false;
   _currentChildAPIBody: any;
- searchThrough: string = '';
+  searchThrough: string = '';
   @Input() CurrentAPIBody: any;
   @Input() index: any;
   @Output() ROSChange: EventEmitter<any> = new EventEmitter<any>();
@@ -59,12 +59,12 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.localCount = ++ChemicalDirectoryDataCardComponent.counter; // ✅ Assign unique count to each instance
-     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
-     this.showAppIntermediates = (this.searchThrough === searchTypes.chemicalStructure);
+    this.searchThrough = Auth_operations.getActiveformValues().activeForm;
+    this.showAppIntermediates = (this.searchThrough === searchTypes.chemicalStructure);
   }
 
   ngOnInit() {
-    console.log("searchThrough",this.searchThrough)
+    console.log("searchThrough", this.searchThrough)
     if (ChemicalDirectoryDataCardComponent.counter === 0) {
       ChemicalDirectoryDataCardComponent.counter = 0;
     }
@@ -133,13 +133,13 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
     } else {
       this.ROSChange.emit('ROS_filter_' + new Date().getTime());
     }
-   
+
     this.sharedROS.setROSCount({
       agrochemical: this._data?.special_count?.agroTotal ?? 0,
       pharmaceutical: this._data?.special_count?.pharmaTotal ?? 0,
       index: this.index
     });
-    
+
     if (this.resultTabs?.technicalRoutes?.name) {
       console.log("📤 Emitting tab change to:", this.resultTabs.technicalRoutes.name);
       this.utilityService.setActiveTab(this.resultTabs.technicalRoutes.name);
@@ -153,6 +153,10 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
 
   getImageUrl(): string {
     return `${environment.baseUrl}${environment.domainNameChemicalDirectoryStructure}${this._data?.chemical_structure}`;
+  }
+  showFull = false;
+  toggleView() {
+    this.showFull = !this.showFull;
   }
 
   toggleMoreInfo() {

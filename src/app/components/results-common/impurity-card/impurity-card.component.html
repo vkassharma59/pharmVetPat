@@ -1,6 +1,14 @@
 <div class="card-header text-white" >
-  <div style="padding-top:7px; justify-content:space-between; display:flex;">
-  {{ apiCallInstance }}. {{resultTabs?.impurity?.label}} >> {{_data?.name}}
+  <div style="padding-top:7px;display:flex;">
+  {{ apiCallInstance }}. {{resultTabs?.impurity?.label}} >> 
+  <span>
+     {{showFull ? (_data?.name || '' ) : (_data?.name | slice:0:200) }} 
+    <ng-container *ngIf="_data?.name?.length > 200">
+      <span (click)="toggleView()" style="color: black; cursor: pointer; border-bottom: 1px dotted;">
+        {{ showFull ? '... View Less' : '... View More' }}
+      </span>
+      </ng-container>
+    </span>
   </div>
 </div>
 <div class="card-body" style="background-color: #F5FBFF;" *ngIf="!isEmptyObject(_data); else noData">

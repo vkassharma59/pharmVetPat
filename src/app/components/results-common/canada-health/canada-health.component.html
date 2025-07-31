@@ -1,8 +1,16 @@
 <!-- <pre>{{_data | json}}</pre>  -->
 
 <div class="card-header text-white ">
-    <div style="padding-top:7px; justify-content:space-between; display:flex;">
+    <div style="padding-top:7px;  display:flex;">
         {{ localCount }}. {{resultTabs?.canadaApproval?.label}}>> {{_data?.product_name}}
+        <span>
+     {{showFull ? (_data?.product_name || '' ) : (_data?.product_name | slice:0:200) }} 
+    <ng-container *ngIf="_data?.product_name?.length > 200">
+      <span (click)="toggleView()" style="color: black; cursor: pointer; border-bottom: 1px dotted;">
+        {{ showFull ? '... View Less' : '... View More' }}
+      </span>
+      </ng-container>
+    </span>
     </div>
 </div>
 
@@ -115,8 +123,6 @@
     <div class="row">
 
         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-
-
             <div *ngIf="_data?.green_book_registration_number && getColumnName('green_book_registration_number')">
                 <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("green_book_registration_number") }}
                     <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn

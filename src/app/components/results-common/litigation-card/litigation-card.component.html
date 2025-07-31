@@ -1,8 +1,18 @@
 <!-- <pre>{{_data | json}}</pre>  -->
 
 <div class="card-header text-white ">
-    <div style="padding-top:7px; justify-content:space-between; display:flex;">
-        {{ localCount }}. {{resultTabs?.litigation?.label}} >> {{_data?.active_ingredient_biologics_combination}}</div>
+    <div style="padding-top:7px;  display:flex;">
+        {{ localCount }}. {{resultTabs?.litigation?.label}} >>
+        <span>
+            {{showFull ? (_data?.active_ingredient_biologics_combination || '' ) :
+            (_data?.active_ingredient_biologics_combination | slice:0:200) }}
+            <ng-container *ngIf="_data?.active_ingredient_biologics_combination?.length > 200">
+                <span (click)="toggleView()" style="color: black; cursor: pointer; border-bottom: 1px dotted;">
+                    {{ showFull ? '... View Less' : '... View More' }}
+                </span>
+            </ng-container>
+        </span>
+    </div>
 </div>
 <div class="card-body" style="background-color: #f7fcf2;">
     <div class="pb-3 mb-3 px-2 rounded-lg">
@@ -26,7 +36,7 @@
                         {{ _data?.plaintiffs }}
                     </p>
                 </div>
-                
+
                 <div *ngIf="_data?.gbrn && getColumnName('gbrn')">
                     <h1 class="font-bold">
                         {{ getColumnName("gbrn") }}
@@ -40,7 +50,7 @@
                     </p>
                 </div>
 
-                <img *ngIf="_data?.plaintiff_logo" class="plaintiff_logo" [src]="getImageUrl1(_data)"   alt="error"
+                <img *ngIf="_data?.plaintiff_logo" class="plaintiff_logo" [src]="getImageUrl1(_data)" alt="error"
                     style="height: 200px; width: 200px; padding: 10px;padding-left: 0;object-fit: contain;">
 
             </div>
@@ -74,13 +84,13 @@
                 </div>
 
                 <div>
-                    <img *ngIf="_data?.defendant_logo" class="defendant_logo" [src]="getImageUrl(_data)" alt="error" 
+                    <img *ngIf="_data?.defendant_logo" class="defendant_logo" [src]="getImageUrl(_data)" alt="error"
                         style="height: 150px; width: 100%; padding: 10px;padding-left: 0; object-fit: contain;">
 
                 </div>
                 <br>
 
-                
+
 
             </div>
 
@@ -114,27 +124,20 @@
                 </div>
 
             </div>
-            
+
             <!-- Column 4 -->
             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
 
                 <img src="assets/components/litigation-tab.jpg" class="image1"
                     style="height: 120px; width: 300px; padding: 10px;">
-
-               
-
-
             </div>
         </div>
     </div>
 </div>
 
 <div class="flex justify-center" style="background-color: #f7fcf2;">
-    <button (click)="toggleMoreInfo()" 
-    class="py-2 px-3 mt-3 mb-3 btnchemical rounded-md btn"
-    style="background:linear-gradient(to right, #efb303,#fff087); color: black;"
-
-        >
+    <button (click)="toggleMoreInfo()" class="py-2 px-3 mt-3 mb-3 btnchemical rounded-md btn"
+        style="background:linear-gradient(to right, #efb303,#fff087); color: black;">
         {{
         MoreInfo
         ? "Less Information"

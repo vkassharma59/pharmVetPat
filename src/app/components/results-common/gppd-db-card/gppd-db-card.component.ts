@@ -36,6 +36,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
 
   @Output() dataFetchRequest = new EventEmitter<any>();
   @Input() columnDefs: any[] = [];
+  
   @Input() rowData: any[] = [];
   data?: {
     data?: any[]; // Replace `any` with your actual data type
@@ -64,6 +65,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
+
   @ViewChildren('filterInput') filterInputs!: QueryList<ElementRef<HTMLInputElement>>;
 
   @Input()
@@ -161,6 +163,10 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     }
     this.fetchData();
   }
+  getCompanyLogo(value: any): string {
+    return `${environment.baseUrl}${environment.domainNameCompanyLogo}${value?.company_logo}`;
+  }
+
   getCountryUrl(value: any) {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country}.png`;
   }

@@ -80,7 +80,10 @@ export class ImpurityCardComponent implements OnInit, OnDestroy {
   getPubchemId(value: any) {
     return `https://pubchem.ncbi.nlm.nih.gov/#query=${value}`;
   }
-
+ showFull = false;
+  toggleView() {
+    this.showFull = !this.showFull;
+  }
   handleCopy(text: string, el: HTMLElement) {
     const textArea = document.createElement('textarea');
     textArea.value = text;

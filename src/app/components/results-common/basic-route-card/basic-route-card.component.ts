@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -8,6 +8,7 @@ import { ChemDiscriptionModelComponent } from '../../../commons/chem-discription
 import { ChemDiscriptionViewModelComponent } from '../../../commons/chem-discription-viewmodel/chem-discription-viewmodel.component';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 @Component({
   selector: 'chem-product-info-card',
   standalone: true,
@@ -31,6 +32,9 @@ export class BasicRouteCardComponent {
   basic_column: any = {};
   _data: any = [];
   routesList: any = {};
+  showViewMore: boolean = false;
+  @ViewChild('synonymBlock') synonymBlock!: ElementRef;
+  isOverflowing = false;
   @Input()
   get data() {
     return this._data;
@@ -59,8 +63,15 @@ export class BasicRouteCardComponent {
   constructor(
     private dialog: MatDialog,
     private utilityService: UtilityService,
-    private MainSearchService: MainSearchService
+    private MainSearchService: MainSearchService,
+    private sanitizer: DomSanitizer
   ) { }
+  convertNewlinesToBreaks(text: string, sliceLength?: number): string {
+  if (!text) return '';
+  const slicedText = sliceLength ? text.slice(0, sliceLength) : text;
+  return slicedText.replace(/(?:\r\n|\r|\n)/g, '<br>');
+}
+
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
@@ -77,10 +88,39 @@ export class BasicRouteCardComponent {
       BasicRouteCardComponent.apiCallCount = 0;
     }
   }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.checkOverflow();
+    });
+  }
+
+  checkOverflow() {
+    const el = this.synonymBlock?.nativeElement;
+    if (el) {
+      this.isOverflowing = el.scrollHeight > el.clientHeight;
+    }
+  }
 
   ngOnDestroy() {
     // Reset counter when navigating away from the component
     BasicRouteCardComponent.apiCallCount = 0;
+  }
+  formattedNotes: SafeHtml = '';
+
+  openFormattedView(content: any, title: string): void {
+    const formatted = this.sanitizer.bypassSecurityTrustHtml(
+      content.replace(/\n/g, '<br>')
+    );
+
+    this.dialog.open(ChemDiscriptionViewModelComponent, {
+      width: 'calc(100vw - 50px)',
+      height: 'auto',
+      panelClass: 'full-screen-modal',
+      data: {
+        dataRecord: formatted,
+        title: title,
+      },
+    });
   }
 
   getInventorLogo(data: any) {
@@ -143,7 +183,19 @@ export class BasicRouteCardComponent {
       }, 1500);
     }
   }
-
+  processSynonyms() {
+    if (this.data?.SYNONYMSCOMMON_NAME) {
+      const synonymList = this.data.SYNONYMSCOMMON_NAME.split('\n').map(
+        (synonym: string) => synonym.trim()
+      );
+      this.processedSynonyms = synonymList.map((synonym: string) => {
+        const match = synonym.match(/^(\d+)\.\s*(.*)$/);
+        return match
+          ? { number: match[1], text: match[2] }
+          : { number: '', text: synonym };
+      });
+    }
+  }
   getColumnName(value: any) {
     return this.basic_column[value];
   }
@@ -169,20 +221,6 @@ export class BasicRouteCardComponent {
     } else return data;
   }
 
-  processSynonyms() {
-    if (this.data?.SYNONYMSCOMMON_NAME) {
-      const synonymList = this.data.SYNONYMSCOMMON_NAME.split('\n').map(
-        (synonym: string) => synonym.trim()
-      );
-      this.processedSynonyms = synonymList.map((synonym: string) => {
-        const match = synonym.match(/^(\d+)\.\s*(.*)$/);
-        return match
-          ? { number: match[1], text: match[2] }
-          : { number: '', text: synonym };
-      });
-    }
-  }
-
   getImageUrl = (props: any) => {
     return (
       environment.baseUrl +
@@ -190,10 +228,7 @@ export class BasicRouteCardComponent {
       this.data?.CHEMICAL_STRUCTURE
     );
   };
-  //  onImgError(event: Event) {
-  //   const imgElement = event.target as HTMLImageElement;
-  //   imgElement.src = 'assets/components/noimg.png';
-  // }
+
   getPatentUrl(data: any) {
     return `https://patentscope.wipo.int/search/en/result.jsf?inchikey=${data?.INCHIKEY}`;
   }

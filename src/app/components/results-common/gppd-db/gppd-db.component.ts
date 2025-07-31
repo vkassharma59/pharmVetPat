@@ -27,7 +27,6 @@ import { TruncatePipe } from '../../../pipes/truncate.pipe';
 })
 export class GppdDbComponent implements OnChanges {
   @ViewChildren('dropdownRef') dropdownRefs!: QueryList<ElementRef>;
-
   _data: any = { columns: [], rows: [] };
   _currentChildAPIBody: any = { page: 1, pageSize: 25, filters: {} };
   searchByTable: boolean = false;
@@ -62,10 +61,8 @@ export class GppdDbComponent implements OnChanges {
       this.handleFetchFilters();
     }
   }
-
   @Input() index: any;
   @Input() tabName?: string;
-
   resultTabs: any = {};
   gppdApiBody: any;
   gppdFilters: any = {};
@@ -111,20 +108,14 @@ export class GppdDbComponent implements OnChanges {
     }
   }
 
-  // ngOnInit(): void {
-  //   this.gppdApiBody = { ...this._currentChildAPIBody };
-  //   this.gppdApiBody.filters = this.gppdApiBody.filters || {};
-  //   this.handleFetchFilters();
-  // }
-
   ngOnChanges() {
-    console.log('scientificDocs received data:', this._data);
+    console.log('scientificDocs received data:', this.isFilterApplied);
     this.handleResultTabData.emit(this._data);
   }
 
   onDataFetchRequest(payload: any) {
     this.isFilterApplied = !!(payload?.search || payload?.columns);
-
+    console.log("isFilterApplied:", this.isFilterApplied);
     if (!('columns' in payload)) delete this._currentChildAPIBody.columns;
     if (!('search' in payload)) delete this._currentChildAPIBody.search;
 
@@ -132,10 +123,10 @@ export class GppdDbComponent implements OnChanges {
       ...this._currentChildAPIBody,
       ...payload
     };
-
+    console.log("isFilterApplied:", requestBody);
     this._currentChildAPIBody = requestBody;
     this.handleSetLoading.emit(true);
-
+    console.log("final API body000000000000000", requestBody);
     this.mainSearchService.gppdDbSearchSpecific(requestBody).subscribe({
       next: (result: any) => {
         this._data.rows = result?.data?.data || [];
@@ -158,19 +149,14 @@ export class GppdDbComponent implements OnChanges {
 
   handleFetchFilters() {
     this.gppdApiBody.filter_enable = true;
-
     this.mainSearchService.gppdDbSearchSpecific(this.gppdApiBody).subscribe({
       next: (res: any) => {
-        const hcData = res?.data?.data || [];
-        console.log(res?.data?.data, "-------hacdat-----", hcData)
-        const getUnique = (arr: any[]) => [...new Set(arr.filter(v => !!v && typeof v === 'string' && v.trim().length > 0))];
-       // const countryFilters = getUnique(hcData.map(item => item?.country));
-       // const companyFilters = getUnique(hcData.map(item => item?.company));
+
         const countryFilters = res?.data?.country?.map(item => ({
           name: item.name,
           value: item.value
         })) || [];
-         const companyFilters = res?.data?.company?.map(item => ({
+        const companyFilters = res?.data?.company?.map(item => ({
           name: item.name,
           value: item.value
         })) || [];
@@ -223,6 +209,7 @@ export class GppdDbComponent implements OnChanges {
       this.gppdApiBody.filters[filterKey] = value;
       this.setFilterLabel(filterKey, name || '');
     }
+    this.isFilterApplied = Object.keys(this.gppdApiBody.filters).length > 0;
 
     // ✅ Close dropdowns
     this.filterConfigs = this.filterConfigs.map(item => ({
@@ -232,9 +219,7 @@ export class GppdDbComponent implements OnChanges {
 
     // ✅ Maintain columns array properly
     const existingColumns = this._currentChildAPIBody.columns || [];
-
     const updatedColumns = existingColumns.filter((col: any) => col.data !== filterKey);
-
     if (value) {
       updatedColumns.push({
         data: filterKey,
@@ -244,25 +229,19 @@ export class GppdDbComponent implements OnChanges {
         }
       });
     }
-
     this._currentChildAPIBody = {
       ...this.gppdApiBody,
       filters: { ...this.gppdApiBody.filters },
-    //  columns: updatedColumns,
       draw: 1
     };
-
-    console.log("final API body", this._currentChildAPIBody);
-
+    console.log("final API body----------------", this._currentChildAPIBody);
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
     this.mainSearchService.gppdDbSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         const resultData = res?.data;
         this.count = resultData?.recordsFiltered ?? resultData?.recordsTotal;
         this.totalPages = Math.ceil(this.count / this.pageSize);
         this._currentChildAPIBody.count = this.count;
-
         this._data = {
           ...this._data,
           rows: resultData?.data || []
@@ -292,35 +271,15 @@ export class GppdDbComponent implements OnChanges {
 
     // Clear filters
     this.gppdApiBody.filters = {};
+    this.isFilterApplied = false;
 
-    // Reset page number and start
-    this._currentChildAPIBody = {
+    const payload = {
       ...this.gppdApiBody,
       filters: {},
       page_no: 1,
-      start: 0
+      start: 0,
     };
-
-    this.handleSetLoading.emit(true);
-    this.mainSearchService.gppdDbSearchSpecific(this._currentChildAPIBody).subscribe({
-
-      next: (res) => {
-        this._currentChildAPIBody.count = res?.data?.recordsTotal;
-        this._data.rows = res?.data?.data || [];
-        this.count = this._currentChildAPIBody.count;
-        this.totalPages = Math.ceil(this.count / this.pageSize); // Recalculate pagination
-        this.searchByTable = false;
-        this.handleResultTabData.emit(this._data.rows);
-        this.handleSetLoading.emit(false);
-      },
-      error: (err) => {
-        console.error(err);
-        this._currentChildAPIBody.filter_enable = false;
-        this.handleSetLoading.emit(false);
-      }
-    });
-
+    this.onDataFetchRequest(payload); // This will fetch data and update pagination
     window.scrollTo(0, 0);
   }
-
 }

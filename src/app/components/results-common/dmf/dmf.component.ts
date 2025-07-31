@@ -7,11 +7,11 @@ import { CommonModule } from '@angular/common';
 import { DmfCardComponent } from '../dmf-card/dmf-card.component';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
-import { ChangeDetectorRef } from '@angular/core';
+
 @Component({
   selector: 'app-dmf',
   standalone: true,
-  imports: [CommonModule, TruncatePipe, DmfCardComponent, ChildPagingComponent],
+  imports: [CommonModule, TruncatePipe, DmfCardComponent,ChildPagingComponent ],
   templateUrl: './dmf.component.html',
   styleUrl: './dmf.component.css'
 })
@@ -57,6 +57,7 @@ export class DmfComponent {
 
   @Input()
   get data() {
+    console.log('📥 Data received in DMF Component:', this._data);
     return this._data;
   }
   set data(value: any) {
@@ -70,7 +71,7 @@ export class DmfComponent {
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
     if (value) {
-      this.dmfApiBody = JSON.parse(JSON.stringify(value)) || value;
+        this.dmfApiBody = JSON.parse(JSON.stringify(value)) || value;
       this.handleFetchFilters();
     }
   }
@@ -96,6 +97,7 @@ export class DmfComponent {
     public loadingService: LoadingService,
     private mainSearchService: MainSearchService,
   ) {
+ 
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
@@ -160,8 +162,7 @@ export class DmfComponent {
     });
   }
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
-    console.log('🔍 Filter clicked:', { filterKey, value, name });
-    this.handleSetLoading.emit(true);
+       this.handleSetLoading.emit(true);
     // this.dmfApiBody.filters = this.dmfApiBody.filters || {};
     if (value === '') {
       delete this.dmfApiBody.filters[filterKey];
