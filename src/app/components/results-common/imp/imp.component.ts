@@ -219,7 +219,7 @@ export class ImpComponent {
       filters: { ...this.impPatentApiBody.filters },
       order_by: this.impPatentApiBody.order_by || ''
     };
-    console.log('📦 API BODY sent =>', this._currentChildAPIBody);
+    
 
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 

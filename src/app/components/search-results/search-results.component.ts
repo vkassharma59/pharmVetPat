@@ -1123,54 +1123,45 @@ export class SearchResultsComponent {
     });
   }
 
+  private scientificDocsSearch(resultTabData: any): void {
 
-  private scientificDocsSearch(resultTabData: any,): void {
-    const pageSize = 25;
-    const page_no = 1
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = {};
       this.setLoadingState.emit(false);
       return;
     }
-    if (!this.childApiBody[resultTabData.index]) {
+
+    if (this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name] = {};
+    } else {
       this.childApiBody[resultTabData.index] = {};
     }
-    // Step 1: Prepare API body
+
     this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name] = {
       api_url: this.apiUrls.scientificDocs.searchSpecific,
       search_type: resultTabData?.searchWith,
-      keyword: [resultTabData?.searchWithValue],
-      draw: 1,
+      keyword: resultTabData?.searchWithValue,
       page_no: 1,
-      start: (page_no - 1) * pageSize,
-      length: pageSize
-    };
-    // Step 2: Fetch Column List First
-    this.columnListService.getColumnList(this.apiUrls.scientificDocs.columnList).subscribe({
+      // filter_enable: false,
+      // filters: {},
+      // order_by: '',
+      // filter_enable: false,
+      // filters: {},
+      // order_by: '',
+      index: resultTabData.index
+    }
+
+    const tech_API = this.apiUrls.scientificDocs.columnList;
+    this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
-        const columnList = res?.data?.columns || [];
+        const response = res?.data;
+        Auth_operations.setColumnList(this.resultTabs.scientificDocs.name, response);
 
-
-        // Step 3: Save column list locally
-        Auth_operations.setColumnList(this.resultTabs.scientificDocs.name, columnList);
-
-        // ✅ SAVE to pass to component
-        this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = {
-          columns: columnList,  // <- for <app-scientific-docs-card>
-          rows: []              // <- we’ll fill this after searchSpecific
-        };
-
-        // Step 4: Call main search API
         this.mainSearchService.scientificDocsSpecific(this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]).subscribe({
           next: (result: any) => {
 
-            const dataRows = result?.data?.data || [];
-
-            // ✅ Append search result (rows) to saved structure
-            this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name].rows = dataRows;
-
-            this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name].count = result?.data?.recordsTotal;
-
+            this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name].count = result?.data?.recordsTotal
+            this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = result?.data?.data;
             this.setLoadingState.emit(false);
             this.loadingService.setLoading(this.resultTabs.scientificDocs.name, resultTabData.index, false);
           },
@@ -1188,6 +1179,71 @@ export class SearchResultsComponent {
       },
     });
   }
+
+  // private scientificDocsSearch(resultTabData: any,): void {
+  //   const pageSize = 25;
+  //   const page_no = 1
+  //   if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+  //     this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = {};
+  //     this.setLoadingState.emit(false);
+  //     return;
+  //   }
+  //   if (!this.childApiBody[resultTabData.index]) {
+  //     this.childApiBody[resultTabData.index] = {};
+  //   }
+  //   // Step 1: Prepare API body
+  //   this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name] = {
+  //     api_url: this.apiUrls.scientificDocs.searchSpecific,
+  //     search_type: resultTabData?.searchWith,
+  //     keyword: [resultTabData?.searchWithValue],
+  //     draw: 1,
+  //     page_no: 1,
+  //     start: (page_no - 1) * pageSize,
+  //     length: pageSize
+  //   };
+  //   // Step 2: Fetch Column List First
+  //   this.columnListService.getColumnList(this.apiUrls.scientificDocs.columnList).subscribe({
+  //     next: (res: any) => {
+  //       const columnList = res?.data?.columns || [];
+
+
+  //       // Step 3: Save column list locally
+  //       Auth_operations.setColumnList(this.resultTabs.scientificDocs.name, columnList);
+
+  //       // ✅ SAVE to pass to component
+  //       this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = {
+  //         columns: columnList,  // <- for <app-scientific-docs-card>
+  //         rows: []              // <- we’ll fill this after searchSpecific
+  //       };
+
+  //       // Step 4: Call main search API
+  //       this.mainSearchService.scientificDocsSpecific(this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]).subscribe({
+  //         next: (result: any) => {
+
+  //           const dataRows = result?.data?.data || [];
+
+  //           // ✅ Append search result (rows) to saved structure
+  //           this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name].rows = dataRows;
+
+  //           this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name].count = result?.data?.recordsTotal;
+
+  //           this.setLoadingState.emit(false);
+  //           this.loadingService.setLoading(this.resultTabs.scientificDocs.name, resultTabData.index, false);
+  //         },
+  //         error: (e) => {
+  //           console.error('Error during main search:', e);
+  //           this.setLoadingState.emit(false);
+  //           this.loadingService.setLoading(this.resultTabs.scientificDocs.name, resultTabData.index, false);
+  //         },
+  //       });
+  //     },
+  //     error: (e) => {
+  //       console.error('Error fetching column list:', e);
+  //       this.setLoadingState.emit(false);
+  //       this.loadingService.setLoading(this.resultTabs.scientificDocs.name, resultTabData.index, false);
+  //     },
+  //   });
+  // }
   private spcDbSearch(resultTabData: any): void {
     const pageSize = 25;
     const page_no = 1

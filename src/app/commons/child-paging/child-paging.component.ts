@@ -70,13 +70,28 @@ export class ChildPagingComponent implements OnInit {
   };
 
   handleNextclick = () => {
-    const remain = Math.ceil((this.count - this.PageArray[4] * 25) / 25);
-    const count = Math.ceil(this.count / 25);
-    if (this.PageArray[this.PageArray.length - 1] == count) return;
-    this.MainPageNo = this.PageArray[4] + 1;
-
+    console.log('➡️ handleNextclick triggered');
+  
+    const count = Math.ceil(this.count / 25); // total pages
+    const currentLastPage = this.PageArray[this.PageArray.length - 1] ?? 0;
+  
+    console.log('📦 Total Count:', this.count);
+    console.log('📄 Total Pages:', count);
+    console.log('📑 Current PageArray:', this.PageArray);
+    console.log('📍 Current Last Page:', currentLastPage);
+  
+    if (currentLastPage >= count) {
+      console.log('⛔ Already at last page, no action needed');
+      return;
+    }
+  
+    this.MainPageNo = currentLastPage + 1;
+  
+    const remain = count - currentLastPage;
+    console.log('🔢 Remaining pages:', remain);
+  
     this.PageArray = [];
-
+  
     for (
       let i = this.MainPageNo;
       i < Math.min(this.MainPageNo + 5, this.MainPageNo + remain);
@@ -84,8 +99,13 @@ export class ChildPagingComponent implements OnInit {
     ) {
       this.PageArray.push(i);
     }
+  
+    console.log('✅ Updated PageArray:', this.PageArray);
+  
     this.handlePageClick(this.MainPageNo);
   };
+  
+  
 
   handlePreviousClick = () => {
     if (this.MainPageNo == 1) return;
