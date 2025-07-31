@@ -60,7 +60,7 @@ export class TechnicalRoutesCardComponent {
   @Input() CurrentAPIBody: any;
   @Input() index: any;
   _itemid: any = {};
- showFull = false;
+  showFull = false;
   toggleView() {
     this.showFull = !this.showFull;
   }
@@ -232,12 +232,12 @@ export class TechnicalRoutesCardComponent {
       data: { dataRecord: data, title: title },
     });
   }
-  openImageModal(imageUrl: string): void {
+  openImageModal(imageUrl: string, showZoomControls: boolean): void {
     this.dialog.open(ImageModalComponent, {
       width: 'auto',
       height: 'auto',
-      panelClass: 'full-screen-modal',
-      data: { dataImage: imageUrl },
+      panelClass: 'custom-image-modal',
+      data: { dataImage: imageUrl, showZoomControls: showZoomControls, compactView: true },
     });
   }
 }

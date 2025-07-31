@@ -1566,8 +1566,7 @@ export class SearchResultsComponent {
       },
     });
   }
-
-  private performDMFSearch(resultTabData: any): void {
+private performDMFSearch(resultTabData: any): void {
 
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.dmf.name] = {};
@@ -1589,9 +1588,9 @@ export class SearchResultsComponent {
       filter_enable: false,
       filters: {},
       order_by: '',
-      index: resultTabData.index
+      index: resultTabData.index,
     }
-    console.log('DMF Search Input:', this.childApiBody[resultTabData.index][this.resultTabs.dmf.name]);
+
     const tech_API = this.apiUrls.dmf.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
@@ -1602,7 +1601,6 @@ export class SearchResultsComponent {
           next: (result: any) => {
             this.childApiBody[resultTabData.index][this.resultTabs.dmf.name].count = result?.data?.tech_supplier_count;
             this.allDataSets[resultTabData.index][this.resultTabs.dmf.name] = result?.data?.tech_supplier_data;
-            console.log('DMF Search Result:', this.allDataSets[resultTabData.index][this.resultTabs.dmf.name]);
             this.setLoadingState.emit(false);
             this.loadingService.setLoading(this.resultTabs.dmf.name, resultTabData.index, false);
           },
@@ -1620,6 +1618,7 @@ export class SearchResultsComponent {
       },
     });
   }
+
 
   ButtonROSSearch(SearchKey: any, index: number): void {
 

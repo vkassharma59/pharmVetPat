@@ -221,7 +221,7 @@ export class BasicRouteCardComponent {
     } else return data;
   }
 
-  getImageUrl = (props: any) => {
+  getImageUrl = (props: any): string => {
     return (
       environment.baseUrl +
       environment.domainNameBasicRoutStructure +
@@ -253,12 +253,16 @@ export class BasicRouteCardComponent {
     });
   }
 
-  openImageModal(imageUrl: string): void {
-    this.dialog.open(ImageModalComponent, {
-      width: 'auto',
-      height: 'auto',
-      panelClass: 'full-screen-modal',
-      data: { dataImage: imageUrl },
-    });
-  }
+ openImageModal(imageUrl: string, showZoomControls: boolean): void {
+  this.dialog.open(ImageModalComponent, {
+    width: 'auto',
+    height: 'auto',
+    panelClass: 'full-screen-modal',
+    data: { 
+      dataImage: imageUrl,
+      showZoomControls: showZoomControls 
+    },
+  });
+}
+
 }

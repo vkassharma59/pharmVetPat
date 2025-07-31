@@ -1,7 +1,7 @@
 
 <div  class="child-route-count-wrapper justify-between">
   <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
-    Total Records : {{ _currentChildAPIBody?.count }}
+    Total Records : {{currentChildAPIBody?.count }}
   </button>
   <!-- Dropdown
     <div class="flex flex-wrap gap-3">
@@ -51,21 +51,24 @@
   (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
 </ng-container>
 
+
 <ng-template #noData>
-<div class="card" style="background-color: white;">
-  <div class="card-header text-white bg-primary">
-    {{resultTabs.scientificDocs?.label}}
+  <div class="card" style="background-color: white;">
+    <div class="card-header text-white bg-primary"
+      style="background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);">
+      {{resultTabs.scientificDocs?.label}}
+    </div>
+    <div class="card-body">
+      <ng-container *ngIf="loadingService.getLoading(resultTabs.scientificDocs.name, index); else noDataText">
+        <div class="loading-text">Loading<span class="dots"></span></div>
+      </ng-container>
+      <ng-template #noDataText>
+        <p>No Data found!</p>
+      </ng-template>
+    </div>
   </div>
-  <div class="card-body">
-    <ng-container *ngIf="loadingService.getLoading(resultTabs.scientificDocs?.name, index); else noDataText">
-      <div class="loading-text">Loading<span class="dots"></span></div>
-    </ng-container>
-    <ng-template #noDataText>
-      <p>No Data found!</p>
-    </ng-template>
-  </div>
-</div>
-</ng-template><!-- <ng-container *ngIf="_data?.rows?.length > 0 || searchByTable; else noData">
+</ng-template>
+<!-- <ng-container *ngIf="_data?.rows?.length > 0 || searchByTable; else noData">
   <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper justify-between">
     <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
       Total Records : {{currentChildAPIBody?.count }}
@@ -74,7 +77,6 @@
   <div class="card-header text-white fs-5" style="  background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
  padding: 10px;">
     <div class="d-flex flex-wrap align-items-center justify-content-between">
-
       <div class="d-flex align-items-center me-3">
         <i class="fa-solid fa-flask me-2"></i>
         <span>AgroPharm  {{resultTabs.scientificDocs?.label}} >> SITAGLIPTIN PHOSPHAT</span>

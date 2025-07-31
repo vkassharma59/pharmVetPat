@@ -119,14 +119,12 @@ export class ImpurityCardComponent implements OnInit, OnDestroy {
   const imgElement = event.target as HTMLImageElement;
   imgElement.src = 'assets/components/noimg.png';
 }
-  openImageModal(imageUrl: string): void {
+  openImageModal(imageUrl: string,showZoomControls: boolean): void {
     this.dialog.open(ImageModalComponent, {
-      // width: 'calc(100vw - 5vw)',
-      // height: '700px',
-       width: 'auto',
+      width: 'auto',
       height: 'auto',
       panelClass: 'full-screen-modal',
-      data: { dataImage: imageUrl },
+      data: { dataImage: imageUrl ,showZoomControls: showZoomControls },
     });
   }
 }
