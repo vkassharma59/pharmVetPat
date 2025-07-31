@@ -139,6 +139,7 @@
         </div>
 
 
+
         <div class="col-md-9 col-sm-8" *ngIf="_data?.ingredient">
           <h6 class="font-bold text-indigo-900">
             {{ getColumnName('ingredient') }}
@@ -156,10 +157,12 @@
           <h6 class="font-bold text-indigo-900">
             {{ getColumnName('rld') }}
             <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.rld, copyBtn)">
+
               <i class="fas fa-copy"></i>
             </span>
           </h6>
           <p class="text-wrap max-h-12 whitespace-normal">
+
             {{ _data?.rld }}
           </p>
         </div>
@@ -195,10 +198,12 @@
           <h6 class="font-bold text-indigo-900">
             {{ getColumnName('route') }}
             <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.route, copyBtn)">
+
               <i class="fas fa-copy"></i>
             </span>
           </h6>
           <p class="text-wrap max-h-12 whitespace-normal">
+
             {{ _data?.route }}
           </p>
         </div>
@@ -244,10 +249,12 @@
             {{ getColumnName('exclusivity_code') }}
             <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
               (click)="handleCopy(_data?.exclusivity_code, copyBtn)">
+
               <i class="fas fa-copy"></i>
             </span>
           </h6>
           <p class="text-wrap max-h-12 whitespace-normal">
+
             {{ _data?.exclusivity_code }}
           </p>
         </div>
@@ -257,17 +264,40 @@
             {{ getColumnName('type') }}
             <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
               (click)="handleCopy(_data?.type, copyBtn)">
+
               <i class="fas fa-copy"></i>
             </span>
           </h6>
           <p class="text-wrap max-h-12 whitespace-normal">
+
             {{ _data?.type }}
           </p>
         </div>
+        <div class="col-md-9 col-sm-8">
+          <ng-container *ngIf="_data?.drug_product_flag; else FDA">
+            <h6 class="font-bold text-indigo-900">
+              {{ getColumnName('drug_product_flag') }}
+            </h6>
+            <div *ngIf="data?.drug_product_flag">
+              <img [src]="getCompanyLogo(data)" alt="error" class="object-contain" style="height: 75px" />
+            </div>
+          </ng-container>
+        
+          <ng-template #FDA>
+            <h6 class="font-bold text-indigo-900">
+              TYPE: <i class="fa-solid fa-copy hover:cursor-pointer"
+                (click)="copyText('TYPE',$event)" title="Copy to clipboard"></i>
+            </h6>
+            <p id="TYPE">Rx</p>
+            <img src="assets/components/fda.jpg" class="image2">
+          </ng-template>
+        </div>
+        
          <!-- <img src="assets/components/fda.jpg" class="image2"> -->
       </div>
 
       <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" style="background-color: #f8faff;">
+
 
         <div class="col-md-9 col-sm-8" *ngIf="_data?.appl_no">
           <h6 class="font-bold text-indigo-900">
@@ -336,7 +366,18 @@
     <tbody class="bg-white">
       <tr *ngFor="let item of _data.patentData" class="border-b border-gray-300 hover:bg-gray-100"
         style="align-items: center;text-align: center;">
-        <td class="px-2 py-1">{{ item.patent_no }}</td>
+
+        <td class="px-2 py-1">{{ item.patent_no }} 
+          <div>
+            <a [href]="'https://worldwide.espacenet.com/patent/search?q=' + item?.patent_no" target="_blank">
+              <img class="mx-auto" style="height:35px;" src="assets/espace-logo.png">
+            </a>
+          </div>
+          <a [href]="'https://patents.google.com/patent/' + item?.patent_no" target="_blank">
+          <img class="mx-auto" style="height:35px;" src="assets/GooglePatents.png">
+          </a>
+        </td>
+
         <td class="px-2 py-1">
           <button (click)="openPopup(item)" class="button text-white text-xs px-2 py-1 rounded hover:bg-yellow-700"
             style="width:120px" data-bs-toggle="modal" data-bs-target="#viewPatentModal">

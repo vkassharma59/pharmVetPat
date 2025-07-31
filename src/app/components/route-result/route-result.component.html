@@ -196,10 +196,9 @@
       <app-scientific-docs [data]="_dataItem.scientificDocs"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.scientificDocs.name]" [index]="index"
         [tabName]="resultTabWithKeys.scientificDocs.name" (handleSetLoading)="handleSetLoading.emit($event)"
-        (handleResultTabData)="handleChildPaginationSearch.emit($event)">
-      </app-scientific-docs>
-
+        (handleResultTabData)="handleChildPaginationSearch.emit($event)"></app-scientific-docs>
     </ng-container>
+
     <ng-container *ngSwitchCase="resultTabWithKeys.eximData.name">
       <chem-exim [data]="_dataItem.eximData"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.eximData.name]" [index]="index"

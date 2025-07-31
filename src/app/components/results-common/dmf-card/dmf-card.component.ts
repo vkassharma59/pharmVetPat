@@ -4,6 +4,7 @@ import { UtilityService } from '../../../services/utility-service/utility.servic
 import { Auth_operations } from '../../../Utils/SetToken';
 import { CommonModule } from '@angular/common';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-dmf-card',
@@ -138,7 +139,9 @@ export class DmfCardComponent implements OnDestroy{
       }, 1500);
     }
   }
-
+  getCompanyLogo(value: any): string {
+    return `${environment.baseUrl}${environment.domainNameCompanyLogo}${value?.dmf_holder_logo}`;
+  }
   copyText(elementId: string, event: Event) {
     const el = event.currentTarget as HTMLElement;
     const textToCopy = document.getElementById(elementId)?.innerText;
