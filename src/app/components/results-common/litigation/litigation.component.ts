@@ -22,40 +22,51 @@ export class LitigationComponent {
   @ViewChildren('dropdownRef') dropdownRefs!: QueryList<ElementRef>;
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
-  @Input() currentChildAPIBody: any;
-  @Input() index: any;
-  @Input() tabName?: string;
-  countryConfigRaw: any[] = [];
-  searchThrough: string = '';
   _currentChildAPIBody: any;
+  searchThrough: string = '';
   resultTabs: any = {};
   searchByTable: boolean = false;
-  litgApiBody: any;
-  litgFilters: any = {};
+  @Input() index: any;
+  @Input() tabName?: string;
+  litigApiBody: any;
+  litigFilters: any = {};
   lastClickedFilterKey: string | null = null;
   _data: any = [];
-  @Input()
-  get data() {
-    return this._data;
-  }
-  set data(value: any) {
-    this._data = value;
-    this._currentChildAPIBody = value;
-    if (value) {
-      this.litgApiBody = JSON.parse(JSON.stringify(value)) || value;
-      this.handleFetchFilters();
-    }
-  }
+
 
   filterConfigs = [
     {
       key: 'country',
-      label: 'All Country',
+      label: 'Select Country',
       dataKey: 'countryFilters',
       filterType: 'country',
       dropdownState: false
-    },
+    }
   ];
+
+  @Input()
+  get data() {
+    console.log('📥 Data received in litig Component:', this._data);
+    return this._data;
+  }
+  set data(value: any) {
+    this._data = value;
+  }
+  countryConfigRaw: any[] = [];
+  @Input()
+  get currentChildAPIBody() {
+    return this._currentChildAPIBody;
+  }
+  set currentChildAPIBody(value: any) {
+    this._currentChildAPIBody = value;
+    if (value) {
+        this.litigApiBody = JSON.parse(JSON.stringify(value)) || value;
+      this.handleFetchFilters();
+    }
+  }
+
+
+
   @HostListener('document:mousedown', ['$event'])
   onClickOutside(event: MouseEvent) {
     const clickedInsideAny = this.dropdownRefs?.some((dropdown: ElementRef) =>
@@ -69,69 +80,72 @@ export class LitigationComponent {
       }));
     }
   }
+
   constructor(
     private utilityService: UtilityService,
     public loadingService: LoadingService,
     private mainSearchService: MainSearchService,
-
   ) {
+ 
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
-
-  }
-  ngOnChanges() {
-    console.log('JapanComponent received data:', this._data);
-  }
- 
-  setFilterLabel(filterKey: string, label: string) {
-    this.filterConfigs = this.filterConfigs.map(item => {
-      if (item.key === filterKey) {
-        if (label === '') {
-          switch (filterKey) {
-            case 'country': label = 'All Country'; break;
-          }
-        }
-        return { ...item, label };
-      }
-      return item;
-    });
   }
 
   onFilterButtonClick(filterKey: string) {
     this.lastClickedFilterKey = filterKey;
-    this.filterConfigs = this.filterConfigs.map(item => ({
-      ...item,
-      dropdownState: item.key === filterKey ? !item.dropdownState : false
-    }));
-  }
 
+    this.filterConfigs = this.filterConfigs.map((item) => {
+      if (item.key === filterKey) {
+        return { ...item, dropdownState: !item.dropdownState };
+      }
+      return { ...item, dropdownState: false };
+    });
+  }
   handleFetchFilters() {
-    this.litgApiBody.filter_enable = true;
-    this.mainSearchService.litigationSearchSpecific(this.litgApiBody).subscribe({
+     this.litigApiBody.filter_enable = true;
+    this.mainSearchService.litigationSearchSpecific(this.litigApiBody).subscribe({
       next: (result: any) => {
+        const countryConfig = result?.data?.country || [];
+        this.countryConfigRaw = countryConfig;
+
         const countryFilters = result?.data?.country?.map(item => ({
           name: item.name,
           value: item.value
         })) || [];
-        this.litgFilters = {
+
+        this.litigFilters = {
           countryFilters: countryFilters, // ← Fix here
         };
-        this.litgApiBody.filter_enable = false;
+        this.litigApiBody.filter_enable = false;
       },
       error: (err) => {
-        console.error('Error fetching dmf filters:', err);
-        this.litgApiBody.filter_enable = false;
+        console.error('Error fetching litig filters:', err);
+        this.litigApiBody.filter_enable = false;
       }
     });
   }
- 
+  setFilterLabel(filterKey: string, label: string) {
+    this.filterConfigs = this.filterConfigs.map((item) => {
+      if (item.key === filterKey) {
+        if (label === '') {
+          switch (filterKey) {
+            case 'country': label = 'Country'; break;
+            
+          }
+        }
+        return { ...item, label: label };
+      }
+      return item;
+    });
+  }
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
-    this.handleSetLoading.emit(true);
+       this.handleSetLoading.emit(true);
+    // this.litigApiBody.filters = this.litigApiBody.filters || {};
     if (value === '') {
-      delete this.litgApiBody.filters[filterKey];
+      delete this.litigApiBody.filters[filterKey];
       this.setFilterLabel(filterKey, '');
     } else {
-      this.litgApiBody.filters[filterKey] = value;  // ✅ Only value goes in filters
+      this.litigApiBody.filters[filterKey] = value;  // ✅ Only value goes in filters
       this.setFilterLabel(filterKey, name || '');
     }
     // ✅ Close dropdowns
@@ -140,24 +154,24 @@ export class LitigationComponent {
       dropdownState: false
     }));
     // Log constructed filter object
-    console.log('📦 Final Filters:', this.litgApiBody.filters);
+    
     this._currentChildAPIBody = {
-      ...this.litgApiBody,
-      filters: { ...this.litgApiBody.filters }
+      ...this.litigApiBody,
+      filters: { ...this.litigApiBody.filters }
     };
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    console.log('📤 Sending API Request:', this._currentChildAPIBody);
+    
 
     this.mainSearchService.litigationSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         const resultData = res?.data || {};
-        console.log('✅ API Response Received:', resultData);
+       
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
           count: resultData?.litigation_count
         };
-        this._data = resultData?.litigation_count || [];
+        this._data = resultData?.litigation_data || [];
 
         // ✅ Emit updated data to parent (optional)
         this.handleResultTabData.emit(resultData);
@@ -179,19 +193,21 @@ export class LitigationComponent {
     this.filterConfigs = this.filterConfigs.map(config => {
       let defaultLabel = '';
       switch (config.key) {
-        case 'country': defaultLabel = 'All Country'; break;
+        case 'country': defaultLabel = 'Country'; break;
+        
+
       }
       return { ...config, label: defaultLabel, dropdownState: false };
     });
 
-    this.litgApiBody.filters = {};
+    this.litigApiBody.filters = {};
     this._currentChildAPIBody = {
-      ...this.litgApiBody,
+      ...this.litigApiBody,
       filters: {}
     };
 
     this.handleSetLoading.emit(true);
-    this.mainSearchService.dmfSearchSpecific(this._currentChildAPIBody).subscribe({
+    this.mainSearchService.litigationSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
 
         this._currentChildAPIBody = {
@@ -231,4 +247,5 @@ export class LitigationComponent {
       });
     }
   }
+  
 }

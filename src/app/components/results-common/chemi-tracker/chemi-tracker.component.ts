@@ -25,7 +25,7 @@ export class ChemiTrackerComponent {
   _data: any = [];
   country_value: any = 'Select Country';
   _currentChildAPIBody: any = {};
-  DMFAPIBody: any;
+  chemiAPIBody: any;
   formulation_value: any = 'Select TECH.API & FORMULATION';
   countryFilters: any = [];
   foundationsFilters: any = [];
@@ -48,7 +48,7 @@ export class ChemiTrackerComponent {
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
     if (value) {
-      this.DMFAPIBody = JSON.parse(JSON.stringify(value)) || value;
+      this.chemiAPIBody = JSON.parse(JSON.stringify(value)) || value;
       this.handleFetchFilters();
     }
   }
@@ -80,17 +80,17 @@ export class ChemiTrackerComponent {
     this.isCountryDropdownOpen = false; // close other dropdown
   }
   handleFetchFilters() {
-    this.DMFAPIBody.filter_enable = true;
-    this.mainSearchService.chemiTrackerSearchSpecific(this.DMFAPIBody).subscribe({
+    this.chemiAPIBody.filter_enable = true;
+    this.mainSearchService.chemiTrackerSearchSpecific(this.chemiAPIBody).subscribe({
       next: (res) => {
         console.log('🔍 Formulation Filter Values (dummy_6):', res?.data?.dummy_6);
         this.countryFilters = res?.data?.country_of_company;
         this.foundationsFilters = res?.data?.dummy_6;
-        this.DMFAPIBody.filter_enable = false;
+        this.chemiAPIBody.filter_enable = false;
       },
       error: (err) => {
         console.error(err);
-        this.DMFAPIBody.filter_enable = false;
+        this.chemiAPIBody.filter_enable = false;
       },
     });
   }
@@ -124,25 +124,25 @@ export class ChemiTrackerComponent {
     this.handleSetLoading.emit(true);
     if (value == '') {
       if (filter == 'country_of_company') {
-        delete this.DMFAPIBody.filters['country_of_company'];
+        delete this.chemiAPIBody.filters['country_of_company'];
         this.country_value = 'Select Country';
       } else {
-        delete this.DMFAPIBody.filters['dummy_6'];
+        delete this.chemiAPIBody.filters['dummy_6'];
         this.formulation_value = 'Select TECH.API & FORMULATION';
       }
     } else {
       if (filter == 'country_of_company') {
-        this.DMFAPIBody.filters['country_of_company'] = value;
+        this.chemiAPIBody.filters['country_of_company'] = value;
         this.country_value = value;
       } else {
-        this.DMFAPIBody.filters['dummy_6'] = value;
+        this.chemiAPIBody.filters['dummy_6'] = value;
         this.formulation_value = value;
       }
     }
 
     this._currentChildAPIBody = {
-      ...this.DMFAPIBody,
-      filters: { ...this.DMFAPIBody.filters }
+      ...this.chemiAPIBody,
+      filters: { ...this.chemiAPIBody.filters }
     };
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
@@ -179,11 +179,11 @@ export class ChemiTrackerComponent {
     this.isOpen = false;
 
     // Clear filters
-    this.DMFAPIBody.filters = {};
+    this.chemiAPIBody.filters = {};
 
     // Prepare new API body
     this._currentChildAPIBody = {
-      ...this.DMFAPIBody,
+      ...this.chemiAPIBody,
       filters: {}
     };
 
