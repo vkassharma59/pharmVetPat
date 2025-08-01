@@ -17,7 +17,7 @@
             class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
             <span class="block text-sm font-medium text-gray-700">View All</span>
           </li>
-          <li *ngFor="let data of litgFilters[configData.dataKey]"
+          <li *ngFor="let data of litigFilters[configData.dataKey]"
             (click)="handleSelectFilter(configData.key, data?.value ,data?.name )">
             <span class="block text-sm whitespace-normal break-words leading-snug text-gray-800">
               {{ data?.name || data?.value }}
