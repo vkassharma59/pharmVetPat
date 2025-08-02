@@ -112,73 +112,81 @@ export class EuropeApprovalComponent {
       dropdownState: item.key === filterKey ? !item.dropdownState : false
     }));
   }
-
   handleFetchFilters() {
     this.emaApiBody.filter_enable = true;
+  
     this.mainSearchService.europeApprovalSearchSpecific(this.emaApiBody).subscribe({
-      next: (res: any) => {
-        const hcData = res?.data?.ema_data || [];
-        const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
-        const marketFilters = getUnique(hcData.map(item => item.marketing_authorisation_holder));
+      next: (result: any) => {
+        const rawMarketData = result?.data?.marketing_authorisation_holder || [];
+  
+        const marketFilters = rawMarketData.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+  
         this.emaFilters = {
-          marketFilters
+          marketFilters: marketFilters,
         };
-
+  
         this.emaApiBody.filter_enable = false;
-
-
       },
       error: (err) => {
-        console.error('Error fetching ema filters:', err);
         this.emaApiBody.filter_enable = false;
-
       }
     });
   }
-
-
+  
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     this.handleSetLoading.emit(true);
-    this.emaApiBody.filters = this.emaApiBody.filters || {};
+ 
+ if (value === '') {
+   delete this.emaApiBody.filters[filterKey];
+   this.setFilterLabel(filterKey, '');
+ } else {
+   this.emaApiBody.filters[filterKey] = value;  // ✅ Only value goes in filters
+   this.setFilterLabel(filterKey, name || '');
+ }
+ // ✅ Close dropdowns
+ this.filterConfigs = this.filterConfigs.map(item => ({
+   ...item,
+   dropdownState: false
+ }));
+ // Log constructed filter object
+ 
+ this._currentChildAPIBody = {
+   ...this.emaApiBody,
+   filters: { ...this.emaApiBody.filters }
+ };
+ const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    if (value === '') {
-      delete this.emaApiBody.filters[filterKey];
-      this.setFilterLabel(filterKey, '');
-    } else {
-      this.emaApiBody.filters[filterKey] = value;
-      this.setFilterLabel(filterKey, name || '');
-    }
+ 
 
-    this._currentChildAPIBody = {
-      ...this.emaApiBody,
-      filters: { ...this.emaApiBody.filters }
-    };
+ this.mainSearchService.europeApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
+   next: (res) => {
+     const resultData = res?.data || {};
+    
+     this._currentChildAPIBody = {
+       ...this._currentChildAPIBody,
+       count: resultData?.ema_count
+     };
+     this._data = resultData?.ema_data || [];
 
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-    this.mainSearchService.europeApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
-      next: (res) => {
-        let resultData = res?.data || {};
-        this._currentChildAPIBody = {
-          ...this._currentChildAPIBody,
-          count: resultData?.ema_count
-        };
-
-        // ✅ Update _data directly!
-        this._data = resultData.ema_data || [];
-        this.handleResultTabData.emit(this._data);
-        this.handleSetLoading.emit(false);
-
-        this.cdr.detectChanges();
-        window.scrollTo(0, scrollTop);
-      },
-      error: () => {
-        this._currentChildAPIBody.filter_enable = false;
-        this.handleSetLoading.emit(false);
-        window.scrollTo(0, scrollTop);
-      }
-    });
-  }
+     // ✅ Emit updated data to parent (optional)
+     this.handleResultTabData.emit(resultData);
+     this.handleSetLoading.emit(false);
+     window.scrollTo(0, scrollTop);
+   },
+   error: (err) => {
+     console.error("❌ Error while filtering data", err);
+     this._currentChildAPIBody = {
+       ...this._currentChildAPIBody,
+       filter_enable: false
+     };
+     this.handleSetLoading.emit(false);
+     window.scrollTo(0, scrollTop);
+   }
+ });
+}
 
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
