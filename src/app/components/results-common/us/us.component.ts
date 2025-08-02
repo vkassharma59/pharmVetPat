@@ -161,39 +161,45 @@ export class UsComponent {
       }
     });
   }
-
   handleFetchFilters() {
+    this.usApiBody.filter_enable = true;
+    console.log('[Filters] Fetching US filters with body:', this.usApiBody);
+  
     this.mainSearchService.usApprovalSearchSpecific(this.usApiBody).subscribe({
       next: (res: any) => {
-        const hcData = res?.data?.orange_book_us_data || [];
-        console.log('[Filters] Fetched filters from API:', hcData.length, 'records');
-
-        const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
-
-        const applFilters = getUnique(hcData.map(item => item.appl_type));
-        const strengthFilters = getUnique(hcData.map(item => item.strength));
-        const rldFilters = getUnique(hcData.map(item => item.rld));
-        const applicantFilters = getUnique(hcData.map(item => item.applicant));
-        const ingredientFilters = getUnique(hcData.map(item => item.ingredient));
-
+        console.log('[Filters] Raw response:', res);
+  
+        const data = res?.data || {};
+        const applFilters = data.appl_type || [];
+        const strengthFilters = data.strength || [];
+        const rldFilters = data.rld || [];
+        const applicantFilters = data.applicant || [];
+        const ingredientFilters = data.ingredient || [];
+  
+        console.log('[Filters] appl_type:', applFilters);
+        console.log('[Filters] strength:', strengthFilters);
+        console.log('[Filters] rld:', rldFilters);
+        console.log('[Filters] applicant:', applicantFilters);
+        console.log('[Filters] ingredient:', ingredientFilters);
+  
         this.usFilters = {
           applFilters,
           strengthFilters,
-          rldFilters: rldFilters.map(name => ({ name, value: name })),
+          rldFilters,
           applicantFilters,
-          ingredientFilters: ingredientFilters.map(name => ({ name, value: name }))
+          ingredientFilters,
         };
-        console.log('[Filters] Assigned filter data:', this.usFilters);
+  
+        console.log('[Filters] Final assigned usFilters:', this.usFilters);
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('❌ Error fetching filters from API:', err);
+        console.error('[Filters] Error fetching US filters:', err);
         this.usApiBody.filter_enable = false;
       }
     });
   }
-
-
+  
   setFilterLabel(filterKey: string, label: string) {
     this.filterConfigs = this.filterConfigs.map((item) => {
       if (item.key === filterKey) {
@@ -211,65 +217,115 @@ export class UsComponent {
       return item;
     });
   }
-
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
-    console.log(`[Filter] Selected key: ${filterKey}, value: ${value}, label: ${name}`);
     this.handleSetLoading.emit(true);
-    this.usApiBody.filters = this.usApiBody.filters || {};
+ // this.usApiBody.filters = this.usApiBody.filters || {};
+ if (value === '') {
+   delete this.usApiBody.filters[filterKey];
+   this.setFilterLabel(filterKey, '');
+ } else {
+   this.usApiBody.filters[filterKey] = value;  // ✅ Only value goes in filters
+   this.setFilterLabel(filterKey, name || '');
+ }
+ // ✅ Close dropdowns
+ this.filterConfigs = this.filterConfigs.map(item => ({
+   ...item,
+   dropdownState: false
+ }));
+ // Log constructed filter object
+ 
+ this._currentChildAPIBody = {
+   ...this.usApiBody,
+   filters: { ...this.usApiBody.filters }
+ };
+ const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    if (value === '') {
-      delete this.usApiBody.filters[filterKey];
-      this.setFilterLabel(filterKey, '');
-    } else {
-      this.usApiBody.filters[filterKey] = value;
-      this.setFilterLabel(filterKey, name || '');
-    }
+ 
 
-    this.filterConfigs = this.filterConfigs.map(item => ({
-      ...item,
-      dropdownState: false
-    }));
+ this.mainSearchService.usApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
+   next: (res) => {
+     const resultData = res?.data || {};
+    
+     this._currentChildAPIBody = {
+       ...this._currentChildAPIBody,
+       count: resultData?.oran
+     };
+     this._data = resultData?.tech_supplier_data || [];
 
-    this._currentChildAPIBody = {
-      ...this.usApiBody,
-      filters: { ...this.usApiBody.filters }
-    };
-    console.log(`[API] Current API body for ${filterKey}:`, this._currentChildAPIBody);
+     // ✅ Emit updated data to parent (optional)
+     this.handleResultTabData.emit(resultData);
+     this.handleSetLoading.emit(false);
+     window.scrollTo(0, scrollTop);
+   },
+   error: (err) => {
+     console.error("❌ Error while filtering data", err);
+     this._currentChildAPIBody = {
+       ...this._currentChildAPIBody,
+       filter_enable: false
+     };
+     this.handleSetLoading.emit(false);
+     window.scrollTo(0, scrollTop);
+   }
+ });
+}
+  // handleSelectFilter(filterKey: string, value: any, name?: string): void {
+  //   console.log(`[Filter] Selected key: ${filterKey}, value: ${value}, label: ${name}`);
+  //   this.handleSetLoading.emit(true);
+  //   this.usApiBody.filters = this.usApiBody.filters || {};
 
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  //   if (value === '') {
+  //     delete this.usApiBody.filters[filterKey];
+  //     this.setFilterLabel(filterKey, '');
+  //   } else {
+  //     this.usApiBody.filters[filterKey] = value;
+  //     this.setFilterLabel(filterKey, name || '');
+  //   }
 
-    this.mainSearchService.usApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
-      next: (res) => {
-        console.log(`[API] Filtered result for ${filterKey}:`, res?.data);
+  //   this.filterConfigs = this.filterConfigs.map(item => ({
+  //     ...item,
+  //     dropdownState: false
+  //   }));
 
-        let resultData = res?.data || {};
+  //   this._currentChildAPIBody = {
+  //     ...this.usApiBody,
+  //     filters: { ...this.usApiBody.filters }
+  //   };
+  //   console.log(`[API] Current API body for ${filterKey}:`, this._currentChildAPIBody);
 
-        // ✅ Updating the local data property:
-        this._data = resultData.orange_book_us_data || [];
+  //   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-        // ✅ Emitting only the relevant array instead of the whole object:
-        this.handleResultTabData.emit(this._data);
+  //   this.mainSearchService.usApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
+  //     next: (res) => {
+  //       console.log(`[API] Filtered result for ${filterKey}:`, res?.data);
 
-        // ✅ Updating count if needed:
-        this._currentChildAPIBody = {
-          ...this._currentChildAPIBody,
-          count: resultData?.orange_book_us_count
-        };
+  //       let resultData = res?.data || {};
 
-        this.handleSetLoading.emit(false);
-        window.scrollTo(0, scrollTop);
+  //       // ✅ Updating the local data property:
+  //       this._data = resultData.orange_book_us_data || [];
 
-        // ✅ Trigger change detection if using OnPush:
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error(`[API] Error filtering on ${filterKey}:`, err);
-        this._currentChildAPIBody.filter_enable = false;
-        this.handleSetLoading.emit(false);
-        window.scrollTo(0, scrollTop);
-      }
-    });
-  }
+  //       // ✅ Emitting only the relevant array instead of the whole object:
+  //       this.handleResultTabData.emit(this._data);
+
+  //       // ✅ Updating count if needed:
+  //       this._currentChildAPIBody = {
+  //         ...this._currentChildAPIBody,
+  //         count: resultData?.orange_book_us_count
+  //       };
+
+  //       this.handleSetLoading.emit(false);
+  //       window.scrollTo(0, scrollTop);
+
+  //       // ✅ Trigger change detection if using OnPush:
+  //       this.cdr.detectChanges();
+  //     },
+  //     error: (err) => {
+  //       console.error(`[API] Error filtering on ${filterKey}:`, err);
+  //       this._currentChildAPIBody.filter_enable = false;
+  //       this.handleSetLoading.emit(false);
+  //       window.scrollTo(0, scrollTop);
+  //     }
+  //   });
+  // }
   sortPatentData(data: any[], order: string): any[] {
     if (!Array.isArray(data)) return [];
 

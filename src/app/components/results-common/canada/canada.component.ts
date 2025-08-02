@@ -145,20 +145,29 @@ export class CanadaComponent implements OnInit {
 
     this.mainSearchService.canadaApprovalSearchSpecific(this.canadaPatentApiBody).subscribe({
       next: (res: any) => {
-        const hcData = res?.data?.health_canada_data || [];
-
-        const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
-
-        const productFilters = getUnique(hcData.map(item => item.product_name));
-        const strengthFilters = getUnique(hcData.map(item => item.strength));
-        const companyFiltersRaw = getUnique(hcData.map(item => item.company));
-        const dosageFilters = getUnique(hcData.map(item => item.dosage_forms));
+        console.log('📥 ---------------sdjisgjishjd---------', res.data);
 
 
+        const productFilters = res?.data?.product_name?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const strengthFilters = res?.data?.product_name?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const companyFiltersRaw = res?.data?.company?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const dosageFilters = res?.data?.dosage_forms?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
         this.canadaPatentFilters = {
           productFilters,
           strengthFilters,
-          CompanyFilters: companyFiltersRaw.map(name => ({ name, value: name })),
+          CompanyFilters: companyFiltersRaw,
           DosageFilters: dosageFilters
         };
 
