@@ -34,9 +34,6 @@ export class IndianMedicineCardComponent implements OnInit, OnDestroy {
     if (value && Object.keys(value).length > 0) {
       IndianMedicineCardComponent.apiCallCount++; // Increment the static counter
       this.localCount = IndianMedicineCardComponent.apiCallCount; // Assign to local instance
-
-
-
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
 

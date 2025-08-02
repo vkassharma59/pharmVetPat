@@ -1,53 +1,47 @@
-  <div  class="child-route-count-wrapper justify-between">
-    <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
-      Total Records : {{ _currentChildAPIBody?.count }}
-    </button>
-    <!-- <div class="flex flex-wrap gap-3">
-      <div class="dropdown" *ngFor="let configData of filterConfigs" #dropdownRef>
-       
-        <button class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
-          type="button" id="configData.key" (click)="onFilterButtonClick(configData.key)">
-          {{ configData.label | truncate:20 }}
-        </button>
-
-        <ul *ngIf="configData.dropdownState" class="dropdown-menu w-66 max-h-60 overflow-y-auto z-30 p-2">
-          <li (click)="handleSelectFilter(configData.key, '')"
-            class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
-            <span class="block text-sm font-medium text-gray-700">View All</span>
-          </li>
-          <li *ngFor="let data of dmfFilters[configData.dataKey]"
-            (click)="handleSelectFilter(configData.key, data?.value ,data?.name )">
-            <span class="block text-sm whitespace-normal break-words leading-snug text-gray-800">
-              {{ data?.name || data?.value }}
-            </span>
-          </li>
-        </ul>
-      </div>
-
-
-     
-      <button (click)="clear()" class="clear btn btn-outline-primary">
-        <i class="fa-solid fa-rotate"></i>
+<div class="child-route-count-wrapper justify-between">
+  <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
+    Total Records : {{ _currentChildAPIBody?.count }}
+  </button>
+  <div class="flex flex-wrap gap-3">
+    <div class="dropdown" *ngFor="let configData of filterConfigs" #dropdownRef>
+      <button class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
+        type="button" id="configData.key" (click)="onFilterButtonClick(configData.key)">
+        {{ configData.label | truncate:20 }}
       </button>
-    </div> -->
+
+      <ul *ngIf="configData.dropdownState" class="dropdown-menu w-66 max-h-60 overflow-y-auto z-30 p-2">
+        <li (click)="handleSelectFilter(configData.key, '')" class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
+          <span class="block text-sm font-medium text-gray-700">View All</span>
+        </li>
+        <li *ngFor="let data of dmfFilters[configData.dataKey]"
+          (click)="handleSelectFilter(configData.key, data?.value ,data?.name )">
+          <span class="block text-sm whitespace-normal break-words leading-snug text-gray-800">
+            {{ data?.name || data?.value }}
+          </span>
+        </li>
+      </ul>
+    </div>
+    <button (click)="clear()" class="clear btn btn-outline-primary">
+      <i class="fa-solid fa-rotate"></i>
+    </button>
   </div>
-  <ng-container *ngIf="_data?.length  > 0 ; else noData">
+
+</div>
+<ng-container *ngIf="_data?.length  > 0 ; else noData">
   <ng-container *ngFor="let dataItem of _data; let i = index">
     <div class="py-4">
       <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
         <span
           class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-normal h-[37px] flex justify-center items-center">
-        Drug Master File (DMF) {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
-       </span>
+          Drug Master File (DMF) {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
+        </span>
       </div>
     </div>
-    <app-dmf-card [data]="dataItem"   [countryConfig]="countryConfigRaw" 
-     ></app-dmf-card>
+    <app-dmf-card [data]="dataItem" [countryConfig]="countryConfigRaw"></app-dmf-card>
   </ng-container>
   <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"
-    (handleChangeTabData)="handleResultTabData.emit($event)"
-    (setLoading)="handleSetLoading.emit($event)"
-  ></app-child-paging>
+     (handleChangeTabData)="onChildPagingDataUpdate($event)"
+    (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
 </ng-container>
 
 <ng-template #noData>
