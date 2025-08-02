@@ -1,4 +1,3 @@
-//import { Component, ElementRef, EventEmitter, HostListener, Input, Output, QueryList, ViewChildren } from '@angular/core';
 import { LoadingService } from '../../../services/loading-service/loading.service';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { Auth_operations } from '../../../Utils/SetToken';
@@ -7,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { DmfCardComponent } from '../dmf-card/dmf-card.component';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
-import { Component, EventEmitter, Input, Output, ElementRef, ViewChild, HostListener, ViewChildren, QueryList } from '@angular/core'
+import { Component, EventEmitter, Input, Output, ElementRef, ViewChild, HostListener, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core'
 @Component({
   selector: 'app-dmf',
   standalone: true,
@@ -21,6 +20,7 @@ export class DmfComponent {
   @Output() handleSetLoading = new EventEmitter<boolean>();
   @ViewChild('dropdownMenu') dropdownMenuRef!: ElementRef;
   @ViewChildren('dropdownRef') dropdownRefs!: QueryList<ElementRef>;
+
   searchThrough: string = '';
   resultTabs: any = {};
   isOpen: boolean = false;
@@ -48,14 +48,14 @@ export class DmfComponent {
 
   @Input()
   get currentChildAPIBody() {
-    console.log('Getting currentChildAPIBody in Component:', this._currentChildAPIBody);
+
     return this._currentChildAPIBody;
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
     if (value) {
       this.dmfApiBody = JSON.parse(JSON.stringify(this._currentChildAPIBody)) || this._currentChildAPIBody;
-      //this.handleFetchFilters();
+      this.handleFetchFilters();
     }
   }
 
@@ -83,11 +83,11 @@ export class DmfComponent {
     }
   ];
 
-
   constructor(
     private utilityService: UtilityService,
     private mainSearchService: MainSearchService,
-    public loadingService: LoadingService
+    public loadingService: LoadingService,
+    private cdr: ChangeDetectorRef
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
@@ -148,6 +148,39 @@ export class DmfComponent {
   //   });
   // }
 
+  handleFetchFilters() {
+    this.dmfApiBody.filter_enable = true;
+    this.mainSearchService.dmfSearchSpecific(this.dmfApiBody).subscribe({
+      next: (result: any) => {
+        const countryConfig = result?.data?.country_dmf_holder || [];
+        this.countryConfigRaw = countryConfig;
+        const countryFilters = result?.data?.country_dmf_holder?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const stockstatusFilters = result?.data?.stock_status?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const dmfholderFilters = result?.data?.dmf_holder?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        this.dmfFilters = {
+          countryFilters: countryFilters, // ← Fix here
+          stockstatusFilters: stockstatusFilters,
+          dmfholderFilters: dmfholderFilters,
+        };
+        console.log('DMF Filters:', this.dmfFilters);
+        this.dmfApiBody.filter_enable = false;
+      },
+      error: (err) => {
+        console.error('Error fetching dmf filters:', err);
+        this.dmfApiBody.filter_enable = false;
+      }
+    });
+  }
+
   setFilterLabel(filterKey: string, label: string) {
     this.filterConfigs = this.filterConfigs.map((item) => {
       if (item.key === filterKey) {
@@ -164,7 +197,7 @@ export class DmfComponent {
     });
   }
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
-       this.handleSetLoading.emit(true);
+    this.handleSetLoading.emit(true);
     // this.dmfApiBody.filters = this.dmfApiBody.filters || {};
     if (value === '') {
       delete this.dmfApiBody.filters[filterKey];
@@ -179,19 +212,19 @@ export class DmfComponent {
       dropdownState: false
     }));
     // Log constructed filter object
-    
+
     this._currentChildAPIBody = {
       ...this.dmfApiBody,
       filters: { ...this.dmfApiBody.filters }
     };
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    
+
 
     this.mainSearchService.dmfSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         const resultData = res?.data || {};
-       
+
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
           count: resultData?.tech_supplier_count
@@ -240,7 +273,7 @@ export class DmfComponent {
           ...this._currentChildAPIBody,
           count: res?.data?.tech_supplier_count
         };
-       // this._data = res?.data?.tech_supplier_data || [];
+        this._data = res?.data?.tech_supplier_data || [];
 
         this.handleResultTabData.emit(res?.data);
         this.handleSetLoading.emit(false);
@@ -253,6 +286,17 @@ export class DmfComponent {
     });
 
     window.scrollTo(0, 0);
+  }
+  onChildPagingDataUpdate(eventData: any) {
+    this._data = eventData?.tech_supplier_data || [];
+
+    this._currentChildAPIBody = {
+      ...this._currentChildAPIBody,
+      count: eventData?.tech_supplier_count
+    };
+
+    this.cdr.detectChanges(); // Optional — use only if UI isn't updating as expected
+    this.handleResultTabData.emit(eventData); // Optional — needed if parent needs it
   }
   copyText(elementId: string, event: Event) {
     const el = event.currentTarget as HTMLElement;
@@ -273,8 +317,12 @@ export class DmfComponent {
       });
     }
   }
-  
 }
+
+
+
+
+
 
 
 
