@@ -82,20 +82,20 @@ export class UsApprovalCardComponent {
   productColumns: any[] = [];
   productData: any[] = [];
   ngOnInit() {
-    this.http.get('API_ENDPOINT_HERE').subscribe((res: any) => {
-      this.patentColumns = res?.data?.patentColumnList || [];
-      this.patentData = res?.data?.patentData || []; // assuming this is how patent rows come
-      if (UsApprovalCardComponent.apiCallCount === 0) {
-        UsApprovalCardComponent.apiCallCount = 0;
-      }
-    });
-    this.http.get('API_ENDPOINT_HEREeeee').subscribe((res: any) => {
-      this.productColumns = res?.data?.productColumnList || [];
-      this.productData = res?.data?.productData || []; // assuming this is how product rows come
-      if (UsApprovalCardComponent.apiCallCount === 0) {
-        UsApprovalCardComponent.apiCallCount = 0;
-      }
-    });
+    // this.http.get('API_ENDPOINT_HERE').subscribe((res: any) => {
+    //   this.patentColumns = res?.data?.patentColumnList || [];
+    //   this.patentData = res?.data?.patentData || []; // assuming this is how patent rows come
+    //   if (UsApprovalCardComponent.apiCallCount === 0) {
+    //     UsApprovalCardComponent.apiCallCount = 0;
+    //   }
+    // });
+    // this.http.get('API_ENDPOINT_HEREeeee').subscribe((res: any) => {
+    //   this.productColumns = res?.data?.productColumnList || [];
+    //   this.productData = res?.data?.productData || []; // assuming this is how product rows come
+    //   if (UsApprovalCardComponent.apiCallCount === 0) {
+    //     UsApprovalCardComponent.apiCallCount = 0;
+    //   }
+    // });
   }
 
   ngOnChanges() {

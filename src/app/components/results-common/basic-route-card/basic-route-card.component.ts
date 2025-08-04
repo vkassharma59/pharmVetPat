@@ -58,7 +58,7 @@ export class BasicRouteCardComponent {
     }
   }
   viewProductHighlight: boolean = false;
-  MoreApplicationInfo: any = false;
+  MoreApplicationInfo: boolean = false;
 
   constructor(
     private dialog: MatDialog,

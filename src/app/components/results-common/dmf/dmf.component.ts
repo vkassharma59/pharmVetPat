@@ -15,11 +15,13 @@ import { Component, EventEmitter, Input, Output, ElementRef, ViewChild, HostList
   styleUrl: './dmf.component.css'
 })
 
+
 export class DmfComponent {
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
   @ViewChild('dropdownMenu') dropdownMenuRef!: ElementRef;
   @ViewChildren('dropdownRef') dropdownRefs!: QueryList<ElementRef>;
+
 
   searchThrough: string = '';
   resultTabs: any = {};
@@ -218,13 +220,9 @@ export class DmfComponent {
       filters: { ...this.dmfApiBody.filters }
     };
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-
-
     this.mainSearchService.dmfSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         const resultData = res?.data || {};
-
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
           count: resultData?.tech_supplier_count
@@ -285,7 +283,7 @@ export class DmfComponent {
       }
     });
 
-    window.scrollTo(0, 0);
+  window.scrollTo(0, 0);
   }
   onChildPagingDataUpdate(eventData: any) {
     this._data = eventData?.tech_supplier_data || [];
@@ -318,6 +316,11 @@ export class DmfComponent {
     }
   }
 }
+
+
+
+
+
 
 
 
