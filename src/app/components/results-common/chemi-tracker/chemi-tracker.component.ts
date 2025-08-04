@@ -83,7 +83,7 @@ export class ChemiTrackerComponent {
     this.chemiAPIBody.filter_enable = true;
     this.mainSearchService.chemiTrackerSearchSpecific(this.chemiAPIBody).subscribe({
       next: (res) => {
-        console.log('🔍 Formulation Filter Values (dummy_6):', res?.data?.dummy_6);
+        console.log('🔍 Formulation Filter Values (dummy_6):', res?.data);
         this.countryFilters = res?.data?.country_of_company;
         this.foundationsFilters = res?.data?.dummy_6;
         this.chemiAPIBody.filter_enable = false;
