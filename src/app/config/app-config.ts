@@ -76,8 +76,8 @@ export const AppConfigValues: AppConfig = {
         columnList: `${appUrl.apiUrl}/orange-book-us/column-list`,
       },
       veterinaryUsApproval: {
-        searchSpecific: `${appUrl.devApiUrl}/green-book-us/search-specific`,
-        columnList: `${appUrl.devApiUrl}/green-book-us/column-list`,
+        searchSpecific: `${appUrl.apiUrl}/green-book-us/search-specific`,
+        columnList: `${appUrl.apiUrl}/green-book-us/column-list`,
       },
       activePatent: {
         searchSpecific: `${appUrl.apiUrl}/active-patent/search-specific`,
@@ -96,8 +96,8 @@ export const AppConfigValues: AppConfig = {
         columnList: `${appUrl.apiUrl}/litigation/column-list`,
       },
       spcDb: {
-        searchSpecific: `${appUrl.apiUrl}/spc/search-specific`,
-        columnList: `${appUrl.apiUrl}/spc/column-list`,
+        searchSpecific: `${appUrl.devApiUrl}/spc/search-specific`,
+        columnList: `${appUrl.devApiUrl}/spc/column-list`,
       },
       gppdDb: {
         searchSpecific: `${appUrl.apiUrl}/gppd/search-specific`,

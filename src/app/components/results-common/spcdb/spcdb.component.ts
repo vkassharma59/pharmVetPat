@@ -143,14 +143,15 @@ export class SpcdbComponent implements OnChanges {
     this.spcdApiBody.filter_enable = true;
     this.mainSearchService.spcdbSearchSpecific(this.spcdApiBody).subscribe({
       next: (res: any) => {
-        const countryFilters = res?.data?.country?.map(item => ({
+        console.log("fdhrdhxdr",res.data)
+       const countryFilters = res?.data?.country?.map(item => ({
           name: item.name,
           value: item.value
         })) || [];
         this.spcdFilters = {
           countryFilters: countryFilters,
         };
-
+        console.log("fdhrdhxdr", this.spcdFilters);
         this.spcdApiBody.filter_enable = false;
       },
       error: (err) => {

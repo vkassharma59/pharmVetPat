@@ -7,33 +7,37 @@
     </button>
   </div>
  <!-- Right: Filters and Reset -->
-  <div class="flex flex-wrap gap-3">
-        <div class="dropdown" *ngFor="let configData of filterConfigs" #dropdownRef>
-      <!-- Dropdown Button -->
-      <button class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
-        type="button" id="configData.key" (click)="onFilterButtonClick(configData.key)">
-        {{ configData.label | truncate:20 }}
-      </button>
-    
-      <!-- Dropdown Menu -->
-      <ul *ngIf="configData.dropdownState" class="dropdown-menu w-66 max-h-60 overflow-y-auto z-30 p-2">
-        <li (click)="handleSelectFilter(configData.key, '')" class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
-          <span class="block text-sm font-medium text-gray-700">View All</span>
-        </li>
-        <li *ngFor="let data of spcdApiBody[configData.dataKey]"
-          (click)="handleSelectFilter(configData.key, data.value, data.name)"
-          class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
-          <span class="block text-sm whitespace-normal break-words leading-snug text-gray-800">
-            {{ data?.name || data?.value || data }}
-          </span>
-        </li>
-      </ul>
-    </div>
-     <!-- Clear Button -->
-        <button (click)="clear()" class="clear btn btn-outline-primary">
-          <i class="fa-solid fa-rotate"></i>
+ <div class="flex flex-wrap gap-3">
+      <div class="dropdown" *ngFor="let configData of filterConfigs" #dropdownRef>
+        <!-- Dropdown Button -->
+        <button
+          class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
+          type="button"
+          (click)="onFilterButtonClick(configData.key)">
+          {{ configData.label | truncate:20 }}
         </button>
+  
+        <!-- Dropdown Menu -->
+        <ul *ngIf="configData.dropdownState" class="dropdown-menu w-66 max-h-60 overflow-y-auto z-30 p-2 bg-white border rounded shadow-md">
+          <li (click)="handleSelectFilter(configData.key, '')" class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
+            <span class="block text-sm font-medium text-gray-700">View All</span>
+          </li>
+  
+          <li *ngFor="let data of spcdFilters[configData.dataKey]"
+              (click)="handleSelectFilter(configData.key, data?.value , data?.name )"
+              class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
+            <span class="block text-sm whitespace-normal break-words leading-snug text-gray-800">
+              {{ data?.name || data?.value || data }}
+            </span>
+          </li>
+        </ul>
       </div>
+  
+      <!-- Clear Button -->
+      <button (click)="clear()" class="clear btn btn-outline-primary">
+        <i class="fa-solid fa-rotate"></i>
+      </button>
+    </div>
 </div>
 
   <div class="card-header text-white fs-5" style="  background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
@@ -57,7 +61,7 @@
 
 </ng-container>
 <ng-template #noData>
-  <div class="card">
+  <div class="card" style="background-color: white;">
     <div class="card-header text-white bg-primary" style="background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);">
       {{resultTabs.spcDb?.label}}
     </div>

@@ -134,7 +134,6 @@ export class UsComponent {
     } else {
       console.warn('⚠️ patentData is missing or not valid');
     }
-
     // Fix 2: Handle column definitions
     if (this.currentChildAPIBody?.columnList?.patentColumnList?.length) {
       this.patentColumns = this.currentChildAPIBody.columnList.patentColumnList;
@@ -154,7 +153,6 @@ export class UsComponent {
     this.filterConfigs = this.filterConfigs.map((item) => {
       if (item.key === filterKey) {
         const toggledState = !item.dropdownState;
-        console.log(`[Dropdown] Toggling dropdown for '${filterKey}':`, toggledState ? 'OPEN' : 'CLOSED');
         return { ...item, dropdownState: toggledState };
       } else {
         return { ...item, dropdownState: false };
@@ -163,28 +161,38 @@ export class UsComponent {
   }
 
   handleFetchFilters() {
+    this.usApiBody.filter_enable = true;
     this.mainSearchService.usApprovalSearchSpecific(this.usApiBody).subscribe({
       next: (res: any) => {
-        const hcData = res?.data?.orange_book_us_data || [];
-        console.log('[Filters] Fetched filters from API:', hcData.length, 'records');
-
-        const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
-
-        const applFilters = getUnique(hcData.map(item => item.appl_type));
-        const strengthFilters = getUnique(hcData.map(item => item.strength));
-        const rldFilters = getUnique(hcData.map(item => item.rld));
-        const applicantFilters = getUnique(hcData.map(item => item.applicant));
-        const ingredientFilters = getUnique(hcData.map(item => item.ingredient));
-
+        const applFilters = res?.data?.appl_type?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const strengthFilters = res?.data?.strength?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const rldFilters = res?.data?.rld?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const applicantFilters = res?.data?.applicant?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const ingredientFilters = res?.data?.ingredient?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
         this.usFilters = {
           applFilters,
           strengthFilters,
-          rldFilters: rldFilters.map(name => ({ name, value: name })),
+          rldFilters: rldFilters,
           applicantFilters,
-          ingredientFilters: ingredientFilters.map(name => ({ name, value: name }))
+          ingredientFilters: ingredientFilters,
         };
-        console.log('[Filters] Assigned filter data:', this.usFilters);
-        this.cdr.detectChanges();
+      this.usApiBody.filter_enable = false;
+
       },
       error: (err) => {
         console.error('❌ Error fetching filters from API:', err);
@@ -213,9 +221,8 @@ export class UsComponent {
   }
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
-    console.log(`[Filter] Selected key: ${filterKey}, value: ${value}, label: ${name}`);
     this.handleSetLoading.emit(true);
-    this.usApiBody.filters = this.usApiBody.filters || {};
+   // this.usApiBody.filters = this.usApiBody.filters || {};
 
     if (value === '') {
       delete this.usApiBody.filters[filterKey];
@@ -235,32 +242,19 @@ export class UsComponent {
       filters: { ...this.usApiBody.filters }
     };
     console.log(`[API] Current API body for ${filterKey}:`, this._currentChildAPIBody);
-
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
     this.mainSearchService.usApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         console.log(`[API] Filtered result for ${filterKey}:`, res?.data);
-
-        let resultData = res?.data || {};
-
-        // ✅ Updating the local data property:
-        this._data = resultData.orange_book_us_data || [];
-
-        // ✅ Emitting only the relevant array instead of the whole object:
-        this.handleResultTabData.emit(this._data);
-
+       const resultData = res?.data || {};
         // ✅ Updating count if needed:
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
           count: resultData?.orange_book_us_count
         };
-
+        this._data = resultData?.orange_book_us_data || [];
+        this.handleResultTabData.emit(resultData);
         this.handleSetLoading.emit(false);
-        window.scrollTo(0, scrollTop);
-
-        // ✅ Trigger change detection if using OnPush:
-        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error(`[API] Error filtering on ${filterKey}:`, err);
@@ -312,7 +306,7 @@ export class UsComponent {
           ...this._currentChildAPIBody,
           count: res?.data?.orange_book_us_count
         };
-        this.searchByTable = true;
+         this._data = res?.data?.orange_book_us_data || [];
         this.handleResultTabData.emit(res.data);
         this.handleSetLoading.emit(false);
       },

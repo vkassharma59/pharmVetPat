@@ -176,18 +176,6 @@ export class ImpComponent {
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     this.handleSetLoading.emit(true);
-
-    //    if (filterKey === 'order_by') {
-    //   this.impPatentApiBody.order_by = value;
-    // } else {
-    //   if (value === '') {
-    //     delete this.impPatentApiBody.filters[filterKey];
-    //     this.setFilterLabel(filterKey, '');
-    //   } else {
-    //     this.impPatentApiBody.filters[filterKey] = value;
-    //     this.setFilterLabel(filterKey, name || '');
-    //   }
-    // }
     // Handle `order_by` separately
     if (filterKey === 'order_by') {
       // Map display label to backend value
@@ -211,18 +199,17 @@ export class ImpComponent {
         this.setFilterLabel(filterKey, name || '');
       }
     }
-
-
-
+     // Close all dropdowns
+    this.filterConfigs = this.filterConfigs.map(item => ({
+      ...item,
+      dropdownState: false
+    }));
     this._currentChildAPIBody = {
       ...this.impPatentApiBody,
       filters: { ...this.impPatentApiBody.filters },
       order_by: this.impPatentApiBody.order_by || ''
     };
-    
-
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
+     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     this.mainSearchService.impPatentsSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         let resultData = res?.data || {};
@@ -230,6 +217,7 @@ export class ImpComponent {
           ...this._currentChildAPIBody,
           count: resultData?.imp_patent_count
         };
+        this._data = resultData?.imp_patent_data || [];
 
         this.handleResultTabData.emit(resultData);
         this.handleSetLoading.emit(false);

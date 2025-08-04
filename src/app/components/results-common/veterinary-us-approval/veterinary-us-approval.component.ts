@@ -246,6 +246,7 @@ export class VeterinaryUsApprovalComponent {
           ...this._currentChildAPIBody,
           count: res?.data?.green_book_us_count
         };
+       this._data = res?.data?.green_book_us_data || [];
         console.log('📦 [clear] Refreshed data:', res.data);
         this.handleResultTabData.emit(res.data);
         this.handleSetLoading.emit(false);
