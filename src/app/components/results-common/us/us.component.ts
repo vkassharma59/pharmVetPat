@@ -159,7 +159,6 @@ export class UsComponent {
       }
     });
   }
-
   handleFetchFilters() {
     this.usApiBody.filter_enable = true;
     this.mainSearchService.usApprovalSearchSpecific(this.usApiBody).subscribe({
@@ -192,16 +191,14 @@ export class UsComponent {
           ingredientFilters: ingredientFilters,
         };
       this.usApiBody.filter_enable = false;
-
       },
       error: (err) => {
-        console.error('❌ Error fetching filters from API:', err);
+        console.error('[Filters] Error fetching US filters:', err);
         this.usApiBody.filter_enable = false;
       }
     });
   }
-
-
+  
   setFilterLabel(filterKey: string, label: string) {
     this.filterConfigs = this.filterConfigs.map((item) => {
       if (item.key === filterKey) {
@@ -219,11 +216,9 @@ export class UsComponent {
       return item;
     });
   }
-
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     this.handleSetLoading.emit(true);
    // this.usApiBody.filters = this.usApiBody.filters || {};
-
     if (value === '') {
       delete this.usApiBody.filters[filterKey];
       this.setFilterLabel(filterKey, '');
@@ -264,6 +259,7 @@ export class UsComponent {
       }
     });
   }
+
   sortPatentData(data: any[], order: string): any[] {
     if (!Array.isArray(data)) return [];
 
