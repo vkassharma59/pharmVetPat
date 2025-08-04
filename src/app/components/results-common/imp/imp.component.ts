@@ -181,7 +181,7 @@ export class ImpComponent {
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     this.handleSetLoading.emit(true);
-
+    // Handle `order_by` separately
     if (filterKey === 'order_by') {
       let mappedOrderBy = '';
       if (value === 'Newest') {
@@ -205,22 +205,17 @@ export class ImpComponent {
         this.setFilterLabel(filterKey, name || '');
       }
     }
-
+     // Close all dropdowns
     this.filterConfigs = this.filterConfigs.map(item => ({
       ...item,
       dropdownState: false
     }));
-
     this._currentChildAPIBody = {
       ...this.impPatentApiBody,
       filters: { ...this.impPatentApiBody.filters },
       order_by: this.impPatentApiBody.order_by || ''
     };
-
-    console.log('📦 Updated API Body:', this._currentChildAPIBody);
-
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
+     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     this.mainSearchService.impPatentsSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         let resultData = res?.data || {};
@@ -228,6 +223,7 @@ export class ImpComponent {
           ...this._currentChildAPIBody,
           count: resultData?.imp_patent_count
         };
+        this._data = resultData?.imp_patent_data || [];
         this._data = resultData?.imp_patent_data || [];
 
         this.handleResultTabData.emit(resultData);

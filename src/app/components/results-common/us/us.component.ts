@@ -183,14 +183,37 @@ export class UsComponent {
           name: item.name,
           value: item.value
         })) || [];
+        const applFilters = res?.data?.appl_type?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const strengthFilters = res?.data?.strength?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const rldFilters = res?.data?.rld?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const applicantFilters = res?.data?.applicant?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const ingredientFilters = res?.data?.ingredient?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
         this.usFilters = {
           applFilters,
           strengthFilters,
           rldFilters: rldFilters,
+          rldFilters: rldFilters,
           applicantFilters,
+          ingredientFilters: ingredientFilters,
           ingredientFilters: ingredientFilters,
         };
       this.usApiBody.filter_enable = false;
+
       },
       error: (err) => {
         console.error('[Filters] Error fetching US filters:', err);
@@ -219,6 +242,7 @@ export class UsComponent {
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     this.handleSetLoading.emit(true);
    // this.usApiBody.filters = this.usApiBody.filters || {};
+
     if (value === '') {
       delete this.usApiBody.filters[filterKey];
       this.setFilterLabel(filterKey, '');
@@ -259,7 +283,6 @@ export class UsComponent {
       }
     });
   }
-
   sortPatentData(data: any[], order: string): any[] {
     if (!Array.isArray(data)) return [];
 
@@ -302,6 +325,7 @@ export class UsComponent {
           ...this._currentChildAPIBody,
           count: res?.data?.orange_book_us_count
         };
+         this._data = res?.data?.orange_book_us_data || [];
          this._data = res?.data?.orange_book_us_data || [];
         this.handleResultTabData.emit(res.data);
         this.handleSetLoading.emit(false);
