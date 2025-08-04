@@ -210,11 +210,17 @@ export class ImpComponent {
       ...item,
       dropdownState: false
     }));
+     // Close all dropdowns
+    this.filterConfigs = this.filterConfigs.map(item => ({
+      ...item,
+      dropdownState: false
+    }));
     this._currentChildAPIBody = {
       ...this.impPatentApiBody,
       filters: { ...this.impPatentApiBody.filters },
       order_by: this.impPatentApiBody.order_by || ''
     };
+     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     this.mainSearchService.impPatentsSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
@@ -223,7 +229,6 @@ export class ImpComponent {
           ...this._currentChildAPIBody,
           count: resultData?.imp_patent_count
         };
-        this._data = resultData?.imp_patent_data || [];
         this._data = resultData?.imp_patent_data || [];
 
         this.handleResultTabData.emit(resultData);
