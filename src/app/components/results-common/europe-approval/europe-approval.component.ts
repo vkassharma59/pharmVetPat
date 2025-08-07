@@ -47,7 +47,15 @@ export class EuropeApprovalComponent {
       dataKey: 'marketFilters',
       filterType: 'marketing_authorisation_holder',
       dropdownState: false
-    }];
+    },
+    {
+      key: 'active_substance',
+      label: 'Product Name ',
+      dataKey: 'productFilters',
+      filterType: 'active_substance',
+      dropdownState: false
+    }
+  ];
   @HostListener('document:mousedown', ['$event'])
   onClickOutside(event: MouseEvent) {
     const clickedInsideAny = this.dropdownRefs?.some((dropdown: ElementRef) =>
@@ -95,8 +103,12 @@ export class EuropeApprovalComponent {
       if (item.key === filterKey) {
         if (label === '') {
           switch (filterKey) {
-            case 'marketing_authorisation_holder': label = 'Select Marketing Authorization Holder'; break;
-
+            case 'marketing_authorisation_holder': 
+              label = 'Marketing Authorization Holder';
+              break; 
+            case 'active_substance': 
+              label = 'Product Name';
+              break;
           }
         }
         return { ...item, label: label };
@@ -118,14 +130,18 @@ export class EuropeApprovalComponent {
     this.mainSearchService.europeApprovalSearchSpecific(this.emaApiBody).subscribe({
       next: (result: any) => {
         const rawMarketData = result?.data?.marketing_authorisation_holder || [];
-  
+        const rawProductData = result?.data?.active_substance || [];
         const marketFilters = rawMarketData.map(item => ({
           name: item.name,
           value: item.value
         })) || [];
-  
+        const productFilters = rawProductData.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
         this.emaFilters = {
           marketFilters: marketFilters,
+          productFilters: productFilters
         };
   
         this.emaApiBody.filter_enable = false;
@@ -193,6 +209,7 @@ export class EuropeApprovalComponent {
       let defaultLabel = '';
       switch (config.key) {
         case 'marketing_authorisation_holder': defaultLabel = 'Marketing Authorisation Holder'; break;
+        case 'active_substance': defaultLabel = 'Product Name'; break;
       }
       return { ...config, label: defaultLabel, dropdownState: false };
     });
