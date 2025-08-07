@@ -352,7 +352,25 @@ export class ChildResultTabComponent {
 
   handleSearchFilterResults() {
     this.setLoading.emit(true);
+    this.OpenSuggestionBox = {
+      field_of_application: false,
+      active_ingredient: false,
+      company_name: false,
+      order_by: false,
+      route_type: false,
+      updation_date: false,
+      types_of_route: false
+    };
 
+    this.filterMap = {
+      openFieldOfApplicationsFilter: false,
+      openActiveIngredientFilter: false,
+      openCompanyFilter: false,
+      openOrderfilter: false,
+      openRouteFilter: false,
+      openUpdateDateFilter: false,
+      openTypeOfRouteFilter: false
+    };
     const body = this._currentAPIData.body;
     body.page_no = 1;
     body.filter_enable = false;
@@ -395,42 +413,42 @@ export class ChildResultTabComponent {
     // this.getFilteredDataFromAPI(); 
   }
   handleCheckFilter(key: string, selectedValue: string): void {
-  const allOptions = this[`${key}_filters`] || [];
+    const allOptions = this[`${key}_filters`] || [];
 
-  // For company_name, match related branches using base name
-  let valuesToToggle: string[] = [];
-  if (key === 'company_name') {
-    const baseName = selectedValue.split(' - ')[0].trim();
-    valuesToToggle = allOptions
-      .filter(option => option.name.startsWith(baseName))
-      .map(option => option.value);
-  } else {
-    valuesToToggle = [selectedValue];
-  }
+    // For company_name, match related branches using base name
+    let valuesToToggle: string[] = [];
+    if (key === 'company_name') {
+      const baseName = selectedValue.split(' - ')[0].trim();
+      valuesToToggle = allOptions
+        .filter(option => option.name.startsWith(baseName))
+        .map(option => option.value);
+    } else {
+      valuesToToggle = [selectedValue];
+    }
 
-  const allSelected = valuesToToggle.every(value =>
-    this.FilterValues[key].includes(value)
-  );
-
-  if (allSelected) {
-    this.FilterValues[key] = this.FilterValues[key].filter(
-      value => !valuesToToggle.includes(value)
+    const allSelected = valuesToToggle.every(value =>
+      this.FilterValues[key].includes(value)
     );
-  } else {
-    valuesToToggle.forEach(value => {
-      if (!this.FilterValues[key].includes(value)) {
-        this.FilterValues[key].push(value);
-      }
-    });
+
+    if (allSelected) {
+      this.FilterValues[key] = this.FilterValues[key].filter(
+        value => !valuesToToggle.includes(value)
+      );
+    } else {
+      valuesToToggle.forEach(value => {
+        if (!this.FilterValues[key].includes(value)) {
+          this.FilterValues[key].push(value);
+        }
+      });
+    }
+
+    this.updateChildFilterData();
   }
 
-  this.updateChildFilterData();
-}
-
-getFieldApplicationLabel(value: string): string {
-  const match = this.field_of_applications_filters.find(opt => opt.value === value);
-  return match ? match.name : value;
-}
+  getFieldApplicationLabel(value: string): string {
+    const match = this.field_of_applications_filters.find(opt => opt.value === value);
+    return match ? match.name : value;
+  }
 
   emitCombinedFilters(): void {
     this.childFilteredData.emit(this.FilterValues);
