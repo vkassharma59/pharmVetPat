@@ -61,7 +61,8 @@
           <input id="order_by" [(ngModel)]="SearchFilterValues.order_by"
             (input)="handleSearchFilter('order_by', 'order_filters')" [value]="SearchFilterValues.order_by"
             (blur)="OnBlur('order_by')"
-            class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
+            class="uppercase px-1 py-2 text-left w-full rounded-md text-xs hover:bg-[#0032A0] hover:text-white"
+            
             placeholder="Search Filter" />
           <div *ngIf="order_filters && order_filters?.length > 0" class="overflow-y-auto max-h-[35vh] my-2">
             <button (click)="handleCheckFilter('order_by', option.value)" *ngFor="let option of order_filters"

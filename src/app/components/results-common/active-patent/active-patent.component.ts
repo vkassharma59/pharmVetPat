@@ -130,13 +130,13 @@ export class ActivePatentComponent implements OnChanges {
   lastClickedFilterKey: string | null = null;
 
   filterConfigs = [
-    {
-      key: 'order',
-      label: 'Order By',
-      dataKey: 'order',
-      filterType: 'order',
-      dropdownState: false
-    },
+    // {
+    //   key: 'order',
+    //   label: 'Order By',
+    //   dataKey: 'order',
+    //   filterType: 'order',
+    //   dropdownState: false
+    // },
     {
       key: 'patent_type',
       label: 'Patent Type',
@@ -284,7 +284,7 @@ export class ActivePatentComponent implements OnChanges {
     this.filterConfigs = this.filterConfigs.map(config => {
       let defaultLabel = '';
       switch (config.key) {
-        case 'order': defaultLabel = 'Order By'; break;
+        // case 'order': defaultLabel = 'Order By'; break;
         case 'patent_type': defaultLabel = 'Patent Type'; break;
       }
       return { ...config, label: defaultLabel, dropdownState: false };

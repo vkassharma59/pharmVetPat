@@ -117,13 +117,13 @@ export class NonPatentComponent implements OnChanges {
   lastClickedFilterKey: string | null = null;
 
   filterConfigs = [
-    {
-      key: 'order',
-      label: 'Order By',
-      dataKey: 'order',
-      filterType: 'order',
-      dropdownState: false
-    },
+    // {
+    //   key: 'order',
+    //   label: 'Order By',
+    //   dataKey: 'order',
+    //   filterType: 'order',
+    //   dropdownState: false
+    // },
     {
       key: "concepts",
       label: 'View All Non Patent Concepts',
@@ -261,7 +261,7 @@ export class NonPatentComponent implements OnChanges {
     this.filterConfigs = this.filterConfigs.map(config => {
       let defaultLabel = '';
       switch (config.key) {
-        case 'order': defaultLabel = 'Order By'; break;
+        // case 'order': defaultLabel = 'Order By'; break;
         case 'concepts': defaultLabel = 'Concept Filter'; break;
       }
       return { ...config, label: defaultLabel, dropdownState: false };
