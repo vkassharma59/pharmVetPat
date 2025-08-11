@@ -182,35 +182,14 @@ export class UsComponent {
         const ingredientFilters = res?.data?.ingredient?.map(item => ({
           name: item.name,
           value: item.value
-        })) || [];
-        const applFilters = res?.data?.appl_type?.map(item => ({
-          name: item.name,
-          value: item.value
-        })) || [];
-        const strengthFilters = res?.data?.strength?.map(item => ({
-          name: item.name,
-          value: item.value
-        })) || [];
-        const rldFilters = res?.data?.rld?.map(item => ({
-          name: item.name,
-          value: item.value
-        })) || [];
-        const applicantFilters = res?.data?.applicant?.map(item => ({
-          name: item.name,
-          value: item.value
-        })) || [];
-        const ingredientFilters = res?.data?.ingredient?.map(item => ({
-          name: item.name,
-          value: item.value
-        })) || [];
+        })) || []; 
         this.usFilters = {
           applFilters,
           strengthFilters,
           rldFilters: rldFilters,
-          rldFilters: rldFilters,
           applicantFilters,
           ingredientFilters: ingredientFilters,
-          ingredientFilters: ingredientFilters,
+   
         };
       this.usApiBody.filter_enable = false;
 
