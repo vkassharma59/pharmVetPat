@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, HostListener, ElementRef } from '@angular/core';
 import { Chem_Robotics_QueryModalComponent } from '../../components/Chem_Robotics_QueryModal/Chem_Robotics_QueryModal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Input } from '@angular/core';
@@ -71,10 +71,38 @@ export class ResultTabComponent {
     private dialog: MatDialog,
     private UserPriviledgeService: UserPriviledgeService,
     private ServiceResultTabFiltersService: ServiceResultTabFiltersService,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private eRef: ElementRef
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
   }
+
+  @HostListener('document:click', ['$event'])
+  handleOutsideClick(event: MouseEvent) {
+    // If clicked outside the dropdown area
+    if (!this.eRef.nativeElement.contains(event.target)) {
+      this.OpenSuggestionBox = {
+        field_of_application: false,
+        active_ingredient: false,
+        company_name: false,
+        order_by: false,
+        route_type: false,
+        updation_date: false,
+        types_of_route: false
+      };
+
+      this.filterMap = {
+        openFieldOfApplicationsFilter: false,
+        openActiveIngredientFilter: false,
+        openCompanyFilter: false,
+        openOrderfilter: false,
+        openRouteFilter: false,
+        openUpdateDateFilter: false,
+        openTypeOfRouteFilter: false
+      };
+    }
+  }
+
   isTechnicalRoutesTabActive(): boolean {
     return this.CurrentAPIBody?.currentTab === this.resultTabs?.technicalRoutes?.name;
   }
@@ -195,7 +223,7 @@ export class ResultTabComponent {
     ExtraValue.splice(index, 1);
     this.FilterValues[filter] = ExtraValue;
   }
-fetchAndStoreVerticalLimits(): void {
+  fetchAndStoreVerticalLimits(): void {
     this.UserPriviledgeService.getverticalcategoryData().subscribe({
       next: (res: any) => {
         const verticals = res?.data?.verticals;
@@ -217,22 +245,22 @@ fetchAndStoreVerticalLimits(): void {
       error: err => console.error('Vertical limit fetch failed:', err),
     });
   }
- getReportLimit(): number {
-  // Step 1: Try privilege_json first
-  const privRaw = localStorage.getItem('priviledge_json');
-  const priv = JSON.parse(privRaw || '{}');
-  const privLimit = Number(priv['pharmvetpat-mongodb']?.ReportLimit);
-   if (!isNaN(privLimit) && privLimit > 0) {
-       return privLimit;
+  getReportLimit(): number {
+    // Step 1: Try privilege_json first
+    const privRaw = localStorage.getItem('priviledge_json');
+    const priv = JSON.parse(privRaw || '{}');
+    const privLimit = Number(priv['pharmvetpat-mongodb']?.ReportLimit);
+    if (!isNaN(privLimit) && privLimit > 0) {
+      return privLimit;
+    }
+    // Step 2: Try vertical report_limit from localStorage
+    const storedLimitRaw = localStorage.getItem('report_limit');
+    const storedLimit = Number(storedLimitRaw);
+    if (!isNaN(storedLimit) && storedLimit > 0) {
+      return storedLimit;
+    }
+    return 25;
   }
-  // Step 2: Try vertical report_limit from localStorage
-  const storedLimitRaw = localStorage.getItem('report_limit');
-  const storedLimit = Number(storedLimitRaw);
-   if (!isNaN(storedLimit) && storedLimit > 0) {
-       return storedLimit;
-  }
-  return 25;
-}
   handleGeneratePdf() {
     this.handlegenerateloading = true;
     this.handleLoading.emit(true);
@@ -304,8 +332,8 @@ fetchAndStoreVerticalLimits(): void {
                     let pdf_body = this.CurrentAPIBody;
 
                     pdf_body.body['report_download'] = true;
-                    pdf_body.body['limit'] =this.getReportLimit();
-                  //  priviledge_data?.['pharmvetpat-mongodb']?.ReportLimit;
+                    pdf_body.body['limit'] = this.getReportLimit();
+                    //  priviledge_data?.['pharmvetpat-mongodb']?.ReportLimit;
 
                     this.ServiceResultTabFiltersService.getGeneratePDF(
                       pdf_body
@@ -496,6 +524,26 @@ fetchAndStoreVerticalLimits(): void {
 
   handleSearchFilterResults() {
     this.handleLoading.emit(true);
+    // Close all filter dropdowns explicitly
+    this.OpenSuggestionBox = {
+      field_of_application: false,
+      active_ingredient: false,
+      company_name: false,
+      order_by: false,
+      route_type: false,
+      updation_date: false,
+      types_of_route: false
+    };
+
+    this.filterMap = {
+      openFieldOfApplicationsFilter: false,
+      openActiveIngredientFilter: false,
+      openCompanyFilter: false,
+      openOrderfilter: false,
+      openRouteFilter: false,
+      openUpdateDateFilter: false,
+      openTypeOfRouteFilter: false
+    };
     let body = this.CurrentAPIBody.body;
     body.filter_enable = false;
     if (this.FilterValues?.order_by?.length > 0)

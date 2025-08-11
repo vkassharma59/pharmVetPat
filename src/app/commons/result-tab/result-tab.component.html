@@ -1,7 +1,9 @@
 <div class="container mt-4 " style="background-color: aliceblue;">
   <div *ngIf="isTechnicalRoutesTabActive()" class="py-2">
     <div class="h-auto min-h-35 px-2 py-2 lg:px-2">
-      <button class="px-4 py-1 my-1 bg-[#F8FAFF] rounded-md font-semibold border-2 text-[#0032A0] border-[#0032A0] hover:bg-[#0032A0] hover:text-white button" (click)="handleBack()"> Back </button>
+      <button
+        class="px-4 py-1 my-1 bg-[#F8FAFF] rounded-md font-semibold border-2 text-[#0032A0] border-[#0032A0] hover:bg-[#0032A0] hover:text-white button"
+        (click)="handleBack()"> Back </button>
       <div class="flex justify-between items-center flex-wrap gap-4 pb-2">
         <h1 class="text-2xl font-extrabold gap-1">
           Total Results :
@@ -84,7 +86,7 @@
 
             <input id="order_by" [(ngModel)]="SearchFilterValues.order_by"
               (input)="handleSearchFilter('order_by', 'order_filters')" [value]="SearchFilterValues.order_by"
-              (blur)="OnBlur('order_by')"
+              
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
               placeholder="Search Filter" />
             <div *ngIf="order_filters && order_filters?.length > 0" class="overflow-y-auto max-h-[35vh] my-2">
@@ -139,7 +141,7 @@
             >
               {{ option.name }}
             </button> -->
-            <input id="active_ingredient" (blur)="OnBlur('active_ingredient')"
+            <input id="active_ingredient" 
               [(ngModel)]="SearchFilterValues.active_ingredient" (input)="
                 handleSearchFilter(
                   'active_ingredient',
@@ -205,7 +207,7 @@
               {{ option.name }}
             </button> -->
 
-            <input id="field_of_application" (blur)="OnBlur('field_of_application')"
+            <input id="field_of_application" 
               [(ngModel)]="SearchFilterValues.field_of_application" (input)="
                 handleSearchFilter(
                   'field_of_application',
@@ -214,7 +216,7 @@
               " [value]="SearchFilterValues.field_of_application"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
               placeholder="Search Filter" />
-            <div *ngIf="
+            <!-- <div *ngIf="
                 field_of_applications_filters &&
                 field_of_applications_filters?.length > 0
               " class="overflow-y-auto max-h-[35vh] my-2">
@@ -223,7 +225,16 @@
                 class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white">
                 {{ option.name }}
               </button>
-            </div>
+            </div> -->
+             <div *ngIf="field_of_applications_filters && field_of_applications_filters?.length > 0"
+            class="overflow-y-auto max-h-[35vh] my-2">
+            <label *ngFor="let option of field_of_applications_filters"
+              class="flex items-center px-2 py-1 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white cursor-pointer">
+              <input type="checkbox" [checked]="FilterValues.field_of_application?.includes(option.value)"
+                (change)="handleCheckFilter('field_of_application', option.value)" class="mr-2" />
+              {{ option.name }}
+            </label>
+          </div>
           </div>
         </div>
 
@@ -263,18 +274,27 @@
             >
               {{ option.name }}
             </button> -->
-            <input id="company_name" (blur)="OnBlur('company_name')" [(ngModel)]="SearchFilterValues.company_name"
+            <input id="company_name"  [(ngModel)]="SearchFilterValues.company_name"
               (input)="handleSearchFilter('company_name', 'company_name_filters')"
               [value]="SearchFilterValues.company_name"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
               placeholder="Search Filter" />
-            <div *ngIf="company_name_filters && company_name_filters?.length > 0"
+            <!-- <div *ngIf="company_name_filters && company_name_filters?.length > 0"
               class="overflow-y-auto max-h-[35vh] my-2">
               <button (click)="handleCheckFilter('company_name', option.value)"
                 *ngFor="let option of company_name_filters"
                 class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white">
                 {{ option.name }}
               </button>
+            </div> -->
+            <div *ngIf="company_name_filters && company_name_filters?.length > 0"
+              class="overflow-y-auto max-h-[35vh] my-2">
+              <label *ngFor="let option of company_name_filters"
+                class="flex items-center px-2 py-1 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white cursor-pointer">
+                <input type="checkbox" [checked]="FilterValues.company_name?.includes(option.value)"
+                  (change)="handleCheckFilter('company_name', option.value)" class="mr-2" />
+                {{ option.name }}
+              </label>
             </div>
           </div>
         </div>
@@ -319,7 +339,7 @@
               {{ option.name }}
             </button> -->
 
-            <input id="types_of_route" (blur)="OnBlur('types_of_route')" [(ngModel)]="SearchFilterValues.types_of_route"
+            <input id="types_of_route"  [(ngModel)]="SearchFilterValues.types_of_route"
               (input)="
                 handleSearchFilter('types_of_route', 'types_of_route_filters')
               " [value]="SearchFilterValues.types_of_route"
@@ -372,7 +392,7 @@
               {{ option.name }}
             </button> -->
 
-            <input id="route_type" (blur)="OnBlur('route_type')" [(ngModel)]="SearchFilterValues.route_type"
+            <input id="route_type"  [(ngModel)]="SearchFilterValues.route_type"
               (input)="handleSearchFilter('route_type', 'route_type_filters')" [value]="SearchFilterValues.route_type"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
               placeholder="Search Filter" />
@@ -424,7 +444,7 @@
               {{ getUpdationDate(option?.name) }}
             </button> -->
 
-            <input id="updation_date" (blur)="OnBlur('updation_date')" [(ngModel)]="SearchFilterValues.updation_date"
+            <input id="updation_date"  [(ngModel)]="SearchFilterValues.updation_date"
               (input)="handleSearchFilter('updation_date', 'update_date_filters')"
               [value]="SearchFilterValues.updation_date"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
@@ -482,7 +502,7 @@
             >
               {{ option.name }}
             </button> -->
-            <input id="order_by" (blur)="OnBlur('order_by')" [(ngModel)]="SearchFilterValues.order_by"
+            <input id="order_by"  [(ngModel)]="SearchFilterValues.order_by"
               (input)="handleSearchFilter('order_by', 'order_filters')" [value]="SearchFilterValues.order_by"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
               placeholder="Search Filter" />
@@ -535,7 +555,7 @@
             >
               {{ option.name }}
             </button> -->
-            <input id="active_ingredient" (blur)="OnBlur('active_ingredient')"
+            <input id="active_ingredient" 
               [(ngModel)]="SearchFilterValues.active_ingredient" (input)="
                 handleSearchFilter(
                   'active_ingredient',
@@ -599,7 +619,7 @@
               {{ option.name }}
             </button> -->
 
-            <input id="field_of_application" (blur)="OnBlur('field_of_application')"
+            <input id="field_of_application" 
               [(ngModel)]="SearchFilterValues.field_of_application" (input)="
                 handleSearchFilter(
                   'field_of_application',
@@ -608,7 +628,7 @@
               " [value]="SearchFilterValues.field_of_application"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
               placeholder="Search Filter" />
-            <div *ngIf="
+            <!-- <div *ngIf="
                 field_of_applications_filters &&
                 field_of_applications_filters?.length > 0
               " class="overflow-y-auto max-h-[35vh] my-2">
@@ -617,7 +637,16 @@
                 class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white">
                 {{ option.name }}
               </button>
-            </div>
+            </div> -->
+             <div *ngIf="field_of_applications_filters && field_of_applications_filters?.length > 0"
+            class="overflow-y-auto max-h-[35vh] my-2">
+            <label *ngFor="let option of field_of_applications_filters"
+              class="flex items-center px-2 py-1 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white cursor-pointer">
+              <input type="checkbox" [checked]="FilterValues.field_of_application?.includes(option.value)"
+                (change)="handleCheckFilter('field_of_application', option.value)" class="mr-2" />
+              {{ option.name }}
+            </label>
+          </div>
           </div>
         </div>
 
@@ -655,18 +684,27 @@
               {{ option.name }}
             </button> -->
 
-            <input id="company_name" (blur)="OnBlur('company_name')" [(ngModel)]="SearchFilterValues.company_name"
+            <input id="company_name"  [(ngModel)]="SearchFilterValues.company_name"
               (input)="handleSearchFilter('company_name', 'company_name_filters')"
               [value]="SearchFilterValues.company_name"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
               placeholder="Search Filter" />
-            <div *ngIf="company_name_filters && company_name_filters?.length > 0"
+            <!-- <div *ngIf="company_name_filters && company_name_filters?.length > 0"
               class="overflow-y-auto max-h-[35vh] my-2">
               <button (click)="handleCheckFilter('company_name', option.value)"
                 *ngFor="let option of company_name_filters"
                 class="px-1 py-2 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white">
                 {{ option.name }}
               </button>
+            </div> -->
+            <div *ngIf="company_name_filters && company_name_filters?.length > 0"
+              class="overflow-y-auto max-h-[35vh] my-2">
+              <label *ngFor="let option of company_name_filters"
+                class="flex items-center px-2 py-1 text-left w-full rounded-md text-xs text-wrap hover:bg-[#0032A0] hover:text-white cursor-pointer">
+                <input type="checkbox" [checked]="FilterValues.company_name?.includes(option.value)"
+                  (change)="handleCheckFilter('company_name', option.value)" class="mr-2" />
+                {{ option.name }}
+              </label>
             </div>
           </div>
         </div>
@@ -709,7 +747,7 @@
               {{ option.name }}
             </button> -->
 
-            <input id="types_of_route" (blur)="OnBlur('types_of_route')" [(ngModel)]="SearchFilterValues.types_of_route"
+            <input id="types_of_route"  [(ngModel)]="SearchFilterValues.types_of_route"
               (input)="
                 handleSearchFilter('types_of_route', 'types_of_route_filters')
               " [value]="SearchFilterValues.types_of_route"
@@ -758,7 +796,7 @@
             >
               {{ option.name }}
             </button> -->
-            <input id="route_type" (blur)="OnBlur('route_type')" [(ngModel)]="SearchFilterValues.route_type"
+            <input id="route_type"  [(ngModel)]="SearchFilterValues.route_type"
               (input)="handleSearchFilter('route_type', 'route_type_filters')" [value]="SearchFilterValues.route_type"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
               placeholder="Search Filter" />
@@ -805,7 +843,7 @@
             >
               {{ getUpdationDate(option?.name) }}
             </button> -->
-            <input id="updation_date" (blur)="OnBlur('updation_date')" [(ngModel)]="SearchFilterValues.updation_date"
+            <input id="updation_date"  [(ngModel)]="SearchFilterValues.updation_date"
               (input)="handleSearchFilter('updation_date', 'update_date_filters')"
               [value]="SearchFilterValues.updation_date"
               class="p-2 w-full focus:outline-none border border-gray-300 rounded-full text-sm"
