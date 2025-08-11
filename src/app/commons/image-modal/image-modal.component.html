@@ -6,13 +6,13 @@
     <!-- <button class="absolute top-2 right-2 text-sm px-3 py-1 bg-red-500 text-white rounded" (click)="closeModal()">
       Close
     </button> -->
-    <button class="absolute top-2 right-2 text-xl px-3 py-1 bg-red-500 text-white rounded" (click)="closeModal()">
+    <button class="absolute top-2 left-2 text-xl px-3 py-1 bg-red-500 text-white rounded" (click)="closeModal()">
       &times;
     </button>
 
 
     <!-- Zoom Buttons -->
-    <div *ngIf="showZoomControls" class="absolute top-2 left-2 flex gap-2 z-10">
+    <div *ngIf="showZoomControls" class="absolute top-2 right-2 flex gap-2 z-10">
       <button class="bg-blue-800 text-white px-4 py-1 rounded" (click)="zoomIn()">
         Zoom In
       </button>
@@ -22,20 +22,29 @@
     </div>
 
     <!-- Image container -->
-    <div class="flex items-center justify-center mt-10 overflow-auto">
+    <!-- <div class="flex items-center justify-center mt-10 overflow-auto">
       <div #mainDiv class="transition-transform duration-300 ease-in-out">
-        <!-- <img [src]="data.dataImage" alt="Zoomable Image" class="max-w-full max-h-[75vh] object-contain" /> -->
-        <!-- <img [src]="data.dataImage" alt="Zoomable Image" [style.transform]="'scale(' + currentZoom + ')'"
-          [style.transition]="'transform 0.3s ease-in-out'" class="object-contain max-w-full max-h-[75vh]"
-          style="width: auto; height: auto;" /> -->
         <img [src]="data.dataImage" alt="Zoomable Image" [style.transform]="'scale(' + currentZoom + ')'"
           [style.transition]="'transform 0.3s ease-in-out'" [ngClass]="{
     'max-w-full max-h-[75vh]': !data.compactView,
-    'w-[600px] h-auto max-h-[600px]': data.compactView
+    'w-[700px] h-auto max-h-[700px]': data.compactView
   }" class="object-contain" />
 
       </div>
+    </div> -->
+    <!-- Outer container -->
+    <div class="flex items-center justify-center mt-10">
+      <!-- Scrollable wrapper -->
+      <div class="overflow-auto max-w-full max-h-[80vh]">
+        <img [src]="data.dataImage" alt="Zoomable Image" [style.transform]="'scale(' + currentZoom + ')'"
+          [style.transition]="'transform 0.3s ease-in-out'" [style.transform-origin]="'center center'" [ngClass]="{
+       
+        'max-w-full max-h-[75vh]': currentZoom === 1 && !data.compactView,
+        'w-[600px] h-auto max-h-[600px]': currentZoom === 1 && data.compactView
+      }" class="object-contain" />
+      </div>
     </div>
+
 
   </div>
 </div>

@@ -88,19 +88,34 @@ export class ImageModalComponent {
     this.applyZoom();
   }
 
-  zoomIn() {
-    if (this.indexofArr < this.zoomArr.length - 1) {
-      this.indexofArr += 1;
-      this.applyZoom();
-    }
-  }
+  // zoomIn() {
+  //   if (this.indexofArr < this.zoomArr.length - 1) {
+  //     this.indexofArr += 1;
+  //     this.applyZoom();
+  //   }
+  // }
 
-  zoomOut() {
-    if (this.indexofArr > 0) {
-      this.indexofArr -= 1;
-      this.applyZoom();
-    }
+  // zoomOut() {
+  //   if (this.indexofArr > 0) {
+  //     this.indexofArr -= 1;
+  //     this.applyZoom();
+  //   }
+  // }
+zoomIn() {
+  if (this.indexofArr < this.zoomArr.length - 1) {
+    this.indexofArr++;
+   // this.currentZoom = this.zoomArr[this.indexofArr];
+    this.applyZoom();
   }
+}
+
+zoomOut() {
+  if (this.indexofArr > 0) {
+    this.indexofArr--;
+  //  this.currentZoom = this.zoomArr[this.indexofArr];
+   this.applyZoom();
+  }
+}
 
   applyZoom() {
     this.currentZoom = this.zoomArr[this.indexofArr];

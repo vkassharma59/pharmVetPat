@@ -36,18 +36,18 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
 
   @Output() dataFetchRequest = new EventEmitter<any>();
   @Input() columnDefs: any[] = [];
-  
+
   @Input() rowData: any[] = [];
   data?: {
     data?: any[]; // Replace `any` with your actual data type
   };
   isExportingCSV: boolean = false;
- 
+
   isExportingExcel: boolean = false;
 
   _currentChildAPIBody: any;
   loading = false;
- 
+
   displayedColumns: string[] = [];
   columnHeaders: { [key: string]: string } = {};
   filterableColumns: string[] = [];
@@ -115,17 +115,17 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
 
     }
   }
-    onFlagError(event: any) {
+  onFlagError(event: any) {
     event.target.src = 'assets/images/flag.png';
   }
- isISODate(value: any): boolean {
-  if (typeof value !== 'string') return false;
+  isISODate(value: any): boolean {
+    if (typeof value !== 'string') return false;
 
-  // ISO format flexible pattern (with optional milliseconds/timezone)
-  const isoPattern = /^\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
+    // ISO format flexible pattern (with optional milliseconds/timezone)
+    const isoPattern = /^\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
 
-  return isoPattern.test(value) && !isNaN(Date.parse(value.replace(' ', 'T')));
-}
+    return isoPattern.test(value) && !isNaN(Date.parse(value.replace(' ', 'T')));
+  }
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
@@ -142,6 +142,13 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     const container = document.querySelector('.scroll-container');
     if (container) {
       container.scrollBy({ left: direction === 'left' ? -150 : 150, behavior: 'smooth' });
+    }
+  }
+  onFilterInput(columnKey: string, value: string) {
+    if (value.trim() !== '') {
+      this.columnsSearch[columnKey] = value;
+    } else {
+      delete this.columnsSearch[columnKey];
     }
   }
 
@@ -170,11 +177,17 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
   getCountryUrl(value: any) {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country}.png`;
   }
-  clearFilter(column: string, input: HTMLInputElement) {
-    input.value = '';
-    delete this.columnsSearch[column];
+  // clearFilter(column: string, input: HTMLInputElement) {
+  //   input.value = '';
+  //   delete this.columnsSearch[column];
+  //   this.fetchData();
+  // }
+  clearFilter(columnKey: string, inputRef: HTMLInputElement) {
+    inputRef.value = '';
+    delete this.columnsSearch[columnKey];
     this.fetchData();
   }
+
   onCustomSort(column: number) {
     const existing = this.multiSortOrder.find(s => s.column === column);
     if (existing) {
