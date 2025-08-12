@@ -93,13 +93,13 @@ export class EximComponent implements OnChanges {
       filterType: 'TYPE',
       dropdownState: false
     },
-    {
-      key: 'order_by',
-      label: 'Order By',
-      dataKey: 'orderByFilters',
-      filterType: 'order_by',
-      dropdownState: false
-    },
+    // {
+    //   key: 'order_by',
+    //   label: 'Order By',
+    //   dataKey: 'orderByFilters',
+    //   filterType: 'order_by',
+    //   dropdownState: false
+    // },
     {
       key: 'yearmonth',
       label: 'All Year-Month',
@@ -363,7 +363,7 @@ export class EximComponent implements OnChanges {
         case 'yearmonth': defaultLabel = 'All Year-Month'; break;
         case 'exporter_name': defaultLabel = 'All Exporter'; break;
         case 'importer_name': defaultLabel = 'All Importer'; break;
-        case 'order_by': defaultLabel = 'Order  By'; break;
+        // case 'order_by': defaultLabel = 'Order  By'; break;
       }
       return { ...config, label: defaultLabel, dropdownState: false };
     });

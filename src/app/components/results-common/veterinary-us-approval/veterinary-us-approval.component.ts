@@ -1,36 +1,37 @@
 import { CommonModule } from '@angular/common';
-import { Component,EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { VeterinaryUsApprovalCardComponent } from '../veterinary-us-approval-card/veterinary-us-approval-card.component';
 import { ChildPagingComponent } from "../../../commons/child-paging/child-paging.component";
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { LoadingService } from '../../../services/loading-service/loading.service';
 import { Auth_operations } from '../../../Utils/SetToken';
-import { ElementRef,HostListener,ViewChildren,QueryList } from '@angular/core';
+import { ElementRef, HostListener, ViewChildren, QueryList } from '@angular/core';
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
 
 @Component({
   selector: 'app-veterinary-us-approval',
   standalone: true,
-  imports: [CommonModule, VeterinaryUsApprovalCardComponent, ChildPagingComponent,TruncatePipe],
+  imports: [CommonModule, VeterinaryUsApprovalCardComponent, ChildPagingComponent, TruncatePipe],
   templateUrl: './veterinary-us-approval.component.html',
   styleUrl: './veterinary-us-approval.component.css'
 })
 export class VeterinaryUsApprovalComponent {
   @ViewChildren('dropdownRef') dropdownRefs!: QueryList<ElementRef>;
   @Output() handleResultTabData = new EventEmitter<any>();
-   @Output() handleSetLoading = new EventEmitter<boolean>();
- 
+  @Output() handleSetLoading = new EventEmitter<boolean>();
+
   isPopupOpen = false;
   searchThrough: string = '';
   resultTabs: any = {};
+
   _currentChildAPIBody: any = {};
   _data: any = [];
-   @Input() index: any;
-   @Input() tabName?: string;
+  @Input() index: any;
+  @Input() tabName?: string;
   @Input()
   get data() {
-    console.log('get data called',this._data);
+    console.log('get data called', this._data);
     return this._data;
   }
   set data(value: any) {
@@ -39,14 +40,14 @@ export class VeterinaryUsApprovalComponent {
       this._data = value;
     }
   }
-   @Input()
+  @Input()
   get currentChildAPIBody() {
     return this._currentChildAPIBody;
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
     // if (value) {
-    //   this.ImpurityBody = JSON.parse(JSON.stringify(this._currentChildAPIBody)) || this._currentChildAPIBody;
+    //   this.vetenaryusApiBody = JSON.parse(JSON.stringify(this._currentChildAPIBody)) || this._currentChildAPIBody;
     //   this.handleFetchFilters();
     // }
   }
@@ -54,18 +55,18 @@ export class VeterinaryUsApprovalComponent {
   constructor(
     private utilityService: UtilityService,
     private mainSearchService: MainSearchService,
-    public loadingService: LoadingService
+    public loadingService: LoadingService,
+    private cdr: ChangeDetectorRef
+
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
   ngOnInit(): void {
-     console.log('get data called',this._data);
+    //  console.log('get data called',this._data);
     this.vetenaryusApiBody = { ...this.currentChildAPIBody };
     this.vetenaryusApiBody.filters = this.vetenaryusApiBody.filters || {};
-  
-    console.log('[ngOnInit] Initial vetenaryusApiBody:', JSON.stringify(this.vetenaryusApiBody, null, 2));
-  
+    //console.log('[ngOnInit] Initial vetenaryusApiBody:', JSON.stringify(this.vetenaryusApiBody, null, 2));
     this.handleFetchFilters();
   }
 
@@ -98,17 +99,17 @@ export class VeterinaryUsApprovalComponent {
   ];
   @HostListener('document:mousedown', ['$event'])
   onClickOutside(event: MouseEvent) {
-   const clickedInsideAny = this.dropdownRefs?.some((dropdown: ElementRef) =>
-     dropdown.nativeElement.contains(event.target)
-   );
- 
-   if (!clickedInsideAny) {
-     this.filterConfigs = this.filterConfigs.map(config => ({
-       ...config,
-       dropdownState: false
-     }));
-   }
- }
+    const clickedInsideAny = this.dropdownRefs?.some((dropdown: ElementRef) =>
+      dropdown.nativeElement.contains(event.target)
+    );
+
+    if (!clickedInsideAny) {
+      this.filterConfigs = this.filterConfigs.map(config => ({
+        ...config,
+        dropdownState: false
+      }));
+    }
+  }
 
   setFilterLabel(filterKey: string, label: string) {
     this.filterConfigs = this.filterConfigs.map((item) => {
@@ -136,37 +137,32 @@ export class VeterinaryUsApprovalComponent {
 
   handleFetchFilters() {
     this.vetenaryusApiBody.filter_enable = true;
-  
     this.mainSearchService.veterinaryusApprovalSearchSpecific(this.vetenaryusApiBody).subscribe({
- 
-      next: (res:any) => {  
-        const hcData = res?.data?.green_book_us_data || [];
-        console.log("✅ Full hcData length:", hcData.length);
-        const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
-        const ingredientFilters = getUnique(hcData.map(item => item.ingredient));
-        const tradeFilters = getUnique(hcData.map(item => item.trade_name));
-        const activeIngredientFilters = getUnique(hcData.map(item => item.active_ingredients));
-        
-        const formattedtradeFilters = tradeFilters.map((item: string) => ({
-          name: item,
-          value: item
-        }));
-        
+      next: (res: any) => {
+        console.log('📥 [handleFetchFilters] API response:', res);
+        const ingredientFilters = res?.data?.ingredient?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const activeIngredientFilters = res?.data?.active_ingredients?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const formattedtradeFilters = res?.data?.trade_name?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
         this.vetenaryusFilters = {
           ingredientFilters,
           activeIngredientFilters,
           tradeFilters: formattedtradeFilters
         };
-  
-        console.log('[handleFetchFilters] Final vetenaryusFilters object:', this.vetenaryusFilters);
-  
+        console.log('📦 [handleFetchFilters] Filters fetched:', this.vetenaryusFilters);
         this.vetenaryusApiBody.filter_enable = false;
-        console.log('[handleFetchFilters] Reset filter_enable to false');
       },
       error: (err) => {
         console.error('[handleFetchFilters] API call failed:', err);
         this.vetenaryusApiBody.filter_enable = false;
-        console.log('[handleFetchFilters] Reset filter_enable to false (on error)');
       }
     });
   }
@@ -183,24 +179,27 @@ export class VeterinaryUsApprovalComponent {
       this.vetenaryusApiBody.filters[filterKey] = value;
       this.setFilterLabel(filterKey, name || '');
     }
-
+    this.filterConfigs = this.filterConfigs.map(item => ({
+      ...item,
+      dropdownState: false
+    }));
     this._currentChildAPIBody = {
       ...this.vetenaryusApiBody,
       filters: { ...this.vetenaryusApiBody.filters }
     };
-
+    console.log('📦 [handleSelectFilter] Updated API Body:', this._currentChildAPIBody);
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
     this.mainSearchService.veterinaryusApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         console.log('📥 [handleSelectFilter] Filtered result received:', res?.data);
         const resultData = res?.data || {};
-
+        console.log('📦 [handleSelectFilter] Result data:', resultData);
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
           count: resultData?.green_book_us_count
         };
-
+        this._data = resultData?.green_book_us_data || [];
         this.handleResultTabData.emit(resultData);
         this.handleSetLoading.emit(false);
         window.scrollTo(0, scrollTop);
@@ -212,7 +211,16 @@ export class VeterinaryUsApprovalComponent {
       }
     });
   }
+  onChildPagingDataUpdate(eventData: any) {
+    this._data = eventData?.green_book_us_data || [];
 
+    this._currentChildAPIBody = {
+      ...this._currentChildAPIBody,
+      count: eventData?.green_book_us_count
+    };
+    this.cdr.detectChanges(); // Optional — use only if UI isn't updating as expected
+    this.handleResultTabData.emit(eventData); // Optional — needed if parent needs it
+  }
   clear() {
     console.log('🧹 Clearing filters...');
     this.filterConfigs = this.filterConfigs.map(config => {
@@ -238,6 +246,7 @@ export class VeterinaryUsApprovalComponent {
           ...this._currentChildAPIBody,
           count: res?.data?.green_book_us_count
         };
+       this._data = res?.data?.green_book_us_data || [];
         console.log('📦 [clear] Refreshed data:', res.data);
         this.handleResultTabData.emit(res.data);
         this.handleSetLoading.emit(false);

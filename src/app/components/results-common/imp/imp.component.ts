@@ -133,8 +133,8 @@ export class ImpComponent {
         console.log('📦 Raw patent_type data:', res?.data?.patent_type);
 
         this.impPatentFilters.productFilters = res?.data?.product || [];
-        this.impPatentFilters.orderByFilters = res?.data?.order_by || [];
-        console.log('📦 Raw patent_type data:', res?.data?.order_by);
+        //  this.impPatentFilters.orderByFilters = res?.data?.order_by || [];
+
 
         this.impPatentFilters.patentTypeFilters = Array.isArray(res?.data?.patent_type)
           ? res.data.patent_type.map((item: any) => ({
@@ -142,8 +142,13 @@ export class ImpComponent {
             value: item.value
           }))
           : [];
-
-
+        this.impPatentFilters.orderByFilters = Array.isArray(res?.data?.order_by)
+          ? res.data.order_by.map((item: any) => ({
+            name: item.name || item.value,
+            value: item.value
+          }))
+          : [];
+        console.log('📦 Raw patent_type data:', this.impPatentFilters.orderByFilters);
         console.log('✅ Mapped patentTypeFilters:', this.impPatentFilters.patentTypeFilters);
 
         this.impPatentFilters.assigneeFilters = res?.data?.assignee || [];
@@ -176,31 +181,21 @@ export class ImpComponent {
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     this.handleSetLoading.emit(true);
-
-    //    if (filterKey === 'order_by') {
-    //   this.impPatentApiBody.order_by = value;
-    // } else {
-    //   if (value === '') {
-    //     delete this.impPatentApiBody.filters[filterKey];
-    //     this.setFilterLabel(filterKey, '');
-    //   } else {
-    //     this.impPatentApiBody.filters[filterKey] = value;
-    //     this.setFilterLabel(filterKey, name || '');
-    //   }
-    // }
+    // Handle `order_by` separately
     // Handle `order_by` separately
     if (filterKey === 'order_by') {
-      // Map display label to backend value
       let mappedOrderBy = '';
       if (value === 'Newest') {
         mappedOrderBy = 'ASC';
       } else if (value === 'Oldest') {
         mappedOrderBy = 'DESC';
       } else {
-        mappedOrderBy = value; // in case future filters have direct values like ASC/DESC
+        mappedOrderBy = value;
       }
 
+      // ✅ API body में order_by सेट करें
       this.impPatentApiBody.order_by = mappedOrderBy;
+
       this.setFilterLabel(filterKey, name || value);
     } else {
       if (value === '') {
@@ -211,18 +206,17 @@ export class ImpComponent {
         this.setFilterLabel(filterKey, name || '');
       }
     }
-
-
-
+     // Close all dropdowns
+    this.filterConfigs = this.filterConfigs.map(item => ({
+      ...item,
+      dropdownState: false
+    }));
     this._currentChildAPIBody = {
       ...this.impPatentApiBody,
       filters: { ...this.impPatentApiBody.filters },
       order_by: this.impPatentApiBody.order_by || ''
     };
-    
-
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
+     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     this.mainSearchService.impPatentsSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         let resultData = res?.data || {};
@@ -230,6 +224,8 @@ export class ImpComponent {
           ...this._currentChildAPIBody,
           count: resultData?.imp_patent_count
         };
+        this._data = resultData?.imp_patent_data || [];
+        this._data = resultData?.imp_patent_data || [];
 
         this.handleResultTabData.emit(resultData);
         this.handleSetLoading.emit(false);
@@ -246,6 +242,7 @@ export class ImpComponent {
     });
   }
 
+
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
       let defaultLabel = '';
@@ -259,12 +256,13 @@ export class ImpComponent {
     });
 
     this.impPatentApiBody.filters = {};
-
+    this.impPatentApiBody.order_by = '';
     this._currentChildAPIBody = {
       ...this.impPatentApiBody,
-      filters: {}
+      filters: {},
+      order_by: ''
     };
-
+    console.log('📦 API Body after clear:', this._currentChildAPIBody);
     this.handleSetLoading.emit(true);
 
     this.mainSearchService.impPatentsSearchSpecific(this._currentChildAPIBody).subscribe({

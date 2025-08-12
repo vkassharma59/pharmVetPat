@@ -31,7 +31,6 @@ export class CanadaComponent implements OnInit {
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
 
-  @Input() currentChildAPIBody: any;
   @Input() index: any;
   @Input() tabName?: string;
 
@@ -43,7 +42,17 @@ export class CanadaComponent implements OnInit {
   set data(value: any) {
     this._data = value;
   }
-
+ @Input()
+  get currentChildAPIBody() {
+    return this._currentChildAPIBody;
+  }
+  set currentChildAPIBody(value: any) {
+    this._currentChildAPIBody = value;
+    if (value) {
+      this.canadaPatentApiBody = JSON.parse(JSON.stringify(value)) || value;
+      this.handleFetchFilters();
+    }
+  }
   searchThrough: string = '';
   resultTabs: any = {};
 
@@ -110,7 +119,7 @@ export class CanadaComponent implements OnInit {
 
     console.log('[ngOnInit] Initial canadaPatentApiBody:', JSON.stringify(this.canadaPatentApiBody, null, 2));
 
-    this.handleFetchFilters();
+  //  this.handleFetchFilters();
   }
 
 
@@ -141,43 +150,41 @@ export class CanadaComponent implements OnInit {
 
   handleFetchFilters() {
     this.canadaPatentApiBody.filter_enable = true;
-
-
     this.mainSearchService.canadaApprovalSearchSpecific(this.canadaPatentApiBody).subscribe({
       next: (res: any) => {
-        const hcData = res?.data?.health_canada_data || [];
-
-        const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
-
-        const productFilters = getUnique(hcData.map(item => item.product_name));
-        const strengthFilters = getUnique(hcData.map(item => item.strength));
-        const companyFiltersRaw = getUnique(hcData.map(item => item.company));
-        const dosageFilters = getUnique(hcData.map(item => item.dosage_forms));
-
-
+        const productFilters = res?.data?.product_name?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const strengthFilters = res?.data?.product_name?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const companyFiltersRaw = res?.data?.company?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const dosageFilters = res?.data?.dosage_forms?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
         this.canadaPatentFilters = {
           productFilters,
           strengthFilters,
-          CompanyFilters: companyFiltersRaw.map(name => ({ name, value: name })),
+          CompanyFilters: companyFiltersRaw,
           DosageFilters: dosageFilters
         };
-
         this.canadaPatentApiBody.filter_enable = false;
-
-
       },
       error: (err) => {
         console.error('Error fetching Health Canada filters:', err);
         this.canadaPatentApiBody.filter_enable = false;
-
       }
     });
   }
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     this.handleSetLoading.emit(true);
-
     this.canadaPatentApiBody.filters = this.canadaPatentApiBody.filters || {};
-
     // Set or remove the filter
     if (value === '') {
       delete this.canadaPatentApiBody.filters[filterKey];
@@ -186,7 +193,6 @@ export class CanadaComponent implements OnInit {
       this.canadaPatentApiBody.filters[filterKey] = value;
       this.setFilterLabel(filterKey, name || '');
     }
-
     // Close all dropdowns
     this.filterConfigs = this.filterConfigs.map(item => ({
       ...item,
@@ -215,6 +221,7 @@ export class CanadaComponent implements OnInit {
           ...updatedBody,
           count: resultData?.health_canada_count
         };
+        this._data = resultData?.health_canada_data || [];
 
         this.handleResultTabData.emit(resultData);
         this.handleSetLoading.emit(false);
@@ -271,86 +278,4 @@ export class CanadaComponent implements OnInit {
     window.scrollTo(0, 0);
   }
 
-
-  // handleSelectFilter(filterKey: string, value: any, name?: string): void {
-  //   this.handleSetLoading.emit(true);
-  //   this.canadaPatentApiBody.filters = this.canadaPatentApiBody.filters || {};
-
-  //   if (value === '') {
-  //     delete this.canadaPatentApiBody.filters[filterKey];
-  //     this.setFilterLabel(filterKey, '');
-  //   } else {
-  //     this.canadaPatentApiBody.filters[filterKey] = value;
-  //     this.setFilterLabel(filterKey, name || '');
-  //   }
-  //   this.filterConfigs = this.filterConfigs.map(item => ({
-  //     ...item,
-  //     dropdownState: false
-  //   }));
-
-  //   this._currentChildAPIBody = {
-  //     ...this.canadaPatentApiBody,
-  //     filters: { ...this.canadaPatentApiBody.filters }
-  //   };
-  //   console.log('📤 Sending API Request:', this._currentChildAPIBody);
-
-  //   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-  //   this.mainSearchService.canadaApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
-  //     next: (res) => {
-  //       let resultData = res?.data || {};
-  //         console.log('✅ API Response Received:', resultData);
-  //       this._currentChildAPIBody = {
-  //         ...this._currentChildAPIBody,
-  //         count: resultData?.health_canada_count
-  //       };
-
-  //       this.handleResultTabData.emit(resultData);
-  //       this.handleSetLoading.emit(false);
-  //       window.scrollTo(0, scrollTop);
-  //     },
-  //     error: () => {
-  //       this._currentChildAPIBody.filter_enable = false;
-  //       this.handleSetLoading.emit(false);
-  //       window.scrollTo(0, scrollTop);
-  //     }
-  //   });
-  // }
-  // clear() {
-  //   this.filterConfigs = this.filterConfigs.map(config => {
-  //     let defaultLabel = '';
-  //     switch (config.key) {
-  //       case 'product_name': defaultLabel = 'Select Product'; break;
-  //       case 'company': defaultLabel = 'Company'; break;
-  //       case 'dosage_forms': defaultLabel = 'Dosage Forms'; break;
-  //       case 'strength': defaultLabel = 'Strengths'; break;
-  //     }
-  //     return { ...config, label: defaultLabel, dropdownState: false };
-  //   });
-
-  //   this.canadaPatentApiBody.filters = {};
-  //   this._currentChildAPIBody = {
-  //     ...this.canadaPatentApiBody,
-  //     filters: {}
-  //   };
-
-  //   this.handleSetLoading.emit(true);
-  //   this.mainSearchService.canadaApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
-  //     next: (res) => {
-  //       this._currentChildAPIBody = {
-  //         ...this._currentChildAPIBody,
-  //         count: res?.data?.health_canada_count
-  //       };
-  //       this.handleResultTabData.emit(res.data);
-  //       this.handleSetLoading.emit(false);
-  //     },
-  //     error: (err) => {
-  //       console.error(err);
-  //       this._currentChildAPIBody.filter_enable = false;
-  //       this.handleSetLoading.emit(false);
-  //     }
-  //   });
-
-  //   window.scrollTo(0, 0);
-  // }
 }

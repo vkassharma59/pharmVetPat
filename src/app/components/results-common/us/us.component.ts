@@ -134,7 +134,6 @@ export class UsComponent {
     } else {
       console.warn('⚠️ patentData is missing or not valid');
     }
-
     // Fix 2: Handle column definitions
     if (this.currentChildAPIBody?.columnList?.patentColumnList?.length) {
       this.patentColumns = this.currentChildAPIBody.columnList.patentColumnList;
@@ -154,7 +153,6 @@ export class UsComponent {
     this.filterConfigs = this.filterConfigs.map((item) => {
       if (item.key === filterKey) {
         const toggledState = !item.dropdownState;
-        console.log(`[Dropdown] Toggling dropdown for '${filterKey}':`, toggledState ? 'OPEN' : 'CLOSED');
         return { ...item, dropdownState: toggledState };
       } else {
         return { ...item, dropdownState: false };
@@ -163,35 +161,38 @@ export class UsComponent {
   }
   handleFetchFilters() {
     this.usApiBody.filter_enable = true;
-    console.log('[Filters] Fetching US filters with body:', this.usApiBody);
-  
     this.mainSearchService.usApprovalSearchSpecific(this.usApiBody).subscribe({
       next: (res: any) => {
-        console.log('[Filters] Raw response:', res);
-  
-        const data = res?.data || {};
-        const applFilters = data.appl_type || [];
-        const strengthFilters = data.strength || [];
-        const rldFilters = data.rld || [];
-        const applicantFilters = data.applicant || [];
-        const ingredientFilters = data.ingredient || [];
-  
-        console.log('[Filters] appl_type:', applFilters);
-        console.log('[Filters] strength:', strengthFilters);
-        console.log('[Filters] rld:', rldFilters);
-        console.log('[Filters] applicant:', applicantFilters);
-        console.log('[Filters] ingredient:', ingredientFilters);
-  
+        const applFilters = res?.data?.appl_type?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const strengthFilters = res?.data?.strength?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const rldFilters = res?.data?.rld?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const applicantFilters = res?.data?.applicant?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const ingredientFilters = res?.data?.ingredient?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || []; 
         this.usFilters = {
           applFilters,
           strengthFilters,
-          rldFilters,
+          rldFilters: rldFilters,
           applicantFilters,
-          ingredientFilters,
+          ingredientFilters: ingredientFilters,
+   
         };
-  
-        console.log('[Filters] Final assigned usFilters:', this.usFilters);
-        this.cdr.detectChanges();
+      this.usApiBody.filter_enable = false;
+
       },
       error: (err) => {
         console.error('[Filters] Error fetching US filters:', err);
@@ -219,113 +220,48 @@ export class UsComponent {
   }
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     this.handleSetLoading.emit(true);
- // this.usApiBody.filters = this.usApiBody.filters || {};
- if (value === '') {
-   delete this.usApiBody.filters[filterKey];
-   this.setFilterLabel(filterKey, '');
- } else {
-   this.usApiBody.filters[filterKey] = value;  // ✅ Only value goes in filters
-   this.setFilterLabel(filterKey, name || '');
- }
- // ✅ Close dropdowns
- this.filterConfigs = this.filterConfigs.map(item => ({
-   ...item,
-   dropdownState: false
- }));
- // Log constructed filter object
- 
- this._currentChildAPIBody = {
-   ...this.usApiBody,
-   filters: { ...this.usApiBody.filters }
- };
- const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+   // this.usApiBody.filters = this.usApiBody.filters || {};
 
- 
+    if (value === '') {
+      delete this.usApiBody.filters[filterKey];
+      this.setFilterLabel(filterKey, '');
+    } else {
+      this.usApiBody.filters[filterKey] = value;
+      this.setFilterLabel(filterKey, name || '');
+    }
 
- this.mainSearchService.usApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
-   next: (res) => {
-     const resultData = res?.data || {};
-    
-     this._currentChildAPIBody = {
-       ...this._currentChildAPIBody,
-       count: resultData?.oran
-     };
-     this._data = resultData?.tech_supplier_data || [];
+    this.filterConfigs = this.filterConfigs.map(item => ({
+      ...item,
+      dropdownState: false
+    }));
 
-     // ✅ Emit updated data to parent (optional)
-     this.handleResultTabData.emit(resultData);
-     this.handleSetLoading.emit(false);
-     window.scrollTo(0, scrollTop);
-   },
-   error: (err) => {
-     console.error("❌ Error while filtering data", err);
-     this._currentChildAPIBody = {
-       ...this._currentChildAPIBody,
-       filter_enable: false
-     };
-     this.handleSetLoading.emit(false);
-     window.scrollTo(0, scrollTop);
-   }
- });
-}
-  // handleSelectFilter(filterKey: string, value: any, name?: string): void {
-  //   console.log(`[Filter] Selected key: ${filterKey}, value: ${value}, label: ${name}`);
-  //   this.handleSetLoading.emit(true);
-  //   this.usApiBody.filters = this.usApiBody.filters || {};
-
-  //   if (value === '') {
-  //     delete this.usApiBody.filters[filterKey];
-  //     this.setFilterLabel(filterKey, '');
-  //   } else {
-  //     this.usApiBody.filters[filterKey] = value;
-  //     this.setFilterLabel(filterKey, name || '');
-  //   }
-
-  //   this.filterConfigs = this.filterConfigs.map(item => ({
-  //     ...item,
-  //     dropdownState: false
-  //   }));
-
-  //   this._currentChildAPIBody = {
-  //     ...this.usApiBody,
-  //     filters: { ...this.usApiBody.filters }
-  //   };
-  //   console.log(`[API] Current API body for ${filterKey}:`, this._currentChildAPIBody);
-
-  //   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-  //   this.mainSearchService.usApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
-  //     next: (res) => {
-  //       console.log(`[API] Filtered result for ${filterKey}:`, res?.data);
-
-  //       let resultData = res?.data || {};
-
-  //       // ✅ Updating the local data property:
-  //       this._data = resultData.orange_book_us_data || [];
-
-  //       // ✅ Emitting only the relevant array instead of the whole object:
-  //       this.handleResultTabData.emit(this._data);
-
-  //       // ✅ Updating count if needed:
-  //       this._currentChildAPIBody = {
-  //         ...this._currentChildAPIBody,
-  //         count: resultData?.orange_book_us_count
-  //       };
-
-  //       this.handleSetLoading.emit(false);
-  //       window.scrollTo(0, scrollTop);
-
-  //       // ✅ Trigger change detection if using OnPush:
-  //       this.cdr.detectChanges();
-  //     },
-  //     error: (err) => {
-  //       console.error(`[API] Error filtering on ${filterKey}:`, err);
-  //       this._currentChildAPIBody.filter_enable = false;
-  //       this.handleSetLoading.emit(false);
-  //       window.scrollTo(0, scrollTop);
-  //     }
-  //   });
-  // }
+    this._currentChildAPIBody = {
+      ...this.usApiBody,
+      filters: { ...this.usApiBody.filters }
+    };
+    console.log(`[API] Current API body for ${filterKey}:`, this._currentChildAPIBody);
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    this.mainSearchService.usApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
+      next: (res) => {
+        console.log(`[API] Filtered result for ${filterKey}:`, res?.data);
+       const resultData = res?.data || {};
+        // ✅ Updating count if needed:
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          count: resultData?.orange_book_us_count
+        };
+        this._data = resultData?.orange_book_us_data || [];
+        this.handleResultTabData.emit(resultData);
+        this.handleSetLoading.emit(false);
+      },
+      error: (err) => {
+        console.error(`[API] Error filtering on ${filterKey}:`, err);
+        this._currentChildAPIBody.filter_enable = false;
+        this.handleSetLoading.emit(false);
+        window.scrollTo(0, scrollTop);
+      }
+    });
+  }
   sortPatentData(data: any[], order: string): any[] {
     if (!Array.isArray(data)) return [];
 
@@ -368,7 +304,8 @@ export class UsComponent {
           ...this._currentChildAPIBody,
           count: res?.data?.orange_book_us_count
         };
-        this.searchByTable = true;
+         this._data = res?.data?.orange_book_us_data || [];
+         this._data = res?.data?.orange_book_us_data || [];
         this.handleResultTabData.emit(res.data);
         this.handleSetLoading.emit(false);
       },

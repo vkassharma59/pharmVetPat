@@ -111,13 +111,15 @@ export class ChemiTrackerCardComponent implements OnDestroy {
     return `${environment.baseUrl}${environment.domainNameChemicalDirectoryStructure}${this._data?.chemical_structure}`;
   }
 
-
-  openImageModal(imageUrl: string): void {
+  openImageModal(imageUrl: string, showZoomControls: boolean): void {
     this.dialog.open(ImageModalComponent, {
       width: 'auto',
       height: 'auto',
       panelClass: 'full-screen-modal',
-      data: { dataImage: imageUrl },
+      data: {
+        dataImage: imageUrl,
+        showZoomControls: showZoomControls
+      },
     });
   }
 }

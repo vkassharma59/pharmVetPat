@@ -117,13 +117,13 @@ export class NonPatentComponent implements OnChanges {
   lastClickedFilterKey: string | null = null;
 
   filterConfigs = [
-    {
-      key: 'order',
-      label: 'Order By',
-      dataKey: 'order',
-      filterType: 'order',
-      dropdownState: false
-    },
+    // {
+    //   key: 'order',
+    //   label: 'Order By',
+    //   dataKey: 'order',
+    //   filterType: 'order',
+    //   dropdownState: false
+    // },
     {
       key: "concepts",
       label: 'View All Non Patent Concepts',
@@ -171,28 +171,18 @@ export class NonPatentComponent implements OnChanges {
   }
 
   handleFetchFilters() {
-    console.log('[handleFetchFilters] Starting to fetch Non-Patent filters...');
     this.nonPatentApiBody.filter_enable = true;
-
     this.mainSearchService.NonPatentSearchSpecific(this.nonPatentApiBody).subscribe({
       next: (res: any) => {
-        const hcData = res?.data || [];
-        console.log('[handleFetchFilters] Extracted records:', hcData);
-
-        const getUnique = (arr: any[]) => [...new Set(arr.filter(Boolean))];
-
         const order = ['Latest First', 'Oldest First'];
         const conceptFilters = res?.data?.concepts?.map(item => ({
           name: item.name,
           value: item.value
         })) || [];
-
-        console.log('[handleFetchFilters] Unique concept filters:', conceptFilters);
         this.nonPatentFilters = {
           order,
           conceptFilters: conceptFilters,
         };
-
         this.nonPatentApiBody.filter_enable = false;
       },
       error: (err) => {
@@ -214,7 +204,6 @@ export class NonPatentComponent implements OnChanges {
       this.setFilterLabel(filterKey, name || '');
     }
     this.isFilterApplied = Object.keys(this.nonPatentApiBody.filters).length > 0;
-
     // Close dropdown
     this.filterConfigs = this.filterConfigs.map((item) => ({
       ...item,
@@ -238,7 +227,7 @@ export class NonPatentComponent implements OnChanges {
       ...this.nonPatentApiBody,
       filters: { ...this.nonPatentApiBody.filters },
       // columns: updatedColumns,
-      draw: 1, 
+      draw: 1,
     };
     console.log('Updated _currentChildAPIBody:', this._currentChildAPIBody);
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -272,14 +261,14 @@ export class NonPatentComponent implements OnChanges {
     this.filterConfigs = this.filterConfigs.map(config => {
       let defaultLabel = '';
       switch (config.key) {
-        case 'order': defaultLabel = 'Order By'; break;
+        // case 'order': defaultLabel = 'Order By'; break;
         case 'concepts': defaultLabel = 'Concept Filter'; break;
       }
       return { ...config, label: defaultLabel, dropdownState: false };
     });
 
     this.nonPatentApiBody.filters = {};
-     this.isFilterApplied = false;
+    this.isFilterApplied = false;
     const payload = {
       ...this.nonPatentApiBody,
       filters: {},

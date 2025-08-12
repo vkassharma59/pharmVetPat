@@ -75,30 +75,47 @@ export class ImageModalComponent {
   zoomArr: number[] = [1, 1.2, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3];
   indexofArr: number = 0;
   currentZoom: number = this.zoomArr[this.indexofArr];
-
+ showZoomControls = true;
   constructor(
     public dialogRef: MatDialogRef<ImageModalComponent>,
     private renderer: Renderer2,
-    @Inject(MAT_DIALOG_DATA) public data: { dataImage: string }
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: { dataImage: string , showZoomControls?: boolean; compactView?: boolean }
+  ) {
+      this.showZoomControls = this.data.showZoomControls ?? true;
+  }
 
   ngAfterViewInit(): void {
     this.applyZoom();
   }
 
-  zoomIn() {
-    if (this.indexofArr < this.zoomArr.length - 1) {
-      this.indexofArr += 1;
-      this.applyZoom();
-    }
-  }
+  // zoomIn() {
+  //   if (this.indexofArr < this.zoomArr.length - 1) {
+  //     this.indexofArr += 1;
+  //     this.applyZoom();
+  //   }
+  // }
 
-  zoomOut() {
-    if (this.indexofArr > 0) {
-      this.indexofArr -= 1;
-      this.applyZoom();
-    }
+  // zoomOut() {
+  //   if (this.indexofArr > 0) {
+  //     this.indexofArr -= 1;
+  //     this.applyZoom();
+  //   }
+  // }
+zoomIn() {
+  if (this.indexofArr < this.zoomArr.length - 1) {
+    this.indexofArr++;
+   // this.currentZoom = this.zoomArr[this.indexofArr];
+    this.applyZoom();
   }
+}
+
+zoomOut() {
+  if (this.indexofArr > 0) {
+    this.indexofArr--;
+  //  this.currentZoom = this.zoomArr[this.indexofArr];
+   this.applyZoom();
+  }
+}
 
   applyZoom() {
     this.currentZoom = this.zoomArr[this.indexofArr];

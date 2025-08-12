@@ -96,8 +96,8 @@ export const AppConfigValues: AppConfig = {
         columnList: `${appUrl.apiUrl}/litigation/column-list`,
       },
       spcDb: {
-        searchSpecific: `${appUrl.apiUrl}/spc/search-specific`,
-        columnList: `${appUrl.apiUrl}/spc/column-list`,
+        searchSpecific: `${appUrl.devApiUrl}/spc/search-specific`,
+        columnList: `${appUrl.devApiUrl}/spc/column-list`,
       },
       gppdDb: {
         searchSpecific: `${appUrl.apiUrl}/gppd/search-specific`,

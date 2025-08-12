@@ -22,12 +22,14 @@
              <img [src]="getImageUrl()" alt="error" class="ps-7 pe-7 h-40 aspect-auto"
                 style="height:15rem; width:18rem;" />
             <button class="btns flex items-center justify-center p-2" style="background-color: #312e81; color: white"
-              (click)="openImageModal(getImageUrl())">
+              (click)="openImageModal(getImageUrl(),false)">
               <i class="fa-solid fa-magnifying-glass"></i>
             </button>
           </div>
 
+
           <div class="px-3" style="margin-left:1rem;width:70%;">
+
             <a [href]="getPatentUrl(_data)" target="_blank"
               class="uppercase text-white rounded-md bg-[#0032A0] py-2 px-3 text-sm text-center">
               Click me - for updated Pantent At Patent scope(wipo)
@@ -1304,7 +1306,7 @@
               <img [src]="getImageUrl()" alt="error" class="ps-7 pe-7 h-40 aspect-auto"
                 style="height:15rem; width:18rem;" />
               <button class="btns flex items-center justify-center p-2" style="background-color: #312e81; color: white"
-                (click)="openImageModal(getImageUrl())">
+                (click)="openImageModal(getImageUrl(),false)">
                 <i class="fa-solid fa-magnifying-glass"></i>
               </button>
             </div>

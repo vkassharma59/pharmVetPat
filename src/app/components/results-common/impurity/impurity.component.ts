@@ -32,7 +32,7 @@ export class ImpurityComponent {
 
   @Input()
   get data() {
-    return this._data;
+       return this._data;
   }
   set data(value: any) {
     this._data = value;

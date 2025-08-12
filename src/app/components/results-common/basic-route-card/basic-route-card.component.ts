@@ -21,7 +21,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   styleUrl: './basic-route-card.component.css',
 })
 export class BasicRouteCardComponent {
-
+  isLoadingUI = true;
   static apiCallCount: number = 0; // Global static counter
   localCount: number = 0; // Instance-specific counter
   productHighlights: any[] = [];
@@ -58,7 +58,7 @@ export class BasicRouteCardComponent {
     }
   }
   viewProductHighlight: boolean = false;
-  MoreApplicationInfo: any = false;
+  MoreApplicationInfo: boolean = false;
 
   constructor(
     private dialog: MatDialog,
@@ -67,10 +67,10 @@ export class BasicRouteCardComponent {
     private sanitizer: DomSanitizer
   ) { }
   convertNewlinesToBreaks(text: string, sliceLength?: number): string {
-  if (!text) return '';
-  const slicedText = sliceLength ? text.slice(0, sliceLength) : text;
-  return slicedText.replace(/(?:\r\n|\r|\n)/g, '<br>');
-}
+    if (!text) return '';
+    const slicedText = sliceLength ? text.slice(0, sliceLength) : text;
+    return slicedText.replace(/(?:\r\n|\r|\n)/g, '<br>');
+  }
 
 
   isEmptyObject(obj: any): boolean {
@@ -221,7 +221,7 @@ export class BasicRouteCardComponent {
     } else return data;
   }
 
-  getImageUrl = (props: any) => {
+  getImageUrl = (props: any): string => {
     return (
       environment.baseUrl +
       environment.domainNameBasicRoutStructure +
@@ -253,12 +253,16 @@ export class BasicRouteCardComponent {
     });
   }
 
-  openImageModal(imageUrl: string): void {
+  openImageModal(imageUrl: string, showZoomControls: boolean): void {
     this.dialog.open(ImageModalComponent, {
       width: 'auto',
       height: 'auto',
       panelClass: 'full-screen-modal',
-      data: { dataImage: imageUrl },
+      data: {
+        dataImage: imageUrl,
+        showZoomControls: showZoomControls
+      },
     });
   }
+
 }

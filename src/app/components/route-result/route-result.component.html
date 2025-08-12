@@ -1,6 +1,6 @@
 <div class="container mt-4">
   <!--logo -->
-<!-- <div class="logo">
+  <!-- <div class="logo">
   <div class="pharma-logo" style="margin-left: 10px;">
     <img src="assets/images/home/PharmVetPat.svg" alt="PharmVetPat" class="img">
   </div>
@@ -12,7 +12,7 @@
     <img src="assets/evaluation-version.png" alt="Technical Routes Logo" class="h-10" />
   </div>
 </div> -->
- 
+
   <!-- Header Section -->
   <div class="d-flex justify-content-between align-items-center">
     <!-- Left Section -->
@@ -26,9 +26,9 @@
 
     <!-- Right Section -->
     <div style="display: flex;" *ngIf="index==0">
-      <button *ngIf="!generatePDFloader && isDownloadPermit" (click)="handleGeneratePDF()"
-        [disabled]="generatePDFloader" title="Download Single Route" class="btn btn-outline-primary btn-sm me-2"><i
-          class="fas fa-download"></i>
+      <button *ngIf="!generatePDFloader && isSplitDownload && searchThrough !== 'synthesis-search'"
+        (click)="handleGeneratePDF()" [disabled]="generatePDFloader" title="Download Single Route"
+        class="btn btn-outline-primary btn-sm me-2"><i class="fas fa-download"></i>
         Full Report Download</button>
       <div
         *ngIf="searchThrough != 'synthesis-search' || this.CurrentAPIBody?.currentTab != this.resultTabWithKeys.technicalRoutes.name,">
@@ -43,15 +43,12 @@
   <chem-route-tabs (handleCurrentTab)="handleCurrentTab($event)" [resultTabs]="resultTabs"
     [activeTab]="activeTab"></chem-route-tabs>
   <div>
-
-    <div *ngIf="shouldShowDownloadButton()" style="display: flex; justify-content: flex-end; margin-top: 5px;">
+    <div *ngIf="shouldShowDownloadButton()" style="display: flex; justify-content: flex-end; margin-top: px;">
       <button *ngIf="isDownloadPermit && isSplitDownload" (click)="openDownloadModal(index)"
-        title="Download Single Route" 
-        class="btn btn-outline-primary btn-sm me-2" class="btn btn-outline-primary btn-sm me-2"><i
-          class="fas fa-download"></i>
+        title="Download Single Route" class="btn btn-outline-primary btn-sm me-2"
+        class="btn btn-outline-primary btn-sm me-2"><i class="fas fa-download"></i>
         Download Single Route</button>
     </div>
-
   </div>
   <!-- Main Content Section -->
   <div class="mt-3" [ngSwitch]="activeTab || currentTabData?.name">
@@ -72,11 +69,9 @@
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-technical-route>
     </ng-container>
     <ng-container *ngSwitchCase="resultTabWithKeys.dmf.name">
-      <app-dmf  [data]="_dataItem.dmf"
-        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.dmf.name]" [index]="index"
-        [tabName]="resultTabWithKeys.dmf.name" (handleSetLoading)="handleSetLoading.emit($event)"
-        (handleResultTabData)="handleChildPaginationSearch.emit($event)"
-        ></app-dmf>
+      <app-dmf [data]="_dataItem.dmf" [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.dmf.name]"
+        [index]="index" [tabName]="resultTabWithKeys.dmf.name" (handleSetLoading)="handleSetLoading.emit($event)"
+        (handleResultTabData)="handleChildPaginationSearch.emit($event)"></app-dmf>
     </ng-container>
     <ng-container *ngSwitchCase="resultTabWithKeys.chemicalDirectory.name">
       <chemical-directory [data]="_dataItem.chemicalDirectory"
@@ -218,12 +213,8 @@
 </div>
 
 <!-- Download Modal -->
-<div  #downloadModal
-  class="modal fade"
-  id="download_btn"
-  aria-labelledby="downloadModalLabel"
-  id="download_btn" tabindex="-1" 
-  style="margin-top: 2rem;" aria-hidden="true">
+<div #downloadModal class="modal fade" id="download_btn" aria-labelledby="downloadModalLabel" id="download_btn"
+  tabindex="-1" style="margin-top: 2rem;" aria-hidden="true">
 
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content bg_1 px-4">
@@ -232,6 +223,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <label class="flex items-center" *ngFor="let tab of resultTabs">
             <input type="checkbox" [(ngModel)]="SingleDownloadCheckbox[tab.name]"
+             [checked]="shouldShowDownloadButton()"  
               [disabled]="isDisabled() && !SingleDownloadCheckbox[tab.name]"
               class="form-checkbox text-blue-600 h-5 w-5" />
             <span class="ml-2 text-gray-700">{{ tab.label }}</span>
@@ -270,4 +262,3 @@
     </div>
   </div>
 </div>
-  

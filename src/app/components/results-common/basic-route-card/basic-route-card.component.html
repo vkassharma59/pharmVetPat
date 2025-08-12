@@ -36,7 +36,7 @@
         style="background-color: #F5FBFF;">
         <h3 class="text-center ph-box-main-title">Product Highlight</h3>
         <div *ngIf="isLoading" class="loading-text">Loading<span class="dots"></span></div>
-        <ng-container *ngIf="(productHighlights?.length ?? 0) > 0; else noData">
+        <ng-container *ngIf="(productHighlights?.length ?? 0) > 0; else noData1">
           <div *ngFor="let section of productHighlights">
             <h5>{{ section.sectionTitle }}</h5>
             <div class="flex-container">
@@ -51,7 +51,7 @@
             </div>
           </div>
         </ng-container>
-        <ng-template #noData>
+        <ng-template #noData1>
           <div *ngIf="!isLoading">No Data Found!</div>
         </ng-template>
       </div>
@@ -61,7 +61,7 @@
             style="height: 256px" />
           <!-- (error)="onImgError($event)" -->
           <div class="ms-4 pom">
-            <button class="p-2 bg-[#0032A0] text-white" (click)="openImageModal(getImageUrl(_data))">
+            <button class="p-2 bg-[#0032A0] text-white" (click)="openImageModal(getImageUrl(_data), false)">
               <i class="fa-solid fa-magnifying-glass"></i>
             </button>
           </div>
@@ -484,7 +484,7 @@
           </button>
         </div>
 
-        <div *ngIf="MoreApplicationInfo">
+        <div *ngIf="MoreApplicationInfo"> 
           <div *ngIf="_data?.DESCRIPTION && getColumnName('DESCRIPTION')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold" style="color:#312e81;">
@@ -722,9 +722,10 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.NCE_MINUS_OR_QIDP_MINUS, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify">
-                {{ _data?.NCE_MINUS_OR_QIDP_MINUS }}
+              <p class="text-justify" [innerHTML]="convertNewlinesToBreaks( _data?.NCE_MINUS_OR_QIDP_MINUS,200)">
+              
               </p>
+              
               <p *ngIf="_data?.NCE_MINUS_OR_QIDP_MINUS?.length > 200" class="para pt-2 cursor-pointer"
                 style="color:#2f45ff" style="color:#2f45ff" (click)="
                   OpenViewModal(
@@ -744,8 +745,7 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.EUROPE_EXCLUSIVITY, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify">
-                {{ _data?.EUROPE_EXCLUSIVITY }}
+              <p class="text-justify" [innerHTML]="convertNewlinesToBreaks(_data?.EUROPE_EXCLUSIVITY,200)">
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.EUROPE_EXCLUSIVITY?.length > 200" style="color:#2f45ff"
                 style="color:#2f45ff" (click)="
@@ -763,8 +763,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.CANADA_EXCLUSIVITY, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify">
-                {{ _data?.CANADA_EXCLUSIVITY }}
+              <p class="text-justify" [innerHTML]="convertNewlinesToBreaks(_data?.CANADA_EXCLUSIVITY,200)">
+              
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.CANADA_EXCLUSIVITY?.length > 200" style="color:#2f45ff"
                 style="color:#2f45ff" (click)="
@@ -783,8 +783,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.OTHER_COUNTRIES_EXCLUSIVITIES, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify">
-                {{ _data?.OTHER_COUNTRIES_EXCLUSIVITIES }}
+              <p class="text-justify" [innerHTML]="convertNewlinesToBreaks(_data?.OTHER_COUNTRIES_EXCLUSIVITIES,200)">
+                
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.OTHER_COUNTRIES_EXCLUSIVITIES?.length > 200"
                 style="color:#2f45ff" style="color:#2f45ff" (click)="
@@ -805,8 +805,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.COMMENTRY, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify">
-                {{ _data?.COMMENTRY }}
+              <p class="text-justify" [innerHTML]="convertNewlinesToBreaks(_data?.COMMENTRY,200)">
+                
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.COMMENTRY?.length > 200" style="color:#2f45ff"
                 style="color:#2f45ff" (click)="OpenViewModal(_data?.COMMENTRY, 'COMMENTRY')">
@@ -822,8 +822,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.REMARKS, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify">
-                {{ _data?.REMARKS }}
+              <p class="text-justify" [innerHTML]="convertNewlinesToBreaks(_data?.REMARKS,200)">
+              
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.REMARKS?.length > 200" style="color:#2f45ff"
                 style="color:#2f45ff" (click)="OpenViewModal(_data?.REMARKS, 'REMARKS')">
@@ -839,8 +839,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.LITERATURE, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify">
-                {{ _data?.LITERATURE }}
+              <p class="text-justify" [innerHTML]="convertNewlinesToBreaks(_data?.LITERATURE,200)">
+               
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.LITERATURE?.length > 200" style="color:#2f45ff"
                 style="color:#2f45ff" (click)="OpenViewModal(_data?.LITERATURE, 'LITERATURE')">
@@ -856,8 +856,7 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.INFORMATION_SOURCES, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.INFORMATION_SOURCES }}
+              <p class="text-justify max-h-28 overflow-auto"  [innerHTML]="convertNewlinesToBreaks(_data?.INFORMATION_SOURCES,200)">
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.INFORMATION_SOURCES?.length > 200" style="color:#2f45ff"
                 style="color:#2f45ff" (click)="
@@ -878,8 +877,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.PDF_MULTIPLE_PDF, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.PDF_MULTIPLE_PDF }}
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.PDF_MULTIPLE_PDF,200)">
+                
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.PDF_MULTIPLE_PDF?.length > 200" style="color:#2f45ff"
                 style="color:#2f45ff" (click)="
@@ -897,8 +896,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.ORANGE_BOOK_PATENTS, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.ORANGE_BOOK_PATENTS }}
+              <p class="text-justify max-h-28 overflow-auto" innerHTML="convertNewlinesToBreaks(_data?.ORANGE_BOOK_PATENTS,200)">
+               
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.ORANGE_BOOK_PATENTS?.length > 200" style="color:#2f45ff"
                 style="color:#2f45ff" (click)="
@@ -919,8 +918,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.USDMF_HOLDER, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.USDMF_HOLDER }}
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.USDMF_HOLDER,200)">
+               
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.USDMF_HOLDER?.length > 200" style="color:#2f45ff"
                 style="color:#2f45ff" (click)="OpenViewModal(_data?.USDMF_HOLDER, 'USDMF HOLDER')">
@@ -936,8 +935,7 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.EP_DMF_HOLDER, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.EP_DMF_HOLDER }}
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.EP_DMF_HOLDER,200)">
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.EP_DMF_HOLDER?.length > 200" style="color:#2f45ff"
                 style="color:#2f45ff" (click)="OpenViewModal(_data?.EP_DMF_HOLDER, 'EP DMF HOLDER')">
@@ -953,8 +951,7 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.OTHER_DMF_HOLDER, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.OTHER_DMF_HOLDER }}
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.OTHER_DMF_HOLDER,200)">
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.OTHER_DMF_HOLDER?.length > 200" style="color:#2f45ff"
                 style="color:#2f45ff" (click)="
@@ -972,8 +969,7 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.PRODUCT_CLASSIFICATION, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.PRODUCT_CLASSIFICATION }}
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.PRODUCT_CLASSIFICATION,200)">
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.PRODUCT_CLASSIFICATION?.length > 200"
                 style="color:#2f45ff" style="color:#2f45ff" (click)="
@@ -994,8 +990,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.PRODUCT_TYPE, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.PRODUCT_TYPE }}
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.PRODUCT_TYPE,200)">
+               
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.PRODUCT_TYPE?.length > 200" style="color:#2f45ff"
                 style="color:#2f45ff" (click)="OpenViewModal(_data?.PRODUCT_TYPE, 'PRODUCT TYPE')">
@@ -1011,8 +1007,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.PESTICIDE_TYPE, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.PESTICIDE_TYPE }}
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.PESTICIDE_TYPE,200)">
+                
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.PESTICIDE_TYPE?.length > 200" style="color:#2f45ff"
                 style="color:#2f45ff" (click)="OpenViewModal(_data?.PESTICIDE_TYPE, 'PESTICIDE TYPE')">
@@ -1028,8 +1024,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.RELEATED_COMPOUNDS_AIS, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.RELEATED_COMPOUNDS_AIS }}
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.RELEATED_COMPOUNDS_AIS,200)">
+               
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.RELEATED_COMPOUNDS_AIS?.length > 200"
                 style="color:#2f45ff" style="color:#2f45ff" (click)="
@@ -1050,8 +1046,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.SUBSTANCE_ORIGIN, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.SUBSTANCE_ORIGIN }}
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.SUBSTANCE_ORIGIN,200)">
+               
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.SUBSTANCE_ORIGIN?.length > 200" style="color:#2f45ff"
                 style="color:#2f45ff" (click)="
@@ -1069,7 +1065,7 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.LAUNCH_STATUS, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.LAUNCH_STATUS,200)">
                 {{ _data?.LAUNCH_STATUS }}
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.LAUNCH_STATUS?.length > 200" style="color:#2f45ff"
@@ -1086,8 +1082,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.ISO_STATUS, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.ISO_STATUS }}
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.ISO_STATUS,200)">
+            
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.ISO_STATUS?.length > 200" style="color:#2f45ff"
                 style="color:#2f45ff" (click)="OpenViewModal(_data?.ISO_STATUS, 'ISO STATUS')">
@@ -1103,8 +1099,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.US_EPA_CHEMICAL_CODE, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.US_EPA_CHEMICAL_CODE }}
+              <p class="text-justify max-h-28 overflow-auto" innerHTML="convertNewlinesToBreaks(_data?.US_EPA_CHEMICAL_CODE,200)">
+              
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.US_EPA_CHEMICAL_CODE?.length > 200" style="color:#2f45ff"
                 style="color:#2f45ff" (click)="
@@ -1125,8 +1121,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.UN_NUMBER, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.UN_NUMBER }}
+              <p class="text-justify max-h-28 overflow-auto" innerHTML="convertNewlinesToBreaks(_data?.UN_NUMBER,200)">
+              
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.UN_NUMBER?.length > 200" style="color:#2f45ff"
                 (click)="OpenViewModal(_data?.UN_NUMBER, 'UN NUMBER')">
@@ -1142,8 +1138,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.STRAIN_NO, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.STRAIN_NO }}
+              <p class="text-justify max-h-28 overflow-auto" innerHTML="convertNewlinesToBreaks(_data?.STRAIN_NO,200)">
+               
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.STRAIN_NO?.length > 200" style="color:#2f45ff"
                 (click)="OpenViewModal(_data?.STRAIN_NO, 'STRAIN NO')">
@@ -1162,8 +1158,8 @@
                   (click)="handleCopy(_data?.GOOGLEPATENTHYPERLINKOFPATENTINVENTINFO, copyBtn)"><i
                     class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.GOOGLEPATENTHYPERLINKOFPATENTINVENTINFO }}
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.GOOGLEPATENTHYPERLINKOFPATENTINVENTINFO,200)">
+               
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.GOOGLEPATENTHYPERLINKOFPATENTINVENTINFO?.length > 200"
                 style="color:#2f45ff" (click)="
@@ -1184,8 +1180,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.INVENT_INFO2, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.INVENT_INFO2 }}
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.INVENT_INFO2,200)">
+               
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.INVENT_INFO2?.length > 200" style="color:#2f45ff"
                 (click)="OpenViewModal(_data?.INVENT_INFO2, 'INVENT INFO2')">
@@ -1201,8 +1197,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.INVENT_INFO3, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.INVENT_INFO3 }}
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.INVENT_INFO3,200)">
+                
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.INVENT_INFO3?.length > 200" style="color:#2f45ff"
                 (click)="OpenViewModal(_data?.INVENT_INFO3, 'INVENT INFO3')">
@@ -1218,9 +1214,7 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.year_wise_iso, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.year_wise_iso }}
-              </p>
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.year_wise_iso,200)"></p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.year_wise_iso?.length > 200" style="color:#2f45ff"
                 (click)="OpenViewModal(_data?.year_wise_iso, 'year wise iso')">
                 View More
@@ -1236,8 +1230,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.company_registration_number, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.company_registration_number }}
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.company_registration_number,200)">
+                
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.company_registration_number?.length > 200"
                 style="color:#2f45ff" (click)="
@@ -1258,8 +1252,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.developmental_code, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.developmental_code }}
+              <p class="text-justify max-h-28 overflow-auto" innerHTML="convertNewlinesToBreaks(_data?.developmental_code,200)">
+                
               </p>
               <p class="para pt-2 cursor-pointer" ngIf="_data?.developmental_code?.length > 200" style="color:#2f45ff"
                 (click)="
@@ -1277,8 +1271,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.dummy_1, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.dummy_1 }}
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.dummy_1,200)">
+               
               </p>
             </div>
           </div>
@@ -1290,8 +1284,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.dummy_2, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.dummy_2 }}
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.dummy_2,200)">
+              
               </p>
             </div>
           </div>
@@ -1303,8 +1297,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.dummy_3, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.dummy_3 }}
+              <p class="text-justify max-h-28 overflow-auto" innerHTML="convertNewlinesToBreaks(_data?.dummy_3,200)">
+               
               </p>
             </div>
           </div>
@@ -1316,8 +1310,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.dummy_4, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.dummy_4 }}
+              <p class="text-justify max-h-28 overflow-auto" innerHTML="convertNewlinesToBreaks(_data?.dummy_4,200)">
+               
               </p>
             </div>
           </div>
@@ -1329,9 +1323,7 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.dummy_5, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.dummy_5 }}
-              </p>
+              <p class="text-justify max-h-28 overflow-auto">{{_data?.dummy_5}}</p>
             </div>
           </div>
 
@@ -1342,8 +1334,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.dummy_6, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.dummy_6 }}
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.dummy_6,200)">
+                
               </p>
             </div>
           </div>
@@ -1355,8 +1347,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.dummy_7, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.dummy_7 }}
+              <p class="text-justify max-h-28 overflow-auto" innerHTML="convertNewlinesToBreaks(_data?.dummy_7,200)">
+                
               </p>
             </div>
           </div>
@@ -1368,8 +1360,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.dummy_8, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.dummy_8 }}
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.dummy_8,200)">
+               
               </p>
             </div>
           </div>
@@ -1381,8 +1373,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.dummy_9, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.dummy_9 }}
+              <p class="text-justify max-h-28 overflow-auto" innerHTML="convertNewlinesToBreaks(_data?.dummy_9,200)">
+               
               </p>
             </div>
           </div>
@@ -1394,8 +1386,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.dummy_10, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.dummy_10 }}
+              <p class="text-justify max-h-28 overflow-auto" innerHTML="convertNewlinesToBreaks(_data?.dummy_10,200)">
+                
               </p>
             </div>
           </div>
@@ -1407,8 +1399,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.dummy_11, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.dummy_11 }}
+              <p class="text-justify max-h-28 overflow-auto" [innerHTML]="convertNewlinesToBreaks(_data?.dummy_11,200)"> 
+                
               </p>
             </div>
           </div>
@@ -1420,8 +1412,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.dummy_12, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
-                {{ _data?.dummy_12 }}
+              <p class="text-justify max-h-28 overflow-auto" innerHTML="convertNewlinesToBreaks(_data?.dummy_12,200)">
+               
               </p>
             </div>
           </div>
@@ -1433,7 +1425,7 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.dummy_13, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
+              <p class="text-justify max-h-28 overflow-auto" innerHTML="convertNewlinesToBreaks(_data?.dummy_13,200)">
                 {{ _data?.dummy_13 }}
               </p>
             </div>
@@ -1446,7 +1438,7 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.dummy_14, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify max-h-28 overflow-auto">
+              <p class="text-justify max-h-28 overflow-auto" innerHTML="convertNewlinesToBreaks(_data?.dummy_14,200)">
                 {{ _data?.dummy_14 }}
               </p>
             </div>
@@ -1524,7 +1516,7 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                   (click)="handleCopy(_data?.LINK_6, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
-              <p class="text-justify overflow-auto">{{ _data?.LINK_6 }}</p>
+              <p class="text-justify overflow-auto" >{{ _data?.LINK_6 }}</p>
               <p class="para pt-2 cursor-pointer" style="color:#2f45ff" ngIf="_data?.LINK_6?.length > 200"
                 (click)="OpenViewModal(_data?.LINK_6, 'LINK-6')">
                 View More
@@ -1535,7 +1527,7 @@
       </div>
     </div>
   </div>
-  <ng-template #noData>
+  <ng-template #noData >
     <p>No Data Found!</p>
   </ng-template>
 </div>

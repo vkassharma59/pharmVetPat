@@ -29,7 +29,7 @@
                                 <div class="ms-4 pom"
                                     *ngIf="data?.chemical_structure && getColumnName('chemical_structure')">
                                     <button class="p-2 bg-[#0032A0] text-white"
-                                        (click)="openImageModal(getChemicalImage())">
+                                        (click)="openImageModal(getChemicalImage(), false)">
                                         <i class="fa-solid fa-magnifying-glass"></i>
                                     </button>
                                 </div>
@@ -198,6 +198,7 @@
                                     </div>
                                     <div *ngIf="data?.company_logo && getColumnName('company_logo')"
                                         class="col-lg-2 col-md-6 col-sm-12">
+
                                         <div class="ps-3">
                                             <h1 class="font-bold" style="color:#312e81;">
                                                 {{ getColumnName("company_name") }}   
@@ -207,10 +208,11 @@
                                             </p>
                                             <div *ngIf="data?.company_logo">
                                                 <img [src]="getCompanyLogo(data)" alt="error" class="object-contain"
-                                                    style="height: 75px" />
+                                                    style="height: 75px ;padding-top: 3px;" />
                                             </div>
                                         </div>
                                     </div>
+                                   
                                     <div *ngIf="data?.company_website && getColumnName('company_website')"
                                         class="col-lg-2 col-md-6 col-sm-12">
                                         <div class="ps-3">
@@ -480,7 +482,7 @@
         </div>
     </div>
     <div class="flex justify-center">
-        <button (click)="toggleMoreInfo()" class="py-2 px-3 mt-5 btnchemical rounded-md btn"
+        <button (click)="toggleMoreInfo()" class="py-2 px-3  btnchemical rounded-md btn"
             style="background:linear-gradient(to right, #efb303,#fff087); color: black;">
             {{
             MoreInfo

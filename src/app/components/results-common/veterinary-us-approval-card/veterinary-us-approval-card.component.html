@@ -3,7 +3,7 @@
 </div> -->
 <div class="card-header text-white ">
   <div style="padding-top:7px;display:flex;">
-    {{resultTabs?.veterinaryUsApproval?.label}} >> {{_data?.active_ingredients}}
+    {{resultTabs?.veterinaryUsApproval?.label}} >>
      <span>
      {{showFull ? (_data?.active_ingredients || '' ) : (_data?.active_ingredients | slice:0:200) }} 
     <ng-container *ngIf="_data?.active_ingredients?.length > 200">

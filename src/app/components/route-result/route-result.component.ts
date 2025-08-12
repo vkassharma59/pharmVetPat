@@ -169,6 +169,7 @@ export class RouteResultComponent {
     return currentTabName === expectedTabName;
   }
 
+
   isTechnicalRoutesTabActive(): boolean {
     return this.CurrentAPIBody?.currentTab === this.resultTabWithKeys?.technicalRoutes?.name;
   }
@@ -314,19 +315,41 @@ export class RouteResultComponent {
             localStorage.setItem('priviledge_json', JSON.stringify(userPrivilege));
           }
           const pharmaPrivilege = userPrivilege?.['pharmvetpat-mongodb'];
-          if (
-            !pharmaPrivilege ||
-            pharmaPrivilege?.SplitDownload === 'false' ||
-            !pharmaPrivilege?.DownloadCount ||
-            pharmaPrivilege?.DownloadCount == 0
-          ) {
-            this.handleSetLoading.emit(false);
-            this.OpenPriviledgeModal.emit(
-              'Report download is only allowed with premium ID, please upgrade to a premium account.'
-            );
-            this.generatePDFloader = false;
-            return;
-          }
+          // if (
+          //   !pharmaPrivilege ||
+          //   pharmaPrivilege?.SplitDownload === 'false' ||
+          //   !pharmaPrivilege?.DownloadCount ||
+          //   pharmaPrivilege?.DownloadCount == 0 || "0"
+          // ) {
+          //   this.handleSetLoading.emit(false);
+          //   this.OpenPriviledgeModal.emit(
+          //     'Report download is only allowed with premium ID, please upgrade to a premium account.'
+          //   );
+          //   this.generatePDFloader = false;
+          //   return;
+          // }
+        if (!pharmaPrivilege || pharmaPrivilege.SplitDownload === 'false') {
+          // If SplitDownload is false → hide download button in UI
+         // this.showDownloadButton = false;
+          this.handleSetLoading.emit(false);
+          this.generatePDFloader = false;
+          return;
+        }
+
+        if (
+          !pharmaPrivilege.DownloadCount ||
+          pharmaPrivilege.DownloadCount === 0 ||
+          pharmaPrivilege.DownloadCount === "0"
+        ) {
+          // If DownloadCount is 0 → show error
+          this.handleSetLoading.emit(false);
+          this.OpenPriviledgeModal.emit(
+            'Your daily download limit is over for this platform.'
+            // 'Report download is only allowed with premium ID, please upgrade to a premium account.'
+          );
+          this.generatePDFloader = false;
+          return;
+        }
           this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
             next: (res: any) => {
               if (res?.data) {
@@ -447,6 +470,7 @@ export class RouteResultComponent {
     }, 0);
   }
 
+
   handleGeneratePDF1(index: number) {
     this.generatePDFloader = true;
     this.handleSetLoading.emit(true);
@@ -487,7 +511,8 @@ export class RouteResultComponent {
           ) {
             this.handleSetLoading.emit(false);
             this.OpenPriviledgeModal.emit(
-              'Report download is only allowed with premium ID, please updgrade to premium account.'
+              'Your daily download limit is over for this platform.'
+              // 'Report download is only allowed with premium ID, please updgrade to premium account.'
             );
             this.generatePDFloader = false;
             return;

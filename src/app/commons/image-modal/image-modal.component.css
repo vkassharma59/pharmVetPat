@@ -103,6 +103,12 @@ img {
   height: auto;
   /* Maintain aspect ratio */
 }
+::ng-deep .custom-image-modal .mat-dialog-container {
+  margin-top:auto !important;
+  padding: 8px !important;
+  max-width: 350px;
+  max-height: 450px;
+}
 
 .zoomin,
 .zoomout,

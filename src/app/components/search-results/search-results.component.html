@@ -20,6 +20,7 @@
       [searchData]="_searchData"
       [CurrentAPIBody]="CurrentAPIBody"
       [currentChildAPIBody]="childApiBody[i]"
+      (OpenPriviledgeModal)="openPriviledgeModal($event)"
       (onResultTabChange)="onResultTabChange($event)"
       (handleSetLoading)="handleLoadingState($event)"
       (resetPagination)="resetPagination($event, i)"
@@ -31,6 +32,7 @@
     *ngIf="CurrentAPIBody?.count > 25"
     (showDataResultFunction)="showDataResultFunction.emit($event)"
     [CurrentAPIBody]="CurrentAPIBody"
+    (OpenPriviledgeModal)="openPriviledgeModal($event)"
     [paginationRerenderTrigger]="paginationRerenderTrigger"
     (setLoading)="handleLoadingState($event)"
     ></chem-pagination>
