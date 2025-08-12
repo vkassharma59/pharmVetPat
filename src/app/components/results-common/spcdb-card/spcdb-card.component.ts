@@ -161,9 +161,9 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
     this.fetchData();
   }
 
-  clearFilter(column: string, input: HTMLInputElement) {
-    input.value = '';
-    delete this.columnsSearch[column];
+   clearFilter(columnKey: string, inputRef: HTMLInputElement) {
+    inputRef.value = '';
+    delete this.columnsSearch[columnKey];
     this.fetchData();
   }
   onCustomSort(column: number) {
