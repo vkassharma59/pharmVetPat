@@ -301,7 +301,8 @@ export class ResultTabComponent {
           ) {
             this.handleLoading.emit(false);
             this.priviledgeModal.emit(
-              'Report download is only allowed with premium ID, please updgrade to premium account.'
+              'Your daily download limit is over for this platform.'
+              // 'Report download is only allowed with premium ID, please updgrade to premium account.'
             );
             this.handlegenerateloading = false;
 
