@@ -20,7 +20,7 @@ export class MainSearchService {
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
     'api-key': environment.headerApiKey,
-    'platforms': environment.platforms,
+    'platform': environment.platform,
     'access-token': this.auth_token,
     'x-forwarded-for': this.ip,
     'Access-Control-Allow-Origin': '*',

@@ -18,7 +18,7 @@ export class ServiceResultTabFiltersService {
     'Content-Type': 'application/json',
     'api-key': environment.headerApiKey,
     'access-token': this.auth_token,
-    'platforms': environment.platforms,
+    'platform': environment.platform,
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
   });
@@ -40,7 +40,7 @@ export class ServiceResultTabFiltersService {
       accept: 'application/pdf',
       'api-key': environment.headerApiKey,
       'access-token': this.auth_token,
-      'platforms': environment.platforms,
+      'platform': environment.platform,
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
     };
