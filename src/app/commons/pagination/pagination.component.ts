@@ -135,7 +135,7 @@ export class PaginationComponent {
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
     'api-key': environment.headerApiKey,
-    'platforms': environment.platforms,
+    'platform': environment.platform,
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
   });
