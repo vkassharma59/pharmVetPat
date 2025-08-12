@@ -58,40 +58,25 @@
                   <span>{{ column.name }}</span>
                   <i class="fa-solid" [ngClass]="getSortIcon(i)" style="margin-left: 8px;"></i>
                 </div>
-                <ng-container *ngIf="filterableColumns.includes(column.value)">
-                  <div class="filter" style="display: flex;
-    align-items: center;
-    font-size: 14px;
-    width: 180px;">
-                    <input #filterInput matInput placeholder="Filter" (click)="$event.stopPropagation()" style="margin-top: 5px;
-    border-radius: 7px;
-    padding: 3px;
-    color: black;
-    width: 100px;" />
+ <div class="filter" style="display:flex; align-items:center; font-size:14px; width:180px;">
+                  <input #filterInput matInput placeholder="Filter" (click)="$event.stopPropagation()"
+                    [(ngModel)]="columnsSearch[column.value]" name="filter_{{column.value}}"
+                    style="margin-top:5px; border-radius:7px; padding:3px; color:black; width:100px;" />
 
-                    <!-- (keyup)="applyColumnFilter(column, $event)"  -->
-
-                    <div style="position: relative; display: flex; overflow:visible; padding:0; width:58px">
-
-                      <button class="filterIcon" (click)="searchInColumn(column, filterInput, $event);">
-                        <i class="fa-solid fa-filter"></i>
-                      </button>
-                      <div class="filter_container">
-                        <button class="filterIcon"
-                          (click)="clearFilter(column.value, filterInput); $event.stopPropagation()">
-                          <i class="fa-solid fa-filter-circle-xmark"></i>
-                        </button>
-                        <div *ngIf="openFilter[column.value] && false" class="dropdown-item" #dropdownRef>
-                          <ul>
-                            <li
-                              *ngFor="let option of ['Starts with','Contains','Not Contains','Ends With','Equals','Not Equals']"
-                              class="list">{{ option }}</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
+                  <div style="position:relative; display:flex; overflow:visible; padding:0; width:58px;">
+                    <!-- Search icon -->
+                    <button class="filterIcon"
+                      (click)="searchInColumn(column, filterInput, $event); $event.stopPropagation();">
+                      <i class="fa-solid fa-filter"></i>
+                    </button>
+    
+                    <!-- Clear icon: only appears when there is some text -->
+                    <button *ngIf="columnsSearch[column.value]?.trim()" class="filterIcon"
+                      (click)="clearFilter(column.value, filterInput); $event.stopPropagation()">
+                      <i class="fa-solid fa-filter-circle-xmark"></i>
+                    </button>
                   </div>
-                </ng-container>
+                </div>
               </div>
             </th>
 

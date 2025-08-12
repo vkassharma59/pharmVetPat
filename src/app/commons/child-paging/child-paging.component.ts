@@ -69,42 +69,68 @@ export class ChildPagingComponent implements OnInit {
     this.handlePageClick(this.MainPageNo);
   };
 
+  // handleNextclick = () => {
+  //   console.log('➡️ handleNextclick triggered');
+  
+  //   const count = Math.ceil(this.count / 25); // total pages
+  //   const currentLastPage = this.PageArray[this.PageArray.length - 1] ?? 0;
+  
+  //   console.log('📦 Total Count:', this.count);
+  //   console.log('📄 Total Pages:', count);
+  //   console.log('📑 Current PageArray:', this.PageArray);
+  //   console.log('📍 Current Last Page:', currentLastPage);
+  
+  //   if (currentLastPage >= count) {
+  //     console.log('⛔ Already at last page, no action needed');
+  //     return;
+  //   }
+  
+  //   this.MainPageNo = currentLastPage + 1;
+  
+  //   const remain = count - currentLastPage;
+  //   console.log('🔢 Remaining pages:', remain);
+  
+  //   this.PageArray = [];
+  
+  //   for (
+  //     let i = this.MainPageNo;
+  //     i < Math.min(this.MainPageNo + 5, this.MainPageNo + remain);
+  //     i++
+  //   ) {
+  //     this.PageArray.push(i);
+  //   }
+  
+  //   console.log('✅ Updated PageArray:', this.PageArray);
+  
+  //   this.handlePageClick(this.MainPageNo);
+  // };
   handleNextclick = () => {
-    console.log('➡️ handleNextclick triggered');
-  
-    const count = Math.ceil(this.count / 25); // total pages
-    const currentLastPage = this.PageArray[this.PageArray.length - 1] ?? 0;
-  
-    console.log('📦 Total Count:', this.count);
-    console.log('📄 Total Pages:', count);
-    console.log('📑 Current PageArray:', this.PageArray);
-    console.log('📍 Current Last Page:', currentLastPage);
-  
-    if (currentLastPage >= count) {
-      console.log('⛔ Already at last page, no action needed');
-      return;
-    }
-  
-    this.MainPageNo = currentLastPage + 1;
-  
-    const remain = count - currentLastPage;
-    console.log('🔢 Remaining pages:', remain);
-  
+  const totalPages = Math.ceil(this.count / 25);
+
+  // 🚫 Already at last page
+  if (this.MainPageNo >= totalPages) {
+    return;
+  }
+
+  // ✅ Move to next page
+  this.MainPageNo++;
+
+  const firstPageInArray = this.PageArray[0];
+  const lastPageInArray = this.PageArray[this.PageArray.length - 1];
+
+  // 🔄 Shift PageArray window only if MainPageNo goes beyond current last page
+  if (this.MainPageNo > lastPageInArray) {
     this.PageArray = [];
-  
-    for (
-      let i = this.MainPageNo;
-      i < Math.min(this.MainPageNo + 5, this.MainPageNo + remain);
-      i++
-    ) {
+    const startPage = Math.min(this.MainPageNo, totalPages - 4);
+    for (let i = startPage; i <= Math.min(startPage + 4, totalPages); i++) {
       this.PageArray.push(i);
     }
-  
-    console.log('✅ Updated PageArray:', this.PageArray);
-  
-    this.handlePageClick(this.MainPageNo);
-  };
-  
+  }
+
+  // 🔄 Call API for new page
+  this.handlePageClick(this.MainPageNo);
+};
+
   
 
   handlePreviousClick = () => {
