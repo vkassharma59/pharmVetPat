@@ -22,7 +22,7 @@ export class UserPriviledgeService {
     'Content-Type': 'application/json',
     'api-key': env.headerApiKey,
     'access-token': this.auth_token,
-    'platforms': env.platforms,
+    'platform': env.platform,
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
   });
@@ -67,7 +67,7 @@ export class UserPriviledgeService {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'api-key': env.headerApiKey,
-      'platforms': env.platforms,
+      'platform': env.platform,
       'access-token': auth_token,
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',

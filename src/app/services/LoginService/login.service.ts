@@ -21,7 +21,7 @@ export class LoginService {
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
     'api-key': environment.headerApiKey,
-    'platforms': environment.platforms,
+    'platform': environment.platform,
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
   });
@@ -57,7 +57,7 @@ export class LoginService {
       'Content-Type': 'application/json',
       'access-token': access_token,
       'api-key': environment.headerApiKey,
-      'platforms': environment.platforms,
+      'platform': environment.platform,
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
     });

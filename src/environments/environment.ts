@@ -15,6 +15,6 @@ export const environment = {
     countryNameLogoDomain2: '/agropat/images/',  
     baseUrlProduct: 'https://imd.chemrobotics.com',
     productImages: '/assets/img/ProductImages/',
-    platforms:'PharmVetPat'
+    platform:'PharmVetPat'
   };
   

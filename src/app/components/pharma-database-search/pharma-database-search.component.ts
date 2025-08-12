@@ -186,12 +186,15 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       console.log('Loaded filter:', savedSimpleFilter);
     }
 
-    // Restore other search states
+    this.advanceSearch.keyword = sessionStorage.getItem('advanceSearch.keyword') || '';
+    const savedadvanceFilter = sessionStorage.getItem('advanceSearch.filter');
+    if (savedadvanceFilter) {
+      this.advanceSearch.filter = savedadvanceFilter;
+      console.log('Loaded filter:', savedadvanceFilter);
+    }
     this.chemicalStructure.keyword = sessionStorage.getItem('chemicalStructure.keyword') || '';
     this.synthesisSearch.keyword = sessionStorage.getItem('synthesisSearch.keyword') || '';
     this.intermediateSearch.keyword = sessionStorage.getItem('intermediateSearch.keyword') || '';
-
-    // Set selected tab index based on API tab
     if (this.CurrentAPIBody?.currentTab) {
       switch (this.CurrentAPIBody.currentTab) {
         case 'active_ingredient':
@@ -572,6 +575,10 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       case searchTypes.advanceSearch:
         this.advanceSearch.filterInputs[index].keyword = value;
         this.advanceSearch.autosuggestionList[index] = [];
+        sessionStorage.setItem('advanceSearch.keyword', value);
+        sessionStorage.setItem('advanceSearch.filter', this.advanceSearch.filter || '');
+        this.checkPriviledgeAndHandleSearch(this.searchTypes.advanceSearch);
+
         break;
     }
   }
@@ -625,7 +632,10 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       sessionStorage.setItem('simpleSearch.keyword', this.simpleSearch.keyword || '');
       sessionStorage.setItem('simpleSearch.filter', this.simpleSearch.filter || '');
     }
-
+    if (searchType === this.searchTypes.advanceSearch) {
+      sessionStorage.setItem('advanceSearch.keyword', this.advanceSearch.keyword || '');
+      sessionStorage.setItem('advanceSearch.filter', this.advanceSearch.filter || '');
+    }
     // 🚨 Validate sales range if only one value is given
     if (startSales && !endSales) {
       this.priviledgeModal.emit('Please enter End Range.');
