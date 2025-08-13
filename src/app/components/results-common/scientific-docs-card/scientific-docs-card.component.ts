@@ -133,7 +133,7 @@ export class ScientificDocsCardComponent implements OnChanges {
   }
 
   getColumnName(value: any): string {
-    const name = this.scientific_column[value] || value;
+    const name = this.scientific_column[value];
     return name;
   }
 

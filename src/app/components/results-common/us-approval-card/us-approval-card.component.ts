@@ -113,10 +113,10 @@ export class UsApprovalCardComponent {
     return Object.values(obj);
   }
   getColumnName1(value: any) {
-    return this.us_column[value] || value;
+    return this.us_column[value];
   }
   getColumnName2(value: any) {
-    return this.us_column2[value] || value;
+    return this.us_column2[value];
   }
   ngOnDestroy() {
     // Reset counter when navigating away from the component
