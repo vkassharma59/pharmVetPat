@@ -878,13 +878,13 @@
           Raise Query
         </button>
         <div *ngIf="isDownloadAvailableFunction()">
-          <button *ngIf="!handlegenerateloading && isDownloadPermit" (click)="handleGeneratePdf()"
+          <button *ngIf="!handlegenerateloading && isDownloadAvailable" (click)="handleGeneratePdf()"
             [disabled]="handlegenerateloading" title="Download Full Report (Max 25 ROS)"
             class="px-2 py-2 text-xs bg-[#0032A0] text-white font-semibold rounded-full">
             <i class="fa-solid fa-download px-2"></i>Full Report (max 25 Report
             Download)
           </button>
-          <button *ngIf="handlegenerateloading && isDownloadPermit"
+          <button *ngIf="handlegenerateloading && isDownloadAvailable"
             class="px-2 py-2 text-xs bg-[#0032A0] text-white font-semibold rounded-full flex justify-center items-center gap-2">
             <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-white"
               viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">

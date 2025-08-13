@@ -72,7 +72,7 @@ export class JapanPMDAComponent implements OnInit, OnDestroy {
   }
 
   getColumnName(value: string): string {
-    return this.japan_approval_column?.[value] ?? value;
+    return this.japan_approval_column?.[value];
   }
 
   getPubchemId(value: string) {

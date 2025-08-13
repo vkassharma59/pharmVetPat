@@ -125,22 +125,22 @@ export class VeterinaryUsApprovalCardComponent implements OnInit, OnDestroy {
   }
 
   getColumnName(value: any) {
-    return this.veterinary_column[value] || value;
+    return this.veterinary_column[value];
   }
   getColumnName1(value: any) {
-    return this.veterinary_column1[value] || value;
+    return this.veterinary_column1[value];
   }
   getColumnName2(value: any) {
-    return this.veterinary_column2[value] || value;
+    return this.veterinary_column2[value];
   }
   getColumnName3(value: any) {
-    return this.veterinary_column3[value] || value;
+    return this.veterinary_column3[value];
   }
   getColumnName4(value: any) {
-    return this.veterinary_column4[value] || value;
+    return this.veterinary_column4[value];
   }
   getColumnName5(value: any) {
-    return this.veterinary_column5[value] || value;
+    return this.veterinary_column5[value];
   }
   getCompanyLogo(value: any): string {
     return `assets/images/${value?.company_logo}`;
