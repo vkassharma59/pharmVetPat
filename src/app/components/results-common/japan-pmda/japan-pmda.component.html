@@ -50,7 +50,7 @@
                     </p>
                 </div>
 
-                <img *ngIf="_data?.company_logo" class="company_logo" [src]="getImageUrl(_data)" alt="error"
+                <img *ngIf="_data?.company_logo" class="company_logo" [src]="getImageUrl(_data)" (error)="onImageError($event)" [alt]="_data?.company_logr"
                     style="height: 150px; width: 150px; padding: 10px;padding-left: 0; object-fit: contain;">
 
                 <!-- ✅ Moved inside the Second Column -->
@@ -76,7 +76,7 @@
                     {{ _data?.approval_supplemental_change }}
                 </p>
 
-                <img src="assets/components/PMDA.png" class="image1">
+                <img src="assets/components/PMDA.png" class="image1" (error)="onImageError($event)">
 
             </div>
         </div>
@@ -133,7 +133,7 @@
                 </p>
             </div>
 
-            <img *ngIf="data?.company_logo" class="company_logo" [src]="getImageUrl(data)" alt="error" style="
+            <img *ngIf="data?.company_logo" class="company_logo" (error)="onImageError($event)" [src]="getImageUrl(data)" alt="error" style="
         height: 200px;
         width: 200px;
         padding: 20px 20px;

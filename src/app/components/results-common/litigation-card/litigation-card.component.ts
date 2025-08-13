@@ -128,4 +128,8 @@ export class LitigationCardComponent implements OnInit, OnDestroy {
   getImageUrl1(data: any): string {
     return `${environment.baseUrl}${environment.domainNameCompanyLogo}${this._data?.plaintiff_logo}`;
   }
+  onImageError(event: Event) {
+    const element = event.target as HTMLImageElement;
+    element.src = '/assets/no-image.jpg'; // Fallback image path
+    }
 }

@@ -3,13 +3,13 @@
         <div style="padding:7px; justify-content:space-between; display:flex;">
             {{ localCount }}. {{resultTabs?.dmf?.label}} >>
             <span>
-            {{showFull ? (_data?.name || '' ) :(_data?.name | slice:0:200) }}
-            <ng-container *ngIf="_data?.name?.length > 200">
-                <span (click)="toggleView()" style="color: black; cursor: pointer; border-bottom: 1px dotted;">
-                    {{ showFull ? '... View Less' : '... View More' }}
-                </span>
-            </ng-container>
-        </span>
+                {{showFull ? (_data?.name || '' ) :(_data?.name | slice:0:200) }}
+                <ng-container *ngIf="_data?.name?.length > 200">
+                    <span (click)="toggleView()" style="color: black; cursor: pointer; border-bottom: 1px dotted;">
+                        {{ showFull ? '... View Less' : '... View More' }}
+                    </span>
+                </ng-container>
+            </span>
         </div>
     </div>
     <!-- HTML Template -->
@@ -51,10 +51,11 @@
                         <p>{{ _data?.chemrobotics_technical_supplier_registration_number }}</p>
                     </div>
 
+
                     <!-- DMF Holder -->
                     <div *ngIf="_data?.dmf_holder" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
-                            {{ getColumnName('dmf_holder') }}
+                            {{ getColumnName('dmf_holder') }} test
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
                                 (click)="handleCopy(_data?.dmf_holder, $event)">
                                 <i class="fas fa-copy"></i>
@@ -62,9 +63,11 @@
                         </h6>
                         <p>{{ _data?.dmf_holder }}</p>
                         <div *ngIf="data?.dmf_holder_logo">
-                            <img [src]="getCompanyLogo(data)" alt="error" class="object-contain" style="height: 75px" />
+                            <img [src]="getCompanyLogo(data)" (error)="onImageError($event)" [alt]="_data?.dmf_holder"
+                                class="object-contain" style="height: 75px" />
                         </div>
                     </div>
+                    
                     <!-- Type of Product -->
                     <div *ngIf="_data?.type_of_product" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">

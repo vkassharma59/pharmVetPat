@@ -21,7 +21,7 @@
         <div class="heading p-2">
           <div class="row">
             <div class="col-md-5" *ngIf="_data?.route_of_synthesis && getColumnName('route_of_synthesis')">
-              <img [src]="getImageUrl(_data)" alt="error" class=" aspect-auto" style="height: 268px;width: 291px;" />
+              <img [src]="getImageUrl(_data)" alt="_data?.route_of_synthesis" (error)="onImageError($event)" class=" aspect-auto" style="height: 268px;width: 291px;" />
 
               <div class=" pom">
                 <button class="p-2 bg-[#0032A0] text-white" (click)="openImageModal(getImageUrl(_data),true)">
@@ -167,7 +167,7 @@
         <div class="heading2">
           <div class="row">
             <div class="col-md-4" *ngIf="_data?.company_logo && getColumnName('company_logo')">
-              <img [src]="getImageUrl2(_data)" alt="error" style="width: 200px; height: 150px; margin-bottom: 12px" />
+              <img [src]="getImageUrl2(_data)" alt="_data?.company_logo" (error)="onImageError($event)" style="width: 200px; height: 150px; margin-bottom: 12px" />
               <div *ngIf="_data?.smilies_of_reactants && getColumnName('smilies_of_reactants')" class="col-md-10"
                 style="margin:15px; margin-top: 54px;">
                 <h1 class="pt-0 uppercase font-bold" style="color:#312e81;">
