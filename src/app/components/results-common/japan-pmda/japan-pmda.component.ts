@@ -72,7 +72,7 @@ export class JapanPMDAComponent implements OnInit, OnDestroy {
   }
 
   getColumnName(value: string): string {
-    return this.japan_approval_column?.[value] ?? value;
+    return this.japan_approval_column?.[value];
   }
 
   getPubchemId(value: string) {
@@ -121,4 +121,8 @@ export class JapanPMDAComponent implements OnInit, OnDestroy {
       this._data?.company_logo
     );
   }
+  onImageError(event: Event) {
+    const element = event.target as HTMLImageElement;
+    element.src = '/assets/no-image.jpg'; // Fallback image path
+    }
 }

@@ -133,7 +133,7 @@ export class ScientificDocsCardComponent implements OnChanges {
   }
 
   getColumnName(value: any): string {
-    const name = this.scientific_column[value] || value;
+    const name = this.scientific_column[value];
     return name;
   }
 
@@ -181,4 +181,8 @@ export class ScientificDocsCardComponent implements OnChanges {
       });
     }
   }
+  onImageError(event: Event) {
+    const element = event.target as HTMLImageElement;
+    element.src = '/assets/no-image.jpg'; // Fallback image path
+    }
 }

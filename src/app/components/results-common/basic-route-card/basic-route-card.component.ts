@@ -66,12 +66,12 @@ export class BasicRouteCardComponent {
     private MainSearchService: MainSearchService,
     private sanitizer: DomSanitizer
   ) { }
+  
   convertNewlinesToBreaks(text: string, sliceLength?: number): string {
     if (!text) return '';
     const slicedText = sliceLength ? text.slice(0, sliceLength) : text;
     return slicedText.replace(/(?:\r\n|\r|\n)/g, '<br>');
   }
-
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
@@ -264,5 +264,9 @@ export class BasicRouteCardComponent {
       },
     });
   }
+  onImageError(event: Event) {
+    const element = event.target as HTMLImageElement;
+    element.src = '/assets/no-image.jpg'; // Fallback image path
+    }
 
 }

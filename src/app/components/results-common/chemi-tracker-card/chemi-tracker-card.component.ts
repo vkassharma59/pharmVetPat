@@ -44,7 +44,7 @@ export class ChemiTrackerCardComponent implements OnDestroy {
       this._data = value;
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
-
+       
       if (column_list[this.resultTabs.chemiTracker?.name]?.length > 0) {
         column_list[this.resultTabs.chemiTracker.name].forEach((col: any) => {
           this.chemi_tracker_column[col.value] = col.name;
@@ -60,10 +60,14 @@ export class ChemiTrackerCardComponent implements OnDestroy {
   toggleMoreInfo() {
     this.MoreInfo = !this.MoreInfo;
   }
-
+  onImageError(event: Event) {
+    const element = event.target as HTMLImageElement;
+    element.src = '/assets/no-image.jpg'; // Fallback image path
+    }
   getColumnName(value: string) {
-    return this.chemi_tracker_column[value] || value;
+    return this.chemi_tracker_column[value];
   }
+
 
   getPubchemId(value: string) {
     return `https://pubchem.ncbi.nlm.nih.gov/#query=${value}`;

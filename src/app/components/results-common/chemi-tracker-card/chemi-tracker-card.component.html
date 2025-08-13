@@ -1,11 +1,10 @@
 <div class="card-header text-white">
-    <div style="padding-top: 7px; display:flex;">{{ localCount }}. {{resultTabs?.chemiTracker?.label}} >> <span >
-    {{showFull ? (_data?.chemical_name || '' ) : (_data?.chemical_name | slice:0:200) }} 
-            <ng-container
-            *ngIf="_data?.chemical_name?.length > 200">
-            <span (click)="toggleView()" style="color: black; cursor: pointer;border-bottom: 1px dotted;">
-                {{ showFull ? '... View Less' : '...View More' }}
-            </span>
+    <div style="padding-top: 7px; display:flex;">{{ localCount }}. {{resultTabs?.chemiTracker?.label}} >> <span>
+            {{showFull ? (_data?.chemical_name || '' ) : (_data?.chemical_name | slice:0:200) }}
+            <ng-container *ngIf="_data?.chemical_name?.length > 200">
+                <span (click)="toggleView()" style="color: black; cursor: pointer;border-bottom: 1px dotted;">
+                    {{ showFull ? '... View Less' : '...View More' }}
+                </span>
             </ng-container>
         </span></div>
 </div>
@@ -18,7 +17,7 @@
                         <div class="row">
                             <div *ngIf="data?.chemical_structure && getColumnName('chemical_structure')"
                                 class="col-lg-2 col-md-8 col-sm-12">
-                                <img *ngIf="data?.chemical_structure" class="aspect-auto" [src]="getChemicalImage()"
+                                <img *ngIf="data?.chemical_structure" class="aspect-auto" (error)="onImageError($event)" [src]="getChemicalImage()"
                                     alt="Chemical Structure" style="
                           height: 270px;
                           width: 470px;
@@ -60,42 +59,38 @@
                                 </p>
                             </div>
                             <div *ngIf="data?.active_pharmaceutical_ingredients && getColumnName('active_pharmaceutical_ingredients')"
-                                        class="py-3 col-lg-3 col-md-6 col-sm-12">
+                                class="py-3 col-lg-3 col-md-6 col-sm-12">
+                                <div class="">
+                                    <h1 class="font-bold ps-3" style="color:#312e81;">
+                                        {{
+                                        getColumnName("active_pharmaceutical_ingredients")
+                                        }}
+                                        <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                                            (click)="handleCopy(_data?.active_pharmaceutical_ingredients, copyBtn)"><i
+                                                class="fas fa-copy"></i></span>
+                                    </h1>
+                                    <p class="ps-3 overflow-auto h-16">
+                                        {{ data?.active_pharmaceutical_ingredients }}
+                                    </p>
+                                </div>
+                            </div>
+                      
+                                    <div *ngIf="data?.gbrn && getColumnName('gbrn')"
+                                        class="py-3 col-lg-2 col-md-6 col-sm-12">
                                         <div class="">
                                             <h1 class="font-bold ps-3" style="color:#312e81;">
-                                                {{
-                                                getColumnName("active_pharmaceutical_ingredients")
-                                                }}
-                                                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
-                                                    (click)="handleCopy(_data?.active_pharmaceutical_ingredients, copyBtn)"><i
-                                                        class="fas fa-copy"></i></span>
-                                            </h1>
-                                            <p class="ps-3 overflow-auto h-16">
-                                                {{ data?.active_pharmaceutical_ingredients }}
-                                            </p>
-                                        </div>
-                                    </div>
-                        </div>
-
-                        <div class="">
-                            <div class="py-2">
-                                <div class="row">
-                                    <div *ngIf="data?.gbrn && getColumnName('gbrn')"
-                                        class="col-lg-2 col-md-6 col-sm-12">
-                                        <div class="ps-3">
-                                            <h1 class="font-bold" style="color:#312e81;">
                                                 {{ getColumnName("gbrn") }}:
                                                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                                                     (click)="handleCopy(data?.gbrn, copyBtn)"><i
                                                         class="fas fa-copy"></i></span>
                                             </h1>
-                                            <p class="max-h-20 overflow-auto">
+                                            <p class="ps-3 max-h-20 overflow-auto">
                                                 {{ data?.gbrn }}
                                             </p>
                                         </div>
                                     </div>
                                     <div *ngIf="data?.cas_rn && getColumnName('cas_rn')"
-                                        class="col-lg-2 col-md-6 col-sm-12">
+                                        class="py-3 col-lg-2 col-md-6 col-sm-12">
                                         <div class="">
                                             <h1 class="font-bold ps-3" style="color:#312e81;">
                                                 {{ getColumnName("cas_rn") }}:
@@ -109,7 +104,7 @@
                                         </div>
                                     </div>
                                     <div *ngIf="data?.iupac && getColumnName('iupac')"
-                                        class="col-lg-2 col-md-6 col-sm-12">
+                                        class="py-3 col-lg-2 col-md-6 col-sm-12">
                                         <div class="">
                                             <h1 class="font-bold ps-3" style="color:#312e81;">
                                                 {{ getColumnName("iupac") }}:
@@ -121,7 +116,7 @@
                                         </div>
                                     </div>
                                     <div *ngIf="data?.field_of_applications && getColumnName('field_of_applications')"
-                                        class="col-lg-2 col-md-6 col-sm-12">
+                                        class="py-3 col-lg-2 col-md-6 col-sm-12">
                                         <div class="">
                                             <h1 class="font-bold ps-3" style="color:#312e81;">
                                                 {{ getColumnName("field_of_applications") }}:
@@ -135,7 +130,7 @@
                                         </div>
                                     </div>
                                     <div *ngIf="data?.role_of_chemical_ai_intermediate && getColumnName('role_of_chemical_ai_intermediate')"
-                                        class="col-lg-2 col-md-6 col-sm-12">
+                                        class="py-3 col-lg-2 col-md-6 col-sm-12">
                                         <div class="">
                                             <h1 class="font-bold ps-3" style="color:#312e81;">
                                                 {{
@@ -152,7 +147,7 @@
                                     </div>
 
                                     <div *ngIf="data?.releated_compounds && getColumnName('releated_compounds')"
-                                        class="col-lg-2 col-md-6 col-sm-12">
+                                        class="py-3 col-lg-2 col-md-6 col-sm-12">
                                         <div class="">
                                             <h1 class="font-bold ps-3" style="color:#312e81;">
                                                 {{ getColumnName("releated_compounds") }}:
@@ -167,7 +162,7 @@
                                     </div>
 
                                     <div *ngIf="data?.price && getColumnName('price')"
-                                        class="col-lg-2 col-md-6 col-sm-12">
+                                        class="py-3 col-lg-2 col-md-6 col-sm-12">
                                         <div class="">
                                             <h1 class="font-bold ps-3" style="color:#312e81;">
                                                 {{ getColumnName("price") }}:
@@ -181,7 +176,7 @@
                                         </div>
                                     </div>
                                     <div *ngIf="data?.structure_elucidation_report_ser && getColumnName('structure_elucidation_report_ser')"
-                                        class="col-lg-2 col-md-6 col-sm-12">
+                                        class="py-3 col-lg-2 col-md-6 col-sm-12">
                                         <div class="ps-3">
                                             <h1 class="font-bold" style="color:#312e81;">
                                                 {{
@@ -197,24 +192,27 @@
                                         </div>
                                     </div>
                                     <div *ngIf="data?.company_logo && getColumnName('company_logo')"
-                                        class="col-lg-2 col-md-6 col-sm-12">
+                                        class="py-3 col-lg-2 col-md-6 col-sm-12">
 
                                         <div class="ps-3">
                                             <h1 class="font-bold" style="color:#312e81;">
-                                                {{ getColumnName("company_name") }}   
+                                                {{ getColumnName("company_name") }}
+                                                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                                                    (click)="handleCopy(data?.company_name, copyBtn)"><i
+                                                    class="fas fa-copy"></i></span>
                                             </h1>
                                             <p class="overflow-auto">
                                                 {{ data?.company_name }}
                                             </p>
                                             <div *ngIf="data?.company_logo">
-                                                <img [src]="getCompanyLogo(data)" alt="error" class="object-contain"
+                                                <img [src]="getCompanyLogo(data)" [alt]="_data?.company_name" class="object-contain" (error)="onImageError($event)"
                                                     style="height: 75px ;padding-top: 3px;" />
                                             </div>
                                         </div>
                                     </div>
-                                   
+
                                     <div *ngIf="data?.company_website && getColumnName('company_website')"
-                                        class="col-lg-2 col-md-6 col-sm-12">
+                                        class="py-3 col-lg-2 col-md-6 col-sm-12">
                                         <div class="ps-3">
                                             <h1 class="font-bold" style="color:#312e81;">
                                                 {{ getColumnName("company_website") }}:
@@ -228,20 +226,22 @@
                                     </div>
 
                                     <div *ngIf="data?.country_of_company && getColumnName('country_of_company')"
-                                        class="col-lg-2 col-md-6 col-sm-12">
+
+                                        class="py-3 col-lg-3 col-md-6 col-sm-12">
+
                                         <div class="ps-3">
-                                            <h1 class="font-bold" style="color:#312e81;">
+                                            <h1 class="font-bold " style="color:#312e81;">
                                                 {{ getColumnName("country_of_company") }}:
                                                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                                                     (click)="handleCopy(_data?.country_of_company, copyBtn)"><i
                                                         class="fas fa-copy"></i></span>
                                             </h1>
-                                            <p class="overflow-auto">
+                                            <p class=" overflow-auto">
                                                 {{ data.country_of_company }}
                                             </p>
                                         </div>
                                         <div *ngIf="data?.country_of_company" class="">
-                                            <img [src]="getCountryUrl(data)" class="ps-3" alt="error" style="
+                                            <img [src]="getCountryUrl(data)" class="ps-3" (error)="onImageError($event)" [alt]="_data?.country_of_company" style="
                                     width: 100px;
                                     object-fit: contain;
                                     margin-bottom: 12px;
@@ -250,7 +250,7 @@
                                     </div>
 
                                     <div *ngIf="data?.email && getColumnName('email')"
-                                        class="col-lg-2 col-md-6 col-sm-12">
+                                        class="py-3 col-lg-2 col-md-6 col-sm-12">
                                         <div class="ps-3">
                                             <h1 class="font-bold" style="color:#312e81;">
                                                 {{ getColumnName("email") }}:
@@ -264,7 +264,7 @@
                                         </div>
                                     </div>
                                     <div *ngIf="data?.contact_details && getColumnName('contact_details')"
-                                        class="col-lg-6 col-md-6 col-sm-12">
+                                        class="col-lg-6 col-md-6 col-sm-12 py-3">
                                         <div class="ps-3">
                                             <h1 class="font-bold" style="color:#312e81;">
                                                 {{ getColumnName("contact_details") }}:
@@ -277,12 +277,9 @@
                                             </p>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row py-2">
                                 <div *ngIf="data?.description && getColumnName('description')"
-                                    class="col-lg-12 col-md-12 col-sm-12">
-                                    <div class="py-3 ps-3">
+                                    class="col-lg-12 col-md-12 col-sm-12 py-3">
+                                    <div class="ps-3">
                                         <h1 class="font-bold" style="color:#312e81;">
                                             {{ getColumnName("description") }}:
                                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -296,7 +293,7 @@
                                 </div>
 
                                 <div *ngIf="data?.certificate_of_analysis_coa && getColumnName('certificate_of_analysis_coa')"
-                                    class="col-lg-2 col-md-6 col-sm-12">
+                                    class="py-3 col-lg-2 col-md-6 col-sm-12">
                                     <div class="ps-3">
                                         <h1 class="font-bold" style="color:#312e81;">
                                             {{ getColumnName("certificate_of_analysis_coa") }}:
@@ -311,7 +308,7 @@
                                 </div>
 
                                 <div *ngIf="data?.pdf_multiple_pdf && getColumnName('pdf_multiple_pdf')"
-                                    class="col-lg-2 col-md-6 col-sm-12 py-1">
+                                    class="col-lg-2 col-md-6 col-sm-12 py-3">
                                     <div class="ps-3">
                                         <h1 class="font-bold" style="color:#312e81;">
                                             {{ getColumnName("pdf_multiple_pdf") }}:
@@ -326,7 +323,7 @@
                                 </div>
 
                                 <div *ngIf="data?.dummy_1 && getColumnName('dummy_1')"
-                                    class="col-lg-2 col-md-6 col-sm-12 py-1">
+                                    class="col-lg-2 col-md-6 col-sm-12 py-3">
                                     <div class="ps-3">
                                         <h1 class="font-bold" style="color:#312e81;">
                                             {{ getColumnName("dummy_1") }}:
@@ -341,7 +338,7 @@
                                 </div>
 
                                 <div *ngIf="data?.dummy_2 && getColumnName('dummy_2')"
-                                    class="col-lg-2 col-md-6 col-sm-12 py-1">
+                                    class="col-lg-2 col-md-6 col-sm-12 py-3">
                                     <div class="ps-3">
                                         <h1 class="font-bold" style="color:#312e81;">
                                             {{ getColumnName("dummy_2") }}:
@@ -356,7 +353,7 @@
                                 </div>
 
                                 <div *ngIf="data?.dummy_3 && getColumnName('dummy_3')"
-                                    class="col-lg-2 col-md-6 col-sm-12 py-1">
+                                    class="col-lg-2 col-md-6 col-sm-12 py-3">
                                     <div class="ps-3">
                                         <h1 class="font-bold" style="color:#312e81;">
                                             {{ getColumnName("dummy_3") }}:
@@ -371,7 +368,7 @@
                                 </div>
 
                                 <div *ngIf="data?.dummy_4 && getColumnName('dummy_4')"
-                                    class="col-lg-2 col-md-6 col-sm-12 py-1">
+                                    class="col-lg-2 col-md-6 col-sm-12 py-3">
                                     <div class="ps-3">
                                         <h1 class="font-bold" style="color:#312e81;">
                                             {{ getColumnName("dummy_4") }}:
@@ -386,7 +383,7 @@
                                 </div>
 
                                 <div *ngIf="data?.dummy_5 && getColumnName('dummy_5')"
-                                    class="col-lg-2 col-md-6 col-sm-12 py-1">
+                                    class="col-lg-2 col-md-6 col-sm-12 py-3">
                                     <div class="ps-3">
                                         <h1 class="font-bold" style="color:#312e81;">
                                             {{ getColumnName("dummy_5") }}:
@@ -401,7 +398,7 @@
                                 </div>
 
                                 <div *ngIf="data?.dummy_6 && getColumnName('dummy_6')"
-                                    class="col-lg-2 col-md-6 col-sm-12 py-1">
+                                    class="col-lg-2 col-md-6 col-sm-12 py-3">
                                     <div class="ps-3">
                                         <h1 class="font-bold" style="color:#312e81;">
                                             {{ getColumnName("dummy_6") }}:
@@ -416,7 +413,7 @@
                                 </div>
 
                                 <div *ngIf="data?.dummy_7 && getColumnName('dummy_7')"
-                                    class="col-lg-2 col-md-6 col-sm-12 py-1">
+                                    class="col-lg-2 col-md-6 col-sm-12 py-3">
                                     <div class="ps-3">
                                         <h1 class="font-bold" style="color:#312e81;">
                                             {{ getColumnName("dummy_7") }}:
@@ -431,7 +428,7 @@
                                 </div>
 
                                 <div *ngIf="data?.dummy_8 && getColumnName('dummy_8')"
-                                    class="col-lg-2 col-md-6 col-sm-12 py-1">
+                                    class="col-lg-2 col-md-6 col-sm-12 py-3">
                                     <div class="ps-3">
                                         <h1 class="font-bold" style="color:#312e81;">
                                             {{ getColumnName("dummy_8") }}:
@@ -446,7 +443,7 @@
                                 </div>
 
                                 <div *ngIf="data?.dummy_9 && getColumnName('dummy_9')"
-                                    class="col-lg-2 col-md-6 col-sm-12 py-1">
+                                    class="col-lg-2 col-md-6 col-sm-12 py-3">
                                     <div class="ps-3">
                                         <h1 class="font-bold" style="color:#312e81;">
                                             {{ getColumnName("dummy_9") }}:
@@ -461,7 +458,7 @@
                                 </div>
 
                                 <div *ngIf="data?.dummy_10 && getColumnName('dummy_10')"
-                                    class="col-lg-2 col-md-6 col-sm-12 py-1">
+                                    class="col-lg-2 col-md-6 col-sm-12 py-3">
                                     <div class="ps-3">
                                         <h1 class="font-bold" style="color:#312e81;">
                                             {{ getColumnName("dummy_10") }}:
@@ -474,8 +471,8 @@
                                         </p>
                                     </div>
                                 </div>
-                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>

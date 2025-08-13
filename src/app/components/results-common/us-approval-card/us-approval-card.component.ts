@@ -113,10 +113,10 @@ export class UsApprovalCardComponent {
     return Object.values(obj);
   }
   getColumnName1(value: any) {
-    return this.us_column[value] || value;
+    return this.us_column[value];
   }
   getColumnName2(value: any) {
-    return this.us_column2[value] || value;
+    return this.us_column2[value];
   }
   ngOnDestroy() {
     // Reset counter when navigating away from the component
@@ -195,9 +195,10 @@ export class UsApprovalCardComponent {
       environment.domainNameCompanyLogo +
       this._data?.commentry
     );
-  } onImgError(event: Event) {
+  } 
+  onImgError(event: Event) {
     const imgElement = event.target as HTMLImageElement;
-    imgElement.src = 'assets/components/noimg.png';
+    imgElement.src =  '/assets/no-image.jpg';
   }
   openImageModal(imageUrl: string): void {
     this.dialog.open(ImageModalComponent, {

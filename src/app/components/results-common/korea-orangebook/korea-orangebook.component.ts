@@ -80,7 +80,7 @@ export class KoreaOrangebookComponent implements OnInit, OnDestroy {
 
   getColumnName(value: any): string {
     const label = this.korea_approval_column?.[value];
-    return label ?? value; // fallback to key if no label found
+    return label; // fallback to key if no label found
   }
 
   getPubchemId(value: any) {
@@ -128,4 +128,8 @@ export class KoreaOrangebookComponent implements OnInit, OnDestroy {
       this._data?.company_logo
     );
   }
+  onImageError(event: Event) {
+    const element = event.target as HTMLImageElement;
+    element.src = '/assets/no-image.jpg'; // Fallback image path
+    }
 }

@@ -98,7 +98,7 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
   }
 
   getColumnName(value: any) {
-    return this.chem_column[value] || value;
+    return this.chem_column[value];
   }
 
   handleCopy(text: string, el: HTMLElement) {
@@ -190,4 +190,8 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
       },
     });
   }
+  onImageError(event: Event) {
+    const element = event.target as HTMLImageElement;
+    element.src = '/assets/no-image.jpg'; // Fallback image path
+    }
 }

@@ -69,7 +69,7 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
   }
 
   getColumnName(value: any) {
-    return this.canada_approval_column?.[value] ?? value;
+    return this.canada_approval_column?.[value];
   }
 
   getPubchemId(value: any): string {
@@ -114,7 +114,10 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
       }, 1500);
     }
   }
-
+  onImageError(event: Event) {
+    const element = event.target as HTMLImageElement;
+    element.src = '/assets/no-image.jpg'; // Fallback image path
+    }
   getImageUrl(data: any): string {
     return (
       environment.baseUrl +

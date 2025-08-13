@@ -105,7 +105,7 @@ export class DmfCardComponent implements OnDestroy{
   }
 
   getColumnName(value: any): string {
-    const name = this.dmf_column[value] || value;
+    const name = this.dmf_column[value];
     return name;
   }
 
@@ -156,5 +156,9 @@ export class DmfCardComponent implements OnDestroy{
       });
     }
   }
+  onImageError(event: Event) {
+    const element = event.target as HTMLImageElement;
+    element.src = '/assets/no-image.jpg'; // Fallback image path
+    }
 }
 

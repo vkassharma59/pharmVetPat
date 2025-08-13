@@ -33,11 +33,9 @@ export class ImpPatentsCardComponent implements OnInit, OnDestroy {
     this.showFull[section] = !this.showFull[section];
   }
 
-
   @Input()
   get data() {
     return this._data;
-
   }
   set data(value: any) {
     if (value && Object.keys(value).length > 0) {
@@ -75,7 +73,7 @@ export class ImpPatentsCardComponent implements OnInit, OnDestroy {
   }
 
   getColumnName(value: any): string {
-    return this.imp_patents_column[value] || value;
+    return this.imp_patents_column[value];
   }
 
   getPubchemId(value: any): string {
@@ -123,4 +121,8 @@ export class ImpPatentsCardComponent implements OnInit, OnDestroy {
   getImageUrl(): string {
     return this._data?.company_logo ? `${environment.baseUrl}${environment.domainNameCompanyLogo}${this._data.company_logo}` : '';
   }
+  onImageError(event: Event) {
+    const element = event.target as HTMLImageElement;
+    element.src = '/assets/no-image.jpg'; // Fallback image path
+    }
 }
