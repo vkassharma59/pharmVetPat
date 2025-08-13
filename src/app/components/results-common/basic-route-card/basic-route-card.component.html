@@ -57,7 +57,7 @@
       </div>
       <div class="col-lg-3" *ngIf="_data?.CHEMICAL_STRUCTURE && getColumnName('CHEMICAL_STRUCTURE')">
         <div class="mt-4">
-          <img [src]="getImageUrl(_data)" alt="error" class="ps-7 pe-7 aspect-auto object-contain"
+          <img [src]="getImageUrl(_data)" alt="error" (error)="onImageError($event)" class="ps-7 pe-7 aspect-auto object-contain"
             style="height: 256px" />
           <!-- (error)="onImgError($event)" -->
           <div class="ms-4 pom">

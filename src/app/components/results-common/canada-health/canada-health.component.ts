@@ -114,7 +114,10 @@ export class CanadaHealthComponent implements OnInit, OnDestroy {
       }, 1500);
     }
   }
-
+  onImageError(event: Event) {
+    const element = event.target as HTMLImageElement;
+    element.src = '/assets/no-image.jpg'; // Fallback image path
+    }
   getImageUrl(data: any): string {
     return (
       environment.baseUrl +

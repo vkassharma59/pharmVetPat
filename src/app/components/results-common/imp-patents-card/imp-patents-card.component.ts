@@ -123,4 +123,8 @@ export class ImpPatentsCardComponent implements OnInit, OnDestroy {
   getImageUrl(): string {
     return this._data?.company_logo ? `${environment.baseUrl}${environment.domainNameCompanyLogo}${this._data.company_logo}` : '';
   }
+  onImageError(event: Event) {
+    const element = event.target as HTMLImageElement;
+    element.src = '/assets/no-image.jpg'; // Fallback image path
+    }
 }

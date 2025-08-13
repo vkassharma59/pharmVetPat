@@ -115,3 +115,91 @@ img {
 .header {
   z-index: 30;
 }
+/* figure.zoom {
+    background-position: 50% 50%;
+    position: relative;
+    width: 100%; 
+    overflow: hidden;
+    cursor: zoom-in;
+    height: auto;
+}
+
+figure.zoom img:hover {
+    opacity: 0;
+}
+
+figure.zoom img {
+    transition: opacity 0.5s;
+    display: block;
+   
+} */
+
+  
+.zoom-header {
+  display: flex;
+}
+
+.zoomin {
+  position: relative;
+  z-index: 1000;
+}
+.main-container {
+  width: 500px;
+  height: 600px;
+  background: blue;
+  overflow: auto;
+}
+.zoomout {
+  position: relative;
+  z-index: 1000;
+}
+
+.maindiv {
+ 
+  transform-origin:0% 0%;
+}
+.h-screen {
+  height: 100vh; /* Ensure the container takes the full height of the viewport */
+}
+
+.flex {
+  display: flex;
+  flex-direction: column; /* Arrange children vertically */
+}
+
+.flex-grow {
+  flex-grow: 1; /* Allow this div to take the remaining space */
+}
+
+.relative {
+  position: relative;
+}
+
+.overflow-auto {
+  overflow: auto; /* Enable scrolling */
+}
+
+.z-20 {
+  z-index: 20; /* Ensure buttons are on top */
+}
+
+/* Button styles */
+.zoomin, .zoomout {
+  background-color: #0032A0; /* Background color */
+  color: white; /* Text color */
+  border-radius: 9999px; /* Fully rounded */
+  padding: 0.5rem 1rem; /* Padding */
+}
+
+.maindiv {
+  z-index: 10; /* Keep the image behind buttons */
+}
+
+img {
+  display: block;
+  max-width: 100%; /* Ensure the image does not exceed the container's width */
+  max-height: 100%; /* Ensure the image does not exceed the container's height */
+  height: auto; /* Maintain aspect ratio */
+}
+
+
