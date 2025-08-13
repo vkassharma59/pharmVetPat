@@ -213,8 +213,10 @@
                 (click)="copyText('TYPE',$event)" title="Copy to clipboard"></i>
             </h6>
             <p id="TYPE">Rx</p> -->
-            <img src="assets/components/fda.jpg" class="image2">
-          </ng-template>
+
+            <img src="assets/components/fda.jpg" class="image2" (error)="onImgError($event)">
+          </ng-template> -->
+
         </div>
         <!-- <img src="assets/components/fda.jpg" class="image2"> -->
       </div>

@@ -190,4 +190,8 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
       },
     });
   }
+  onImageError(event: Event) {
+    const element = event.target as HTMLImageElement;
+    element.src = '/assets/no-image.jpg'; // Fallback image path
+    }
 }

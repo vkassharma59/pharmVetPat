@@ -60,7 +60,10 @@ export class ChemiTrackerCardComponent implements OnDestroy {
   toggleMoreInfo() {
     this.MoreInfo = !this.MoreInfo;
   }
-
+  onImageError(event: Event) {
+    const element = event.target as HTMLImageElement;
+    element.src = '/assets/no-image.jpg'; // Fallback image path
+    }
   getColumnName(value: string) {
     return this.chemi_tracker_column[value];
   }

@@ -19,7 +19,7 @@
       <div class=" w-full">
         <div class="flex flex-wrap">
           <div class="lg:w-1/4 my-2" *ngIf="_data?.chemical_structure">
-             <img [src]="getImageUrl()" alt="error" class="ps-7 pe-7 h-40 aspect-auto"
+             <img [src]="getImageUrl()" alt="_data?.chemical_structure" (error)="onImageError($event)" class="ps-7 pe-7 h-40 aspect-auto"
                 style="height:15rem; width:18rem;" />
             <button class="btns flex items-center justify-center p-2" style="background-color: #312e81; color: white"
               (click)="openImageModal(getImageUrl(),false)">
@@ -1303,7 +1303,7 @@
         <div class="flex flex-wrap">
           <div class="lg:w-3/4 flex flex-wrap">
             <div class="lg:w-1/3  my-2" *ngIf="_data?.chemical_structure">
-              <img [src]="getImageUrl()" alt="error" class="ps-7 pe-7 h-40 aspect-auto"
+              <img [src]="getImageUrl()" alt="_data?.chemical_structure" (error)="onImageError($event)" class="ps-7 pe-7 h-40 aspect-auto"
                 style="height:15rem; width:18rem;" />
               <button class="btns flex items-center justify-center p-2" style="background-color: #312e81; color: white"
                 (click)="openImageModal(getImageUrl(),false)">

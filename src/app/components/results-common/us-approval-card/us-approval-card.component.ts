@@ -195,9 +195,10 @@ export class UsApprovalCardComponent {
       environment.domainNameCompanyLogo +
       this._data?.commentry
     );
-  } onImgError(event: Event) {
+  } 
+  onImgError(event: Event) {
     const imgElement = event.target as HTMLImageElement;
-    imgElement.src = 'assets/components/noimg.png';
+    imgElement.src =  '/assets/no-image.jpg';
   }
   openImageModal(imageUrl: string): void {
     this.dialog.open(ImageModalComponent, {

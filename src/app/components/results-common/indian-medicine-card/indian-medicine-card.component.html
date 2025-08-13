@@ -22,7 +22,7 @@
                     {{ _data?.medicine_name_trade_name }}
                 </p> -->
                 <div>
-                    <img *ngIf="_data?.product_image1" class="product_image1" [src]="getImageUrl(_data)" alt=" "
+                    <img *ngIf="_data?.product_image1" class="product_image1" [src]="getImageUrl(_data)" alt="_data?.product_image " (error)="onImageError($event)"
                       style="height: 150px; width: 100%; padding: 20px; object-fit: contain;">
                 </div>
 
@@ -73,13 +73,13 @@
         </div>
 
         <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
-            <img *ngIf="_data?.product_image2" class="product_image1" [src]="getImageUrl(_data)" alt="error"
+            <img *ngIf="_data?.product_image2" class="product_image1" (error)="onImageError($event)" [src]="getImageUrl(_data)" [alt]="_data?.product_image2"
                 style="height: 150px; width: 100%; max-width: 200px; padding: 20px; object-fit: contain;">
 
-            <img *ngIf="_data?.product_image2" class="product_image2" [src]="getImageUrl(_data)" alt="error"
+            <img *ngIf="_data?.product_image2" class="product_image2" (error)="onImageError($event)" [src]="getImageUrl(_data)" [alt]="_data?.product_image2"
                 style="height: 150px; width: 100%; max-width: 200px; padding: 20px; object-fit: contain;">
 
-            <img *ngIf="_data?.product_image2" class="product_image3" [src]="getImageUrl(_data)" alt="error"
+            <img *ngIf="_data?.product_image2" class="product_image3" (error)="onImageError($event)" [src]="getImageUrl(_data)" [alt]="_data?.product_image2"
                 style="height: 150px; width: 100%; max-width: 200px; padding: 20px; object-fit: contain;">
         </div>
 
