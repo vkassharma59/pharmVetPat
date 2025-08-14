@@ -1,47 +1,6 @@
+
 <ng-container *ngIf="_data?.rows?.length > 0 || searchByTable; else noData">
-  <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper justify-between">
-    <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
-      Total Records : {{currentChildAPIBody?.count }}
-    </button>
-    <div class="flex flex-wrap gap-3">
-      <div class="dropdown" *ngFor="let configData of filterConfigs" #dropdownRef>
-        <!-- Dropdown Button -->
-        <button class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
-          type="button" (click)="onFilterButtonClick(configData.key)">
-          {{ configData.label | truncate:20 }}
-        </button>
-
-        <!-- Dropdown Menu -->
-        <ul *ngIf="configData.dropdownState"
-          class="dropdown-menu w-66 max-h-60 overflow-y-auto z-30 p-2 bg-white border rounded shadow-md">
-          <!-- Loader while fetching filter values -->
-          <li *ngIf="filterLoading[configData.dataKey]" class="px-2 py-2 text-gray-500 text-sm italic">
-            Loading...
-          </li>
-
-          <li *ngIf="!filterLoading[configData.dataKey]" (click)="handleSelectFilter(configData.key, '')"
-            class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
-            <span class="block text-sm font-medium text-gray-700">View All</span>
-          </li>
-          <ng-container *ngIf="!filterLoading[configData.dataKey]">
-            <li *ngFor="let data of activePatentFilters[configData.dataKey]"
-              (click)="handleSelectFilter(configData.key, data?.value, data?.name)"
-              class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
-              <span class="block text-sm whitespace-normal break-words leading-snug text-gray-800">
-                {{ data?.name || data?.value || data }}
-              </span>
-            </li>
-          </ng-container>
-        </ul>
-      </div>
-
-      <!-- Clear Button -->
-      <button (click)="clear()" class="clear btn btn-outline-primary">
-        <i class="fa-solid fa-rotate"></i>
-      </button>
-    </div>
-  </div>
-  <div class="card-header text-white fs-5" style="  background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
+  <div class="card-header text-white fs-5 child-route-count-wrapper justify-between"*ngIf="currentChildAPIBody?.count" style="  background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
  padding: 10px;">
     <div class="d-flex flex-wrap align-items-center justify-content-between">
 
@@ -49,8 +8,53 @@
         <i class="fa-solid fa-flask me-2"></i>
         <span>AgroPharm {{resultTabs.activePatent?.label}} >> SITAGLIPTIN PHOSPHATE</span>
       </div>
+      <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
+        Total Records : {{currentChildAPIBody?.count }}
+      </button>
     </div>
   </div>
+    <!-- <div class="flex flex-wrap gap-3">
+      <button (click)="clear()" class="clear btn btn-outline-primary">
+        <i class="fa-solid fa-rotate"></i>
+      </button>
+    </div> -->
+  <div class="filterButton gap-3 d-flex flex-wrap">
+    <div class="buttons" style="margin-top: 0.8rem;" >
+      <button class="px-2 py-1 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"  (click)="applyButtonFilter('patent_type', 'compound', 'COMPOUND PATENT')">
+        COMPOUND PATENT
+      </button>
+      <button class="px-2 py-1 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
+        COMPOSITION PATENT
+      </button>
+      <button class="px-2 py-1 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]" (click)="applyButtonFilter('patent_type', 'process;process', 'PROCESS')">
+        PROCESS PATENT
+      </button>
+      <button class="px-2 py-1 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]" (click)="applyButtonFilter('patent_type', ';', 'MOU')">
+        MOU PATENT
+      </button>
+      <button class="px-2 py-1 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"  (click)="applyButtonFilter('patent_type', 'formulation;combination;combination', 'FORMULATION COMBINATION')">
+        COMBINATION PATENT
+      </button>
+      <button class="px-2 py-1 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
+        POLYMORPH PATENT
+      </button>
+      <button class="px-2 py-1 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
+        BIOTECH
+      </button>
+      <button class="px-2 py-1 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
+        DEVICE PATENT
+      </button>
+      <button class="px-2 py-1 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
+        KIT PATENT
+      </button>
+    </div>
+    <div class="clear" style="margin-top: 0.8rem;">
+      <button (click)="clear()" class="clear btn btn-outline-primary">
+        <i class="fa-solid fa-rotate"></i>
+      </button>
+    </div>
+  </div>
+  
   <div>
     <app-active-patent-card [columnDefs]="_data?.columns" [rowData]="_data?.rows"
       (dataFetchRequest)="onDataFetchRequest($event)" [currentChildAPIBody]="_currentChildAPIBody"

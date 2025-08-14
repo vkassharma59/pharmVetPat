@@ -50,7 +50,8 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
   sortDirection: 'asc' | 'desc' | '' = '';
   noMatchingData: boolean = false; columnsSearch: { [key: string]: string } = {};
   multiSortOrder: { column: number, dir: 'asc' | 'desc' }[] = [];
-
+  ListView:boolean = true; 
+  GridView:boolean = false; 
   globalSearchValue: string = '';
   get pageSize(): number {
     return this._currentChildAPIBody?.length || 25;
@@ -256,6 +257,21 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
       const currentData = this.dataSource.filteredData || [];
       this.noMatchingData = currentData.length === 0;
     }, 300);
+  }
+
+  toggleView(view: 'list' | 'grid'): void {
+    if (view === 'list') {
+      this.ListView = true;
+      this.GridView = false;
+    } else if (view === 'grid') {
+      this.ListView = false;
+      this.GridView = true;
+    }
+    // Reset pagination when toggling views
+    if (this.paginator) {
+      this.paginator.pageIndex = 0;
+      this.fetchData();
+    }
   }
 
   resetToDefault() {
