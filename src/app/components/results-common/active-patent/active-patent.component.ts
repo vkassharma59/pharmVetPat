@@ -319,5 +319,47 @@ export class ActivePatentComponent implements OnChanges {
 
     window.scrollTo(0, 0);
   }
+  applyButtonFilter(filterKey: string, value: any, name?: string) {
+  console.log("Button clicked:", { filterKey, value, name });
 
+  this.handleSetLoading.emit(true);
+  this.activePatentApiBody.filters = this.activePatentApiBody.filters || {};
+
+  if (this.activePatentApiBody.filters[filterKey] === value) {
+    delete this.activePatentApiBody.filters[filterKey];
+    this.isFilterApplied = Object.keys(this.activePatentApiBody.filters).length > 0;
+  } else {
+    this.activePatentApiBody.filters[filterKey] = value;
+    this.isFilterApplied = true;
+  }
+
+  const payload = {
+    ...this.activePatentApiBody,
+    page_no: 1,
+    start: 0
+  };
+
+  console.log("Applying filter:", filterKey, "=", value);
+  console.log("Payload before API:", payload);
+
+  this.mainSearchService.activePatentSearchSpecific(payload).subscribe({
+    next: (res) => {
+      console.log("API Response Raw:", res);
+      const resultData = res?.data || {};
+      this.count = resultData?.recordsFiltered ?? resultData?.recordsTotal;
+      this.totalPages = Math.ceil(this.count / this.pageSize);
+      this._data.rows = resultData?.data || [];
+      console.log("Parsed Count:", this.count, "Total Pages:", this.totalPages);
+      console.log("Rows Data:", this._data.rows);
+      this.handleResultTabData.emit(this._data.rows);
+      this.handleSetLoading.emit(false);
+    },
+    error: (err) => {
+      console.error("API Error:", err);
+      this.handleSetLoading.emit(false);
+    }
+  });
+}
+
+  
 }

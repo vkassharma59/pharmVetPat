@@ -212,8 +212,9 @@ p{
 .clear {
   border-radius: 50%;
   font-weight: 700;
-  border: 1px solid #0032A0;
+  /* border: 1px solid #0032A0; */
   color: #0032A0;
+  margin-top: 0.023rem;
 }
 
 .clear:hover {
@@ -240,4 +241,43 @@ p{
     padding: 0.5rem;
     box-sizing: border-box;
   }
+.rounded-md{
+  margin: 0.3rem;
+  font-size: 0.8rem;
+}
+.filterButton{
+  display:flex;
+}
+.child-route-count{
+  margin-left: 31rem;
+}
+.patent-type-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 
+.patent-btn {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.patent-btn:hover {
+  background: #f5f5f5;
+}
+
+.clear-btn {
+  padding: 6px 12px;
+  background: #fbeaea;
+  border: 1px solid #d33;
+  color: #d33;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.clear-btn:hover {
+  background: #ffdede;
+}
