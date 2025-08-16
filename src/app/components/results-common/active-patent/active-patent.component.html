@@ -19,35 +19,15 @@
       </button>
     </div> -->
   <div class="filterButton gap-3 d-flex flex-wrap">
-    <div class="buttons" style="margin-top: 0.8rem;" >
-      <button class="px-2 py-1 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"  (click)="applyButtonFilter('patent_type', 'compound', 'COMPOUND PATENT')">
-        COMPOUND PATENT
-      </button>
-      <button class="px-2 py-1 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
-        COMPOSITION PATENT
-      </button>
-      <button class="px-2 py-1 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]" (click)="applyButtonFilter('patent_type', 'process;process', 'PROCESS')">
-        PROCESS PATENT
-      </button>
-      <button class="px-2 py-1 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]" (click)="applyButtonFilter('patent_type', ';', 'MOU')">
-        MOU PATENT
-      </button>
-      <button class="px-2 py-1 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"  (click)="applyButtonFilter('patent_type', 'formulation;combination;combination', 'FORMULATION COMBINATION')">
-        COMBINATION PATENT
-      </button>
-      <button class="px-2 py-1 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
-        POLYMORPH PATENT
-      </button>
-      <button class="px-2 py-1 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
-        BIOTECH
-      </button>
-      <button class="px-2 py-1 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
-        DEVICE PATENT
-      </button>
-      <button class="px-2 py-1 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
-        KIT PATENT
+    <div class="buttons" style="margin-top: 0.8rem;">
+      <button 
+        *ngFor="let btn of quickFilterButtons"
+        class="px-2 py-1 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
+        (click)="applyQuickFilter(btn.value)">
+        {{ btn.label }}
       </button>
     </div>
+    
     <div class="clear" style="margin-top: 0.8rem;">
       <button (click)="clear()" class="clear btn btn-outline-primary">
         <i class="fa-solid fa-rotate"></i>
