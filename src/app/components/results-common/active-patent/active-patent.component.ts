@@ -28,6 +28,10 @@ export class ActivePatentComponent implements OnChanges {
 
   _data: any = { columns: [], rows: [] };
   _currentChildAPIBody: any;
+  activePatentApiBody: any;
+  activePatentFilters: any = {};
+  lastClickedFilterKey: string | null = null;
+
   searchByTable: boolean = false;
   isFilterApplied: boolean = false;
   count: number = 0;
@@ -47,7 +51,6 @@ export class ActivePatentComponent implements OnChanges {
     this._data = value;
     this.handleResultTabData.emit(this._data?.rows || []);
   }
-
   get data() {
     return this._data;
   }
@@ -79,64 +82,40 @@ export class ActivePatentComponent implements OnChanges {
   ngOnChanges() {
     this.handleResultTabData.emit(this._data);
   }
-  ngOnInit(): void {
-    // console.log('get data called', this._data);
-    // this.activePatentApiBody = { ...this.currentChildAPIBody };
-    // this.activePatentApiBody.filters = this.activePatentApiBody.filters || {};
 
-    // console.log('[ngOnInit] Initial vetenaryusApiBody:', JSON.stringify(this.activePatentApiBody, null, 2));
-
-    // this.handleFetchFilters();
-  }
+  /** Common API Request */
   onDataFetchRequest(payload: any) {
-    this.isFilterApplied = !!(payload?.search || payload?.columns);
-
-    if (!('columns' in payload)) {
-      delete this._currentChildAPIBody.columns;
-    }
-    if (!('search' in payload)) {
-      delete this._currentChildAPIBody.search;
-    }
+    this.isFilterApplied = !!(payload?.filters && Object.keys(payload.filters).length);
 
     const requestBody = {
       ...this._currentChildAPIBody,
       ...payload
     };
     this._currentChildAPIBody = requestBody;
+
     this.handleSetLoading.emit(true);
 
     this.mainSearchService.activePatentSearchSpecific(requestBody).subscribe({
       next: (result: any) => {
-        this._data.rows = result?.data?.data || [];
-        this.count = result?.data?.recordsFiltered ?? result?.data?.recordsTotal;
-        this.totalPages = Math.ceil(this.count / this.pageSize);
+        const resultData = result?.data || {};
+        this._data.rows = resultData?.data || [];
+        this.count = resultData?.recordsFiltered ?? resultData?.recordsTotal ?? 0;
+        this.totalPages = this.count ? Math.ceil(this.count / this.pageSize) : 0;
         this._currentChildAPIBody.count = this.count;
         this.searchByTable = true;
+
         this.handleResultTabData.emit(this._data.rows);
         this.handleSetLoading.emit(false);
       },
       error: (err) => {
         console.error('API Error:', err);
         this.handleSetLoading.emit(false);
-      },
-      complete: () => {
-        this.handleSetLoading.emit(false);
       }
     });
   }
 
-  activePatentApiBody: any;
-  activePatentFilters: any = {};
-  lastClickedFilterKey: string | null = null;
-
+  /** Filter Configs */
   filterConfigs = [
-    // {
-    //   key: 'order',
-    //   label: 'Order By',
-    //   dataKey: 'order',
-    //   filterType: 'order',
-    //   dropdownState: false
-    // },
     {
       key: 'patent_type',
       label: 'Patent Type',
@@ -146,12 +125,24 @@ export class ActivePatentComponent implements OnChanges {
     }
   ];
 
+  quickFilterButtons = [
+    { label: 'COMPOUND PATENT', value: 'compound' },
+    { label: 'COMPOSITION PATENT', value: 'composition' },
+    { label: 'PROCESS PATENT', value: 'process;process' },
+    { label: 'MOU PATENT', value: 'mou' },
+    { label: 'COMBINATION PATENT', value: 'formulation;combination;combination' },
+    { label: 'POLYMORPH PATENT', value: 'polymorph' },
+    { label: 'BIOTECH', value: 'biotech' },
+    { label: 'DEVICE PATENT', value: 'device' },
+    { label: 'KIT PATENT', value: 'kit' }
+  ];
+
+  /** Dropdown outside click close */
   @HostListener('document:mousedown', ['$event'])
   onClickOutside(event: MouseEvent) {
     const clickedInsideAny = this.dropdownRefs?.some((dropdown: ElementRef) =>
       dropdown.nativeElement.contains(event.target)
     );
-
     if (!clickedInsideAny) {
       this.filterConfigs = this.filterConfigs.map(config => ({
         ...config,
@@ -160,12 +151,12 @@ export class ActivePatentComponent implements OnChanges {
     }
   }
 
+  /** Update filter label */
   setFilterLabel(filterKey: string, label: string) {
     this.filterConfigs = this.filterConfigs.map((item) => {
       if (item.key === filterKey) {
         if (label === '') {
           switch (filterKey) {
-            case 'order': label = 'Order By'; break;
             case 'patent_type': label = 'Patent Type'; break;
           }
         }
@@ -175,6 +166,7 @@ export class ActivePatentComponent implements OnChanges {
     });
   }
 
+  /** Open dropdown */
   onFilterButtonClick(filterKey: string) {
     this.lastClickedFilterKey = filterKey;
     this.filterConfigs = this.filterConfigs.map((item) => ({
@@ -183,6 +175,7 @@ export class ActivePatentComponent implements OnChanges {
     }));
   }
 
+  /** Fetch available filters */
   handleFetchFilters() {
     this.filterLoading['patentFilters'] = true;
     this.activePatentApiBody.filter_enable = true;
@@ -190,18 +183,13 @@ export class ActivePatentComponent implements OnChanges {
     this.mainSearchService.activePatentSearchSpecific(this.activePatentApiBody).subscribe({
       next: (res: any) => {
         const resultData = res?.data || {};
-
         const order = ['Latest First', 'Oldest First'];
         const patentFilters = resultData?.patent_type?.map(item => ({
           name: item.name,
           value: item.value
         })) || [];
 
-        this.activePatentFilters = {
-          order,
-          patentFilters
-        };
-
+        this.activePatentFilters = { order, patentFilters };
         this.activePatentApiBody.filter_enable = false;
         this.filterLoading['patentFilters'] = false;
       },
@@ -213,9 +201,8 @@ export class ActivePatentComponent implements OnChanges {
     });
   }
 
-
+  /** Apply dropdown filter */
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
-    this.handleSetLoading.emit(true);
     this.activePatentApiBody.filters = this.activePatentApiBody.filters || {};
 
     if (value === '') {
@@ -225,6 +212,7 @@ export class ActivePatentComponent implements OnChanges {
       this.activePatentApiBody.filters[filterKey] = value;
       this.setFilterLabel(filterKey, name || '');
     }
+
     this.isFilterApplied = Object.keys(this.activePatentApiBody.filters).length > 0;
 
     // Close dropdown
@@ -232,59 +220,23 @@ export class ActivePatentComponent implements OnChanges {
       ...item,
       dropdownState: item.key === filterKey ? false : item.dropdownState
     }));
-    const existingColumns = this._currentChildAPIBody.columns || [];
 
-    const updatedColumns = existingColumns.filter((col: any) => col.data !== filterKey);
-
-    if (value) {
-      updatedColumns.push({
-        data: filterKey,
-        searchable: 'true',
-        search: {
-          value: value
-        }
-      });
-    }
-
-    this._currentChildAPIBody = {
+    const payload = {
       ...this.activePatentApiBody,
       filters: { ...this.activePatentApiBody.filters },
-      // columns: updatedColumns,
-      draw: 1,
+      page_no: 1,
       start: 0,
-      pageno: 1,
+      draw: 1
     };
 
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-    this.mainSearchService.activePatentSearchSpecific(this._currentChildAPIBody).subscribe({
-      next: (res) => {
-        const resultData = res?.data || {};
-        this.count = resultData?.recordsFiltered ?? resultData?.recordsTotal;
-        this.totalPages = Math.ceil(this.count / this.pageSize);
-        this._currentChildAPIBody.count = this.count;
-        this._data = {
-          ...this._data,
-          rows: resultData?.data || []
-        };
-        this.searchByTable = true;
-        this.handleResultTabData.emit(this._data.rows);
-        this.handleSetLoading.emit(false);
-        window.scrollTo(0, scrollTop);
-      },
-      error: () => {
-        this._currentChildAPIBody.filter_enable = false;
-        this.handleSetLoading.emit(false);
-        window.scrollTo(0, scrollTop);
-      }
-    });
+    this.onDataFetchRequest(payload);
   }
 
+  /** Clear filters */
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
       let defaultLabel = '';
       switch (config.key) {
-        // case 'order': defaultLabel = 'Order By'; break;
         case 'patent_type': defaultLabel = 'Patent Type'; break;
       }
       return { ...config, label: defaultLabel, dropdownState: false };
@@ -292,74 +244,26 @@ export class ActivePatentComponent implements OnChanges {
 
     this.activePatentApiBody.filters = {};
     this.isFilterApplied = false;
-    const payload  = {
+
+    const payload = {
       ...this.activePatentApiBody,
       filters: {},
       page_no: 1,
-      start: 0,
+      start: 0
     };
     this.onDataFetchRequest(payload);
-    // this.handleSetLoading.emit(true);
-    // this.mainSearchService.activePatentSearchSpecific(this._currentChildAPIBody).subscribe({
-    //   next: (res) => {
-    //     this._currentChildAPIBody.count = res?.data?.recordsTotal;
-    //     this._data.rows = res?.data?.data || [];
-    //     this.count = this._currentChildAPIBody.count;
-    //     this.totalPages = Math.ceil(this.count / this.pageSize); // Recalculate pagination
-    //     this.searchByTable = false;
-    //     this.handleResultTabData.emit(this._data.rows);
-    //     this.handleSetLoading.emit(false);
-    //   },
-    // error: (err) => {
-    //   console.error(err);
-    //   this._currentChildAPIBody.filter_enable = false;
-    //   this.handleSetLoading.emit(false);
-    // }
-    //});
-
     window.scrollTo(0, 0);
   }
-  applyButtonFilter(filterKey: string, value: any, name?: string) {
-  console.log("Button clicked:", { filterKey, value, name });
 
-  this.handleSetLoading.emit(true);
-  this.activePatentApiBody.filters = this.activePatentApiBody.filters || {};
-
-  if (this.activePatentApiBody.filters[filterKey] === value) {
-    delete this.activePatentApiBody.filters[filterKey];
-    this.isFilterApplied = Object.keys(this.activePatentApiBody.filters).length > 0;
-  } else {
-    this.activePatentApiBody.filters[filterKey] = value;
-    this.isFilterApplied = true;
+  /** Apply Quick filter button */
+  applyQuickFilter(value: string) {
+    this.activePatentApiBody.filters = { patent_type: value };
+    const payload = {
+      ...this.activePatentApiBody,
+      filters: { ...this.activePatentApiBody.filters },
+      page_no: 1,
+      start: 0
+    };
+    this.onDataFetchRequest(payload);
   }
-
-  const payload = {
-    ...this.activePatentApiBody,
-    page_no: 1,
-    start: 0
-  };
-
-  console.log("Applying filter:", filterKey, "=", value);
-  console.log("Payload before API:", payload);
-
-  this.mainSearchService.activePatentSearchSpecific(payload).subscribe({
-    next: (res) => {
-      console.log("API Response Raw:", res);
-      const resultData = res?.data || {};
-      this.count = resultData?.recordsFiltered ?? resultData?.recordsTotal;
-      this.totalPages = Math.ceil(this.count / this.pageSize);
-      this._data.rows = resultData?.data || [];
-      console.log("Parsed Count:", this.count, "Total Pages:", this.totalPages);
-      console.log("Rows Data:", this._data.rows);
-      this.handleResultTabData.emit(this._data.rows);
-      this.handleSetLoading.emit(false);
-    },
-    error: (err) => {
-      console.error("API Error:", err);
-      this.handleSetLoading.emit(false);
-    }
-  });
-}
-
-  
 }
