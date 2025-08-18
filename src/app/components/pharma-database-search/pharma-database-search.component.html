@@ -253,8 +253,8 @@
         <!-- Start Sales -->
         <div class="col-md-3 col-12 mb-2 mb-md-0">
           <label for="startSales" class="form-label">Start Range Sales ($M)</label>
-          <input type="text" class="form-control" placeholder="Start Range" [(ngModel)]="advanceSearch.startSales"
-            [disabled]="isAdvancedInputDisabled() && false"
+          <input type="number" class="form-control" placeholder="Start Range" id="startSales" [(ngModel)]="advanceSearch.startSales"
+            [disabled]="isAdvancedInputDisabled() && false" min="0"
             [title]="isAdvancedInputDisabled() ? 'Please enter Filter and Text first' : ''" />
 
         </div>
@@ -262,14 +262,11 @@
         <!-- End Sales -->
         <div class="col-md-3 col-12 mb-2 mb-md-0">
           <label for="endSales" class="form-label">End Range Sales ($M)</label>
-          <input type="text" class="form-control" placeholder="End Range" [(ngModel)]="advanceSearch.endSales"
-            [disabled]="isAdvancedInputDisabled() && false"
+          <input type="number" class="form-control" placeholder="End Range" id="endSales" [(ngModel)]="advanceSearch.endSales"
+            [disabled]="isAdvancedInputDisabled() && false" min="0"
             [title]="isAdvancedInputDisabled() ? 'Please enter Filter and Text first' : ''" />
         </div>
       </div>
-
-
-
       <!-- Tutorial Buttons Row -->
       <div class="row mb-3 align-items-center">
         <div class="col-md-2 col-6 mb-2 mb-md-0">
