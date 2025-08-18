@@ -70,7 +70,11 @@ export class JapanPMDAComponent implements OnInit, OnDestroy {
   toggleMoreInfo() {
     this.MoreInfo = !this.MoreInfo;
   }
-
+ convertNewlinesToBreaks(text: string, sliceLength?: number): string {
+    if (!text) return '';
+    const slicedText = sliceLength ? text.slice(0, sliceLength) : text;
+    return slicedText.replace(/(?:\r\n|\r|\n)/g, '<br>');
+  }
   getColumnName(value: string): string {
     return this.japan_approval_column?.[value];
   }

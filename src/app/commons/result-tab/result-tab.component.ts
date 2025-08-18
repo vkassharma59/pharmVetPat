@@ -117,7 +117,8 @@ export class ResultTabComponent {
     const Account_type = localStorage.getItem('account_type');
     const Userdata = JSON.parse(localStorage.getItem('priviledge_json') || '');
     this.isSplitDownload = Userdata?.['pharmvetpat-mongodb']?.SplitDownload;
-    this.isDownloadAvailable = Userdata?.['pharmvetpat-mongodb']?.Download;
+    this.isDownloadAvailable = Userdata?.['pharmvetpat-mongodb']?.Download == 'true' ? true : false;
+   console.log('isDownloadAvailable', this.isDownloadAvailable);
     this.isDownloadPermit = Account_type == 'premium' ? true : false;
   }
 
@@ -161,7 +162,7 @@ export class ResultTabComponent {
   };
 
   isDownloadAvailableFunction() {
-    return this.isDownloadAvailable === 'true';
+    return this.isDownloadAvailable == 'true';
   }
 
   OnBlur(filterValue: any) {

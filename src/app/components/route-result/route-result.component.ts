@@ -60,6 +60,13 @@ export class RouteResultComponent {
     chemiTracker: 'chemiTracker',
     technicalRoutes: 'techRoute',
     impurity: 'impurity',
+    dmf: "techSupplier",
+    europeApproval: "ema",
+    japanApproval: "pmda",
+    canadaApproval: "healthCanada",
+    indianMedicine: "indianMedicine",
+    litigation: "litigation"
+
   };
 
   currentTabData: any = {}
@@ -74,7 +81,7 @@ export class RouteResultComponent {
   apiUrls = AppConfigValues.appUrls;
   searchThrough: string = '';
   isSplitDownload: boolean = false;
-  isFullDownload:boolean =false;
+  isFullDownload: boolean = false;
   isDownloadPermit: boolean = false;
   activeTab: string = '';
   report_download = true;

@@ -53,14 +53,11 @@
           <p class="text-wrap max-h-12 whitespace-normal">
             {{ _data?.trade_name }}
           </p>
-        </div>
-        <div class="col-md-9 col-sm-8" *ngIf="_data?.company_logo">
-          <h6 class="font-bold text-indigo-900">
-            {{ getColumnName('company_logo') }}</h6>
           <div *ngIf="data?.company_logo">
-            <img [src]="getCompanyLogo(data)" alt="error" class="object-contain" style="height: 75px" />
+            <img [src]="getCompanyLogo(data)" alt="error" class="object-contain" style="width:150px;height: 75px" />
           </div>
         </div>
+       
 
 
 
