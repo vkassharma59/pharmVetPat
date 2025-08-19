@@ -224,7 +224,7 @@
           <label class="flex items-center" *ngFor="let tab of resultTabs">
             <input type="checkbox" [(ngModel)]="SingleDownloadCheckbox[tab.name]"
              [checked]="shouldShowDownloadButton()"  
-              [disabled]="isDisabled() && !SingleDownloadCheckbox[tab.name]"
+             [disabled]="isDisabled() && !SingleDownloadCheckbox[tab.name]"
               class="form-checkbox text-blue-600 h-5 w-5" />
             <span class="ml-2 text-gray-700">{{ tab.label }}</span>
           </label>
