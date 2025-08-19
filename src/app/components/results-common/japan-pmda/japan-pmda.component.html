@@ -306,10 +306,10 @@
     <div *ngIf="_data?.notes && getColumnName('notes')">
         <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("notes") }}
             <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
-                (click)="handleCopy(_data?.notes, copyBtn)"><i class="fas fa-copy"></i></span>
+            (click)="handleCopy(_data?.notes, copyBtn)"><i class="fas fa-copy"></i></span>
         </h1>
-        <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal">
-            {{ _data?.notes }}
+        <p class="text-wrap max-h-12 overflow-y-auto break-words whitespace-normal"
+        [innerHTML]="convertNewlinesToBreaks(_data?.notes)">
         </p>
     </div>
 </div>

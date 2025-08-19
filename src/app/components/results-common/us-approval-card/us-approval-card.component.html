@@ -53,14 +53,13 @@
           <p class="text-wrap max-h-12 whitespace-normal">
             {{ _data?.trade_name }}
           </p>
+
         </div>
         <div class="col-md-9 col-sm-8" *ngIf="_data?.company_logo && getColumnName('company_logo')">
           <h6 class="font-bold text-indigo-900">
             {{ getColumnName('company_logo') }}</h6>
-          <div *ngIf="data?.company_logo">
-            <img [src]="getCompanyLogo(data)" alt="error" class="object-contain" style="height: 75px" />
-          </div>
-        </div>
+
+       
 
 
 
@@ -186,8 +185,7 @@
         <div class="col-md-9 col-sm-8" *ngIf="_data?.type && getColumnName('type')">
           <h6 class="font-bold text-indigo-900">
             {{ getColumnName('type') }}
-            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
-              (click)="handleCopy(_data?.type, copyBtn)">
+            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.type, copyBtn)">
 
               <i class="fas fa-copy"></i>
             </span>
@@ -206,25 +204,26 @@
               <img [src]="getCompanyLogo(data)" alt="error" class="object-contain" style="height: 75px" />
             </div>
           </ng-container>
-        
+
           <ng-template #FDA>
             <!-- <h6 class="font-bold text-indigo-900">
-            <!-- <h6 class="font-bold text-indigo-900">
+             <h6 class="font-bold text-indigo-900">
               TYPE: <i class="fa-solid fa-copy hover:cursor-pointer"
                 (click)="copyText('TYPE',$event)" title="Copy to clipboard"></i>
             </h6>
             <p id="TYPE">Rx</p> -->
+
             <img src="assets/components/fda.jpg" class="image2" (error)="onImgError($event)">
           </ng-template> -->
-        </div>
-        
-         <!-- <img src="assets/components/fda.jpg" class="image2"> -->
-      </div>
 
+        </div>
+        <!-- <img src="assets/components/fda.jpg" class="image2"> -->
+      </div>
       <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" style="background-color: #f8faff;">
 
 
         <div class="col-md-9 col-sm-8" *ngIf="_data?.appl_no && getColumnName('appl_no')">
+
           <h6 class="font-bold text-indigo-900">
             {{ getColumnName('appl_no') }}
             <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -292,14 +291,14 @@
       <tr *ngFor="let item of _data.patentData" class="border-b border-gray-300 hover:bg-gray-100"
         style="align-items: center;text-align: center;">
 
-        <td class="px-2 py-1">{{ item.patent_no }} 
+        <td class="px-2 py-1">{{ item.patent_no }}
           <div>
             <a [href]="'https://worldwide.espacenet.com/patent/search?q=' + item?.patent_no" target="_blank">
               <img class="mx-auto" style="height:35px;" src="assets/espace-logo.png">
             </a>
           </div>
           <a [href]="'https://patents.google.com/patent/' + item?.patent_no" target="_blank">
-          <img class="mx-auto" style="height:35px;" src="assets/GooglePatents.png">
+            <img class="mx-auto" style="height:35px;" src="assets/GooglePatents.png">
           </a>
         </td>
 
@@ -430,7 +429,7 @@
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
       </div>
 
-      
+
     </div>
   </div>
 </div>

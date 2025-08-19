@@ -98,7 +98,7 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
   }
 
   getColumnName(value: any) {
-    return this.chem_column[value] || value;
+    return this.chem_column[value];
   }
 
   handleCopy(text: string, el: HTMLElement) {

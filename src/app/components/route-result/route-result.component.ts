@@ -60,6 +60,13 @@ export class RouteResultComponent {
     chemiTracker: 'chemiTracker',
     technicalRoutes: 'techRoute',
     impurity: 'impurity',
+    dmf: "techSupplier",
+    europeApproval: "ema",
+    japanApproval: "pmda",
+    canadaApproval: "healthCanada",
+    indianMedicine: "indianMedicine",
+    litigation: "litigation"
+
   };
 
   currentTabData: any = {}
@@ -74,6 +81,7 @@ export class RouteResultComponent {
   apiUrls = AppConfigValues.appUrls;
   searchThrough: string = '';
   isSplitDownload: boolean = false;
+  isFullDownload: boolean = false;
   isDownloadPermit: boolean = false;
   activeTab: string = '';
   report_download = true;
@@ -142,6 +150,8 @@ export class RouteResultComponent {
     this.accountType = accountType ? accountType : '';
     const Account_type = localStorage.getItem('account_type');
     const Userdata = JSON.parse(localStorage.getItem('priviledge_json') || '');
+    this.isFullDownload =
+      Userdata?.['pharmvetpat-mongodb']?.Download == 'true' ? true : false;
 
     this.isSplitDownload =
       Userdata?.['pharmvetpat-mongodb']?.SplitDownload == 'true' ? true : false;
@@ -328,28 +338,28 @@ export class RouteResultComponent {
           //   this.generatePDFloader = false;
           //   return;
           // }
-        if (!pharmaPrivilege || pharmaPrivilege.SplitDownload === 'false') {
-          // If SplitDownload is false → hide download button in UI
-         // this.showDownloadButton = false;
-          this.handleSetLoading.emit(false);
-          this.generatePDFloader = false;
-          return;
-        }
+          if (!pharmaPrivilege || pharmaPrivilege.SplitDownload === 'false') {
+            // If SplitDownload is false → hide download button in UI
+            // this.showDownloadButton = false;
+            this.handleSetLoading.emit(false);
+            this.generatePDFloader = false;
+            return;
+          }
 
-        if (
-          !pharmaPrivilege.DownloadCount ||
-          pharmaPrivilege.DownloadCount === 0 ||
-          pharmaPrivilege.DownloadCount === "0"
-        ) {
-          // If DownloadCount is 0 → show error
-          this.handleSetLoading.emit(false);
-          this.OpenPriviledgeModal.emit(
-            'Your daily download limit is over for this platform.'
-            // 'Report download is only allowed with premium ID, please upgrade to a premium account.'
-          );
-          this.generatePDFloader = false;
-          return;
-        }
+          if (
+            !pharmaPrivilege.DownloadCount ||
+            pharmaPrivilege.DownloadCount === 0 ||
+            pharmaPrivilege.DownloadCount === "0"
+          ) {
+            // If DownloadCount is 0 → show error
+            this.handleSetLoading.emit(false);
+            this.OpenPriviledgeModal.emit(
+              'Your daily download limit is over for this platform.'
+              // 'Report download is only allowed with premium ID, please upgrade to a premium account.'
+            );
+            this.generatePDFloader = false;
+            return;
+          }
           this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
             next: (res: any) => {
               if (res?.data) {

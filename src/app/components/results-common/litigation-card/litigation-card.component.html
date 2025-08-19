@@ -35,6 +35,11 @@
                     <p class="text-wrap max-h-12 whitespace-normal">
                         {{ _data?.plaintiffs }}
                     </p>
+                    <div class="plaintiff_logo_container ">
+                        <img *ngIf="_data?.plaintiff_logo" class="plaintiff_logo" [src]="getImageUrl1(_data)"
+                            (error)="onImageError($event)" alt="error"
+                            style="max-height: 120px;max-width: 150px;margin-bottom:5px; object-fit: contain;">
+                    </div>
                 </div>
 
                 <div *ngIf="_data?.gbrn && getColumnName('gbrn')">
@@ -50,8 +55,6 @@
                     </p>
                 </div>
 
-                <img *ngIf="_data?.plaintiff_logo" class="plaintiff_logo" [src]="getImageUrl1(_data)" (error)="onImageError($event)"alt="error"
-                    style="height: 200px; width: 200px; padding: 10px;padding-left: 0;object-fit: contain;">
 
             </div>
 
@@ -81,11 +84,15 @@
                     <p class="text-wrap max-h-12 whitespace-normal">
                         {{ _data?.defendants }}
                     </p>
+                    <div class="defendant_logo_container">
+                    <img *ngIf="_data?.defendant_logo" class="defendant_logo" [src]="getImageUrl(_data)"
+                        (error)="onImageError($event)" alt="_data?.defendant_logor"
+                        style="height: 150px; width: 100%; object-fit: contain;">
+                        </div>
                 </div>
 
                 <div>
-                    <img *ngIf="_data?.defendant_logo" class="defendant_logo" [src]="getImageUrl(_data)" (error)="onImageError($event)"alt="_data?.defendant_logor"
-                        style="height: 150px; width: 100%; padding: 10px;padding-left: 0; object-fit: contain;">
+
 
                 </div>
                 <br>
@@ -117,8 +124,8 @@
                             <i class="fas fa-copy"></i>
                         </span>
                     </h1>
-                    <a href="{{ _data?.uniform_resource_locator_url }}" class="text-wrap max-h-12 whitespace-normal"
-                        style="color: blue;">
+                    <a href="{{ _data?.uniform_resource_locator_url }}" target="_blank"
+                        class="text-wrap max-h-12 whitespace-normal" style="color: blue;">
                         {{ _data?.uniform_resource_locator_url }}
                     </a>
                 </div>
@@ -128,7 +135,7 @@
             <!-- Column 4 -->
             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
 
-                <img src="assets/components/litigation-tab.jpg" class="image1" 
+                <img src="assets/components/litigation-tab.jpg" class="image1"
                     style="height: 120px; width: 300px; padding: 10px;">
             </div>
         </div>

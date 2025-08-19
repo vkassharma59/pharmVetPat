@@ -26,7 +26,7 @@
 
     <!-- Right Section -->
     <div style="display: flex;" *ngIf="index==0">
-      <button *ngIf="!generatePDFloader && isSplitDownload && searchThrough !== 'synthesis-search'"
+      <button *ngIf="!generatePDFloader && isFullDownload && searchThrough !== 'synthesis-search'"
         (click)="handleGeneratePDF()" [disabled]="generatePDFloader" title="Download Single Route"
         class="btn btn-outline-primary btn-sm me-2"><i class="fas fa-download"></i>
         Full Report Download</button>
@@ -44,7 +44,7 @@
     [activeTab]="activeTab"></chem-route-tabs>
   <div>
     <div *ngIf="shouldShowDownloadButton()" style="display: flex; justify-content: flex-end; margin-top: px;">
-      <button *ngIf="isDownloadPermit && isSplitDownload" (click)="openDownloadModal(index)"
+      <button *ngIf="isSplitDownload" (click)="openDownloadModal(index)"
         title="Download Single Route" class="btn btn-outline-primary btn-sm me-2"
         class="btn btn-outline-primary btn-sm me-2"><i class="fas fa-download"></i>
         Download Single Route</button>
