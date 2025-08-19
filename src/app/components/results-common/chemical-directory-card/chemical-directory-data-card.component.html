@@ -15,12 +15,12 @@
     searchThrough == 'synthesis-search' ||
     searchThrough == 'advance-search'">
   <div class="card-body" style="background-color:#F5FBFF;" *ngIf="!isEmptyObject(_data); else noData">
-    <div class=" mb-3 flex flex-wrap">
+    <div class=" mb-0 flex flex-wrap">
       <div class=" w-full">
         <div class="flex flex-wrap">
           <div class="lg:w-1/4 my-2" *ngIf="_data?.chemical_structure">
              <img [src]="getImageUrl()" alt="_data?.chemical_structure" (error)="onImageError($event)" class="ps-7 pe-7 h-40 aspect-auto"
-                style="height:15rem; width:18rem;" />
+                style="height:12rem; width:16rem;" />
             <button class="btns flex items-center justify-center p-2" style="background-color: #312e81; color: white"
               (click)="openImageModal(getImageUrl(),false)">
               <i class="fa-solid fa-magnifying-glass"></i>
@@ -42,7 +42,7 @@
             </div>
              <div class="container">
           <div class="row">
-            <div *ngIf="_data.trrn" class="col-md-3">
+            <div *ngIf="_data.trrn && getColumnName('trrn')" class="col-md-3">
               <div class="my-4">
                 <h1 class="font-bold ps-4" style="color:#312e81;">
                   {{ getColumnName("trrn") }}
@@ -54,7 +54,7 @@
                 </p>
               </div>
             </div>
-            <div *ngIf="_data.gbrn" class="col-md-3">
+            <div *ngIf="_data.gbrn  && getColumnName('gbrn')" class="col-md-3">
               <div class="my-4">
                 <h1 class="font-bold ps-4" style="color:#312e81;">
                   {{ getColumnName("gbrn") }}
@@ -66,7 +66,7 @@
                 </p>
               </div>
             </div>
-            <div *ngIf="_data?.cas_rn" class="col-md-3">
+            <div *ngIf="_data?.cas_rn  && getColumnName('cas_rn')" class="col-md-3">
               <div class="my-4">
                 <h1 class="font-bold ps-4" style="color:#312e81;">
                   {{ getColumnName("cas_rn") }}
@@ -160,7 +160,7 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="_data.inchikey" class="col-md-3">
+            <div *ngIf="_data.inchikey  && getColumnName('inchikey')" class="col-md-3">
               <div class="my-4">
                 <h1 class="font-bold ps-4" style="color:#312e81;">
                   {{ getColumnName("inchikey") }}
@@ -180,7 +180,7 @@
       
     </div>
     <div class="flex justify-center">
-      <button (click)="toggleMoreApplicationInfo()" class="py-2 px-3 mt-3 mb-3 btnchemical rounded-md"
+      <button (click)="toggleMoreApplicationInfo()" class="py-2 px-3 mt-1 mb-1 btnchemical rounded-md"
         style="background:linear-gradient(to right, #efb303,#fff087); color: black;">
         {{
         MoreApplicationInfo
@@ -194,7 +194,7 @@
         <div class="row">
           <div class="col-md-12">
             <h1 class="h1class" style="color: #312e81">Description</h1>
-            <div *ngIf="_data.chemical_name" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.chemical_name && getColumnName('chemical_name')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("chemical_name") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -203,7 +203,7 @@
               <p class="p-2 overflow-auto">{{ _data.chemical_name }}</p>
             </div>
 
-            <div *ngIf="_data.description" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.description && getColumnName('description')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("description") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -211,7 +211,7 @@
               </h2>
               <p class="p-2 overflow-auto">{{ _data.description }}</p>
             </div>
-            <div *ngIf="_data.field_of_application" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.field_of_application && getColumnName('field_of_application')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("field_of_application") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -220,7 +220,7 @@
               <p class="p-2 overflow-auto">{{ _data.field_of_application }}</p>
             </div>
 
-            <div *ngIf="_data.indication" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.indication && getColumnName('indication')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("indication") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -231,7 +231,7 @@
           </div>
           <div class="col-md-12">
             <h1 class="h1class">Name and Identifers:</h1>
-            <div *ngIf="_data?.iupac" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.iupac && getColumnName('iupac')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("iupac") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -239,7 +239,7 @@
               </h2>
               <p class="p-2 overflow-auto">{{ _data?.iupac }}</p>
             </div>
-            <div *ngIf="_data?.inchi" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.inchi && getColumnName('inchi')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("inchi") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -247,7 +247,7 @@
               </h2>
               <p class="p-2 overflow-auto">{{ _data?.inchi }}</p>
             </div>
-            <div *ngIf="_data?.inchikey" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.inchikey && getColumnName('inchikey')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("inchikey") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -255,7 +255,7 @@
               </h2>
               <p class="p-2 overflow-auto">{{ _data?.inchikey }}</p>
             </div>
-            <div *ngIf="_data.canonical_smiles" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.canonical_smiles && getColumnName('canonical_smiles')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("canonical_smiles") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -264,7 +264,7 @@
               <p class="p-2 overflow-auto">{{ _data.canonical_smiles }}</p>
             </div>
 
-            <div *ngIf="_data.molecular_formula" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.molecular_formula && getColumnName('molecular_formula')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("molecular_formula") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -272,7 +272,7 @@
               </h2>
               <p class="p-2 overflow-auto">{{ _data.molecular_formula }}</p>
             </div>
-            <div *ngIf="_data?.cas_rn" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.cas_rn && getColumnName('cas_rn')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("cas_rn") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -280,7 +280,7 @@
               </h2>
               <p class="p-2 overflow-auto">{{ _data?.cas_rn }}</p>
             </div>
-            <div *ngIf="_data?.ec_no" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.ec_no && getColumnName('ec.no')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("ec_no") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -289,7 +289,7 @@
               <p class="p-2">{{ _data?.ec_no }}</p>
             </div>
 
-            <div *ngIf="_data?.un_number" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.un_number && getColumnName('un_number')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("un_number") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -298,7 +298,7 @@
               <p class="p-2">{{ _data?.un_number }}</p>
             </div>
 
-            <div *ngIf="_data?.unii" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.unii && getColumnName('unii')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("unii") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -307,7 +307,7 @@
               <p class="p-2">{{ _data?.unii }}</p>
             </div>
 
-            <div *ngIf="_data?.dsstox_substance_id" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.dsstox_substance_id && getColumnName('dsstox_substance_id')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("dsstox_substance_id") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -316,7 +316,7 @@
               <p class="p-2">{{ _data?.dsstox_substance_id }}</p>
             </div>
 
-            <div *ngIf="_data?.substance_origin" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.substance_origin && getColumnName('substance_origin')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("substance_origin") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -325,7 +325,7 @@
               <p class="p-2">{{ _data?.substance_origin }}</p>
             </div>
 
-            <div *ngIf="_data?.originator" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.originator && getColumnName('originator')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("originator") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -334,7 +334,7 @@
               <p class="p-2">{{ _data?.originator }}</p>
             </div>
 
-            <div *ngIf="_data?.originator_logo" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.originator_logo && getColumnName('originator_logo')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("originator_logo") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -343,7 +343,7 @@
               <p class="p-2">{{ _data?.originator_logo }}</p>
             </div>
 
-            <div *ngIf="_data?.year_of_discovery" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.year_of_discovery && getColumnName('year_of_discovery')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("year_of_discovery") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -352,7 +352,7 @@
               <p class="p-2">{{ _data?.year_of_discovery }}</p>
             </div>
 
-            <div *ngIf="_data?.launch_year" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.launch_year && getColumnName('launch_year')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("launch_year") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -361,7 +361,7 @@
               <p class="p-2">{{ _data?.launch_year }}</p>
             </div>
 
-            <div *ngIf="_data?.launch_status" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.launch_status && getColumnName('launch_status')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("launch_status") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -370,7 +370,7 @@
               <p class="p-2">{{ _data?.launch_status }}</p>
             </div>
 
-            <div *ngIf="_data?.year_wise_off_patent_molecule"
+            <div *ngIf="_data?.year_wise_off_patent_molecule && getColumnName('year_wise_off_patent_molecule')"
               class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("year_wise_off_patent_molecule") }}
@@ -380,7 +380,7 @@
               <p class="p-2">{{ _data?.year_wise_off_patent_molecule }}</p>
             </div>
 
-            <div *ngIf="_data?.trade_name_proprietary_name"
+            <div *ngIf="_data?.trade_name_proprietary_name && getColumnName('trade_name_proprietary_name')"
               class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("trade_name_proprietary_name") }}
@@ -390,7 +390,7 @@
               <p class="p-2">{{ _data?.trade_name_proprietary_name }}</p>
             </div>
 
-            <div *ngIf="_data?.related_compounds" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.related_compounds && getColumnName('related_compounds')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("related_compounds") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -399,7 +399,7 @@
               <p class="p-2">{{ _data?.related_compounds }}</p>
             </div>
 
-            <div *ngIf="_data?.other_codes" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.other_codes && getColumnName('other_codes')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("other_codes") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -408,7 +408,7 @@
               <p class="p-2">{{ _data?.other_codes }}</p>
             </div>
 
-            <div *ngIf="_data?.chemical_class" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.chemical_class && getColumnName('chemical_class')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("chemical_class") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -416,7 +416,7 @@
               </h2>
               <p class="p-2">{{ _data?.chemical_class }}</p>
             </div>
-            <div *ngIf="_data?.synonyms_common_name" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.synonyms_common_name && getColumnName('synonyms_common_name')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("synonyms_common_name") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -426,7 +426,7 @@
                 <p class="p-2">{{ _data?.synonyms_common_name }}</p>
               </div>
             </div>
-            <div *ngIf="_data?.pubchem_id" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.pubchem_id && getColumnName('pubchem_id')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("pubchem_id") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -441,7 +441,7 @@
 
             <h1 class="h1class py-2">Chemical and Physical Properties:</h1>
             <div class="text-xs md:text-sm p-2 border-2 border-gray-100 bg-[#F8FAFF] rounded-md">
-              <div *ngIf="_data.molecular_formula" class="flex justify-start gap-4">
+              <div *ngIf="_data.molecular_formula && getColumnName('molecular_formula')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("molecular_formula") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -449,7 +449,7 @@
                 </h2>
                 <p class="p-2 word-break">{{ _data.molecular_formula }}</p>
               </div>
-              <div *ngIf="_data.molecular_weight" class="flex justify-start gap-4">
+              <div *ngIf="_data.molecular_weight && getColumnName('molecular_weight')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("molecular_weight") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -457,7 +457,7 @@
                 </h2>
                 <p class="p-2 word-break">{{ _data.molecular_weight }}</p>
               </div>
-              <div *ngIf="_data.hydrogen_bond_donor_count" class="flex justify-start gap-4">
+              <div *ngIf="_data.hydrogen_bond_donor_count && getColumnName('hydrogen_bond_donor_count')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("hydrogen_bond_donor_count") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -466,7 +466,7 @@
                 <p class="p-2 word-break">{{ _data.hydrogen_bond_donor_count }}</p>
               </div>
 
-              <div *ngIf="_data.hydrogen_bond_acceptor_count" class="flex justify-start gap-4">
+              <div *ngIf="_data.hydrogen_bond_acceptor_count && getColumnName('hydrogen_bond_acceptor_count')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("hydrogen_bond_acceptor_count") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -476,7 +476,7 @@
                   {{ _data.hydrogen_bond_acceptor_count }}
                 </p>
               </div>
-              <div *ngIf="_data.rotatable_bond_count" class="flex justify-start gap-4">
+              <div *ngIf="_data.rotatable_bond_count && getColumnName('rotatable_bond_count')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("rotatable_bond_count") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -486,7 +486,7 @@
                   {{ _data.rotatable_bond_count }}
                 </p>
               </div>
-              <div *ngIf="_data.exact_mass" class="flex justify-start gap-4">
+              <div *ngIf="_data.exact_mass && getColumnName('exact_mass')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("exact_mass") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -496,7 +496,7 @@
                   {{ _data.exact_mass }}
                 </p>
               </div>
-              <div *ngIf="_data.monoisotopic_mass" class="flex justify-start gap-4">
+              <div *ngIf="_data.monoisotopic_mass && getColumnName('monoisotopic_mass')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("monoisotopic_mass") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -507,7 +507,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.topological_polar_surface_area" class="flex justify-start gap-4">
+              <div *ngIf="_data.topological_polar_surface_area && getColumnName('topological_polar_surface_area')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("topological_polar_surface_area") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -519,7 +519,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.heavy_atom_count" class="flex justify-start gap-4">
+              <div *ngIf="_data.heavy_atom_count && getColumnName('heavy_atom_count')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("heavy_atom_count") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -530,7 +530,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.isotope_atom_count" class="flex justify-start gap-4">
+              <div *ngIf="_data.isotope_atom_count && getColumnName('isotope_atom_count')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("isotope_atom_count") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -541,7 +541,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.defined_atom_stereocenter_count" class="flex justify-start gap-4">
+              <div *ngIf="_data.defined_atom_stereocenter_count && getColumnName('defined_atom_stereocenter_count')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("defined_atom_stereocenter_count") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -553,7 +553,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.undefined_atom_stereocenter_count" class="flex justify-start gap-4">
+              <div *ngIf="_data.undefined_atom_stereocenter_count && getColumnName('undefined_atom_stereocenter_count')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("undefined_atom_stereocenter_count") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -565,7 +565,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.defined_bond_stereocenter_count" class="flex justify-start gap-4">
+              <div *ngIf="_data.defined_bond_stereocenter_count && getColumnName('defined_bond_stereocenter_count')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("defined_bond_stereocenter_count") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -577,7 +577,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.undefined_bond_stereocenter_count" class="flex justify-start gap-4">
+              <div *ngIf="_data.undefined_bond_stereocenter_count && getColumnName('undefined_bond_stereocenter_count')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("undefined_bond_stereocenter_count") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -589,7 +589,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.covalently_bonded_unit_count" class="flex justify-start gap-4">
+              <div *ngIf="_data.covalently_bonded_unit_count && getColumnName('covalently_bonded_unit_count')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("covalently_bonded_unit_count") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -601,7 +601,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.complexity" class="flex justify-start gap-4">
+              <div *ngIf="_data.complexity && getColumnName('complexity')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("complexity") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -612,7 +612,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.cskf" class="flex justify-start gap-4">
+              <div *ngIf="_data.cskf && getColumnName('cskf')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("cskf") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -623,7 +623,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.logp_computed" class="flex justify-start gap-4">
+              <div *ngIf="_data.logp_computed && getColumnName('logp_computed')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("logp_computed") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -634,7 +634,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.compound_is_canonicalized" class="flex justify-start gap-4">
+              <div *ngIf="_data.compound_is_canonicalized && getColumnName('compound_is_canonicalized')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("compound_is_canonicalized") }}:
                 </h2>
@@ -643,7 +643,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.formal_charge" class="flex justify-start gap-4">
+              <div *ngIf="_data.formal_charge && getColumnName('formal_charge')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("formal_charge") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -654,7 +654,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.summary_physicochemical_properties" class="flex justify-start gap-4">
+              <div *ngIf="_data.summary_physicochemical_properties && getColumnName('summary_physicochemical_properties')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("summary_physicochemical_properties") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -666,7 +666,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.isomerism" class="flex justify-start gap-4">
+              <div *ngIf="_data.isomerism && getColumnName('isomerism')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("isomerism") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -677,7 +677,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.physical_description" class="flex justify-start gap-4">
+              <div *ngIf="_data.physical_description && getColumnName('physical_description')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("physical_description") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -688,7 +688,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.polymorphism" class="flex justify-start gap-4">
+              <div *ngIf="_data.polymorphism && getColumnName('polymorphism')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("polymorphism") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -699,7 +699,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.melting_point" class="flex justify-start gap-4">
+              <div *ngIf="_data.melting_point && getColumnName('melting_point')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("melting_point") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -710,7 +710,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.boiling_point" class="flex justify-start gap-4">
+              <div *ngIf="_data.boiling_point && getColumnName('boiling_point')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("boiling_point") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -721,7 +721,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.color_form" class="flex justify-start gap-4">
+              <div *ngIf="_data.color_form  && getColumnName('color_form')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("color_form") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -732,7 +732,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.decomposition" class="flex justify-start gap-4">
+              <div *ngIf="_data.decomposition && getColumnName('decomposition')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("decomposition") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -743,7 +743,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.corrosivity" class="flex justify-start gap-4">
+              <div *ngIf="_data.corrosivity && getColumnName('corrosivity')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("corrosivity") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -754,7 +754,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.refractive_index" class="flex justify-start gap-4">
+              <div *ngIf="_data.refractive_index && getColumnName('refractive_index')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("refractive_index") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -765,7 +765,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.kovats_retention_index" class="flex justify-start gap-4">
+              <div *ngIf="_data.kovats_retention_index && getColumnName('kovats_retention_index')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("kovats_retention_index") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -776,7 +776,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.degradation_point" class="flex justify-start gap-4">
+              <div *ngIf="_data.degradation_point && getColumnName('degradation_point')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("degradation_point") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -787,7 +787,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.flashpoint" class="flex justify-start gap-4">
+              <div *ngIf="_data.flashpoint && getColumnName('flashpoint')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("flashpoint") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -798,7 +798,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.freezing_point" class="flex justify-start gap-4">
+              <div *ngIf="_data.freezing_point && getColumnName('freezing_point')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("freezing_point") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -809,7 +809,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.sublimation" class="flex justify-start gap-4">
+              <div *ngIf="_data.sublimation && getColumnName('sublimation')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("sublimation") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -820,7 +820,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.agueous_solubility" class="flex justify-start gap-4">
+              <div *ngIf="_data.agueous_solubility && getColumnName('agueous_solubility')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("agueous_solubility") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -831,7 +831,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.solubility_in_organic_solvent" class="flex justify-start gap-4">
+              <div *ngIf="_data.solubility_in_organic_solvent && getColumnName('solubility_in_organic_solvent')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("solubility_in_organic_solvent") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -843,7 +843,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.density" class="flex justify-start gap-4">
+              <div *ngIf="_data.density && getColumnName('density')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("density") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -854,7 +854,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.bulk_density_specific_gravity" class="flex justify-start gap-4">
+              <div *ngIf="_data.bulk_density_specific_gravity && getColumnName('bulk_density_specific_gravity')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("bulk_density_specific_gravity") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -866,7 +866,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.vapour_pressure" class="flex justify-start gap-4">
+              <div *ngIf="_data.vapour_pressure && getColumnName('vapour_pressure')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("vapour_pressure") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -877,7 +877,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.logp" class="flex justify-start gap-4">
+              <div *ngIf="_data.logp && getColumnName('logp')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("logp") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -888,7 +888,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.stability" class="flex justify-start gap-4">
+              <div *ngIf="_data.stability && getColumnName('stability')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("stability") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -899,7 +899,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.ph" class="flex justify-start gap-4">
+              <div *ngIf="_data.ph && getColumnName('ph')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("ph") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -910,7 +910,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.dissociation_constants" class="flex justify-start gap-4">
+              <div *ngIf="_data.dissociation_constants && getColumnName('dissociation_constants')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("dissociation_constants") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -921,7 +921,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.henrys_law_constant" class="flex justify-start gap-4">
+              <div *ngIf="_data.henrys_law_constant && getColumnName('henrys_law_constant')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("henrys_law_constant") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -932,7 +932,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.application_rate" class="flex justify-start gap-4">
+              <div *ngIf="_data.application_rate && getColumnName('application_rate')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("application_rate") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -943,7 +943,18 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.maximum_uv_vis_absorption" class="flex justify-start gap-4">
+              <!-- <div *ngIf="_data.maximum_uv_vis_absorption" class="flex justify-start gap-4">
+                <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
+                  {{ getColumnName("maximum_uv_vis_absorption") }}:
+                  <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                    (click)="handleCopy(_data?.maximum_uv_vis_absorption, copyBtn)"><i class="fas fa-copy"></i></span>
+                </h2>
+                <p class="p-2 word-break">
+                  {{ _data.maximum_uv_vis_absorption }}
+                </p>
+              </div> -->
+
+              <div *ngIf="_data.maximum_uv_vis_absorption && getColumnName('maximum_uv_vis_absorption')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("maximum_uv_vis_absorption") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -954,18 +965,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.maximum_uv_vis_absorption" class="flex justify-start gap-4">
-                <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
-                  {{ getColumnName("maximum_uv_vis_absorption") }}:
-                  <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
-                    (click)="handleCopy(_data?.maximum_uv_vis_absorption, copyBtn)"><i class="fas fa-copy"></i></span>
-                </h2>
-                <p class="p-2 word-break">
-                  {{ _data.maximum_uv_vis_absorption }}
-                </p>
-              </div>
-
-              <div *ngIf="_data.surface_tension" class="flex justify-start gap-4">
+              <div *ngIf="_data.surface_tension && getColumnName('surface_tension')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("surface_tension") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -976,7 +976,7 @@
                 </p>
               </div>
             </div>
-            <div *ngIf="_data.trrn" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.trrn && getColumnName('trrn')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("trrn") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -987,7 +987,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.us_epa_chemical_code" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.us_epa_chemical_code && getColumnName('us_epa_chemical_code')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("us_epa_chemical_code") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -998,7 +998,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.commentry" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.commentry && getColumnName('commentry')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("commentry") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1009,7 +1009,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.notes" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.notes && getColumnName('notes')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("notes") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1020,7 +1020,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.remarks" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.remarks && getColumnName('remarks')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("remarks") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1031,7 +1031,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.literature" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.literature && getColumnName('literature')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("literature") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1042,7 +1042,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.information_sources" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.information_sources && getColumnName('information_sources')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("information_sources") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1053,7 +1053,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.pdf_multiple_pdf" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.pdf_multiple_pdf && getColumnName('pdf_multiple_pdf')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("pdf_multiple_pdf") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1064,7 +1064,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.strain_no" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.strain_no && getColumnName('strain_no')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("strain_no") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1075,7 +1075,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.summary_invent_info" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.summary_invent_info && getColumnName('summary_invent_info')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("summary_invent_info") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1086,7 +1086,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.compound_patent_1st_disclosure"
+            <div *ngIf="_data.compound_patent_1st_disclosure && getColumnName('compound_patent_1st_disclosure')"
               class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("compound_patent_1st_disclosure") }}
@@ -1101,7 +1101,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.google_patent_hyper_link" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.google_patent_hyper_link && getColumnName('google_patent_hyper_link')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("google_patent_hyper_link") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1114,7 +1114,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.history_development_licencing_commercialisation"
+            <div *ngIf="_data.history_development_licencing_commercialisation && getColumnName('history_development_licencing_commercialisation')"
               class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{
@@ -1133,7 +1133,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.non_patent" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.non_patent && getColumnName('non_patent')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("non_patent") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1146,7 +1146,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.gcd" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.gcd && getColumnName('gcd')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("gcd") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1159,7 +1159,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.summary_phsyi_chem" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.summary_phsyi_chem && getColumnName('summary_phsyi_chem')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("summary_phsyi_chem") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1172,7 +1172,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.dummy_2" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.dummy_2 && getColumnName('dummy_2')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("dummy_2") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1185,7 +1185,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.dummy_3" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.dummy_3 && getColumnName('dummy_3')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("dummy_3") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1198,7 +1198,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.dummy_4" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.dummy_4 && getColumnName('dummy_4')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("dummy_4") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1211,7 +1211,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.dummy_5" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.dummy_5 && getColumnName('dummy_5')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("dummy_5") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1224,7 +1224,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.dummy_6" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.dummy_6 && getColumnName('dummy_6')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("dummy_6") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1237,7 +1237,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.dummy_7" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.dummy_7 && getColumnName('dummy_7')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("dummy_7") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1250,7 +1250,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.dummy_8" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.dummy_8 && getColumnName('dummy_8')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("dummy_8") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1263,7 +1263,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.dummy_9" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.dummy_9 && getColumnName('dummy_9')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("dummy_9") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1276,7 +1276,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.dummy_10" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.dummy_10 && getColumnName('dummy_10')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("dummy_10") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1298,13 +1298,13 @@
     searchThrough == 'chemical-structure' ||
     searchThrough == 'intermediate-search'">
   <div class="card-body" style="background-color:#F5FBFF;" *ngIf="!isEmptyObject(_data); else noData">
-    <div class=" mb-2 flex flex-wrap">
+    <div class="flex flex-wrap">
       <div class=" w-full">
         <div class="flex flex-wrap">
           <div class="lg:w-3/4 flex flex-wrap">
             <div class="lg:w-1/3  my-2" *ngIf="_data?.chemical_structure">
               <img [src]="getImageUrl()" alt="_data?.chemical_structure" (error)="onImageError($event)" class="ps-7 pe-7 h-40 aspect-auto"
-                style="height:15rem; width:18rem;" />
+                style="height:12rem; width:16rem;" />
               <button class="btns flex items-center justify-center p-2" style="background-color: #312e81; color: white"
                 (click)="openImageModal(getImageUrl(),false)">
                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -1325,7 +1325,7 @@
             </div>
             <div class="container">
               <div class="row">
-                <div *ngIf="_data.trrn" class="col-md-3">
+                <div *ngIf="_data.trrn && getColumnName('trrn')" class="col-md-3">
                   <div class="my-4">
                     <h1 class="font-bold ps-4" style="color:#312e81;">
                       {{ getColumnName("trrn") }}
@@ -1337,7 +1337,7 @@
                     </p>
                   </div>
                 </div>
-                <div *ngIf="_data.gbrn" class="col-md-3">
+                <div *ngIf="_data.gbrn && getColumnName('gbrn')" class="col-md-3">
                   <div class="my-4">
                     <h1 class="font-bold ps-4" style="color:#312e81;">
                       {{ getColumnName("gbrn") }}
@@ -1349,7 +1349,7 @@
                     </p>
                   </div>
                 </div>
-                <div *ngIf="_data?.cas_rn" class="col-md-3">
+                <div *ngIf="_data?.cas_rn && getColumnName('cas_rn')" class="col-md-3">
                   <div class="my-4">
                     <h1 class="font-bold ps-4" style="color:#312e81;">
                       {{ getColumnName("cas_rn") }}
@@ -1363,7 +1363,7 @@
                   </div>
                 </div>
 
-                <div *ngIf="_data?.field_of_application" class="col-md-3 col-lg-2">
+                <div *ngIf="_data?.field_of_application && getColumnName('field_of_application')" class="col-md-3 col-lg-2">
                   <div class="my-4">
                     <h1 class="font-bold ps-4" style="color:#312e81;">
                       {{ getColumnName("field_of_application") }}
@@ -1376,7 +1376,7 @@
                   </div>
                 </div>
 
-                <div *ngIf="_data?.indication" class="col-md-3 col-lg-2">
+                <div *ngIf="_data?.indication && getColumnName('indication')" class="col-md-3 col-lg-2">
                   <div class="my-4">
                     <h1 class="font-bold ps-4" style="color:#312e81;">
                       {{ getColumnName("indication") }}
@@ -1389,7 +1389,7 @@
                   </div>
                 </div>
 
-                <div *ngIf="_data?.cas_name" class="col-md-3 col-lg-2">
+                <div *ngIf="_data?.cas_name && getColumnName('cas_name')" class="col-md-3 col-lg-2">
                   <div class="my-4">
                     <h1 class="font-bold ps-4" style="color:#312e81;">
                       {{ getColumnName("cas_name") }}
@@ -1402,7 +1402,7 @@
                   </div>
                 </div>
 
-                <div *ngIf="_data?.molecular_formula" class="col-md-3">
+                <div *ngIf="_data?.molecular_formula && getColumnName('molecular_formula')" class="col-md-3">
                   <div class="my-4">
                     <h1 class="font-bold ps-4" style="color:#312e81;">
                       {{ getColumnName("molecular_formula")
@@ -1412,7 +1412,7 @@
                     <h1 class="ps-4 overflow-auto">{{ _data?.molecular_formula }}</h1>
                   </div>
                 </div>
-                <div *ngIf="_data?.molecular_weight" class="col-md-3">
+                <div *ngIf="_data?.molecular_weight && getColumnName('molecular_weight')" class="col-md-3">
                   <div class="my-4">
                     <h1 class="font-bold ps-4" style="color:#312e81;">
                       {{ getColumnName("molecular_weight")
@@ -1422,7 +1422,7 @@
                     <h1 class="ps-4 overflow-auto">{{ _data?.molecular_weight }}</h1>
                   </div>
                 </div>
-                <div *ngIf="_data?.iupac" class="col-md-3">
+                <div *ngIf="_data?.iupac && getColumnName('iupac')" class="col-md-3">
                   <div class="my-4">
                     <h1 class="font-bold ps-4" style="color:#312e81;">
                       {{ getColumnName("iupac") }}
@@ -1433,7 +1433,7 @@
                   </div>
                 </div>
 
-                <div *ngIf="_data?.smiles_code" class="col-md-3">
+                <div *ngIf="_data?.smiles_code && getColumnName('smiles_code')" class="col-md-3">
                   <div class="my-4">
                     <h1 class="font-bold ps-4" style="color:#312e81;">
                       {{ getColumnName("smiles_code")
@@ -1445,7 +1445,7 @@
                     </div>
                   </div>
                 </div>
-                <div *ngIf="_data.inchikey" class="col-md-3">
+                <div *ngIf="_data.inchikey && getColumnName('inchikey')" class="col-md-3">
                   <div class="my-4">
                     <h1 class="font-bold ps-4" style="color:#312e81;">
                       {{ getColumnName("inchikey") }}
@@ -1506,7 +1506,7 @@
 
     </div>
     <div class="flex justify-center">
-      <button (click)="toggleMoreApplicationInfo()" class="py-2 px-3 mt-3 mb-3 btnchemical rounded-md"
+      <button (click)="toggleMoreApplicationInfo()" class="py-2 px-3 mt-1 mb-1 btnchemical rounded-md"
         style="background:linear-gradient(to right, #efb303,#fff087); color: black;">
         {{
         MoreApplicationInfo
@@ -1520,7 +1520,7 @@
         <div class="row">
           <div class="col-md-12">
             <h1 class="h1class" style="color: #312e81">Description</h1>
-            <div *ngIf="_data.chemical_name" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.chemical_name && getColumnName('chemical_name')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("chemical_name") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1529,7 +1529,7 @@
               <p class="p-2 overflow-auto">{{ _data.chemical_name }}</p>
             </div>
 
-            <div *ngIf="_data.description" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.description && getColumnName('description')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("description") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1537,7 +1537,7 @@
               </h2>
               <p class="p-2 overflow-auto">{{ _data.description }}</p>
             </div>
-            <div *ngIf="_data.field_of_application" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.field_of_application && getColumnName('field_of_application')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("field_of_application") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1546,7 +1546,7 @@
               <p class="p-2 overflow-auto">{{ _data.field_of_application }}</p>
             </div>
 
-            <div *ngIf="_data.indication" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.indication && getColumnName('indication')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("indication") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1557,7 +1557,7 @@
           </div>
           <div class="col-md-12">
             <h1 class="h1class">Name and Identifers:</h1>
-            <div *ngIf="_data?.iupac" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.iupac && getColumnName('iupac')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("iupac") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1565,7 +1565,7 @@
               </h2>
               <p class="p-2 overflow-auto">{{ _data?.iupac }}</p>
             </div>
-            <div *ngIf="_data?.inchi" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.inchi && getColumnName('inchi')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("inchi") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1573,7 +1573,7 @@
               </h2>
               <p class="p-2 overflow-auto">{{ _data?.inchi }}</p>
             </div>
-            <div *ngIf="_data?.inchikey" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.inchikey && getColumnName('inchikey')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("inchikey") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1581,7 +1581,7 @@
               </h2>
               <p class="p-2 overflow-auto">{{ _data?.inchikey }}</p>
             </div>
-            <div *ngIf="_data.canonical_smiles" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.canonical_smiles && getColumnName('canonical_smiles')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("canonical_smiles") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1590,7 +1590,7 @@
               <p class="p-2 overflow-auto">{{ _data.canonical_smiles }}</p>
             </div>
 
-            <div *ngIf="_data.molecular_formula" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.molecular_formula && getColumnName('molecular_formula')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("molecular_formula") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1598,15 +1598,7 @@
               </h2>
               <p class="p-2 overflow-auto">{{ _data.molecular_formula }}</p>
             </div>
-            <div *ngIf="_data?.cas_rn" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
-              <h2 class="p-2 font-semibold">
-                {{ getColumnName("cas_rn") }}:
-                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
-                  (click)="handleCopy(_data?.cas_rn, copyBtn)"><i class="fas fa-copy"></i></span>
-              </h2>
-              <p class="p-2 overflow-auto">{{ _data?.cas_rn }}</p>
-            </div>
-            <div *ngIf="_data?.ec_no" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.ec_no && getColumnName('ec_no')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("ec_no") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1615,7 +1607,7 @@
               <p class="p-2">{{ _data?.ec_no }}</p>
             </div>
 
-            <div *ngIf="_data?.un_number" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.un_number && getColumnName('un_number')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("un_number") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1624,7 +1616,7 @@
               <p class="p-2">{{ _data?.un_number }}</p>
             </div>
 
-            <div *ngIf="_data?.unii" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.unii && getColumnName('unii')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("unii") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1633,7 +1625,7 @@
               <p class="p-2">{{ _data?.unii }}</p>
             </div>
 
-            <div *ngIf="_data?.dsstox_substance_id" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.dsstox_substance_id && getColumnName('dsstox_substance_id')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("dsstox_substance_id") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1642,7 +1634,7 @@
               <p class="p-2">{{ _data?.dsstox_substance_id }}</p>
             </div>
 
-            <div *ngIf="_data?.substance_origin" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.substance_origin && getColumnName('substance_origin')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("substance_origin") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1651,7 +1643,7 @@
               <p class="p-2">{{ _data?.substance_origin }}</p>
             </div>
 
-            <div *ngIf="_data?.originator" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.originator && getColumnName('originator')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("originator") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1660,7 +1652,7 @@
               <p class="p-2">{{ _data?.originator }}</p>
             </div>
 
-            <div *ngIf="_data?.originator_logo" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.originator_logo && getColumnName('originator_logo')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("originator_logo") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1669,7 +1661,7 @@
               <p class="p-2">{{ _data?.originator_logo }}</p>
             </div>
 
-            <div *ngIf="_data?.year_of_discovery" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.year_of_discovery && getColumnName('year_of_discovery')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("year_of_discovery") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1678,7 +1670,7 @@
               <p class="p-2">{{ _data?.year_of_discovery }}</p>
             </div>
 
-            <div *ngIf="_data?.launch_year" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.launch_year && getColumnName('launch_year')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("launch_year") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1687,7 +1679,7 @@
               <p class="p-2">{{ _data?.launch_year }}</p>
             </div>
 
-            <div *ngIf="_data?.launch_status" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.launch_status && getColumnName('launch_status')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("launch_status") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1696,7 +1688,7 @@
               <p class="p-2">{{ _data?.launch_status }}</p>
             </div>
 
-            <div *ngIf="_data?.year_wise_off_patent_molecule"
+            <div *ngIf="_data?.year_wise_off_patent_molecule && getColumnName('year_wise_off_patent_molecule')"
               class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("year_wise_off_patent_molecule") }}
@@ -1706,7 +1698,7 @@
               <p class="p-2">{{ _data?.year_wise_off_patent_molecule }}</p>
             </div>
 
-            <div *ngIf="_data?.trade_name_proprietary_name"
+            <div *ngIf="_data?.trade_name_proprietary_name && getColumnName('trade_name_proprietary_name')"
               class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("trade_name_proprietary_name") }}
@@ -1716,7 +1708,7 @@
               <p class="p-2">{{ _data?.trade_name_proprietary_name }}</p>
             </div>
 
-            <div *ngIf="_data?.related_compounds" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.related_compounds && getColumnName('related_compounds')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("related_compounds") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1725,7 +1717,7 @@
               <p class="p-2">{{ _data?.related_compounds }}</p>
             </div>
 
-            <div *ngIf="_data?.other_codes" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.other_codes && getColumnName('other_codes')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("other_codes") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1734,7 +1726,7 @@
               <p class="p-2">{{ _data?.other_codes }}</p>
             </div>
 
-            <div *ngIf="_data?.chemical_class" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.chemical_class && getColumnName('chemical_class')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 pb-0 font-semibold uppercase">
                 {{ getColumnName("chemical_class") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1742,7 +1734,7 @@
               </h2>
               <p class="p-2">{{ _data?.chemical_class }}</p>
             </div>
-            <div *ngIf="_data?.synonyms_common_name" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.synonyms_common_name && getColumnName('synonyms_common_name')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("synonyms_common_name") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1752,7 +1744,7 @@
                 <p class="p-2">{{ _data?.synonyms_common_name }}</p>
               </div>
             </div>
-            <div *ngIf="_data?.pubchem_id" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data?.pubchem_id && getColumnName('pubchem_id')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("pubchem_id") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1767,7 +1759,7 @@
 
             <h1 class="h1class py-2">Chemical and Physical Properties:</h1>
             <div class="text-xs md:text-sm p-2 border-2 border-gray-100 bg-[#F8FAFF] rounded-md">
-              <div *ngIf="_data.molecular_formula" class="flex justify-start gap-4">
+              <div *ngIf="_data.molecular_formula && getColumnName('molecular_formula')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("molecular_formula") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1775,7 +1767,7 @@
                 </h2>
                 <p class="p-2 word-break">{{ _data.molecular_formula }}</p>
               </div>
-              <div *ngIf="_data.molecular_weight" class="flex justify-start gap-4">
+              <div *ngIf="_data.molecular_weight && getColumnName('molecular_weight')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("molecular_weight") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1783,7 +1775,7 @@
                 </h2>
                 <p class="p-2 word-break">{{ _data.molecular_weight }}</p>
               </div>
-              <div *ngIf="_data.hydrogen_bond_donor_count" class="flex justify-start gap-4">
+              <div *ngIf="_data.hydrogen_bond_donor_count && getColumnName('molecular_weight')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("hydrogen_bond_donor_count") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1792,7 +1784,7 @@
                 <p class="p-2 word-break">{{ _data.hydrogen_bond_donor_count }}</p>
               </div>
 
-              <div *ngIf="_data.hydrogen_bond_acceptor_count" class="flex justify-start gap-4">
+              <div *ngIf="_data.hydrogen_bond_acceptor_count && getColumnName('hydrogen_bond_acceptor_count')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("hydrogen_bond_acceptor_count") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1802,7 +1794,7 @@
                   {{ _data.hydrogen_bond_acceptor_count }}
                 </p>
               </div>
-              <div *ngIf="_data.rotatable_bond_count" class="flex justify-start gap-4">
+              <div *ngIf="_data.rotatable_bond_count && getColumnName('rotatable_bond_count')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("rotatable_bond_count") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1812,7 +1804,7 @@
                   {{ _data.rotatable_bond_count }}
                 </p>
               </div>
-              <div *ngIf="_data.exact_mass" class="flex justify-start gap-4">
+              <div *ngIf="_data.exact_mass && getColumnName('exact_mass')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("exact_mass") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1822,7 +1814,7 @@
                   {{ _data.exact_mass }}
                 </p>
               </div>
-              <div *ngIf="_data.monoisotopic_mass" class="flex justify-start gap-4">
+              <div *ngIf="_data.monoisotopic_mass && getColumnName('monoisotopic_mass')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("monoisotopic_mass") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1833,7 +1825,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.topological_polar_surface_area" class="flex justify-start gap-4">
+              <div *ngIf="_data.topological_polar_surface_area && getColumnName('topological_polar_surface_area')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("topological_polar_surface_area") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1845,7 +1837,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.heavy_atom_count" class="flex justify-start gap-4">
+              <div *ngIf="_data.heavy_atom_count && getColumnName('heavy_atom_count')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("heavy_atom_count") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1856,7 +1848,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.isotope_atom_count" class="flex justify-start gap-4">
+              <div *ngIf="_data.isotope_atom_count && getColumnName('isotope_atom_count')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("isotope_atom_count") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1867,7 +1859,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.defined_atom_stereocenter_count" class="flex justify-start gap-4">
+              <div *ngIf="_data.defined_atom_stereocenter_count && getColumnName('defined_atom_stereocenter_count')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("defined_atom_stereocenter_count") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1879,7 +1871,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.undefined_atom_stereocenter_count" class="flex justify-start gap-4">
+              <div *ngIf="_data.undefined_atom_stereocenter_count && getColumnName('undefined_atom_stereocenter_count')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("undefined_atom_stereocenter_count") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1891,7 +1883,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.defined_bond_stereocenter_count" class="flex justify-start gap-4">
+              <div *ngIf="_data.defined_bond_stereocenter_count && getColumnName('defined_bond_stereocenter_count')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("defined_bond_stereocenter_count") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1903,7 +1895,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.undefined_bond_stereocenter_count" class="flex justify-start gap-4">
+              <div *ngIf="_data.undefined_bond_stereocenter_count && getColumnName('defined_bond_stereocenter_count')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("undefined_bond_stereocenter_count") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1915,7 +1907,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.covalently_bonded_unit_count" class="flex justify-start gap-4">
+              <div *ngIf="_data.covalently_bonded_unit_count && getColumnName('covalently_bonded_unit_count')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("covalently_bonded_unit_count") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1927,7 +1919,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.complexity" class="flex justify-start gap-4">
+              <div *ngIf="_data.complexity && getColumnName('complexity')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("complexity") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1938,7 +1930,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.cskf" class="flex justify-start gap-4">
+              <div *ngIf="_data.cskf && getColumnName('cskf')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("cskf") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1949,7 +1941,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.logp_computed" class="flex justify-start gap-4">
+              <div *ngIf="_data.logp_computed && getColumnName('logp_computed')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("logp_computed") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1960,7 +1952,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.compound_is_canonicalized" class="flex justify-start gap-4">
+              <div *ngIf="_data.compound_is_canonicalized && getColumnName('compound_is_canonicalized')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("compound_is_canonicalized") }}:
                 </h2>
@@ -1969,7 +1961,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.formal_charge" class="flex justify-start gap-4">
+              <div *ngIf="_data.formal_charge && getColumnName('formal_charge')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("formal_charge") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1980,7 +1972,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.summary_physicochemical_properties" class="flex justify-start gap-4">
+              <div *ngIf="_data.summary_physicochemical_properties && getColumnName('summary_physicochemical_properties')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("summary_physicochemical_properties") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -1992,7 +1984,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.isomerism" class="flex justify-start gap-4">
+              <div *ngIf="_data.isomerism && getColumnName('isomerism')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("isomerism") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2003,7 +1995,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.physical_description" class="flex justify-start gap-4">
+              <div *ngIf="_data.physical_description && getColumnName('physical_description')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("physical_description") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2014,7 +2006,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.polymorphism" class="flex justify-start gap-4">
+              <div *ngIf="_data.polymorphism && getColumnName('polymorphism')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("polymorphism") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2025,7 +2017,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.melting_point" class="flex justify-start gap-4">
+              <div *ngIf="_data.melting_point && getColumnName('melting_point')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("melting_point") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2036,7 +2028,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.boiling_point" class="flex justify-start gap-4">
+              <div *ngIf="_data.boiling_point && getColumnName('boiling_point')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("boiling_point") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2047,7 +2039,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.color_form" class="flex justify-start gap-4">
+              <div *ngIf="_data.color_form && getColumnName('color_form')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("color_form") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2058,7 +2050,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.decomposition" class="flex justify-start gap-4">
+              <div *ngIf="_data.decomposition && getColumnName('decomposition')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("decomposition") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2069,7 +2061,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.corrosivity" class="flex justify-start gap-4">
+              <div *ngIf="_data.corrosivity && getColumnName('corrosivity')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("corrosivity") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2079,8 +2071,8 @@
                   {{ _data.corrosivity }}
                 </p>
               </div>
-
-              <div *ngIf="_data.refractive_index" class="flex justify-start gap-4">
+ 
+              <div *ngIf="_data.refractive_index && getColumnName('refractive_index')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("refractive_index") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2091,7 +2083,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.kovats_retention_index" class="flex justify-start gap-4">
+              <div *ngIf="_data.kovats_retention_index && getColumnName('kovats_retention_index')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("kovats_retention_index") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2102,7 +2094,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.degradation_point" class="flex justify-start gap-4">
+              <div *ngIf="_data.degradation_point && getColumnName('degradation_point')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("degradation_point") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2113,7 +2105,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.flashpoint" class="flex justify-start gap-4">
+              <div *ngIf="_data.flashpoint && getColumnName('flashpoint')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("flashpoint") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2124,7 +2116,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.freezing_point" class="flex justify-start gap-4">
+              <div *ngIf="_data.freezing_point && getColumnName('freezing_point')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("freezing_point") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2135,7 +2127,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.sublimation" class="flex justify-start gap-4">
+              <div *ngIf="_data.sublimation && getColumnName('sublimation')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("sublimation") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2146,7 +2138,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.agueous_solubility" class="flex justify-start gap-4">
+              <div *ngIf="_data.agueous_solubility && getColumnName('agueous_solubility')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("agueous_solubility") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2157,7 +2149,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.solubility_in_organic_solvent" class="flex justify-start gap-4">
+              <div *ngIf="_data.solubility_in_organic_solvent && getColumnName('solubility_in_organic_solvent')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("solubility_in_organic_solvent") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2169,7 +2161,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.density" class="flex justify-start gap-4">
+              <div *ngIf="_data.density && getColumnName('density')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("density") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2180,7 +2172,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.bulk_density_specific_gravity" class="flex justify-start gap-4">
+              <div *ngIf="_data.bulk_density_specific_gravity && getColumnName('bulk_density_specific_gravity')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("bulk_density_specific_gravity") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2192,7 +2184,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.vapour_pressure" class="flex justify-start gap-4">
+              <div *ngIf="_data.vapour_pressure && getColumnName('vapour_pressure')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("vapour_pressure") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2203,7 +2195,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.logp" class="flex justify-start gap-4">
+              <div *ngIf="_data.logp && getColumnName('logp')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("logp") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2214,7 +2206,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.stability" class="flex justify-start gap-4">
+              <div *ngIf="_data.stability && getColumnName('stability')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("stability") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2225,7 +2217,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.ph" class="flex justify-start gap-4">
+              <div *ngIf="_data.ph && getColumnName('ph')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("ph") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2236,7 +2228,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.dissociation_constants" class="flex justify-start gap-4">
+              <div *ngIf="_data.dissociation_constants && getColumnName('dissociation_constants')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("dissociation_constants") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2247,7 +2239,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.henrys_law_constant" class="flex justify-start gap-4">
+              <div *ngIf="_data.henrys_law_constant && getColumnName('henrys_law_constant')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("henrys_law_constant") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2258,7 +2250,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.application_rate" class="flex justify-start gap-4">
+              <div *ngIf="_data.application_rate && getColumnName('application_rate')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("application_rate") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2269,7 +2261,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.maximum_uv_vis_absorption" class="flex justify-start gap-4">
+              <div *ngIf="_data.maximum_uv_vis_absorption && getColumnName('maximum_uv_vis_absorption')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("maximum_uv_vis_absorption") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2280,7 +2272,7 @@
                 </p>
               </div>
 
-              <div *ngIf="_data.maximum_uv_vis_absorption" class="flex justify-start gap-4">
+              <!-- <div *ngIf="_data.maximum_uv_vis_absorption" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("maximum_uv_vis_absorption") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2289,9 +2281,9 @@
                 <p class="p-2 word-break">
                   {{ _data.maximum_uv_vis_absorption }}
                 </p>
-              </div>
+              </div> -->
 
-              <div *ngIf="_data.surface_tension" class="flex justify-start gap-4">
+              <div *ngIf="_data.surface_tension && getColumnName('trrn')" class="flex justify-start gap-4">
                 <h2 class="p-2 font-semibold uppercase min-w-[40vw] max-w-[40vw]">
                   {{ getColumnName("surface_tension") }}:
                   <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2302,7 +2294,7 @@
                 </p>
               </div>
             </div>
-            <div *ngIf="_data.trrn" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.trrn && getColumnName('trrn')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("trrn") }}:
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2313,7 +2305,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.us_epa_chemical_code" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.us_epa_chemical_code && getColumnName('us_epa_chemical_code')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("us_epa_chemical_code") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2324,7 +2316,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.commentry" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.commentry && getColumnName('commentry')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("commentry") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2335,7 +2327,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.notes" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.notes && getColumnName('notes')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("notes") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2346,7 +2338,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.remarks" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.remarks && getColumnName('remarks')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("remarks") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2357,7 +2349,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.literature" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.literature && getColumnName('literature')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("literature") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2368,7 +2360,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.information_sources" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.information_sources && getColumnName('information_sources')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("information_sources") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2379,7 +2371,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.pdf_multiple_pdf" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.pdf_multiple_pdf && getColumnName('pdf_multiple_pdf')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("pdf_multiple_pdf") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2390,7 +2382,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.strain_no" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.strain_no && getColumnName('strain_no')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("strain_no") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2401,7 +2393,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.summary_invent_info" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.summary_invent_info && getColumnName('summary_invent_info')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("summary_invent_info") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2412,7 +2404,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.compound_patent_1st_disclosure"
+            <div *ngIf="_data.compound_patent_1st_disclosure && getColumnName('compound_patent_1st_disclosure')"
               class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("compound_patent_1st_disclosure") }}
@@ -2427,7 +2419,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.google_patent_hyper_link" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.google_patent_hyper_link && getColumnName('google_patent_hyper_link')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("google_patent_hyper_link") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2440,7 +2432,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.history_development_licencing_commercialisation"
+            <div *ngIf="_data.history_development_licencing_commercialisation && getColumnName('history_development_licencing_commercialisation')"
               class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{
@@ -2459,7 +2451,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.non_patent" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.non_patent && getColumnName('non_patent')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("non_patent") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2472,7 +2464,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.gcd" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.gcd && getColumnName('gcd')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("gcd") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2485,7 +2477,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.summary_phsyi_chem" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.summary_phsyi_chem && getColumnName('summary_phsyi_chem')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("summary_phsyi_chem") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2498,7 +2490,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.dummy_2" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.dummy_2 && getColumnName('dummy_2')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("dummy_2") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2511,7 +2503,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.dummy_3" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.dummy_3 && getColumnName('dummy_3')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("dummy_3") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2524,7 +2516,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.dummy_4" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.dummy_4 && getColumnName('dummy_10')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("dummy_4") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2537,7 +2529,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.dummy_5" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.dummy_5 && getColumnName('dummy_5')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("dummy_5") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2550,7 +2542,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.dummy_6" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.dummy_6 && getColumnName('dummy_6')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("dummy_6") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2563,7 +2555,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.dummy_7" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.dummy_7 && getColumnName('dummy_7')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("dummy_7") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2576,7 +2568,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.dummy_8" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.dummy_8 && getColumnName('dummy_8')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("dummy_8") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2589,7 +2581,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.dummy_9" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.dummy_9 && getColumnName('dummy_9')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("dummy_9") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -2602,7 +2594,7 @@
               </div>
             </div>
 
-            <div *ngIf="_data.dummy_10" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
+            <div *ngIf="_data.dummy_10  && getColumnName('dummy_10')" class="border-2 border-gray-300 rounded-md my-3 bg-[#F8FAFF]">
               <h2 class="p-2 font-semibold">
                 {{ getColumnName("dummy_10") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
