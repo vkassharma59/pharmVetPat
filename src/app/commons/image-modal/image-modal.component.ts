@@ -28,7 +28,7 @@ export class ImageModalComponent implements AfterViewInit {
     public dialogRef: MatDialogRef<ImageModalComponent>,
     private renderer: Renderer2,
     @Inject(MAT_DIALOG_DATA)
-    public data: { dataImage: string; showZoomControls?: boolean }
+    public data: { dataImage: string; showZoomControls?: boolean; compactView: boolean }
   ) {
     this.showZoomControls = this.data.showZoomControls ?? true;
   }

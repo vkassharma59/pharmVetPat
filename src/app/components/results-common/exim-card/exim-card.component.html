@@ -61,9 +61,9 @@
                 <div class="filter" style="display:flex; align-items:center; font-size:14px; width:180px;">
                   <input #filterInput matInput placeholder="Filter" (click)="$event.stopPropagation()"
                     [(ngModel)]="columnsSearch[column.value]" name="filter_{{column.value}}"
-                    style="margin-top:5px; border-radius:7px; padding:3px; color:black; width:100px;" />
+                    style="margin-top:5px; border-radius:7px; padding:3px; color:black; width:180px;" />
 
-                  <div style="position:relative; display:flex; overflow:visible; padding:0; width:58px;">
+                  <div style="position:relative; display:flex; overflow:visible; padding:0; width:40px;">
                     <!-- Search icon -->
                     <button class="filterIcon"
                       (click)="searchInColumn(column, filterInput, $event); $event.stopPropagation();">
@@ -115,7 +115,7 @@
 
                   <!-- Fallback if not date -->
                   <ng-template #normalCell>
-                    <span [style.width.px]="150" class="fixed-cell" style="display:block;">
+                    <span [style.width.px]="200" class="fixed-cell" style="display:block;">
                       <div class="scrollable-text" *ngIf="column.value === 'country'; else defaultCell"
                         style="display: flex; align-items: center;">
                         {{ element[column.value] }}
