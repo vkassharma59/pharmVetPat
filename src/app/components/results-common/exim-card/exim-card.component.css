@@ -346,7 +346,7 @@ th{
   text-overflow: ellipsis;
   white-space: normal;
   line-height: 1.5em;
-margin: 10px;
+margin:0.3rem;
   padding-right: 8px; /* for scrollbar space */
 }
 .scrollable-text::-webkit-scrollbar {
@@ -361,4 +361,8 @@ margin: 10px;
 /* Track */
 .scrollable-text::-webkit-scrollbar-track {
   background: #f1f1f1e7;
+}
+.filterIcon{
+  padding: 0.2rem;
+  margin: 0.1rem;
 }
