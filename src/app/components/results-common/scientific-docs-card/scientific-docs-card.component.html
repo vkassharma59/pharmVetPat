@@ -18,7 +18,7 @@
         <div class="col-xl-5 col-lg-4 col-md-4 col-sm-12">
 
           <!-- GBRN -->
-          <div *ngIf="_data?.chemrobotics_document_registration_number_cdrn" style="margin: 0.8rem;">
+          <div *ngIf="_data?.chemrobotics_document_registration_number_cdrn && getColumnName('chemrobotics_document_registration_number_cdrn')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('chemrobotics_document_registration_number_cdrn') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -30,7 +30,7 @@
           </div>
 
           <!-- CTSRN -->
-          <div *ngIf="_data?.field_of_document" style="margin-left: 14px;">
+          <div *ngIf="_data?.field_of_document && getColumnName('field_of_document')" style="margin-left: 14px;">
             <h6 class="font-bold text-indigo-900">
                    {{ getColumnName('field_of_document') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -42,7 +42,7 @@
           </div>
 
           <!-- DMF Holder -->
-          <div *ngIf="_data?.gbrn" style="margin: 0.8rem;">
+          <div *ngIf="_data?.gbrn && getColumnName('gbrn')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('gbrn') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" (click)="handleCopy(_data?.gbrn, $event)">
@@ -52,7 +52,7 @@
             <p>{{ _data?.gbrn }}</p>
           </div>
           <!-- Type of Product -->
-          <div *ngIf="_data?.trrn" style="margin: 0.8rem;">
+          <div *ngIf="_data?.trrn && getColumnName('trrn')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('trrn') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" (click)="handleCopy(_data?.trrn, $event)">
@@ -62,7 +62,7 @@
             <p>{{ _data?.trrn }}</p>
           </div>
           <!-- Active Ingredient -->
-          <div *ngIf="_data?.active_ingredient_biologics_combination" style="margin: 0.8rem;">
+          <div *ngIf="_data?.active_ingredient_biologics_combination && getColumnName('active_ingredient_biologics_combination')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('active_ingredient_biologics_combination') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -74,7 +74,7 @@
           </div>
         </div>
         <!-- Trade Name -->
-        <div *ngIf="_data?.patent_non_patent_references" style="margin: 0.8rem;">
+        <div *ngIf="_data?.patent_non_patent_references && getColumnName('patent_non_patent_references')" style="margin: 0.8rem;">
           <h6 class="font-bold text-indigo-900">
             {{ getColumnName('patent_non_patent_references') }}
             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -86,7 +86,7 @@
         </div>
         <div class="col-xl-5 col-lg-4 col-md-4 col-sm-12">
           <!-- Frequently Active Ingredient -->
-          <div *ngIf="_data?.chemical_structure" style="margin: 0.8rem;">
+          <div *ngIf="_data?.chemical_structure && getColumnName('chemical_structure')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('chemical_structure') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -97,7 +97,7 @@
             <p>{{ _data?.chemical_structure }}</p>
           </div>
           <!-- Trade Name -->
-          <div *ngIf="_data?.chemical_class" style="margin: 0.8rem;">
+          <div *ngIf="_data?.chemical_class && getColumnName('chemical_class')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('chemical_class') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -109,7 +109,7 @@
           </div>
 
           <!-- Alternate Name -->
-          <div *ngIf="_data?.indication" style="margin: 0.8rem;">
+          <div *ngIf="_data?.indication && getColumnName('indication')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('indication') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" (click)="handleCopy(_data?.indication, $event)">
@@ -118,7 +118,7 @@
             </h6>
             <p>{{ _data?.indication }}</p>
           </div>
-          <div *ngIf="_data?.document_creation_date" style="margin: 0.8rem;">
+          <div *ngIf="_data?.document_creation_date && getColumnName('document_creation_date')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('document_creation_date') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" (click)="handleCopy(_data?.document_creation_date, $event)">
@@ -127,7 +127,7 @@
             </h6>
             <p>{{ _data?.document_creation_date }}</p>
           </div>
-          <div *ngIf="_data?.document_publication_date" style="margin: 0.8rem;">
+          <div *ngIf="_data?.document_publication_date && getColumnName('document_publication_date')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('document_publication_date') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" (click)="handleCopy(_data?.document_publication_date, $event)">
@@ -138,7 +138,7 @@
           </div>
 
         </div>
-        <div *ngIf="_data?.name_of_documents" style="margin: 0.8rem;">
+        <div *ngIf="_data?.name_of_documents && getColumnName('name_of_documents')" style="margin: 0.8rem;">
           <h6 class="font-bold text-indigo-900">
             {{ getColumnName('name_of_documents') }}
             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -152,7 +152,7 @@
         <div class="col-xl-5 col-lg-4 col-md-4 col-sm-12">
           <!-- Country -->
           
-          <div *ngIf="_data?.inventors_authors" style="margin: 0.8rem;">
+          <div *ngIf="_data?.inventors_authors && getColumnName('inventors_authors')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('inventors_authors') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" (click)="handleCopy(_data?.inventors_authors, $event)">
@@ -162,7 +162,7 @@
             <p>{{ _data?.inventors_authors }}</p>
           </div>
           <!-- DMF Type -->
-          <div *ngIf="_data?.patent_type" style="margin: 0.8rem;">
+          <div *ngIf="_data?.patent_type && getColumnName('patent_type')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('patent_type') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" (click)="handleCopy(_data?.patent_type, $event)">
@@ -173,7 +173,7 @@
           </div>
           
           <!-- DMF Number -->
-          <div *ngIf="_data?.notice_number_document_number_certificate_number" style="margin: 0.8rem;">
+          <div *ngIf="_data?.notice_number_document_number_certificate_number && getColumnName('notice_number_document_number_certificate_number')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('notice_number_document_number_certificate_number') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -186,7 +186,7 @@
 
 
           <!-- DMF Status -->
-          <div *ngIf="_data?.patent_publication_number_application_number_patent_document_number"
+          <div *ngIf="_data?.patent_publication_number_application_number_patent_document_number && getColumnName('patent_publication_number_application_number_patent_document_number')"
             style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('patent_publication_number_application_number_patent_document_number') }}
@@ -197,7 +197,7 @@
             </h6>
             <p>{{ _data?.patent_publication_number_application_number_patent_document_number }}</p>
           </div>
-          <div *ngIf="_data?.abstract" style="margin: 0.8rem;">
+          <div *ngIf="_data?.abstract && getColumnName('abstract')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('abstract') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" (click)="handleCopy(_data?.abstract, $event)">
@@ -206,7 +206,7 @@
             </h6>
             <p>{{ _data?.abstract }}</p>
           </div>
-          <div *ngIf="_data?.registration_number" style="margin: 0.8rem;">
+          <div *ngIf="_data?.registration_number && getColumnName('registration_number')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('registration_number') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -221,7 +221,7 @@
           <!-- Country -->
          
           <!-- DMF Type -->
-          <div *ngIf="_data?.product_type" style="margin: 0.8rem;">
+          <div *ngIf="_data?.product_type && getColumnName('product_type')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('product_type') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" (click)="handleCopy(_data?.product_type, $event)">
@@ -232,7 +232,7 @@
           </div>
 
           <!-- DMF Number -->
-          <div *ngIf="_data?.type_of_combination" style="margin: 0.8rem;">
+          <div *ngIf="_data?.type_of_combination && getColumnName('type_of_combination')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('type_of_combination') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -244,7 +244,7 @@
           </div>
 
           <!-- Filled Date -->
-          <div *ngIf="_data?.country" style="margin: 0.8rem;">
+          <div *ngIf="_data?.country && getColumnName('country')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('country') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" (click)="handleCopy(_data?.country, $event)">
@@ -255,7 +255,7 @@
           </div>
 
           <!-- DMF Status -->
-          <div *ngIf="_data?.province" style="margin: 0.8rem;">
+          <div *ngIf="_data?.province && getColumnName('province')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('province') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" (click)="handleCopy(_data?.province, $event)">
@@ -264,7 +264,7 @@
             </h6>
             <p>{{ _data?.province }}</p>
           </div>
-          <div *ngIf="_data?.applicants_companies_institutes" style="margin: 0.8rem;">
+          <div *ngIf="_data?.applicants_companies_institutes && getColumnName('applicants_companies_institutes')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('applicants_companies_institutes') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" (click)="handleCopy(_data?.applicants_companies_institutes, $event)">
@@ -273,7 +273,7 @@
             </h6>
             <p>{{ _data?.applicants_companies_institutes }}</p>
           </div>
-          <div *ngIf="_data?.description" style="margin: 0.8rem;">
+          <div *ngIf="_data?.description && getColumnName('description')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('description') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" (click)="handleCopy(_data?.description, $event)">
@@ -282,7 +282,7 @@
             </h6>
             <p>{{ _data?.description }}</p>
           </div>
-          <div *ngIf="_data?.remarks" style="margin: 0.8rem;">
+          <div *ngIf="_data?.remarks && getColumnName('remarks')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('remarks') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" (click)="handleCopy(_data?.remarks, $event)">
@@ -294,7 +294,7 @@
         </div>
         <div class="col-xl-5 col-lg-4 col-md-4 col-sm-12">
           <!-- Country -->
-          <div *ngIf="_data?.uniform_resource_locator_url" style="margin: 0.8rem;">
+          <div *ngIf="_data?.uniform_resource_locator_url && getColumnName('uniform_resource_locator_url')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('uniform_resource_locator_url') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -305,7 +305,7 @@
             <p>{{ _data?.uniform_resource_locator_url }}</p>
           </div>
           <!-- DMF Type -->
-          <div *ngIf="_data?.digital_object_identifier_doi" style="margin: 0.8rem;">
+          <div *ngIf="_data?.digital_object_identifier_doi && getColumnName('digital_object_identifier_doi')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('digital_object_identifier_doi') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" (click)="handleCopy(_data?.digital_object_identifier_doi, $event)">
@@ -316,7 +316,7 @@
           </div>
 
           <!-- DMF Number -->
-          <div *ngIf="_data?.pubchem_id" style="margin: 0.8rem;">
+          <div *ngIf="_data?.pubchem_id && getColumnName('pubchem_id')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('pubchem_id') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -328,7 +328,7 @@
           </div>
 
           <!-- Filled Date -->
-          <div *ngIf="_data?.international_standard_serial_number_issn" style="margin: 0.8rem;">
+          <div *ngIf="_data?.international_standard_serial_number_issn && getColumnName('international_standard_serial_number_issn')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('international_standard_serial_number_issn') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" (click)="handleCopy(_data?.international_standard_serial_number_issn, $event)">
@@ -339,7 +339,7 @@
           </div>
 
           <!-- DMF Status -->
-          <div *ngIf="_data?.references" style="margin: 0.8rem;">
+          <div *ngIf="_data?.references && getColumnName('references')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('references') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" (click)="handleCopy(_data?.references, $event)">
@@ -348,7 +348,7 @@
             </h6>
             <p>{{ _data?.references }}</p>
           </div>
-          <div *ngIf="_data?.notes" style="margin: 0.8rem;">
+          <div *ngIf="_data?.notes && getColumnName('notes')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('notes') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" (click)="handleCopy(_data?.notes, $event)">
@@ -357,7 +357,7 @@
             </h6>
             <p>{{ _data?.notes }}</p>
           </div>
-          <div *ngIf="_data?.comment" style="margin: 0.8rem;">
+          <div *ngIf="_data?.comment && getColumnName('comment')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('comment') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" (click)="handleCopy(_data?.comment, $event)">
@@ -366,7 +366,7 @@
             </h6>
             <p>{{ _data?.comment }}</p>
           </div>
-          <div *ngIf="_data?.miscellaneous" style="margin: 0.8rem;">
+          <div *ngIf="_data?.miscellaneous && getColumnName('miscellaneous')" style="margin: 0.8rem;">
             <h6 class="font-bold text-indigo-900">
               {{ getColumnName('miscellaneous') }}
               <span class="mx-1 hover:cursor-pointer text-[#0032A0]" (click)="handleCopy(_data?.miscellaneous, $event)">

@@ -120,15 +120,7 @@
                       style="object-fit: contain; width: 155px; height: 65px" />
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-12 my-2">
-        <div class="row">
-          <div *ngIf="_data?.IUPAC && getColumnName('IUPAC')" class="col-md-3">
+                <div *ngIf="_data?.IUPAC && getColumnName('IUPAC')" class="col-md-4">
             <div class="pt-3">
               <h1 class="font-bold" style="color:#312e81;" mt-2>
                 {{ getColumnName("IUPAC") }}
@@ -139,7 +131,7 @@
             </div>
           </div>
 
-          <div *ngIf="_data?.CAS_RN && getColumnName('CAS_RN')" class="col-md-3 mt-2">
+          <div *ngIf="_data?.CAS_RN && getColumnName('CAS_RN')" class="col-md-4 mt-2">
             <div class="pt-3">
               <h1 class="font-bold" style="color:#312e81;">
                 {{ getColumnName("CAS_RN") }}
@@ -150,7 +142,7 @@
             </div>
           </div>
 
-          <div *ngIf="_data?.CAS_NAME && getColumnName('CAS_NAME')" class="col-md-3 mt-2">
+          <div *ngIf="_data?.CAS_NAME && getColumnName('CAS_NAME')" class="col-md-4 mt-2">
             <div class="pt-3">
               <h1 class="font-bold" style="color:#312e81;">
                 {{ getColumnName("CAS_NAME") }}
@@ -162,7 +154,7 @@
               </p>
             </div>
           </div>
-          <div *ngIf="_data?.PUBCHEM_ID && getColumnName('PUBCHEM_ID')" class="col-md-3 mt-2">
+          <div *ngIf="_data?.PUBCHEM_ID && getColumnName('PUBCHEM_ID')" class="col-md-4 mt-2">
             <div class="pt-3">
               <h1 class="font-bold" style="color:#312e81;">{{ getColumnName("PUBCHEM_ID") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -175,7 +167,17 @@
               </p>
             </div>
           </div>
-          <div *ngIf="_data?.EC_NO && getColumnName('EC_NO')" class="col-md-3 mt-2">
+         
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12 my-2">
+        <div class="row">
+           <div *ngIf="_data?.EC_NO && getColumnName('EC_NO')" class="col-md-3 mt-2">
             <div class="pt-3">
               <h1 class="font-bold" style="color:#312e81;">{{ getColumnName("EC_NO") }}
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -199,8 +201,6 @@
               </p>
             </div>
           </div>
-
-
           <div *ngIf="_data?.ISOMERISM && getColumnName('ISOMERISM')" class="col-md-3">
             <div class="pt-3">
               <h1 class="font-bold" style="color:#312e81;">
@@ -213,7 +213,6 @@
               </p>
             </div>
           </div>
-
           <div *ngIf="_data?.EUROPE_SUP_PROT_CERTIFI_SPC && getColumnName('EUROPE_SUP_PROT_CERTIFI_SPC')"
             class="col-md-3">
             <div class="pt-3">

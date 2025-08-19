@@ -25,11 +25,11 @@
                 style="color: #1351cc; font-size: 20px; font-weight: bold; padding-bottom: 15px;">
                 {{ _data?.product }}
             </p> -->
-            <p class="text-wrap whitespace-normal"
+            <p *ngIf="_data?.title && getColumnName('title')" class="text-wrap whitespace-normal"
                 style="color: #1351cc; font-size: 16px; font-weight: bold; padding-bottom: 15px;">
                 <span>
-                    {{ showFull['body'] ? (_data?.product || '') : (_data?.product | slice:0:125) }}
-                    <ng-container *ngIf="_data?.product?.length > 125">
+                    {{ showFull['body'] ? (_data?.title || '') : (_data?.title | slice:0:125) }}
+                    <ng-container *ngIf="_data?.title?.length > 125">
                         <span (click)="toggleView('body')"
                             style="color: black; cursor: pointer; border-bottom: 1px dotted;">
                             {{ showFull['body'] ? '...View Less' : '...View More' }}
@@ -366,15 +366,7 @@
             </p>
         </div>
 
-        <div *ngIf="_data?.title && getColumnName('title')">
-            <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("title") }}
-                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
-                    (click)="handleCopy(_data?.title, copyBtn)"><i class="fas fa-copy"></i></span>
-            </h1>
-            <p class="text-wrap max-h-24 overflow-y-auto break-words whitespace-normal">
-                {{ _data?.title }}
-            </p>
-        </div>
+        
 
         <div *ngIf="_data?.description && getColumnName('description')">
             <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("description") }}
