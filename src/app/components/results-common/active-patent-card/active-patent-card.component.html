@@ -31,11 +31,20 @@
       color:#fff" (click)="resetToDefault()">
         Reset to Default
       </button>
+      <div style="display: flex; gap: 4px; margin-bottom: 6px;">
+        <button mat-raised-button (click)="setViewMode('grid')" [ngClass]="{'active': viewMode === 'grid'}">
+          <i class="fa-solid fa-list"></i> List View
+        </button>
+        <button mat-raised-button (click)="setViewMode('list')" [ngClass]="{'active': viewMode === 'list'}">
+          <i class="fa-solid fa-table-cells"></i> Grid View
+        </button>
+      </div>
+
     </div>
   </div>
 
 
-  <div class="table-wrapper">
+  <div class="table-wrapper" *ngIf="viewMode === 'list'; else gridView">
     <!-- Header-Top Scroll Buttons -->
     <div class="table-scroll-container">
       <div class="header-scroll-buttons">
@@ -61,15 +70,15 @@
                 <div class="filter" style="display:flex; align-items:center; font-size:14px; width:180px;">
                   <input #filterInput matInput placeholder="Filter" (click)="$event.stopPropagation()"
                     [(ngModel)]="columnsSearch[column.value]" name="filter_{{column.value}}"
-                    style="margin-top:5px; border-radius:7px; padding:3px; color:black; width:100px;" />
+                    style="margin-top:5px; border-radius:7px; padding:3px; color:black; width:180px;" />
 
-                  <div style="position:relative; display:flex; overflow:visible; padding:0; width:58px;">
+                  <div style="position:relative; display:flex; overflow:visible; padding:0; width:40px;">
                     <!-- Search icon -->
                     <button class="filterIcon"
                       (click)="searchInColumn(column, filterInput, $event); $event.stopPropagation();">
                       <i class="fa-solid fa-filter"></i>
                     </button>
-    
+
                     <!-- Clear icon: only appears when there is some text -->
                     <button *ngIf="columnsSearch[column.value]?.trim()" class="filterIcon"
                       (click)="clearFilter(column.value, filterInput); $event.stopPropagation()">
@@ -115,7 +124,7 @@
 
                   <!-- Fallback if not date -->
                   <ng-template #normalCell>
-                    <span [style.width.px]="150" class="fixed-cell" style="display:block;">
+                    <span [style.width.px]="200" class="fixed-cell" style="display:block;">
                       <div class="scrollable-text" *ngIf="column.value === 'country';  else checkCompanyLogo"
                         style="display: flex; align-items: center;">
                         {{ element[column.value] }}
@@ -146,12 +155,53 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns" style="background-color: #def1ff;"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
         </table>
+
+      </div>
+    </div>
+  </div>
+  <ng-template #gridView>
+    <div class="list-view-wrapper" style="height: 27rem;">
+      <div class="list-view-container" >
+        <div *ngFor="let element of dataSource.data" class="list-card">
+    
+          <!-- Flag -->
+          <div *ngIf="element.flag" class="flag-wrapper">
+            <img [src]="element.flag" alt="flag" width="25" height="18" (error)="onFlagError($event)" />
+          </div>
+    
+          <!-- Company Logo -->
+          <div *ngIf="element.company_logo" class="logo-wrapper">
+            <img [src]="getCompanyLogo(element)" alt="logo" width="70" height="40" style="object-fit:contain;" />
+          </div>
+    
+          <!-- Dynamic column values -->
+          <div class="info" style="height: 10rem;">
+            <div *ngFor="let column of columnDefs">
+              <strong>{{ column.name }}:</strong>
+              <span *ngIf="isISODate(element[column.value]); else normalCell" style="width: 3rem; overflow-wrap: break-word; word-wrap: break-word; ">
+                {{ element[column.value] | date:'yyyy-MM-dd' }}
+              </span>
+                <div *ngIf="column.value === 'company_logo' && element?.company_logo"
+                  style="display: flex; align-items: center;">
+                  <img [src]="getCompanyLogo(element)" alt=" " width="60" height="40"
+                    style="object-fit: contain;" />
+                </div>
+              <ng-template #normalCell>
+                <div [ngClass]="{'scrollable-text': column.name === 'DESCRIPTION' || column.name === 'CLAIMS' || column.name === 'ABSTRACT' || column.name === 'PRODUCT'}" class="col-val" style="overflow: scroll;">
+                {{ element[column.value] }}
+              </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+    
+        <!-- No records -->
         <div *ngIf="noMatchingData" style="text-align:center; padding: 20px; font-weight: 500;">
           🔍 No matching records found
         </div>
       </div>
-
-      <!-- Paginator -->
     </div>
-  </div>
+    
+  </ng-template>
 </div>
+<!-- Paginator -->

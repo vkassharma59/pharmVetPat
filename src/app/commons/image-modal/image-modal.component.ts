@@ -28,12 +28,14 @@ export class ImageModalComponent implements AfterViewInit {
     public dialogRef: MatDialogRef<ImageModalComponent>,
     private renderer: Renderer2,
     @Inject(MAT_DIALOG_DATA)
-    public data: { dataImage: string; showZoomControls?: boolean; compactView: boolean }
+    public data: { dataImage: string; showZoomControls?: boolean; compactView?: boolean }
   ) {
     this.showZoomControls = this.data.showZoomControls ?? true;
+    console.log('compactView received:', this.data.compactView);
   }
 
   ngAfterViewInit(): void {
+    console.log('compactView (after view init):', this.data.compactView);
     this.applyZoom();
   }
 
