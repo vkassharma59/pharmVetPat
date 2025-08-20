@@ -14,44 +14,55 @@
 </div> -->
 
   <!-- Header Section -->
-  <div class="d-flex justify-content-between align-items-center">
+  <div class="d-flex justify-content-between align-items-center card-header text-white">
     <!-- Left Section -->
     <div class="d-flex align-items-center">
-      <h5 class="text-primary mb-0">{{currentTabData?.label}}</h5>
+      <button *ngIf="index==0" (click)="handleBack()" class="btn btn-outline-primary btn-sm"
+        style="color: white; border-color: white;">Back to search</button>
       <span class="divider">&nbsp;|&nbsp;</span>
+      <h5 style="color: white;">{{currentTabData?.label}}
+        <ng-container *ngIf="lastSearchData">
+          &nbsp;|&nbsp;
+          <span style="color: white;">
+            {{lastSearchData.searchType}}:
+            {{ lastSearchData.keyword ? lastSearchData.keyword : lastSearchData.criteria }}
+
+          </span>
+        </ng-container>
+      </h5>
+      <!-- <span class="divider">&nbsp;|&nbsp;</span>
       <span class="fw-bold">Total Results: {{CurrentAPIBody?.count}}</span>
       <span class="divider">&nbsp;|&nbsp;</span>
-      <span class="fw-bold">Routes: #{{(index) ? index+1 : 1}}</span>
+      <span class="fw-bold">Routes: #{{(index) ? index+1 : 1}}</span> -->
     </div>
-
     <!-- Right Section -->
     <div style="display: flex;" *ngIf="index==0">
       <button *ngIf="!generatePDFloader && isFullDownload && searchThrough !== 'synthesis-search'"
         (click)="handleGeneratePDF()" [disabled]="generatePDFloader" title="Download Single Route"
-        class="btn btn-outline-primary btn-sm me-2"><i class="fas fa-download"></i>
+        class="btn btn-outline-primary btn-sm me-2" style="color: white; border-color: white;"><i
+          class="fas fa-download"></i>
         Full Report Download</button>
       <div
         *ngIf="searchThrough != 'synthesis-search' || this.CurrentAPIBody?.currentTab != this.resultTabWithKeys.technicalRoutes.name,">
-        <button *ngIf="index==0" (click)="OpenQueryModal()" class="btn btn-outline-primary btn-sm me-2">Raise
+        <button *ngIf="index==0" (click)="OpenQueryModal()" style="color: white; border-color: white;"
+          class="btn btn-outline-primary btn-sm me-2">Raise
           Query</button>
-        <button *ngIf="index==0" (click)="handleBack()" class="btn btn-outline-primary btn-sm">Back to Search</button>
+        <!-- <button *ngIf="index==0" (click)="handleBack()" class="btn btn-outline-primary btn-sm">Back to Search</button> -->
       </div>
     </div>
-
   </div>
-
   <chem-route-tabs (handleCurrentTab)="handleCurrentTab($event)" [resultTabs]="resultTabs"
     [activeTab]="activeTab"></chem-route-tabs>
   <div>
-    <div *ngIf="shouldShowDownloadButton()" style="display: flex; justify-content: flex-end; margin-top: px;">
-      <button *ngIf="isSplitDownload" (click)="openDownloadModal(index)"
-        title="Download Single Route" class="btn btn-outline-primary btn-sm me-2"
-        class="btn btn-outline-primary btn-sm me-2"><i class="fas fa-download"></i>
-        Download Single Route</button>
-    </div>
   </div>
   <!-- Main Content Section -->
-  <div class="mt-3" [ngSwitch]="activeTab || currentTabData?.name">
+  <div *ngIf="shouldShowDownloadButton()" style="display: flex; justify-content: flex-end;">
+    <button *ngIf="isSplitDownload" (click)="openDownloadModal(index)" title="Download Single Route"
+     class="btn btn-outline-primary btn-sm "><i
+        class="fas fa-download"></i>
+      Download Single Route</button>
+  </div>
+  <div [ngSwitch]="activeTab || currentTabData?.name">
     <ng-container *ngSwitchCase="resultTabWithKeys.productInfo.name">
       <chem-product-info [data]="_dataItem.productInfo"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.productInfo.name]" [index]="index"
@@ -223,8 +234,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <label class="flex items-center" *ngFor="let tab of resultTabs">
             <input type="checkbox" [(ngModel)]="SingleDownloadCheckbox[tab.name]"
-             [checked]="shouldShowDownloadButton()"  
-             [disabled]="isDisabled() && !SingleDownloadCheckbox[tab.name]"
+              [disabled]="isDisabled() && !SingleDownloadCheckbox[tab.name]"
               class="form-checkbox text-blue-600 h-5 w-5" />
             <span class="ml-2 text-gray-700">{{ tab.label }}</span>
           </label>
