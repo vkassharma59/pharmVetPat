@@ -123,7 +123,7 @@ export class RouteResultComponent {
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
   }
-
+  lastSearchData: { searchType: string, keyword: string, criteria: any } | null = null;
   constructor(
     private dialog: MatDialog,
     private sharedRosService: SharedRosService,
@@ -135,6 +135,7 @@ export class RouteResultComponent {
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
   ngOnInit() {
+    this.lastSearchData = this.sharedRosService.getSearchData();
     this.AllSetData = this.sharedRosService.getAllDataSets();
     this.resultTabs = Object.values(this.utilityService.getAllTabsName());
     this.currentTabData = this.resultTabs.find((tab: any) => tab.isActive);
@@ -160,6 +161,7 @@ export class RouteResultComponent {
   }
 
   handleBack() {
+     this.sharedRosService.clearSearchData();
     this.backFunction.emit(false);
   }
   shouldShowDownloadButton(): boolean {

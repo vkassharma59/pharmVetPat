@@ -20,6 +20,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../../dialog/dialog.component';
 import { VideoTutorialComponent } from '../video-tutorial/video-tutorial.component';
 import { coerceStringArray } from '@angular/cdk/coercion';
+import { SharedRosService } from '../../shared-ros.service';
 
 @Component({
   selector: 'chem-pharma-database-search',
@@ -152,6 +153,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private elementRef: ElementRef,
+    private sharedRosService: SharedRosService,
     private mainSearchService: MainSearchService,
     private userPriviledgeService: UserPriviledgeService,
     private utilityService: UtilityService,
@@ -767,8 +769,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       keyword: this.simpleSearch?.keyword,
       screenColumn: this.screenColumn,
       activeForm: searchTypes.simpleSearch,
-    });
-
+    })
     const body = {
       criteria: this.criteria,
       page_no: 1,
@@ -777,7 +778,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       order_by: '',
       keyword: this.simpleSearch?.keyword
     };
-
+    this.sharedRosService.setSearchData('Simple Search', this.simpleSearch?.keyword, this.criteria);
     const tech_API = this.apiUrls.basicProductInfo.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
@@ -860,6 +861,8 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       }),
       page_no: 1
     };
+    console.log("Advance Search API Body", apiBody);
+    this.sharedRosService.setSearchData('advance Search', this.advanceSearch?.keyword, this.criteria);
 
     const tech_API = this.apiUrls.basicProductInfo.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
@@ -907,6 +910,8 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       order_by: '',
       keyword: this.synthesisSearch?.keyword
     };
+  this.sharedRosService.setSearchData('synthesis Search', this.synthesisSearch?.keyword, this.criteria);
+
     const tech_API = this.apiUrls.technicalRoutes.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
@@ -976,6 +981,7 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       order_by: '',
       keyword: this.chemicalStructure?.keyword
     };
+  this.sharedRosService.setSearchData('chemicalStructure', this.chemicalStructure?.keyword, this.chemicalStructure?.filter);
 
     const tech_API = this.apiUrls.chemicalDirectory.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
@@ -1024,6 +1030,8 @@ export class pharmaDatabaseSearchComponent implements OnInit {
       keyword: this.intermediateSearch?.keyword,
       criteria: this.intermediateSearch?.filter
     };
+    this.sharedRosService.setSearchData('intermediateSearch', this.intermediateSearch?.keyword, this.intermediateSearch?.filter);
+
     console.log("Intermediate search body", body);
     const tech_API = this.apiUrls.chemicalDirectory.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({

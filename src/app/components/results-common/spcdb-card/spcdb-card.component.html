@@ -61,15 +61,15 @@
  <div class="filter" style="display:flex; align-items:center; font-size:14px; width:180px;">
                   <input #filterInput matInput placeholder="Filter" (click)="$event.stopPropagation()"
                     [(ngModel)]="columnsSearch[column.value]" name="filter_{{column.value}}"
-                    style="margin-top:5px; border-radius:7px; padding:3px; color:black; width:100px;" />
+                    style="margin-top:5px; border-radius:7px; padding:3px; color:black; width:180px;" />
 
-                  <div style="position:relative; display:flex; overflow:visible; padding:0; width:58px;">
+                  <div style="position:relative; display:flex; overflow:visible; padding:0; width:40px;">
                     <!-- Search icon -->
                     <button class="filterIcon"
-                      (click)="searchInColumn(column, filterInput, $event); $event.stopPropagation();">
+                      (click)="toggleDropdown()">
                       <i class="fa-solid fa-filter"></i>
                     </button>
-    
+                    
                     <!-- Clear icon: only appears when there is some text -->
                     <button *ngIf="columnsSearch[column.value]?.trim()" class="filterIcon"
                       (click)="clearFilter(column.value, filterInput); $event.stopPropagation()">
@@ -77,6 +77,18 @@
                     </button>
                   </div>
                 </div>
+              </div>
+              <div class="filterDropdown" *ngIf="dropdown" >
+                <ul class="options">
+                  <li>Starts with</li>
+                  <li>Contains</li>
+                  <li>Not Contains</li>
+                  <li>Ends with</li>
+                  <li>Equals</li>
+                  <li>Not Equals</li>
+                  <hr>
+                  <li>No Filter</li>
+                </ul>
               </div>
             </th>
 
@@ -115,7 +127,7 @@
 
                   <!-- Fallback if not date -->
                   <ng-template #normalCell>
-                    <span [style.width.px]="150" class="fixed-cell" style="display:block;">
+                    <span [style.width.px]="200" class="fixed-cell" style="display:block;">
                       <div class="scrollable-text" *ngIf="column.value === 'country'; else defaultCell"
                         style="display: flex; align-items: center;">
                         {{ element[column.value] }}
