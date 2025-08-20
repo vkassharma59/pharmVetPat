@@ -50,8 +50,10 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
   sortDirection: 'asc' | 'desc' | '' = '';
   noMatchingData: boolean = false; columnsSearch: { [key: string]: string } = {};
   multiSortOrder: { column: number, dir: 'asc' | 'desc' }[] = [];
-  ListView:boolean = true; 
-  GridView:boolean = false; 
+  ListView: boolean = true;
+  viewMode: 'list' | 'grid' = 'list'; // default list view
+
+  GridView: boolean = false;
   globalSearchValue: string = '';
   get pageSize(): number {
     return this._currentChildAPIBody?.length || 25;
@@ -115,12 +117,18 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
 
     this.cdr.detectChanges();
   }
+  setViewMode(mode: 'grid' | 'list') {
+    this.viewMode = mode;
+  }
 
   scrollTable(direction: 'left' | 'right'): void {
     const container = document.querySelector('.scroll-container');
     if (container) {
       container.scrollBy({ left: direction === 'left' ? -150 : 150, behavior: 'smooth' });
     }
+  }
+  getCompanyURL(value: any) {
+    return `${environment.baseUrl}${environment.domainNameCompanyLogo}${value?.company}.png`;
   }
   getCountryUrl(value: any) {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country}.png`;
@@ -159,7 +167,7 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
     this.fetchData();
   }
 
-   clearFilter(columnKey: string, inputRef: HTMLInputElement) {
+  clearFilter(columnKey: string, inputRef: HTMLInputElement) {
     inputRef.value = '';
     delete this.columnsSearch[columnKey];
     this.fetchData();

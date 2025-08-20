@@ -362,3 +362,16 @@ margin: 10px;
 .scrollable-text::-webkit-scrollbar-track {
   background: #f1f1f1e7;
 }
+
+.options{
+  width: max-content;
+    position: absolute;
+    border: 2px solid black;
+    z-index: 9999;
+    font-size: larger;
+    margin: 1rem;
+    padding: 1rem;
+    text-align: justify;
+    color: black;
+    margin-top: 3rem;
+}

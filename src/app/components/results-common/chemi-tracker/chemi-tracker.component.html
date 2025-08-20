@@ -28,13 +28,13 @@
   </ul>
 </div>
 
-    <!-- Formulation Dropdown -->
-    <div class="dropdown" #formulationDropdownRef>
+    <!-- company Dropdown -->
+    <div class="dropdown" #companyDropdownRef>
   <button
-    (click)="toggleFormulationDropdown($event)"
+    (click)="toggleCompanyDropdown($event)"
     class="px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
   >
-    {{ formulation_value | truncate: 20 }}
+    {{ company_value | truncate: 20 }}
   </button>
   <ul
     *ngIf="isOpen"
