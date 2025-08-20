@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output, QueryList, ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from '../../../services/utility-service/utility.service';
 import { Auth_operations } from '../../../Utils/SetToken';
@@ -8,23 +8,25 @@ import { environment } from '../../../../environments/environment';
 import { JapanPMDAComponent } from "../japan-pmda/japan-pmda.component";
 import { ChildPagingComponent } from '../../../commons/child-paging/child-paging.component';
 import { LoadingService } from '../../../services/loading-service/loading.service';
+import { MainSearchService } from '../../../services/main-search/main-search.service';
+import { TruncatePipe } from '../../../pipes/truncate.pipe';
 
 @Component({
   selector: 'chem-japan',
   standalone: true,
-  imports: [CommonModule, JapanPMDAComponent, ChildPagingComponent],
+  imports: [CommonModule, JapanPMDAComponent, ChildPagingComponent,TruncatePipe],
   templateUrl: './japan.component.html',
   styleUrl: './japan.component.css'
 })
 export class JapanComponent {
-
+  @ViewChildren('dropdownRef') dropdownRefs!: QueryList<ElementRef>;
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
   @Input() currentChildAPIBody: any;
+   _currentChildAPIBody: any;
   @Input() index: any;
   @Input() tabName?: string;
   searchThrough: string = '';
-
   resultTabs: any = {};
   _data: any = [];
   @Input()
@@ -33,17 +35,206 @@ export class JapanComponent {
   }
   set data(value: any) {
     this._data = value;
-  }
+    this.handleResultTabData.emit(this._data || []);
 
+  }
+  japanApiBody: any;
+  japanFilters: any = {};
+  lastClickedFilterKey: string | null = null;
+
+  filterConfigs = [
+    {
+      key: 'company',
+      label: 'company',
+      dataKey: 'companyFilters',
+      filterType: 'company',
+      dropdownState: false
+    },
+    {
+      key: 'active_ingredients',
+      label: 'Product Name',
+      dataKey: 'productFilters',
+      filterType: 'active_ingredients',
+      dropdownState: false
+    }
+  ];
+  @HostListener('document:mousedown', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const clickedInsideAny = this.dropdownRefs?.some((dropdown: ElementRef) =>
+      dropdown.nativeElement.contains(event.target)
+    );
+
+    if (!clickedInsideAny) {
+      this.filterConfigs = this.filterConfigs.map(config => ({
+        ...config,
+        dropdownState: false
+      }));
+    }
+  }
   constructor(
     private utilityService: UtilityService,
-    public loadingService: LoadingService
+    public loadingService: LoadingService,
+    private mainSearchService: MainSearchService,
+    
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
   ngOnChanges() {
     console.log('JapanComponent received data:', this._data);
+    this.handleResultTabData.emit(this._data);
+  
+  }
+  ngOnInit(): void {
+    this.japanApiBody = { ...this.currentChildAPIBody };
+    this.japanApiBody.filters = this.japanApiBody.filters || {};
+
+    console.log('[ngOnInit] Initial japanApiBody:', JSON.stringify(this.japanApiBody, null, 2));
+
+    this.handleFetchFilters();
+  }
+  setFilterLabel(filterKey: string, label: string) {
+    this.filterConfigs = this.filterConfigs.map((item) => {
+      if (item.key === filterKey) {
+        if (label === '') {
+          switch (filterKey) {
+            case 'company':
+              label = 'Company';
+              break;
+            case 'active_ingredients':
+              label = 'Product Name';
+              break;
+          }
+        }
+        return { ...item, label: label };
+      }
+      return item;
+    });
   }
 
+  onFilterButtonClick(filterKey: string) {
+    this.lastClickedFilterKey = filterKey;
+    this.filterConfigs = this.filterConfigs.map((item) => ({
+      ...item,
+      dropdownState: item.key === filterKey ? !item.dropdownState : false
+    }));
+  }
+  handleFetchFilters() {
+    this.japanApiBody.filter_enable = true;
+
+    this.mainSearchService.europeApprovalSearchSpecific(this.japanApiBody).subscribe({
+      next: (result: any) => {
+        const rawMarketData = result?.data?.company || [];
+        const rawProductData = result?.data?.active_ingredients || [];
+        const marketFilters = rawMarketData.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const productFilters = rawProductData.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        this.japanFilters = {
+          marketFilters: marketFilters,
+          productFilters: productFilters
+        };
+
+        this.japanApiBody.filter_enable = false;
+      },
+      error: (err) => {
+        this.japanApiBody.filter_enable = false;
+      }
+    });
+  }
+
+  handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    this.handleSetLoading.emit(true);
+
+    if (value === '') {
+      delete this.japanApiBody.filters[filterKey];
+      this.setFilterLabel(filterKey, '');
+    } else {
+      this.japanApiBody.filters[filterKey] = value;  // ✅ Only value goes in filters
+      this.setFilterLabel(filterKey, name || '');
+    }
+    // ✅ Close dropdowns
+    this.filterConfigs = this.filterConfigs.map(item => ({
+      ...item,
+      dropdownState: false
+    }));
+    // Log constructed filter object
+
+    this._currentChildAPIBody = {
+      ...this.japanApiBody,
+      filters: { ...this.japanApiBody.filters }
+    };
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+
+
+    this.mainSearchService.japanApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
+      next: (res) => {
+        const resultData = res?.data || {};
+
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          count: resultData?.ema_count
+        };
+        this._data = resultData?.ema_data || [];
+
+        // ✅ Emit updated data to parent (optional)
+        this.handleResultTabData.emit(resultData);
+        this.handleSetLoading.emit(false);
+        window.scrollTo(0, scrollTop);
+      },
+      error: (err) => {
+        console.error("❌ Error while filtering data", err);
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          filter_enable: false
+        };
+        this.handleSetLoading.emit(false);
+        window.scrollTo(0, scrollTop);
+      }
+    });
+  }
+
+  clear() {
+    this.filterConfigs = this.filterConfigs.map(config => {
+      let defaultLabel = '';
+      switch (config.key) {
+        case 'company': defaultLabel = 'Company'; break;
+        case 'active_ingredients': defaultLabel = 'Product Name'; break;
+      }
+      return { ...config, label: defaultLabel, dropdownState: false };
+    });
+
+    this.japanApiBody.filters = {};
+    this._currentChildAPIBody = {
+      ...this.japanApiBody,
+      filters: {}
+    };
+
+    this.handleSetLoading.emit(true);
+    this.mainSearchService.japanApprovalSearchSpecific(this._currentChildAPIBody).subscribe({
+      next: (res) => {
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          count: res?.data?.ema_count
+        };
+        this.handleResultTabData.emit(res.data);
+        this.handleSetLoading.emit(false);
+      },
+      error: (err) => {
+        console.error(err);
+        this._currentChildAPIBody.filter_enable = false;
+        this.handleSetLoading.emit(false);
+      }
+    });
+
+    window.scrollTo(0, 0);
+  }
 }
+
+
+
