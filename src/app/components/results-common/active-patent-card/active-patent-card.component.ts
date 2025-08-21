@@ -39,7 +39,7 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
   isExportingCSV: boolean = false;
   isExportingExcel: boolean = false;
   data?: {
-    data?: any[]; // Replace `any` with your actual data type
+    data?: any[]; 
   };
   _currentChildAPIBody: any;
   displayedColumns: string[] = [];
@@ -51,10 +51,12 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
   noMatchingData: boolean = false; columnsSearch: { [key: string]: string } = {};
   multiSortOrder: { column: number, dir: 'asc' | 'desc' }[] = [];
   ListView: boolean = true;
-  viewMode: 'list' | 'grid' = 'list'; // default list view
-
+  viewMode: 'list' | 'grid' |'detail' = 'grid'; 
+  items: any[] = [];       // API se pura list ayega
+  selectedItem: any = null; 
   GridView: boolean = false;
   globalSearchValue: string = '';
+  columns: any;
   get pageSize(): number {
     return this._currentChildAPIBody?.length || 25;
   }
@@ -117,10 +119,34 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
 
     this.cdr.detectChanges();
   }
-  setViewMode(mode: 'grid' | 'list') {
+  setViewMode(mode: 'grid' | 'list' | 'detail') {
     this.viewMode = mode;
+    console.log('View mode set to:', this.viewMode);
   }
+  ngOnInit() {
+    // Pehle columns le aao
+    this.mainSearchService.getactivePatentColumnList().subscribe((columns: any) => {
+      this.columns = columns; // yeh table ke liye headers hain
+    });
+  
+    // Fir data le aao
+    const props = {
+      searchText: '',   // agar kuch search karna ho
+      filters: {},      // filters bhej sakte ho
+      page: 1,
+      pageSize: 50
+    };
+  
+    this.mainSearchService.activePatentSearchSpecific(props).subscribe((response: any) => {
+      this.items = response.data;  // yahan se actual rows ka data milega
+    });
+  }
+  
 
+  showDetails(item: any) {
+    this.selectedItem = item;
+
+  }
   scrollTable(direction: 'left' | 'right'): void {
     const container = document.querySelector('.scroll-container');
     if (container) {

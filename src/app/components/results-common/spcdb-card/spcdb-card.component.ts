@@ -63,6 +63,7 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
     return this._currentChildAPIBody?.length || 25;
   }
   dataSource = new MatTableDataSource<any>([]);
+  openDropdownColumn: string | null = null;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   @ViewChildren('filterInput') filterInputs!: QueryList<ElementRef<HTMLInputElement>>;
@@ -191,8 +192,14 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
     this.multiSortOrder.push({ column: index, dir: newDir });
     this.fetchData();
   }
-  toggleDropdown() {
-    this.dropdown = !this.dropdown;
+  toggleDropdown(columnValue: string) {
+    if (this.openDropdownColumn === columnValue) {
+      // If already open, close it
+      this.openDropdownColumn = null;
+    } else {
+      // Open this column's dropdown
+      this.openDropdownColumn = columnValue;
+    }
   }
   getSortIcon(index: number): string {
     const column = this.displayedColumns[index];
