@@ -173,7 +173,7 @@
                         (click)="handleCopy(_data?.PUBCHEM_ID, copyBtn)"><i class="fas fa-copy"></i></span>
                     </h1>
                     <p class="pt-2 text-justify overflow-auto">
-                      <a target="_blank" [href]="getPubchemId(_data?.PUBCHEM_ID)">{{
+                      <a target="_blank" class="color:blue;font-weight:600;" [href]="getPubchemId(_data?.PUBCHEM_ID)">{{
                         _data?.PUBCHEM_ID
                         }}</a>
                     </p>
@@ -451,6 +451,20 @@
               </p>
             </div>
           </div>
+           <div *ngIf="_data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE && getColumnName('PEDIATRIC_DRUG_EXCLUSIVITY_PDE')"
+            class="col-md-3">
+            <div class="pt-3 ">
+              <h1 class="font-bold" style="color:#312e81;">
+                {{ getColumnName("PEDIATRIC_DRUG_EXCLUSIVITY_PDE") }}
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE, copyBtn)"><i
+                    class="fas fa-copy"></i></span>
+              </h1>
+              <p class="text-justify max-h-20 overflow-auto" #synonymBlock>
+                {{ _data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE }}
+              </p>
+            </div>
+          </div>
           <div *ngIf="_data?.GENERIC_CONSTRAINING_DATE && getColumnName('GENERIC_CONSTRAINING_DATE')" class="col-md-4">
             <div class="pt-3">
               <h1 class="font-bold" style="color:#312e81;">
@@ -703,27 +717,6 @@
               </p>
             </div>
           </div>
-
-          <div *ngIf="_data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE && getColumnName('PEDIATRIC_DRUG_EXCLUSIVITY_PDE')"
-            class="col-md-12">
-            <div class="pt-3 mt-3">
-              <h1 class="font-bold" style="color:#312e81;">
-                {{ getColumnName("PEDIATRIC_DRUG_EXCLUSIVITY_PDE") }}
-                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
-                  (click)="handleCopy(_data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE, copyBtn)"><i
-                    class="fas fa-copy"></i></span>
-              </h1>
-              <p class="text-justify max-h-20 overflow-y-auto" #synonymBlock>
-                {{ _data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE }}
-              </p>
-              <p *ngIf="_data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE?.length > 200" class="para pt-2 cursor-pointer"
-                style="color:#2f45ff"
-                (click)="OpenViewModal(_data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE, 'PEDIATRIC DRUG EXCLUSIVITY (PDE)')">
-                View More
-              </p>
-            </div>
-          </div>
-
           <div *ngIf="_data?.NCE_MINUS_OR_QIDP_MINUS && getColumnName('NCE_MINUS_OR_QIDP_MINUS')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold" style="color:#312e81;">

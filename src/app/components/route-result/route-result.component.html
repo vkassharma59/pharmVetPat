@@ -1,32 +1,17 @@
 <div class="container mt-4">
-  <!--logo -->
-  <!-- <div class="logo">
-  <div class="pharma-logo" style="margin-left: 10px;">
-    <img src="assets/images/home/PharmVetPat.svg" alt="PharmVetPat" class="img">
-  </div>
-  <!--right logo
-  <div class="flex justify-end" *ngIf="accountType === 'premium'">
-    <img src="assets/premium.png" alt="Technical Routes Logo" class="h-10" />
-  </div>
-  <div class="flex justify-end mb-2" *ngIf="accountType === 'free'">
-    <img src="assets/evaluation-version.png" alt="Technical Routes Logo" class="h-10" />
-  </div>
-</div> -->
-
   <!-- Header Section -->
   <div class="d-flex justify-content-between align-items-center card-header text-white">
     <!-- Left Section -->
     <div class="d-flex align-items-center">
       <button *ngIf="index==0" (click)="handleBack()" class="btn btn-outline-primary btn-sm"
-        style="color: white; border-color: white;">Back to search</button>
-      <span class="divider">&nbsp;|&nbsp;</span>
-      <h5 style="color: white;">{{currentTabData?.label}}
+        style="color: white; border-color: white;font-weight: 500;">Back to search</button>
+      <span *ngIf="index==0" class="divider">&nbsp;|&nbsp;</span>
+      <h5 style="color: white;">{{currentTabData?.label}}  {{(index) ? index+1 : 1}} 
         <ng-container *ngIf="lastSearchData">
           &nbsp;|&nbsp;
           <span style="color: white;">
             {{lastSearchData.searchType}}:
             {{ lastSearchData.keyword ? lastSearchData.keyword : lastSearchData.criteria }}
-
           </span>
         </ng-container>
       </h5>
@@ -38,7 +23,7 @@
     <!-- Right Section -->
     <div style="display: flex;" *ngIf="index==0">
       <button *ngIf="!generatePDFloader && isFullDownload && searchThrough !== 'synthesis-search'"
-        (click)="handleGeneratePDF()" [disabled]="generatePDFloader" title="Download Single Route"
+        (click)="handleGeneratePDF()" [disabled]="generatePDFloader" title="Full Report Download"
         class="btn btn-outline-primary btn-sm me-2" style="color: white; border-color: white;"><i
           class="fas fa-download"></i>
         Full Report Download</button>
