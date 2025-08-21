@@ -15,6 +15,6 @@ background: linear-gradient(90deg, rgba(189, 218, 242, 1) 0%, rgba(56, 130, 194,
     background: #020024;
     background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
     justify-content: space-between;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.5rem;
     border-radius: 0.25rem;
   }

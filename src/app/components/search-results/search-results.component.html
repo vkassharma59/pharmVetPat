@@ -1,41 +1,23 @@
 <app-loader *ngIf="loading"></app-loader>
 
-<app-result-tab
-  *ngIf="searchThrough === searchTypes.synthesisSearch"
-  (makePdf)="generatePdf.emit($event)"
-  (backFunction)="handleBack()"
-  [MainDataResultShow]="allDataSets"
-  [CurrentAPIBody]="CurrentAPIBody"
-  (showDataResultFunction)="showDataResultFunction.emit($event)"
-  (priviledgeModal)="openPriviledgeModal($event)"
-  (handleLoading)="handleLoadingState($event)"
-></app-result-tab>
+<app-result-tab *ngIf="searchThrough === searchTypes.synthesisSearch" (makePdf)="generatePdf.emit($event)"
+  (backFunction)="handleBack()" [MainDataResultShow]="allDataSets" [CurrentAPIBody]="CurrentAPIBody"
+  (showDataResultFunction)="showDataResultFunction.emit($event)" (priviledgeModal)="openPriviledgeModal($event)"
+  (handleLoading)="handleLoadingState($event)"></app-result-tab>
 
 <ng-container *ngIf="allDataSets.length > 0; else noData">
-  <div *ngFor="let item of allDataSets; let i = index"> 
-    <chem-route-results
-      (backFunction)="handleBack()"
-      [index]="i"
-      [dataItem]="item"
-      [searchData]="_searchData"
-      [CurrentAPIBody]="CurrentAPIBody"
-      [currentChildAPIBody]="childApiBody[i]"
-      (OpenPriviledgeModal)="openPriviledgeModal($event)"
-      (onResultTabChange)="onResultTabChange($event)"
-      (handleSetLoading)="handleLoadingState($event)"
-      (resetPagination)="resetPagination($event, i)"
+  <div *ngFor="let item of allDataSets; let i = index">
+    
+    <chem-route-results (backFunction)="handleBack()" [index]="i" [dataItem]="item" [searchData]="_searchData"
+      [CurrentAPIBody]="CurrentAPIBody" [currentChildAPIBody]="childApiBody[i]"
+      (OpenPriviledgeModal)="openPriviledgeModal($event)" (onResultTabChange)="onResultTabChange($event)"
+      (handleSetLoading)="handleLoadingState($event)" (resetPagination)="resetPagination($event, i)"
       (handleROSChange)="ButtonROSSearch($event, i)"
-      (handleChildPaginationSearch)="onChildPaginationChange($event, i)"
-    ></chem-route-results>
+      (handleChildPaginationSearch)="onChildPaginationChange($event, i)"></chem-route-results>
   </div>
-  <chem-pagination 
-    *ngIf="CurrentAPIBody?.count > 25"
-    (showDataResultFunction)="showDataResultFunction.emit($event)"
-    [CurrentAPIBody]="CurrentAPIBody"
-    (OpenPriviledgeModal)="openPriviledgeModal($event)"
-    [paginationRerenderTrigger]="paginationRerenderTrigger"
-    (setLoading)="handleLoadingState($event)"
-    ></chem-pagination>
+  <chem-pagination *ngIf="CurrentAPIBody?.count > 25" (showDataResultFunction)="showDataResultFunction.emit($event)"
+    [CurrentAPIBody]="CurrentAPIBody" (OpenPriviledgeModal)="openPriviledgeModal($event)"
+    [paginationRerenderTrigger]="paginationRerenderTrigger" (setLoading)="handleLoadingState($event)"></chem-pagination>
 </ng-container>
 
 <ng-template #noData>
@@ -49,7 +31,7 @@
 
       <!-- Right Section -->
       <div>
-        <button class="btn btn-outline-success btn-sm me-2" >Raise Query</button>
+        <button class="btn btn-outline-success btn-sm me-2">Raise Query</button>
         <button (click)="handleBack()" class="btn btn-success btn-sm">Back to Search</button>
       </div>
     </div>
@@ -83,14 +65,8 @@
 ></app-record-data> -->
 
 <!-- Priviledge Modal -->
-<div
-  #priviledgeModal
-  class="modal fade bg-black bg-opacity-50"
-  id="priviledge"
-  tabindex="-1"
-  aria-labelledby="priviledge"
-  aria-hidden="true"
->
+<div #priviledgeModal class="modal fade bg-black bg-opacity-50" id="priviledge" tabindex="-1"
+  aria-labelledby="priviledge" aria-hidden="true">
   <div class="modal-dialog text-center modal-dialog-centered">
     <div class="modal-content p-x-15 bg_1">
       <div class="dis-block-2">
@@ -114,11 +90,9 @@
         <div class="py-3">
           <div class="flex justify-center items-center gap-3 pb-3">
             <div class="">
-              <button
-                type="button"
+              <button type="button"
                 class="text_white_1 bg-gray-700 h-[50px] px-8 py-2 rounded-full text-white font-bold"
-                (click)="closeModal()"
-              >
+                (click)="closeModal()">
                 Cancel
               </button>
             </div>
