@@ -6,6 +6,8 @@ import {
   ElementRef,
   ViewChild,
   ChangeDetectorRef,
+  ViewChildren,
+  QueryList,
 } from '@angular/core';
 import { LoaderComponent } from '../../commons/loader/loader.component';
 import { CommonModule } from '@angular/common';
@@ -35,7 +37,7 @@ import { LoadingService } from '../../services/loading-service/loading.service';
 })
 
 export class SearchResultsComponent {
-
+  @ViewChildren(RouteResultComponent) children!: QueryList<RouteResultComponent>;
   _searchData: any;
   @Output() showDataResultFunction: EventEmitter<any> = new EventEmitter<any>();
   @Output() showResultFunction: EventEmitter<any> = new EventEmitter<any>();
@@ -43,6 +45,8 @@ export class SearchResultsComponent {
   @Output() generatePdf: EventEmitter<any> = new EventEmitter<any>();
   @Output() setLoadingState: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() allDataSets: any = [];
+  activeIndex: number | null = null;
+
   @Input()
   get searchData() {
     return this._searchData;
@@ -88,6 +92,7 @@ export class SearchResultsComponent {
       this.FilterObjectLength =
         Object.keys(this.CurrentAPIBody?.body?.filters).length !== 0;
     }
+    
   }
 
   handleUserLoggedIn(loggedIn: boolean) {
@@ -96,7 +101,10 @@ export class SearchResultsComponent {
   handleLoadingState(data: any) {
     this.loading = data;
   }
-
+  handleBack1() {
+    // User clicked back button -> show all datasets again
+    this.activeIndex = null;
+  }
   handleBack() {
     this.backFunction.emit(false);
   }
@@ -197,8 +205,13 @@ export class SearchResultsComponent {
       section?.Search != 0
     );
   }
-
-  onResultTabChange(resultTabData: any) {
+  onResultTabChange(resultTabData: any, index: number) {
+    // User clicked a tab -> show only that dataset
+     this.activeIndex = resultTabData.index;
+      this.CurrentAPIBody.currentTab = resultTabData.currentTabData?.name;
+    this.handleResultTabChange(resultTabData);
+  }
+  handleResultTabChange(resultTabData: any) {
     this.setLoadingState.emit(true);
     this.currentTabData = resultTabData?.currentTabData;
 
@@ -1566,7 +1579,7 @@ export class SearchResultsComponent {
       },
     });
   }
-private performDMFSearch(resultTabData: any): void {
+  private performDMFSearch(resultTabData: any): void {
 
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.dmf.name] = {};

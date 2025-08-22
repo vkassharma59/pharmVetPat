@@ -66,7 +66,7 @@ export class BasicRouteCardComponent {
     private MainSearchService: MainSearchService,
     private sanitizer: DomSanitizer
   ) { }
-  
+
   convertNewlinesToBreaks(text: string, sliceLength?: number): string {
     if (!text) return '';
     const slicedText = sliceLength ? text.slice(0, sliceLength) : text;
@@ -131,7 +131,8 @@ export class BasicRouteCardComponent {
     this.toggleProductHighlights = !this.toggleProductHighlights;
     if (this.toggleProductHighlights && this.productHighlights.length === 0) {
       this.isLoading = true;
-      this.MainSearchService.getProductHighlights().subscribe({
+      const productId = this._data?._id;
+      this.MainSearchService.getProductHighlights(productId).subscribe({
         next: (response) => {
           console.log('API response received:', response);
           if (response.status) {
@@ -267,6 +268,6 @@ export class BasicRouteCardComponent {
   onImageError(event: Event) {
     const element = event.target as HTMLImageElement;
     element.src = '/assets/no-image.jpg'; // Fallback image path
-    }
+  }
 
 }
