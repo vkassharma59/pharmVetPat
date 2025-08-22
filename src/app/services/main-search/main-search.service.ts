@@ -100,9 +100,15 @@ export class MainSearchService {
       .get(this.apiUrls.basicProductInfo.filterColumns, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
- getProductHighlights(): Observable<any> {
+  //  getProductHighlights(): Observable<any> {
+  //     return this.http
+  //       .get(this.apiUrls.basicProductInfo.productHighlights, { headers: this.headers })
+  //       .pipe(catchError(this.handleError));
+  //   }
+  getProductHighlights(productId: string): Observable<any> {
+    const url = `${this.apiUrls.basicProductInfo.productHighlights}/${productId}`;
     return this.http
-      .get(this.apiUrls.basicProductInfo.productHighlights, { headers: this.headers })
+      .get(url, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
 
@@ -275,7 +281,7 @@ export class MainSearchService {
       .post(this.apiUrls.dmf.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
- 
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred:', error.error.message);

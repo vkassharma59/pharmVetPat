@@ -4,7 +4,6 @@
             Total Records : {{ currentChildAPIBody?.count }}
         </button>
     </div>
-
     <ng-container *ngFor="let dataItem of _data; let i = index">
         <div class="pb-4 pt-2">
             <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
@@ -13,7 +12,7 @@
                     API
                     {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
                 </span>
-            </div>
+            </div> 
         </div>
         <chem-product-info-card class="card" [data]="dataItem"></chem-product-info-card>
     </ng-container>
