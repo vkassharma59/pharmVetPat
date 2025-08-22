@@ -28,7 +28,7 @@ export class ChemiTrackerComponent {
   chemiAPIBody: any;
   company_value: any = 'Select Company';
   countryFilters: any = [];
-  foundationsFilters: any = [];
+  companyFilters: any = [];
   isCountryDropdownOpen: boolean = false;
   isOpen: boolean = false;
   searchThrough: string = '';
@@ -85,7 +85,7 @@ export class ChemiTrackerComponent {
       next: (res) => {
         console.log('🔍 company Filter Values (company_name):', res?.data);
         this.countryFilters = res?.data?.country_of_company;
-        this.foundationsFilters = res?.data?.company_name;
+        this.companyFilters = res?.data?.company_name;
         this.chemiAPIBody.filter_enable = false;
       },
       error: (err) => {

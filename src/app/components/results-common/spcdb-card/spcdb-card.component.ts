@@ -62,6 +62,8 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
   get pageSize(): number {
     return this._currentChildAPIBody?.length || 25;
   }
+  columnsFilterType: { [key: string]: string } = {}; // e.g. startsWith, contains, etc.
+
   dataSource = new MatTableDataSource<any>([]);
   openDropdownColumn: string | null = null;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -124,7 +126,11 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
 
     return isoPattern.test(value) && !isNaN(Date.parse(value.replace(' ', 'T')));
   }
-
+  filterState(column: string, type: string) {
+    this.columnsFilterType[column] = type;
+    this.fetchData();  // API ko dubara call karo
+    this.openDropdownColumn = null; // dropdown close
+  }
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -220,14 +226,21 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
 
     // Add only filtered columns for column search
     const searchColumns = !isGlobalSearch
-      ? Object.entries(this.columnsSearch)
-        .filter(([_, value]) => value && value.trim() !== '')
-        .map(([key, value]) => ({
+  ? Object.entries(this.columnsSearch)
+      .filter(([_, value]) => value && value.trim() !== '')
+      .map(([key, value]) => {
+        const filterType = this.columnsFilterType[key] || 'contains';
+        return {
           data: key,
           searchable: true,
-          search: { value: value.trim() }
-        }))
-      : [];
+          search: {
+            value: value.trim(),
+            type: filterType   // ✅ yaha filter type bhi API ko bhej rahe hain
+          }
+        };
+      })
+  : [];
+
     const order = this.multiSortOrder.length > 0
       ? this.multiSortOrder
         .filter(s => typeof s.column === 'number')

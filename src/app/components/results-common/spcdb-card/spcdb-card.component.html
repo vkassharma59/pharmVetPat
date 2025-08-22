@@ -52,7 +52,18 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell"
             (click)="onCustomSort(column.value)"
             style="position: sticky; background-color:#3886d8; color:white; border:2px solid white; overflow:visible; z-index: 9;">
-          
+            <div class="filterDropdown" *ngIf="openDropdownColumn === column.value" >
+              <ul class="options">
+                <li >Starts with</li>
+                <li>Contains</li>
+                <li>Not Contains</li>
+                <li>Ends with</li>
+                <li>Equals</li>
+                <li>Not Equals</li>
+                <hr>
+                <li>No Filter</li>
+              </ul>
+            </div>
 
               <div class="header-content">
                 <div class="d-flex align-items-center" (click)="toggleSort(i)" style="cursor: pointer;">
@@ -78,18 +89,6 @@
                     </button>
                   </div>
                 </div>
-              </div>
-              <div class="filterDropdown" *ngIf="openDropdownColumn === column.value" >
-                <ul class="options">
-                  <li>Starts with</li>
-                  <li>Contains</li>
-                  <li>Not Contains</li>
-                  <li>Ends with</li>
-                  <li>Equals</li>
-                  <li>Not Equals</li>
-                  <hr>
-                  <li>No Filter</li>
-                </ul>
               </div>
             </th>
 

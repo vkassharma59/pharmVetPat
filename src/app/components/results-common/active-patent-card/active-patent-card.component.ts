@@ -64,6 +64,7 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   @ViewChildren('filterInput') filterInputs!: QueryList<ElementRef<HTMLInputElement>>;
+  @ViewChild('rightSection') rightSection!: ElementRef;
 
   @Input()
   get currentChildAPIBody() {
@@ -145,7 +146,23 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
 
   showDetails(item: any) {
     this.selectedItem = item;
+    this.resetScroll();
 
+  }
+  toggleDetailView() {
+    if (this.viewMode === 'detail') {
+      this.setViewMode('list'); // go back to list
+      this.selectedItem = null; // optional: clear selection
+    } else {
+      this.setViewMode('detail'); // go to detail
+    }
+  }
+  resetScroll() {
+    setTimeout(() => {
+      if (this.rightSection && this.rightSection.nativeElement) {
+        this.rightSection.nativeElement.scrollTop = 0;
+      }
+    }, 0);
   }
   scrollTable(direction: 'left' | 'right'): void {
     const container = document.querySelector('.scroll-container');
