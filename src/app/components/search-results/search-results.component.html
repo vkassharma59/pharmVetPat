@@ -7,12 +7,14 @@
 
 <ng-container *ngIf="allDataSets.length > 0; else noData">
   <div *ngFor="let item of allDataSets; let i = index">
+
     <chem-route-results *ngIf="activeIndex === null || activeIndex === i" (backFunction)="handleBack()" [index]="i"
       [dataItem]="item" [searchData]="_searchData" [CurrentAPIBody]="CurrentAPIBody"
       [currentChildAPIBody]="childApiBody[i]" (OpenPriviledgeModal)="openPriviledgeModal($event)"
       (onResultTabChange)="onResultTabChange($event,i)" (handleSetLoading)="handleLoadingState($event)"
       (resetPagination)="resetPagination($event, i)" (handleROSChange)="ButtonROSSearch($event, i)"
       (backFunction1)="handleBack1()"
+
       (handleChildPaginationSearch)="onChildPaginationChange($event, i)"></chem-route-results>
   </div>
   <chem-pagination *ngIf="CurrentAPIBody?.count > 25" (showDataResultFunction)="showDataResultFunction.emit($event)"
