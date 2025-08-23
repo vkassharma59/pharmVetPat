@@ -1,5 +1,5 @@
 <ng-container>
-    <div class="card-header text-white rounded-lg">
+    <!-- <div class="card-header text-white rounded-lg">
         <div style="padding:7px; justify-content:space-between; display:flex;">
             {{ localCount }}. {{resultTabs?.dmf?.label}} >>
             <span>
@@ -11,9 +11,20 @@
                 </ng-container>
             </span>
         </div>
-    </div>
+    </div> -->
     <!-- HTML Template -->
     <div class="card body" style="background-color:#f8faff;">
+        <div style="padding:7px; justify-content:space-between; display:flex;">
+            <!-- {{ localCount }}. {{resultTabs?.dmf?.label}} >> -->
+            <span>
+                {{showFull ? (_data?.name || '' ) :(_data?.name | slice:0:200) }}
+                <ng-container *ngIf="_data?.name?.length > 200">
+                    <span (click)="toggleView()" style="color: black; cursor: pointer; border-bottom: 1px dotted;">
+                        {{ showFull ? '... View Less' : '... View More' }}
+                    </span>
+                </ng-container>
+            </span>
+        </div>
         <div class="pb-3 mb-3 px-2 rounded-lg" style="margin-top: 1rem;">
             <div *ngIf="localCount === 1" class="col-md-12 dmf-country-box"
                 style="display: flex; flex-direction: row; flex-wrap: wrap;">

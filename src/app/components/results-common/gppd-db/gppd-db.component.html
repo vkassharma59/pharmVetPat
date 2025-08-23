@@ -42,7 +42,7 @@
     </div>
   </div>
 
-  <div class="card-header text-white fs-5"
+  <!-- <div class="card-header text-white fs-5"
     style="background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%); padding: 10px;">
     <div class="d-flex flex-wrap align-items-center justify-between">
       <div class="d-flex align-items-center me-3">
@@ -50,7 +50,7 @@
         <span>AgroPharm {{ resultTabs.gppdDb?.label }} >> SITAGLIPTIN PHOSPHATE</span>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <div>
     <app-gppd-db-card [columnDefs]="_data?.columns" [rowData]="_data?.rows"
@@ -65,10 +65,10 @@
 
 <ng-template #noData>
   <div class="card">
-    <div class="card-header text-white bg-primary"
+    <!-- <div class="card-header text-white bg-primary"
       style="background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);">
       {{ resultTabs.gppdDb?.label }}
-    </div>
+    </div> -->
     <div class="card-body">
       <ng-container *ngIf="loadingService.getLoading(resultTabs.gppdDb.name, index); else noDataText">
         <div class="loading-text">Loading<span class="dots"></span></div>
