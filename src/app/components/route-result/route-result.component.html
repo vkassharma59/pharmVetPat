@@ -3,10 +3,15 @@
   <div class="d-flex justify-content-between align-items-center card-header text-white">
     <!-- Left Section -->
     <div class="d-flex align-items-center">
-      <button *ngIf="index==0" (click)="handleBack()" class="btn btn-outline-primary btn-sm"
+      <button *ngIf="index==0 && !showBackButton" (click)="handleBack()" class="btn btn-outline-primary btn-sm"
         style="color: white; border-color: white;font-weight: 500;">Back to search</button>
-      <span *ngIf="index==0" class="divider">&nbsp;|&nbsp;</span>
-      <h5 style="color: white;">{{currentTabData?.label}}  {{(index) ? index+1 : 1}} 
+      <span *ngIf="index==0 && !showBackButton" class="divider">&nbsp;|&nbsp;</span>
+      <button *ngIf="showBackButton" (click)="handleBack1()"  style="color: white; border-color: white;font-weight: 500;" 
+      class="btn btn-outline-primary btn-sm">
+        Back to search
+      </button>
+      <span  *ngIf="showBackButton"  class="divider">&nbsp;|&nbsp;</span>
+      <h5 style="color: white;">{{currentTabData?.label}} {{(index) ? index+1 : 1}}
         <ng-container *ngIf="lastSearchData">
           &nbsp;|&nbsp;
           <span style="color: white;">
@@ -43,9 +48,7 @@
   <!-- Main Content Section -->
   <div *ngIf="shouldShowDownloadButton()" style="display: flex; justify-content: flex-end;">
     <button *ngIf="isSplitDownload" (click)="openDownloadModal(index)" title="Download Single Route"
-     class="btn btn-outline-primary btn-sm "><i
-        class="fas fa-download"></i>
-      Download Single Route</button>
+      class="btn btn-outline-primary btn-sm "><i class="fas fa-download"></i>
   </div>
   <div [ngSwitch]="activeTab || currentTabData?.name">
     <ng-container *ngSwitchCase="resultTabWithKeys.productInfo.name">

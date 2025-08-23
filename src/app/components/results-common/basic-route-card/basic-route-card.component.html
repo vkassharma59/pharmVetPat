@@ -31,7 +31,7 @@
       <div class="d-flex justify-content-between align-items-center py-2 flex-sm-row flex-column text-center">
         <p class="mb-2 mb-sm-0 px-3 py-2 w-50 w-sm-auto"
           style="background-color: #d9dbe4; color: #545454; border-radius: 5px;">
-          <strong>Generic Constraining Date (GCD):</strong> 2013-12-31
+          <strong>Generic Constraining Date (GCD):</strong> {{ getUpdationDate(_data?.GENERIC_CONSTRAINING_DATE)}}
         </p>
         <div class="d-flex gap-2 flex-sm-row flex-column w-100 w-sm-auto" style="margin:0 6px;">
           <button class="btn btn-primary w-50 w-sm-auto" [disabled]="!_data?.INCHIKEY">
@@ -173,7 +173,8 @@
                         (click)="handleCopy(_data?.PUBCHEM_ID, copyBtn)"><i class="fas fa-copy"></i></span>
                     </h1>
                     <p class="pt-2 text-justify overflow-auto">
-                      <a target="_blank" class="color:blue;font-weight:600;" [href]="getPubchemId(_data?.PUBCHEM_ID)">{{
+
+                      <a target="_blank" style="color:blue;font-weight:600;" [href]="getPubchemId(_data?.PUBCHEM_ID)">{{
                         _data?.PUBCHEM_ID
                         }}</a>
                     </p>

@@ -6,51 +6,37 @@
   <div class="flex flex-wrap gap-3">
     <!-- Country Dropdown -->
     <div class="dropdown" #countryDropdownRef>
-  <button
-    (click)="toggleCountryDropdown($event)"
-    class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
-  >
-    {{ country_value | truncate: 50 }}
-  </button>
-  <ul
-    *ngIf="isCountryDropdownOpen"
-    class="dropdown-menu max-h-40 overflow-y-auto z-30"
-  >
-    <li (click)="handleSelectFilter('country_of_company', '')">
-      <a class="dropdown-item">View All</a>
-    </li>
-    <li
-      *ngFor="let data of countryFilters"
-      (click)="handleSelectFilter('country_of_company', data.value)"
-    >
-      <a class="dropdown-item">{{ data?.name }}</a>
-    </li>
-  </ul>
-</div>
+      <button (click)="toggleCountryDropdown($event)"
+        class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
+
+        {{ country_value | truncate: 50 }}
+      </button>
+      <ul *ngIf="isCountryDropdownOpen" class="dropdown-menu max-h-40 overflow-y-auto z-30">
+        <li (click)="handleSelectFilter('country_of_company', '')">
+          <a class="dropdown-item">View All</a>
+        </li>
+        <li *ngFor="let data of countryFilters" (click)="handleSelectFilter('country_of_company', data.value)">
+          <a class="dropdown-item">{{ data?.name }}</a>
+        </li>
+      </ul>
+    </div>
+
 
     <!-- company Dropdown -->
     <div class="dropdown" #companyDropdownRef>
-  <button
-    (click)="toggleCompanyDropdown($event)"
-    class="px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
-  >
-    {{ company_value | truncate: 20 }}
-  </button>
-  <ul
-    *ngIf="isOpen"
-    class="dropdown-menu z-30 max-h-40 overflow-y-auto"
-  >
-    <li (click)="handleSelectFilter('dummy_6', '')">
-      <a class="dropdown-item">View All</a>
-    </li>
-    <li
-      *ngFor="let data of foundationsFilters"
-      (click)="handleSelectFilter('dummy_6', data.value)"
-    >
-      <a class="dropdown-item">{{ data?.name }}</a>
-    </li>
-  </ul>
-</div>
+      <button (click)="toggleCompanyDropdown($event)"
+        class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
+        {{ company_value | truncate: 20 }}
+      </button>
+      <ul *ngIf="isOpen" class="dropdown-menu z-30 max-h-40 overflow-y-auto">
+        <li (click)="handleSelectFilter('company_name', '')">
+          <a class="dropdown-item">View All</a>
+        </li>
+        <li *ngFor="let data of companyFilters" (click)="handleSelectFilter('company_name', data.value)">
+          <a class="dropdown-item">{{ data?.name }}</a>
+        </li>
+      </ul>
+    </div>
 
     <!-- Clear Button -->
     <button (click)="clear()" class="clear btn btn-outline-primary">
@@ -65,9 +51,8 @@
     <div class="py-4">
       <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
         <span
-          class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-normal h-[37px] flex justify-center items-center"
-        >
-        Supplier 
+          class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-normal h-[37px] flex justify-center items-center">
+          Supplier
           {{ (((_currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
         </span>
       </div>
@@ -76,18 +61,16 @@
   </ng-container>
 
   <!-- Pagination -->
-  <app-child-paging
-    *ngIf="currentChildAPIBody?.count > 25"
-    [currentChildAPIBody]="_currentChildAPIBody"
+  <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="_currentChildAPIBody"
     (handleChangeTabData)="handleResultTabData.emit($event)"
-    (setLoading)="handleSetLoading.emit($event)"
-  ></app-child-paging>
+    (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
 </ng-container>
 
 <!-- No Data -->
 <ng-template #noData>
   <div class="card">
-    <div class="card-header text-white bg-primary" style="background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);">
+    <div class="card-header text-white bg-primary"
+      style="background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);">
       {{resultTabs.chemiTracker?.label}}
     </div>
     <div class="card-body">
