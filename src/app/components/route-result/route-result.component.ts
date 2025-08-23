@@ -138,7 +138,6 @@ export class RouteResultComponent {
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
   ngOnInit() {
-
     this.lastSearchData = this.sharedRosService.getSearchData();
     this.AllSetData = this.sharedRosService.getAllDataSets();
     this.resultTabs = Object.values(this.utilityService.getAllTabsName());
@@ -184,9 +183,7 @@ export class RouteResultComponent {
     this.backFunction1.emit();
   }
   handleBack() {
-
     this.sharedRosService.clearSearchData();
-
     this.backFunction.emit(false);
   }
   // shouldShowDownloadButton(): boolean {

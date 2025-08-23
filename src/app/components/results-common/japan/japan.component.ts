@@ -1,4 +1,3 @@
-
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, Output, QueryList, ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from '../../../services/utility-service/utility.service';
@@ -15,9 +14,7 @@ import { TruncatePipe } from '../../../pipes/truncate.pipe';
 @Component({
   selector: 'chem-japan',
   standalone: true,
-
   imports: [CommonModule, JapanPMDAComponent, ChildPagingComponent, TruncatePipe],
-
   templateUrl: './japan.component.html',
   styleUrl: './japan.component.css'
 })
@@ -25,10 +22,7 @@ export class JapanComponent {
   @ViewChildren('dropdownRef') dropdownRefs!: QueryList<ElementRef>;
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
-
-  //  @Input() currentChildAPIBody: any;
   _currentChildAPIBody: any;
-
   @Input() index: any;
   @Input() tabName?: string;
   searchThrough: string = '';
@@ -43,7 +37,6 @@ export class JapanComponent {
     this.handleResultTabData.emit(this._data || []);
 
   }
-
   @Input()
   get currentChildAPIBody() {
 
@@ -94,10 +87,7 @@ export class JapanComponent {
     private utilityService: UtilityService,
     public loadingService: LoadingService,
     private mainSearchService: MainSearchService,
-
     private cdr: ChangeDetectorRef
-
-
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
@@ -106,23 +96,19 @@ export class JapanComponent {
   // ngOnChanges() {
   //   console.log('JapanComponent received data:', this._data);
   //   this.handleResultTabData.emit(this._data);
-
   // }
   // ngOnInit(): void {
   //   this.japanApiBody = { ...this.currentChildAPIBody };
   //   this.japanApiBody.filters = this.japanApiBody.filters || {};
   //   this.handleFetchFilters();
   // }
-
   setFilterLabel(filterKey: string, label: string) {
     this.filterConfigs = this.filterConfigs.map((item) => {
       if (item.key === filterKey) {
         if (label === '') {
           switch (filterKey) {
             case 'company':
-
               label = 'company';
-
               break;
             case 'active_ingredients':
               label = 'Product Name';
@@ -231,18 +217,14 @@ export class JapanComponent {
       ...this._currentChildAPIBody,
       count: eventData?.japan_pmda_count
     };
-
     this.cdr.detectChanges(); // Optional — use only if UI isn't updating as expected
     this.handleResultTabData.emit(eventData); // Optional — needed if parent needs it
   }
-
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
       let defaultLabel = '';
       switch (config.key) {
-
         case 'company': defaultLabel = 'company'; break;
-
         case 'active_ingredients': defaultLabel = 'Product Name'; break;
       }
       return { ...config, label: defaultLabel, dropdownState: false };
@@ -259,12 +241,8 @@ export class JapanComponent {
       next: (res) => {
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
-
-          count: res?.data?.japan_pmda_count
         };
         this._data = res?.data?.japan_pmda_data || [];
-
-
         this.handleResultTabData.emit(res.data);
         this.handleSetLoading.emit(false);
       },

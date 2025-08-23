@@ -19,10 +19,10 @@
           </li>
           <li *ngFor="let data of japanFilters[configData.dataKey]"
 
+
             (click)="handleSelectFilter(configData.key, data?.value ,data?.name)">
             <span class="block text-sm whitespace-normal break-words leading-snug text-gray-800">
               {{ data?.name || data?.value }}
-
             </span>
           </li>
         </ul>
@@ -49,7 +49,6 @@
 
     (handleChangeTabData)="onChildPagingDataUpdate($event)"
 
-    (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
 </ng-container>
 <ng-template #noData>
   <div class="card">

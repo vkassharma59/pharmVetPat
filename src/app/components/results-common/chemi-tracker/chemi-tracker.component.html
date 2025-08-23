@@ -8,6 +8,7 @@
     <div class="dropdown" #countryDropdownRef>
       <button (click)="toggleCountryDropdown($event)"
         class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
+
         {{ country_value | truncate: 50 }}
       </button>
       <ul *ngIf="isCountryDropdownOpen" class="dropdown-menu max-h-40 overflow-y-auto z-30">
@@ -19,6 +20,7 @@
         </li>
       </ul>
     </div>
+
 
     <!-- company Dropdown -->
     <div class="dropdown" #companyDropdownRef>
