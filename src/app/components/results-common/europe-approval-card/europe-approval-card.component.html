@@ -1,5 +1,5 @@
 <!-- <pre>{{_data | json}}</pre>  -->
- <div class="card-header text-white ">
+ <!-- <div class="card-header text-white ">
   <div style="padding-top:7px;display:flex;">
     {{ localCount }}. {{resultTabs?.europeApproval?.label}} >> 
      <span>
@@ -11,9 +11,20 @@
       </ng-container>
     </span>
   </div>
-</div>
+</div> -->
 
 <div class="card-body" style="background-color:#F5FBFF;">
+    <div style="padding-top:7px;display:flex;">
+    <!-- {{ localCount }}. {{resultTabs?.europeApproval?.label}} >>  -->
+     <span>
+     {{showFull ? (_data?.medicine_name || '' ) : (_data?.medicine_name | slice:0:200) }} 
+    <ng-container *ngIf="_data?.medicine_name?.length > 200">
+      <span (click)="toggleView()" style="color: black; cursor: pointer; border-bottom: 1px dotted;">
+        {{ showFull ? '... View Less' : '... View More' }}
+      </span>
+      </ng-container>
+    </span>
+  </div>
     <div class="pb-1 mb-1 px-2 rounded-lg">
         <div class="row">
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 ">
