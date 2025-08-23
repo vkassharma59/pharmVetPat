@@ -88,12 +88,15 @@ export class RouteResultComponent {
   isDownloadAvailable: any = false;
   @Output() handleSetLoading: EventEmitter<any> = new EventEmitter<any>();
   @Output() backFunction: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onResultTabChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onResultTabChange = new EventEmitter<any>();
   @Output() handleChildPaginationSearch: EventEmitter<any> = new EventEmitter<any>();
   @Output() OpenPriviledgeModal: EventEmitter<any> = new EventEmitter<any>();
   @Output() resetPagination: EventEmitter<any> = new EventEmitter<any>();
   @Output() handleROSChange: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('downloadModal') downloadModalRef!: ElementRef;
+  @Output() backFunction1 = new EventEmitter<void>();
+  private initialTab: any;
+
 
   _MainDataResultShow: any;
   _currentChildAPIBody: any;
@@ -135,10 +138,21 @@ export class RouteResultComponent {
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
   ngOnInit() {
+    // Save for back usage
     this.lastSearchData = this.sharedRosService.getSearchData();
     this.AllSetData = this.sharedRosService.getAllDataSets();
     this.resultTabs = Object.values(this.utilityService.getAllTabsName());
     this.currentTabData = this.resultTabs.find((tab: any) => tab.isActive);
+    console.log('Current Tab Data on Init:', this.currentTabData);
+    this.activeTab = this.currentTabData?.name || '';
+    console.log('Active Tab on Init:', this.activeTab);
+    this.isDownloadAvailable = this.currentApiData?.isDownloadAvailable || false;
+    this.initialTab = this.currentTabData;
+    console.log('Initial Tab:', this.initialTab);
+    // Fetch and store vertical limits on component init
+    this.fetchAndStoreVerticalLimits();
+
+    // Initialize resultTabWithKeys
     this.resultTabWithKeys = this.utilityService.getAllTabsName();
     this.raise_query_object = this.CurrentAPIBody?.body;
 
@@ -159,27 +173,53 @@ export class RouteResultComponent {
 
     this.isDownloadPermit = Account_type == 'premium' ? true : false;
   }
+  get showBackButton(): boolean {
+    return this.currentTabData?.name !== this.initialTab?.name;
+  }
 
+  handleBack1() {
+    this.currentTabData = this.initialTab;
+    this.activeTab = this.initialTab?.name || '';
+    console.log('Back pressed → reset to initial tab:', this.activeTab);
+    this.backFunction1.emit();
+  }
   handleBack() {
-     this.sharedRosService.clearSearchData();
+    this.sharedRosService.clearSearchData();
     this.backFunction.emit(false);
   }
-  shouldShowDownloadButton(): boolean {
-    const searchType = this.searchThrough;
-    const currentTabName = this.CurrentAPIBody?.currentTab;
-    // ✅ Use string keys, not dynamic types with `typeof this`
-    const searchToTabKeyMap: { [key: string]: string } = {
-      'synthesis-search': 'technicalRoutes',
-      'chemical-structure': 'chemicalDirectory',
-      'intermediate-search': 'chemicalDirectory',
-      'simple-search': 'productInfo',
-      'advance-search': 'productInfo',
-    };
+  // shouldShowDownloadButton(): boolean {
+  //   const searchType = this.searchThrough;
+  //   const currentTabName = this.CurrentAPIBody?.currentTab;
+  //   // ✅ Use string keys, not dynamic types with `typeof this`
+  //   const searchToTabKeyMap: { [key: string]: string } = {
+  //     'synthesis-search': 'technicalRoutes',
+  //     'chemical-structure': 'chemicalDirectory',
+  //     'intermediate-search': 'chemicalDirectory',
+  //     'simple-search': 'productInfo',
+  //     'advance-search': 'productInfo',
+  //   };
 
-    const expectedTabKey = searchToTabKeyMap[searchType];
-    const expectedTabName = this.resultTabWithKeys?.[expectedTabKey]?.name;
-    return currentTabName === expectedTabName;
-  }
+  //   const expectedTabKey = searchToTabKeyMap[searchType];
+  //   const expectedTabName = this.resultTabWithKeys?.[expectedTabKey]?.name;
+  //   return currentTabName === expectedTabName;
+  // }
+shouldShowDownloadButton(): boolean {
+  const searchType = this.searchThrough;
+  const currentTabName = this.activeTab;   // ✅ direct activeTab use karo
+
+  const searchToTabKeyMap: { [key: string]: string } = {
+    'synthesis-search': 'technicalRoutes',
+    'chemical-structure': 'chemicalDirectory',
+    'intermediate-search': 'chemicalDirectory',
+    'simple-search': 'productInfo',
+    'advance-search': 'productInfo',
+  };
+
+  const expectedTabKey = searchToTabKeyMap[searchType];
+  const expectedTabName = this.resultTabWithKeys?.[expectedTabKey]?.name;
+
+  return currentTabName === expectedTabName;
+}
 
 
   isTechnicalRoutesTabActive(): boolean {
