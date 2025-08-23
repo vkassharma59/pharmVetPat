@@ -1,6 +1,6 @@
 
 <ng-container *ngIf="_data?.rows?.length > 0 || searchByTable; else noData">
-  <div class="card-header text-white fs-5 child-route-count-wrapper justify-between"*ngIf="currentChildAPIBody?.count" style="  background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
+  <!-- <div class="card-header text-white fs-5 child-route-count-wrapper justify-between"*ngIf="currentChildAPIBody?.count" style="  background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);
  padding: 10px;">
     <div class="d-flex flex-wrap align-items-center justify-content-between">
 
@@ -12,7 +12,7 @@
         Total Records : {{currentChildAPIBody?.count }}
       </button>
     </div>
-  </div>
+  </div> -->
     <!-- <div class="flex flex-wrap gap-3">
       <button (click)="clear()" class="clear btn btn-outline-primary">
         <i class="fa-solid fa-rotate"></i>
@@ -47,10 +47,10 @@
 </ng-container>
 <ng-template #noData>
   <div class="card" style="background-color: white;">
-    <div class="card-header text-white bg-primary"
+    <!-- <div class="card-header text-white bg-primary"
       style="background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);">
       {{resultTabs.activePatent?.label}}
-    </div>
+    </div> -->
     <div class="card-body">
       <ng-container *ngIf="loadingService.getLoading(resultTabs.activePatent.name, index); else noDataText">
         <div class="loading-text">Loading<span class="dots"></span></div>

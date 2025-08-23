@@ -1,4 +1,4 @@
-<div class="card-header text-white ">
+<!-- <div class="card-header text-white ">
   <div style="padding-top:7px;display:flex;">
     {{ localCount }}. {{resultTabs?.chemicalDirectory?.label}} >> <span>
      {{showFull ? (_data?.chemical_name || '' ) : (_data?.chemical_name | slice:0:200) }} 
@@ -9,12 +9,23 @@
       </ng-container>
     </span>
   </div>
-</div>
+</div> -->
 <div *ngIf="
     searchThrough == 'simple-search' ||
     searchThrough == 'synthesis-search' ||
     searchThrough == 'advance-search'">
   <div class="card-body" style="background-color:#F5FBFF;" *ngIf="!isEmptyObject(_data); else noData">
+    <div style="padding-top:7px;display:flex;">
+    <!-- {{ localCount }}. {{resultTabs?.chemicalDirectory?.label}} >>  -->
+    <span>
+     {{showFull ? (_data?.chemical_name || '' ) : (_data?.chemical_name | slice:0:200) }} 
+    <ng-container *ngIf="_data?.chemical_name?.length > 200">
+      <span (click)="toggleView()" style="color: black; cursor: pointer; border-bottom: 1px dotted;">
+        {{ showFull ? '... View Less' : '... View More' }}
+      </span>
+      </ng-container>
+    </span>
+  </div>
     <div class=" mb-0 flex flex-wrap">
       <div class=" w-full">
         <div class="flex flex-wrap">
