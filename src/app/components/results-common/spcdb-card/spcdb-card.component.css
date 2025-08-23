@@ -391,6 +391,17 @@ th {
 .scrollable-text::-webkit-scrollbar-track {
   background: #f1f1f1e7;
 }
+.filterDropdown .options {
+  position: absolute;
+  background: white;   /* dropdown ke piche white background */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 9999 !important;   /* upar dikhane ke liye */
+  max-height: 200px;   /* optional scroll */
+  overflow-y: auto;
+  margin-left: 2.5rem;
+}
+
 
 .options {
   width: 11rem;
@@ -419,11 +430,5 @@ th {
   overflow: visible !important;
   z-index: 2; /* stay above rows */
 }
-.table-wrapper,
-.table-scroll-container,
-.mat-header-row,
-.mat-header-cell {
-  overflow: visible !important;
-  z-index: 100;
-}
+
 

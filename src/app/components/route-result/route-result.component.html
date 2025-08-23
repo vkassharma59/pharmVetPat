@@ -49,7 +49,6 @@
   <div *ngIf="shouldShowDownloadButton()" style="display: flex; justify-content: flex-end;">
     <button *ngIf="isSplitDownload" (click)="openDownloadModal(index)" title="Download Single Route"
       class="btn btn-outline-primary btn-sm "><i class="fas fa-download"></i>
-      Download Single Route</button>
   </div>
   <div [ngSwitch]="activeTab || currentTabData?.name">
     <ng-container *ngSwitchCase="resultTabWithKeys.productInfo.name">

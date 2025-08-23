@@ -138,7 +138,6 @@ export class RouteResultComponent {
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
   ngOnInit() {
-    // Save for back usage
     this.lastSearchData = this.sharedRosService.getSearchData();
     this.AllSetData = this.sharedRosService.getAllDataSets();
     this.resultTabs = Object.values(this.utilityService.getAllTabsName());

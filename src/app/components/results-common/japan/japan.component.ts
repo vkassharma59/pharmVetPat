@@ -22,7 +22,6 @@ export class JapanComponent {
   @ViewChildren('dropdownRef') dropdownRefs!: QueryList<ElementRef>;
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
-  //  @Input() currentChildAPIBody: any;
   _currentChildAPIBody: any;
   @Input() index: any;
   @Input() tabName?: string;
@@ -76,6 +75,7 @@ export class JapanComponent {
       dropdown.nativeElement.contains(event.target)
     );
 
+
     if (!clickedInsideAny) {
       this.filterConfigs = this.filterConfigs.map(config => ({
         ...config,
@@ -88,15 +88,14 @@ export class JapanComponent {
     public loadingService: LoadingService,
     private mainSearchService: MainSearchService,
     private cdr: ChangeDetectorRef
-
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
+
   // ngOnChanges() {
   //   console.log('JapanComponent received data:', this._data);
   //   this.handleResultTabData.emit(this._data);
-
   // }
   // ngOnInit(): void {
   //   this.japanApiBody = { ...this.currentChildAPIBody };
@@ -120,6 +119,7 @@ export class JapanComponent {
       }
       return item;
     });
+
   }
 
   onFilterButtonClick(filterKey: string) {
@@ -217,7 +217,6 @@ export class JapanComponent {
       ...this._currentChildAPIBody,
       count: eventData?.japan_pmda_count
     };
-
     this.cdr.detectChanges(); // Optional — use only if UI isn't updating as expected
     this.handleResultTabData.emit(eventData); // Optional — needed if parent needs it
   }
@@ -242,10 +241,8 @@ export class JapanComponent {
       next: (res) => {
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
-          count: res?.data?.japan_pmda_count
         };
         this._data = res?.data?.japan_pmda_data || [];
-
         this.handleResultTabData.emit(res.data);
         this.handleSetLoading.emit(false);
       },

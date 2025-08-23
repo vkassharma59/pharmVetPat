@@ -1,122 +1,140 @@
-
-:host
-{
-    background-color: #F1F0E0;
+:host {
+  background-color: #F1F0E0;
 }
 
-h5{
-    font-weight: bold;
-    font-size: 15px;
-    padding-top:  15px;
-}
-.more 
-{
-    display: inline-block; 
-    text-align: center;
-    justify-content: center;
-    display: flex;
-    padding: 20px;
-  }
-
-
-  .textmore {
-    height: 50px;
-    width: 150px;
-    
-  }
-  .btn1
-  {
-    background-color: blue;
-    color: white;
-    height: 50px;
-    width: 150px;   
-    font-weight: bold;
-    font-size: 17px; 
-  }
-
-  .border-dark {
-    border: 2px solid black !important;
-    border-radius: 5px; /* Optional: Adds rounded corners */
+h5 {
+  font-weight: bold;
+  font-size: 15px;
+  padding-top: 15px;
 }
 
-h4{
-    
-    font-size: 20px;
-    padding-top:  15px 0 5px;
+.more {
+  display: inline-block;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  padding: 20px;
 }
+
+
+.textmore {
+  height: 50px;
+  width: 150px;
+
+}
+
+.btn1 {
+  background-color: blue;
+  color: white;
+  height: 50px;
+  width: 150px;
+  font-weight: bold;
+  font-size: 17px;
+}
+
+.border-dark {
+  border: 2px solid black !important;
+  border-radius: 5px;
+  /* Optional: Adds rounded corners */
+}
+
+h4 {
+
+  font-size: 20px;
+  padding-top: 15px 0 5px;
+}
+
 .hr-custom {
-    width: 100%; /* Adjusts the width to match text */
-    height: 4px;
-    background-color: #95880F;
-    border: none;
-    margin-bottom: 20px; /* Adds spacing below the hr */
+  width: 100%;
+  /* Adjusts the width to match text */
+  height: 4px;
+  background-color: #95880F;
+  border: none;
+  margin-bottom: 20px;
+  /* Adds spacing below the hr */
 }
 
 .chemicalname {
-    padding: 15px;
-    border-radius: 5px;
+  padding: 15px;
+  border-radius: 5px;
 }
 
 .underline {
-    display: block;
-    width: 100%;
-    height: 2px;
-    background-color: black;
-    position: absolute;
-    bottom: -2px;
-    left: 0;
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: black;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
 }
+
 .dropdown {
-    position: relative;
-    display: inline-block;
-  }
+  position: relative;
+  display: inline-block;
+}
+
 .dropdown-container {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .dropdown-toggle {
-    padding: 10px 20px;
-    background-color: #f8faff;
-    border: 2px solid #0032a0;
-    color: #0032a0;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .dropdown-menu {
-    position: absolute;
-    top: 110%;
-    left: 0;
-    background-color: white;
-    border: 1px solid #ccc;
-    min-width: 200px;
-    /* z-index: 1; */
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    display: block;
-    overflow-x: auto;
-    max-height: 220px;
-  }
-  
-  .dropdown-menu li {
-    padding: 10px 15px;
-    cursor: pointer;
-  }
-  
-  .dropdown-menu li:hover {
-    background-color: #f0f0f0;
-  }
-  
-.clear{
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  padding: 10px 20px;
+  background-color: #f8faff;
+  border: 2px solid #0032a0;
+  color: #0032a0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  min-width: 200px;
+  max-width: 250px; /* limits width */
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: block;
+  max-height: 220px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.dropdown-menu li {
+  padding: 10px 15px;
+  cursor: pointer;
+  white-space: normal; 
+  overflow-wrap: break-word; /* <-- added */
+  word-break: break-word; /* <-- added */
+  line-height: 1.4;
+}
+
+.dropdown-menu li a {
+  display: block;
+  white-space: normal;
+  overflow-wrap: break-word; /* <-- added */
+  word-break: break-word; /* <-- added */
+}
+
+
+.dropdown-menu li:hover {
+  background-color: #f0f0f0;
+}
+
+.clear {
   border-radius: 50%;
   font-weight: 700;
   border: 1px solid #0032A0;
   color: #0032A0;
 }
-.clear:hover{
+
+.clear:hover {
   background-color: #ccc;
   color: #f0f0f0;
 }
