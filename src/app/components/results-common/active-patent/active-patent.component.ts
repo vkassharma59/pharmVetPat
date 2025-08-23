@@ -85,30 +85,37 @@ export class ActivePatentComponent implements OnChanges {
 
   /** Common API Request */
   onDataFetchRequest(payload: any) {
+    console.log('[onDataFetchRequest] Requesting data with payload:', payload);
+  
     this.isFilterApplied = !!(payload?.filters && Object.keys(payload.filters).length);
-
+  
     const requestBody = {
       ...this._currentChildAPIBody,
       ...payload
     };
     this._currentChildAPIBody = requestBody;
-
+  
     this.handleSetLoading.emit(true);
-
+  
     this.mainSearchService.activePatentSearchSpecific(requestBody).subscribe({
       next: (result: any) => {
+        console.log('[onDataFetchRequest] API response:', result);
+  
         const resultData = result?.data || {};
         this._data.rows = resultData?.data || [];
         this.count = resultData?.recordsFiltered ?? resultData?.recordsTotal ?? 0;
         this.totalPages = this.count ? Math.ceil(this.count / this.pageSize) : 0;
         this._currentChildAPIBody.count = this.count;
         this.searchByTable = true;
-
+  
         this.handleResultTabData.emit(this._data.rows);
         this.handleSetLoading.emit(false);
+  
+        console.log('[onDataFetchRequest] Data rows:', this._data.rows);
+        console.log('[onDataFetchRequest] Total records:', this.count);
       },
       error: (err) => {
-        console.error('API Error:', err);
+        console.error('[onDataFetchRequest] API Error:', err);
         this.handleSetLoading.emit(false);
       }
     });
@@ -126,16 +133,18 @@ export class ActivePatentComponent implements OnChanges {
   ];
 
   quickFilterButtons = [
-    { label: 'COMPOUND PATENT', value: 'compound' },
-    { label: 'COMPOSITION PATENT', value: 'composition' },
-    { label: 'PROCESS PATENT', value: 'process;process' },
-    { label: 'MOU PATENT', value: 'mou' },
-    { label: 'COMBINATION PATENT', value: 'formulation;combination;combination' },
-    { label: 'POLYMORPH PATENT', value: 'polymorph' },
     { label: 'BIOTECH', value: 'biotech' },
+    { label: 'COMBINATION PATENT', value: 'combination' },
+    { label: 'MOU PATENT', value: 'mou' },
+    { label: 'PROCESS PATENT', value: 'process' },
     { label: 'DEVICE PATENT', value: 'device' },
-    { label: 'KIT PATENT', value: 'kit' }
-  ];
+    { label: 'FORMULATION PATENT', value: 'formulation' },
+    { label: 'DISCOVERY ACTIVE INGREDIENTS', value: 'discovery active ingredients' },
+    { label: 'POLYMORPH PATENT', value: 'polymorph' },
+    { label: 'PLANT VARIETY', value: 'plant variety' },
+    { label: 'PARTICAL SIZE', value: 'partical size' },
+    { label: 'HYDRATE', value: 'hydrate' }
+  ];  
 
   /** Dropdown outside click close */
   @HostListener('document:mousedown', ['$event'])
@@ -203,8 +212,12 @@ export class ActivePatentComponent implements OnChanges {
 
   /** Apply dropdown filter */
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    console.log('[handleSelectFilter] Filter Key:', filterKey);
+    console.log('[handleSelectFilter] Selected Value:', value);
+    console.log('[handleSelectFilter] Selected Label:', name);
+  
     this.activePatentApiBody.filters = this.activePatentApiBody.filters || {};
-
+  
     if (value === '') {
       delete this.activePatentApiBody.filters[filterKey];
       this.setFilterLabel(filterKey, '');
@@ -212,15 +225,17 @@ export class ActivePatentComponent implements OnChanges {
       this.activePatentApiBody.filters[filterKey] = value;
       this.setFilterLabel(filterKey, name || '');
     }
-
+  
+    console.log('[handleSelectFilter] Updated Filters:', this.activePatentApiBody.filters);
+  
     this.isFilterApplied = Object.keys(this.activePatentApiBody.filters).length > 0;
-
+  
     // Close dropdown
     this.filterConfigs = this.filterConfigs.map((item) => ({
       ...item,
       dropdownState: item.key === filterKey ? false : item.dropdownState
     }));
-
+  
     const payload = {
       ...this.activePatentApiBody,
       filters: { ...this.activePatentApiBody.filters },
@@ -228,9 +243,12 @@ export class ActivePatentComponent implements OnChanges {
       start: 0,
       draw: 1
     };
-
+  
+    console.log('[handleSelectFilter] Payload to API:', payload);
+  
     this.onDataFetchRequest(payload);
   }
+  
 
   /** Clear filters */
   clear() {
@@ -257,13 +275,20 @@ export class ActivePatentComponent implements OnChanges {
 
   /** Apply Quick filter button */
   applyQuickFilter(value: string) {
+    console.log('[applyQuickFilter] Button clicked:', value);
+    this.activePatentApiBody.filter_enable = true;
     this.activePatentApiBody.filters = { patent_type: value };
+    console.log('[applyQuickFilter] Updated filters:', this.activePatentApiBody.filters);
+  
     const payload = {
       ...this.activePatentApiBody,
       filters: { ...this.activePatentApiBody.filters },
       page_no: 1,
       start: 0
     };
+  
+    console.log('[applyQuickFilter] Payload to API:', payload);
+  
     this.onDataFetchRequest(payload);
   }
 }

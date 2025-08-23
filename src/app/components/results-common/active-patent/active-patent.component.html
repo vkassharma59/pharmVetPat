@@ -19,16 +19,16 @@
       </button>
     </div> -->
   <div class="filterButton gap-3 d-flex flex-wrap">
-    <div class="buttons" style="margin-top: 0.8rem;">
+    <div class="buttons" style="margin-top: 0.8rem;width:95%">
       <button 
         *ngFor="let btn of quickFilterButtons"
         class="px-2 py-1 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
-        (click)="applyQuickFilter(btn.value)">
+        (click)="handleSelectFilter('patent_type', btn.value, btn.label)">
         {{ btn.label }}
       </button>
     </div>
     
-    <div class="clear" style="margin-top: 0.8rem;">
+    <div class="clear" style="margin-top: 0.8rem; height: 2.5rem;">
       <button (click)="clear()" class="clear btn btn-outline-primary">
         <i class="fa-solid fa-rotate"></i>
       </button>
