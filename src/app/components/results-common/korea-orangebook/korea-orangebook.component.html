@@ -16,10 +16,10 @@
 <div class="card-body">
     <div style="padding-top:7px; display:flex;">
         <!-- {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (index + 1) }}. {{resultTabs?.koreaApproval?.label}} >>  -->
-         <span>
+         <span style="color:#0032a0; font-size: 17px; font-weight:600;padding-left: 5px;">
           {{showFull ? (_data?.product_name || '' ) : (_data?.product_name | slice:0:200) }} 
       <ng-container *ngIf="_data?.product_name?.length > 200">
-        <span (click)="toggleView()" style="color: black; cursor: pointer; border-bottom: 1px dotted;">
+        <span (click)="toggleView()" style="color: black; cursor: pointer;border-bottom: 1px dotted;">
           {{ showFull ? '... View Less' : '... View More' }}
         </span>
         </ng-container>
@@ -33,7 +33,7 @@
             </p> -->
             
 
-            <p style="font-size: 25px; padding-bottom: 20px;color: #0032a0;">
+            <p style="font-size: 17px; padding-bottom: 5px;color: #0032a0;">
                 {{ _data?.company_name }}
             </p>
 

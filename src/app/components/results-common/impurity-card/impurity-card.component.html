@@ -12,8 +12,8 @@
   </div>
 </div> -->
 <div class="card-body" style="background-color: #F5FBFF;" *ngIf="!isEmptyObject(_data); else noData">
-  <div style="padding-top:7px;display:flex;">
-    <!-- {{ apiCallInstance }}. {{resultTabs?.impurity?.label}} >>  -->
+  <!-- <div style="padding-top:7px;display:flex;">
+     {{ apiCallInstance }}. {{resultTabs?.impurity?.label}} >> 
     <span>
        {{showFull ? (_data?.name || '' ) : (_data?.name | slice:0:200) }} 
       <ng-container *ngIf="_data?.name?.length > 200">
@@ -22,7 +22,7 @@
         </span>
         </ng-container>
       </span>
-    </div>
+    </div> -->
         <div class="row">
           <div class="col-md-12">
             <div class="row">
