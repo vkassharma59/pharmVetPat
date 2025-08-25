@@ -1,5 +1,4 @@
-
-<div  class="child-route-count-wrapper justify-between">
+<div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper justify-between">
   <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
     Total Records : {{currentChildAPIBody?.count }}
   </button>
@@ -26,8 +25,6 @@
         </li>
       </ul>
     </div>
-
-
     <!-- Clear Button 
     <button (click)="clear()" class="clear btn btn-outline-primary">
       <i class="fa-solid fa-rotate"></i>
@@ -44,7 +41,7 @@
      </span>
     </div>
   </div>
-  <app-scientific-docs-card class="card" [data]="dataItem" [currentChildAPIBody]="currentChildAPIBody"></app-scientific-docs-card>
+  <app-scientific-docs-card class="card" [data]="dataItem" ></app-scientific-docs-card>
 </ng-container>
 <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"
   (handleChangeTabData)="handleResultTabData.emit($event)"
@@ -54,10 +51,10 @@
 
 <ng-template #noData>
   <div class="card" style="background-color: white;">
-    <!-- <div class="card-header text-white bg-primary"
+    <div class="card-header text-white bg-primary"
       style="background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);">
       {{resultTabs.scientificDocs?.label}}
-    </div> -->
+    </div>
     <div class="card-body">
       <ng-container *ngIf="loadingService.getLoading(resultTabs.scientificDocs.name, index); else noDataText">
         <div class="loading-text">Loading<span class="dots"></span></div>

@@ -17,7 +17,7 @@
   <div class="card-body" style="background-color:#F5FBFF;" *ngIf="!isEmptyObject(_data); else noData">
     <div style="padding-top:7px;display:flex;">
     <!-- {{ localCount }}. {{resultTabs?.chemicalDirectory?.label}} >>  -->
-    <span>
+    <span style="color:#0032a0; font-size: 17px; font-weight:600;padding-left: 10px;">
      {{showFull ? (_data?.chemical_name || '' ) : (_data?.chemical_name | slice:0:200) }} 
     <ng-container *ngIf="_data?.chemical_name?.length > 200">
       <span (click)="toggleView()" style="color: black; cursor: pointer; border-bottom: 1px dotted;">
@@ -1311,6 +1311,17 @@
   <div class="card-body" style="background-color:#F5FBFF;" *ngIf="!isEmptyObject(_data); else noData">
     <div class="flex flex-wrap">
       <div class=" w-full">
+         <div style="padding-top:7px;display:flex;">
+    <!-- {{ localCount }}. {{resultTabs?.chemicalDirectory?.label}} >>  -->
+    <span style="color:#0032a0; font-size: 17px; font-weight:600;padding-left: 10px;">
+     {{showFull ? (_data?.chemical_name || '' ) : (_data?.chemical_name | slice:0:200) }} 
+    <ng-container *ngIf="_data?.chemical_name?.length > 200">
+      <span (click)="toggleView()" style="color: black; cursor: pointer; border-bottom: 1px dotted;">
+        {{ showFull ? '... View Less' : '... View More' }}
+      </span>
+      </ng-container>
+    </span>
+  </div>
         <div class="flex flex-wrap">
           <div class="lg:w-3/4 flex flex-wrap">
             <div class="lg:w-1/3  my-2" *ngIf="_data?.chemical_structure">
