@@ -211,6 +211,7 @@ export class SearchResultsComponent {
       this.CurrentAPIBody.currentTab = resultTabData.currentTabData?.name;
     this.handleResultTabChange(resultTabData);
   }
+  
   handleResultTabChange(resultTabData: any) {
     this.setLoadingState.emit(true);
     this.currentTabData = resultTabData?.currentTabData;
@@ -1135,46 +1136,38 @@ export class SearchResultsComponent {
       },
     });
   }
-
   private scientificDocsSearch(resultTabData: any): void {
-
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = {};
       this.setLoadingState.emit(false);
       return;
     }
-
     if (this.childApiBody?.[resultTabData.index]) {
       this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name] = {};
     } else {
       this.childApiBody[resultTabData.index] = {};
     }
-
     this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name] = {
       api_url: this.apiUrls.scientificDocs.searchSpecific,
       search_type: resultTabData?.searchWith,
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
-      // filter_enable: false,
-      // filters: {},
-      // order_by: '',
-      // filter_enable: false,
-      // filters: {},
-      // order_by: '',
+      filter_enable: false,
+      filters: {},
+      order_by: '',
       index: resultTabData.index
     }
 
     const tech_API = this.apiUrls.scientificDocs.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
-        const response = res?.data;
+        const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.scientificDocs.name, response);
 
         this.mainSearchService.scientificDocsSpecific(this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name]).subscribe({
           next: (result: any) => {
-
-            this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name].count = result?.data?.recordsTotal
-            this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = result?.data?.data;
+            this.childApiBody[resultTabData.index][this.resultTabs.scientificDocs.name].count = result?.data?.scientific_docs_count;
+            this.allDataSets[resultTabData.index][this.resultTabs.scientificDocs.name] = result?.data?.scientific_docs_data;
             this.setLoadingState.emit(false);
             this.loadingService.setLoading(this.resultTabs.scientificDocs.name, resultTabData.index, false);
           },
@@ -1192,7 +1185,6 @@ export class SearchResultsComponent {
       },
     });
   }
-
   // private scientificDocsSearch(resultTabData: any,): void {
   //   const pageSize = 25;
   //   const page_no = 1

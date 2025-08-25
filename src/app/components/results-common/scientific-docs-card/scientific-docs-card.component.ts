@@ -34,19 +34,18 @@ import { Auth_operations } from '../../../Utils/SetToken';
   styleUrl: './scientific-docs-card.component.css'
 })
 
-export class ScientificDocsCardComponent implements OnChanges {
+export class ScientificDocsCardComponent  {
 
   _data: any = [];
   noMatchingData: boolean = false;
   MoreInfo: boolean = false;
   pageNo: number = 1;
-  scientific_column: Record<string, string> = {};
+  scientific_column: any = {};
   resultTabs: any = {};
   columns: any[] = [];
   scientificApiBody: any;
   _currentChildAPIBody: any;
-  filteredCountries: any[] = [];
-  @Input() countryConfig: any[] = [];
+ 
   static apiCallCount: number = 0;
   localCount: number = 0;
 
@@ -57,70 +56,44 @@ export class ScientificDocsCardComponent implements OnChanges {
   ) {
 
   }
-  ngOnChanges(changes: SimpleChanges): void {
-    throw new Error('Method not implemented.');
-  }
 
-  routesList = {
-    countries: [
-      { key: 'USA', total: 78 },
-      { key: 'Europe', total: 45 },
-      { key: 'Japan', total: 3 },
-
-    ]
-  };
-  @Input() selectedCountry: any;
   @Input()
   get data() {
-    console.log("helo",this._data);
     return this._data;
   }
-
-  set data(value: any) {
+ set data(value: any) {
     if (value && Object.keys(value).length > 0) {
-      // this.noMatchingData = false;
-      ScientificDocsCardComponent.apiCallCount++;
-      this.localCount = ScientificDocsCardComponent.apiCallCount;
+      ScientificDocsCardComponent.apiCallCount++; // Increment the static counter
+      this.localCount = ScientificDocsCardComponent.apiCallCount; // Assign to local instance
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
 
-      if (column_list[this.resultTabs.scientific?.name]?.length > 0) {
-        for (let i = 0; i < column_list[this.resultTabs.scientific.name].length; i++) {
-          const col = column_list[this.resultTabs.scientific.name][i];
-          this.scientific_column[col.value] = col.name;
+      if (column_list[this.resultTabs.scientificDocs?.name]?.length > 0) {
+        for (let i = 0; i < column_list[this.resultTabs.scientificDocs.name].length; i++) {
+          this.scientific_column[column_list[this.resultTabs.scientificDocs.name][i].value] =
+            column_list[this.resultTabs.scientificDocs.name][i].name;
         }
       }
       this._data = value;
-      
     }
   }
-  @Input()
-  get currentChildAPIBody() {
-    return this._currentChildAPIBody;
-  }
-  set currentChildAPIBody(value: any) {
-    this._currentChildAPIBody = value;
-   }
-
-  @Input() countryList: any[] = []; // ← This replaces processCountryData
-
   ngOnInit() {
+    console.log("data",this._data);
     //this.processCountryData();
     if (ScientificDocsCardComponent.apiCallCount === 0) {
       ScientificDocsCardComponent.apiCallCount = 0;
     }
   }
-
-  getscientificPrefix(country: string): string {
-    const upperKey = (country || '').toUpperCase();
-    const prefixMap: { [key: string]: string } = {
-      'USA': 'USscientific',
-      'EUROPE': 'EPscientific',
-      'JAPAN': 'Jscientific',
-      'KOREA': 'Kscientific',
-      'BRAZIL': 'Bscientific'
-    };
-    return prefixMap[upperKey] || 'scientific';
+  getImageUrl(data: any): string {
+    return (
+      environment.baseUrlProduct +
+      environment.productImages +
+      this._data?.product_image1
+    );
+  }
+  onImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src =  '/assets/no-image.jpg';
   }
 
   ngOnDestroy() {
@@ -132,11 +105,10 @@ export class ScientificDocsCardComponent implements OnChanges {
     this.MoreInfo = !this.MoreInfo;
   }
 
-  getColumnName(value: any): string {
-    const name = this.scientific_column[value];
-    return name;
-  }
 
+  getColumnName(value: any) {
+    return this.scientific_column[value];
+  }
 
   handleCopy(text: string, event: MouseEvent) {
 
@@ -181,8 +153,5 @@ export class ScientificDocsCardComponent implements OnChanges {
       });
     }
   }
-  onImageError(event: Event) {
-    const element = event.target as HTMLImageElement;
-    element.src = '/assets/no-image.jpg'; // Fallback image path
-    }
+
 }
