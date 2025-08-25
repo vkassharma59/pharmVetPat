@@ -13,8 +13,8 @@
     </div>
 </div> -->
 <div class="card-body" style="background-color: #F5FBFF;">
-    <div style="padding-top:7px;  display:flex;">
-        <!-- {{ localCount }}. {{resultTabs?.japanApproval?.label}} >>  -->
+    <!-- <div style="padding-top:7px;  display:flex;">
+         {{ localCount }}. {{resultTabs?.japanApproval?.label}} >> 
         <span>
             {{showFull ? (_data?.strength || '' ) : (_data?.strength | slice:0:200) }}
             <ng-container *ngIf="_data?.strength?.length > 200">
@@ -23,17 +23,17 @@
                 </span>
             </ng-container>
         </span>
-    </div>
+    </div> -->
     <div class="pb-3 mb-3 px-2 rounded-lg">
         <div class="row ">
             <!-- First Column -->
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 ">
                 <p class="text-wrap break-words whitespace-normal"
-                    style="color: #0032a0; font-size: 17px; font-weight: bold; padding-bottom: 15px;">
+                    style="color: #0032a0; font-size: 17px; font-weight: bold; padding-bottom: 5px;">
                     {{ _data?.strength }}
                 </p>
 
-                <p style="font-size: 17px; padding-bottom: 15px;">
+                <p style="font-size: 17px; padding-bottom: 10px;">
                     {{ _data?.active_ingredients }}
                 </p>
 

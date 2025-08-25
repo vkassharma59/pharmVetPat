@@ -15,9 +15,12 @@
       (backFunction1)="handleBack1()"
       (handleChildPaginationSearch)="onChildPaginationChange($event, i)"></chem-route-results>
   </div>
-  <!-- <chem-pagination *ngIf="CurrentAPIBody?.count > 25" (showDataResultFunction)="showDataResultFunction.emit($event)"
+  <!-- <chem-pagination
+    *ngIf="CurrentAPIBody?.count > 25"
+    (showDataResultFunction)="showDataResultFunction.emit($event)"
     [CurrentAPIBody]="CurrentAPIBody" (OpenPriviledgeModal)="openPriviledgeModal($event)"
-    [paginationRerenderTrigger]="paginationRerenderTrigger" (setLoading)="handleLoadingState($event)"></chem-pagination> -->
+    [paginationRerenderTrigger]="paginationRerenderTrigger" (setLoading)="handleLoadingState($event)">
+  </chem-pagination> -->
 </ng-container>
 
 <ng-template #noData>

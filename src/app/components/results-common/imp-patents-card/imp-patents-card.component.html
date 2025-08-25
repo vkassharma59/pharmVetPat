@@ -2,7 +2,7 @@
 <!-- <div class="card-header text-white ">
     <div style="padding-top:7px; justify-content:space-between; display:flex; flex-wrap: wrap;">
         <span>
-            {{ localCount }}. {{ resultTabs?.impPatents?.label }} >>
+            {{ localCount }}.>>
             <span>
                 {{ showFull['header'] ? (_data?.product || '') : (_data?.product | slice:0:130) }}
                 <ng-container *ngIf="_data?.product?.length > 130">
@@ -21,7 +21,7 @@
     <div style="padding-top:7px; justify-content:space-between; display:flex; flex-wrap: wrap;">
          <span>
             <!-- {{ localCount }}. {{ resultTabs?.impPatents?.label }} >> -->
-            <span> 
+            <span style="padding-left: 10px;"> 
                 {{ showFull['header'] ? (_data?.product || '') : (_data?.product | slice:0:130) }}
                 <ng-container *ngIf="_data?.product?.length > 130">
                     <span (click)="toggleView('header')"
