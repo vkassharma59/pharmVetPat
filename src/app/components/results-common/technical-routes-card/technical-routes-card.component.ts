@@ -130,6 +130,7 @@ export class TechnicalRoutesCardComponent {
 
     this.isDownloadPermit = Account_type == 'premium' ? true : false;
   }
+
   isDisabled() {
     // Count the number of selected checkboxes
     const selectedCount = Object.values(this.SingleDownloadCheckbox).filter(
