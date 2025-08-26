@@ -16,7 +16,8 @@
 <div class="card-body">
   <div style="padding-top: 7px; justify-content:space-between;display:flex;">
     <!-- {{ localCount }}. {{resultTabs?.technicalRoes?.label}} >> -->
-    <span style="color:#0032a0; font-size: 17px; font-weight:600;padding-left: 10px;"> {{ showFull ? (_data?.ACTIVE_INGREDIENT || _data?.active_ingredient || '')
+    <span style="color:#0032a0; font-size: 17px; font-weight:600;padding-left: 10px;"> {{ showFull ?
+      (_data?.ACTIVE_INGREDIENT || _data?.active_ingredient || '')
       : (_data?.ACTIVE_INGREDIENT || _data?.active_ingredient | slice: 0:200)}}
       <ng-container *ngIf="_data?.ACTIVE_INGREDIENT?.length|| _data?.active_ingredient?.length > 200">
         <span (click)="toggleView()" style="color: black; cursor: pointer;border-bottom: 1px dotted;">
@@ -31,7 +32,8 @@
         <div class="heading p-2">
           <div class="row">
             <div class="col-md-5" *ngIf="_data?.route_of_synthesis && getColumnName('route_of_synthesis')">
-              <img [src]="getImageUrl(_data)" alt="_data?.route_of_synthesis" (error)="onImageError($event)" class=" aspect-auto" style="height: 268px;width: 291px;" />
+              <img [src]="getImageUrl(_data)" alt="_data?.route_of_synthesis" (error)="onImageError($event)"
+                class=" aspect-auto" style="height: 268px;width: 291px;" />
 
               <div class=" pom">
                 <button class="p-2 bg-[#0032A0] text-white" (click)="openImageModal(getImageUrl(_data),true)">
@@ -71,11 +73,11 @@
                       <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                         (click)="handleCopy(_data?.gbrn, copyBtn)"><i class="fas fa-copy"></i></span>
                     </h1>
-                    <div class="w-full max-h-16 overflow-y-hidden overflow-x-auto">
+                    <div class="w-full max-h-16  overflow-x-auto">
                       <p>{{ _data?.gbrn }}</p>
                     </div>
                   </div>
-                  <div class="head" style="padding:0;"
+                  <div class="col-md-5 head" style="padding:0;"
                     *ngIf="_data?.active_ingredient_cas_rn && getColumnName('active_ingredient_cas_rn')">
                     <h1 class="font-bold" style="color:#312e81;">
                       {{ getColumnName("active_ingredient_cas_rn") }}
@@ -83,9 +85,51 @@
                         (click)="handleCopy(_data?.active_ingredient_cas_rn, copyBtn)"><i
                           class="fas fa-copy"></i></span>
                     </h1>
-                    <p>{{ _data?.active_ingredient_cas_rn }}</p>
+                    <p class="w-full max-h-16  overflow-auto">{{ _data?.active_ingredient_cas_rn }}
+                    </p>
                   </div>
                 </div>
+                <!-- Wrap in a row -->
+                <!-- Row for Active Ingredient, Types of Route, Updation Date -->
+                <div class="col-md-8" style="padding:0; display:flex;">
+                  <!-- Active Ingredient -->
+                  <div class="col-md-5 head" *ngIf="_data?.active_ingredient && getColumnName('active_ingredient')">
+                    <h1 class="font-bold" style="color:#312e81;">
+                      {{ getColumnName("active_ingredient") }}
+                      <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.active_ingredient, copyBtn)">
+                        <i class="fas fa-copy"></i>
+                      </span>
+                    </h1>
+                    <p class="w-full max-h-16  overflow-auto">{{ _data?.active_ingredient }}</p>
+                  </div>
+
+                  <!-- Types of Route -->
+                  <div class="col-md-5 head" *ngIf="_data?.types_of_route && getColumnName('types_of_route')">
+                    <h1 class="font-bold" style="color:#312e81;">
+                      {{ getColumnName("types_of_route") }}
+                      <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.types_of_route, copyBtn)">
+                        <i class="fas fa-copy"></i>
+                      </span>
+                    </h1>
+                    <p class="text-truncate w-full max-h-16  overflow-auto">{{ _data?.types_of_route }}</p>
+                  </div>
+
+                  <!-- Updation Date -->
+                  <div class="col-md-5 head" *ngIf="_data?.updation_date && getColumnName('updation_date')">
+                    <h1 class="font-bold" style="color:#312e81;">
+                      {{ getColumnName("updation_date") }}
+                      <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.updation_date, copyBtn)">
+                        <i class="fas fa-copy"></i>
+                      </span>
+                    </h1>
+                    <p>{{ getUpdationDate(_data?.updation_date) }}</p>
+                  </div>
+                </div>
+
+
                 <div class="head col-md-5" style="padding:0; display: flex;">
                   <div class="head col-md-7"
                     *ngIf="_data?.field_of_application && getColumnName('field_of_application')">
@@ -118,7 +162,7 @@
                     <p>{{ _data?.applications_in_across_industry }}</p>
                   </div>
                 </div>
-                <div class="head col-md-7" style="padding:0; display: flex;">
+                <div class="head col-md-5" style="padding:0; display: flex;">
                   <div class="head col-md-5" style="padding:0;"
                     *ngIf="_data?.manufacturer_supplier && getColumnName('manufacturer_supplier')">
                     <h1 class="font-bold" style="color:#312e81;">
@@ -159,7 +203,8 @@
                   <p>{{ getUpdationDate(_data?.application_date) }}</p>
                 </div>
 
-                <div class="col-md-6" style="padding:0;" *ngIf="_data?.priority_date && getColumnName('priority_date')">
+                <div class="head col-md-5" style="padding:0;"
+                  *ngIf="_data?.priority_date && getColumnName('priority_date')">
                   <h1 class="font-bold" style="color:#312e81;">
                     {{ getColumnName("priority_date") }}
                     <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -177,7 +222,8 @@
         <div class="heading2">
           <div class="row">
             <div class="col-md-4" *ngIf="_data?.company_logo && getColumnName('company_logo')">
-              <img [src]="getImageUrl2(_data)" alt="_data?.company_logo" (error)="onImageError($event)" style="width: 200px; height: 150px; margin-bottom: 12px" />
+              <img [src]="getImageUrl2(_data)" alt="_data?.company_logo" (error)="onImageError($event)"
+                style="width: 200px; height: 150px; margin-bottom: 12px" />
               <div *ngIf="_data?.smilies_of_reactants && getColumnName('smilies_of_reactants')" class="col-md-10"
                 style="margin:15px; margin-top: 54px;">
                 <h1 class="pt-0 uppercase font-bold" style="color:#312e81;">
