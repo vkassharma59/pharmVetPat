@@ -111,7 +111,7 @@ export class ChemiTrackerCardComponent implements OnDestroy {
     }
   }
 
-  getChemicalImage(): string {
+  getChemicalImage(props: any): string {
     return `${environment.baseUrl}${environment.domainNameChemicalDirectoryStructure}${this._data?.chemical_structure}`;
   }
 

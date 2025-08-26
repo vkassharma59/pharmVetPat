@@ -25,7 +25,7 @@
                 </ng-container>
             </span>
         </div>
-        <div class="pb-3 mb-3 px-2 rounded-lg" style="margin-top: 1rem;">
+        <div class="pb-3 mb-3 px-2 rounded-lg container" style="margin-top: 1rem;">
             <div *ngIf="localCount === 1" class="col-md-12 dmf-country-box"
                 style="display: flex; flex-direction: row; flex-wrap: wrap;">
                 <span class="dmf-block" *ngFor="let country of countryConfig">
@@ -37,9 +37,8 @@
 
             <div class="row">
                 <!-- Column 1 -->
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                    <!-- GBRN -->
-                    <div *ngIf="_data?.gbrn && getColumnName('gbrn')" style="margin: 0.8rem;">
+                     <!-- GBRN -->
+                    <div  class="col-xl-3 col-lg-3 col-md-6 col-sm-12" *ngIf="_data?.gbrn && getColumnName('gbrn')" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('gbrn') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -51,7 +50,7 @@
                     </div>
 
                     <!-- CTSRN -->
-                    <div *ngIf="_data?.chemrobotics_technical_supplier_registration_number && getColumnName('chemrobotics_technical_supplier_registration_number')">
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12"  *ngIf="_data?.chemrobotics_technical_supplier_registration_number && getColumnName('chemrobotics_technical_supplier_registration_number')">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('chemrobotics_technical_supplier_registration_number') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -64,7 +63,7 @@
 
 
                     <!-- DMF Holder -->
-                    <div *ngIf="_data?.dmf_holder && getColumnName('dmf_holder')" style="margin: 0.8rem;">
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12" *ngIf="_data?.dmf_holder && getColumnName('dmf_holder')" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('dmf_holder') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -80,7 +79,7 @@
                     </div>
                     
                     <!-- Type of Product -->
-                    <div *ngIf="_data?.type_of_product && getColumnName('type_of_product')" style="margin: 0.8rem;">
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12" *ngIf="_data?.type_of_product && getColumnName('type_of_product')" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('type_of_product') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -91,7 +90,7 @@
                         <p>{{ _data?.type_of_product }}</p>
                     </div>
                     <!-- Active Ingredient -->
-                    <div *ngIf="_data?.active_ingredient && getColumnName('active_ingredien')" style="margin: 0.8rem;">
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12" *ngIf="_data?.active_ingredient && getColumnName('active_ingredien')" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('active_ingredient') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -101,11 +100,11 @@
                         </h6>
                         <p>{{ _data?.active_ingredient }}</p>
                     </div>
-                </div>
+               
                 <!-- Trade Name -->
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+               
                     <!-- Frequently Active Ingredient -->
-                    <div *ngIf="_data?.frequently_active_ingredient && getColumnName('frequently_active_ingredient')" style="margin: 0.8rem;">
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12" *ngIf="_data?.frequently_active_ingredient && getColumnName('frequently_active_ingredient')" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('frequently_active_ingredient') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -116,7 +115,7 @@
                         <p>{{ _data?.frequently_active_ingredient }}</p>
                     </div>
                     <!-- Trade Name -->
-                    <div *ngIf="_data?.trade_name && getColumnName('trade_name')" style="margin: 0.8rem;">
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12" *ngIf="_data?.trade_name && getColumnName('trade_name')" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('trade_name') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -128,7 +127,7 @@
                     </div>
 
                     <!-- Alternate Name -->
-                    <div *ngIf="_data?.alternate_name && getColumnName('alternate_name')" style="margin: 0.8rem;">
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12" *ngIf="_data?.alternate_name && getColumnName('alternate_name')" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('alternate_name') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -140,12 +139,14 @@
                     </div>
 
 
-                </div>
+                
 
                 <!-- Column 2 -->
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+                
                     <!-- Country -->
-                    <div *ngIf="_data?.country_dmf_holder && getColumnName('country_dmf_holder')" style="margin: 0.8rem;">
+                    <div  class="col-xl-3 col-lg-3 col-md-6 col-sm-12"
+                    *ngIf="_data?.country_dmf_holder && getColumnName('country_dmf_holder')" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('country_dmf_holder') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -156,7 +157,7 @@
                         <p>{{ _data?.country_dmf_holder }}</p>
                     </div>
                     <!-- DMF Type -->
-                    <div *ngIf="_data?.dmf_type && getColumnName('dmf_type')" style="margin: 0.8rem;">
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12" *ngIf="_data?.dmf_type && getColumnName('dmf_type')" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('dmf_type') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -168,7 +169,8 @@
                     </div>
 
                     <!-- DMF Number -->
-                    <div *ngIf="_data?.dmf_or_asmf_number && getColumnName('dmf_or_asmf_number')" style="margin: 0.8rem;">
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12"
+                    *ngIf="_data?.dmf_or_asmf_number && getColumnName('dmf_or_asmf_number')" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('dmf_or_asmf_number') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -180,7 +182,8 @@
                     </div>
 
                     <!-- Filled Date -->
-                    <div *ngIf="_data?.dmf_or_asmf_filled_date && getColumnName('dmf_or_asmf_filled_date')" style="margin: 0.8rem;">
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12"
+                    *ngIf="_data?.dmf_or_asmf_filled_date && getColumnName('dmf_or_asmf_filled_date')" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('dmf_or_asmf_filled_date') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -192,7 +195,8 @@
                     </div>
 
                     <!-- DMF Status -->
-                    <div *ngIf="_data?.dmf_status && getColumnName('dmf_status')" style="margin: 0.8rem;">
+                    <div *ngIf="_data?.dmf_status && getColumnName('dmf_status')" 
+                    class="col-xl-3 col-lg-3 col-md-6 col-sm-12" style="margin: 0.8rem;">
                         <h6 class="font-bold text-indigo-900">
                             {{ getColumnName('dmf_status') }}
                             <span class="mx-1 hover:cursor-pointer text-[#0032A0]"
@@ -203,7 +207,7 @@
                         <p>{{ _data?.dmf_status }}</p>
                     </div>
 
-                </div>
+                
             </div>
         </div>
     </div>

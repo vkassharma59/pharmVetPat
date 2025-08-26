@@ -7,19 +7,24 @@ h1{
   font-size: 14px;
 }
 ::-webkit-scrollbar {
-    width: 7px;
-    height:7px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #F5FBFF;
-  }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #312e81;
-  }
+  width: 7px;
+  height:7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1d9;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #312e81;
+}
+
+.word-break {
+  word-break: break-all; /* This will break the text anywhere it needs to to fit */
+}
+
   .card-header {
     background: #020024;
     background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);

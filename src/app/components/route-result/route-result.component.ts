@@ -65,8 +65,11 @@ export class RouteResultComponent {
     japanApproval: "pmda",
     canadaApproval: "healthCanada",
     indianMedicine: "indianMedicine",
-    litigation: "litigation"
-
+    litigation: "litigation",
+    koreaApproval: "koreaOrangeBook",
+    usApproval: "usOrangeBook",
+    veterinaryUsApproval: "usGreenBook",
+    scientificDocs: "scientificDocs"
   };
 
   currentTabData: any = {}
