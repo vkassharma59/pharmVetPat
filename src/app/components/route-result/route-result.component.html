@@ -3,9 +3,9 @@
   <div class="d-flex justify-content-between align-items-center card-header text-white">
     <!-- Left Section -->
     <div class="d-flex align-items-center">
-      <button *ngIf="index==0 && !showBackButton" (click)="handleBack()" class="btn btn-outline-primary btn-sm"
+      <button *ngIf="!showBackButton" (click)="handleBack()" class="btn btn-outline-primary btn-sm"
         style="color: white; border-color: white;font-weight: 500;">Back to search</button>
-      <span *ngIf="index==0 && !showBackButton" class="divider">&nbsp;|&nbsp;</span>
+      <span *ngIf="!showBackButton" class="divider">&nbsp;|&nbsp;</span>
       <button *ngIf="showBackButton" (click)="handleBack1()" style="color: white; border-color: white;font-weight: 500;"
         class="btn btn-outline-primary btn-sm">
         Back to search
