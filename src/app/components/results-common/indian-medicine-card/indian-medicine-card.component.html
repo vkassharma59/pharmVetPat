@@ -33,14 +33,26 @@
                     {{ _data?.medicine_name_trade_name }}
                 </p> -->
                 <div>
-                    <img *ngIf="_data?.product_image1" class="product_image1" [src]="getImageUrl(_data)" alt="_data?.product_image " (error)="onImageError($event)"
-                      style="height: 150px; width: 100%; padding: 20px; object-fit: contain;">
+                    <div class="image-wrapper">
+                        <!-- Image -->
+                        <img *ngIf="!imageError && _data?.product_image1" class="product_image1"
+                            [src]="getImageUrl(_data)" [alt]="_data?.product_image1" (error)="onImageError($event)"
+                            style="height: 150px; width: 100%; object-fit: contain; padding: 20px;" />
+
+                        <!-- Fallback (agar image load fail ho) -->
+                        <div *ngIf="!_data?.product_image1 || imageError" class="image-fallback">
+                            {{ _data?.medicine_name_trade_name }}
+                        </div>
+                    </div>
+
+                    <!-- <img *ngIf="_data?.product_image1" class="product_image1" [src]="getImageUrl(_data)" alt="_data?.product_image " (error)="onImageError($event)"
+                      style="height: 150px; width: 100%; padding: 20px; object-fit: contain;"> -->
                 </div>
 
             </div>
             <div class="col-md-3 col-sm-12">
 
-                <div *ngIf="_data?.active_ingredient && getColumnName('active_ingredient')"  class="py-3">
+                <div *ngIf="_data?.active_ingredient && getColumnName('active_ingredient')" class="py-3">
                     <h1 class="font-bold" style="color:#312e81;">
                         {{ getColumnName("active_ingredient") }}
                         <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -53,7 +65,7 @@
                     </p>
                 </div>
 
-                <div *ngIf="_data?.composition && getColumnName('composition')"  class="py-3">
+                <div *ngIf="_data?.composition && getColumnName('composition')" class="py-3">
                     <h1 class="font-bold" style="color:#312e81;">
                         {{ getColumnName("composition") }}
                         <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -68,7 +80,7 @@
             </div>
             <div class="col-md-3 col-sm-12">
 
-                <div *ngIf="_data?.manufacturer && getColumnName('manufacturer')"  class="py-3">
+                <div *ngIf="_data?.manufacturer && getColumnName('manufacturer')" class="py-3">
                     <h1 class="font-bold" style="color:#312e81;">
                         {{ getColumnName("manufacturer") }}
                         <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -83,17 +95,57 @@
             </div>
         </div>
 
+        <!-- <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
+            <img *ngIf="_data?.product_image2" class="product_image1" (error)="onImageError($event)"
+                [src]="getImageUrl(_data)" [alt]="_data?.product_image2"
+                style="height: 150px; width: 100%; max-width: 200px; padding: 20px; object-fit: contain;">
+
+            <img *ngIf="_data?.product_image2" class="product_image2" (error)="onImageError($event)"
+                [src]="getImageUrl(_data)" [alt]="_data?.product_image2"
+                style="height: 150px; width: 100%; max-width: 200px; padding: 20px; object-fit: contain;">
+
+            <img *ngIf="_data?.product_image2" class="product_image3" (error)="onImageError($event)"
+                [src]="getImageUrl(_data)" [alt]="_data?.product_image2"
+                style="height: 150px; width: 100%; max-width: 200px; padding: 20px; object-fit: contain;">
+       
+
+        </div> -->
         <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
-            <img *ngIf="_data?.product_image2" class="product_image1" (error)="onImageError($event)" [src]="getImageUrl(_data)" [alt]="_data?.product_image2"
-                style="height: 150px; width: 100%; max-width: 200px; padding: 20px; object-fit: contain;">
 
-            <img *ngIf="_data?.product_image2" class="product_image2" (error)="onImageError($event)" [src]="getImageUrl(_data)" [alt]="_data?.product_image2"
-                style="height: 150px; width: 100%; max-width: 200px; padding: 20px; object-fit: contain;">
+            <!-- Product Image 1 -->
+            <ng-container>
+                <img *ngIf="_data?.product_image1 && !imageError1" [src]="getImageUrl(_data)"
+                    [alt]="_data?.product_image1" (error)="onImageError1(1,$event)"
+                    style="height: 150px; width: 100%; max-width: 200px; padding: 20px; object-fit: contain; border-radius: 8px;" />
 
-            <img *ngIf="_data?.product_image2" class="product_image3" (error)="onImageError($event)" [src]="getImageUrl(_data)" [alt]="_data?.product_image2"
-                style="height: 150px; width: 100%; max-width: 200px; padding: 20px; object-fit: contain;">
+                <div *ngIf="!_data?.product_image1 || imageError1" class="image-fallback1">
+                    {{ _data?.medicine_name_trade_name }}
+                </div>
+            </ng-container>
+
+            <!-- Product Image 2 -->
+            <ng-container>
+                <img *ngIf="_data?.product_image2 && !imageError2" [src]="getImageUrl(_data)"
+                    [alt]="_data?.product_image2" (error)="onImageError1(2,$event)"
+                    style="height: 150px; width: 100%; max-width: 200px; padding: 20px; object-fit: contain; border-radius: 8px;" />
+
+                <div *ngIf="!_data?.product_image2 || imageError2" class="image-fallback1">
+                    {{ _data?.medicine_name_trade_name }}
+                </div>
+            </ng-container>
+
+            <!-- Product Image 3 -->
+            <ng-container>
+                <img *ngIf="_data?.product_image3 && !imageError3" [src]="getImageUrl(_data)"
+                    [alt]="_data?.product_image3" (error)="onImageError1(3,$event)"
+                    style="height: 150px; width: 100%; max-width: 200px; padding: 20px; object-fit: contain; border-radius: 8px;" />
+
+                <div *ngIf="!_data?.product_image3 || imageError3" class="image-fallback1">
+                    {{ _data?.medicine_name_trade_name }}
+                </div>
+            </ng-container>
+
         </div>
-
     </div>
 </div>
 <div class="flex justify-center">
@@ -113,7 +165,7 @@
 
         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
 
-            <div *ngIf="_data?.gbrn && getColumnName('gbrn')"  class="py-3">
+            <div *ngIf="_data?.gbrn && getColumnName('gbrn')" class="py-3">
                 <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("gbrn") }}
                     <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                         (click)="handleCopy(_data?.gbrn, copyBtn)"><i class="fas fa-copy"></i></span>
@@ -187,7 +239,8 @@
                 </p>
             </div>
 
-            <div *ngIf="_data?.manufacturer_marketer_address && getColumnName('manufacturer_marketer_address')" class="py-3">
+            <div *ngIf="_data?.manufacturer_marketer_address && getColumnName('manufacturer_marketer_address')"
+                class="py-3">
                 <h1 class="font-bold" style="color:#312e81;"> {{ getColumnName("manufacturer_marketer_address") }}
                     <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                         (click)="handleCopy(_data?.manufacturer_marketer_address, copyBtn)"><i

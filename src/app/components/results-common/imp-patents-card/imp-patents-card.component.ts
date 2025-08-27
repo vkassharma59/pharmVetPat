@@ -68,6 +68,11 @@ export class ImpPatentsCardComponent implements OnInit, OnDestroy {
     return Object.keys(obj).length === 0;
   }
 
+  convertNewlinesToBreaks(text: string, sliceLength?: number): string {
+    if (!text) return '';
+    const slicedText = sliceLength ? text.slice(0, sliceLength) : text;
+    return slicedText.replace(/(?:\r\n|\r|\n)/g, '<br>');
+  }
   toggleMoreInfo(): void {
     this.MoreInfo = !this.MoreInfo;
   }
