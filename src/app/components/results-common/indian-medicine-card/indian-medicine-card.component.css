@@ -60,12 +60,9 @@ h1 {
   font-style: italic;
   font-weight: 600;
   color: #374151;
-  /* dark gray text */
   padding: 20px;
-
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-  /* subtle shadow */
-}
+  }
 .image-fallback1 {
   height: 100px;
   width: 200px;
