@@ -19,10 +19,16 @@ export class IndianMedicineCardComponent implements OnInit, OnDestroy {
   pageNo: number = 1;
   indian_medicine_column: any = {};
   resultTabs: any = {};
+  imageError: boolean = false;
+  imageError1: boolean = false;
+  imageError2: boolean = false;
+  imageError3: boolean = false;
+
+
 
   static apiCallCount: number = 0; // Global static counter
   localCount: number = 0; // Stores the instance-specific count
- showFull = false;
+  showFull = false;
   toggleView() {
     this.showFull = !this.showFull;
   }
@@ -115,8 +121,37 @@ export class IndianMedicineCardComponent implements OnInit, OnDestroy {
       this._data?.product_image1
     );
   }
-  onImageError(event: Event) {
+  // onImageError(event: Event) {
+  //   const imgElement = event.target as HTMLImageElement;
+  //   imgElement.src =  '/assets/no-image.jpg';
+  // }
+
+  onImageError(event: any) {
+    this.imageError = true;
     const imgElement = event.target as HTMLImageElement;
-    imgElement.src =  '/assets/no-image.jpg';
+    imgElement.src = '/assets/no-image.jpg';
   }
+  onImageError1(index: number,event: any) {
+  if (index === 1) this.imageError1 = true;
+  if (index === 2) this.imageError2 = true;
+  if (index === 3) this.imageError3 = true;
+   const imgElement = event.target as HTMLImageElement;
+    imgElement.src = '/assets/no-image.jpg';
+ }
+//   onImageError1(event: any) {
+//     this.imageError1 = true;
+//     const imgElement = event.target as HTMLImageElement;
+//     imgElement.src = '/assets/no-image.jpg';
+//   }
+//   onImageError2(event: any) {
+//     this.imageError2 = true;
+//     const imgElement = event.target as HTMLImageElement;
+//     imgElement.src = '/assets/no-image.jpg';
+//   }
+//   onImageError3(event: any) {
+//     this.imageError3 = true;
+//     const imgElement = event.target as HTMLImageElement;
+//     imgElement.src = '/assets/no-image.jpg';
+//   }
+
 }

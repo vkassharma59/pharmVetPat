@@ -294,8 +294,8 @@
                 <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
                     (click)="handleCopy(_data?.claims, copyBtn)"><i class="fas fa-copy"></i></span>
             </h1>
-            <p class="text-wrap max-h-24 overflow-y-auto break-words whitespace-normal">
-                {{ _data?.claims }}
+            <p class="text-wrap max-h-24 overflow-y-auto break-words whitespace-normal"
+            [innerHTML]="convertNewlinesToBreaks(_data?.claims)">
             </p>
         </div>
 
