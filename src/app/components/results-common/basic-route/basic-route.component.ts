@@ -55,4 +55,7 @@ export class BasicRouteComponent {
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
     console.log('🔎 Active searchThrough value:', this.searchThrough);
   }
+  ngOnInit(): void {
+      console.log('Current Child API Body (index:', this.currentChildAPIBody);
+  }
 }
