@@ -280,13 +280,14 @@ button[color="warn"] {
 }
 .table-wrapper {
   position: relative;
-  height: 427px;  
-  overflow: hidden;
+  max-height: 427px;   /* scroll only if rows exceed */
+  overflow-y: auto;    /* allow scrolling when needed */
+  height: auto;        /* let it shrink if fewer rows */
 }
-
 .table-scroll-container {
   overflow-y: auto;
-  height: 100%;
+  max-height: inherit; /* respect parent's max height */
+  height: auto;
 }
 
 .mat-header-row {
