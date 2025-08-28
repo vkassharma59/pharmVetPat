@@ -36,4 +36,7 @@ export class BasicRouteComponent {
     this.resultTabs = this.utilityService.getAllTabsName();    
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
+  ngOnInit(): void {
+      console.log('Current Child API Body (index:', this.currentChildAPIBody);
+  }
 }

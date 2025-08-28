@@ -141,6 +141,7 @@ export class RouteResultComponent {
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
   ngOnInit() {
+    console.log('currentchild api', this.currentChildAPIBody);
     this.lastSearchData = this.sharedRosService.getSearchData();
     this.AllSetData = this.sharedRosService.getAllDataSets();
     this.resultTabs = Object.values(this.utilityService.getAllTabsName());
@@ -205,22 +206,68 @@ export class RouteResultComponent {
   //   const expectedTabName = this.resultTabWithKeys?.[expectedTabKey]?.name;
   //   return currentTabName === expectedTabName;
   // }
-shouldShowDownloadButton(): boolean {
-  const searchType = this.searchThrough;
-  const currentTabName = this.activeTab;   // ✅ direct activeTab use karo
+  shouldShowDownloadButton(): boolean {
+    const searchType = this.searchThrough;
+    const currentTabName = this.activeTab;   // ✅ direct activeTab use karo
 
-  const searchToTabKeyMap: { [key: string]: string } = {
-    'synthesis-search': 'technicalRoutes',
-    'chemical-structure': 'chemicalDirectory',
-    'intermediate-search': 'chemicalDirectory',
-    'simple-search': 'productInfo',
-    'advance-search': 'productInfo',
-  };
+    const searchToTabKeyMap: { [key: string]: string } = {
+      'synthesis-search': 'technicalRoutes',
+      'chemical-structure': 'chemicalDirectory',
+      'intermediate-search': 'chemicalDirectory',
+      'simple-search': 'productInfo',
+      'advance-search': 'productInfo',
+    };
 
-  const expectedTabKey = searchToTabKeyMap[searchType];
-  const expectedTabName = this.resultTabWithKeys?.[expectedTabKey]?.name;
+    const expectedTabKey = searchToTabKeyMap[searchType];
+    const expectedTabName = this.resultTabWithKeys?.[expectedTabKey]?.name;
 
-  return currentTabName === expectedTabName;
+    return currentTabName === expectedTabName;
+  }
+  // getFirstProductName(tabData: any, activeTab: string): string {
+  //   console.log('Tab Data:', tabData);
+  //   console.log('Active Tab:', activeTab);
+  //   if (!tabData || !activeTab) return '';
+
+  //   const dataArray = tabData[activeTab]; // activeTab ki array nikali
+  //   console.log('Data Array for Active Tab:', dataArray);
+  //   console.log('Data Array for Active Tab:', tabData[activeTab]);
+  //   if (Array.isArray(dataArray) && dataArray.length > 0) {
+  //     console.log('First Product Name:', dataArray[0]?.ros_data[0]);
+  //     return dataArray[0]?.ACTIVE_INGREDIENT || dataArray[0]?.ros_data?.ACTIVE_INGREDIENT  || dataArray[0]?.chemical_name ||'';
+  //   }
+
+  //   return '';
+  // }
+  getFirstProductName(tabData: any, activeTab: string): string {
+  console.log('Tab Data:', tabData);
+  console.log('Active Tab:', activeTab);
+
+  if (!tabData || !activeTab) return '';
+
+  // Step 1: tabData[activeTab] nikalo
+  const tabObj = tabData[activeTab];
+  console.log('Tab Object:', tabObj);
+
+  if (!tabObj) return '';
+
+  // Step 2: Agar direct array hai
+  if (Array.isArray(tabObj) && tabObj.length > 0) {
+    return (
+      tabObj[0]?.ACTIVE_INGREDIENT ||
+      tabObj[0]?.chemical_name ||
+      ''
+    );
+  }
+
+  // Step 3: Agar object hai aur uske andar array (jaise ros_data)
+  if (tabObj.ros_data && Array.isArray(tabObj.ros_data) && tabObj.ros_data.length > 0) {
+    return (
+      tabObj.ros_data[0]?.ACTIVE_INGREDIENT || ''
+    );
+  }
+
+  // Step 4: Fallback
+  return '';
 }
 
 
