@@ -84,9 +84,6 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
   ) { }
 
   ngOnChanges(): void {
-    //console.log('columnDefs:', this.columnDefs);
-    // Reset counter only when the component is first loaded
-
     if (this.columnDefs && this.columnDefs.length > 0) {
       this.displayedColumns = [];
       this.columnHeaders = {};
@@ -177,11 +174,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
   getCountryUrl(value: any) {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country}.png`;
   }
-  // clearFilter(column: string, input: HTMLInputElement) {
-  //   input.value = '';
-  //   delete this.columnsSearch[column];
-  //   this.fetchData();
-  // }
+
   clearFilter(columnKey: string, inputRef: HTMLInputElement) {
     inputRef.value = '';
     delete this.columnsSearch[columnKey];
@@ -252,13 +245,6 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
           };
         })
       : null;
-    // const order = this.multiSortOrder.length > 0
-    //   ? this.multiSortOrder.map(s => ({
-    //     column: s.column,
-    //     dir: s.dir
-    //   }))
-    //   : null;
-
     const globalSearch = isGlobalSearch
       ? { value: this.globalSearchValue.trim() }
       : null;
@@ -366,13 +352,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
 
     doc.save('ExportedData.pdf');
   }
-  // // Optional helper to capitalize column names
-  // toTitleCase(str: string): string {
-  //   return str.replace(/_/g, ' ')
-  //     .replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
-  // }
 
-  // 3️⃣ Download CSV
   downloadCSV(): void {
     this.isExportingCSV = true;
     this.getAllDataFromApi().subscribe(data => {
@@ -510,7 +490,4 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     return str.replace(/_/g, ' ')
       .replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
   }
-
-
 }
-

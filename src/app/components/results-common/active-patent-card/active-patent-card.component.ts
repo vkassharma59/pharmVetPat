@@ -57,6 +57,7 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
   GridView: boolean = false;
   globalSearchValue: string = '';
   columns: any;
+  selectedIndex: number | null = null;
   get pageSize(): number {
     return this._currentChildAPIBody?.length || 25;
   }
@@ -82,37 +83,41 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
   ) { }
 
   ngOnChanges(): void {
-    //console.log('columnDefs:', this.columnDefs);
-    // Reset counter only when the component is first loaded
-
     if (this.columnDefs && this.columnDefs.length > 0) {
       this.displayedColumns = [];
       this.columnHeaders = {};
       this.filterableColumns = [];
-
-      // Check which columns have at least one non-empty value
+  
       for (const col of this.columnDefs) {
         const colValue = col.value;
-
         const hasData = this.rowData?.some(row =>
           row[colValue] !== null && row[colValue] !== undefined && row[colValue] !== ''
         );
-
+  
         if (hasData) {
-          this.displayedColumns.push(colValue); // ✅ Only include columns with at least one value
+          this.displayedColumns.push(colValue);
           this.columnHeaders[colValue] = col.label;
           this.filterableColumns.push(colValue);
-        } else {
-          //console.log('🚫 Hiding column (empty data):', colValue);
         }
       }
     }
+  
     if (this.rowData) {
       this.dataSource.data = this.rowData;
       this.noMatchingData = this.rowData.length === 0;
-
+  
+      // 🔥 IMPORTANT: Reset selection when rowData changes
+      if (this.rowData.length > 0) {
+        this.selectedItem = this.rowData[0]; // auto-select first
+      } else {
+        this.selectedItem = null; // nothing to show
+      }
+  
+      // Scroll detail panel to top
+      this.resetScroll();
     }
   }
+  
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -142,10 +147,11 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
       this.items = response.data;  // yahan se actual rows ka data milega
     });
   }
-  
-
-  showDetails(item: any) {
+ 
+  showDetails(item: any, index: number) {
     this.selectedItem = item;
+    this.selectedIndex = index + 1;  // match left numbering
+    console.log("Selected:", this.selectedIndex, item);
     this.resetScroll();
 
   }
