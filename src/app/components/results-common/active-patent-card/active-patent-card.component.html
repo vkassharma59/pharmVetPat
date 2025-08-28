@@ -223,28 +223,26 @@
 
       <!-- Left Side List -->
       <div class="list-view-wrapper" style="height: 27rem;">
-        <!-- <div class="detail-button align-items-end">
-          <button mat-raised-button style="background: linear-gradient(192deg, rgb(131, 164, 236) 0%, 
-            rgb(79, 154, 240) 50%, rgba(0, 58, 219, 1) 100%); color:#fff;" (click)="setViewMode('detail')">
-            Detail View
-          </button>
-        </div> -->
-
         <div class="list-view-container" style="width: 35rem;">
-          <div *ngFor="let element of dataSource.data" class="list-card" (click)="showDetails(element)"
-            [class.active]="selectedItem === element"
-            style="cursor:pointer; border:1px solid #ddd; border-radius:0.5rem; margin-bottom:1rem; padding:0.5rem;">
-
+          <div *ngFor="let element of dataSource.data; let i = index" 
+               class="list-card" 
+               (click)="showDetails(element, i)" 
+               [class.active]="selectedItem === element"
+               style="cursor:pointer; border:1px solid #ddd; border-radius:0.5rem; margin-bottom:1rem; padding:0.5rem;">
+        
+            <!-- Number -->
+            <div style="font-weight:bold; margin-bottom:4px;">{{ i + 1 }}.</div>
+        
             <!-- Flag -->
             <div *ngIf="element.flag" class="flag-wrapper">
               <img [src]="element.flag" alt="flag" width="25" height="18" (error)="onFlagError($event)" />
             </div>
-
+        
             <!-- Company Logo -->
             <div *ngIf="element.company_logo" class="logo-wrapper">
               <img [src]="getCompanyLogo(element)" alt="logo" width="70" height="40" style="object-fit:contain;" />
             </div>
-
+        
             <!-- Dynamic column values -->
             <div class="info" style="height: 10rem;">
               <div *ngFor="let column of columnDefs">
@@ -260,11 +258,12 @@
               </div>
             </div>
           </div>
-
+        
           <div *ngIf="noMatchingData" style="text-align:center; padding:20px; font-weight:500;">
             🔍 No matching records found
           </div>
         </div>
+        
       </div>
 
       <!-- Right Side Detail Card -->
@@ -275,7 +274,7 @@
           <!-- Header -->
           <div class="right-header">
             <h2 style="margin:0; font-size:1.1rem; font-weight:600;">
-              {{ selectedItem['sno'] }}. {{ selectedItem['patent_publication_number'] }} - {{ selectedItem['title'] }}
+              {{ selectedItem['patent_publication_number'] }} - {{ selectedItem['title'] }}
             </h2>
           </div>
 
