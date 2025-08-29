@@ -16,25 +16,47 @@ import { LoadingService } from '../../../services/loading-service/loading.servic
 export class BasicRouteComponent {
 
   resultTabs: any = {};
+  productInfoApiBody: any;
   _data: any = [];
   count: number = 0;
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
   searchThrough: string = '';
-  @Input() currentChildAPIBody: any;
+  _currentChildAPIBody: any;
   @Input() index: any;
   @Input() tabName?: string;
-    @Input()
+
+  @Input()
   get data() {
     return this._data;
   }
   set data(value: any) {
     this._data = value;
+    console.log('📦 Input `data` updated:', value); // ✅ Console log when data is updated
+  }
+
+  @Input()
+  get currentChildAPIBody() {
+    return this._currentChildAPIBody;
+  }
+  set currentChildAPIBody(value: any) {
+    this._currentChildAPIBody = value;
+    console.log('🔹 Input `currentChildAPIBody` updated:', value); // ✅ Console log when API body changes
+    if (value) {
+      this.productInfoApiBody = JSON.parse(JSON.stringify(value)) || value;
+      console.log('📄 Copied `productInfoApiBody`:', this.productInfoApiBody);
+    }
   }
 
   constructor(private utilityService: UtilityService, public loadingService: LoadingService) {
-    this.resultTabs = this.utilityService.getAllTabsName();    
+    this.resultTabs = this.utilityService.getAllTabsName();
+    console.log('📝 Result Tabs initialized:', this.resultTabs);
+    
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
+    console.log('🔎 Active searchThrough value:', this.searchThrough);
+  }
+  ngOnInit(): void {
+      console.log('Current Child API Body (index:', this.currentChildAPIBody);
   }
   ngOnInit(): void {
       console.log('Current Child API Body (index:', this.currentChildAPIBody);

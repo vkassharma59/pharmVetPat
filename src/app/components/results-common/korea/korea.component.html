@@ -5,7 +5,7 @@
         </button>
     </div>
     <ng-container *ngFor="let dataItem of _data; let i = index">
-        <div class="py-4">
+        <!-- <div class="py-4">
             <div
               class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]"
             >
@@ -16,7 +16,7 @@
                     {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
                 </span>
             </div>
-        </div>
+        </div> -->
         <app-korea-orangebook class="card"
          [data]="dataItem"
          [currentChildAPIBody]="currentChildAPIBody"  [index]="i"></app-korea-orangebook>
