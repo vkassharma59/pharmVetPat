@@ -58,4 +58,7 @@ export class BasicRouteComponent {
   ngOnInit(): void {
       console.log('Current Child API Body (index:', this.currentChildAPIBody);
   }
+  ngOnInit(): void {
+      console.log('Current Child API Body (index:', this.currentChildAPIBody);
+  }
 }
