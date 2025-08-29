@@ -264,12 +264,9 @@ export class RouteResultComponent {
   //     return ingredient;
   //   }
 
-
-
   //   // Step 4: Fallback
   //   return '';
   // }
-
   getFirstProductName(tabData: any): string {
     console.log('Tab Data:', tabData);
     console.log('Initial Tab:', this.initialTab);
