@@ -11,14 +11,32 @@
         Back to list
       </button>
       <span *ngIf="showBackButton" class="divider">&nbsp;|&nbsp;</span>
-      <h5 style="color: white;">{{currentTabData?.label}} {{(index) ? index+1 : 1}}
-        <ng-container *ngIf="lastSearchData">
-          &nbsp;|&nbsp;
-          <span style="color: white;">
-            {{ getFirstProductName(_dataItem,activeTab) }}
+      
+      <div style="display: flex; align-items: center; gap: 10px;">
+
+        <h5 style="color: white; margin: 0;">
+          {{ currentTabData?.label }} {{ (index) ? index+1 : 1 }}
+        </h5>
+      </div>
+      <span *ngIf="currentTabData" class="divider">&nbsp;|&nbsp;</span>
+     
+      <div style="margin-left: 2px; margin-top: 4px; color: white; font-size: 15px; font-weight: 500;">
+        <span>
+          {{ showFullName
+          ? (getFirstProductName(_dataItem) || '')
+          : ((getFirstProductName(_dataItem) || '') | slice:0:100)
+          }}
+        </span>
+
+        <ng-container *ngIf="(getFirstProductName(_dataItem)?.length || 0) > 100">
+          <span (click)="toggleProductName()"
+            style="color: black; cursor: pointer; border-bottom: 1px dotted; margin-left: 5px;">
+            {{ showFullName ? 'View Less' : 'View More' }}
           </span>
         </ng-container>
-      </h5>
+      </div>
+
+
       <!-- <span class="divider">&nbsp;|&nbsp;</span>
       <span class="fw-bold">Total Results: {{CurrentAPIBody?.count}}</span>
       <span class="divider">&nbsp;|&nbsp;</span>
