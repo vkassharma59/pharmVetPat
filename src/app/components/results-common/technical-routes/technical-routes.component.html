@@ -67,7 +67,7 @@
       </div>
        <ng-container *ngIf="_data?.ros_data?.length > 0; else noData">
       <ng-container *ngFor="let dataItem of _data?.ros_data; let i = index">
-        <div class="py-4" *ngIf="searchThrough !== 'synthesis-search'">
+        <!-- <div class="py-4" *ngIf="searchThrough !== 'synthesis-search'">
           <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
             <span
               class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-normal h-[37px] flex justify-center items-center">
@@ -75,7 +75,7 @@
               {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
             </span>
           </div>
-        </div>
+        </div> -->
         <chem-technical-route-card class="card" [data]="dataItem"  [index]="index" [itemid]="itemid" [CurrentAPIBody]="CurrentAPIBody"></chem-technical-route-card>
       </ng-container>
       <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"

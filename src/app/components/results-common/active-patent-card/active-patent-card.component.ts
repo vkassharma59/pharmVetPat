@@ -150,8 +150,8 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
  
   showDetails(item: any, index: number) {
     this.selectedItem = item;
-    this.selectedIndex = index + 1;  // match left numbering
-    console.log("Selected:", this.selectedIndex, item);
+    this.selectedIndex = index + 1; // numbering maintain
+    console.log("Selected Index:", this.selectedIndex, "Item:", item);
     this.resetScroll();
 
   }
