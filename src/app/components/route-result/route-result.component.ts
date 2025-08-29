@@ -111,6 +111,7 @@ export class RouteResultComponent {
   currentIndex: number = 0;
   selectedIndex: number = 0;
   @Input() activeIndex: number | null = null;
+  @Input() activeIndex: number | null = null;
 
   setSelectedIndex(index: number): void {
     this.selectedIndex = index;
@@ -130,6 +131,7 @@ export class RouteResultComponent {
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
   }
+
 
   lastSearchData: { searchType: string, keyword: string, criteria: any } | null = null;
   constructor(
@@ -181,12 +183,21 @@ export class RouteResultComponent {
   //   return this.currentTabData?.name !== this.initialTab?.name;
   // }
 
+  // get showBackButton(): boolean {
+  //   return this.currentTabData?.name !== this.initialTab?.name;
+  // }
+
   get showBackButton(): boolean {
     const isDifferentFromInitial = this.currentTabData?.name !== this.initialTab?.name;
     const isMultipleLoop = this.activeIndex !== null;
     // Tab change ho ya activeIndex set ho → show button
     return isDifferentFromInitial || isMultipleLoop;
+    const isDifferentFromInitial = this.currentTabData?.name !== this.initialTab?.name;
+    const isMultipleLoop = this.activeIndex !== null;
+    // Tab change ho ya activeIndex set ho → show button
+    return isDifferentFromInitial || isMultipleLoop;
   }
+
 
 
   handleBack1() {
@@ -239,6 +250,13 @@ export class RouteResultComponent {
     this.showFullName = !this.showFullName;
   }
 
+
+  showFullName: boolean = false;
+
+  toggleProductName() {
+    this.showFullName = !this.showFullName;
+  }
+
   // getFirstProductName(tabData: any, activeTab: string): string {
   //   console.log('Tab Data:', tabData);
   //   console.log('Active Tab:', activeTab);
@@ -266,20 +284,53 @@ export class RouteResultComponent {
 
 
   //   // Step 4: Fallback
+  //   // Step 1: tabData[activeTab] nikalo
+  //   const tabObj = tabData[activeTab];
+  //   console.log('Tab Object:', tabObj);
+  //   if (!tabObj) return '';
+  //   // Step 2: Agar direct array hai
+  //   if (Array.isArray(tabObj) && tabObj.length > 0) {
+  //     return (
+  //       tabObj[0]?.ACTIVE_INGREDIENT ||
+  //       tabObj[0]?.chemical_name ||
+  //       ''
+  //     );
+  //   }
+  //   console.log('Tab Object after array check:', tabObj);
+  //   console.log('Tab Object after array check:---', tabObj.ros_data);
+  //   if (tabObj.ros_data && Array.isArray(tabObj.ros_data) && tabObj.ros_data.length > 0) {
+  //     const ingredient = tabObj.ros_data[0]?.ACTIVE_INGREDIENT || tabObj.ros_data[0]?.active_ingredient || '';
+  //     console.log('Active Ingredient:', ingredient);
+  //     return ingredient;
+  //   }
+
+
+
+  //   // Step 4: Fallback
   //   return '';
   // }
 
   getFirstProductName(tabData: any): string {
-    // console.log('Tab Data:', tabData);
-    // console.log('Initial Tab:', this.initialTab);
+    console.log('Tab Data:', tabData);
+    console.log('Initial Tab:', this.initialTab);
 
+    if (!tabData || !this.initialTab?.name) return '';
     if (!tabData || !this.initialTab?.name) return '';
 
     const tabObj = tabData[this.initialTab.name];   // 👈 fixed: activeTab ki jagah initialTab
-    // console.log('Tab Object:', tabObj);
+    console.log('Tab Object:', tabObj);
 
     if (!tabObj) return '';
+    if (!tabObj) return '';
 
+    // Step 2: Agar direct array hai
+    if (Array.isArray(tabObj) && tabObj.length > 0) {
+      return (
+        tabObj[0]?.ACTIVE_INGREDIENT ||
+        tabObj[0]?.chemical_name ||
+        ''
+      );
+    }
     // Step 2: Agar direct array hai
     if (Array.isArray(tabObj) && tabObj.length > 0) {
       return (
@@ -296,7 +347,16 @@ export class RouteResultComponent {
         ''
       );
     }
+    if (tabObj.ros_data && Array.isArray(tabObj.ros_data) && tabObj.ros_data.length > 0) {
+      return (
+        tabObj.ros_data[0]?.ACTIVE_INGREDIENT ||
+        tabObj.ros_data[0]?.active_ingredient ||
+        ''
+      );
+    }
 
+    return '';
+  }
     return '';
   }
 

@@ -302,7 +302,7 @@ export class TechnicalRoutesCardComponent {
       localStorage.setItem("searchType", "synthesis");
       console.log("💾 Saved to storage:", { casRN, type: "synthesis" });
   
-      window.open("/pharma-database", "_blank");
+      window.open("https://pharmvetpat.chemrobotics.com", "_blank");
     } else {
       console.warn("⚠️ CAS RN not matched in line:", line);
     }
@@ -319,7 +319,7 @@ export class TechnicalRoutesCardComponent {
       localStorage.setItem("searchType", "intermediate");
       console.log("💾 Saved to storage:", { casRN, type: "intermediate" });
   
-      window.open("/pharma-database", "_blank");
+      window.open("https://pharmvetpat.chemrobotics.com/", "_blank");
     } else {
       console.warn("⚠️ CAS RN not matched in line:", line);
     }

@@ -10,6 +10,9 @@
     <chem-route-results *ngIf="activeIndex === null || activeIndex === i"
     [activeIndex]="activeIndex"  
     (backFunction)="handleBack()" [index]="i"
+    <chem-route-results *ngIf="activeIndex === null || activeIndex === i"
+    [activeIndex]="activeIndex"  
+    (backFunction)="handleBack()" [index]="i"
       [dataItem]="item" [searchData]="_searchData" [CurrentAPIBody]="CurrentAPIBody"
       [currentChildAPIBody]="childApiBody[i]" (OpenPriviledgeModal)="openPriviledgeModal($event)"
       (onResultTabChange)="onResultTabChange($event,i)" (handleSetLoading)="handleLoadingState($event)"
@@ -18,14 +21,12 @@
      (backFunction)="handleBack()"
       (handleChildPaginationSearch)="onChildPaginationChange($event, i)"></chem-route-results>
   </div>
-
    <chem-pagination
     *ngIf="CurrentAPIBody?.count > 25 && activeIndex === null"
     (showDataResultFunction)="showDataResultFunction.emit($event)"
     [CurrentAPIBody]="CurrentAPIBody" (OpenPriviledgeModal)="openPriviledgeModal($event)"
     [paginationRerenderTrigger]="paginationRerenderTrigger" (setLoading)="handleLoadingState($event)">
   </chem-pagination> 
-
 </ng-container>
 
 <ng-template #noData>
