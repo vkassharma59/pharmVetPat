@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, AfterViewInit, OnInit } from '@angular/core';
 import { BasicRouteCardComponent } from '../basic-route-card/basic-route-card.component';
 import { CommonModule } from '@angular/common';
 import { UtilityService } from '../../../services/utility-service/utility.service';
@@ -13,7 +13,7 @@ import { LoadingService } from '../../../services/loading-service/loading.servic
   templateUrl: './basic-route.component.html',
   styleUrl: './basic-route.component.css'
 })
-export class BasicRouteComponent {
+export class BasicRouteComponent implements OnInit, AfterViewInit {
 
   resultTabs: any = {};
   productInfoApiBody: any;
@@ -32,7 +32,7 @@ export class BasicRouteComponent {
   }
   set data(value: any) {
     this._data = value;
-    console.log('📦 Input `data` updated:', value); // ✅ Console log when data is updated
+    console.log('📦 Input `data` updated:', value);
   }
 
   @Input()
@@ -41,7 +41,7 @@ export class BasicRouteComponent {
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
-    console.log('🔹 Input `currentChildAPIBody` updated:', value); // ✅ Console log when API body changes
+    console.log('🔹 Input `currentChildAPIBody` updated:', value);
     if (value) {
       this.productInfoApiBody = JSON.parse(JSON.stringify(value)) || value;
       console.log('📄 Copied `productInfoApiBody`:', this.productInfoApiBody);
@@ -51,14 +51,17 @@ export class BasicRouteComponent {
   constructor(private utilityService: UtilityService, public loadingService: LoadingService) {
     this.resultTabs = this.utilityService.getAllTabsName();
     console.log('📝 Result Tabs initialized:', this.resultTabs);
-    
+
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
     console.log('🔎 Active searchThrough value:', this.searchThrough);
   }
+
   ngOnInit(): void {
-      console.log('Current Child API Body (index:', this.currentChildAPIBody);
+    console.log('Current Child API Body (index:', this.currentChildAPIBody);
   }
-  ngOnInit(): void {
-      console.log('Current Child API Body (index:', this.currentChildAPIBody);
+
+  ngAfterViewInit(): void {
+    // ✅ Scroll to top after component loads
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }
 }
