@@ -154,7 +154,6 @@ export class RouteResultComponent {
     console.log('Active Tab on Init:', this.activeTab);
     this.isDownloadAvailable = this.currentApiData?.isDownloadAvailable || false;
     this.initialTab = this.currentTabData;
-    console.log('Initial Tab:', this.initialTab);
     // Fetch and store vertical limits on component init
     this.fetchAndStoreVerticalLimits();
 
@@ -285,15 +284,16 @@ export class RouteResultComponent {
   //   return '';
   // }
   getFirstProductName(tabData: any): string {
-    console.log('Tab Data:', tabData);
-    console.log('Initial Tab:', this.initialTab);
+    // console.log('Tab Data:', tabData);
+    // console.log('Initial Tab:', this.initialTab);
 
     if (!tabData || !this.initialTab?.name) return '';
 
     const tabObj = tabData[this.initialTab.name];   // 👈 fixed: activeTab ki jagah initialTab
-    console.log('Tab Object:', tabObj);
+    // console.log('Tab Object:', tabObj);
 
     if (!tabObj) return '';
+
     // Step 2: Agar direct array hai
     if (Array.isArray(tabObj) && tabObj.length > 0) {
       return (

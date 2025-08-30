@@ -36,7 +36,7 @@ export class SharedRosService {
     this.clearSearchData();
 
     let displayValue = '';
-
+    console.log("searchType:", searchType, "keyword:", keyword, "criteria:", criteria);
     // CASE 1: Advanced Search (criteria is array)
     if (Array.isArray(criteria) && criteria.length > 0) {
       displayValue = criteria.map(c => `${c.column}: ${c.keyword}`).join(', ');

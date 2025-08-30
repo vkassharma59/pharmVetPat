@@ -5,18 +5,20 @@ import { environment } from '../../../../environments/environment';
 import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
 import { Auth_operations } from '../../../Utils/SetToken';
 import { ChemDiscriptionViewModelComponent } from '../../../commons/chem-discription-viewmodel/chem-discription-viewmodel.component';
-import { searchTypes, UtilityService } from '../../../services/utility-service/utility.service';
+import { UtilityService } from '../../../services/utility-service/utility.service';
 import { RouteResultComponent } from '../../route-result/route-result.component';
 import { MainSearchService } from '../../../services/main-search/main-search.service';
 import { ServiceResultTabFiltersService } from '../../../services/result_tab/service-result-tab-filters.service';
 import { UserPriviledgeService } from '../../../services/user_priviledges/user-priviledge.service';
 import { AppConfigValues } from '../../../config/app-config';
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { CasRnService } from '../../../services/casRn';
+import { pharmaDatabaseSearchComponent } from '../../pharma-database-search/pharma-database-search.component';
 
 @Component({
   selector: 'chem-technical-route-card',
   standalone: true,
-  imports: [CommonModule, RouteResultComponent, NgFor, FormsModule],
+  imports: [CommonModule, RouteResultComponent, NgFor, FormsModule,pharmaDatabaseSearchComponent],
   templateUrl: './technical-routes-card.component.html',
   styleUrl: './technical-routes-card.component.css',
 })
@@ -24,8 +26,8 @@ export class TechnicalRoutesCardComponent {
   @Output() handleSetLoading: EventEmitter<any> = new EventEmitter<any>();
   @Output() OpenPriviledgeModal: EventEmitter<any> = new EventEmitter<any>();
 
-  static apiCallCount: number = 0; // Global static counter
-  localCount: number = 0; // Instance-specific counter
+  static apiCallCount: number = 0;
+  localCount: number = 0;
 
   downloadable_values: string[] = [];
   doc_values: any = [];
@@ -61,6 +63,10 @@ export class TechnicalRoutesCardComponent {
   @Input() index: any;
   _itemid: any = {};
   showFull = false;
+
+  casRnValue: string | null = null;
+  searchResult: any = null;
+
   toggleView() {
     this.showFull = !this.showFull;
   }
@@ -69,11 +75,9 @@ export class TechnicalRoutesCardComponent {
   get itemid() {
     return this._itemid;
   }
-
   set itemid(value: any) {
     this._itemid = value;
   }
-
 
   @Input()
   get data() {
@@ -81,8 +85,8 @@ export class TechnicalRoutesCardComponent {
   }
   set data(value: any) {
     if (value && Object.keys(value).length > 0) {
-      TechnicalRoutesCardComponent.apiCallCount++; // Increment global counter
-      this.localCount = TechnicalRoutesCardComponent.apiCallCount; // Assign to local instance
+      TechnicalRoutesCardComponent.apiCallCount++;
+      this.localCount = TechnicalRoutesCardComponent.apiCallCount;
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
       if (column_list[this.resultTabs.technicalRoutes?.name]?.length > 0) {
@@ -91,8 +95,14 @@ export class TechnicalRoutesCardComponent {
             column_list[this.resultTabs.technicalRoutes.name][i].name;
         }
       }
-
       this._data = value;
+
+      // 👇 auto run CAS RN extract for debugging
+      if (this._data?.reactants_cas_rn) {
+        this.splitLines(this._data.reactants_cas_rn).forEach(line => {
+          this.extractCasRN(line);
+        });
+      }
     }
   }
 
@@ -102,18 +112,19 @@ export class TechnicalRoutesCardComponent {
     private utilityService: UtilityService,
     private userPriviledgeService: UserPriviledgeService,
     private MainsearchService: MainSearchService,
+    private casRnService: CasRnService
   ) { }
 
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
-  ngOnInit() {
 
+  ngOnInit() {
     this.allDataSets = this.utilityService.getDataStates();
     this.resultTabs1 = Object.values(this.utilityService.getAllTabsName());
     this.currentTabData = this.resultTabs1.find((tab: any) => tab.isActive);
     this.resultTabWithKeys = this.utilityService.getAllTabsName();
-    // Reset counter only when the component is first loaded
+
     if (TechnicalRoutesCardComponent.apiCallCount === 0) {
       TechnicalRoutesCardComponent.apiCallCount = 0;
     }
@@ -121,7 +132,6 @@ export class TechnicalRoutesCardComponent {
       this.SingleDownloadCheckbox[tab.name] = false;
     });
 
-    //
     const Account_type = localStorage.getItem('account_type');
     const Userdata = JSON.parse(localStorage.getItem('priviledge_json') || '');
 
@@ -132,7 +142,6 @@ export class TechnicalRoutesCardComponent {
   }
 
   isDisabled() {
-    // Count the number of selected checkboxes
     const selectedCount = Object.values(this.SingleDownloadCheckbox).filter(
       (checked) => checked
     ).length;
@@ -140,9 +149,9 @@ export class TechnicalRoutesCardComponent {
   }
 
   ngOnDestroy() {
-    // Reset counter when navigating away from the component
     TechnicalRoutesCardComponent.apiCallCount = 0;
   }
+
   getColumnName(value: any) {
     return this.tech_column[value];
   }
@@ -156,14 +165,10 @@ export class TechnicalRoutesCardComponent {
     document.execCommand('copy');
     document.body.removeChild(textArea);
 
-    // Step 2: Find the icon inside the clicked span and swap classes
     const icon = el.querySelector('i');
-
     if (icon?.classList.contains('fa-copy')) {
       icon.classList.remove('fa-copy');
       icon.classList.add('fa-check');
-
-      // Step 3: Revert it back after 1.5 seconds
       setTimeout(() => {
         icon.classList.remove('fa-check');
         icon.classList.add('fa-copy');
@@ -233,6 +238,7 @@ export class TechnicalRoutesCardComponent {
       data: { dataRecord: data, title: title },
     });
   }
+
   openImageModal(imageUrl: string, showZoomControls: boolean): void {
     this.dialog.open(ImageModalComponent, {
       width: 'auto',
@@ -241,8 +247,71 @@ export class TechnicalRoutesCardComponent {
       data: { dataImage: imageUrl, showZoomControls: showZoomControls, compactView: true },
     });
   }
+
   onImageError(event: Event) {
     const element = event.target as HTMLImageElement;
-    element.src = '/assets/no-image.jpg'; // Fallback image path
+    element.src = '/assets/no-image.jpg';
+  }
+
+  splitLines(data: string): string[] {
+    if (!data) return [];
+    return data.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+  }
+
+  extractCasRN(text: string): string | null {
+    console.log("🔍 Input Text:", text);
+    const regex = /Cas RN:\s*([\d-]+)/i;
+    const match = text.match(regex);
+
+    if (match) {
+      console.log("✅ Extracted Cas RN (string):", match[1]);
+      const casNumber = Number(match[1].replace(/-/g, ""));
+      console.log("🔢 Converted Cas RN (number):", casNumber);
+      return match[1];
+    } else {
+      console.log("⚠️ No Cas RN found in text");
+      return null;
     }
+  }
+
+  onSearchClick(text: string) {
+    const casRn = this.extractCasRN(text);
+    if (casRn) {
+      console.log("📤 Sending Cas RN for search:", casRn);
+      this.MainsearchService.technicalRoutesSearchSpecific(casRn).subscribe(
+        (result) => {
+          console.log("✅ Search Result:", result);
+          this.searchResult = result;
+        },
+        (error) => {
+          console.error("❌ Search Error:", error);
+        }
+      );
+    }
+  }
+
+  showPharma = false;
+
+  openSynthesis(line: string) {
+    console.log("🔬 Synthesis clicked for line:", line);
+    const match = line.match(/Cas RN:\s*(\d+-\d+-\d+)/i);
+    if (match) {
+      const casRN = match[1];
+      console.log("✅ Sending CAS RN to synthesis input:", casRN);
+      this.casRnService.setCasRn('synthesis', casRN);
+      this.showPharma = true;
+    }
+  }
+
+  openIntermediate(line: string) {
+    console.log("🧪 Intermediate clicked for line:", line);
+    const match = line.match(/Cas RN:\s*(\d+-\d+-\d+)/i);
+    if (match) {
+      const casRN = match[1];
+      console.log("✅ Sending CAS RN to intermediate input:", casRN);
+      this.casRnService.setCasRn('intermediate', casRN);
+      this.showPharma = true;
+    }
+  }
+
 }
