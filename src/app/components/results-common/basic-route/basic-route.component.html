@@ -1,9 +1,9 @@
 <ng-container *ngIf="_data.length > 0; else noData">
-    <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper">
+    <!-- <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper">
         <button class="child-route-count child-route-count-btn">
             Total Records : {{ currentChildAPIBody?.count }}
         </button>
-    </div>
+    </div> -->
     <ng-container *ngFor="let dataItem of _data; let i = index">
         <!-- <div class="pb-4 pt-2">
             <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">

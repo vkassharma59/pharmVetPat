@@ -58,6 +58,7 @@ export class RouteResultComponent {
     productInfo: 'basicProduct',
     chemicalDirectory: 'chemDirectory',
     chemiTracker: 'chemiTracker',
+    impPatents: 'impPatent',
     technicalRoutes: 'techRoute',
     impurity: 'impurity',
     dmf: "techSupplier",
@@ -71,7 +72,7 @@ export class RouteResultComponent {
     veterinaryUsApproval: "usGreenBook",
     scientificDocs: "scientificDocs"
   };
-
+  showTotalAfterTab: boolean = false;
   currentTabData: any = {}
   resultTabs: any = [];
   resultTabWithKeys: any = [];
@@ -421,6 +422,9 @@ export class RouteResultComponent {
     this.onResultTabChange.emit(tempObj);
     this.currentTabData = data;
     this.activeTab = data.name;
+    
+      this.showTotalAfterTab = true;
+      console.log('👉 Tab changed for index:', this.index, 'tab:',data?.name);
   }
 
   OpenQueryModal() {
