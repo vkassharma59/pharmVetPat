@@ -63,7 +63,7 @@ export class UtilityService {
   getAllTabsName(): { [key: string]: any } {
     const tabs = this.tabsSubject.getValue();
     return tabs.reduce((acc: { [key: string]: any }, tab: any) => {
-      acc[tab.name] = tab; // key is tab name, value is the tab object
+      acc[tab.name] = tab; // key is tab name, value is the 
       return acc;
     }, []);
   }

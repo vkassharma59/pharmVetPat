@@ -417,21 +417,40 @@
           </h2>
         </div>
 
-        <div class="col-md-12" *ngIf="_data?.reactants_cas_rn && getColumnName('reactants_cas_rn')">
+        <div class="col-md-12 max-h-60 overflow-auto" *ngIf="_data?.reactants_cas_rn && getColumnName('reactants_cas_rn')">
           <h2 class="font-bold uppercase pt-2" style="color:#312e81;">
             {{ getColumnName("reactants_cas_rn") }}
             <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
-              (click)="handleCopy(_data?.reactants_cas_rn, copyBtn)"><i class="fas fa-copy"></i></span>
+              (click)="handleCopy(_data?.reactants_cas_rn, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
           </h2>
-          <p [ngClass]="{ res: getStringLength(_data?.reactants_cas_rn) }" class="pb-4">
-            {{ _data?.reactants_cas_rn }}
-          </p>
-          <h2 *ngIf="_data?.reactants_cas_rn?.length > 450" class="para"
+        
+          <!-- Loop through each CAS RN item -->
+          <div *ngFor="let line of splitLines(_data?.reactants_cas_rn)" class="flex items-center gap-2 pb-1" >
+            <span class="flex-1 max-w-450px" style="width: 49rem;">{{ line }}</span>
+            <div class="redirection-button gap-3 data" style="margin-left: 5rem;">
+              <button class="text-white text-xs px-2 py-1 rounded"
+                      (click)="openSynthesis(line)"
+                      style="margin: 0.2rem; background: #1333b0;">
+                Synthesis
+              </button>
+            
+              <button class="bg-green-600 text-white text-xs px-2 py-1 rounded"
+                      (click)="openIntermediate(line)"
+                      style="margin: 0.2rem; background: #4e9af8;">
+                Intermediate
+              </button>
+            </div>
+            <chem-pharma-database-search *ngIf="showPharma"></chem-pharma-database-search>
+          </div>
+        
+          <!-- <h2 *ngIf="_data?.reactants_cas_rn?.length > 450" class="para"
             (click)="OpenViewModal(_data?.reactants_cas_rn, 'REACTANTS CAS RN:')" style="cursor: pointer">
             View more
-          </h2>
+          </h2> -->
         </div>
-
+        
         <div *ngIf="_data?.smilies_of_reactants && getColumnName('smilies_of_reactants')" class="col-md-12">
           <h1 class="uppercase font-bold pt-2" style="color:#312e81;">
             {{ getColumnName("smilies_of_reactants") }}

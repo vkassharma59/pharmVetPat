@@ -15,7 +15,7 @@ export class FooterComponent {
   accessKey: any = '';
 
   scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scroll({ top: 0, behavior: 'smooth' });
   }
 
   ngOnInit() {
