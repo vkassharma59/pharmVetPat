@@ -241,6 +241,7 @@ export class JapanComponent {
       next: (res) => {
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
+          count: res?.data?.japan_pmda_count
         };
         this._data = res?.data?.japan_pmda_data || [];
         this.handleResultTabData.emit(res.data);

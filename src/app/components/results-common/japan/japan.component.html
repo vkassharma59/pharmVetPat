@@ -1,8 +1,8 @@
 <ng-container *ngIf="_data.length > 0; else noData">
-  <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper justify-between">
-    <button class="child-route-count child-route-count-btn" style="background-color: #F5FBFF;">
+  <div class="child-route-count-wrapper justify-end py-2">
+    <!-- <button class="child-route-count child-route-count-btn" style="background-color: #F5FBFF;">
       Total Records : {{ currentChildAPIBody?.count }}
-    </button>
+    </button> -->
     <div class="flex flex-wrap gap-3">
       <div class="dropdown" *ngFor="let configData of filterConfigs" #dropdownRef>
         <!-- Dropdown Button -->
@@ -43,7 +43,7 @@
         </span>
       </div>
     </div> -->
-    <app-japan-pmda class="card" [data]="dataItem"></app-japan-pmda>
+    <app-japan-pmda class="card mb-4" [data]="dataItem"></app-japan-pmda>
   </ng-container>
   <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"
 

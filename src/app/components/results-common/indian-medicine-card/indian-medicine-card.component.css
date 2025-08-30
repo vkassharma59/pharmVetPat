@@ -50,7 +50,7 @@ h1 {
   height: 150px;
   width: 100%;
   background: #ffffff;
-  background-image: url('/assets/images/backgroundimg.jpg');
+  background-image: url('/assets/images/backgroundimg.png');
   background-size: cover;     /* pura box fill hoga */
   background-position: center; /* beech me focus rahega */
   border: 1px solid #e5e7eb;
@@ -70,7 +70,7 @@ h1 {
   height: 100px;
   width: 200px;
   background: #ffffff;
-  background-image: url('/assets/images/backgroundimg.jpg');
+  background-image: url('/assets/images/backgroundimg.png');
   background-size: cover;     /* pura box fill hoga */
   background-position: center; /* beech me focus rahega */
   border: 1px solid #e5e7eb;

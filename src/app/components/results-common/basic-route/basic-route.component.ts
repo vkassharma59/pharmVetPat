@@ -60,8 +60,10 @@ export class BasicRouteComponent implements OnInit, AfterViewInit {
     console.log('Current Child API Body (index:', this.currentChildAPIBody);
   }
 
+
   ngAfterViewInit(): void {
     // ✅ Scroll to top after component loads
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }
+
 }

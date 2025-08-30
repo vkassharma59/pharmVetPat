@@ -1,11 +1,11 @@
 <ng-container *ngIf="_data?.rows?.length > 0 || searchByTable; else noData">
-  <div class="d-flex justify-content-between align-items-center flex-wrap mb-2">
+  <div class="d-flex justify-end align-items-center flex-wrap mb-2">
 
-  <div  class="child-route-count-wrapper">
+  <!-- <div  class="child-route-count-wrapper">
     <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
       Total Records : {{currentChildAPIBody?.count }}
     </button>
-  </div>
+  </div> -->
  <!-- Right: Filters and Reset -->
  <div class="flex flex-wrap gap-3">
       <div class="dropdown" *ngFor="let configData of filterConfigs" #dropdownRef>

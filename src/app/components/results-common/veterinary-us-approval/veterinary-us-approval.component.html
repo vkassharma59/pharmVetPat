@@ -1,73 +1,9 @@
-<!-- <div>
-<div class="d-flex justify-between align-items-center">
-  <div >
-    <button class="child-route-count child-route-count-btn">
-      Total Records : 200
-  </button>
-  </div>
-  <div class="d-flex">
-    <button  class="clear btn btn-outline-primary">
-            <i class="fa-solid fa-rotate" aria-hidden="true"></i>
-        </button>
-  
-    <select class="form-select dropdown-width mx-1 dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
-          <option>Select Ingredient</option>
-             <option>ERTUGLIFLOZIN; SITAGLIPTIN PHOSPHATE</option>
-            <option>SITAGLIPTIN</option>
-            <option>SITAGLIPTIN PHOSPHATE</option>
-            <option> METFOMIN HYDROCHLORIDE; SITAGLIPTIN PHOSPHATE</option>
-            <option>SIMVASTATIN;SITAGLIPTIN PHOSPHATE</option>
-     
-    </select>
-        <select class="form-select dropdown-width mx-1 dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
-      <option>Select Trade</option>
-      <option>MSD SUB MERCK</option>
-      <option>ZYDUS LIFESCIENCES</option>
-      <option>MERCK SHARP DOHME</option>
-   
-      
-
-    </select>
-  
-    <select class="form-select dropdown-width mx-1 dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
-      <option>Select Ingredient</option>
-      <option>15MG;EQ 100MG BASE</option>
-      <option>5MG;EQ 100MG BASE</option>
-      <option>100MG</option>
-      <option>50MG</option>
-      <option>25MG</option>
-      <option>EQ 25MG BASE</option>
-      <option>EQ 50MG BASE</option>
-      
-      <option>AN EQ 100MG BASE</option>
-     
-      <option>Z 1GM;EQ 100MG BASE </option>
-     
-      <option>500MG;EQ 50MG BASE </option>
-      
-      <option>1GM;EQ 50MG BASE </option>
-    
-      <option>10MG;EQ 100MG BASE  **Federal Register determination that product was not discontinued or withdrawn for safety or effectiveness reasons**</option>
-      <option>20MG;EQ 50MG BASE **Federal Register determination that product was not discontinued or withdrawn for safety or effectiveness reasons**</option>  
-      <option>20MG;EQ 100MG BASE **Federal Register determination that product was not discontinued or withdrawn for safety or effectiveness reasons**</option>
-      <option> 40MG;EQ 50MG BASE **Federal Register determination that product was not discontinued or withdrawn for safety or effectiveness reasons**</option>
-      <option>40MG;EQ 100MG BASE **Federal Register determination that product was not discontinued or withdrawn for safety or effectiveness reasons** </option>    
-      <option>10MG;EQ 50MG BASE **Federal Register determination that product was not discontinued or withdrawn for safety or effectiveness reasons**</option>
-      
-
-    </select>
-
-  </div>
- </div>
-  <app-veterinary-us-approval-card></app-veterinary-us-approval-card>
-</div> -->
-
-<div class="child-route-count-wrapper flex justify-between items-center w-full">
-  <div>
+<div class="child-route-count-wrapper flex justify-end items-center w-full py-2">
+  <!-- <div>
     <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
       Total Records : {{ currentChildAPIBody?.count }}
     </button>
-  </div>
+  </div> -->
 
   <div class="flex flex-wrap gap-3">
     <div class="dropdown" *ngFor="let configData of filterConfigs" #dropdownRef>
@@ -104,7 +40,7 @@
 
 <ng-container *ngIf="_data.length > 0; else noData">
   <ng-container *ngFor="let dataItem of _data; let i = index">
-    <app-veterinary-us-approval-card  class="card" [data]="dataItem"></app-veterinary-us-approval-card>
+    <app-veterinary-us-approval-card  class="card mb-4" [data]="dataItem"></app-veterinary-us-approval-card>
   </ng-container>
 
   <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"

@@ -58,6 +58,7 @@ export class RouteResultComponent {
     productInfo: 'basicProduct',
     chemicalDirectory: 'chemDirectory',
     chemiTracker: 'chemiTracker',
+    impPatents: 'impPatent',
     technicalRoutes: 'techRoute',
     impurity: 'impurity',
     dmf: "techSupplier",
@@ -71,7 +72,7 @@ export class RouteResultComponent {
     veterinaryUsApproval: "usGreenBook",
     scientificDocs: "scientificDocs"
   };
-
+  showTotalAfterTab: boolean = false;
   currentTabData: any = {}
   resultTabs: any = [];
   resultTabWithKeys: any = [];
@@ -186,6 +187,22 @@ export class RouteResultComponent {
     const isMultipleLoop = this.activeIndex !== null;
     // Tab change ho ya activeIndex set ho → show button
     return isDifferentFromInitial || isMultipleLoop;
+  }
+  getCurrentTabCount(): number {
+    const tabName = this.currentTabData?.name;
+
+    console.log('🔎 Current Tab:', tabName);
+    console.log('📦 Current Child API Body:', this.currentChildAPIBody);
+    console.log('➡️ Child Count:', this.currentChildAPIBody?.[tabName]?.count);
+    console.log('➡️ Parent Count:', this.CurrentAPIBody?.count);
+
+    // Agar child API count hai to wahi return karo
+    if (tabName && this.currentChildAPIBody?.[tabName]?.count !== undefined) {
+      return this.currentChildAPIBody[tabName].count;
+    }
+
+    // Default → parent ka count
+    return this.CurrentAPIBody?.count || 0;
   }
 
 
@@ -358,6 +375,9 @@ export class RouteResultComponent {
     this.onResultTabChange.emit(tempObj);
     this.currentTabData = data;
     this.activeTab = data.name;
+    
+      this.showTotalAfterTab = true;
+      console.log('👉 Tab changed for index:', this.index, 'tab:',data?.name);
   }
 
   OpenQueryModal() {
