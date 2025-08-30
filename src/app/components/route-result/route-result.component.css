@@ -18,3 +18,12 @@ background: linear-gradient(90deg, rgba(189, 218, 242, 1) 0%, rgba(56, 130, 194,
     padding: 0.5rem 0.5rem;
     border-radius: 0.25rem;
   }
+  .header-bar {
+  background: linear-gradient(to right, #1d4ed8, #3b82f6); /* tumhari blue gradient */
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.product-name {
+  text-align: right;
+}

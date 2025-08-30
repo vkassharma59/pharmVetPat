@@ -1,7 +1,7 @@
-<div class="child-route-count-wrapper flex justify-between items-center w-full">
-  <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
+<div class="child-route-count-wrapper flex justify-end items-center w-full py-2">
+  <!-- <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
     Total Records : {{ _currentChildAPIBody?.count }}
-  </button>
+  </button> -->
   <div class="flex flex-wrap gap-3">
     <div class="dropdown-container" #dropdownMenu>
       <button (click)="handleFilter()" class="dropdown-toggle">
@@ -23,7 +23,7 @@
 
 <ng-container *ngIf="_data.length > 0; else noData">
     <ng-container *ngFor="let dataItem of _data; let i = index">
-        <div class="py-4">
+        <!-- <div class="py-4">
             <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
                 <span
                     class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-normal h-[37px] flex justify-center items-center">
@@ -31,8 +31,8 @@
                     {{ (((_currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
                 </span>
             </div>
-        </div>
-        <chem-impurity-card class="card" [data]="dataItem"></chem-impurity-card>
+        </div> -->
+        <chem-impurity-card class="card mb-4" [data]="dataItem"></chem-impurity-card>
     </ng-container>
     <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"
         (handleChangeTabData)="handleResultTabData.emit($event)"

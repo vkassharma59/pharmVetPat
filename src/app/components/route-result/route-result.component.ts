@@ -58,6 +58,7 @@ export class RouteResultComponent {
     productInfo: 'basicProduct',
     chemicalDirectory: 'chemDirectory',
     chemiTracker: 'chemiTracker',
+    impPatents: 'impPatent',
     technicalRoutes: 'techRoute',
     impurity: 'impurity',
     dmf: "techSupplier",
@@ -71,7 +72,7 @@ export class RouteResultComponent {
     veterinaryUsApproval: "usGreenBook",
     scientificDocs: "scientificDocs"
   };
-
+  showTotalAfterTab: boolean = false;
   currentTabData: any = {}
   resultTabs: any = [];
   resultTabWithKeys: any = [];
@@ -110,6 +111,7 @@ export class RouteResultComponent {
   @Input() searchData: any;
   currentIndex: number = 0;
   selectedIndex: number = 0;
+  @Input() activeIndex: number | null = null;
 
   setSelectedIndex(index: number): void {
     this.selectedIndex = index;
@@ -129,6 +131,7 @@ export class RouteResultComponent {
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
   }
+
   lastSearchData: { searchType: string, keyword: string, criteria: any } | null = null;
   constructor(
     private dialog: MatDialog,
@@ -151,7 +154,6 @@ export class RouteResultComponent {
     console.log('Active Tab on Init:', this.activeTab);
     this.isDownloadAvailable = this.currentApiData?.isDownloadAvailable || false;
     this.initialTab = this.currentTabData;
-    console.log('Initial Tab:', this.initialTab);
     // Fetch and store vertical limits on component init
     this.fetchAndStoreVerticalLimits();
 
@@ -176,9 +178,33 @@ export class RouteResultComponent {
 
     this.isDownloadPermit = Account_type == 'premium' ? true : false;
   }
+  // get showBackButton(): boolean {
+  //   return this.currentTabData?.name !== this.initialTab?.name;
+  // }
+
   get showBackButton(): boolean {
-    return this.currentTabData?.name !== this.initialTab?.name;
+    const isDifferentFromInitial = this.currentTabData?.name !== this.initialTab?.name;
+    const isMultipleLoop = this.activeIndex !== null;
+    // Tab change ho ya activeIndex set ho → show button
+    return isDifferentFromInitial || isMultipleLoop;
   }
+  getCurrentTabCount(): number {
+    const tabName = this.currentTabData?.name;
+
+    console.log('🔎 Current Tab:', tabName);
+    console.log('📦 Current Child API Body:', this.currentChildAPIBody);
+    console.log('➡️ Child Count:', this.currentChildAPIBody?.[tabName]?.count);
+    console.log('➡️ Parent Count:', this.CurrentAPIBody?.count);
+
+    // Agar child API count hai to wahi return karo
+    if (tabName && this.currentChildAPIBody?.[tabName]?.count !== undefined) {
+      return this.currentChildAPIBody[tabName].count;
+    }
+
+    // Default → parent ka count
+    return this.CurrentAPIBody?.count || 0;
+  }
+
 
   handleBack1() {
     this.currentTabData = this.initialTab;
@@ -223,53 +249,70 @@ export class RouteResultComponent {
 
     return currentTabName === expectedTabName;
   }
+
+  showFullName: boolean = false;
+
+  toggleProductName() {
+    this.showFullName = !this.showFullName;
+  }
+
   // getFirstProductName(tabData: any, activeTab: string): string {
   //   console.log('Tab Data:', tabData);
   //   console.log('Active Tab:', activeTab);
   //   if (!tabData || !activeTab) return '';
-
-  //   const dataArray = tabData[activeTab]; // activeTab ki array nikali
-  //   console.log('Data Array for Active Tab:', dataArray);
-  //   console.log('Data Array for Active Tab:', tabData[activeTab]);
-  //   if (Array.isArray(dataArray) && dataArray.length > 0) {
-  //     console.log('First Product Name:', dataArray[0]?.ros_data[0]);
-  //     return dataArray[0]?.ACTIVE_INGREDIENT || dataArray[0]?.ros_data?.ACTIVE_INGREDIENT  || dataArray[0]?.chemical_name ||'';
+  //   // Step 1: tabData[activeTab] nikalo
+  //   const tabObj = tabData[activeTab];
+  //   console.log('Tab Object:', tabObj);
+  //   if (!tabObj) return '';
+  //   // Step 2: Agar direct array hai
+  //   if (Array.isArray(tabObj) && tabObj.length > 0) {
+  //     return (
+  //       tabObj[0]?.ACTIVE_INGREDIENT ||
+  //       tabObj[0]?.chemical_name ||
+  //       ''
+  //     );
+  //   }
+  //   console.log('Tab Object after array check:', tabObj);
+  //   console.log('Tab Object after array check:---', tabObj.ros_data);
+  //   if (tabObj.ros_data && Array.isArray(tabObj.ros_data) && tabObj.ros_data.length > 0) {
+  //     const ingredient = tabObj.ros_data[0]?.ACTIVE_INGREDIENT || tabObj.ros_data[0]?.active_ingredient || '';
+  //     console.log('Active Ingredient:', ingredient);
+  //     return ingredient;
   //   }
 
+  //   // Step 4: Fallback
   //   return '';
   // }
-  getFirstProductName(tabData: any, activeTab: string): string {
-  console.log('Tab Data:', tabData);
-  console.log('Active Tab:', activeTab);
+  getFirstProductName(tabData: any): string {
+    // console.log('Tab Data:', tabData);
+    // console.log('Initial Tab:', this.initialTab);
 
-  if (!tabData || !activeTab) return '';
+    if (!tabData || !this.initialTab?.name) return '';
 
-  // Step 1: tabData[activeTab] nikalo
-  const tabObj = tabData[activeTab];
-  console.log('Tab Object:', tabObj);
+    const tabObj = tabData[this.initialTab.name];   // 👈 fixed: activeTab ki jagah initialTab
+    // console.log('Tab Object:', tabObj);
 
-  if (!tabObj) return '';
+    if (!tabObj) return '';
 
-  // Step 2: Agar direct array hai
-  if (Array.isArray(tabObj) && tabObj.length > 0) {
-    return (
-      tabObj[0]?.ACTIVE_INGREDIENT ||
-      tabObj[0]?.chemical_name ||
-      ''
-    );
+    // Step 2: Agar direct array hai
+    if (Array.isArray(tabObj) && tabObj.length > 0) {
+      return (
+        tabObj[0]?.ACTIVE_INGREDIENT ||
+        tabObj[0]?.chemical_name ||
+        ''
+      );
+    }
+
+    if (tabObj.ros_data && Array.isArray(tabObj.ros_data) && tabObj.ros_data.length > 0) {
+      return (
+        tabObj.ros_data[0]?.ACTIVE_INGREDIENT ||
+        tabObj.ros_data[0]?.active_ingredient ||
+        ''
+      );
+    }
+
+    return '';
   }
-
-  // Step 3: Agar object hai aur uske andar array (jaise ros_data)
-  if (tabObj.ros_data && Array.isArray(tabObj.ros_data) && tabObj.ros_data.length > 0) {
-    return (
-      tabObj.ros_data[0]?.ACTIVE_INGREDIENT || ''
-    );
-  }
-
-  // Step 4: Fallback
-  return '';
-}
-
 
   isTechnicalRoutesTabActive(): boolean {
     return this.CurrentAPIBody?.currentTab === this.resultTabWithKeys?.technicalRoutes?.name;
@@ -332,6 +375,9 @@ export class RouteResultComponent {
     this.onResultTabChange.emit(tempObj);
     this.currentTabData = data;
     this.activeTab = data.name;
+    
+      this.showTotalAfterTab = true;
+      console.log('👉 Tab changed for index:', this.index, 'tab:',data?.name);
   }
 
   OpenQueryModal() {

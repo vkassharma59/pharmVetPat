@@ -4,36 +4,59 @@
     <!-- Left Section -->
     <div class="d-flex align-items-center">
       <button *ngIf="!showBackButton" (click)="handleBack()" class="btn btn-outline-primary btn-sm"
-        style="color: white; border-color: white;font-weight: 500;">Back to search</button>
+        style="color: white; border-color: white;font-weight: 500;">Back To Search</button>
       <span *ngIf="!showBackButton" class="divider">&nbsp;|&nbsp;</span>
       <button *ngIf="showBackButton" (click)="handleBack1()" style="color: white; border-color: white;font-weight: 500;"
         class="btn btn-outline-primary btn-sm">
-        Back to list
+        Back To List
       </button>
       <span *ngIf="showBackButton" class="divider">&nbsp;|&nbsp;</span>
-      <h5 style="color: white;">{{currentTabData?.label}} {{(index) ? index+1 : 1}}
-        <ng-container *ngIf="lastSearchData">
-          &nbsp;|&nbsp;
-          <span style="color: white;">
-            {{ getFirstProductName(_dataItem,activeTab) }}
+      
+      <div style="display: flex; align-items: center; gap: 10px;">
+
+        <h5 *ngIf="!showBackButton" style="color: white; margin: 0;">
+          {{ currentTabData?.label }} {{ (index) ? index+1 : 1 }}
+        </h5>
+ 
+      </div>
+      <span *ngIf="!showBackButton" class="divider">&nbsp;|&nbsp;</span>
+     
+      <div style="margin-left: 2px; margin-top: 4px; color: white; font-size: 15px; font-weight: 500;">
+        <span>
+          {{ showFullName
+          ? (getFirstProductName(_dataItem) || '')
+          : ((getFirstProductName(_dataItem) || '') | slice:0:100)
+          }}
+        </span>
+
+        <ng-container *ngIf="(getFirstProductName(_dataItem)?.length || 0) > 100">
+          <span (click)="toggleProductName()"
+            style="color: black; cursor: pointer; border-bottom: 1px dotted; margin-left: 5px;">
+            {{ showFullName ? 'View Less' : 'View More' }}
           </span>
         </ng-container>
-      </h5>
+      </div>
+
+
       <!-- <span class="divider">&nbsp;|&nbsp;</span>
       <span class="fw-bold">Total Results: {{CurrentAPIBody?.count}}</span>
       <span class="divider">&nbsp;|&nbsp;</span>
       <span class="fw-bold">Routes: #{{(index) ? index+1 : 1}}</span> -->
     </div>
     <!-- Right Section -->
-    <div style="display: flex;" *ngIf="index==0">
-      <button *ngIf="!generatePDFloader && isFullDownload && searchThrough !== 'synthesis-search'"
+    <div style="display: flex;" >
+       <button *ngIf="index==0 || showTotalAfterTab && showBackButton"
+        class="btn btn-outline-primary btn-sm me-2" style="color: white; border-color: white;">
+        Total Results:{{ getCurrentTabCount() }}
+      </button>
+      <button *ngIf="index==0  && !generatePDFloader && isFullDownload && searchThrough !== 'synthesis-search'|| showTotalAfterTab && showBackButton"
         (click)="handleGeneratePDF()" [disabled]="generatePDFloader" title="Full Report Download"
         class="btn btn-outline-primary btn-sm me-2" style="color: white; border-color: white;"><i
           class="fas fa-download"></i>
         Full Report Download</button>
       <div
-        *ngIf="searchThrough != 'synthesis-search' || this.CurrentAPIBody?.currentTab != this.resultTabWithKeys.technicalRoutes.name,">
-        <button *ngIf="index==0" (click)="OpenQueryModal()" style="color: white; border-color: white;"
+        *ngIf="index==0 && searchThrough != 'synthesis-search'  || showTotalAfterTab && showBackButton">
+        <button  (click)="OpenQueryModal()" style="color: white; border-color: white;"
           class="btn btn-outline-primary btn-sm me-2">Raise
           Query</button>
         <!-- <button *ngIf="index==0" (click)="handleBack()" class="btn btn-outline-primary btn-sm">Back to Search</button> -->
@@ -218,14 +241,19 @@
     <div class="modal-content bg_1 px-4">
       <!-- Modal Body -->
       <div class="p-3">
+       
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <label class="flex items-center" *ngFor="let tab of resultTabs">
+           <ng-container *ngFor="let tab of resultTabs">
+          <label class="flex items-center"
+          *ngIf="!['gppdDb','spcDb','nonPatentLandscape','eximData','activePatent'].includes(tab.name)">
             <input type="checkbox" [(ngModel)]="SingleDownloadCheckbox[tab.name]"
               [disabled]="isDisabled() && !SingleDownloadCheckbox[tab.name]"
               class="form-checkbox text-blue-600 h-5 w-5" />
             <span class="ml-2 text-gray-700">{{ tab.label }}</span>
           </label>
+           </ng-container>
         </div>
+       
         <h1 class="text-red-600 pt-2 text-sm text-left">
           Choose any 3 vertical report to download
         </h1>

@@ -78,7 +78,7 @@
           </div>
           <div class="col-md-2 col-6 mb-2 mb-md-0">
             <button class="btn btn-outline-secondary"
-              (click)="clearInputAndSuggetions(searchTypes.simpleSearch)">Clear</button>
+              (click)="clearInputAndSuggetions('ALL')">Clear</button>
           </div>
         </div>
         <div class="col-md-12">
@@ -277,7 +277,7 @@
         </div>
         <div class="col-md-2 col-6 mb-2 mb-md-0">
           <button class="btn btn-outline-secondary w-100"
-            (click)="clearInputAndSuggetions(searchTypes.advanceSearch)">Reset Filters</button>
+            (click)="clearInputAndSuggetions('ALL')">Reset Filters</button>
         </div>
         <div class="col-md-6"></div>
         <div class="col-md-2 col-12 d-flex justify-content-md-end">
@@ -342,7 +342,7 @@
               class="btn btn-outline-primary search w-100">Search</button>
           </div>
           <div class="col-md-2 col-6 mb-2 mb-md-0">
-            <button (click)="clearInputAndSuggetions(searchTypes.intermediateSearch)"
+            <button (click)="clearInputAndSuggetions('ALL')"
               class="btn btn-outline-secondary w-100">Clear</button>
           </div>
 
@@ -389,7 +389,7 @@
               class="btn btn-outline-primary search w-100">Search</button>
           </div>
           <div class="col-md-2 col-6 mb-2 mb-md-0">
-            <button (click)="clearInputAndSuggetions(searchTypes.synthesisSearch)"
+            <button (click)="clearInputAndSuggetions('ALL')"
               class="btn btn-outline-secondary w-100">Clear</button>
           </div>
 
@@ -445,7 +445,7 @@
               class="btn btn-outline-primary search w-100">Search</button>
           </div>
           <div class="col-md-2 col-6 mb-2 mb-md-0">
-            <button (click)="clearInputAndSuggetions(searchTypes.chemicalStructure)"
+            <button (click)="clearInputAndSuggetions('ALL')"
               class="btn btn-outline-secondary w-100">Clear</button>
           </div>
         </div>

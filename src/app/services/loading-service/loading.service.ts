@@ -11,6 +11,7 @@ export class LoadingService {
     if (!map[tab]) map[tab] = {};
     map[tab][idx] = value;
     this.loadingMap.next(map);
+    console.log("🔄 Updated loadingMap:", JSON.stringify(map));
   }
 
   getLoading(tab: string, idx: number): boolean {

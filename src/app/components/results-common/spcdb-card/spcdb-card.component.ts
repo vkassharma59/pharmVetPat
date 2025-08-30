@@ -127,10 +127,34 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
     return isoPattern.test(value) && !isNaN(Date.parse(value.replace(' ', 'T')));
   }
   filterState(column: string, type: string) {
-    this.columnsFilterType[column] = type;
-    this.fetchData();  // API ko dubara call karo
-    this.openDropdownColumn = null; // dropdown close
+    const apiTypeMap: any = {
+      "Starts with": "STARTS_WITH",
+      "Contains": "CONTAINS",
+      "Not Contains": "NOT_CONTAINS",
+      "Ends with": "ENDS_WITH",
+      "Equals": "EQUALS",
+      "Not Equals": "NOT_EQUALS",
+      "No Filter": null
+    };
+  
+    if (type === "No Filter") {
+      delete this.columnsFilterType[column];
+      delete this.columnsSearch[column];
+    } else {
+      this.columnsFilterType[column] = apiTypeMap[type] || type;
+    }
+  
+    // ✅ log payload before fetch
+    console.log("🔍 Filter Payload →", {
+      column,
+      type: this.columnsFilterType[column],
+      value: this.columnsSearch[column]
+    });
+  
+    this.fetchData();
+    this.openDropdownColumn = null;
   }
+  
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -167,7 +191,31 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
 
     this.fetchData();
   }
-
+  applyFilter(columnKey: string, filterValue: string, filterType: string) {
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      const filterLower = filter.toLowerCase();
+      const targetValue = (data[columnKey] || '').toString().toLowerCase();
+  
+      switch (filterType) {
+        case 'startsWith':
+          return targetValue.startsWith(filterLower);
+        case 'endsWith':
+          return targetValue.endsWith(filterLower);
+        case 'equals':
+          return targetValue === filterLower;
+        case 'contains':
+        default:
+          return targetValue.includes(filterLower);
+      }
+    };
+  
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  
+    console.log("🔎 Filter Applied => ", filterType, filterValue);
+    console.log("✅ Filtered Data =>", this.dataSource.filteredData);
+    console.log("📊 Total Results =>", this.dataSource.filteredData.length);
+  }
+  
   clearFilter(columnKey: string, inputRef: HTMLInputElement) {
     inputRef.value = '';
     delete this.columnsSearch[columnKey];
@@ -216,61 +264,48 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
 
   fetchData() {
     const isGlobalSearch = this.globalSearchValue && this.globalSearchValue.trim() !== '';
-    // Add columns for global search: all displayedColumns with searchable: true
+    
     const allColumns = isGlobalSearch
       ? this.displayedColumns.map(col => ({
-        data: col,
-        searchable: true
-      }))
+          data: col,
+          searchable: true
+        }))
       : undefined;
-
-    // Add only filtered columns for column search
+  
     const searchColumns = !isGlobalSearch
-  ? Object.entries(this.columnsSearch)
-      .filter(([_, value]) => value && value.trim() !== '')
-      .map(([key, value]) => {
-        const filterType = this.columnsFilterType[key] || 'contains';
-        return {
-          data: key,
-          searchable: true,
-          search: {
-            value: value.trim(),
-            type: filterType   // ✅ yaha filter type bhi API ko bhej rahe hain
-          }
-        };
-      })
-  : [];
-
+      ? Object.entries(this.columnsSearch)
+          .filter(([_, value]) => value && value.trim() !== '')
+          .map(([key, value]) => {
+            const filterType = this.columnsFilterType[key] || 'Contains';
+            return {
+              data: key,
+              searchable: true,
+              search: {
+                value: value.trim(),
+                type: filterType
+              }
+            };
+          })
+      : [];
+  
     const order = this.multiSortOrder.length > 0
       ? this.multiSortOrder
-        .filter(s => typeof s.column === 'number')
-        .map(s => {
-          console.log('Sorting index:', s.column, 'direction:', s.dir);
-          return {
-            column: s.column,
-            dir: s.dir
-          };
-        })
+          .filter(s => typeof s.column === 'number')
+          .map(s => {
+            console.log('↕️ Sorting applied →', { columnIndex: s.column, direction: s.dir });
+            return { column: s.column, dir: s.dir };
+          })
       : null;
-    // const order = this.multiSortOrder.length > 0
-    //   ? this.multiSortOrder.map(s => ({
-    //     column: s.column,
-    //     dir: s.dir
-    //   }))
-    //   : null;
-
+  
     const globalSearch = isGlobalSearch
       ? { value: this.globalSearchValue.trim() }
       : null;
-
+  
     const start = this.paginator ? this.paginator.pageIndex * this.paginator.pageSize : 0;
     const pageno = this.paginator ? this.paginator.pageIndex + 1 : 1;
-
-    const payload: any = {
-      start,
-      pageno
-    };
-    console.log("payload data ", payload)
+  
+    const payload: any = { start, pageno };
+  
     if (isGlobalSearch && allColumns) {
       payload.columns = allColumns;
       payload.search = globalSearch;
@@ -278,13 +313,23 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       payload.columns = searchColumns;
     }
     if (order) payload.order = order;
+  
+    // ✅ Log payload before sending
+    console.log("📤 API Payload →", JSON.stringify(payload, null, 2));
+  
+    // Send request
     this.dataFetchRequest.emit(payload);
-    // Simulate check until API updates data
+  
+    // Wait for API response & table update
     setTimeout(() => {
       const currentData = this.dataSource.filteredData || [];
+      console.log("📥 Data received →", this.dataSource.data); // full raw data
+      console.log("📊 Rows after filter:", currentData.length);
+  
       this.noMatchingData = currentData.length === 0;
     }, 300);
   }
+  
   resetToDefault() {
     this.multiSortOrder = [];
     this.columnsSearch = {};
