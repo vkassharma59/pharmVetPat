@@ -100,8 +100,6 @@ export class RouteResultComponent {
   @ViewChild('downloadModal') downloadModalRef!: ElementRef;
   @Output() backFunction1 = new EventEmitter<void>();
   private initialTab: any;
-
-
   _MainDataResultShow: any;
   _currentChildAPIBody: any;
   @Input() specialCount: any;
@@ -112,7 +110,7 @@ export class RouteResultComponent {
   currentIndex: number = 0;
   selectedIndex: number = 0;
   @Input() activeIndex: number | null = null;
-
+  private limitsFetched = false;
   setSelectedIndex(index: number): void {
     this.selectedIndex = index;
   }
@@ -144,38 +142,31 @@ export class RouteResultComponent {
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
   ngOnInit() {
-    console.log('currentchild api', this.currentChildAPIBody);
     this.lastSearchData = this.sharedRosService.getSearchData();
     this.AllSetData = this.sharedRosService.getAllDataSets();
     this.resultTabs = Object.values(this.utilityService.getAllTabsName());
     this.currentTabData = this.resultTabs.find((tab: any) => tab.isActive);
-    console.log('Current Tab Data on Init:', this.currentTabData);
     this.activeTab = this.currentTabData?.name || '';
-    console.log('Active Tab on Init:', this.activeTab);
     this.isDownloadAvailable = this.currentApiData?.isDownloadAvailable || false;
     this.initialTab = this.currentTabData;
-    // Fetch and store vertical limits on component init
-    this.fetchAndStoreVerticalLimits();
-
-    // Initialize resultTabWithKeys
+    // if (!this.limitsFetched) {
+    //   this.fetchAndStoreVerticalLimits();
+    //   this.limitsFetched = true;
+    // }
     this.resultTabWithKeys = this.utilityService.getAllTabsName();
     this.raise_query_object = this.CurrentAPIBody?.body;
-
     this.resultTabs.forEach(tab => {
       this.SingleDownloadCheckbox[tab.name] = false;
     });
 
-    //
     const accountType = localStorage.getItem('account_type');
     this.accountType = accountType ? accountType : '';
     const Account_type = localStorage.getItem('account_type');
     const Userdata = JSON.parse(localStorage.getItem('priviledge_json') || '');
     this.isFullDownload =
       Userdata?.['pharmvetpat-mongodb']?.Download == 'true' ? true : false;
-
     this.isSplitDownload =
       Userdata?.['pharmvetpat-mongodb']?.SplitDownload == 'true' ? true : false;
-
     this.isDownloadPermit = Account_type == 'premium' ? true : false;
   }
   // get showBackButton(): boolean {
@@ -190,17 +181,14 @@ export class RouteResultComponent {
   }
   getCurrentTabCount(): number {
     const tabName = this.currentTabData?.name;
-
-    console.log('🔎 Current Tab:', tabName);
-    console.log('📦 Current Child API Body:', this.currentChildAPIBody);
-    console.log('➡️ Child Count:', this.currentChildAPIBody?.[tabName]?.count);
-    console.log('➡️ Parent Count:', this.CurrentAPIBody?.count);
-
+    // console.log('🔎 Current Tab:', tabName);
+    // console.log('📦 Current Child API Body:', this.currentChildAPIBody);
+    // console.log('➡️ Child Count:', this.currentChildAPIBody?.[tabName]?.count);
+    // console.log('➡️ Parent Count:', this.CurrentAPIBody?.count);
     // Agar child API count hai to wahi return karo
     if (tabName && this.currentChildAPIBody?.[tabName]?.count !== undefined) {
       return this.currentChildAPIBody[tabName].count;
     }
-
     // Default → parent ka count
     return this.CurrentAPIBody?.count || 0;
   }
@@ -375,9 +363,9 @@ export class RouteResultComponent {
     this.onResultTabChange.emit(tempObj);
     this.currentTabData = data;
     this.activeTab = data.name;
-    
-      this.showTotalAfterTab = true;
-      console.log('👉 Tab changed for index:', this.index, 'tab:',data?.name);
+
+    this.showTotalAfterTab = true;
+    console.log('👉 Tab changed for index:', this.index, 'tab:', data?.name);
   }
 
   OpenQueryModal() {
@@ -400,10 +388,14 @@ export class RouteResultComponent {
     return selectedCount >= 3;
   }
   fetchAndStoreVerticalLimits(): void {
+    if (this.limitsFetched) {
+      console.log('Vertical limits already fetched, skipping API call');
+      return;
+    }
     this.userPriviledgeService.getverticalcategoryData().subscribe({
       next: (res: any) => {
         const verticals = res?.data?.verticals;
-
+        console.log('Fetched verticals:', verticals);
         if (Array.isArray(verticals)) {
           localStorage.setItem('vertical_limits', JSON.stringify(verticals));
 
@@ -417,12 +409,14 @@ export class RouteResultComponent {
             console.warn('PharmVetPat MongoDB vertical not found or report_limit is null');
           }
         }
+        this.limitsFetched = true;
       },
       error: err => console.error('Vertical limit fetch failed:', err),
     });
   }
   getReportLimit(): number {
     // Step 1: Try privilege_json first
+    this.fetchAndStoreVerticalLimits();
     const privRaw = localStorage.getItem('priviledge_json');
     const priv = JSON.parse(privRaw || '{}');
     const privLimit = Number(priv['pharmvetpat-mongodb']?.ReportLimit);
@@ -529,7 +523,7 @@ export class RouteResultComponent {
                   this.generatePDFloader = false;
                   return;
                 }
-
+                console.log(this.CurrentAPIBody, this.currentTabData.name, 'Selected Reports for PDF:', body_main.reports);
                 // Clone CurrentAPIBody and add required flags
                 const pdf_body = {
                   ...this.CurrentAPIBody,
@@ -687,7 +681,7 @@ export class RouteResultComponent {
                     let id: any = '';
                     const searchThrough = Auth_operations.getActiveformValues().activeForm;
                     const currentData = this.AllSetData[index];
-
+                    console.log(searchTypes.advanceSearch, "All set data", searchThrough)
                     switch (this.searchThrough) {
                       case searchTypes.chemicalStructure:
                       case searchTypes.intermediateSearch:
@@ -744,6 +738,7 @@ export class RouteResultComponent {
                           body: body_main,
                         };
                       }
+                      console.log(this.searchThrough, searchTypes.advanceSearch, "Api main ", API_MAIN)
                       try {
                         this.serviceResultTabFiltersService.getGeneratePDF(API_MAIN).subscribe({
                           next: (resp: any) => {
@@ -793,6 +788,7 @@ export class RouteResultComponent {
                             this.generatePDFloader = false;
                             this.handleSetLoading.emit(false);
                           },
+
                           error: (err: any) => {
                             this.generatePDFloader = false;
                             this.handleSetLoading.emit(false);
