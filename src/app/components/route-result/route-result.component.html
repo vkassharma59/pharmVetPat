@@ -11,17 +11,13 @@
         Back To List
       </button>
       <span *ngIf="showBackButton" class="divider">&nbsp;|&nbsp;</span>
-      
       <div style="display: flex; align-items: center; gap: 10px;">
-
         <h5 *ngIf="!showBackButton" style="color: white; margin: 0;">
           {{ currentTabData?.label }} {{ (index) ? index+1 : 1 }}
         </h5>
- 
-      </div>
+       </div>
       <span *ngIf="!showBackButton" class="divider">&nbsp;|&nbsp;</span>
-     
-      <div style="margin-left: 2px; margin-top: 4px; color: white; font-size: 15px; font-weight: 500;">
+           <div style="margin-left: 2px; margin-top: 4px; color: white; font-size: 15px; font-weight: 500;">
         <span>
           {{ showFullName
           ? (getFirstProductName(_dataItem) || '')
@@ -50,11 +46,12 @@
         Total Results:{{ getCurrentTabCount() }}
       </button>
       <button *ngIf="index==0  && !generatePDFloader && isFullDownload && searchThrough !== 'synthesis-search'|| showTotalAfterTab && showBackButton"
-        (click)="handleGeneratePDF()" [disabled]="generatePDFloader" title="Full Report Download"
+       (click)="openDownloadModal(index)"
+         [disabled]="generatePDFloader" title="Full Report Download"
         class="btn btn-outline-primary btn-sm me-2" style="color: white; border-color: white;"><i
           class="fas fa-download"></i>
         Full Report Download</button>
-      <div
+          <div
         *ngIf="index==0 && searchThrough != 'synthesis-search'  || showTotalAfterTab && showBackButton">
         <button  (click)="OpenQueryModal()" style="color: white; border-color: white;"
           class="btn btn-outline-primary btn-sm me-2">Raise
