@@ -25,6 +25,7 @@ import { SharedRosService } from '../../shared-ros.service';
 import {AfterViewInit} from '@angular/core';
 import { CasRnService } from '../../services/casRn';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'chem-pharma-database-search',
   standalone: true,
@@ -163,89 +164,44 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     private userPriviledgeService: UserPriviledgeService,
     private utilityService: UtilityService,
     private columnListService: ColumnListService,
-    private casRnService: CasRnService
+    private casRnService: CasRnService,
+    private route: ActivatedRoute,
   ) {
     this.searchTypes = searchTypes;
   }
 
   ngOnInit() {
-    // Reset tabs and get initial filters
     this.utilityService.resetTabs();
     this.resultTabs = this.utilityService.getAllTabsName();
     this.getAllFilters();
+    console.log("🔄 ngOnInit called - Search Page initialized");
   
-    // 🔹 Subscribe to CAS RN from service
-    this.subscription = this.casRnService.casRn$.subscribe(data => {
-      if (data) {
-        console.log("📩 Received CASRN:", data);
-        this.selectedCasRn = data.value; 
+    const type = localStorage.getItem("searchType");
+    const cas = localStorage.getItem("casRN");
   
-        if (data.type === 'synthesis') {
-          this.synthesisSearch.keyword = data.value;  // autofill synthesis search
-          console.log("🟦 Auto-filled synthesisSearch:", this.synthesisSearch.keyword);
+    console.log("📦 Loaded from storage -> type:", type, "| cas:", cas);
   
-          // 👉 Optional: yahi se API call kara sakte ho
-          // this.getSearchResults();
-        } else if (data.type === 'intermediate') {
-          this.intermediateSearch.keyword = data.value;  // autofill intermediate search
-          console.log("🟩 Auto-filled intermediateSearch:", this.intermediateSearch.keyword);
+    if (cas && type) {
+      this.selectedCasRn = cas;
   
-          // 👉 Optional: yahi se API call kara sakte ho
-          // this.getSearchResults();
-        }
+      if (type === "synthesis") {
+        this.synthesisSearch.keyword = cas;
+        this.selectedItem = 2;
+        console.log("🟦 Auto-filled synthesisSearch from storage:", cas);
+        this.performSynthesisSearch();
       }
-    });
   
-    // Load user auth and account type from localStorage
-    const user = localStorage.getItem('auth');
-    this.auth = !!user;
-  
-    const accountType = localStorage.getItem('account_type');
-    this.accountType = accountType ?? '';
-  
-    // Restore previous simple search values
-    const savedSimpleKeyword = sessionStorage.getItem('simpleSearch.keyword');
-    if (savedSimpleKeyword) {
-      this.simpleSearch.keyword = savedSimpleKeyword;
-      console.log('Loaded simple keyword:', savedSimpleKeyword);
-    }
-  
-    const savedSimpleFilter = sessionStorage.getItem('simpleSearch.filter');
-    if (savedSimpleFilter) {
-      this.simpleSearch.filter = savedSimpleFilter;
-      console.log('Loaded filter:', savedSimpleFilter);
-    }
-  
-    this.advanceSearch.keyword = sessionStorage.getItem('advanceSearch.keyword') || '';
-    const savedadvanceFilter = sessionStorage.getItem('advanceSearch.filter');
-    if (savedadvanceFilter) {
-      this.advanceSearch.filter = savedadvanceFilter;
-      console.log('Loaded filter:', savedadvanceFilter);
-    }
-  
-    this.chemicalStructure.keyword = sessionStorage.getItem('chemicalStructure.keyword') || '';
-    this.synthesisSearch.keyword = sessionStorage.getItem('synthesisSearch.keyword') || '';
-    this.intermediateSearch.keyword = sessionStorage.getItem('intermediateSearch.keyword') || '';
-  
-    // Restore selected tab
-    if (this.CurrentAPIBody?.currentTab) {
-      switch (this.CurrentAPIBody.currentTab) {
-        case 'active_ingredient':
-          this.selectedItem = 0;
-          break;
-        case 'intermediate_application':
-          this.selectedItem = 1;
-          break;
-        case 'intermediate_synthesis':
-          this.selectedItem = 2;
-          break;
-        default:
-          this.selectedItem = 3;
+      if (type === "intermediate") {
+        this.intermediateSearch.keyword = cas;
+        this.selectedItem = 1;
+        console.log("🟩 Auto-filled intermediateSearch from storage:", cas);
+        this.performIntermediateSearch();
       }
+    } else {
+      console.warn("⚠️ Nothing found in storage → skipping auto search");
     }
-  }
+  }  
   
-
   // ✅ Unified HostListener to close dropdowns
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
