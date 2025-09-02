@@ -85,7 +85,9 @@ export class SearchResultsComponent {
   }
   patentColumns: any[] = []; // to store column headers
   patentData: any[] = [];    // optional if you want to extract separately
-
+  ngOnInit() {
+    console.log("this.allDataSets", this.CurrentAPIBody)
+  }
   ngOnChanges(_changes: any) {
     this.paginationRerenderTrigger = !this.paginationRerenderTrigger;
     if (this.CurrentAPIBody?.body?.filters) {
@@ -94,7 +96,31 @@ export class SearchResultsComponent {
     }
     
   }
-
+  ngOnInit(): void {
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get('type');
+    const cas = params.get('cas');
+  
+    console.log('URL Params:', { type, cas });
+  
+    if (type && cas) {
+      console.log('Both type and cas found →', { type, cas });
+      this.setLoadingState.emit(true);
+  
+      if (type === 'synthesis') {
+        console.log('Calling performTechnicalRouteSearch with cas:', cas);
+        this.performTechnicalRouteSearch({ searchWithValue: cas, index: 0 });
+      } else if (type === 'intermediate') {
+        console.log('Calling performChemicalDirectorySearch with cas:', cas);
+        this.performChemicalDirectorySearch({ searchWithValue: cas, index: 0 });
+      } else {
+        console.warn('Unknown type received:', type);
+      }
+    } else {
+      console.warn('Missing type or cas param →', { type, cas });
+    }
+  }
+  
   handleUserLoggedIn(loggedIn: boolean) {
     this.userIsLoggedIn = loggedIn;
   }
@@ -236,7 +262,7 @@ export class SearchResultsComponent {
         break;
       case this.resultTabs?.chemicalDirectory.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.chemicalDirectory.name]).length === 0) {
-          this.perforChemicalDirectorySearch(resultTabData);
+          this.performChemicalDirectorySearch(resultTabData);
         } else {
           this.setLoadingState.emit(false);
         }
@@ -483,58 +509,67 @@ export class SearchResultsComponent {
     });
   }
 
-  private perforChemicalDirectorySearch(resultTabData: any): void {
-
-    if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+  private performChemicalDirectorySearch(resultTabData: any): void {
+    console.log("⚡ performChemicalDirectorySearch called with:", resultTabData);
+  
+    if (!resultTabData?.searchWithValue) {
       this.allDataSets[resultTabData.index][this.resultTabs.chemicalDirectory.name] = {};
       this.setLoadingState.emit(false);
       return;
     }
-
-    if (this.childApiBody?.[resultTabData.index]) {
-      this.childApiBody[resultTabData.index][this.resultTabs.chemicalDirectory.name] = {};
-    } else {
+  
+    if (!this.childApiBody?.[resultTabData.index]) {
       this.childApiBody[resultTabData.index] = {};
     }
-
+  
     this.childApiBody[resultTabData.index][this.resultTabs.chemicalDirectory.name] = {
       api_url: this.apiUrls.chemicalDirectory.searchSpecific,
-      search_type: resultTabData?.searchWith,
+      search_type: resultTabData?.searchWith || 'CAS RN',
       keyword: resultTabData?.searchWithValue,
       page_no: 1,
       filter_enable: false,
       filters: {},
       order_by: '',
       index: resultTabData.index,
-    }
-
+    };
+  
+    console.log("📤 Sending API body:", this.childApiBody[resultTabData.index][this.resultTabs.chemicalDirectory.name]);
+  
     const tech_API = this.apiUrls.chemicalDirectory.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.chemicalDirectory.name, response);
-
-        this.mainSearchService.chemicalDirectorySearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.chemicalDirectory.name]).subscribe({
-          next: (result: any) => {
-            this.childApiBody[resultTabData.index][this.resultTabs.chemicalDirectory.name].count = result?.data?.chem_dir_count;
-            this.allDataSets[resultTabData.index][this.resultTabs.chemicalDirectory.name] = result?.data?.chem_dir_data;
-            this.setLoadingState.emit(false);
-            this.loadingService.setLoading(this.resultTabs.chemicalDirectory.name, resultTabData.index, false);
-          },
-          error: (e) => {
-            console.error('Error during main search:', e);
-            this.setLoadingState.emit(false);
-            this.loadingService.setLoading(this.resultTabs.chemicalDirectory.name, resultTabData.index, false);
-          },
-        });
+  
+        this.mainSearchService
+          .chemicalDirectorySearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.chemicalDirectory.name])
+          .subscribe({
+            next: (result: any) => {
+              console.log("✅ API Success result:", result);
+  
+              this.childApiBody[resultTabData.index][this.resultTabs.chemicalDirectory.name].count =
+                result?.data?.chem_dir_count;
+              this.allDataSets[resultTabData.index][this.resultTabs.chemicalDirectory.name] =
+                result?.data?.chem_dir_data;
+  
+              this.setLoadingState.emit(false);
+              this.loadingService.setLoading(this.resultTabs.chemicalDirectory.name, resultTabData.index, false);
+            },
+            error: (e) => {
+              console.error('❌ Error during main search:', e);
+              this.setLoadingState.emit(false);
+              this.loadingService.setLoading(this.resultTabs.chemicalDirectory.name, resultTabData.index, false);
+            },
+          });
       },
       error: (e) => {
-        console.error('Error fetching column list:', e);
+        console.error('❌ Error fetching column list:', e);
         this.setLoadingState.emit(false);
         this.loadingService.setLoading(this.resultTabs.chemicalDirectory.name, resultTabData.index, false);
       },
     });
   }
+  
 
   private perforImpuritySearch(resultTabData: any): void {
 
