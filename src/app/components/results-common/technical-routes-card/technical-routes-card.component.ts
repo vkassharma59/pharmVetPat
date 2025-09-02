@@ -293,25 +293,37 @@ export class TechnicalRoutesCardComponent {
   showPharma = false;
 
   openSynthesis(line: string) {
-    console.log("🔬 Synthesis clicked for line:", line);
     const match = line.match(/Cas RN:\s*(\d+-\d+-\d+)/i);
     if (match) {
       const casRN = match[1];
-      console.log("✅ Sending CAS RN to synthesis input:", casRN);
-      this.casRnService.setCasRn('synthesis', casRN);
-      this.showPharma = true;
+      console.log("🟦 Extracted CAS RN (Synthesis):", casRN);
+  
+      localStorage.setItem("casRN", casRN);
+      localStorage.setItem("searchType", "synthesis");
+      console.log("💾 Saved to storage:", { casRN, type: "synthesis" });
+  
+      window.open("/pharma-database", "_blank");
+    } else {
+      console.warn("⚠️ CAS RN not matched in line:", line);
     }
   }
-
+  
+  
   openIntermediate(line: string) {
-    console.log("🧪 Intermediate clicked for line:", line);
     const match = line.match(/Cas RN:\s*(\d+-\d+-\d+)/i);
     if (match) {
       const casRN = match[1];
-      console.log("✅ Sending CAS RN to intermediate input:", casRN);
-      this.casRnService.setCasRn('intermediate', casRN);
-      this.showPharma = true;
+      console.log("🟦 Extracted CAS RN (Intermediate):", casRN);
+  
+      localStorage.setItem("casRN", casRN);
+      localStorage.setItem("searchType", "intermediate");
+      console.log("💾 Saved to storage:", { casRN, type: "intermediate" });
+  
+      window.open("/pharma-database", "_blank");
+    } else {
+      console.warn("⚠️ CAS RN not matched in line:", line);
     }
   }
-
+  
+  
 }
