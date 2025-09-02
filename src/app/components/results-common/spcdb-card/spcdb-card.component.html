@@ -50,7 +50,7 @@
           <ng-container *ngFor="let column of columnDefs; let i = index" [matColumnDef]="column.value">
             <!-- Header cell with sort and filter -->
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell"
-              (click)="onCustomSort(column.value)"
+              (click)="onCustomSort(column.value)" [style.width]="column.ui_width || '150px'"
               style="position: sticky; background-color:#3886d8; color:white; border:2px solid white; overflow:visible; z-index: 9;">
               <div class="filterDropdown" *ngIf="openDropdownColumn === column.value">
                 <ul class="options">
