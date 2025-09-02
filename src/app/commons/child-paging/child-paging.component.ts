@@ -29,7 +29,6 @@ export class ChildPagingComponent implements OnInit {
     return this._currentChildAPIBody;
   }
   set currentChildAPIBody(value: any) {
-    console.log("childodyApi000000000000", value)
     this._currentChildAPIBody = value;
     this.PageArray = [];
 
@@ -131,7 +130,7 @@ export class ChildPagingComponent implements OnInit {
   this.handlePageClick(this.MainPageNo);
 };
 
-  
+
 
   handlePreviousClick = () => {
     if (this.MainPageNo == 1) return;
@@ -149,7 +148,6 @@ export class ChildPagingComponent implements OnInit {
       this.blurContent = true;
       return;
     }
-
     this.setLoading.emit(true);
     this._currentChildAPIBody.page_no = page;
     this.MainPageNo = page;
@@ -162,6 +160,7 @@ export class ChildPagingComponent implements OnInit {
         console.log("Child Paging Data:", res?.data);
         this.handleChangeTabData.emit(res?.data);
         this.setLoading.emit(false);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       },
       error: (e) => {
         console.error(e);
@@ -195,12 +194,8 @@ export class ChildPagingComponent implements OnInit {
     const priv = JSON.parse(localStorage.getItem('priviledge_json') || '{}');
     const reportLimit = priv['pharmvetpat-mongodb']?.PageLimit || 10;
     this.reportLimitPages = reportLimit;
-
-
     console.log("Allowed pages based on report limit:", this.reportLimitPages);
   }
-
-
   ngOnChanges(): void {
     this.handleChangeData();
   }

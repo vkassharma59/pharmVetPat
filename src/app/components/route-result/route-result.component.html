@@ -32,8 +32,6 @@
           </span>
         </ng-container>
       </div>
-
-
       <!-- <span class="divider">&nbsp;|&nbsp;</span>
       <span class="fw-bold">Total Results: {{CurrentAPIBody?.count}}</span>
       <span class="divider">&nbsp;|&nbsp;</span>
@@ -46,7 +44,7 @@
         Total Results:{{ getCurrentTabCount() }}
       </button>
       <button *ngIf="index==0  && !generatePDFloader && isFullDownload && searchThrough !== 'synthesis-search'|| showTotalAfterTab && showBackButton"
-       (click)="openDownloadModal(index)"
+       (click)="handleGeneratePDF()"
          [disabled]="generatePDFloader" title="Full Report Download"
         class="btn btn-outline-primary btn-sm me-2" style="color: white; border-color: white;"><i
           class="fas fa-download"></i>
