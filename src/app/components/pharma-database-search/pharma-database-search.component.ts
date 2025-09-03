@@ -189,6 +189,9 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
         this.selectedItem = 2;
         console.log("🟦 Auto-filled synthesisSearch from storage:", cas);
         this.performSynthesisSearch();
+        this.setLoadingState.emit(true);
+        localStorage.removeItem("searchType");
+        localStorage.removeItem("casRN");
       }
   
       if (type === "intermediate") {
@@ -196,6 +199,9 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
         this.selectedItem = 1;
         console.log("🟩 Auto-filled intermediateSearch from storage:", cas);
         this.performIntermediateSearch();
+        this.setLoadingState.emit(true);
+        localStorage.removeItem("searchType");
+        localStorage.removeItem("casRN");
       }
     } else {
       console.warn("⚠️ Nothing found in storage → skipping auto search");
@@ -1041,14 +1047,22 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
   }
 
   private performIntermediateSearch(): void {
-
+    // Force set filter and keyword so that UI me bhi dikhe
+    this.intermediateSearch.filter = "cas_rn";  
+    this.intermediateSearch.keyword = this.intermediateSearch.keyword || "74-86-2";  
+  
+    console.log("🔹 Setting UI values", {
+      filter: this.intermediateSearch.filter,
+      keyword: this.intermediateSearch.keyword
+    });
+  
     Auth_operations.setActiveformValues({
       column: this.column,
       keyword: this.intermediateSearch.keyword,
       screenColumn: this.screenColumn,
       activeForm: searchTypes.intermediateSearch
     });
-
+  
     const body = {
       page_no: 1,
       filter_enable: false,
@@ -1057,15 +1071,21 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       keyword: this.intermediateSearch?.keyword,
       criteria: this.intermediateSearch?.filter
     };
-    this.sharedRosService.setSearchData('intermediateSearch', this.intermediateSearch?.keyword, this.intermediateSearch?.filter);
-
+  
+    this.sharedRosService.setSearchData(
+      'intermediateSearch',
+      this.intermediateSearch?.keyword,
+      this.intermediateSearch?.filter
+    );
+  
     console.log("Intermediate search body", body);
+  
     const tech_API = this.apiUrls.chemicalDirectory.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.chemicalDirectory.name, response);
-
+  
         this.mainSearchService.getChemicalStructureResults(body).subscribe({
           next: (res: any) => {
             this.showResultFunction.emit({
@@ -1089,6 +1109,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       },
     });
   }
+  
 
   openTutorialModal() {
     const dialogRef = this.dialog.open(VideoTutorialComponent, {
