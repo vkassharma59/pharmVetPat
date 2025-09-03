@@ -86,6 +86,7 @@ export class SearchResultsComponent {
   patentColumns: any[] = []; // to store column headers
   patentData: any[] = [];    // optional if you want to extract separately
 
+
   ngOnChanges(_changes: any) {
     this.paginationRerenderTrigger = !this.paginationRerenderTrigger;
     if (this.CurrentAPIBody?.body?.filters) {

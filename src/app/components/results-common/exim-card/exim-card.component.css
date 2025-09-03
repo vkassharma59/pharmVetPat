@@ -296,6 +296,18 @@ button[color="warn"] {
   background-color: #73d4ff !important;
   color: white;
 }
+.header-cell {
+  text-align: center; /* text center karega */
+  vertical-align: middle;
+}
+
+.header-cell .header-title {
+  display: flex;
+  justify-content: center;  /* horizontally center */
+  align-items: center;      /* vertically center */
+  font-weight: 600;
+  text-transform: uppercase;
+}
 
 mat-header-cell {
   position: sticky;
