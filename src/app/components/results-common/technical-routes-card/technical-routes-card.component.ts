@@ -290,6 +290,7 @@ export class TechnicalRoutesCardComponent {
     }
   }
 
+  
   showPharma = false;
 
   openSynthesis(line: string) {
