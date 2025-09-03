@@ -274,7 +274,18 @@ button[color="warn"] {
 .scroll-btn.left {
   left: 0px;
 }
+.header-cell {
+  text-align: center; /* text center karega */
+  vertical-align: middle;
+}
 
+.header-cell .header-title {
+  display: flex;
+  justify-content: center;  /* horizontally center */
+  align-items: center;      /* vertically center */
+  font-weight: 600;
+  text-transform: uppercase;
+}
 .scroll-btn.right {
   right: 8px;
 }

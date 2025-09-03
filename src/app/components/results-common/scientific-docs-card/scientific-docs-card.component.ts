@@ -77,6 +77,10 @@ export class ScientificDocsCardComponent  {
       this._data = value;
     }
   }
+   showFull = false;
+  toggleView() {
+    this.showFull = !this.showFull;
+  }
   ngOnInit() {
     console.log("data",this._data);
     //this.processCountryData();

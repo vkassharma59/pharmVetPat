@@ -6,7 +6,18 @@
   margin-top: 5px;
   margin-bottom: 5px;
 }
+.header-cell {
+  text-align: center; /* text center karega */
+  vertical-align: middle;
+}
 
+.header-cell .header-title {
+  display: flex;
+  justify-content: center;  /* horizontally center */
+  align-items: center;      /* vertically center */
+  font-weight: 600;
+  text-transform: uppercase;
+}
 /* ✅ Card-style Table */
 .mat-elevation-z8 {
   padding: 20px;
