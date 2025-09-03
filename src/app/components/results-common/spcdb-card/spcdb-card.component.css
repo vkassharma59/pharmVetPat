@@ -26,10 +26,10 @@
 
 /* ✅ Form Fields (Smaller Input Box) */
 mat-form-field {
-  width: 100px;
-  /* Decreased input width */
+  /* width: 100px; */
+
   font-size: 12px;
-  /* Smaller text */
+ 
 }
 
 .filter-field input {
@@ -276,6 +276,18 @@ button[color="warn"] {
   cursor: pointer;
   font-weight: 500;
   transition: background-color 0.3s ease;
+}
+.header-cell {
+  text-align: center; /* text center karega */
+  vertical-align: middle;
+}
+
+.header-cell .header-title {
+  display: flex;
+  justify-content: center;  /* horizontally center */
+  align-items: center;      /* vertically center */
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 
