@@ -429,7 +429,7 @@
           <!-- Loop through each CAS RN item -->
           <div *ngFor="let line of splitLines(_data?.reactants_cas_rn)" class="flex items-center gap-2 pb-1" >
             <span class="flex-1 max-w-450px" style="width: 49rem;">{{ line }}</span>
-            <div class="redirection-button gap-3 data" style="margin-left: 5rem;">
+            <div class="redirection-button gap-3 data" style="margin-left: 5rem;" *ngIf="extractCasRN(line)">
               <button class="text-white text-xs px-2 py-1 rounded"
                       (click)="openSynthesis(line)"
                       style="margin: 0.2rem; background: #1333b0;">

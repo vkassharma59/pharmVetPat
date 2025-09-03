@@ -133,18 +133,17 @@ export class ActivePatentComponent implements OnChanges {
   ];
 
   quickFilterButtons = [
-    { label: 'BIOTECH', value: 'biotech' },
-    { label: 'COMBINATION PATENT', value: 'combination' },
-    { label: 'MOU PATENT', value: 'mou' },
-    { label: 'PROCESS PATENT', value: 'process' },
-    { label: 'DEVICE PATENT', value: 'device' },
-    { label: 'FORMULATION PATENT', value: 'formulation' },
-    { label: 'DISCOVERY ACTIVE INGREDIENTS', value: 'discovery active ingredients' },
-    { label: 'POLYMORPH PATENT', value: 'polymorph' },
-    { label: 'PLANT VARIETY', value: 'plant variety' },
-    { label: 'PARTICAL SIZE', value: 'partical size' },
-    { label: 'HYDRATE', value: 'hydrate' }
-  ];  
+  { label: 'COMPOUND PATENT', value: 'compound' },
+  { label: 'COMPOSITION PATENT', value: 'composition' },
+  { label: 'PROCESS PATENT', value: 'process' },
+  { label: 'MOU PATENT', value: 'mou' },
+  { label: 'COMBINATION PATENT', value: 'combination' },
+  { label: 'POLYMORPH PATENT', value: 'polymorph' },
+  { label: 'BIOTECH', value: 'biotech' },
+  { label: 'DEVICE PATENT', value: 'device' },
+  { label: 'KIT PATENT', value: 'kit' }
+];
+ 
 
   /** Dropdown outside click close */
   @HostListener('document:mousedown', ['$event'])
