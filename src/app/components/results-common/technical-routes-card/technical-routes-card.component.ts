@@ -18,7 +18,7 @@ import { pharmaDatabaseSearchComponent } from '../../pharma-database-search/phar
 @Component({
   selector: 'chem-technical-route-card',
   standalone: true,
-  imports: [CommonModule, RouteResultComponent, NgFor, FormsModule,pharmaDatabaseSearchComponent],
+  imports: [CommonModule, RouteResultComponent, NgFor, FormsModule, pharmaDatabaseSearchComponent],
   templateUrl: './technical-routes-card.component.html',
   styleUrl: './technical-routes-card.component.css',
 })
@@ -259,72 +259,75 @@ export class TechnicalRoutesCardComponent {
   }
 
   extractCasRN(text: string): string | null {
-    console.log("🔍 Input Text:", text);
+    // console.log("🔍 Input Text:", text);
     const regex = /Cas RN:\s*([\d-]+)/i;
     const match = text.match(regex);
-
+  
     if (match) {
-      console.log("✅ Extracted Cas RN (string):", match[1]);
+      // console.log("✅ Extracted Cas RN (string):", match[1]);
       const casNumber = Number(match[1].replace(/-/g, ""));
-      console.log("🔢 Converted Cas RN (number):", casNumber);
+      // console.log("🔢 Converted Cas RN (number):", casNumber);
       return match[1];
     } else {
-      console.log("⚠️ No Cas RN found in text");
+      // console.log("⚠️ No Cas RN found in text");
       return null;
     }
   }
-
+  
   onSearchClick(text: string) {
     const casRn = this.extractCasRN(text);
     if (casRn) {
-      console.log("📤 Sending Cas RN for search:", casRn);
+      // console.log("📤 Sending Cas RN for search:", casRn);
       this.MainsearchService.technicalRoutesSearchSpecific(casRn).subscribe(
         (result) => {
-          console.log("✅ Search Result:", result);
+          // console.log("✅ Search Result:", result);
           this.searchResult = result;
         },
         (error) => {
-          console.error("❌ Search Error:", error);
+          // console.error("❌ Search Error:", error);
         }
       );
     }
   }
-
   
   showPharma = false;
-
+  
   openSynthesis(line: string) {
     const match = line.match(/Cas RN:\s*(\d+-\d+-\d+)/i);
     if (match) {
       const casRN = match[1];
-      console.log("🟦 Extracted CAS RN (Synthesis):", casRN);
+      // console.log("🟦 Extracted CAS RN (Synthesis):", casRN);
   
       localStorage.setItem("casRN", casRN);
       localStorage.setItem("searchType", "synthesis");
-      console.log("💾 Saved to storage:", { casRN, type: "synthesis" });
+      // console.log("💾 Saved to storage:", { casRN, type: "synthesis" });
   
-      window.open("https://pharmvetpat.chemrobotics.com", "_blank");
+      const baseUrl = window.location.origin;
+      // console.log("🌍 Base URL (Synthesis):", baseUrl);
+  
+      window.open(`${baseUrl}/pharma-database`, "_blank");
     } else {
-      console.warn("⚠️ CAS RN not matched in line:", line);
+      // console.warn("⚠️ CAS RN not matched in line:", line);
     }
   }
-  
   
   openIntermediate(line: string) {
     const match = line.match(/Cas RN:\s*(\d+-\d+-\d+)/i);
     if (match) {
       const casRN = match[1];
-      console.log("🟦 Extracted CAS RN (Intermediate):", casRN);
+      // console.log("🟦 Extracted CAS RN (Intermediate):", casRN);
   
       localStorage.setItem("casRN", casRN);
       localStorage.setItem("searchType", "intermediate");
-      console.log("💾 Saved to storage:", { casRN, type: "intermediate" });
+      // console.log("💾 Saved to storage:", { casRN, type: "intermediate" });
   
-      window.open("https://pharmvetpat.chemrobotics.com/", "_blank");
+      const baseUrl = window.location.origin;
+      // console.log("🌍 Base URL (Intermediate):", baseUrl);
+  
+      window.open(`${baseUrl}/pharma-database`, "_blank");
     } else {
-      console.warn("⚠️ CAS RN not matched in line:", line);
+      // console.warn("⚠️ CAS RN not matched in line:", line);
     }
-  }
-  
-  
+  }  
+
 }

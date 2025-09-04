@@ -110,7 +110,6 @@ export class RouteResultComponent {
   currentIndex: number = 0;
   selectedIndex: number = 0;
   @Input() activeIndex: number | null = null;
-  @Input() activeIndex: number | null = null;
 
   private limitsFetched = false;
   setSelectedIndex(index: number): void {
@@ -185,10 +184,6 @@ export class RouteResultComponent {
     const isMultipleLoop = this.activeIndex !== null;
     // Tab change ho ya activeIndex set ho → show button
     return isDifferentFromInitial || isMultipleLoop;
-    const isDifferentFromInitial = this.currentTabData?.name !== this.initialTab?.name;
-    const isMultipleLoop = this.activeIndex !== null;
-    // Tab change ho ya activeIndex set ho → show button
-    return isDifferentFromInitial || isMultipleLoop;
   }
 
   getCurrentTabCount(): number {
@@ -249,13 +244,6 @@ export class RouteResultComponent {
 
     return currentTabName === expectedTabName;
   }
-
-  showFullName: boolean = false;
-
-  toggleProductName() {
-    this.showFullName = !this.showFullName;
-  }
-
 
   showFullName: boolean = false;
 
@@ -361,8 +349,6 @@ export class RouteResultComponent {
       );
     }
 
-    return '';
-  }
     return '';
   }
 

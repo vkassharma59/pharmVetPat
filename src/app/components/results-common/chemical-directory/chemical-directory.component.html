@@ -1,37 +1,39 @@
 <ng-container *ngIf="_data.length > 0; else noData">
-    <!-- <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper justify-between">
+  <!-- <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper justify-between">
         <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
             Total Records : {{ currentChildAPIBody?.count }}
         </button>
     </div> -->
-    <ng-container *ngFor="let dataItem of _data; let i = index">
-         <div class="py-2">
-            <!-- <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
-                <span
-                    class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-normal h-[37px] flex justify-center items-center">
-                    Building Block 
-                    {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
-                </span>
-            </div> -->
-        </div> 
+  <ng-container *ngFor="let dataItem of _data; let i = index">
+    <div class="py-4">
+      <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
+        <span
+          class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-normal h-[37px] flex justify-center items-center">
+          Building Block
+          {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
+        </span>
+      </div>
+    </div>
 
-        <chemical-directory-card class="card mb-4" [data]="dataItem" [index]="index" [currentChildAPIBody]="currentChildAPIBody"
-            (ROSChange)="handleROSChange.emit($event)" (activeTabChange)="onActiveTabChange($event)">
-        </chemical-directory-card>
+    <chemical-directory-card class="card mb-4" [data]="dataItem" [index]="index"
+      [currentChildAPIBody]="currentChildAPIBody" (ROSChange)="handleROSChange.emit($event)"
+      (activeTabChange)="onActiveTabChange($event)">
+    </chemical-directory-card>
 
 
-        <!-- <chemical-directory-card class="card" [data]="dataItem" [currentChildAPIBody]="currentChildAPIBody"
+    <!-- <chemical-directory-card class="card" [data]="dataItem" [currentChildAPIBody]="currentChildAPIBody"
             (ROSChange)="handleROSChange.emit($event)" (activeTabChange)="onActiveTabChange($event)">
         </chemical-directory-card> -->
 
-    </ng-container>
-    <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"
-        (handleChangeTabData)="updateDataFromPagination($event)"
-        (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
+  </ng-container>
+  <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"
+    (handleChangeTabData)="updateDataFromPagination($event)"
+    (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
 </ng-container>
 <ng-template #noData>
   <div class="card">
-    <div class="card-header text-white bg-primary" style="background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);">
+    <div class="card-header text-white bg-primary"
+      style="background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);">
       {{resultTabs.chemicalDirectory?.label}}
     </div>
     <div class="card-body">
