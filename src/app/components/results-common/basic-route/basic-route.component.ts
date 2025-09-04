@@ -59,6 +59,7 @@ export class BasicRouteComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     console.log('Current Child API Body (index:', this.currentChildAPIBody);
   }
+ 
 
 
   ngAfterViewInit(): void {
