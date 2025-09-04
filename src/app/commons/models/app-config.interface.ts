@@ -50,6 +50,7 @@ export interface AppConfig {
     impPatents: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
     };
     europeApproval: {
       searchSpecific: string;
@@ -90,6 +91,7 @@ export interface AppConfig {
     chemiTracker: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
     };
    veterinaryUsApproval: {
      searchSpecific: string;

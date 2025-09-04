@@ -32,7 +32,7 @@ export class ChemiTrackerComponent {
   isCountryDropdownOpen: boolean = false;
   isOpen: boolean = false;
   searchThrough: string = '';
-
+  isExportingExcel: boolean = false;
   @Input()
   get data() {
     return this._data;
@@ -215,6 +215,46 @@ export class ChemiTrackerComponent {
 
     this.handleSelectFilter;
   }
+downloadExcel(): void {
+  this.isExportingExcel = true;
+  this._currentChildAPIBody = {
+    ...this.chemiAPIBody,
+    filters: { ...this.chemiAPIBody.filters }
+  };
+
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+  this.mainSearchService.chemiTrackerdownloadexcel(
+    this._currentChildAPIBody
+  ).subscribe({
+    next: (res: Blob) => {
+        const blob = new Blob([res], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      });
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ChemiTrackerData.xlsx';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      window.URL.revokeObjectURL(url);
+      this.isExportingExcel = false;
+      window.scrollTo(0, scrollTop);
+    },
+    error: (err) => {
+      console.error("Excel download error:", err);
+      this._currentChildAPIBody = {
+        ...this._currentChildAPIBody,
+        filter_enable: false
+      };
+      this.isExportingExcel = false;
+      window.scrollTo(0, scrollTop);
+    },
+  });
+}
 
 
 }
