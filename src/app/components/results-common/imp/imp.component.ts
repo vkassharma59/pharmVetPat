@@ -38,6 +38,7 @@ export class ImpComponent {
   _currentChildAPIBody: any;
   impPatentApiBody: any;
   impPatentFilters: any = {};
+  isExportingExcel: boolean = false;
   @Input() index: any;
   @Input() tabName?: string;
   filterConfigs = [
@@ -283,4 +284,43 @@ export class ImpComponent {
 
     window.scrollTo(0, 0);
   }
+
+  downloadExcel(): void {
+  this.isExportingExcel = true;
+  this._currentChildAPIBody = {
+    ...this.impPatentApiBody,
+    filters: { ...this.impPatentApiBody.filters }
+  };
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  this.mainSearchService.impPatentsdownloadexcel(
+    this._currentChildAPIBody
+  ).subscribe({
+    next: (res: Blob) => {
+       const blob = new Blob([res], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      });
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ImpPatentData.xlsx';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      window.URL.revokeObjectURL(url);
+      this.isExportingExcel = false;
+      window.scrollTo(0, scrollTop);
+    },
+    error: (err) => {
+      console.error("Excel download error:", err);
+      this._currentChildAPIBody = {
+        ...this._currentChildAPIBody,
+        filter_enable: false
+      };
+      this.isExportingExcel = false;
+      window.scrollTo(0, scrollTop);
+    },
+  });
+}
 }

@@ -5,12 +5,14 @@
     <div class="d-flex align-items-center">
       <button *ngIf="!showBackButton" (click)="handleBack()" class="btn btn-outline-primary btn-sm"
         style="color: white; border-color: white;font-weight: 500;">Back To Search</button>
- 
+
       <span *ngIf="!showBackButton" class="divider">&nbsp;|&nbsp;</span>
       <button *ngIf="showBackButton" (click)="handleBack1()" style="color: white; border-color: white;font-weight: 500;"
         class="btn btn-outline-primary btn-sm">
         Back To List
-     </button>
+
+      </button>
+
       <span *ngIf="showBackButton" class="divider">&nbsp;|&nbsp;</span>
       <div style="display: flex; align-items: center; gap: 10px;">
         <h5 *ngIf="!showBackButton" style="color: white; margin: 0;">

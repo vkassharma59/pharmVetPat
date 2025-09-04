@@ -144,6 +144,18 @@ export class MainSearchService {
       .post(this.apiUrls.chemiTracker.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
+  chemiTrackerdownloadexcel(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.chemiTracker.downloadexcel, body, { headers: this.headers, responseType: 'blob' as 'json' })
+      .pipe(catchError(this.handleError));
+  }
+  impPatentsdownloadexcel(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.impPatents.downloadexcel, body, { headers: this.headers, responseType: 'blob' as 'json' })
+      .pipe(catchError(this.handleError));
+  }
   canadaApprovalSearchSpecific(props: any): Observable<any> {
     const body = props;
     return this.http
