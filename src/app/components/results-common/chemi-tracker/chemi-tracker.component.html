@@ -5,6 +5,12 @@
 
   <div class="flex flex-wrap gap-3">
     <!-- Country Dropdown -->
+      <button mat-raised-button [disabled]="isExportingExcel"
+      class="px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
+        (click)="downloadExcel()">
+        <span *ngIf="!isExportingExcel">Download Excel <i class="fa-solid fa-download"></i></span>
+        <span *ngIf="isExportingExcel"><i class="fa fa-spinner fa-spin"></i> Exporting...</span>
+      </button>
     <div class="dropdown" #countryDropdownRef>
       <button (click)="toggleCountryDropdown($event)"
         class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]">
@@ -56,7 +62,9 @@
           {{ (((_currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
         </span>
       </div> 
+
     </div>
+
     <chem-chemi-tracker-card class="card mb-4" [data]="dataItem"></chem-chemi-tracker-card>
   </ng-container>
 

@@ -54,6 +54,7 @@ export const AppConfigValues: AppConfig = {
       impPatents: {
         searchSpecific: `${appUrl.apiUrl}/imp-patents/search-specific`,
         columnList: `${appUrl.apiUrl}/imp-patents/column-list`,
+        downloadexcel: `${appUrl.apiUrl}/imp-patents/download-excel`,
       },
       europeApproval: {
         searchSpecific: `${appUrl.apiUrl}/ema/search-specific`,
@@ -106,6 +107,7 @@ export const AppConfigValues: AppConfig = {
       chemiTracker: {
         searchSpecific: `${appUrl.apiUrl}/chemi-tracker/search-specific`,
         columnList: `${appUrl.apiUrl}/chemi-tracker/column-list`,
+        downloadexcel: `${appUrl.apiUrl}/chemi-tracker/download-excel`,
       },
       scientificDocs: {
         searchSpecific: `${appUrl.apiUrl}/scientific-docs/search-specific`,

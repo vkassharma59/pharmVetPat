@@ -75,7 +75,9 @@
               {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
             </span>
           </div>
+
         </div>
+
         <chem-technical-route-card class="card mb-4" [data]="dataItem"  [index]="index" [itemid]="itemid" [CurrentAPIBody]="CurrentAPIBody"></chem-technical-route-card>
       </ng-container>
       <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"

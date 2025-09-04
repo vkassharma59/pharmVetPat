@@ -42,7 +42,9 @@
           {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
         </span>
       </div>
+
     </div>
+
     <app-japan-pmda class="card mb-4" [data]="dataItem"></app-japan-pmda>
   </ng-container>
   <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"

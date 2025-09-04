@@ -289,6 +289,7 @@ export class TechnicalRoutesCardComponent {
       );
     }
   }
+
   
   showPharma = false;
   

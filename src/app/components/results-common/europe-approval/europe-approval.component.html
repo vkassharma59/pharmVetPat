@@ -46,7 +46,9 @@
                     {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
                 </span>
             </div>
+
         </div>
+
         <chem-europe-approval-card (handleChangeTabData)="handleResultTabData.emit($event)" class="card mb-4" [data]="dataItem"></chem-europe-approval-card>
     </ng-container>  
     <app-child-paging *ngIf="currentChildAPIBody?.count > 25"

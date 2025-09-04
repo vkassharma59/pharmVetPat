@@ -61,8 +61,10 @@ export class BasicRouteComponent implements OnInit, AfterViewInit {
   }
  
 
+
   ngAfterViewInit(): void {
     // ✅ Scroll to top after component loads
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }
+
 }
