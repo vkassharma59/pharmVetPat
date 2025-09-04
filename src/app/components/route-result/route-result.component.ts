@@ -185,19 +185,6 @@ export class RouteResultComponent {
     // Tab change ho ya activeIndex set ho → show button
     return isDifferentFromInitial || isMultipleLoop;
   }
-  getCurrentTabCount(): number {
-    const tabName = this.currentTabData?.name;
-    // console.log('🔎 Current Tab:', tabName);
-    // console.log('📦 Current Child API Body:', this.currentChildAPIBody);
-    // console.log('➡️ Child Count:', this.currentChildAPIBody?.[tabName]?.count);
-    // console.log('➡️ Parent Count:', this.CurrentAPIBody?.count);
-    // Agar child API count hai to wahi return karo
-    if (tabName && this.currentChildAPIBody?.[tabName]?.count !== undefined) {
-      return this.currentChildAPIBody[tabName].count;
-    }
-    // Default → parent ka count
-    return this.CurrentAPIBody?.count || 0;
-  }
 
   getCurrentTabCount(): number {
     const tabName = this.currentTabData?.name;
