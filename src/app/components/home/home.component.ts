@@ -52,7 +52,6 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     const auth = localStorage.getItem('auth');
     this.allDataSets = this.utilityService.getDataStates();
-    console.log('All Data Sets:', this.allDataSets);
     this.resultTabs = this.utilityService.getAllTabsName();
     this.CurrentAPIBody.count = 0;
 
