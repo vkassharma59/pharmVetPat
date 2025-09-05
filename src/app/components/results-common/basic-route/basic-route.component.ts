@@ -32,7 +32,6 @@ export class BasicRouteComponent implements OnInit, AfterViewInit {
   }
   set data(value: any) {
     this._data = value;
-    console.log('📦 Input `data` updated:', value);
   }
 
   @Input()
@@ -41,23 +40,21 @@ export class BasicRouteComponent implements OnInit, AfterViewInit {
   }
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
-    console.log('🔹 Input `currentChildAPIBody` updated:', value);
+  
     if (value) {
       this.productInfoApiBody = JSON.parse(JSON.stringify(value)) || value;
-      console.log('📄 Copied `productInfoApiBody`:', this.productInfoApiBody);
+      
     }
   }
 
   constructor(private utilityService: UtilityService, public loadingService: LoadingService) {
     this.resultTabs = this.utilityService.getAllTabsName();
-    console.log('📝 Result Tabs initialized:', this.resultTabs);
-
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
-    console.log('🔎 Active searchThrough value:', this.searchThrough);
+   
   }
 
   ngOnInit(): void {
-    console.log('Current Child API Body (index:', this.currentChildAPIBody);
+   // console.log('Current Child API Body (index:', this.currentChildAPIBody);
   }
  
 
