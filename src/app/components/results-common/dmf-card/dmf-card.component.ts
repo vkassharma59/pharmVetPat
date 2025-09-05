@@ -74,11 +74,11 @@ export class DmfCardComponent implements OnDestroy{
   @Input() countryList: any[] = []; // ← This replaces processCountryData
 
   ngOnInit() {
-    console.log('📥 ---------------sdjisgjishjd---------', this._data);
+   // console.log('📥 ---------------sdjisgjishjd---------', this._data);
   }
 
    ngOnChanges(): void {
-      console.log('📥 ------------------------', this._data);
+      //console.log('📥 ------------------------', this._data);
   }
   getDmfPrefix(country: string): string {
     const upperKey = (country || '').toUpperCase();
