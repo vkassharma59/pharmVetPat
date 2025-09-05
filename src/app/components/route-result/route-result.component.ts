@@ -188,11 +188,7 @@ export class RouteResultComponent {
 
   getCurrentTabCount(): number {
     const tabName = this.currentTabData?.name;
-    // console.log('🔎 Current Tab:', tabName);
-    // console.log('📦 Current Child API Body:', this.currentChildAPIBody);
-    // console.log('➡️ Child Count:', this.currentChildAPIBody?.[tabName]?.count);
-    // console.log('➡️ Parent Count:', this.CurrentAPIBody?.count);
-    // Agar child API count hai to wahi return karo
+      // Agar child API count hai to wahi return karo
     if (tabName && this.currentChildAPIBody?.[tabName]?.count !== undefined) {
       return this.currentChildAPIBody[tabName].count;
     }
@@ -204,29 +200,20 @@ export class RouteResultComponent {
   handleBack1() {
     this.currentTabData = this.initialTab;
     this.activeTab = this.initialTab?.name || '';
-    console.log('Back pressed → reset to initial tab:', this.activeTab);
+    if (this.CurrentAPIBody) {
+    this.CurrentAPIBody.body = {
+      ...this.CurrentAPIBody.body,
+     currentTab: this.activeTab  
+    };
+    this.CurrentAPIBody.currentTab = this.activeTab;
+  }
     this.backFunction1.emit();
   }
   handleBack() {
     this.sharedRosService.clearSearchData();
     this.backFunction.emit(false);
   }
-  // shouldShowDownloadButton(): boolean {
-  //   const searchType = this.searchThrough;
-  //   const currentTabName = this.CurrentAPIBody?.currentTab;
-  //   // ✅ Use string keys, not dynamic types with `typeof this`
-  //   const searchToTabKeyMap: { [key: string]: string } = {
-  //     'synthesis-search': 'technicalRoutes',
-  //     'chemical-structure': 'chemicalDirectory',
-  //     'intermediate-search': 'chemicalDirectory',
-  //     'simple-search': 'productInfo',
-  //     'advance-search': 'productInfo',
-  //   };
-
-  //   const expectedTabKey = searchToTabKeyMap[searchType];
-  //   const expectedTabName = this.resultTabWithKeys?.[expectedTabKey]?.name;
-  //   return currentTabName === expectedTabName;
-  // }
+  
   shouldShowDownloadButton(): boolean {
     const searchType = this.searchThrough;
     const currentTabName = this.activeTab;   // ✅ direct activeTab use karo
@@ -250,14 +237,10 @@ export class RouteResultComponent {
   toggleProductName() {
     this.showFullName = !this.showFullName;
   }
-
-  // getFirstProductName(tabData: any, activeTab: string): string {
-  //   console.log('Tab Data:', tabData);
-  //   console.log('Active Tab:', activeTab);
-  //   if (!tabData || !activeTab) return '';
-  //   // Step 1: tabData[activeTab] nikalo
-  //   const tabObj = tabData[activeTab];
-  //   console.log('Tab Object:', tabObj);
+  // getFirstProductName(tabData: any): string {
+  //   if (!tabData || !this.initialTab?.name) return '';
+  //   const tabObj = tabData[this.initialTab.name];   // 👈 fixed: activeTab ki jagah initialTab
+   
   //   if (!tabObj) return '';
   //   // Step 2: Agar direct array hai
   //   if (Array.isArray(tabObj) && tabObj.length > 0) {
@@ -267,19 +250,6 @@ export class RouteResultComponent {
   //       ''
   //     );
   //   }
-  //   console.log('Tab Object after array check:', tabObj);
-  //   console.log('Tab Object after array check:---', tabObj.ros_data);
-  //   if (tabObj.ros_data && Array.isArray(tabObj.ros_data) && tabObj.ros_data.length > 0) {
-  //     const ingredient = tabObj.ros_data[0]?.ACTIVE_INGREDIENT || tabObj.ros_data[0]?.active_ingredient || '';
-  //     console.log('Active Ingredient:', ingredient);
-  //     return ingredient;
-  //   }
-
-  //   // Step 4: Fallback
-  //   // Step 1: tabData[activeTab] nikalo
-  //   const tabObj = tabData[activeTab];
-  //   console.log('Tab Object:', tabObj);
-  //   if (!tabObj) return '';
   //   // Step 2: Agar direct array hai
   //   if (Array.isArray(tabObj) && tabObj.length > 0) {
   //     return (
@@ -288,53 +258,36 @@ export class RouteResultComponent {
   //       ''
   //     );
   //   }
-  //   console.log('Tab Object after array check:', tabObj);
-  //   console.log('Tab Object after array check:---', tabObj.ros_data);
+
   //   if (tabObj.ros_data && Array.isArray(tabObj.ros_data) && tabObj.ros_data.length > 0) {
-  //     const ingredient = tabObj.ros_data[0]?.ACTIVE_INGREDIENT || tabObj.ros_data[0]?.active_ingredient || '';
-  //     console.log('Active Ingredient:', ingredient);
-  //     return ingredient;
+  //     return (
+  //       tabObj.ros_data[0]?.ACTIVE_INGREDIENT ||
+  //       tabObj.ros_data[0]?.active_ingredient ||
+  //       ''
+  //     );
+  //   }
+  //   if (tabObj.ros_data && Array.isArray(tabObj.ros_data) && tabObj.ros_data.length > 0) {
+  //     return (
+  //       tabObj.ros_data[0]?.ACTIVE_INGREDIENT ||
+  //       tabObj.ros_data[0]?.active_ingredient ||
+  //       ''
+  //     );
   //   }
 
-
-
-  //   // Step 4: Fallback
   //   return '';
   // }
   getFirstProductName(tabData: any): string {
     // console.log('Tab Data:', tabData);
     // console.log('Initial Tab:', this.initialTab);
-
     if (!tabData || !this.initialTab?.name) return '';
-    if (!tabData || !this.initialTab?.name) return '';
-
     const tabObj = tabData[this.initialTab.name];   // 👈 fixed: activeTab ki jagah initialTab
     // console.log('Tab Object:', tabObj);
-
     if (!tabObj) return '';
-    if (!tabObj) return '';
-
     // Step 2: Agar direct array hai
     if (Array.isArray(tabObj) && tabObj.length > 0) {
       return (
         tabObj[0]?.ACTIVE_INGREDIENT ||
         tabObj[0]?.chemical_name ||
-        ''
-      );
-    }
-    // Step 2: Agar direct array hai
-    if (Array.isArray(tabObj) && tabObj.length > 0) {
-      return (
-        tabObj[0]?.ACTIVE_INGREDIENT ||
-        tabObj[0]?.chemical_name ||
-        ''
-      );
-    }
-
-    if (tabObj.ros_data && Array.isArray(tabObj.ros_data) && tabObj.ros_data.length > 0) {
-      return (
-        tabObj.ros_data[0]?.ACTIVE_INGREDIENT ||
-        tabObj.ros_data[0]?.active_ingredient ||
         ''
       );
     }
@@ -345,7 +298,6 @@ export class RouteResultComponent {
         ''
       );
     }
-
     return '';
   }
 
@@ -412,7 +364,7 @@ export class RouteResultComponent {
     this.activeTab = data.name;
 
     this.showTotalAfterTab = true;
-    console.log('👉 Tab changed for index:', this.index, 'tab:', data?.name);
+   
   }
 
   OpenQueryModal() {
@@ -436,13 +388,13 @@ export class RouteResultComponent {
   }
   fetchAndStoreVerticalLimits(): void {
     if (this.limitsFetched) {
-      console.log('Vertical limits already fetched, skipping API call');
+      
       return;
     }
     this.userPriviledgeService.getverticalcategoryData().subscribe({
       next: (res: any) => {
         const verticals = res?.data?.verticals;
-        console.log('Fetched verticals:', verticals);
+       
         if (Array.isArray(verticals)) {
           localStorage.setItem('vertical_limits', JSON.stringify(verticals));
 
@@ -570,7 +522,7 @@ export class RouteResultComponent {
                   this.generatePDFloader = false;
                   return;
                 }
-                console.log(this.CurrentAPIBody, this.currentTabData.name, 'Selected Reports for PDF:', body_main.reports);
+                //console.log(this.CurrentAPIBody, this.currentTabData.name, 'Selected Reports for PDF:', body_main.reports);
                 // Clone CurrentAPIBody and add required flags
                 const pdf_body = {
                   ...this.CurrentAPIBody,
@@ -582,7 +534,7 @@ export class RouteResultComponent {
                   },
                 };
 
-                console.log('📄 Final PDF Request Body:', pdf_body);
+               // console.log('📄 Final PDF Request Body:', pdf_body);
 
                 this.serviceResultTabFiltersService.getGeneratePDF(pdf_body).subscribe({
                   next: (resp: any) => {
@@ -728,7 +680,7 @@ export class RouteResultComponent {
                     let id: any = '';
                     const searchThrough = Auth_operations.getActiveformValues().activeForm;
                     const currentData = this.AllSetData[index];
-                    console.log(searchTypes.advanceSearch, "All set data", searchThrough)
+                   
                     switch (this.searchThrough) {
                       case searchTypes.chemicalStructure:
                       case searchTypes.intermediateSearch:
@@ -785,7 +737,6 @@ export class RouteResultComponent {
                           body: body_main,
                         };
                       }
-                      console.log(this.searchThrough, searchTypes.advanceSearch, "Api main ", API_MAIN)
                       try {
                         this.serviceResultTabFiltersService.getGeneratePDF(API_MAIN).subscribe({
                           next: (resp: any) => {
