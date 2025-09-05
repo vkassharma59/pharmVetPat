@@ -306,7 +306,7 @@ export class TechnicalRoutesCardComponent {
       const baseUrl = window.location.origin;
       // console.log("🌍 Base URL (Synthesis):", baseUrl);
   
-      window.open(`${baseUrl}/pharma-database`, "_blank");
+      window.open(`${baseUrl}`, "_blank");
     } else {
       // console.warn("⚠️ CAS RN not matched in line:", line);
     }
@@ -325,7 +325,7 @@ export class TechnicalRoutesCardComponent {
       const baseUrl = window.location.origin;
       // console.log("🌍 Base URL (Intermediate):", baseUrl);
   
-      window.open(`${baseUrl}/pharma-database`, "_blank");
+      window.open(`${baseUrl}`, "_blank");
     } else {
       // console.warn("⚠️ CAS RN not matched in line:", line);
     }

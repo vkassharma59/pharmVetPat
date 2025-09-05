@@ -302,14 +302,14 @@ export class RouteResultComponent {
   //   return '';
   // }
   getFirstProductName(tabData: any): string {
-    console.log('Tab Data:', tabData);
-    console.log('Initial Tab:', this.initialTab);
+    // console.log('Tab Data:', tabData);
+    // console.log('Initial Tab:', this.initialTab);
 
     if (!tabData || !this.initialTab?.name) return '';
     if (!tabData || !this.initialTab?.name) return '';
 
     const tabObj = tabData[this.initialTab.name];   // 👈 fixed: activeTab ki jagah initialTab
-    console.log('Tab Object:', tabObj);
+    // console.log('Tab Object:', tabObj);
 
     if (!tabObj) return '';
     if (!tabObj) return '';
