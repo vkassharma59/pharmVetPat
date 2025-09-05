@@ -279,9 +279,11 @@ export class RouteResultComponent {
   getFirstProductName(tabData: any): string {
     // console.log('Tab Data:', tabData);
     // console.log('Initial Tab:', this.initialTab);
+
     if (!tabData || !this.initialTab?.name) return '';
     const tabObj = tabData[this.initialTab.name];   // 👈 fixed: activeTab ki jagah initialTab
     // console.log('Tab Object:', tabObj);
+
     if (!tabObj) return '';
     // Step 2: Agar direct array hai
     if (Array.isArray(tabObj) && tabObj.length > 0) {
