@@ -433,17 +433,183 @@ export class RouteResultComponent {
     return 25;
   }
 
-  handleGeneratePDF() {
+  // handleGeneratePDF() {
+  //   this.generatePDFloader = true;
+  //   this.handleSetLoading.emit(true);
+
+  //   const localPrivilege = localStorage.getItem('priviledge_json');
+  //   const parsedPrivilege = JSON.parse(localPrivilege || '');
+  //   let todays_limit: any = '';
+
+  //   this.userPriviledgeService.getUserPriviledgesData().subscribe({
+  //     next: (res: any) => {
+  //       if (res?.data?.user_info) {
+  //         const userInfo = res.data.user_info;
+  //         this.userAuth = {
+  //           name: userInfo.name,
+  //           email: userInfo.email,
+  //           user_id: userInfo.user_id,
+  //           auth_token: userInfo.auth_token,
+  //         };
+  //         const privilegeKey = `user_${this.userAuth.user_id}`;
+  //         const userPrivilege = userInfo?.privilege_json?.[privilegeKey];
+  //         if (typeof window !== 'undefined' && window.localStorage && userPrivilege) {
+  //           localStorage.setItem('priviledge_json', JSON.stringify(userPrivilege));
+  //         }
+  //         const pharmaPrivilege = userPrivilege?.['pharmvetpat-mongodb'];
+  //         // if (
+  //         //   !pharmaPrivilege ||
+  //         //   pharmaPrivilege?.SplitDownload === 'false' ||
+  //         //   !pharmaPrivilege?.DownloadCount ||
+  //         //   pharmaPrivilege?.DownloadCount == 0 || "0"
+  //         // ) {
+  //         //   this.handleSetLoading.emit(false);
+  //         //   this.OpenPriviledgeModal.emit(
+  //         //     'Report download is only allowed with premium ID, please upgrade to a premium account.'
+  //         //   );
+  //         //   this.generatePDFloader = false;
+  //         //   return;
+  //         // }
+  //         if (!pharmaPrivilege || pharmaPrivilege.SplitDownload === 'false') {
+  //           // If SplitDownload is false → hide download button in UI
+  //           // this.showDownloadButton = false;
+  //           this.handleSetLoading.emit(false);
+  //           this.generatePDFloader = false;
+  //           return;
+  //         }
+
+  //         if (
+  //           !pharmaPrivilege.DownloadCount ||
+  //           pharmaPrivilege.DownloadCount === 0 ||
+  //           pharmaPrivilege.DownloadCount === "0"
+  //         ) {
+  //           // If DownloadCount is 0 → show error
+  //           this.handleSetLoading.emit(false);
+  //           this.OpenPriviledgeModal.emit(
+  //             'Your daily download limit is over for this platform.'
+  //             // 'Report download is only allowed with premium ID, please upgrade to a premium account.'
+  //           );
+  //           this.generatePDFloader = false;
+  //           return;
+  //         }
+  //         this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
+  //           next: (res: any) => {
+  //             if (res?.data) {
+  //               todays_limit = res.data;
+  //               const remaining = pharmaPrivilege.DailyDownloadLimit - todays_limit.downloadCount;
+  //               if (remaining <= 0) {
+  //                 this.handleSetLoading.emit(false);
+  //                 this.OpenPriviledgeModal.emit(
+  //                   'Your daily download limit is over for this platform.'
+  //                 );
+  //                 this.generatePDFloader = false;
+  //                 return;
+  //               }
+  //               const searchThrough = Auth_operations.getActiveformValues()?.activeForm;
+  //               const dataItem = this.dataItem?.[this.resultTabWithKeys.productInfo.name];
+  //               let body_main: any = {
+  //                 report_download: true,
+  //                 reports: [],
+  //                 limit: pharmaPrivilege.ReportLimit,
+  //               };
+  //               // Push report key if tab available
+  //               if (this.currentTabData?.name) {
+  //                 const tabName = this.currentTabData.name;
+  //                 const reportKey = this.tabNameToReportKey?.[tabName] || tabName;
+  //                 body_main.reports.push(reportKey);
+  //               }
+  //               if (body_main.reports.length === 0) {
+  //                 alert('Please select at least 1 option');
+  //                 this.handleSetLoading.emit(false);
+  //                 this.generatePDFloader = false;
+  //                 return;
+  //               }
+  //               //console.log(this.CurrentAPIBody, this.currentTabData.name, 'Selected Reports for PDF:', body_main.reports);
+  //               // Clone CurrentAPIBody and add required flags
+  //               const pdf_body = {
+  //                 ...this.CurrentAPIBody,
+  //                 body: {
+  //                   ...this.CurrentAPIBody?.body, // preserve existing search fields
+  //                   reports: [...body_main.reports],
+  //                   report_download: true,
+  //                   limit: this.getReportLimit(), //pharmaPrivilege.ReportLimit,
+  //                 },
+  //               };
+
+  //              // console.log('📄 Final PDF Request Body:', pdf_body);
+
+  //               this.serviceResultTabFiltersService.getGeneratePDF(pdf_body).subscribe({
+  //                 next: (resp: any) => {
+  //                   const blob = new Blob([resp.body!], { type: 'application/pdf' });
+  //                   const contentDisposition = resp.headers.get('content-disposition');
+
+  //                   // Generate dynamic filename
+  //                   const timestamp = new Date()
+  //                     .toISOString()
+  //                     .split('.')[0]
+  //                     .replace('T', '_')
+  //                     .replace(/:/g, '-');
+
+  //                   let filename = 'basicProductReport_' + timestamp + '.pdf';
+  //                   if (
+  //                     searchThrough === searchTypes.chemicalStructure ||
+  //                     searchThrough === searchTypes.synthesisSearch ||
+  //                     searchThrough === searchTypes.intermediateSearch
+  //                   ) {
+  //                     filename = 'technicalRouteReport_' + timestamp + '.pdf';
+  //                   }
+
+  //                   // Override if filename is present in response headers
+  //                   if (contentDisposition) {
+  //                     const match = contentDisposition.match(/filename="?([^"]+)"?/);
+  //                     if (match?.[1]) filename = match[1];
+  //                   }
+
+  //                   // Download PDF
+  //                   const fileURL = URL.createObjectURL(blob);
+  //                   const a = document.createElement('a');
+  //                   a.href = fileURL;
+  //                   a.download = filename;
+  //                   document.body.appendChild(a);
+  //                   a.click();
+  //                   document.body.removeChild(a);
+
+  //                   this.generatePDFloader = false;
+  //                   this.handleSetLoading.emit(false);
+  //                 },
+  //                 error: (err: any) => {
+  //                   this.generatePDFloader = false;
+  //                   this.handleSetLoading.emit(false);
+  //                   console.error('Error downloading the PDF', err);
+  //                 },
+  //               });
+  //             }
+  //           },
+  //           error: (e) => {
+  //             this.generatePDFloader = false;
+  //             this.handleSetLoading.emit(false);
+  //             console.error('Error getting today\'s privileges:', e);
+  //           },
+  //         });
+  //       }
+  //     },
+  //     error: (e) => {
+  //       this.generatePDFloader = false;
+  //       this.handleSetLoading.emit(false);
+  //       console.error('Error getting privileges:', e);
+  //     },
+  //   });
+  // }
+    handleGeneratePdf() {
     this.generatePDFloader = true;
     this.handleSetLoading.emit(true);
+    const priviledge = localStorage.getItem('priviledge_json');
+    const priviledge_data = JSON.parse(priviledge || '');
 
-    const localPrivilege = localStorage.getItem('priviledge_json');
-    const parsedPrivilege = JSON.parse(localPrivilege || '');
     let todays_limit: any = '';
-
     this.userPriviledgeService.getUserPriviledgesData().subscribe({
       next: (res: any) => {
-        if (res?.data?.user_info) {
+        if (res && res?.data && res?.data?.user_info) {
           const userInfo = res.data.user_info;
           this.userAuth = {
             name: userInfo.name,
@@ -451,152 +617,121 @@ export class RouteResultComponent {
             user_id: userInfo.user_id,
             auth_token: userInfo.auth_token,
           };
-          const privilegeKey = `user_${this.userAuth.user_id}`;
-          const userPrivilege = userInfo?.privilege_json?.[privilegeKey];
-          if (typeof window !== 'undefined' && window.localStorage && userPrivilege) {
-            localStorage.setItem('priviledge_json', JSON.stringify(userPrivilege));
-          }
-          const pharmaPrivilege = userPrivilege?.['pharmvetpat-mongodb'];
-          // if (
-          //   !pharmaPrivilege ||
-          //   pharmaPrivilege?.SplitDownload === 'false' ||
-          //   !pharmaPrivilege?.DownloadCount ||
-          //   pharmaPrivilege?.DownloadCount == 0 || "0"
-          // ) {
-          //   this.handleSetLoading.emit(false);
-          //   this.OpenPriviledgeModal.emit(
-          //     'Report download is only allowed with premium ID, please upgrade to a premium account.'
-          //   );
-          //   this.generatePDFloader = false;
-          //   return;
-          // }
-          if (!pharmaPrivilege || pharmaPrivilege.SplitDownload === 'false') {
-            // If SplitDownload is false → hide download button in UI
-            // this.showDownloadButton = false;
-            this.handleSetLoading.emit(false);
-            this.generatePDFloader = false;
-            return;
-          }
+          let priviledge = `user_${this.userAuth?.user_id}`;
 
           if (
-            !pharmaPrivilege.DownloadCount ||
-            pharmaPrivilege.DownloadCount === 0 ||
-            pharmaPrivilege.DownloadCount === "0"
+            typeof window !== 'undefined' &&
+            window.localStorage &&
+            userInfo?.priviledge_json
           ) {
-            // If DownloadCount is 0 → show error
+            localStorage.setItem(
+              'priviledge_json',
+              JSON.stringify(userInfo?.privilege_json[priviledge])
+            );
+          }
+          let priviledge_data = userInfo?.privilege_json[priviledge];
+          if (
+            !priviledge_data ||
+            priviledge_data?.['pharmvetpat-mongodb']?.Download === 'false' ||
+            priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == '' ||
+            priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == 0 ||
+            priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == '0'
+
+          ) {
             this.handleSetLoading.emit(false);
             this.OpenPriviledgeModal.emit(
               'Your daily download limit is over for this platform.'
-              // 'Report download is only allowed with premium ID, please upgrade to a premium account.'
+              // 'Report download is only allowed with premium ID, please updgrade to premium account.'
             );
             this.generatePDFloader = false;
+
             return;
+          } else {
+            this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
+              next: (res: any) => {
+                if (res && res?.data) {
+                  todays_limit = res.data;
+                  if (
+                    priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit -
+                    todays_limit?.downloadCount <=
+                    0
+                  ) {
+                    this.handleSetLoading.emit(false);
+                    this.OpenPriviledgeModal.emit(
+                      'Your daily download limit is over for this platform.'
+                    );
+                    this.generatePDFloader = false;
+                    return;
+                  }
+
+                  if (
+                    priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit -
+                    todays_limit?.downloadCount >
+                    0
+                  ) {
+                    let pdf_body = this.CurrentAPIBody;
+
+                    pdf_body.body['report_download'] = true;
+                    pdf_body.body['limit'] = this.getReportLimit();
+                    //  priviledge_data?.['pharmvetpat-mongodb']?.ReportLimit;
+
+                    this.serviceResultTabFiltersService
+                    .getGeneratePDF(
+                      pdf_body
+                    ).subscribe({
+                      next: (response: any) => {
+                        const file = new Blob([response.body], {
+                          type: 'application/pdf',
+                        });
+                        const contentDisposition = response.headers.get('content-disposition');
+                        const timestamp = new Date()
+                          .toISOString()
+                          .split('.')[0] // remove milliseconds
+                          .replace(/T/, '_') // replace T with _
+                          .replace(/:/g, '-'); // format time separator
+
+                        let filename = `Report_${timestamp}.pdf`;
+                        if (contentDisposition) {
+                          const match = contentDisposition.match(/filename="?([^"]+)"?/);
+                          if (match && match[1]) {
+                            filename = match[1];
+                          }
+                        }
+                        const fileURL = URL.createObjectURL(file);
+                        const a = document.createElement('a');
+                        a.href = fileURL;
+                        a.download = filename;
+                        document.body.appendChild(a); // Append anchor to body
+                        a.click(); // Trigger download
+                        document.body.removeChild(a); // Remove the anchor from body
+                        this.generatePDFloader = false;
+                        this.handleSetLoading.emit(false);
+                      },
+                      error: (err) => {
+                        this.generatePDFloader = false;
+                        this.handleSetLoading.emit(false);
+                        alert(err.response.message);
+                        console.error('Error downloading the PDF', err);
+                        // Handle error appropriately, e.g., show a notification to the user
+                      },
+                    });
+                  }
+                }
+              },
+              error: (err: any) => {
+                this.generatePDFloader = false;
+                this.handleSetLoading.emit(false);
+                console.error('Error downloading the PDF', err);
+                // Handle error appropriately, e.g., show a notification to the user
+              },
+            });
           }
-          this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
-            next: (res: any) => {
-              if (res?.data) {
-                todays_limit = res.data;
-                const remaining = pharmaPrivilege.DailyDownloadLimit - todays_limit.downloadCount;
-                if (remaining <= 0) {
-                  this.handleSetLoading.emit(false);
-                  this.OpenPriviledgeModal.emit(
-                    'Your daily download limit is over for this platform.'
-                  );
-                  this.generatePDFloader = false;
-                  return;
-                }
-                const searchThrough = Auth_operations.getActiveformValues()?.activeForm;
-                const dataItem = this.dataItem?.[this.resultTabWithKeys.productInfo.name];
-                let body_main: any = {
-                  report_download: true,
-                  reports: [],
-                  limit: pharmaPrivilege.ReportLimit,
-                };
-                // Push report key if tab available
-                if (this.currentTabData?.name) {
-                  const tabName = this.currentTabData.name;
-                  const reportKey = this.tabNameToReportKey?.[tabName] || tabName;
-                  body_main.reports.push(reportKey);
-                }
-                if (body_main.reports.length === 0) {
-                  alert('Please select at least 1 option');
-                  this.handleSetLoading.emit(false);
-                  this.generatePDFloader = false;
-                  return;
-                }
-                //console.log(this.CurrentAPIBody, this.currentTabData.name, 'Selected Reports for PDF:', body_main.reports);
-                // Clone CurrentAPIBody and add required flags
-                const pdf_body = {
-                  ...this.CurrentAPIBody,
-                  body: {
-                    ...this.CurrentAPIBody?.body, // preserve existing search fields
-                    reports: [...body_main.reports],
-                    report_download: true,
-                    limit: this.getReportLimit(), //pharmaPrivilege.ReportLimit,
-                  },
-                };
-
-               // console.log('📄 Final PDF Request Body:', pdf_body);
-
-                this.serviceResultTabFiltersService.getGeneratePDF(pdf_body).subscribe({
-                  next: (resp: any) => {
-                    const blob = new Blob([resp.body!], { type: 'application/pdf' });
-                    const contentDisposition = resp.headers.get('content-disposition');
-
-                    // Generate dynamic filename
-                    const timestamp = new Date()
-                      .toISOString()
-                      .split('.')[0]
-                      .replace('T', '_')
-                      .replace(/:/g, '-');
-
-                    let filename = 'basicProductReport_' + timestamp + '.pdf';
-                    if (
-                      searchThrough === searchTypes.chemicalStructure ||
-                      searchThrough === searchTypes.synthesisSearch ||
-                      searchThrough === searchTypes.intermediateSearch
-                    ) {
-                      filename = 'technicalRouteReport_' + timestamp + '.pdf';
-                    }
-
-                    // Override if filename is present in response headers
-                    if (contentDisposition) {
-                      const match = contentDisposition.match(/filename="?([^"]+)"?/);
-                      if (match?.[1]) filename = match[1];
-                    }
-
-                    // Download PDF
-                    const fileURL = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = fileURL;
-                    a.download = filename;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-
-                    this.generatePDFloader = false;
-                    this.handleSetLoading.emit(false);
-                  },
-                  error: (err: any) => {
-                    this.generatePDFloader = false;
-                    this.handleSetLoading.emit(false);
-                    console.error('Error downloading the PDF', err);
-                  },
-                });
-              }
-            },
-            error: (e) => {
-              this.generatePDFloader = false;
-              this.handleSetLoading.emit(false);
-              console.error('Error getting today\'s privileges:', e);
-            },
-          });
         }
       },
-      error: (e) => {
+      error: (err: any) => {
         this.generatePDFloader = false;
-        this.handleSetLoading.emit(false);
-        console.error('Error getting privileges:', e);
+        console.error('Error downloading the PDF', err);
+        // Handle error appropriately, e.g., show a notification to the user
       },
     });
   }
