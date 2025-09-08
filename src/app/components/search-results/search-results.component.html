@@ -22,6 +22,7 @@
     *ngIf="CurrentAPIBody?.count > 25 && activeIndex === null"
     (showDataResultFunction)="showDataResultFunction.emit($event)"
     [CurrentAPIBody]="CurrentAPIBody" (OpenPriviledgeModal)="openPriviledgeModal($event)"
+    
     [paginationRerenderTrigger]="paginationRerenderTrigger" (setLoading)="handleLoadingState($event)">
   </chem-pagination> 
 </ng-container>
