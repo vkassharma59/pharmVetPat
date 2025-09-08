@@ -31,29 +31,47 @@ export class PaginationComponent {
 
   ResultDataCount = 0;
 
-  ngOnInit(): void {
-    this.ResultDataCount = this.CurrentAPIBody.count;
-    this.PageArray = [];
-    for (
-      let i = 1;
-      i <= Math.min(Math.ceil(this.ResultDataCount / 25), 5);
-      i++
-    ) {
-      this.PageArray.push(i);
-    }
+  // ngOnInit(): void {
+  //   this.ResultDataCount = this.CurrentAPIBody.count;
+  //   this.PageArray = [];
+  //   for (
+  //     let i = 1;
+  //     i <= Math.min(Math.ceil(this.ResultDataCount / 25), 5);
+  //     i++
+  //   ) {
+  //     this.PageArray.push(i);
+  //   }
 
-    this.totalPageNumbers = this.ResultDataCount;
+  //   this.totalPageNumbers = this.ResultDataCount;
+  // }
+
+  ngOnInit(): void {
+  this.ResultDataCount = this.CurrentAPIBody.count;
+  this.PageArray = [];
+  for (let i = 1; i <= Math.min(Math.ceil(this.ResultDataCount / 25), 5); i++) {
+    this.PageArray.push(i);
   }
+
+  this.totalPageNumbers = this.ResultDataCount;
+  this.MainPageNo = this.CurrentAPIBody?.body?.page_no || 1; // 👈 fix
+}
+
+  // ngOnChanges(changes: SimpleChanges) {
+  //   if (changes['paginationRerenderTrigger']) {
+  //     // console.log(
+  //     //   'Data changed:', 
+  //     //   changes['paginationRerenderTrigger'].currentValue
+  //     // );
+  //   }
+  //   this.handleChangeDataValues();
+  // }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['paginationRerenderTrigger']) {
-      // console.log(
-      //   'Data changed:', 
-      //   changes['paginationRerenderTrigger'].currentValue
-      // );
-    }
+  if (changes['paginationRerenderTrigger'] || changes['CurrentAPIBody']) {
     this.handleChangeDataValues();
+    this.MainPageNo = this.CurrentAPIBody?.body?.page_no || 1; // 👈 fix
   }
+}
 
   handleFirstClick = () => {
     const pageCount = Math.ceil(this.ResultDataCount / 25);
@@ -130,7 +148,7 @@ export class PaginationComponent {
   constructor(
     private http: HttpClient,
     private ServicePaginationService: ServicePaginationService
-  ) {}
+  ) { }
 
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -143,8 +161,9 @@ export class PaginationComponent {
   handlePageClick = (page: number) => {
     this.setLoading.emit(true);
     this.CurrentAPIBody.body.page_no = page;
+    console.log("this.CurrentAPIBody.body.page_no no", this.CurrentAPIBody.body.page_no)
     this.MainPageNo = page;
-
+    console.log("page no", this.MainPageNo)
     this.ServicePaginationService.getNextPaginationData(
       this.CurrentAPIBody
     ).subscribe({

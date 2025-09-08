@@ -46,8 +46,8 @@ export class EuropeApprovalCardComponent implements OnInit, OnDestroy {
             column_list[this.resultTabs.europeApproval.name][i].name;
         }
       }
-      const tabName = this.resultTabs?.europeApproval?.name || 'EUROPE_APPROVAL';
-      this.europe_approval_column = column_list?.[tabName];
+      // const tabName = this.resultTabs?.europeApproval?.name || 'EUROPE_APPROVAL';
+      // this.europe_approval_column = column_list?.[tabName];
     }
   }
 
@@ -72,12 +72,9 @@ export class EuropeApprovalCardComponent implements OnInit, OnDestroy {
   toggleMoreInfo() {
     this.MoreInfo = !this.MoreInfo;
   }
-  getColumnName(field: string): string {
-    const colName = this.europe_approval_column?.[field];
-    return colName || field.replace(/_/g, ' ').toUpperCase(); // fallback display
+  getColumnName(value: any) {
+      return this.europe_approval_column?.[value];
   }
-
-
   getPubchemId(value: any) {
     return `https://pubchem.ncbi.nlm.nih.gov/#query=${value}`;
   }
