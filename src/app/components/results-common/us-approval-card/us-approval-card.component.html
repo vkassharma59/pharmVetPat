@@ -261,9 +261,21 @@
           </p>
         </div>
 
-        <h6 class="font-bold text-indigo-900">APPROVAL DATE: <i class="fa-solid fa-copy hover:cursor-pointer"
+         <div class="col-md-9 col-sm-8" *ngIf="_data?.approval_date && getColumnName('approval_date')">
+          <h6 class="font-bold text-indigo-900">
+            {{ getColumnName('approval_date') }}
+            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+              (click)="handleCopy(_data?.approval_date, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="text-wrap max-h-12 whitespace-normal">
+            {{ _data?.approval_date }}
+          </p>
+        </div>
+        <!-- <h6 class="font-bold text-indigo-900">APPROVAL DATE: <i class="fa-solid fa-copy hover:cursor-pointer"
             (click)="copyText('APPROVALDATE',$event)" title="Copy to clipboard"></i></h6>
-        <p id="APPROVALDATE">19-Dec-2017</p>
+        <p class="text-wrap max-h-12 whitespace-normal">{{_data?.approval_date}}</p> -->
 
 
       </div>
