@@ -84,11 +84,11 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
       const column_list = Auth_operations.getColumnList();
 
       if (column_list[this.resultTabs.chemicalDirectory?.name]?.length > 0) {
-        column_list[this.resultTabs.chemicalDirectory.name].forEach((col: any) => {
-          this.chem_column[col.value] = col.name;
-        });
+        for (let i = 0; i < column_list[this.resultTabs.chemicalDirectory.name].length; i++) {
+          this.chem_column[column_list[this.resultTabs.chemicalDirectory.name][i].value] =
+            column_list[this.resultTabs.chemicalDirectory.name][i].name;
+        }
       }
-
       this._data = value;
     }
   }
@@ -180,18 +180,19 @@ export class ChemicalDirectoryDataCardComponent implements OnInit, OnDestroy {
     this.MoreApplicationInfo = !this.MoreApplicationInfo;
   }
 
-  openImageModal(imageUrl: string,showZoomControls: boolean): void {
+  openImageModal(imageUrl: string, showZoomControls: boolean): void {
     this.dialog.open(ImageModalComponent, {
       width: 'auto',
       height: 'auto',
       panelClass: 'full-screen-modal',
-      data: { dataImage: imageUrl ,
-        showZoomControls: showZoomControls 
+      data: {
+        dataImage: imageUrl,
+        showZoomControls: showZoomControls
       },
     });
   }
   onImageError(event: Event) {
     const element = event.target as HTMLImageElement;
     element.src = '/assets/no-image.jpg'; // Fallback image path
-    }
+  }
 }

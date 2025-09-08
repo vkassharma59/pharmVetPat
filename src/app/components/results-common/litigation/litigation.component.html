@@ -1,5 +1,5 @@
 <ng-container *ngIf="_data.length > 0; else noData">
-  <div class="child-route-count-wrapper justify-end py-2">
+  <div class="child-route-count-wrapper justify-end ">
     <!-- <button class="child-route-count child-route-count-btn">
       Total Records : {{ currentChildAPIBody?.count }}
     </button> -->
@@ -46,7 +46,7 @@
 
     </div>
 
-    <app-litigation-card class="card mb-4" style="background-color: #f7fcf2;" [data]="dataItem"></app-litigation-card>
+    <app-litigation-card class="card" style="background-color: #f7fcf2;" [data]="dataItem"></app-litigation-card>
   </ng-container>
   <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"
     (handleChangeTabData)="handleResultTabData.emit($event)"
