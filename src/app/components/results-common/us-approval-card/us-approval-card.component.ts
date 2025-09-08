@@ -53,9 +53,19 @@ export class UsApprovalCardComponent {
           this.us_column2[col.value] = col.name;
         }
       }
+    if (column_list[this.resultTabs.usApproval?.name]?.columns?.length > 0) {
+        for (let col of column_list[this.resultTabs.usApproval?.name]?.columns) {
+          this.us_approval_column[col.value] = col.name;
+        }
+      }
+      // if (column_list[this.resultTabs.usApproval?.name]?.length > 0) {
+      //   for (let col of column_list[this.resultTabs.usApproval?.name]) {
+      //     this.us_approval_column[col.value] = col.name;
+      //   }
+      // }
     
-      const tabName = this.resultTabs?.usApproval?.name || 'US_APPROVAL';
-      this.us_approval_column = column_list?.[tabName];
+      // const tabName = this.resultTabs?.usApproval?.name || 'US_APPROVAL';
+      // this.us_approval_column = column_list?.[tabName];
     }
     
   }
@@ -139,10 +149,10 @@ export class UsApprovalCardComponent {
   toggleMoreInfo() {
     this.MoreInfo = !this.MoreInfo;
   }
-  getColumnName(field: string): string {
-    const colName = this.us_approval_column?.[field];
+  getColumnName(value:any) {
+    const colName = this.us_approval_column?.[value];
     // console.log(`getColumnName(${field}) =>`, colName);
-    return colName || field.replace(/_/g, ' ').toUpperCase(); // fallback display
+    return colName // fallback display
   }
 
 
