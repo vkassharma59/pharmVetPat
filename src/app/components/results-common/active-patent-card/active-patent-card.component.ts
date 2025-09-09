@@ -39,7 +39,7 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
   isExportingCSV: boolean = false;
   isExportingExcel: boolean = false;
   data?: {
-    data?: any[]; 
+    data?: any[];
   };
   _currentChildAPIBody: any;
   displayedColumns: string[] = [];
@@ -51,9 +51,9 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
   noMatchingData: boolean = false; columnsSearch: { [key: string]: string } = {};
   multiSortOrder: { column: number, dir: 'asc' | 'desc' }[] = [];
   ListView: boolean = true;
-  viewMode: 'list' | 'grid' |'detail' = 'grid'; 
+  viewMode: 'list' | 'grid' | 'detail' = 'grid';
   items: any[] = [];       // API se pura list ayega
-  selectedItem: any = null; 
+  selectedItem: any = null;
   GridView: boolean = false;
   globalSearchValue: string = '';
   columns: any;
@@ -87,13 +87,13 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
       this.displayedColumns = [];
       this.columnHeaders = {};
       this.filterableColumns = [];
-  
+
       for (const col of this.columnDefs) {
         const colValue = col.value;
         const hasData = this.rowData?.some(row =>
           row[colValue] !== null && row[colValue] !== undefined && row[colValue] !== ''
         );
-  
+
         if (hasData) {
           this.displayedColumns.push(colValue);
           this.columnHeaders[colValue] = col.label;
@@ -101,23 +101,23 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
         }
       }
     }
-  
+
     if (this.rowData) {
       this.dataSource.data = this.rowData;
       this.noMatchingData = this.rowData.length === 0;
-  
+
       // 🔥 IMPORTANT: Reset selection when rowData changes
       if (this.rowData.length > 0) {
         this.selectedItem = this.rowData[0]; // auto-select first
       } else {
         this.selectedItem = null; // nothing to show
       }
-  
+
       // Scroll detail panel to top
       this.resetScroll();
     }
   }
-  
+
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -134,7 +134,7 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
     this.mainSearchService.getactivePatentColumnList().subscribe((columns: any) => {
       this.columns = columns; // yeh table ke liye headers hain
     });
-  
+
     // Fir data le aao
     const props = {
       searchText: '',   // agar kuch search karna ho
@@ -142,12 +142,12 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
       page: 1,
       pageSize: 50
     };
-  
+
     this.mainSearchService.activePatentSearchSpecific(props).subscribe((response: any) => {
       this.items = response.data;  // yahan se actual rows ka data milega
     });
   }
- 
+
   showDetails(item: any, index: number) {
     this.selectedItem = item;
     this.selectedIndex = index + 1; // numbering maintain
@@ -212,13 +212,18 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
     } else {
       delete this.columnsSearch[columnKey];
     }
-
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
     this.fetchData();
   }
 
   clearFilter(columnKey: string, inputRef: HTMLInputElement) {
     inputRef.value = '';
     delete this.columnsSearch[columnKey];
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
     this.fetchData();
   }
   onCustomSort(column: number) {
@@ -294,7 +299,11 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
     const globalSearch = isGlobalSearch
       ? { value: this.globalSearchValue.trim() }
       : null;
-
+    if (isGlobalSearch || Object.keys(this.columnsSearch).length > 0) {
+      if (this.paginator) {
+        this.paginator.firstPage();
+      }
+    }
     const start = this.paginator ? this.paginator.pageIndex * this.paginator.pageSize : 0;
     const pageno = this.paginator ? this.paginator.pageIndex + 1 : 1;
 

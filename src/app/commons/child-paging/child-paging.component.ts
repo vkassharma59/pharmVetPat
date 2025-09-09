@@ -68,67 +68,33 @@ export class ChildPagingComponent implements OnInit {
     this.handlePageClick(this.MainPageNo);
   };
 
-  // handleNextclick = () => {
-  //   console.log('➡️ handleNextclick triggered');
-  
-  //   const count = Math.ceil(this.count / 25); // total pages
-  //   const currentLastPage = this.PageArray[this.PageArray.length - 1] ?? 0;
-  
-  //   console.log('📦 Total Count:', this.count);
-  //   console.log('📄 Total Pages:', count);
-  //   console.log('📑 Current PageArray:', this.PageArray);
-  //   console.log('📍 Current Last Page:', currentLastPage);
-  
-  //   if (currentLastPage >= count) {
-  //     console.log('⛔ Already at last page, no action needed');
-  //     return;
-  //   }
-  
-  //   this.MainPageNo = currentLastPage + 1;
-  
-  //   const remain = count - currentLastPage;
-  //   console.log('🔢 Remaining pages:', remain);
-  
-  //   this.PageArray = [];
-  
-  //   for (
-  //     let i = this.MainPageNo;
-  //     i < Math.min(this.MainPageNo + 5, this.MainPageNo + remain);
-  //     i++
-  //   ) {
-  //     this.PageArray.push(i);
-  //   }
-  
-  //   console.log('✅ Updated PageArray:', this.PageArray);
-  
-  //   this.handlePageClick(this.MainPageNo);
-  // };
+
   handleNextclick = () => {
-  const totalPages = Math.ceil(this.count / 25);
+    const totalPages = Math.ceil(this.count / 25);
 
-  // 🚫 Already at last page
-  if (this.MainPageNo >= totalPages) {
-    return;
-  }
-
-  // ✅ Move to next page
-  this.MainPageNo++;
-
-  const firstPageInArray = this.PageArray[0];
-  const lastPageInArray = this.PageArray[this.PageArray.length - 1];
-
-  // 🔄 Shift PageArray window only if MainPageNo goes beyond current last page
-  if (this.MainPageNo > lastPageInArray) {
-    this.PageArray = [];
-    const startPage = Math.min(this.MainPageNo, totalPages - 4);
-    for (let i = startPage; i <= Math.min(startPage + 4, totalPages); i++) {
-      this.PageArray.push(i);
+    // 🚫 Already at last page
+    if (this.MainPageNo >= totalPages) {
+      return;
     }
-  }
 
-  // 🔄 Call API for new page
-  this.handlePageClick(this.MainPageNo);
-};
+    // ✅ Move to next page
+    this.MainPageNo++;
+
+    const firstPageInArray = this.PageArray[0];
+    const lastPageInArray = this.PageArray[this.PageArray.length - 1];
+
+    // 🔄 Shift PageArray window only if MainPageNo goes beyond current last page
+    if (this.MainPageNo > lastPageInArray) {
+      this.PageArray = [];
+      const startPage = Math.min(this.MainPageNo, totalPages - 4);
+      for (let i = startPage; i <= Math.min(startPage + 4, totalPages); i++) {
+        this.PageArray.push(i);
+      }
+    }
+
+    // 🔄 Call API for new page
+    this.handlePageClick(this.MainPageNo);
+  };
 
 
 
@@ -183,6 +149,8 @@ export class ChildPagingComponent implements OnInit {
 
     const pageCount = Math.ceil(this.count / 25);
     const currentPageindex = this._currentChildAPIBody?.page_no || 1;
+    // ✅ make sure MainPageNo and API body are always in sync
+    this.MainPageNo = currentPageindex;
     const pageSetStartIndex = (currentPageindex - 1) - ((currentPageindex - 1) % 5) + 1;
 
     for (let i = pageSetStartIndex; i <= Math.min(pageCount, pageSetStartIndex + 4); i++) {
@@ -197,6 +165,13 @@ export class ChildPagingComponent implements OnInit {
     console.log("Allowed pages based on report limit:", this.reportLimitPages);
   }
   ngOnChanges(): void {
+    if (this._currentChildAPIBody?.page_no) {
+      this.MainPageNo = this._currentChildAPIBody.page_no;  // ✅ set current page
+    }
     this.handleChangeData();
   }
+
+  // ngOnChanges(): void {
+  //   this.handleChangeData();
+  // }
 }

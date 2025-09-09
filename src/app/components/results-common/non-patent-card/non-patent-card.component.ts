@@ -149,13 +149,18 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
     } else {
       delete this.columnsSearch[columnKey];
     }
-
+if (this.paginator) {
+      this.paginator.firstPage();
+    }
     this.fetchData();
   }
 
   clearFilter(columnKey: string, inputRef: HTMLInputElement) {
     inputRef.value = '';
     delete this.columnsSearch[columnKey];
+     if (this.paginator) {
+      this.paginator.firstPage();
+    }
     this.fetchData();
   }
   onCustomSort(column: number) {
@@ -232,7 +237,12 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
     const globalSearch = isGlobalSearch
       ? { value: this.globalSearchValue.trim() }
       : null;
-
+// ✅ Agar filter ya search applied hai → reset page to 1
+    if (isGlobalSearch || Object.keys(this.columnsSearch).length > 0) {
+      if (this.paginator) {
+        this.paginator.firstPage();
+      }
+    }
     const start = this.paginator ? this.paginator.pageIndex * this.paginator.pageSize : 0;
     const pageno = this.paginator ? this.paginator.pageIndex + 1 : 1;
 

@@ -10,7 +10,7 @@
       <button *ngIf="showBackButton" (click)="handleBack1()" style="color: white; border-color: white;font-weight: 500;"
         class="btn btn-outline-primary btn-sm">
         Back To List
-        
+
       </button>
 
       <span *ngIf="showBackButton" class="divider">&nbsp;|&nbsp;</span>
@@ -62,7 +62,8 @@
       </button>
 
       <!-- Agar tab technicalRoutes nahi hai -->
-      <button *ngIf="currentTabData?.name !== 'technicalRoutes' && 
+      <button *ngIf="currentTabData?.name !== 'technicalRoutes' &&  currentTabData?.name !== 'impPatents' 
+         && currentTabData?.name !== 'chemiTracker' &&
          ((index==0 && !generatePDFloader && isFullDownload && searchThrough !== 'synthesis-search') 
            || (showTotalAfterTab && showBackButton))" (click)="openDownloadModal(index)" [disabled]="generatePDFloader"
         title="Full Report Download" class="btn btn-outline-primary btn-sm me-2"
@@ -70,8 +71,6 @@
         <i class="fas fa-download"></i>
         Full Report Download
       </button>
-
-
       <div *ngIf="index==0 && searchThrough != 'synthesis-search'  || showTotalAfterTab && showBackButton">
         <button (click)="OpenQueryModal()" style="color: white; border-color: white;"
           class="btn btn-outline-primary btn-sm me-2">Raise
@@ -85,7 +84,7 @@
 
   <!-- Main Content Section -->
   <div *ngIf="shouldShowDownloadButton()" style="display: flex; justify-content: flex-end;">
-    <button *ngIf="isSplitDownload" (click)="openDownloadModal(index)" title="Download Single Route"
+    <button *ngIf="isSplitDownload" (click)="handleGeneratePdf()" title="Download Single Route"
       class="btn btn-outline-primary btn-sm ">
       <i class="fas fa-download"></i>
     </button>
@@ -264,8 +263,8 @@
             <label class="flex items-center"
               *ngIf="!['gppdDb','spcDb','nonPatentLandscape','eximData','activePatent'].includes(tab.name)">
               <input type="checkbox" [(ngModel)]="SingleDownloadCheckbox[tab.name]"
-                [disabled]="isDisabled() && !SingleDownloadCheckbox[tab.name]"
                 class="form-checkbox text-blue-600 h-5 w-5" />
+              <!-- [disabled]="isDisabled() && !SingleDownloadCheckbox[tab.name]" -->
               <span class="ml-2 text-gray-700">{{ tab.label }}</span>
             </label>
           </ng-container>
