@@ -147,6 +147,12 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     } else {
       delete this.columnsSearch[columnKey];
     }
+    // ✅ Jab bhi filter lagaye → page no = 1
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+
+    this.fetchData();
   }
 
   searchInColumn(column: any, filterInput: HTMLInputElement, event: MouseEvent): void {
@@ -165,6 +171,10 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     } else {
       delete this.columnsSearch[columnKey];
     }
+    // ✅ Reset page number
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
     this.fetchData();
   }
   getCompanyLogo(value: any): string {
@@ -178,6 +188,10 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
   clearFilter(columnKey: string, inputRef: HTMLInputElement) {
     inputRef.value = '';
     delete this.columnsSearch[columnKey];
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+
     this.fetchData();
   }
 
@@ -248,7 +262,12 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     const globalSearch = isGlobalSearch
       ? { value: this.globalSearchValue.trim() }
       : null;
-
+    // ✅ Agar filter ya search applied hai → reset page to 1
+    if (isGlobalSearch || Object.keys(this.columnsSearch).length > 0) {
+      if (this.paginator) {
+        this.paginator.firstPage();
+      }
+    }
     const start = this.paginator ? this.paginator.pageIndex * this.paginator.pageSize : 0;
     const pageno = this.paginator ? this.paginator.pageIndex + 1 : 1;
 
