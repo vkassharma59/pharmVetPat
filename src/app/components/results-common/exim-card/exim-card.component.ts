@@ -141,13 +141,19 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
     } else {
       delete this.columnsSearch[columnKey];
     }
-
+// ✅ Reset page number
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
     this.fetchData();
   }
 
-   clearFilter(columnKey: string, inputRef: HTMLInputElement) {
+  clearFilter(columnKey: string, inputRef: HTMLInputElement) {
     inputRef.value = '';
     delete this.columnsSearch[columnKey];
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
     this.fetchData();
   }
   onCustomSort(column: number) {
@@ -227,7 +233,11 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
     const globalSearch = isGlobalSearch
       ? { value: this.globalSearchValue.trim() }
       : null;
-
+    if (isGlobalSearch || Object.keys(this.columnsSearch).length > 0) {
+      if (this.paginator) {
+        this.paginator.firstPage();
+      }
+    }
     const start = this.paginator ? this.paginator.pageIndex * this.paginator.pageSize : 0;
     const pageno = this.paginator ? this.paginator.pageIndex + 1 : 1;
 
@@ -252,14 +262,14 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
   onFlagError(event: any) {
     event.target.src = 'assets/images/flag.png';
   }
-isISODate(value: any): boolean {
-  if (typeof value !== 'string') return false;
+  isISODate(value: any): boolean {
+    if (typeof value !== 'string') return false;
 
-  // ISO format flexible pattern (with optional milliseconds/timezone)
-  const isoPattern = /^\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
+    // ISO format flexible pattern (with optional milliseconds/timezone)
+    const isoPattern = /^\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
 
-  return isoPattern.test(value) && !isNaN(Date.parse(value.replace(' ', 'T')));
-}
+    return isoPattern.test(value) && !isNaN(Date.parse(value.replace(' ', 'T')));
+  }
 
 
   resetToDefault() {
