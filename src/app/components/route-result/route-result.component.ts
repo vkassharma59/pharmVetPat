@@ -188,7 +188,7 @@ export class RouteResultComponent {
 
   getCurrentTabCount(): number {
     const tabName = this.currentTabData?.name;
-      // Agar child API count hai to wahi return karo
+    // Agar child API count hai to wahi return karo
     if (tabName && this.currentChildAPIBody?.[tabName]?.count !== undefined) {
       return this.currentChildAPIBody[tabName].count;
     }
@@ -201,19 +201,19 @@ export class RouteResultComponent {
     this.currentTabData = this.initialTab;
     this.activeTab = this.initialTab?.name || '';
     if (this.CurrentAPIBody) {
-    this.CurrentAPIBody.body = {
-      ...this.CurrentAPIBody.body,
-     currentTab: this.activeTab  
-    };
-    this.CurrentAPIBody.currentTab = this.activeTab;
-  }
+      this.CurrentAPIBody.body = {
+        ...this.CurrentAPIBody.body,
+        currentTab: this.activeTab
+      };
+      this.CurrentAPIBody.currentTab = this.activeTab;
+    }
     this.backFunction1.emit();
   }
   handleBack() {
     this.sharedRosService.clearSearchData();
     this.backFunction.emit(false);
   }
-  
+
   shouldShowDownloadButton(): boolean {
     const searchType = this.searchThrough;
     const currentTabName = this.activeTab;   // ✅ direct activeTab use karo
@@ -240,7 +240,7 @@ export class RouteResultComponent {
   // getFirstProductName(tabData: any): string {
   //   if (!tabData || !this.initialTab?.name) return '';
   //   const tabObj = tabData[this.initialTab.name];   // 👈 fixed: activeTab ki jagah initialTab
-   
+
   //   if (!tabObj) return '';
   //   // Step 2: Agar direct array hai
   //   if (Array.isArray(tabObj) && tabObj.length > 0) {
@@ -364,7 +364,7 @@ export class RouteResultComponent {
     this.activeTab = data.name;
 
     this.showTotalAfterTab = true;
-   
+
   }
 
   OpenQueryModal() {
@@ -388,13 +388,13 @@ export class RouteResultComponent {
   }
   fetchAndStoreVerticalLimits(): void {
     if (this.limitsFetched) {
-      
+
       return;
     }
     this.userPriviledgeService.getverticalcategoryData().subscribe({
       next: (res: any) => {
         const verticals = res?.data?.verticals;
-       
+
         if (Array.isArray(verticals)) {
           localStorage.setItem('vertical_limits', JSON.stringify(verticals));
 
@@ -598,7 +598,7 @@ export class RouteResultComponent {
   //     },
   //   });
   // }
-    handleGeneratePdf() {
+  handleGeneratePdf() {
     this.generatePDFloader = true;
     this.handleSetLoading.emit(true);
     const priviledge = localStorage.getItem('priviledge_json');
@@ -671,48 +671,52 @@ export class RouteResultComponent {
 
                     pdf_body.body['report_download'] = true;
                     pdf_body.body['limit'] = this.getReportLimit();
+                    if (this.CurrentAPIBody?.currentTab === 'technicalRoutes') {
+                      pdf_body.api_url = 'https://apilive.chemrobotics.com/technical-routes/synthesis-search';
+                    }
                     //  priviledge_data?.['pharmvetpat-mongodb']?.ReportLimit;
-
+                    // console.log('current tab data', this.CurrentAPIBody);
+                    // console.log('pdf_body', pdf_body);
                     this.serviceResultTabFiltersService
-                    .getGeneratePDF(
-                      pdf_body
-                    ).subscribe({
-                      next: (response: any) => {
-                        const file = new Blob([response.body], {
-                          type: 'application/pdf',
-                        });
-                        const contentDisposition = response.headers.get('content-disposition');
-                        const timestamp = new Date()
-                          .toISOString()
-                          .split('.')[0] // remove milliseconds
-                          .replace(/T/, '_') // replace T with _
-                          .replace(/:/g, '-'); // format time separator
+                      .getGeneratePDF(
+                        pdf_body
+                      ).subscribe({
+                        next: (response: any) => {
+                          const file = new Blob([response.body], {
+                            type: 'application/pdf',
+                          });
+                          const contentDisposition = response.headers.get('content-disposition');
+                          const timestamp = new Date()
+                            .toISOString()
+                            .split('.')[0] // remove milliseconds
+                            .replace(/T/, '_') // replace T with _
+                            .replace(/:/g, '-'); // format time separator
 
-                        let filename = `Report_${timestamp}.pdf`;
-                        if (contentDisposition) {
-                          const match = contentDisposition.match(/filename="?([^"]+)"?/);
-                          if (match && match[1]) {
-                            filename = match[1];
+                          let filename = `Report_${timestamp}.pdf`;
+                          if (contentDisposition) {
+                            const match = contentDisposition.match(/filename="?([^"]+)"?/);
+                            if (match && match[1]) {
+                              filename = match[1];
+                            }
                           }
-                        }
-                        const fileURL = URL.createObjectURL(file);
-                        const a = document.createElement('a');
-                        a.href = fileURL;
-                        a.download = filename;
-                        document.body.appendChild(a); // Append anchor to body
-                        a.click(); // Trigger download
-                        document.body.removeChild(a); // Remove the anchor from body
-                        this.generatePDFloader = false;
-                        this.handleSetLoading.emit(false);
-                      },
-                      error: (err) => {
-                        this.generatePDFloader = false;
-                        this.handleSetLoading.emit(false);
-                        alert(err.response.message);
-                        console.error('Error downloading the PDF', err);
-                        // Handle error appropriately, e.g., show a notification to the user
-                      },
-                    });
+                          const fileURL = URL.createObjectURL(file);
+                          const a = document.createElement('a');
+                          a.href = fileURL;
+                          a.download = filename;
+                          document.body.appendChild(a); // Append anchor to body
+                          a.click(); // Trigger download
+                          document.body.removeChild(a); // Remove the anchor from body
+                          this.generatePDFloader = false;
+                          this.handleSetLoading.emit(false);
+                        },
+                        error: (err) => {
+                          this.generatePDFloader = false;
+                          this.handleSetLoading.emit(false);
+                          alert(err.response.message);
+                          console.error('Error downloading the PDF', err);
+                          // Handle error appropriately, e.g., show a notification to the user
+                        },
+                      });
                   }
                 }
               },
@@ -815,7 +819,7 @@ export class RouteResultComponent {
                     let id: any = '';
                     const searchThrough = Auth_operations.getActiveformValues().activeForm;
                     const currentData = this.AllSetData[index];
-                   
+
                     switch (this.searchThrough) {
                       case searchTypes.chemicalStructure:
                       case searchTypes.intermediateSearch:
