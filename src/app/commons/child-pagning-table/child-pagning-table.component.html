@@ -1,12 +1,31 @@
-
 <!-- Custom Simple Pagination for filtered data helloooo  -->
 
-<nav *ngIf="isFilterApplied && count > 25" aria-label="Filtered page navigation" class="w-full flex py-3 justify-center">
+<nav *ngIf="isFilterApplied && count > 25" aria-label="Filtered page navigation"
+  class="w-full flex py-3 justify-center">
   <ul class="inline-flex -space-x-px text-sm">
+    <!-- Jump to Page Input -->
+    <li class="flex items-center mx-3">
+      <div class="relative">
+        <!-- Search Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 absolute left-2 top-1/2 -translate-y-1/2 text-gray-500"
+          fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+        </svg>
+
+        <!-- Input -->
+        <input type="number" [(ngModel)]="goToPageNumber" [min]="1" [max]="totalPages" placeholder="Page"
+          class="w-24 h-8 pl-8 pr-2 border-2 border-[#0032A0] rounded placeholder-gray-400"
+          (keyup.enter)="goToPage()" />
+      </div>
+      <button (click)="goToPage()"
+        class="ml-2 px-2 md:px-3 h-8 border-2 border-[#0032A0] text-[#0032A0] hover:bg-[#0032A0] hover:text-white rounded">
+        Go
+      </button>
+    </li>
+
     <li>
-      <button 
-        (click)="handlePreviousClick()" 
-        [disabled]="MainPageNo === 1" 
+      <button (click)="handlePreviousClick()" [disabled]="MainPageNo === 1"
         class="flex items-center justify-center px-2 md:px-3 h-8 md:h-8 ms-0 leading-tight border-2 text-[#0032A0] hover:text-white border-[#0032A0] hover:bg-[#0032A0]">
         Previous
       </button>
@@ -15,9 +34,7 @@
       Page {{ MainPageNo }} of {{ totalPages }}
     </li>
     <li>
-      <button 
-        (click)="handleNextclick1()" 
-        [disabled]="MainPageNo === totalPages" 
+      <button (click)="handleNextclick1()" [disabled]="MainPageNo === totalPages"
         class="flex items-center justify-center px-2 md:px-3 h-8 md:h-8 leading-tight text-[#0032A0] border-2 hover:text-white border-[#0032A0] hover:bg-[#0032A0]">
         Next
       </button>
@@ -26,48 +43,57 @@
 </nav>
 
 <!-- Full Pagination for unfiltered data -->
-<nav *ngIf="!isFilterApplied && count > 25" aria-label="Page navigation example" class="w-full flex py-3 justify-center">
+<nav *ngIf="!isFilterApplied && count > 25" aria-label="Page navigation example"
+  class="w-full flex py-3 justify-center">
   <ul class="inline-flex -space-x-px text-sm">
+     <li class="flex items-center mx-3">
+      <div class="relative">
+        <!-- Search Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 absolute left-2 top-1/2 -translate-y-1/2 text-gray-500"
+          fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+        </svg>
+
+        <!-- Input -->
+        <input type="number" [(ngModel)]="goToPageNumber" [min]="1" [max]="totalPages" placeholder="Page"
+          class="w-24 h-8 pl-8 pr-2 border-2 border-[#0032A0] rounded placeholder-gray-400"
+          (keyup.enter)="goToPage()" />
+      </div>
+      <button (click)="goToPage()"
+        class="ml-2 px-2 md:px-3 h-8 border-2 border-[#0032A0] text-[#0032A0] hover:bg-[#0032A0] hover:text-white rounded">
+        Go
+      </button>
+    </li>
     <!-- Existing Full Pagination Buttons Here -->
     <li>
-      <button
-        (click)="handleFirstClick()"
-        class="flex items-center justify-center px-2 md:px-3 h-8 md:h-8 ms-0 leading-tight rounded-s-lg border-2 text-[#0032A0] hover:text-white border-[#0032A0] hover:bg-[#0032A0]"
-      >
+      <button (click)="handleFirstClick()"
+        class="flex items-center justify-center px-2 md:px-3 h-8 md:h-8 ms-0 leading-tight rounded-s-lg border-2 text-[#0032A0] hover:text-white border-[#0032A0] hover:bg-[#0032A0]">
         First
       </button>
     </li>
     <li>
-      <button
-        (click)="handlePreviousClick()"
-        class="flex items-center justify-center px-2 md:px-3 h-8 md:h-8 ms-0 leading-tight border-2 text-[#0032A0] hover:text-white border-[#0032A0] hover:bg-[#0032A0]"
-      >
+      <button (click)="handlePreviousClick()"
+        class="flex items-center justify-center px-2 md:px-3 h-8 md:h-8 ms-0 leading-tight border-2 text-[#0032A0] hover:text-white border-[#0032A0] hover:bg-[#0032A0]">
         Previous
       </button>
     </li>
 
     <li *ngFor="let value of PageArray; let i = index">
-      <button
-        (click)="handlePageClick(value)"
-        [ngClass]="{ 'bg-[#0032A0] text-white': MainPageNo === value }"
-        class="flex items-center justify-center px-2 md:px-3 h-8 md:h-8 leading-tight border-2 text-[#0032A0] hover:text-white border-[#0032A0] hover:bg-[#0032A0]"
-      >
+      <button (click)="handlePageClick(value)" [ngClass]="{ 'bg-[#0032A0] text-white': MainPageNo === value }"
+        class="flex items-center justify-center px-2 md:px-3 h-8 md:h-8 leading-tight border-2 text-[#0032A0] hover:text-white border-[#0032A0] hover:bg-[#0032A0]">
         {{ value }}
       </button>
     </li>
     <li>
-      <button
-        (click)="handleNextclick()"
-        class="flex items-center justify-center px-2 md:px-3 h-8 md:h-8 leading-tight text-[#0032A0] border-2 hover:text-white border-[#0032A0] hover:bg-[#0032A0]"
-      >
+      <button (click)="handleNextclick()"
+        class="flex items-center justify-center px-2 md:px-3 h-8 md:h-8 leading-tight text-[#0032A0] border-2 hover:text-white border-[#0032A0] hover:bg-[#0032A0]">
         Next
       </button>
     </li>
     <li>
-      <button
-        (click)="handleLastClick()"
-        class="flex items-center justify-center px-2 md:px-3 h-8 md:h-8 leading-tight text-[#0032A0] border-2 hover:text-white border-[#0032A0] hover:bg-[#0032A0] rounded-e-lg"
-      >
+      <button (click)="handleLastClick()"
+        class="flex items-center justify-center px-2 md:px-3 h-8 md:h-8 leading-tight text-[#0032A0] border-2 hover:text-white border-[#0032A0] hover:bg-[#0032A0] rounded-e-lg">
         Last
       </button>
     </li>
