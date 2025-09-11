@@ -4,11 +4,12 @@ import { map, tap, catchError } from 'rxjs/operators';
 import { ServiceChildPaginationService } from '../../services/child-pagination/service-child-pagination.service';
 import { CommonModule } from '@angular/common';
 import { MainSearchService } from '../../services/main-search/main-search.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-child-paging',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './child-paging.component.html',
   styleUrl: './child-paging.component.css',
 })
@@ -24,6 +25,7 @@ export class ChildPagingComponent implements OnInit {
   blurContent: boolean = false;
   showAccessDeniedModal: boolean = false;
   reportLimitPages: number = 10;
+  goToPageNumber: number | null = null;
   @Input()
   get currentChildAPIBody() {
     return this._currentChildAPIBody;
@@ -107,6 +109,26 @@ export class ChildPagingComponent implements OnInit {
     }
     this.handlePageClick(this.MainPageNo);
   };
+  // Option 1: expose Math
+  Math = Math;
+
+  // OR Option 2: create a helper getter
+  get totalPages(): number {
+    return Math.ceil(this.count / 25);
+  }
+
+
+  goToPage() {
+    const totalPages = Math.ceil(this.count / 25);
+
+    if (!this.goToPageNumber || this.goToPageNumber < 1 || this.goToPageNumber > totalPages) {
+      alert(`Please enter a valid page number between 1 and ${totalPages}`);
+      return;
+    }
+
+    this.handlePageClick(this.goToPageNumber);
+    this.goToPageNumber = null; // reset input after navigation
+  }
 
   handlePageClick = (page: number) => {
     if (page > this.reportLimitPages) {

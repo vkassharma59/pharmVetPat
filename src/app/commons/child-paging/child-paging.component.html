@@ -5,6 +5,60 @@
 >
 <div [class.blur]="blurContent">
   <ul class="inline-flex -space-x-px text-sm">
+    <!-- <li class="flex items-center mx-3">
+  <input
+    type="number"
+    [(ngModel)]="goToPageNumber"
+    [min]="1"
+    [max]="Math.ceil(count / 25)"
+    placeholder="🔍Page"
+    class="w-16 h-8 px-0 border-2 border-[#0032A0] rounded text-center"
+  />
+  <button
+    (click)="goToPage()"
+    class="ml-2 px-2 md:px-3 h-8 border-2 border-[#0032A0] text-[#0032A0] hover:bg-[#0032A0] hover:text-white rounded"
+  >
+    Go
+  </button>
+</li> -->
+
+<li class="flex items-center mx-3">
+  <div class="relative">
+    <!-- Search Icon -->
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="w-4 h-4 absolute left-2 top-1/2 -translate-y-1/2 text-gray-500"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z"
+      />
+    </svg>
+
+    <!-- Input -->
+    <input
+      type="number"
+      [(ngModel)]="goToPageNumber"
+      [min]="1"
+      [max]="totalPages"
+      placeholder="Page No"
+      class="w-28 h-8 pl-7 pr-2 border-2 border-[#0032A0] rounded placeholder-gray-400"
+      (keyup.enter)="goToPage()"
+    />
+  </div>
+   <button
+    (click)="goToPage()"
+    class="ml-2 px-2 md:px-3 h-8 border-2 border-[#0032A0] text-[#0032A0] hover:bg-[#0032A0] hover:text-white rounded"
+  >
+    Go
+  </button>
+</li>
+
     <li>
       <button
         (click)="handleFirstClick()"
