@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ServiceChildPaginationService } from '../../services/child-pagination/service-child-pagination.service';
+import { FormsModule } from '@angular/forms';
 // Optional: Define interface for cleaner code
 interface ChildAPIBody {
   page_no: number;
@@ -21,7 +22,7 @@ interface ChildAPIBody {
 @Component({
   selector: 'app-child-pagning-table',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,FormsModule],
   templateUrl: './child-pagning-table.component.html',
   styleUrls: ['./child-pagning-table.component.css'] // ✅ Fixed typo
 })
@@ -40,7 +41,7 @@ export class ChildPagningTableComponent implements OnChanges {
   blurContent: boolean = false;
   showAccessDeniedModal: boolean = false;
   reportLimitPages: number = 10;
-
+ goToPageNumber: number | null = null;
   @Input()
   get currentChildAPIBody(): ChildAPIBody {
     return this._currentChildAPIBody;
@@ -71,7 +72,7 @@ export class ChildPagningTableComponent implements OnChanges {
       this.PageArray.push(i);
     }
   }
-  
+
   ngOnInit(): void {
     const priv = JSON.parse(localStorage.getItem('priviledge_json') || '{}');
     const reportLimit = priv['pharmvetpat-mongodb']?.PageLimit || 10;
@@ -84,13 +85,13 @@ export class ChildPagningTableComponent implements OnChanges {
   previousAPIBody: any = null; // Add this to your component to track previous request
 
   ngOnChanges(changes: SimpleChanges): void {
- console.log('isFilterApplied:', this.isFilterApplied);
+    console.log('isFilterApplied:', this.isFilterApplied);
     const currentBody = this.currentChildAPIBody;
     const hasBodyChanged = JSON.stringify(currentBody) !== JSON.stringify(this.previousAPIBody);
 
     if (
       (changes['currentChildAPIBody'] && hasBodyChanged) || changes['isFilterApplied']?.currentValue !== undefined
-      
+
     ) {
       if (this.isFilterApplied) {
         if (hasBodyChanged && currentBody.page_no === 1) {
@@ -161,29 +162,29 @@ export class ChildPagningTableComponent implements OnChanges {
   //   }
   // }
   handleChangeData() {
-  this.count = this._currentChildAPIBody?.count || 0;
+    this.count = this._currentChildAPIBody?.count || 0;
 
-  const total = this.totalPages;
-  const currentPage = this._currentChildAPIBody?.page_no || 1;
+    const total = this.totalPages;
+    const currentPage = this._currentChildAPIBody?.page_no || 1;
 
-  // ✅ Keep MainPageNo consistent
-  this.MainPageNo = currentPage;
+    // ✅ Keep MainPageNo consistent
+    this.MainPageNo = currentPage;
 
-  this.PageArray = [];
+    this.PageArray = [];
 
-  if (this.isFilterApplied) {
-    // 🔄 Always reset pagination window from 1 when filter is applied
-    for (let i = 1; i <= Math.min(total, 5); i++) {
-      this.PageArray.push(i);
-    }
-  } else {
-    // 🔄 Normal case: pagination window shifts dynamically
-    const startIndex = Math.floor((currentPage - 1) / 5) * 5 + 1;
-    for (let i = startIndex; i <= Math.min(total, startIndex + 4); i++) {
-      this.PageArray.push(i);
+    if (this.isFilterApplied) {
+      // 🔄 Always reset pagination window from 1 when filter is applied
+      for (let i = 1; i <= Math.min(total, 5); i++) {
+        this.PageArray.push(i);
+      }
+    } else {
+      // 🔄 Normal case: pagination window shifts dynamically
+      const startIndex = Math.floor((currentPage - 1) / 5) * 5 + 1;
+      for (let i = startIndex; i <= Math.min(total, startIndex + 4); i++) {
+        this.PageArray.push(i);
+      }
     }
   }
-}
 
 
   handleFirstClick = () => {
@@ -224,105 +225,114 @@ export class ChildPagningTableComponent implements OnChanges {
         this.PageArray.push(i);
       }
     }
-      // ✅ Important: API call with new page
-      this.handlePageClick1(this.MainPageNo);
-    };
+    // ✅ Important: API call with new page
+    this.handlePageClick1(this.MainPageNo);
+  };
 
-    handleNextclick = () => {
-      if (this.MainPageNo >= this.totalPages) return;
+  handleNextclick = () => {
+    if (this.MainPageNo >= this.totalPages) return;
 
-      this.MainPageNo += 1;
+    this.MainPageNo += 1;
 
-      if (!this.isFilterApplied) {
-        if (this.PageArray[this.PageArray.length - 1] < this.totalPages) {
-          this.PageArray.shift();
-          const nextPage = this.MainPageNo + 4 <= this.totalPages ? this.MainPageNo + 4 : this.totalPages;
-          this.PageArray.push(nextPage);
-        }
+    if (!this.isFilterApplied) {
+      if (this.PageArray[this.PageArray.length - 1] < this.totalPages) {
+        this.PageArray.shift();
+        const nextPage = this.MainPageNo + 4 <= this.totalPages ? this.MainPageNo + 4 : this.totalPages;
+        this.PageArray.push(nextPage);
       }
-      this.handlePageClick(this.MainPageNo);
-    };
+    }
+    this.handlePageClick(this.MainPageNo);
+  };
 
-    handlePreviousClick = () => {
-      if (this.MainPageNo <= 1) return;
+  handlePreviousClick = () => {
+    if (this.MainPageNo <= 1) return;
 
-      this.MainPageNo -= 1;
+    this.MainPageNo -= 1;
 
-      if (!this.isFilterApplied) {
-        if (this.PageArray[0] > 1) {
-          this.PageArray.pop();
-          const prevPage = this.MainPageNo - 4 >= 1 ? this.MainPageNo - 4 : 1;
-          this.PageArray.unshift(prevPage);
-        }
+    if (!this.isFilterApplied) {
+      if (this.PageArray[0] > 1) {
+        this.PageArray.pop();
+        const prevPage = this.MainPageNo - 4 >= 1 ? this.MainPageNo - 4 : 1;
+        this.PageArray.unshift(prevPage);
       }
+    }
 
-      this.handlePageClick(this.MainPageNo);
+    this.handlePageClick(this.MainPageNo);
+  };
+ 
+
+  goToPage() {
+    if (!this.goToPageNumber || this.goToPageNumber < 1 || this.goToPageNumber > this.totalPages) {
+      return; // 🚫 Invalid page number
+    }
+    this.handlePageClick(this.goToPageNumber);
+    this.goToPageNumber = null; // reset input after jump
+  }
+
+  handlePageClick1 = (page: number) => {
+    this.setLoading.emit(true);
+
+    // ✅ Update pagination, preserve filters
+    this._currentChildAPIBody = {
+      ...this._currentChildAPIBody,
+      page_no: page,
+      start: (page - 1) * this.pageSize
     };
 
-    handlePageClick1 = (page: number) => {
-      this.setLoading.emit(true);
+    this.MainPageNo = page;
 
-      // ✅ Update pagination, preserve filters
-      this._currentChildAPIBody = {
-        ...this._currentChildAPIBody,
-        page_no: page,
-        start: (page - 1) * this.pageSize
-      };
-
-      this.MainPageNo = page;
-
-      this.serviceChildPaginationService.getNextChildPaginationData(
-        this._currentChildAPIBody
-      ).subscribe({
-        next: (res) => {
-          this._currentChildAPIBody.count = res?.data?.recordsFiltered ?? res?.data?.recordsTotal;
-          this.count = this._currentChildAPIBody.count ?? 0;
-
-          this.handleChangeData();
-
-          // ✅ Send updated API body with filters and page info
-          this.handleChangeTabData.emit(this._currentChildAPIBody);
-
-          this.setLoading.emit(false);
-        },
-        error: (e) => {
-          console.error("❌ API Error:", e);
-          this.setLoading.emit(false);
-        }
-      });
-    };
-    handlePageClick = (page: number) => {
-      if (page > this.reportLimitPages) {
-        this.showAccessDeniedModal = true;
-        this.blurContent = true;
-        return;
-      }
-
-      this.setLoading.emit(true);
-      this._currentChildAPIBody.page_no = page;
-      this._currentChildAPIBody.start = (page - 1) * this.pageSize;
-      this.MainPageNo = page;
-
-      this.serviceChildPaginationService.getNextChildPaginationData(
-        this._currentChildAPIBody
-      ).subscribe({
-        next: (res) => {
+    this.serviceChildPaginationService.getNextChildPaginationData(
+      this._currentChildAPIBody
+    ).subscribe({
+      next: (res) => {
         this._currentChildAPIBody.count = res?.data?.recordsFiltered ?? res?.data?.recordsTotal;
         this.count = this._currentChildAPIBody.count ?? 0;
 
-          this.handleChangeData();
-          this.handleChangeTabData.emit(this._currentChildAPIBody);
-         // this.handleChangeTabData.emit(res?.data);
-          this.setLoading.emit(false);
-        },
-        error: (e) => {
-          console.error(e);
-          this.setLoading.emit(false);
-        },
-      });
-    };
-    closeAccessDeniedModal() {
-      this.showAccessDeniedModal = false;
-      this.blurContent = false;
+        this.handleChangeData();
+
+        // ✅ Send updated API body with filters and page info
+        this.handleChangeTabData.emit(this._currentChildAPIBody);
+
+        this.setLoading.emit(false);
+      },
+      error: (e) => {
+        console.error("❌ API Error:", e);
+        this.setLoading.emit(false);
+      }
+    });
+  };
+  handlePageClick = (page: number) => {
+    if (page > this.reportLimitPages) {
+      this.showAccessDeniedModal = true;
+      this.blurContent = true;
+      return;
     }
+
+    this.setLoading.emit(true);
+    this._currentChildAPIBody.page_no = page;
+    this._currentChildAPIBody.start = (page - 1) * this.pageSize;
+    this.MainPageNo = page;
+
+    this.serviceChildPaginationService.getNextChildPaginationData(
+      this._currentChildAPIBody
+    ).subscribe({
+      next: (res) => {
+        this._currentChildAPIBody.count = res?.data?.recordsFiltered ?? res?.data?.recordsTotal;
+        this.count = this._currentChildAPIBody.count ?? 0;
+
+        this.handleChangeData();
+        this.handleChangeTabData.emit(this._currentChildAPIBody);
+        // this.handleChangeTabData.emit(res?.data);
+        this.setLoading.emit(false);
+      },
+      error: (e) => {
+        console.error(e);
+        this.setLoading.emit(false);
+      },
+    });
+  };
+  closeAccessDeniedModal() {
+    this.showAccessDeniedModal = false;
+    this.blurContent = false;
   }
+}

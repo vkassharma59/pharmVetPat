@@ -670,15 +670,16 @@ export class RouteResultComponent {
                     0
                   ) {
                     let pdf_body = this.CurrentAPIBody;
-
+                    console.log('current tab data', this.CurrentAPIBody);
+                    console.log('pdf_body', pdf_body);
                     pdf_body.body['report_download'] = true;
                     pdf_body.body['limit'] = this.getReportLimit();
                     if (this.CurrentAPIBody?.currentTab === 'technicalRoutes') {
                       pdf_body.api_url = 'https://apilive.chemrobotics.com/technical-routes/synthesis-search';
                     }
                     //  priviledge_data?.['pharmvetpat-mongodb']?.ReportLimit;
-                    // console.log('current tab data', this.CurrentAPIBody);
-                    // console.log('pdf_body', pdf_body);
+
+                 
                     this.serviceResultTabFiltersService
                       .getGeneratePDF(
                         pdf_body

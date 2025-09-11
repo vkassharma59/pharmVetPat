@@ -872,7 +872,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       this.isValidDate(this.advanceSearch?.startDate) &&
       this.isValidDate(this.advanceSearch?.endDate);
 
-    const apiBody = {
+    const body = {
       ...(hasValidCriteria && { criteria }),
       ...(hasValidDateFilters && {
         date_filters: {
@@ -894,19 +894,18 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       }),
       page_no: 1
     };
-    console.log("Advance Search API Body", apiBody);
+    console.log("Advance Search API Body", body);
     this.sharedRosService.setSearchData('advance Search', this.advanceSearch?.keyword, this.criteria);
-
     const tech_API = this.apiUrls.basicProductInfo.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.productInfo.name, response);
-
-        this.mainSearchService.getAdvanceSearchResults(apiBody).subscribe({
+        this.mainSearchService.getAdvanceSearchResults(body).subscribe({
           next: (res: any) => {
             this.showResultFunction.emit({
-              apiBody,
+              body,
+             // apiBody,
               API_URL: this.apiUrls.basicProductInfo.simpleSearchResults,
               currentTab: this.resultTabs.productInfo.name,
               actual_value: '',
