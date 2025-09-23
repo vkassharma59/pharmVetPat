@@ -1,5 +1,5 @@
 <!-- <pre>{{_data | json}}</pre>  -->
- <!-- <div class="card-header text-white ">
+<!-- <div class="card-header text-white ">
   <div style="padding-top:7px;display:flex;">
     {{ localCount }}. {{resultTabs?.europeApproval?.label}} >> 
      <span>
@@ -31,8 +31,10 @@
 
                 <p style="font-size: 14px; padding-bottom: 5px; color:#312e81;; font-weight: bold;">
                     {{ _data?.medicine_name }}
+                    <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                        (click)="handleCopy(_data?.medicine_name, copyBtn)"><i class="fas fa-copy"></i></span>
                 </p>
-   
+
 
                 <p style="font-size: 14px; padding-bottom: 10px;overflow-y: hidden;">
                     {{ _data?.active_substance }}

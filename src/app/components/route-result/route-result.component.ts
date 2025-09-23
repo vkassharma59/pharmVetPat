@@ -218,6 +218,7 @@ export class RouteResultComponent {
     this.backFunction.emit(false);
   }
 
+
   // shouldShowDownloadButton(): boolean {
   //   // const searchType = this.searchThrough;
   //   const currentTabName = this.activeTab;   // ✅ direct activeTab use karo
@@ -235,6 +236,7 @@ export class RouteResultComponent {
 
   //   //return currentTabName === expectedTabName;
   // }
+
   shouldShowDownloadButton(): boolean {
     const currentTabName = this.activeTab;
 
@@ -289,10 +291,10 @@ export class RouteResultComponent {
   getFirstProductName(tabData: any): string {
     // console.log('Tab Data:', tabData);
     // console.log('Initial Tab:', this.initialTab);
-
     if (!tabData || !this.initialTab?.name) return '';
     const tabObj = tabData[this.initialTab.name];   // 👈 fixed: activeTab ki jagah initialTab
     // console.log('Tab Object:', tabObj);
+
 
     if (!tabObj) return '';
     // Step 2: Agar direct array hai
@@ -655,6 +657,7 @@ export class RouteResultComponent {
             );
             this.generatePDFloader = false;
 
+
             return;
           } else {
             this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
@@ -679,6 +682,7 @@ export class RouteResultComponent {
                     todays_limit?.downloadCount >
                     0
                   ) {
+
                     let pdf_body = { ...this.CurrentAPIBody };
                     pdf_body.body['report_download'] = true;
                     pdf_body.body['limit'] = this.getReportLimit();
@@ -711,6 +715,7 @@ export class RouteResultComponent {
                     }
 
                     console.log("Final pdf_body >>>", pdf_body);
+
 
 
                     this.serviceResultTabFiltersService

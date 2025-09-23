@@ -30,7 +30,8 @@
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 ">
                 <p class="text-wrap break-words whitespace-normal"
                     style="color: #0032a0; font-size: 17px; font-weight: bold; padding-bottom: 5px;">
-                    {{ _data?.strength }}
+                    {{ _data?.strength }} <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                    (click)="handleCopy( _data?.strength, copyBtn)"><i class="fas fa-copy"></i></span>
                 </p>
 
                 <p style="font-size: 17px; padding-bottom: 10px;">
