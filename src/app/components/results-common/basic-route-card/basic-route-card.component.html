@@ -18,8 +18,10 @@
     <div class="row">
       <div style="padding-top:7px;flex-wrap: wrap; justify-content:space-between; display:flex;">
         <span>
-          <span style="font-weight: 500;font-size: 16px;">
+          <span style="font-weight: 500;font-size: 16px;" >
             {{ showFull ? (_data?.ACTIVE_INGREDIENT || '') : (_data?.ACTIVE_INGREDIENT | slice:0:200) }}
+            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                      (click)="handleCopy(_data?.ACTIVE_INGREDIENT, copyBtn)"><i class="fas fa-copy"></i></span>
             <ng-container *ngIf="_data?.ACTIVE_INGREDIENT?.length > 200">
               <span (click)="toggleView()" style="color: black; cursor: pointer;border-bottom: 1px dotted;">
                 {{ showFull ? '... View Less' : '...View More' }}

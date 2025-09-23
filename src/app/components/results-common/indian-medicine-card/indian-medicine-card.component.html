@@ -17,7 +17,8 @@
     <div style="padding-top:7px; display:flex;">
         <!-- {{ localCount }}. {{resultTabs?.indianMedicine?.label}} >> -->
         <span>
-            {{showFull ? (_data?.medicine_name_trade_name || '' ) : (_data?.medicine_name_trade_name | slice:0:200) }}
+            {{showFull ? (_data?.medicine_name_trade_name || '' ) : (_data?.medicine_name_trade_name | slice:0:200) }} <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+            (click)="handleCopy( _data?.medicine_name_trade_name, copyBtn)"><i class="fas fa-copy"></i></span>
             <ng-container *ngIf="_data?.medicine_name_trade_name?.length > 200">
                 <span (click)="toggleView()" style="color: black; cursor: pointer; border-bottom: 1px dotted;">
                     {{ showFull ? '... View Less' : '... View More' }}

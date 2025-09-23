@@ -23,6 +23,8 @@
             <!-- {{ localCount }}. {{ resultTabs?.impPatents?.label }} >> -->
             <span style="padding-left: 10px;"> 
                 {{ showFull['header'] ? (_data?.product || '') : (_data?.product | slice:0:130) }}
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                      (click)="handleCopy(_data?.product, copyBtn)"><i class="fas fa-copy"></i></span>
                 <ng-container *ngIf="_data?.product?.length > 130">
                     <span (click)="toggleView('header')"
                         style="color: black; cursor: pointer;border-bottom: 1px dotted;">
