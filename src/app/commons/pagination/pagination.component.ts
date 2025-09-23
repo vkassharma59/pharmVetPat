@@ -10,11 +10,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { ServicePaginationService } from '../../services/pagination/service-pagination.service';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'chem-pagination',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.css'],
 })
@@ -28,7 +29,7 @@ export class PaginationComponent {
   totalPageNumbers: any;
   MainPageNo = 1;
   PageArray = [1, 2, 3, 4, 5];
-
+  goToPageNumber: number | null = null;
   ResultDataCount = 0;
 
   // ngOnInit(): void {
@@ -45,6 +46,7 @@ export class PaginationComponent {
   //   this.totalPageNumbers = this.ResultDataCount;
   // }
 
+
   ngOnInit(): void {
   this.ResultDataCount = this.CurrentAPIBody.count;
   this.PageArray = [];
@@ -55,6 +57,7 @@ export class PaginationComponent {
   this.totalPageNumbers = this.ResultDataCount;
   this.MainPageNo = this.CurrentAPIBody?.body?.page_no || 1; // 👈 fix
 }
+
 
   // ngOnChanges(changes: SimpleChanges) {
   //   if (changes['paginationRerenderTrigger']) {
@@ -67,9 +70,11 @@ export class PaginationComponent {
   // }
 
   ngOnChanges(changes: SimpleChanges) {
+
   if (changes['paginationRerenderTrigger'] || changes['CurrentAPIBody']) {
     this.handleChangeDataValues();
     this.MainPageNo = this.CurrentAPIBody?.body?.page_no || 1; // 👈 fix
+
   }
 }
 
@@ -94,6 +99,21 @@ export class PaginationComponent {
     this.MainPageNo = pageCount;
     this.handlePageClick(this.MainPageNo);
   };
+
+// Add this method
+goToPage() {
+  const totalPages = Math.ceil(this.ResultDataCount / 25);
+  if (
+    !this.goToPageNumber ||
+    this.goToPageNumber < 1 ||
+    this.goToPageNumber > totalPages
+  ) {
+    return; // 🚫 invalid input
+  }
+
+  this.handlePageClick(this.goToPageNumber);
+  this.goToPageNumber = null; // reset input
+}
 
   handleNextclick = () => {
     const remain = Math.ceil(

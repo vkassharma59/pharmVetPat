@@ -48,8 +48,11 @@ export class HomeComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private utilityService: UtilityService
   ) { }
-
+  ngOnChanges(): void {
+  console.log('Home component initialized-----------------',this.CurrentAPIBody);
+  }
   ngOnInit() {
+    console.log('Home component initialized',this.CurrentAPIBody);
     const auth = localStorage.getItem('auth');
     this.allDataSets = this.utilityService.getDataStates();
     this.resultTabs = this.utilityService.getAllTabsName();
