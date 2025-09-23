@@ -162,29 +162,31 @@ export class ChildPagningTableComponent implements OnChanges {
   //   }
   // }
   handleChangeData() {
-    this.count = this._currentChildAPIBody?.count || 0;
+  this.count = this._currentChildAPIBody?.count || 0;
 
-    const total = this.totalPages;
-    const currentPage = this._currentChildAPIBody?.page_no || 1;
+  const total = this.totalPages;
+  const currentPage = this._currentChildAPIBody?.page_no || 1;
 
-    // ✅ Keep MainPageNo consistent
-    this.MainPageNo = currentPage;
+  // ✅ Keep MainPageNo consistent
+  this.MainPageNo = currentPage;
 
-    this.PageArray = [];
+  this.PageArray = [];
 
-    if (this.isFilterApplied) {
-      // 🔄 Always reset pagination window from 1 when filter is applied
-      for (let i = 1; i <= Math.min(total, 5); i++) {
-        this.PageArray.push(i);
-      }
-    } else {
-      // 🔄 Normal case: pagination window shifts dynamically
-      const startIndex = Math.floor((currentPage - 1) / 5) * 5 + 1;
-      for (let i = startIndex; i <= Math.min(total, startIndex + 4); i++) {
-        this.PageArray.push(i);
-      }
+  if (this.isFilterApplied) {
+    // 🔄 Always reset pagination window from 1 when filter is applied
+    for (let i = 1; i <= Math.min(total, 5); i++) {
+      this.PageArray.push(i);
+    }
+  } else {
+    // 🔄 Normal case: pagination window shifts dynamically
+    const startIndex = Math.floor((currentPage - 1) / 5) * 5 + 1;
+    for (let i = startIndex; i <= Math.min(total, startIndex + 4); i++) {
+      this.PageArray.push(i);
+
     }
   }
+}
+
 
 
   handleFirstClick = () => {

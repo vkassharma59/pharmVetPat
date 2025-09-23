@@ -46,16 +46,18 @@ export class PaginationComponent {
   //   this.totalPageNumbers = this.ResultDataCount;
   // }
 
-  ngOnInit(): void {
-    this.ResultDataCount = this.CurrentAPIBody.count;
-    this.PageArray = [];
-    for (let i = 1; i <= Math.min(Math.ceil(this.ResultDataCount / 25), 5); i++) {
-      this.PageArray.push(i);
-    }
 
-    this.totalPageNumbers = this.ResultDataCount;
-    this.MainPageNo = this.CurrentAPIBody?.body?.page_no || 1; // 👈 fix
+  ngOnInit(): void {
+  this.ResultDataCount = this.CurrentAPIBody.count;
+  this.PageArray = [];
+  for (let i = 1; i <= Math.min(Math.ceil(this.ResultDataCount / 25), 5); i++) {
+    this.PageArray.push(i);
   }
+
+  this.totalPageNumbers = this.ResultDataCount;
+  this.MainPageNo = this.CurrentAPIBody?.body?.page_no || 1; // 👈 fix
+}
+
 
   // ngOnChanges(changes: SimpleChanges) {
   //   if (changes['paginationRerenderTrigger']) {
@@ -68,11 +70,13 @@ export class PaginationComponent {
   // }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['paginationRerenderTrigger'] || changes['CurrentAPIBody']) {
-      this.handleChangeDataValues();
-      this.MainPageNo = this.CurrentAPIBody?.body?.page_no || 1; // 👈 fix
-    }
+
+  if (changes['paginationRerenderTrigger'] || changes['CurrentAPIBody']) {
+    this.handleChangeDataValues();
+    this.MainPageNo = this.CurrentAPIBody?.body?.page_no || 1; // 👈 fix
+
   }
+}
 
   handleFirstClick = () => {
     const pageCount = Math.ceil(this.ResultDataCount / 25);

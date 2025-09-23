@@ -143,6 +143,10 @@ export class RouteResultComponent {
   ) {
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
   }
+  ngOnChanges(_changes: any) {
+    console.log("Current Tab Name for Download Button:", this.activeTab);
+  }
+
   ngOnInit() {
     this.lastSearchData = this.sharedRosService.getSearchData();
     this.AllSetData = this.sharedRosService.getAllDataSets();
@@ -214,22 +218,30 @@ export class RouteResultComponent {
     this.backFunction.emit(false);
   }
 
+
+  // shouldShowDownloadButton(): boolean {
+  //   // const searchType = this.searchThrough;
+  //   const currentTabName = this.activeTab;   // ✅ direct activeTab use karo
+  //   // const searchToTabKeyMap: { [key: string]: string } = {
+  //   //   'synthesis-search': 'technicalRoutes',
+  //   //   'chemical-structure': 'chemicalDirectory',
+  //   //   'intermediate-search': 'chemicalDirectory',
+  //   //   'simple-search': 'productInfo',
+  //   //   'advance-search': 'productInfo',
+  //   // };
+
+  //   // const expectedTabKey = searchToTabKeyMap[searchType];
+  //   //  const expectedTabName = this.resultTabWithKeys?.[expectedTabKey]?.name;
+  //   // ❌ Hide in Important and Chemi Tracker tabs
+
+  //   //return currentTabName === expectedTabName;
+  // }
+
   shouldShowDownloadButton(): boolean {
-    const searchType = this.searchThrough;
-    const currentTabName = this.activeTab;   // ✅ direct activeTab use karo
+    const currentTabName = this.activeTab;
 
-    const searchToTabKeyMap: { [key: string]: string } = {
-      'synthesis-search': 'technicalRoutes',
-      'chemical-structure': 'chemicalDirectory',
-      'intermediate-search': 'chemicalDirectory',
-      'simple-search': 'productInfo',
-      'advance-search': 'productInfo',
-    };
-
-    const expectedTabKey = searchToTabKeyMap[searchType];
-    const expectedTabName = this.resultTabWithKeys?.[expectedTabKey]?.name;
-
-    return currentTabName === expectedTabName;
+    // ❌ Hide only in impPatents and chemiTracker
+    return !(currentTabName === 'impPatents' || currentTabName === 'chemiTracker');
   }
 
   showFullName: boolean = false;
@@ -279,10 +291,10 @@ export class RouteResultComponent {
   getFirstProductName(tabData: any): string {
     // console.log('Tab Data:', tabData);
     // console.log('Initial Tab:', this.initialTab);
-
     if (!tabData || !this.initialTab?.name) return '';
     const tabObj = tabData[this.initialTab.name];   // 👈 fixed: activeTab ki jagah initialTab
     // console.log('Tab Object:', tabObj);
+
 
     if (!tabObj) return '';
     // Step 2: Agar direct array hai
@@ -645,6 +657,7 @@ export class RouteResultComponent {
             );
             this.generatePDFloader = false;
 
+
             return;
           } else {
             this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
@@ -669,17 +682,42 @@ export class RouteResultComponent {
                     todays_limit?.downloadCount >
                     0
                   ) {
-                    let pdf_body = this.CurrentAPIBody;
-                    console.log('current tab data', this.CurrentAPIBody);
-                    console.log('pdf_body', pdf_body);
+
+                    let pdf_body = { ...this.CurrentAPIBody };
                     pdf_body.body['report_download'] = true;
                     pdf_body.body['limit'] = this.getReportLimit();
                     if (this.CurrentAPIBody?.currentTab === 'technicalRoutes') {
-                      pdf_body.api_url = 'https://apilive.chemrobotics.com/technical-routes/synthesis-search';
+                      pdf_body.api_url = this.apiUrls.technicalRoutes.synthesisSearch;
                     }
-                    //  priviledge_data?.['pharmvetpat-mongodb']?.ReportLimit;
+                    // ✅ Advance Search Case
+                    if (this.lastSearchData?.searchType === "advance Search") {
+                      //  const firstKeyword = this.CurrentAPIBody?.criteria?.[0]?.keyword || "";
+                      //  console.log("First Keyword >>>", firstKeyword);
+                      let firstKeyword = "";
 
-                 
+                      if (this.CurrentAPIBody?.criteria?.length > 0) {
+                        firstKeyword = this.CurrentAPIBody.criteria[0].keyword || "";
+                      } else if (this.CurrentAPIBody?.body?.criteria?.length > 0) {
+                        firstKeyword = this.CurrentAPIBody.body.criteria[0].keyword || "";
+                      }
+
+                      console.log("Extracted keyword >>>", firstKeyword);
+
+                      pdf_body.body = {
+                        report_download: true,
+                        limit: this.getReportLimit(),
+                        criteria: "",
+                        filter_enable: false,
+                        filters: {},
+                        keyword: firstKeyword,   // 👈 now value will come
+                        page_no: this.CurrentAPIBody.page_no || 1
+                      };
+                    }
+
+                    console.log("Final pdf_body >>>", pdf_body);
+
+
+
                     this.serviceResultTabFiltersService
                       .getGeneratePDF(
                         pdf_body
