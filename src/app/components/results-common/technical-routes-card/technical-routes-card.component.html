@@ -342,7 +342,7 @@
             <div *ngIf="_data?.patent_link && getColumnName('patent_link') && getSplitValues(_data?.patent_link)"
               class="col-lg-12 col-md-12">
               <img class="h-16 object-contain my-3"
-                src="https://www.chemrobotics.com/agropat-lighter/img/GooglePatents.png"  (error)="onImageError($event)"/>
+                src="assets/components/GooglePatents.png"  (error)="onImageError($event)"/>
               <div class="d-flex flex-wrap gap-2 max-h-40 overflow-y-auto">
                 <a [href]="getGooglrPatentUrl(value)" *ngFor="let value of downloadable_values" target="_blank">
                   <button type="button" style="
@@ -366,7 +366,7 @@
             <div class="col-lg-12 col-md-12"
               *ngIf="_data?.patent_link && getColumnName('patent_link') && getSplitValues(_data?.patent_link)">
               <img class="h-16 object-contain my-3"
-                src="https://www.chemrobotics.com/agropat-lighter/img/espace-logo.png" (error)="onImageError($event)" />
+                src="assets/components/espace.png" (error)="onImageError($event)" />
 
               <div class="col-lg-12 col-md-12">
                 <div class="d-flex flex-wrap gap-2 max-h-40 overflow-y-auto">
