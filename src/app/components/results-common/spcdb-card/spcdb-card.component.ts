@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, ViewChild, AfterViewInit, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnChanges, ViewChild, AfterViewInit, ChangeDetectorRef, EventEmitter, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -87,7 +87,13 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
     private UserPriviledgeService: UserPriviledgeService
   ) { }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['rowData']) {
+      console.log("📥 rowData received in child →", this.rowData);
+    }
+    if (changes['columnDefs']) {
+      console.log("📥 columnDefs received in child →", this.columnDefs);
+    }
     if (this.columnDefs && this.columnDefs.length > 0) {
       this.displayedColumns = [];
       this.columnHeaders = {};
@@ -127,34 +133,24 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
     return isoPattern.test(value) && !isNaN(Date.parse(value.replace(' ', 'T')));
   }
   filterState(column: string, type: string) {
-    const apiTypeMap: any = {
-      "Starts with": "STARTS_WITH",
-      "Contains": "CONTAINS",
-      "Not Contains": "NOT_CONTAINS",
-      "Ends with": "ENDS_WITH",
-      "Equals": "EQUALS",
-      "Not Equals": "NOT_EQUALS",
-      "No Filter": null
-    };
-
-    if (type === "No Filter") {
+    if (!type) {
+      // No Filter selected
       delete this.columnsFilterType[column];
       delete this.columnsSearch[column];
     } else {
-      this.columnsFilterType[column] = apiTypeMap[type] || type;
+      this.columnsFilterType[column] = type || 'contains'; 
     }
-
-    // ✅ log payload before fetch
+  
     console.log("🔍 Filter Payload →", {
       column,
       type: this.columnsFilterType[column],
       value: this.columnsSearch[column]
     });
-
-    this.fetchData();
-    this.openDropdownColumn = null;
+  
+    this.fetchData(); 
+    this.openDropdownColumn = null; // dropdown close
   }
-
+  
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -195,37 +191,61 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
   }
   applyFilter(columnKey: string, filterValue: string, filterType: string) {
     this.dataSource.filterPredicate = (data: any, filter: string) => {
-      const filterLower = filter.toLowerCase();
+      const filterLower = (filter || '').toLowerCase().trim();
       const targetValue = (data[columnKey] || '').toString().toLowerCase();
-
+  
+      console.log("🔍 Applying filter →", { columnKey, filterType, filterValue, filterLower });
+  
       switch (filterType) {
-        case 'startsWith':
+        case 'not_contains':
+          console.log("🔎 not contains Filter Applied => ", filterType, filterValue);
+          return !targetValue.includes(filterLower);
+  
+        case 'starts_with':
           return targetValue.startsWith(filterLower);
-        case 'endsWith':
+  
+        case 'ends_with':
           return targetValue.endsWith(filterLower);
+  
         case 'equals':
           return targetValue === filterLower;
+  
+        case 'not_equals':
+          return targetValue !== filterLower;
+  
         case 'contains':
         default:
           return targetValue.includes(filterLower);
       }
     };
-
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
+  
+    // ✅ Always lowercase filter so letters match case-insensitively
+    this.dataSource.filter = (filterValue || '').trim().toLowerCase();
+  
     console.log("🔎 Filter Applied => ", filterType, filterValue);
     console.log("✅ Filtered Data =>", this.dataSource.filteredData);
     console.log("📊 Total Results =>", this.dataSource.filteredData.length);
   }
+  
 
   clearFilter(columnKey: string, inputRef: HTMLInputElement) {
+  
     inputRef.value = '';
+  
     delete this.columnsSearch[columnKey];
+  
+    this.dataSource.filter = '';   
+
     if (this.paginator) {
       this.paginator.firstPage();
     }
+  
     this.fetchData();
+  
+    console.log("🧹 Cleared filter for column:", columnKey);
+    console.log("📊 Data after clearing filter:", this.dataSource.filteredData);
   }
+  
   onCustomSort(column: number) {
     const existing = this.multiSortOrder.find(s => s.column === column);
     if (existing) {
@@ -269,54 +289,55 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
 
   fetchData() {
     const isGlobalSearch = this.globalSearchValue && this.globalSearchValue.trim() !== '';
-
+    console.log("🔎 Global Search Active:", isGlobalSearch, "Value:", this.globalSearchValue);
+  
     const allColumns = isGlobalSearch
       ? this.displayedColumns.map(col => ({
-        data: col,
-        searchable: true
-      }))
+          data: col,
+          searchable: true
+        }))
       : undefined;
-
-    const searchColumns = !isGlobalSearch
-      ? Object.entries(this.columnsSearch)
-        .filter(([_, value]) => value && value.trim() !== '')
-        .map(([key, value]) => {
-          const filterType = this.columnsFilterType[key] || 'Contains';
-          return {
-            data: key,
-            searchable: true,
-            search: {
-              value: value.trim(),
-              type: filterType
-            }
-          };
-        })
-      : [];
-
+    console.log("🟢 All Columns for Global Search:", allColumns);
+  
+    const searchColumns = Object.entries(this.columnsSearch)
+      .filter(([_, value]) => value && value.trim() !== '')
+      .map(([key, value]) => ({
+        data: key,
+        searchable: true,
+        search: {
+          value: value.trim(),
+          type: this.columnsFilterType[key] || 'contains' // default to contains
+        }
+      }));
+    console.log("🟡 Column-Specific Filters:", searchColumns);
+  
     const order = this.multiSortOrder.length > 0
       ? this.multiSortOrder
-        .filter(s => typeof s.column === 'number')
-        .map(s => {
-          console.log('↕️ Sorting applied →', { columnIndex: s.column, direction: s.dir });
-          return { column: s.column, dir: s.dir };
-        })
+          .filter(s => typeof s.column === 'number')
+          .map(s => {
+            console.log('↕️ Sorting applied →', { columnIndex: s.column, direction: s.dir });
+            return { column: s.column, dir: s.dir };
+          })
       : null;
-
+    console.log("🔵 Current Sort Order:", order);
+  
     const globalSearch = isGlobalSearch
       ? { value: this.globalSearchValue.trim() }
       : null;
-    // ✅ Agar filter ya search applied hai → reset page to 1
+  
     if (isGlobalSearch || Object.keys(this.columnsSearch).length > 0) {
       if (this.paginator) {
         this.paginator.firstPage();
+        console.log("📌 Paginator reset to first page due to search/filter");
       }
     }
-
+  
     const start = this.paginator ? this.paginator.pageIndex * this.paginator.pageSize : 0;
     const pageno = this.paginator ? this.paginator.pageIndex + 1 : 1;
-
+    console.log("📏 Pagination → start:", start, "page no:", pageno);
+  
     const payload: any = { start, pageno };
-
+  
     if (isGlobalSearch && allColumns) {
       payload.columns = allColumns;
       payload.search = globalSearch;
@@ -324,31 +345,33 @@ export class SpcdbCardComponent implements OnChanges, AfterViewInit {
       payload.columns = searchColumns;
     }
     if (order) payload.order = order;
-
-    // ✅ Log payload before sending
-    console.log("📤 API Payload →", JSON.stringify(payload, null, 2));
-
+  
+    console.log("📤 Final API Payload →", JSON.stringify(payload, null, 2));
+  
     // Send request
     this.dataFetchRequest.emit(payload);
-
+  
     // Wait for API response & table update
     setTimeout(() => {
       const currentData = this.dataSource.filteredData || [];
       console.log("📥 Data received →", this.dataSource.data); // full raw data
       console.log("📊 Rows after filter:", currentData.length);
-
+  
       this.noMatchingData = currentData.length === 0;
+      console.log("⚠️ No matching data:", this.noMatchingData);
     }, 300);
   }
-
+  
   resetToDefault() {
     this.multiSortOrder = [];
     this.columnsSearch = {};
+    this.columnsFilterType = {};
     this.globalSearchValue = '';
     // Clear all input boxes in DOM (filters)
     this.filterInputs.forEach(inputRef => inputRef.nativeElement.value = '');
     this.fetchData();
   }
+  
   fetchAndStoreVerticalLimits(): void {
     this.UserPriviledgeService.getverticalcategoryData().subscribe({
       next: (res: any) => {
