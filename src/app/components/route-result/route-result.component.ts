@@ -33,6 +33,7 @@ import { VeterinaryUsApprovalComponent } from "../results-common/veterinary-us-a
 import { DmfComponent } from '../results-common/dmf/dmf.component';
 import { SharedRosService } from '../../shared-ros.service';
 import { AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { PurpleBookComponent } from '../results-common/purple-book/purple-book.component';
 declare var bootstrap: any; // ✅ Add this here
 @Component({
   selector: 'chem-route-results',
@@ -41,7 +42,7 @@ declare var bootstrap: any; // ✅ Add this here
     ImpurityComponent, ChemiTrackerComponent, ImpComponent, IndianComponent, ChemicalDirectoryComponent,
     JapanComponent, CanadaComponent, EuropeApprovalComponent, KoreaComponent, LitigationComponent,
     UsComponent, SpcdbComponent, EximComponent, RouteTabsComponent, ActivePatentComponent,
-    NgSwitch, NgSwitchCase, NgSwitchDefault, ScientificDocsComponent, GppdDbComponent, NonPatentComponent, VeterinaryUsApprovalComponent, DmfComponent],
+    NgSwitch, NgSwitchCase, NgSwitchDefault, ScientificDocsComponent, GppdDbComponent, NonPatentComponent, VeterinaryUsApprovalComponent, DmfComponent,PurpleBookComponent],
   templateUrl: './route-result.component.html',
   styleUrl: './route-result.component.css'
 })
