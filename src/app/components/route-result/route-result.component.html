@@ -147,7 +147,13 @@
         (handleResultTabData)="handleChildPaginationSearch.emit($event)">
       </chem-us>
     </ng-container>
-
+    <ng-container *ngSwitchCase="resultTabWithKeys.purpleBook.name">
+      <app-purple-book [data]="_dataItem.purpleBook"
+        [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.purpleBook.name]" [index]="index"
+        (handleSetLoading)="handleSetLoading.emit($event)" [tabName]="resultTabWithKeys.purpleBook.name"
+        (handleResultTabData)="handleChildPaginationSearch.emit($event)">
+      </app-purple-book>
+    </ng-container>
     <ng-container *ngSwitchCase="resultTabWithKeys.veterinaryUsApproval.name">
       <app-veterinary-us-approval [data]="_dataItem.veterinaryUsApproval"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.veterinaryUsApproval.name]" [index]="index"

@@ -248,6 +248,12 @@ export class MainSearchService {
       .post(this.apiUrls.usApproval.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
+  purpleBookSearchSpecific(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.purpleBook.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
   veterinaryusApprovalSearchSpecific(props: any): Observable<any> {
     const body = props;
     return this.http

@@ -18,7 +18,7 @@ export interface AppConfig {
       filterColumns: string;
       advanceAutoSuggestions: string;
       advanceSearchResults: string;
-      productHighlights:string;
+      productHighlights: string;
       reportData: string;
     };
     technicalRoutes: {
@@ -72,6 +72,10 @@ export interface AppConfig {
       searchSpecific: string;
       columnList: string;
     };
+    purpleBook: {
+      searchSpecific: string;
+      columnList: string;
+    },
     indianMedicine: {
       searchSpecific: string;
       columnList: string;
@@ -93,11 +97,11 @@ export interface AppConfig {
       columnList: string;
       downloadexcel: string;
     };
-   veterinaryUsApproval: {
-     searchSpecific: string;
-    columnList: string;
+    veterinaryUsApproval: {
+      searchSpecific: string;
+      columnList: string;
     };
-      activePatent: {
+    activePatent: {
       searchSpecific: string;
       columnList: string;
     };
