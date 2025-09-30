@@ -76,6 +76,10 @@ export const AppConfigValues: AppConfig = {
         searchSpecific: `${appUrl.apiUrl}/orange-book-us/search-specific`,
         columnList: `${appUrl.apiUrl}/orange-book-us/column-list`,
       },
+      purpleBook: {
+        searchSpecific: `${appUrl.apiUrl}/orange-book-us/search-specific`,
+        columnList: `${appUrl.apiUrl}/orange-book-us/column-list`,
+      },
       veterinaryUsApproval: {
         searchSpecific: `${appUrl.apiUrl}/green-book-us/search-specific`,
         columnList: `${appUrl.apiUrl}/green-book-us/column-list`,

@@ -337,6 +337,14 @@ export class SearchResultsComponent {
           this.setLoadingState.emit(false);
         }
         break;
+        case this.resultTabs?.purpleBook.name:
+        if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.purpleBook.name]).length === 0) {
+          this.performpurpleBookSearch(resultTabData);
+        } else {
+          this.setLoadingState.emit(false);
+        }
+        break;
+        
       case this.resultTabs?.veterinaryUsApproval.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.veterinaryUsApproval.name]).length === 0) {
           this.performveterinaryUsApprovalSearch(resultTabData);
@@ -1108,7 +1116,74 @@ export class SearchResultsComponent {
       },
     });
   }
+ private performpurpleBookSearch(resultTabData: any): void {
+    if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+      this.allDataSets[resultTabData.index][this.resultTabs.purpleBook.name] = {};
+      this.setLoadingState.emit(false);
+      return;
+    }
 
+    // 🛠 Setup childApiBody if not already present
+    if (!this.childApiBody?.[resultTabData.index]) {
+      this.childApiBody[resultTabData.index] = {};
+    }
+
+    // 🛠 Setup request body for search
+    this.childApiBody[resultTabData.index][this.resultTabs.purpleBook.name] = {
+      api_url: this.apiUrls.purpleBook.searchSpecific,
+      search_type: resultTabData?.searchWith,
+      keyword: resultTabData?.searchWithValue,
+      page_no: 1,
+      filter_enable: false,
+      filters: {},
+      order_by: '',
+      index: resultTabData.index
+    };
+
+    const tech_API = this.apiUrls.purpleBook.columnList;
+
+    // ✅ Step 1: Get Column List
+    this.columnListService.getColumnList(tech_API).subscribe({
+      next: (res: any) => {
+        const response = res?.data;
+
+        // ✅ Extract patentColumnList
+        const patentColumns = response?.patentColumnList || [];
+        this.patentColumns = patentColumns;  // You need to define this.patentColumns in component
+
+        // 🔐 Optionally store in Auth if needed globally
+        Auth_operations.setColumnList(this.resultTabs.purpleBook.name, response);
+
+        // ✅ Step 2: Call Main Search API
+        this.mainSearchService.purpleBookSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.purpleBook.name])
+          .subscribe({
+            next: (result: any) => {
+              // ✅ Log to verify
+              const data = result?.data?.orange_book_us_data || [];
+              const count = result?.data?.orange_book_us_count || 0;
+
+              this.childApiBody[resultTabData.index][this.resultTabs.purpleBook.name].count = count;
+              this.allDataSets[resultTabData.index][this.resultTabs.purpleBook.name] = data;
+
+              this.setLoadingState.emit(false);
+              this.loadingService.setLoading(this.resultTabs.purpleBook.name, resultTabData.index, false);
+            },
+            error: (e) => {
+              console.error('Error during main search:', e);
+              this.setLoadingState.emit(false);
+              this.loadingService.setLoading(this.resultTabs.purpleBook.name, resultTabData.index, false);
+            },
+          });
+
+
+      },
+      error: (e) => {
+        console.error('Error fetching column list:', e);
+        this.setLoadingState.emit(false);
+        this.loadingService.setLoading(this.resultTabs.purpleBook.name, resultTabData.index, false);
+      },
+    });
+  }
 
   private performveterinaryUsApprovalSearch(resultTabData: any): void {
 
