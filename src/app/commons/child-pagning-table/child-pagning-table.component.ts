@@ -187,8 +187,6 @@ export class ChildPagningTableComponent implements OnChanges {
   }
 }
 
-
-
   handleFirstClick = () => {
     this.MainPageNo = 1;
     this.updateInitialPageArray();

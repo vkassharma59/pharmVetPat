@@ -47,7 +47,7 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
   openFilter: { [key: string]: boolean } = {};
   activeSort: string = '';
   sortDirection: 'asc' | 'desc' | '' = '';
-  openDropdownColumn: string | null = null;
+  columnsFilterType: { [key: string]: string } = {};
   columnsSearch: { [key: string]: string } = {};
   multiSortOrder: { column: number, dir: 'asc' | 'desc' }[] = [];
   noMatchingData: boolean = false;
@@ -69,7 +69,8 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
   }
   searchText: string = '';
   searchColumn: string | undefined;
-  columnsFilterType: { [key: string]: string } = {};
+  openDropdownColumn: string | null = null;
+  showPaginator: boolean = false;
   constructor(private cdr: ChangeDetectorRef,
     private mainSearchService: MainSearchService,
     private UserPriviledgeService: UserPriviledgeService
@@ -116,6 +117,16 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
 
     this.cdr.detectChanges();
   }
+  handleLoadingState(data: any) {
+    this.loading = data;
+  }
+
+  scrollTable(direction: 'left' | 'right'): void {
+    const container = document.querySelector('.scroll-container');
+    if (container) {
+      container.scrollBy({ left: direction === 'left' ? -150 : 150, behavior: 'smooth' });
+    }
+  }
   filterState(column: string, type: string) {
     if (!type) {
       // No Filter selected
@@ -133,40 +144,6 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
 
     this.fetchData();
     this.openDropdownColumn = null; // dropdown close
-  }
-
-  handleLoadingState(data: any) {
-    this.loading = data;
-  }
-
-  scrollTable(direction: 'left' | 'right'): void {
-    const container = document.querySelector('.scroll-container');
-    if (container) {
-      container.scrollBy({ left: direction === 'left' ? -150 : 150, behavior: 'smooth' });
-    }
-  }
-
-  searchInColumn(column: any, filterInput: HTMLInputElement, event: MouseEvent): void {
-    event.stopPropagation(); // prevent sort from triggering
-
-    if (filterInput.value.trim() === '') {
-      this.clearFilter(column.value, filterInput);
-      return;
-    }
-
-    const searchValue = filterInput.value.trim();
-    const columnKey = column.value;
-
-    if (searchValue) {
-      this.columnsSearch[columnKey] = searchValue;
-    } else {
-      delete this.columnsSearch[columnKey];
-    }
-    // ✅ Reset page number
-    if (this.paginator) {
-      this.paginator.firstPage();
-    }
-    this.fetchData();
   }
   applyFilter(columnKey: string, filterValue: string, filterType: string) {
     if (filterValue && filterValue.trim() !== '') {
@@ -205,7 +182,43 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
 
     console.log("🧹 Cleared filter for column:", columnKey);
   }
+  searchInColumn(column: any, filterInput: HTMLInputElement, event: MouseEvent): void {
+    event.stopPropagation(); // prevent sort from triggering
 
+    if (filterInput.value.trim() === '') {
+      this.clearFilter(column.value, filterInput);
+      return;
+    }
+
+    const searchValue = filterInput.value.trim();
+    const columnKey = column.value;
+
+    if (searchValue) {
+      this.columnsSearch[columnKey] = searchValue;
+    } else {
+      delete this.columnsSearch[columnKey];
+    }
+
+    this.fetchData();
+  }
+  toggleDropdown(columnValue: string) {
+    if (this.openDropdownColumn === columnValue) {
+      // If already open, close it
+      this.openDropdownColumn = null;
+    } else {
+      // Open this column's dropdown
+      this.openDropdownColumn = columnValue;
+    }
+  }
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+
+    // If clicked element is NOT inside .filterDropdown or .filterIcon, close dropdown
+    if (!target.closest('.filterDropdown') && !target.closest('.filterIcon')) {
+      this.openDropdownColumn = null;
+    }
+  }
   onCustomSort(column: number) {
     const existing = this.multiSortOrder.find(s => s.column === column);
     if (existing) {
@@ -231,24 +244,7 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
     this.multiSortOrder.push({ column: index, dir: newDir });
     this.fetchData();
   }
-  toggleDropdown(columnValue: string) {
-    if (this.openDropdownColumn === columnValue) {
-      // If already open, close it
-      this.openDropdownColumn = null;
-    } else {
-      // Open this column's dropdown
-      this.openDropdownColumn = columnValue;
-    }
-  }
-  @HostListener('document:click', ['$event'])
-  onClickOutside(event: MouseEvent) {
-    const target = event.target as HTMLElement;
 
-    // If clicked element is NOT inside .filterDropdown or .filterIcon, close dropdown
-    if (!target.closest('.filterDropdown') && !target.closest('.filterIcon')) {
-      this.openDropdownColumn = null;
-    }
-  }
   getCountryUrl(value: any) {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.COUNTRY_OF_ORIGIN}.png`;
   }
@@ -297,7 +293,7 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
       ? { value: this.globalSearchValue.trim() }
       : null;
 
-    if (isGlobalSearch || Object.keys(this.columnsSearch).length > 0) {
+    if (isGlobalSearch || Object.keys(this.columnsSearch).length < 25) {
       if (this.paginator) {
         this.paginator.firstPage();
         console.log("📌 Paginator reset to first page due to search/filter");
@@ -333,47 +329,25 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
       console.log("⚠️ No matching data:", this.noMatchingData);
     }, 300);
   }
-
   onFlagError(event: any) {
     event.target.src = 'assets/images/flag.png';
   }
-  isISODate(value: any): boolean {
-    if (typeof value !== 'string') return false;
+isISODate(value: any): boolean {
+  if (typeof value !== 'string') return false;
 
-    // ISO format flexible pattern (with optional milliseconds/timezone)
-    const isoPattern = /^\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
+  // ISO format flexible pattern (with optional milliseconds/timezone)
+  const isoPattern = /^\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
 
-    return isoPattern.test(value) && !isNaN(Date.parse(value.replace(' ', 'T')));
-  }
-
-resetToDefault() {
-  // Reset sorting & filters
-  this.multiSortOrder = [];
-  this.columnsSearch = {};
-  this.columnsFilterType = {};
-  this.globalSearchValue = '';
-
-  // Clear input boxes (if you’re using ViewChildren for filterInputs)
-  if (this.filterInputs) {
-    this.filterInputs.forEach(inputRef => inputRef.nativeElement.value = '');
-  }
-
-  // Force table to re-render
-  if (this.paginator) {
-    this.paginator.firstPage();
-  }
-
-  // Refetch fresh data
-  this.fetchData();
-
-  // Force Angular change detection (important if MatTable is not updating)
-  this.dataSource = new MatTableDataSource(this.rowData); // replace rawData with your actual array
-  this.dataSource.paginator = this.paginator;
-  this.dataSource.sort = this.sort;
-
-  console.log("🔄 Reset to default → Data reloaded:", this.dataSource.data);
+  return isoPattern.test(value) && !isNaN(Date.parse(value.replace(' ', 'T')));
 }
 
+  resetToDefault() {
+    this.multiSortOrder = [];
+    this.columnsSearch = {};
+    this.globalSearchValue = '';
+    this.filterInputs.forEach(inputRef => inputRef.nativeElement.value = '');
+    this.fetchData();
+  }
   fetchAndStoreVerticalLimits(): void {
     this.UserPriviledgeService.getverticalcategoryData().subscribe({
       next: (res: any) => {
@@ -582,4 +556,3 @@ resetToDefault() {
   }
 
 }
-

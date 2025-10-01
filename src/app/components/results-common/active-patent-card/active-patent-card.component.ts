@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, ViewChild, AfterViewInit, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnChanges, ViewChild, AfterViewInit, ChangeDetectorRef, EventEmitter, Output, SimpleChanges, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -62,6 +62,8 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
     return this._currentChildAPIBody?.length || 25;
   }
   dataSource = new MatTableDataSource<any>([]);
+  openDropdownColumn: string | null = null;
+  showPaginator: boolean = false;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   @ViewChildren('filterInput') filterInputs!: QueryList<ElementRef<HTMLInputElement>>;
@@ -76,45 +78,44 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
   }
   searchText: string = '';
   searchColumn: string | undefined;
-
+  columnsFilterType: { [key: string]: string } = {};
   constructor(private cdr: ChangeDetectorRef,
     private mainSearchService: MainSearchService,
     private UserPriviledgeService: UserPriviledgeService
   ) { }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['rowData']) {
+      console.log("📥 rowData received in child →", this.rowData);
+    }
+    if (changes['columnDefs']) {
+      console.log("📥 columnDefs received in child →", this.columnDefs);
+    }
     if (this.columnDefs && this.columnDefs.length > 0) {
       this.displayedColumns = [];
       this.columnHeaders = {};
       this.filterableColumns = [];
 
+      // Check which columns have at least one non-empty value
       for (const col of this.columnDefs) {
         const colValue = col.value;
+
         const hasData = this.rowData?.some(row =>
           row[colValue] !== null && row[colValue] !== undefined && row[colValue] !== ''
         );
 
         if (hasData) {
-          this.displayedColumns.push(colValue);
+          this.displayedColumns.push(colValue); // ✅ Only include columns with at least one value
           this.columnHeaders[colValue] = col.label;
           this.filterableColumns.push(colValue);
+        } else {
+
         }
       }
     }
-
     if (this.rowData) {
       this.dataSource.data = this.rowData;
       this.noMatchingData = this.rowData.length === 0;
-
-      // 🔥 IMPORTANT: Reset selection when rowData changes
-      if (this.rowData.length > 0) {
-        this.selectedItem = this.rowData[0]; // auto-select first
-      } else {
-        this.selectedItem = null; // nothing to show
-      }
-
-      // Scroll detail panel to top
-      this.resetScroll();
     }
   }
 
@@ -124,6 +125,24 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
     this.paginator.page.subscribe(() => this.fetchData());
 
     this.cdr.detectChanges();
+  }
+  filterState(column: string, type: string) {
+    if (!type) {
+      // No Filter selected
+      delete this.columnsFilterType[column];
+      delete this.columnsSearch[column];
+    } else {
+      this.columnsFilterType[column] = type || 'contains';
+    }
+
+    console.log("🔍 Filter Payload →", {
+      column,
+      type: this.columnsFilterType[column],
+      value: this.columnsSearch[column]
+    });
+
+    this.fetchData();
+    this.openDropdownColumn = null; // dropdown close
   }
   setViewMode(mode: 'grid' | 'list' | 'detail') {
     this.viewMode = mode;
@@ -217,15 +236,44 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
     }
     this.fetchData();
   }
+  applyFilter(columnKey: string, filterValue: string, filterType: string) {
+    if (filterValue && filterValue.trim() !== '') {
+      this.columnsSearch[columnKey] = filterValue.trim();
+      this.columnsFilterType[columnKey] = filterType || 'contains';
+    } else {
+      delete this.columnsSearch[columnKey];
+      delete this.columnsFilterType[columnKey];
+    }
 
-  clearFilter(columnKey: string, inputRef: HTMLInputElement) {
-    inputRef.value = '';
-    delete this.columnsSearch[columnKey];
     if (this.paginator) {
       this.paginator.firstPage();
     }
+
     this.fetchData();
+
+    console.log("🔍 Applied API filter →", {
+      columnKey,
+      type: this.columnsFilterType[columnKey],
+      value: this.columnsSearch[columnKey]
+    });
   }
+
+  // ✅ clearFilter now only resets API filters
+  clearFilter(columnKey: string, inputRef: HTMLInputElement) {
+    inputRef.value = '';
+
+    delete this.columnsSearch[columnKey];
+    delete this.columnsFilterType[columnKey];
+
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+
+    this.fetchData();
+
+    console.log("🧹 Cleared filter for column:", columnKey);
+  }
+
   onCustomSort(column: number) {
     const existing = this.multiSortOrder.find(s => s.column === column);
     if (existing) {
@@ -251,7 +299,24 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
     this.multiSortOrder.push({ column: index, dir: newDir });
     this.fetchData();
   }
+  toggleDropdown(columnValue: string) {
+    if (this.openDropdownColumn === columnValue) {
+      // If already open, close it
+      this.openDropdownColumn = null;
+    } else {
+      // Open this column's dropdown
+      this.openDropdownColumn = columnValue;
+    }
+  }
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const target = event.target as HTMLElement;
 
+    // If clicked element is NOT inside .filterDropdown or .filterIcon, close dropdown
+    if (!target.closest('.filterDropdown') && !target.closest('.filterIcon')) {
+      this.openDropdownColumn = null;
+    }
+  }
   getSortIcon(index: number): string {
     const column = this.displayedColumns[index];
     const sort = this.multiSortOrder.find(s => s.column === index);
@@ -261,56 +326,55 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
 
   fetchData() {
     const isGlobalSearch = this.globalSearchValue && this.globalSearchValue.trim() !== '';
-    // Add columns for global search: all displayedColumns with searchable: true
+    console.log("🔎 Global Search Active:", isGlobalSearch, "Value:", this.globalSearchValue);
+
     const allColumns = isGlobalSearch
       ? this.displayedColumns.map(col => ({
         data: col,
         searchable: true
       }))
       : undefined;
+    console.log("🟢 All Columns for Global Search:", allColumns);
 
-    // Add only filtered columns for column search
-    const searchColumns = !isGlobalSearch
-      ? Object.entries(this.columnsSearch)
-        .filter(([_, value]) => value && value.trim() !== '')
-        .map(([key, value]) => ({
-          data: key,
-          searchable: true,
-          search: { value: value.trim() }
-        }))
-      : [];
+    const searchColumns = Object.entries(this.columnsSearch)
+      .filter(([_, value]) => value && value.trim() !== '')
+      .map(([key, value]) => ({
+        data: key,
+        searchable: true,
+        search: {
+          value: value.trim(),
+          type: this.columnsFilterType[key] || 'contains' // default to contains
+        }
+      }));
+    console.log("🟡 Column-Specific Filters:", searchColumns);
+
     const order = this.multiSortOrder.length > 0
       ? this.multiSortOrder
         .filter(s => typeof s.column === 'number')
         .map(s => {
-          return {
-            column: s.column,
-            dir: s.dir
-          };
+          console.log('↕️ Sorting applied →', { columnIndex: s.column, direction: s.dir });
+          return { column: s.column, dir: s.dir };
         })
       : null;
-    // const order = this.multiSortOrder.length > 0
-    //   ? this.multiSortOrder.map(s => ({
-    //     column: s.column,
-    //     dir: s.dir
-    //   }))
-    //   : null;
+    console.log("🔵 Current Sort Order:", order);
 
     const globalSearch = isGlobalSearch
       ? { value: this.globalSearchValue.trim() }
       : null;
-    if (isGlobalSearch || Object.keys(this.columnsSearch).length > 0) {
+
+    if (isGlobalSearch || Object.keys(this.columnsSearch).length < 25) {
       if (this.paginator) {
         this.paginator.firstPage();
+        console.log("📌 Paginator reset to first page due to search/filter");
       }
     }
+
     const start = this.paginator ? this.paginator.pageIndex * this.paginator.pageSize : 0;
     const pageno = this.paginator ? this.paginator.pageIndex + 1 : 1;
+    console.log("📏 Pagination → start:", start, "page no:", pageno);
 
-    const payload: any = {
-      start,
-      pageno
-    };
+    const payload: any = { start, pageno };
+
     if (isGlobalSearch && allColumns) {
       payload.columns = allColumns;
       payload.search = globalSearch;
@@ -318,13 +382,22 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
       payload.columns = searchColumns;
     }
     if (order) payload.order = order;
+
+    console.log("📤 Final API Payload →", JSON.stringify(payload, null, 2));
+
+    // Send request
     this.dataFetchRequest.emit(payload);
+
+    // Wait for API response & table update
     setTimeout(() => {
       const currentData = this.dataSource.filteredData || [];
+      console.log("📥 Data received →", this.dataSource.data); // full raw data
+      console.log("📊 Rows after filter:", currentData.length);
+
       this.noMatchingData = currentData.length === 0;
+      console.log("⚠️ No matching data:", this.noMatchingData);
     }, 300);
   }
-
   toggleView(view: 'list' | 'grid'): void {
     if (view === 'list') {
       this.ListView = true;
@@ -343,11 +416,30 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
   resetToDefault() {
     this.multiSortOrder = [];
     this.columnsSearch = {};
+    this.columnsFilterType = {};
     this.globalSearchValue = '';
+    
     // Clear all input boxes in DOM (filters)
     this.filterInputs.forEach(inputRef => inputRef.nativeElement.value = '');
+  
+    // Reset paginator
+    if (this.paginator) this.paginator.firstPage();
+  
+    // ✅ Fetch full original data from API
+    this.getAllDataFromApi().subscribe(data => {
+      this.rowData = data;            // Update rowData
+      this.dataSource.data = this.rowData;  // Update dataSource
+  
+      // Update paginator visibility dynamically
+      this.showPaginator = this.rowData.length > this.pageSize;
+  
+      console.log("🔄 Table reset to default, full data fetched →", this.rowData);
+      this.noMatchingData = !this.rowData || this.rowData.length === 0;
+    });
+
     this.fetchData();
   }
+  
   fetchAndStoreVerticalLimits(): void {
     this.UserPriviledgeService.getverticalcategoryData().subscribe({
       next: (res: any) => {

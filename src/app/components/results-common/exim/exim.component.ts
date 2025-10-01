@@ -141,65 +141,68 @@ export class EximComponent implements OnChanges {
   }
 
   onDataFetchRequest(payload: any) {
-    console.log("📤 Child emitted payload →", payload);
+    console.log("🔹 [onDataFetchRequest] Incoming payload:", payload);
   
+    // ✅ Check if filter/search applied
     this.isFilterApplied = !!(payload?.search || payload?.columns);
-    console.log("🔍 Is filter applied? →", this.isFilterApplied);
+    console.log("✅ isFilterApplied:", this.isFilterApplied);
   
-    // Remove stale filters from _currentChildAPIBody if they are not in payload
+    // ✅ Remove empty fields from current API body
     if (!('columns' in payload)) {
-      console.log("🧹 Removing stale 'columns' filter from _currentChildAPIBody");
+      console.log("🗑️ Removing columns from _currentChildAPIBody");
       delete this._currentChildAPIBody.columns;
     }
-  
     if (!('search' in payload)) {
-      console.log("🧹 Removing stale 'search' filter from _currentChildAPIBody");
+      console.log("🗑️ Removing search from _currentChildAPIBody");
       delete this._currentChildAPIBody.search;
     }
   
+    // ✅ Prepare final request body
     const requestBody = {
       ...this._currentChildAPIBody,
       ...payload
     };
+    console.log("📦 Final Request Body sent to API:", requestBody);
+  
+    // ✅ Save back to current API body
     this._currentChildAPIBody = requestBody;
   
-    console.log("📦 Final requestBody →", JSON.stringify(requestBody, null, 2));
-  
+    // ✅ Emit loading true
     this.handleSetLoading.emit(true);
+    console.log("⏳ API Call started...");
   
-    this.mainSearchService.spcdbSearchSpecific(requestBody).subscribe({
+    // ✅ API Call
+    this.mainSearchService.EximDataSearchSpecific(requestBody).subscribe({
       next: (result: any) => {
-        console.log("✅ API Response →", result);
+        console.log("✅ API Response received:", result);
   
+        // ✅ Extract rows and counts
         this._data.rows = result?.data?.data || [];
-        console.log("📊 Rows received →", this._data.rows.length, "rows");
-  
         this.count = result?.data?.recordsFiltered ?? result?.data?.recordsTotal;
-        console.log("🔢 Count (recordsFiltered/recordsTotal) →", this.count);
-  
         this.totalPages = Math.ceil(this.count / this.pageSize);
-        console.log("📑 Total pages →", this.totalPages);
-  
         this._currentChildAPIBody.count = this.count;
-  
         this.searchByTable = true;
-        console.log("📌 searchByTable flag set →", this.searchByTable);
   
+        console.log("📊 Rows received:", this._data.rows.length);
+        console.log("📊 Total Count:", this.count);
+        console.log("📊 Total Pages:", this.totalPages);
+  
+        // ✅ Emit result
         this.handleResultTabData.emit(this._data.rows);
-        console.log("📤 Emitting rows to handleResultTabData");
-  
         this.handleSetLoading.emit(false);
+        console.log("📤 Data emitted to parent");
       },
       error: (err) => {
-        console.error("❌ API Error →", err);
+        console.error("❌ API Error:", err);
         this.handleSetLoading.emit(false);
       },
       complete: () => {
-        console.log("✅ API call completed");
+        console.log("✅ API Call completed");
         this.handleSetLoading.emit(false);
       }
     });
   }
+  
   setFilterLabel(filterKey: string, label: string) {
     this.filterConfigs = this.filterConfigs.map((item) => {
       if (item.key === filterKey) {

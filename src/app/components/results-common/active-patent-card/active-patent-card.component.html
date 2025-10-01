@@ -67,6 +67,18 @@
             [style.width]="column.ui_width || '150px'"
               (click)="onCustomSort(column.value)"
               style="position: sticky; background-color:#3886d8; color:white; border:2px solid white;overflow:visible;">
+              <div class="filterDropdown" *ngIf="openDropdownColumn === column.value">
+                <ul class="options">
+                  <li (click)="filterState(column.value, 'starts_with')">Starts with</li>
+                  <li (click)="filterState(column.value, 'contains')">Contains</li>
+                  <li (click)="filterState(column.value, 'not_contains')">Not Contains</li>
+                  <li (click)="filterState(column.value, 'ends_with')">Ends with</li>
+                  <li (click)="filterState(column.value, 'equals')">Equals</li>
+                  <li (click)="filterState(column.value, 'not_equals')">Not Equals</li>
+                  <hr>
+                  <li (click)="filterState(column.value, '')">No Filter</li>
+                </ul>
+              </div>
 
               <div class="header-content" [style.width]="column.ui_width || '150px'"
                 style="display:flex; justify-content:center; align-items:center; text-align:center;">
@@ -81,8 +93,7 @@
 
                   <div style="position:relative; display:flex; overflow:visible; padding:0; width:40px;">
                     <!-- Search icon -->
-                    <button class="filterIcon"
-                      (click)="searchInColumn(column, filterInput, $event); $event.stopPropagation();">
+                    <button class="filterIcon" (click)="toggleDropdown(column.value); $event.stopPropagation()">
                       <i class="fa-solid fa-filter"></i>
                     </button>
 
@@ -324,6 +335,3 @@
       </div>
     </div>
   </ng-template>
-
-
-  <!-- Paginator -->

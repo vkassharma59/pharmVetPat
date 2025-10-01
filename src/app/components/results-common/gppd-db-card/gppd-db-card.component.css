@@ -368,7 +368,6 @@ mat-header-cell {
 .scroll-container {
   overflow-x: auto;
   white-space: nowrap;
-  /* padding: 2rem; */
 }
 
 th {
@@ -377,7 +376,6 @@ th {
 
 .scrollable-text {
   max-height: 4.5em;
-  /* Approx. 3 lines */
   overflow-y: auto;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -386,7 +384,6 @@ th {
   line-height: 1.5em;
   margin: 10px;
   padding-right: 8px;
-  /* for scrollbar space */
 }
 
 .scrollable-text::-webkit-scrollbar {
@@ -400,7 +397,6 @@ th {
 
 }
 
-/* Track */
 .scrollable-text::-webkit-scrollbar-track {
   background: #f1f1f1e7;
 }
@@ -415,13 +411,12 @@ th {
   margin-left: 2.5rem;
 }
 
-
 .options {
-  width: 11rem;
+  width: 30%;
   position: absolute;
   border: 2px solid black;
   z-index: 999;
-  font-size: larger;
+  font-size: 0.8rem;
   /* margin: 1rem; */
   text-align: justify;
   color: black;
@@ -437,11 +432,9 @@ th {
 }
 .options li:hover{
   background-color: aliceblue;
-  font-size: larger;
+  font-size:1rem;
 }
 .mat-header-row {
   overflow: visible !important;
   z-index: 2; /* stay above rows */
 }
-
-
