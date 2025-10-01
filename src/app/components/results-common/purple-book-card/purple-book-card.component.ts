@@ -51,6 +51,8 @@ export class PurpleBookCardComponent {
   
       if (column_list[this.resultTabs.purpleBook?.name]?.patentColumnList?.length > 0) {
         for (let col of column_list[this.resultTabs.purpleBook?.name]?.patentColumnList) {
+      if (column_list[this.resultTabs.purpleBook?.name]?.patentColumnList?.length > 0) {
+        for (let col of column_list[this.resultTabs.purpleBook?.name]?.patentColumnList) {
           this.us_column[col.value] = col.name;
         }
       }
@@ -65,7 +67,7 @@ export class PurpleBookCardComponent {
       console.log('us_approval_column (Approval Columns):', this.us_approval_column);
       console.groupEnd();
     }
-  }
+      }}}
   
   convertNewlinesToBr(text: string): string {
     return text?.replace(/\n/g, '<br>');

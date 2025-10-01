@@ -3,12 +3,12 @@
   <div class="flex flex-wrap gap-3">
       <div class="dropdown" *ngFor="let configData of filterConfigs" #dropdownRef>
        
+       
         <button class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
           type="button" id="configData.key" (click)="onFilterButtonClick(configData.key)">
           {{ configData.label | truncate:20 }}
         </button>
 
-       
        
         <ul *ngIf="configData.dropdownState" class="dropdown-menu w-66 max-h-60 overflow-y-auto z-30 p-2">
           <li (click)="handleSelectFilter(configData.key, '')"
@@ -28,6 +28,7 @@
         <i class="fa-solid fa-rotate"></i>
       </button>
     </div>
+  </div> -->
   </div> -->
 <ng-container *ngIf="_data?.length > 0; else noData">
   <ng-container *ngFor="let dataItem of _data; let i = index">
