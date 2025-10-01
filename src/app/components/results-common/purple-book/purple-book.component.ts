@@ -20,10 +20,8 @@ import { PurpleBookCardComponent } from '../purple-book-card/purple-book-card.co
   selector: 'app-purple-book',
   standalone: true,
   imports: [CommonModule, PurpleBookCardComponent, ChildPagingComponent, TruncatePipe],
-  imports: [CommonModule, PurpleBookCardComponent, ChildPagingComponent, TruncatePipe],
   templateUrl: './purple-book.component.html',
   styleUrl: './purple-book.component.css'
-})
 })
 export class PurpleBookComponent {
   @ViewChildren('dropdownRef') dropdownRefs!: QueryList<ElementRef>;
@@ -40,8 +38,6 @@ export class PurpleBookComponent {
   }
   set data(name: any) {
     this._data = name;
-    console.log("hfngefenhdd", this._data); 
-    this.patentData = Array.isArray(name) ? name : [name];
     console.log("hfngefenhdd", this._data); 
     this.patentData = Array.isArray(name) ? name : [name];
     this.handleResultTabData.emit(this._data);
@@ -166,7 +162,6 @@ export class PurpleBookComponent {
   handleFetchFilters() {
     this.usApiBody.filter_enable = true;
     this.mainSearchService.purpleBookSearchSpecific(this.usApiBody).subscribe({
-    this.mainSearchService.purpleBookSearchSpecific(this.usApiBody).subscribe({
       next: (res: any) => {
         const applFilters = res?.data?.appl_type?.map(item => ({
           name: item.name,
@@ -188,7 +183,6 @@ export class PurpleBookComponent {
           name: item.name,
           value: item.value
         })) || [];
-        })) || [];
         this.usFilters = {
           applFilters,
           strengthFilters,
@@ -196,7 +190,9 @@ export class PurpleBookComponent {
           applicantFilters,
           ingredientFilters: ingredientFilters,
 
+
         };
+        this.usApiBody.filter_enable = false;
         this.usApiBody.filter_enable = false;
 
       },
@@ -206,7 +202,6 @@ export class PurpleBookComponent {
       }
     });
   }
-
 
   setFilterLabel(filterKey: string, label: string) {
     this.filterConfigs = this.filterConfigs.map((item) => {
@@ -227,6 +222,7 @@ export class PurpleBookComponent {
   }
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     this.handleSetLoading.emit(true);
+    // this.usApiBody.filters = this.usApiBody.filters || {};
     // this.usApiBody.filters = this.usApiBody.filters || {};
 
     if (value === '') {
@@ -249,17 +245,15 @@ export class PurpleBookComponent {
     console.log(`[API] Current API body for ${filterKey}:`, this._currentChildAPIBody);
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     this.mainSearchService.purpleBookSearchSpecific(this._currentChildAPIBody).subscribe({
-    this.mainSearchService.purpleBookSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         console.log(`[API] Filtered result for ${filterKey}:`, res?.data);
-        const resultData = res?.data || {};
         const resultData = res?.data || {};
         // ✅ Updating count if needed:
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
           count: resultData?.purple_book_count
-          count: resultData?.purple_book_count
         };
+        this._data = resultData?.purple_book_data || [];
         this._data = resultData?.purple_book_data || [];
         this.handleResultTabData.emit(resultData);
         this.handleSetLoading.emit(false);
@@ -309,13 +303,12 @@ export class PurpleBookComponent {
 
     this.handleSetLoading.emit(true);
     this.mainSearchService.purpleBookSearchSpecific(this._currentChildAPIBody).subscribe({
-    this.mainSearchService.purpleBookSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
           count: res?.data?.purple_book_count
-          count: res?.data?.purple_book_count
         };
+        this._data = res?.data?.purple_book_data || [];
         this._data = res?.data?.purple_book_data || [];
         this.handleResultTabData.emit(res.data);
         this.handleSetLoading.emit(false);

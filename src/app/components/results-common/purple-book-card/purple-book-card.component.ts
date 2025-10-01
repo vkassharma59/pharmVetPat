@@ -43,23 +43,23 @@ export class PurpleBookCardComponent {
       const column_list = Auth_operations.getColumnList();
       if (column_list[this.resultTabs.purpleBook?.name]?.patentColumnList?.length > 0) {
         for (let col of column_list[this.resultTabs.purpleBook?.name]?.patentColumnList) {
-      if (column_list[this.resultTabs.purpleBook?.name]?.patentColumnList?.length > 0) {
-        for (let col of column_list[this.resultTabs.purpleBook?.name]?.patentColumnList) {
           this.us_column[col.value] = col.name;
         }
       }
-
-      if (column_list[this.resultTabs.purpleBook?.name]?.columns?.length > 0) {
+ 
+    if (column_list[this.resultTabs.purpleBook?.name]?.columns?.length > 0) {
         for (let col of column_list[this.resultTabs.purpleBook?.name]?.columns) {
           this.us_approval_column[col.value] = col.name;
         }
       }
       // if (column_list[this.resultTabs.purpleBook?.name]?.length > 0) {
       //   for (let col of column_list[this.resultTabs.purpleBook?.name]) {
+      // if (column_list[this.resultTabs.purpleBook?.name]?.length > 0) {
+      //   for (let col of column_list[this.resultTabs.purpleBook?.name]) {
       //     this.us_approval_column[col.value] = col.name;
       //   }
       // }
-
+    
       // const tabName = this.resultTabs?.purpleBook?.name || 'US_APPROVAL';
       // this.us_approval_column = column_list?.[tabName];
     }
@@ -88,39 +88,12 @@ export class PurpleBookCardComponent {
   productColumns: any[] = [];
   productData: any[] = [];
   ngOnInit() {
-    console.log('PurpleBookCardComponent initialized with data:', this._data);
+   console.log('PurpleBookCardComponent initialized with data:', this._data);
   }
-  // getVisibleColumns(): string[] {
-  //   // Get all keys from us_column
-  //   const allKeys = this.getObjectKeys(this.us_column);
-
-  //   // Filter keys to include only those which have at least one non-empty value in any row
-  //   return allKeys.filter(key => {
-  //     return this._data?.patentData?.some(item => {
-  //       const value = item[key];
-  //       return value !== null && value !== undefined && value !== '';
-  //     });
-  //   });
-  // }
-getVisibleColumns(): string[] {
-  const allKeys = this.getObjectKeys(this.us_column);
-
-  return allKeys.filter(key => {
-    return this._data?.patentData?.some(item => {
-      const value = item[key];
-
-      // If value is an array, check if it has at least one element
-      if (Array.isArray(value)) {
-        return value.length > 0;
-      }
-
-      // For strings, numbers, objects etc.
-      return value !== null && value !== undefined && value !== '';
-    });
-  });
-}
 
   ngOnChanges() {
+     console.log('PurpleBookCardComponent initialized with data:', this._data);
+
      console.log('PurpleBookCardComponent initialized with data:', this._data);
 
     if (this.data && Array.isArray(this.data.patent_list)) {
@@ -146,13 +119,11 @@ getVisibleColumns(): string[] {
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
-  allowedColumns: string[] = ['gbrn', 'products', 'bla_number', 'applicant_name', 'applicant_logo', 'proprietary_name', 'proper_name', 'jarvis_rn', 'drug_substance_flag', 'drug_product_flag', 'patent_use_code', 'submission_date', 'remark_s'];
+  allowedColumns: string[] = ['gbrn','products', 'bla_number','applicant_name','applicant_logo','proprietary_name','proper_name','jarvis_rn','drug_substance_flag','drug_product_flag','patent_use_code','submission_date','remark_s']; 
 
   getObjectKeysOrdered(): string[] {
     return this.allowedColumns.filter(key => this.us_column?.hasOwnProperty(key));
   }
-  getObjectKeys(obj: any): string[] {
-    return obj ? Object.keys(obj) : [];
   getObjectKeys(obj: any): string[] {
     return obj ? Object.keys(obj) : [];
   }
