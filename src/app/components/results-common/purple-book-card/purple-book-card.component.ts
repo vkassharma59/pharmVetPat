@@ -42,29 +42,24 @@ export class PurpleBookCardComponent {
       this.resultTabs = this.utilityService.getAllTabsName();
     
       const column_list = Auth_operations.getColumnList();
-      if (column_list[this.resultTabs.usApproval?.name]?.patentColumnList?.length > 0) {
-        for (let col of column_list[this.resultTabs.usApproval?.name]?.patentColumnList) {
+      if (column_list[this.resultTabs.purpleBook?.name]?.patentColumnList?.length > 0) {
+        for (let col of column_list[this.resultTabs.purpleBook?.name]?.patentColumnList) {
           this.us_column[col.value] = col.name;
         }
       }
-    
-      if (column_list[this.resultTabs.usApproval?.name]?.productColumnList?.length > 0) {
-        for (let col of column_list[this.resultTabs.usApproval?.name]?.productColumnList) {
-          this.us_column2[col.value] = col.name;
-        }
-      }
-    if (column_list[this.resultTabs.usApproval?.name]?.columns?.length > 0) {
-        for (let col of column_list[this.resultTabs.usApproval?.name]?.columns) {
+ 
+    if (column_list[this.resultTabs.purpleBook?.name]?.columns?.length > 0) {
+        for (let col of column_list[this.resultTabs.purpleBook?.name]?.columns) {
           this.us_approval_column[col.value] = col.name;
         }
       }
-      // if (column_list[this.resultTabs.usApproval?.name]?.length > 0) {
-      //   for (let col of column_list[this.resultTabs.usApproval?.name]) {
+      // if (column_list[this.resultTabs.purpleBook?.name]?.length > 0) {
+      //   for (let col of column_list[this.resultTabs.purpleBook?.name]) {
       //     this.us_approval_column[col.value] = col.name;
       //   }
       // }
     
-      // const tabName = this.resultTabs?.usApproval?.name || 'US_APPROVAL';
+      // const tabName = this.resultTabs?.purpleBook?.name || 'US_APPROVAL';
       // this.us_approval_column = column_list?.[tabName];
     }
     
@@ -92,24 +87,12 @@ export class PurpleBookCardComponent {
   productColumns: any[] = [];
   productData: any[] = [];
   ngOnInit() {
-    // this.http.get('API_ENDPOINT_HERE').subscribe((res: any) => {
-    //   this.patentColumns = res?.data?.patentColumnList || [];
-    //   this.patentData = res?.data?.patentData || []; // assuming this is how patent rows come
-    //   if (UsApprovalCardComponent.apiCallCount === 0) {
-    //     UsApprovalCardComponent.apiCallCount = 0;
-    //   }
-    // });
-    // this.http.get('API_ENDPOINT_HEREeeee').subscribe((res: any) => {
-    //   this.productColumns = res?.data?.productColumnList || [];
-    //   this.productData = res?.data?.productData || []; // assuming this is how product rows come
-    //   if (UsApprovalCardComponent.apiCallCount === 0) {
-    //     UsApprovalCardComponent.apiCallCount = 0;
-    //   }
-    // });
+   console.log('PurpleBookCardComponent initialized with data:', this._data);
   }
 
   ngOnChanges() {
-  
+     console.log('PurpleBookCardComponent initialized with data:', this._data);
+
     if (this.data && Array.isArray(this.data.patent_list)) {
       this.patentData = this.data.patent_list;
       this.patentColumns = this.data.patentColumnList;
@@ -125,9 +108,6 @@ export class PurpleBookCardComponent {
   getColumnName1(value: any) {
     return this.us_column[value];
   }
-  getColumnName2(value: any) {
-    return this.us_column2[value];
-  }
   ngOnDestroy() {
     // Reset counter when navigating away from the component
     PurpleBookCardComponent.apiCallCount = 0;
@@ -136,16 +116,14 @@ export class PurpleBookCardComponent {
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
-  allowedColumns: string[] = ['patent_no','notes',  'product_no','appl_no', 'patent_expire_date_text','delist_flag','jarvis_rn','drug_substance_flag','drug_product_flag','patent_use_code','submission_date','remark_s']; 
+  allowedColumns: string[] = ['gbrn','products', 'bla_number','applicant_name','applicant_logo','proprietary_name','proper_name','jarvis_rn','drug_substance_flag','drug_product_flag','patent_use_code','submission_date','remark_s']; 
 
   getObjectKeysOrdered(): string[] {
     return this.allowedColumns.filter(key => this.us_column?.hasOwnProperty(key));
   }
-  allowedColumns2: string[]=['products','product_no','exclusivity_code','exclusivity_date','appl_no','appl_type',];
-  getObjectKeysOrdered2(): string[] {
-    return this.allowedColumns2.filter(key => this.us_column2?.hasOwnProperty(key));
+  getObjectKeys(obj: any): string[] {
+    return obj ? Object.keys(obj) : [];
   }
-  
   toggleMoreInfo() {
     this.MoreInfo = !this.MoreInfo;
   }
