@@ -52,6 +52,19 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell"
               (click)="onCustomSort(column.value)"
               style="position: sticky; background-color:#3886d8; color:white; border:2px solid white;overflow:visible;">
+              <div class="filterDropdown" *ngIf="openDropdownColumn === column.value">
+                <ul class="options">
+                  <li (click)="filterState(column.value, 'starts_with')">Starts with</li>
+                  <li (click)="filterState(column.value, 'contains')">Contains</li>
+                  <li (click)="filterState(column.value, 'not_contains')">Not Contains</li>
+                  <li (click)="filterState(column.value, 'ends_with')">Ends with</li>
+                  <li (click)="filterState(column.value, 'equals')">Equals</li>
+                  <li (click)="filterState(column.value, 'not_equals')">Not Equals</li>
+                  <hr>
+                  <li (click)="filterState(column.value, '')">No Filter</li>
+                </ul>
+              </div>
+
 
               <div class="header-content">
                 <div class="d-flex align-items-center" (click)="toggleSort(i)" style="cursor: pointer;">
@@ -61,12 +74,11 @@
                 <div class="filter" style="display:flex; align-items:center; font-size:14px; width:180px;">
                   <input #filterInput matInput placeholder="Filter" (click)="$event.stopPropagation()"
                     [(ngModel)]="columnsSearch[column.value]" name="filter_{{column.value}}"
-                    style="margin-top:5px; border-radius:7px; padding:3px; color:black; width:180px;" />
+                    style="margin-top:5px; border-radius:7px; padding:3px; color:black; width:100px;" />
 
-                  <div style="position:relative; display:flex; overflow:visible; padding:0; width:40px;">
+                  <div style="position:relative; display:flex; overflow:visible; padding:0; width:58px;">
                     <!-- Search icon -->
-                    <button class="filterIcon"
-                      (click)="searchInColumn(column, filterInput, $event); $event.stopPropagation();">
+                    <button class="filterIcon" (click)="toggleDropdown(column.value); $event.stopPropagation()">
                       <i class="fa-solid fa-filter"></i>
                     </button>
     
@@ -115,7 +127,7 @@
 
                   <!-- Fallback if not date -->
                   <ng-template #normalCell>
-                    <span [style.width.px]="200" class="fixed-cell" style="display:block;">
+                    <span [style.width.px]="150" class="fixed-cell" style="display:block;">
                       <div class="scrollable-text" *ngIf="column.value === 'country'; else defaultCell"
                         style="display: flex; align-items: center;">
                         {{ element[column.value] }}
@@ -147,4 +159,3 @@
     </div>
   </div>
 </div>
-

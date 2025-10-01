@@ -14,6 +14,7 @@
   background: #fff;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 ::ng-deep .mat-sort-header-arrow,
 ::ng-deep .mat-sort-header-arrow .mat-sort-header-stem,
 ::ng-deep .mat-sort-header-arrow .mat-sort-header-indicator {
@@ -25,12 +26,15 @@
 
 /* ✅ Form Fields (Smaller Input Box) */
 mat-form-field {
-  width: 100px; /* Decreased input width */
-  font-size: 12px; /* Smaller text */
+  /* width: 100px; */
+
+  font-size: 12px;
+ 
 }
 
 .filter-field input {
-  height: 24px;  /* Decreased height */
+  height: 24px;
+  /* Decreased height */
   font-size: 12px;
   padding: 2px 5px;
 }
@@ -40,7 +44,8 @@ mat-form-field {
   width: 100%;
   min-width: 800px;
   border-collapse: collapse;
-  border: 2px solid #8E24AA; /* Purple border */
+  border: 2px solid #8E24AA;
+  /* Purple border */
 }
 
 /* ✅ Table Header */
@@ -50,7 +55,8 @@ mat-form-field {
   font-weight: bold;
   text-align: center;
   padding: 14px;
-  font-size: 16px; /* Increased font size */
+  font-size: 16px;
+  /* Increased font size */
 }
 
 /* ✅ Table Data Cells */
@@ -59,7 +65,8 @@ mat-form-field {
   padding: 12px;
   font-size: 14px;
   border-bottom: 1px solid #8E24AA;
-  height: 50px; /* Increased row height */
+  height: 50px;
+  /* Increased row height */
 }
 
 /* ✅ Alternating Row Colors */
@@ -73,7 +80,8 @@ tr:nth-child(odd) td {
 
 /* ✅ Hover Effect */
 .mat-table tbody tr:hover td {
-  background-color: #D8BFD8 !important; /* Soft Purple */
+  background-color: #D8BFD8 !important;
+  /* Soft Purple */
   transition: 0.3s ease-in-out;
 }
 
@@ -81,7 +89,8 @@ tr:nth-child(odd) td {
 .mat-paginator {
   position: sticky;
   bottom: 0;
-  background: #673AB7; /* Purple */
+  background: #673AB7;
+  /* Purple */
   color: white;
   z-index: 10;
 }
@@ -100,7 +109,7 @@ header background #e02b33*/
 button {
   text-transform: none;
   margin: 5px;
-  padding: 8px 12px;
+  padding: 7px ;
   font-size: 14px;
   border-radius: 5px;
 }
@@ -125,50 +134,54 @@ button[color="warn"] {
 .mat-sort-header-arrow {
   display: none !important;
 }
-.dropdown-item{
+
+.dropdown-item {
   position: absolute;
-    top: 133%;
-    left: 2px;
-    z-index: 3;
-    background-color: white;
-    border: 1px solid #ccc;
-    min-width: 200px;
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    display: block;
-    overflow-x: auto;
-    max-height: 400px;
-    color: black;
-    border-radius: 18px;
-    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+  top: 133%;
+  left: 2px;
+  z-index: 3;
+  background-color: white;
+  border: 1px solid #ccc;
+  min-width: 200px;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: block;
+  overflow-x: auto;
+  max-height: 400px;
+  color: black;
+  border-radius: 18px;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
 
 }
-.dropdown-item:hover{
+
+.dropdown-item:hover {
   position: absolute;
-    top: 133%;
-    left: 2px;
-    z-index: 3;
-    background-color: white;
-    border: 1px solid #ccc;
-    min-width: 200px;
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    display: block;
-    overflow-x: auto;
-    max-height: 400px;
-    color: black;
-    border-radius: 18px;
+  top: 133%;
+  left: 2px;
+  z-index: 3;
+  background-color: white;
+  border: 1px solid #ccc;
+  min-width: 200px;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: block;
+  overflow-x: auto;
+  max-height: 400px;
+  color: black;
+  border-radius: 18px;
 }
-.dropdown-item li:hover{
-  
-    background-color: rgb(191, 222, 228);
-    
+
+.dropdown-item li:hover {
+
+  background-color: rgb(191, 222, 228);
+
 }
-.dropdown-item li{
+
+.dropdown-item li {
   font-size: 18px;
   margin-bottom: 8px;
   z-index: 5;
@@ -178,10 +191,11 @@ button[color="warn"] {
 }
 
 ::ng-deep .mat-sort-header-arrow {
-  opacity: 1 !important;  /* Always show sorting icon */
+  opacity: 1 !important;
+  /* Always show sorting icon */
   transform: none !important;
   background-color: #e02b33;
-  color:white;
+  color: white;
 }
 
 .custom-table {
@@ -192,13 +206,15 @@ button[color="warn"] {
 }
 
 .mat-header-cell {
-  background-color: #d32f2f; /* Red header */
+  background-color: #d32f2f;
+  /* Red header */
   color: white;
   font-weight: bold;
   text-align: center;
 }
 
-.mat-cell, .mat-header-cell {
+.mat-cell,
+.mat-header-cell {
   padding: 12px;
   border: 1px solid #ddd;
   text-align: center;
@@ -207,10 +223,10 @@ button[color="warn"] {
 
 .header-content {
   display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color:#3886d8;
-    margin: 5px;
+  flex-direction: column;
+  align-items: center;
+  background-color: #3886d8;
+  margin: 5px;
 }
 
 .filter-input {
@@ -243,7 +259,8 @@ button[color="warn"] {
 
 /* Strongest style override for Angular Material header cells */
 :host ::ng-deep .mat-header-cell {
-  background-color: #73d4ff !important;  /* Red background */
+  background-color: #73d4ff !important;
+  /* Red background */
   color: white !important;
   font-weight: bold;
   border-right: 1px solid #ffffff55;
@@ -260,20 +277,6 @@ button[color="warn"] {
   font-weight: 500;
   transition: background-color 0.3s ease;
 }
-
-
-
-/* Container to position buttons absolutely */
-.scroll-buttons {
-  position: relative;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  pointer-events: none; /* Allow clicks to pass through unless on button */
-}
-.scroll-btn.left {
-  left: 0px;
-}
 .header-cell {
   text-align: center; /* text center karega */
   vertical-align: middle;
@@ -286,9 +289,27 @@ button[color="warn"] {
   font-weight: 600;
   text-transform: uppercase;
 }
+
+
+
+/* Container to position buttons absolutely */
+.scroll-buttons {
+  position: relative;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  pointer-events: none;
+  /* Allow clicks to pass through unless on button */
+}
+
+.scroll-btn.left {
+  left: 0px;
+}
+
 .scroll-btn.right {
   right: 8px;
 }
+
 .table-wrapper {
   position: relative;
   max-height: 427px;   /* scroll only if rows exceed */
@@ -312,8 +333,9 @@ button[color="warn"] {
 mat-header-cell {
   position: sticky;
   background-color: #73d4ff;
-  color:white;
+  color: white;
 }
+
 .header-scroll-buttons {
   position: absolute;
   top: 0;
@@ -323,13 +345,14 @@ mat-header-cell {
   justify-content: space-between;
   /* padding: 0 8px; */
   z-index: 5;
-  pointer-events: none; /* Pass clicks except for buttons */
+  pointer-events: none;
+  /* Pass clicks except for buttons */
 }
 
 .scroll-btn {
   pointer-events: auto;
   background: #4ebbf2;
-background: linear-gradient(284deg, rgba(78, 187, 242, 1) 0%, rgba(29, 154, 204, 1) 25%, rgba(3, 109, 171, 1) 100%);
+  background: linear-gradient(284deg, rgba(78, 187, 242, 1) 0%, rgba(29, 154, 204, 1) 25%, rgba(3, 109, 171, 1) 100%);
   color: white;
   border: none;
   border-radius: 50%;
@@ -345,32 +368,73 @@ background: linear-gradient(284deg, rgba(78, 187, 242, 1) 0%, rgba(29, 154, 204,
 .scroll-container {
   overflow-x: auto;
   white-space: nowrap;
-  /* padding: 2rem; */
 }
-th{
+
+th {
   background-color: #73d4ff;
 }
+
 .scrollable-text {
-  max-height: 4.5em; /* Approx. 3 lines */
+  max-height: 4.5em;
   overflow-y: auto;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   white-space: normal;
   line-height: 1.5em;
-margin: 10px;
-  padding-right: 8px; /* for scrollbar space */
+  margin: 10px;
+  padding-right: 8px;
 }
+
 .scrollable-text::-webkit-scrollbar {
   width: 4px;
   height: 0px;
 }
+
 .scrollable-text::-webkit-scrollbar-thumb {
   border-radius: 2px;
   background: #312e81;
 
 }
-/* Track */
+
 .scrollable-text::-webkit-scrollbar-track {
   background: #f1f1f1e7;
+}
+.filterDropdown .options {
+  position: absolute;
+  background: white;   /* dropdown ke piche white background */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 9999 !important;   /* upar dikhane ke liye */
+  max-height: 200px;   /* optional scroll */
+  overflow-y: auto;
+  margin-left: 2.5rem;
+}
+
+.options {
+  width: 30%;
+  position: absolute;
+  border: 2px solid black;
+  z-index: 999;
+  font-size: 0.8rem;
+  /* margin: 1rem; */
+  text-align: justify;
+  color: black;
+  margin-top: 1.5rem;
+  background-color: white;
+}
+.options li {
+  padding-left: 0.5rem;
+  cursor: pointer;
+  list-style-type: none;
+  text-align: left;
+  margin: 0.2rem;
+}
+.options li:hover{
+  background-color: aliceblue;
+  font-size:1rem;
+}
+.mat-header-row {
+  overflow: visible !important;
+  z-index: 2; /* stay above rows */
 }

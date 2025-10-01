@@ -319,11 +319,11 @@
         <td class="px-2 py-1">{{ item.patent_no }}
           <div>
             <a [href]="'https://worldwide.espacenet.com/patent/search?q=' + item?.patent_no" target="_blank">
-              <img class="mx-auto" style="height:35px;" src="assets/espace-logo.png">
+              <img class="mx-auto" style="height:35px;" src="assets/components/espace.png">
             </a>
           </div>
           <a [href]="'https://patents.google.com/patent/' + item?.patent_no" target="_blank">
-            <img class="mx-auto" style="height:35px;" src="assets/GooglePatents.png">
+            <img class="mx-auto" style="height:35px;" src="assets/components/GooglePatents.png">
           </a>
         </td>
 
@@ -346,7 +346,7 @@
         <td class="px-2 py-1">{{ item.drug_substance_flag }}</td>
         <td class="px-2 py-1">{{ item.drug_product_flag }}</td>
         <td class="px-2 py-1">{{ item.patent_use_code }}</td>
-        <td class="px-2 py-1">{{ item.submission_date }}</td>
+        <td class="px-2 py-1">{{ item.submission_date}}</td>
         <td class="px-2 py-1">{{ item.remark_s }}
           <!-- <button 
               (click)="openPopup(item)" 

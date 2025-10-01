@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, ViewChild, AfterViewInit, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnChanges, ViewChild, AfterViewInit, ChangeDetectorRef, EventEmitter, Output, SimpleChanges, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -47,7 +47,7 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
   openFilter: { [key: string]: boolean } = {};
   activeSort: string = '';
   sortDirection: 'asc' | 'desc' | '' = '';
-
+  columnsFilterType: { [key: string]: string } = {};
   columnsSearch: { [key: string]: string } = {};
   multiSortOrder: { column: number, dir: 'asc' | 'desc' }[] = [];
   noMatchingData: boolean = false;
@@ -69,16 +69,20 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
   }
   searchText: string = '';
   searchColumn: string | undefined;
-
+  openDropdownColumn: string | null = null;
+  showPaginator: boolean = false;
   constructor(private cdr: ChangeDetectorRef,
     private mainSearchService: MainSearchService,
     private UserPriviledgeService: UserPriviledgeService
   ) { }
 
-  ngOnChanges(): void {
-    //console.log('columnDefs:', this.columnDefs);
-    // Reset counter only when the component is first loaded
-
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['rowData']) {
+      console.log("📥 rowData received in child →", this.rowData);
+    }
+    if (changes['columnDefs']) {
+      console.log("📥 columnDefs received in child →", this.columnDefs);
+    }
     if (this.columnDefs && this.columnDefs.length > 0) {
       this.displayedColumns = [];
       this.columnHeaders = {};
@@ -97,14 +101,13 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
           this.columnHeaders[colValue] = col.label;
           this.filterableColumns.push(colValue);
         } else {
-          //console.log('🚫 Hiding column (empty data):', colValue);
+
         }
       }
     }
     if (this.rowData) {
       this.dataSource.data = this.rowData;
       this.noMatchingData = this.rowData.length === 0;
-
     }
   }
   ngAfterViewInit(): void {
@@ -124,7 +127,61 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
       container.scrollBy({ left: direction === 'left' ? -150 : 150, behavior: 'smooth' });
     }
   }
+  filterState(column: string, type: string) {
+    if (!type) {
+      // No Filter selected
+      delete this.columnsFilterType[column];
+      delete this.columnsSearch[column];
+    } else {
+      this.columnsFilterType[column] = type || 'contains';
+    }
 
+    console.log("🔍 Filter Payload →", {
+      column,
+      type: this.columnsFilterType[column],
+      value: this.columnsSearch[column]
+    });
+
+    this.fetchData();
+    this.openDropdownColumn = null; // dropdown close
+  }
+  applyFilter(columnKey: string, filterValue: string, filterType: string) {
+    if (filterValue && filterValue.trim() !== '') {
+      this.columnsSearch[columnKey] = filterValue.trim();
+      this.columnsFilterType[columnKey] = filterType || 'contains';
+    } else {
+      delete this.columnsSearch[columnKey];
+      delete this.columnsFilterType[columnKey];
+    }
+
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+
+    this.fetchData();
+
+    console.log("🔍 Applied API filter →", {
+      columnKey,
+      type: this.columnsFilterType[columnKey],
+      value: this.columnsSearch[columnKey]
+    });
+  }
+
+  // ✅ clearFilter now only resets API filters
+  clearFilter(columnKey: string, inputRef: HTMLInputElement) {
+    inputRef.value = '';
+
+    delete this.columnsSearch[columnKey];
+    delete this.columnsFilterType[columnKey];
+
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+
+    this.fetchData();
+
+    console.log("🧹 Cleared filter for column:", columnKey);
+  }
   searchInColumn(column: any, filterInput: HTMLInputElement, event: MouseEvent): void {
     event.stopPropagation(); // prevent sort from triggering
 
@@ -141,20 +198,26 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
     } else {
       delete this.columnsSearch[columnKey];
     }
-// ✅ Reset page number
-    if (this.paginator) {
-      this.paginator.firstPage();
-    }
+
     this.fetchData();
   }
-
-  clearFilter(columnKey: string, inputRef: HTMLInputElement) {
-    inputRef.value = '';
-    delete this.columnsSearch[columnKey];
-    if (this.paginator) {
-      this.paginator.firstPage();
+  toggleDropdown(columnValue: string) {
+    if (this.openDropdownColumn === columnValue) {
+      // If already open, close it
+      this.openDropdownColumn = null;
+    } else {
+      // Open this column's dropdown
+      this.openDropdownColumn = columnValue;
     }
-    this.fetchData();
+  }
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+
+    // If clicked element is NOT inside .filterDropdown or .filterIcon, close dropdown
+    if (!target.closest('.filterDropdown') && !target.closest('.filterIcon')) {
+      this.openDropdownColumn = null;
+    }
   }
   onCustomSort(column: number) {
     const existing = this.multiSortOrder.find(s => s.column === column);
@@ -194,58 +257,55 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
 
   fetchData() {
     const isGlobalSearch = this.globalSearchValue && this.globalSearchValue.trim() !== '';
-    // Add columns for global search: all displayedColumns with searchable: true
+    console.log("🔎 Global Search Active:", isGlobalSearch, "Value:", this.globalSearchValue);
+
     const allColumns = isGlobalSearch
       ? this.displayedColumns.map(col => ({
         data: col,
         searchable: true
       }))
       : undefined;
+    console.log("🟢 All Columns for Global Search:", allColumns);
 
-    // Add only filtered columns for column search
-    const searchColumns = !isGlobalSearch
-      ? Object.entries(this.columnsSearch)
-        .filter(([_, value]) => value && value.trim() !== '')
-        .map(([key, value]) => ({
-          data: key,
-          searchable: true,
-          search: { value: value.trim() }
-        }))
-      : [];
+    const searchColumns = Object.entries(this.columnsSearch)
+      .filter(([_, value]) => value && value.trim() !== '')
+      .map(([key, value]) => ({
+        data: key,
+        searchable: true,
+        search: {
+          value: value.trim(),
+          type: this.columnsFilterType[key] || 'contains' // default to contains
+        }
+      }));
+    console.log("🟡 Column-Specific Filters:", searchColumns);
+
     const order = this.multiSortOrder.length > 0
       ? this.multiSortOrder
         .filter(s => typeof s.column === 'number')
         .map(s => {
-          console.log('Sorting index:', s.column, 'direction:', s.dir);
-          return {
-            column: s.column,
-            dir: s.dir
-          };
+          console.log('↕️ Sorting applied →', { columnIndex: s.column, direction: s.dir });
+          return { column: s.column, dir: s.dir };
         })
       : null;
-    // const order = this.multiSortOrder.length > 0
-    //   ? this.multiSortOrder.map(s => ({
-    //     column: s.column,
-    //     dir: s.dir
-    //   }))
-    //   : null;
+    console.log("🔵 Current Sort Order:", order);
 
     const globalSearch = isGlobalSearch
       ? { value: this.globalSearchValue.trim() }
       : null;
-    if (isGlobalSearch || Object.keys(this.columnsSearch).length > 0) {
+
+    if (isGlobalSearch || Object.keys(this.columnsSearch).length < 25) {
       if (this.paginator) {
         this.paginator.firstPage();
+        console.log("📌 Paginator reset to first page due to search/filter");
       }
     }
+
     const start = this.paginator ? this.paginator.pageIndex * this.paginator.pageSize : 0;
     const pageno = this.paginator ? this.paginator.pageIndex + 1 : 1;
+    console.log("📏 Pagination → start:", start, "page no:", pageno);
 
-    const payload: any = {
-      start,
-      pageno
-    };
-    console.log("payload data ", payload)
+    const payload: any = { start, pageno };
+
     if (isGlobalSearch && allColumns) {
       payload.columns = allColumns;
       payload.search = globalSearch;
@@ -253,30 +313,38 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
       payload.columns = searchColumns;
     }
     if (order) payload.order = order;
+
+    console.log("📤 Final API Payload →", JSON.stringify(payload, null, 2));
+
+    // Send request
     this.dataFetchRequest.emit(payload);
+
+    // Wait for API response & table update
     setTimeout(() => {
       const currentData = this.dataSource.filteredData || [];
+      console.log("📥 Data received →", this.dataSource.data); // full raw data
+      console.log("📊 Rows after filter:", currentData.length);
+
       this.noMatchingData = currentData.length === 0;
+      console.log("⚠️ No matching data:", this.noMatchingData);
     }, 300);
   }
   onFlagError(event: any) {
     event.target.src = 'assets/images/flag.png';
   }
-  isISODate(value: any): boolean {
-    if (typeof value !== 'string') return false;
+isISODate(value: any): boolean {
+  if (typeof value !== 'string') return false;
 
-    // ISO format flexible pattern (with optional milliseconds/timezone)
-    const isoPattern = /^\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
+  // ISO format flexible pattern (with optional milliseconds/timezone)
+  const isoPattern = /^\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
 
-    return isoPattern.test(value) && !isNaN(Date.parse(value.replace(' ', 'T')));
-  }
-
+  return isoPattern.test(value) && !isNaN(Date.parse(value.replace(' ', 'T')));
+}
 
   resetToDefault() {
     this.multiSortOrder = [];
     this.columnsSearch = {};
     this.globalSearchValue = '';
-    // Clear all input boxes in DOM (filters)
     this.filterInputs.forEach(inputRef => inputRef.nativeElement.value = '');
     this.fetchData();
   }
@@ -488,4 +556,3 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
   }
 
 }
-
