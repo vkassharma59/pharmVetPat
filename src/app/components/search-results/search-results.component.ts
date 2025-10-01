@@ -338,6 +338,7 @@ export class SearchResultsComponent {
         }
         break;
       case this.resultTabs?.purpleBook.name:
+      case this.resultTabs?.purpleBook.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.purpleBook.name]).length === 0) {
           this.performpurpleBookSearch(resultTabData);
         } else {

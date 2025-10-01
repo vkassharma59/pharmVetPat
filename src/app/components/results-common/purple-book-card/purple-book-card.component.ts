@@ -45,6 +45,8 @@ export class PurpleBookCardComponent {
       const column_list = Auth_operations.getColumnList();
       if (column_list[this.resultTabs.purpleBook?.name]?.patentColumnList?.length > 0) {
         for (let col of column_list[this.resultTabs.purpleBook?.name]?.patentColumnList) {
+      if (column_list[this.resultTabs.purpleBook?.name]?.patentColumnList?.length > 0) {
+        for (let col of column_list[this.resultTabs.purpleBook?.name]?.patentColumnList) {
           this.us_column[col.value] = col.name;
         }
       }
@@ -159,6 +161,8 @@ getVisibleColumns(): string[] {
   getObjectKeysOrdered(): string[] {
     return this.allowedColumns.filter(key => this.us_column?.hasOwnProperty(key));
   }
+  getObjectKeys(obj: any): string[] {
+    return obj ? Object.keys(obj) : [];
   getObjectKeys(obj: any): string[] {
     return obj ? Object.keys(obj) : [];
   }
