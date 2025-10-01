@@ -189,10 +189,8 @@ export class PurpleBookComponent {
           rldFilters: rldFilters,
           applicantFilters,
           ingredientFilters: ingredientFilters,
-
         };
         this.usApiBody.filter_enable = false;
-
       },
       error: (err) => {
         console.error('[Filters] Error fetching US filters:', err);
@@ -221,7 +219,6 @@ export class PurpleBookComponent {
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     this.handleSetLoading.emit(true);
     // this.usApiBody.filters = this.usApiBody.filters || {};
-
     if (value === '') {
       delete this.usApiBody.filters[filterKey];
       this.setFilterLabel(filterKey, '');
@@ -251,6 +248,7 @@ export class PurpleBookComponent {
           count: resultData?.purple_book_count
         };
         this._data = resultData?.purple_book_data || [];
+
         this.handleResultTabData.emit(resultData);
         this.handleSetLoading.emit(false);
       },
@@ -305,6 +303,7 @@ export class PurpleBookComponent {
           count: res?.data?.purple_book_count
         };
         this._data = res?.data?.purple_book_data || [];
+
         this.handleResultTabData.emit(res.data);
         this.handleSetLoading.emit(false);
       },

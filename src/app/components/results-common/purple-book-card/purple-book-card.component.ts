@@ -55,11 +55,13 @@ export class PurpleBookCardComponent {
       }
       // if (column_list[this.resultTabs.purpleBook?.name]?.length > 0) {
       //   for (let col of column_list[this.resultTabs.purpleBook?.name]) {
+
       //     this.us_approval_column[col.value] = col.name;
       //   }
       // }
     
       // const tabName = this.resultTabs?.purpleBook?.name || 'US_APPROVAL';
+
       // this.us_approval_column = column_list?.[tabName];
     }
     
@@ -90,8 +92,8 @@ export class PurpleBookCardComponent {
    console.log('PurpleBookCardComponent initialized with data:', this._data);
   }
 
+
   ngOnChanges() {
-     console.log('PurpleBookCardComponent initialized with data:', this._data);
 
     if (this.data && Array.isArray(this.data.patent_list)) {
       this.patentData = this.data.patent_list;
@@ -124,6 +126,7 @@ export class PurpleBookCardComponent {
   getObjectKeys(obj: any): string[] {
     return obj ? Object.keys(obj) : [];
   }
+
   toggleMoreInfo() {
     this.MoreInfo = !this.MoreInfo;
   }

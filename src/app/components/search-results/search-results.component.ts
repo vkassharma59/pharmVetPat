@@ -344,7 +344,6 @@ export class SearchResultsComponent {
           this.setLoadingState.emit(false);
         }
         break;
-
       case this.resultTabs?.veterinaryUsApproval.name:
         if (Object.keys(this.allDataSets?.[resultTabData.index]?.[this.resultTabs.veterinaryUsApproval.name]).length === 0) {
           this.performveterinaryUsApprovalSearch(resultTabData);
@@ -1116,7 +1115,8 @@ export class SearchResultsComponent {
       },
     });
   }
-  private performpurpleBookSearch(resultTabData: any): void {
+
+ private performpurpleBookSearch(resultTabData: any): void {
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
       this.allDataSets[resultTabData.index][this.resultTabs.purpleBook.name] = {};
       this.setLoadingState.emit(false);
@@ -1162,6 +1162,7 @@ export class SearchResultsComponent {
               const data = result?.data?.purple_book_data || [];
               const count = result?.data?.purple_book_count || 0;
               console.log("Search data", data, count);
+
               this.childApiBody[resultTabData.index][this.resultTabs.purpleBook.name].count = count;
               this.allDataSets[resultTabData.index][this.resultTabs.purpleBook.name] = data;
 

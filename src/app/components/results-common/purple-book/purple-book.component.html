@@ -9,7 +9,6 @@
           {{ configData.label | truncate:20 }}
         </button>
 
-       
         <ul *ngIf="configData.dropdownState" class="dropdown-menu w-66 max-h-60 overflow-y-auto z-30 p-2">
           <li (click)="handleSelectFilter(configData.key, '')"
             class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
@@ -24,6 +23,7 @@
           </li>
         </ul>
       </div>
+
       <button (click)="clear()" class="clear btn btn-outline-primary">
         <i class="fa-solid fa-rotate"></i>
       </button>
