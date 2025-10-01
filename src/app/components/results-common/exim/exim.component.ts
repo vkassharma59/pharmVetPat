@@ -141,45 +141,68 @@ export class EximComponent implements OnChanges {
   }
 
   onDataFetchRequest(payload: any) {
+    console.log("🔹 [onDataFetchRequest] Incoming payload:", payload);
+  
+    // ✅ Check if filter/search applied
     this.isFilterApplied = !!(payload?.search || payload?.columns);
-
-    // Remove stale filters from _currentChildAPIBody if they are not in payload
+    console.log("✅ isFilterApplied:", this.isFilterApplied);
+  
+    // ✅ Remove empty fields from current API body
     if (!('columns' in payload)) {
+      console.log("🗑️ Removing columns from _currentChildAPIBody");
       delete this._currentChildAPIBody.columns;
     }
-
     if (!('search' in payload)) {
+      console.log("🗑️ Removing search from _currentChildAPIBody");
       delete this._currentChildAPIBody.search;
     }
+  
+    // ✅ Prepare final request body
     const requestBody = {
       ...this._currentChildAPIBody,
       ...payload
     };
+    console.log("📦 Final Request Body sent to API:", requestBody);
+  
+    // ✅ Save back to current API body
     this._currentChildAPIBody = requestBody;
+  
+    // ✅ Emit loading true
     this.handleSetLoading.emit(true);
-
+    console.log("⏳ API Call started...");
+  
+    // ✅ API Call
     this.mainSearchService.EximDataSearchSpecific(requestBody).subscribe({
       next: (result: any) => {
+        console.log("✅ API Response received:", result);
+  
+        // ✅ Extract rows and counts
         this._data.rows = result?.data?.data || [];
         this.count = result?.data?.recordsFiltered ?? result?.data?.recordsTotal;
         this.totalPages = Math.ceil(this.count / this.pageSize);
         this._currentChildAPIBody.count = this.count;
         this.searchByTable = true;
+  
+        console.log("📊 Rows received:", this._data.rows.length);
+        console.log("📊 Total Count:", this.count);
+        console.log("📊 Total Pages:", this.totalPages);
+  
+        // ✅ Emit result
         this.handleResultTabData.emit(this._data.rows);
         this.handleSetLoading.emit(false);
+        console.log("📤 Data emitted to parent");
       },
       error: (err) => {
-        console.error('API Error:', err);
+        console.error("❌ API Error:", err);
         this.handleSetLoading.emit(false);
       },
       complete: () => {
+        console.log("✅ API Call completed");
         this.handleSetLoading.emit(false);
       }
     });
   }
-
-
-
+  
   setFilterLabel(filterKey: string, label: string) {
     this.filterConfigs = this.filterConfigs.map((item) => {
       if (item.key === filterKey) {

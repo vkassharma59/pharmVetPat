@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, ViewChild, AfterViewInit, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnChanges, ViewChild, AfterViewInit, ChangeDetectorRef, EventEmitter, Output, HostListener, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -44,7 +44,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
   isExportingCSV: boolean = false;
 
   isExportingExcel: boolean = false;
-
+  openDropdownColumn: string | null = null;
   _currentChildAPIBody: any;
   loading = false;
 
@@ -54,7 +54,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
   openFilter: { [key: string]: boolean } = {};
   activeSort: string = '';
   sortDirection: 'asc' | 'desc' | '' = '';
-
+  columnsFilterType: { [key: string]: string } = {};
   columnsSearch: { [key: string]: string } = {};
   multiSortOrder: { column: number, dir: 'asc' | 'desc' }[] = [];
   noMatchingData: boolean = false;
@@ -83,35 +83,40 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     private UserPriviledgeService: UserPriviledgeService
   ) { }
 
-  ngOnChanges(): void {
-    if (this.columnDefs && this.columnDefs.length > 0) {
-      this.displayedColumns = [];
-      this.columnHeaders = {};
-      this.filterableColumns = [];
-
-      // Check which columns have at least one non-empty value
-      for (const col of this.columnDefs) {
-        const colValue = col.value;
-
-        const hasData = this.rowData?.some(row =>
-          row[colValue] !== null && row[colValue] !== undefined && row[colValue] !== ''
-        );
-
-        if (hasData) {
-          this.displayedColumns.push(colValue); // ✅ Only include columns with at least one value
-          this.columnHeaders[colValue] = col.label;
-          this.filterableColumns.push(colValue);
-        } else {
-          //console.log('🚫 Hiding column (empty data):', colValue);
-        }
-      }
-    }
-    if (this.rowData) {
-      this.dataSource.data = this.rowData;
-      this.noMatchingData = this.rowData.length === 0;
-
-    }
-  }
+ ngOnChanges(changes: SimpleChanges): void {
+     if (changes['rowData']) {
+       console.log("📥 rowData received in child →", this.rowData);
+     }
+     if (changes['columnDefs']) {
+       console.log("📥 columnDefs received in child →", this.columnDefs);
+     }
+     if (this.columnDefs && this.columnDefs.length > 0) {
+       this.displayedColumns = [];
+       this.columnHeaders = {};
+       this.filterableColumns = [];
+ 
+       // Check which columns have at least one non-empty value
+       for (const col of this.columnDefs) {
+         const colValue = col.value;
+ 
+         const hasData = this.rowData?.some(row =>
+           row[colValue] !== null && row[colValue] !== undefined && row[colValue] !== ''
+         );
+ 
+         if (hasData) {
+           this.displayedColumns.push(colValue); // ✅ Only include columns with at least one value
+           this.columnHeaders[colValue] = col.label;
+           this.filterableColumns.push(colValue);
+         } else {
+ 
+         }
+       }
+     }
+     if (this.rowData) {
+       this.dataSource.data = this.rowData;
+       this.noMatchingData = this.rowData.length === 0;
+     }
+   }
   onFlagError(event: any) {
     event.target.src = 'assets/images/flag.png';
   }
@@ -154,7 +159,24 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
 
     this.fetchData();
   }
+  filterState(column: string, type: string) {
+    if (!type) {
+      // No Filter selected
+      delete this.columnsFilterType[column];
+      delete this.columnsSearch[column];
+    } else {
+      this.columnsFilterType[column] = type || 'contains';
+    }
 
+    console.log("🔍 Filter Payload →", {
+      column,
+      type: this.columnsFilterType[column],
+      value: this.columnsSearch[column]
+    });
+
+    this.fetchData();
+    this.openDropdownColumn = null; // dropdown close
+  }
   searchInColumn(column: any, filterInput: HTMLInputElement, event: MouseEvent): void {
     event.stopPropagation(); // prevent sort from triggering
 
@@ -184,17 +206,24 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
   getCountryUrl(value: any) {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country}.png`;
   }
-
-  clearFilter(columnKey: string, inputRef: HTMLInputElement) {
-    inputRef.value = '';
-    delete this.columnsSearch[columnKey];
-    if (this.paginator) {
-      this.paginator.firstPage();
+toggleDropdown(columnValue: string) {
+    if (this.openDropdownColumn === columnValue) {
+      // If already open, close it
+      this.openDropdownColumn = null;
+    } else {
+      // Open this column's dropdown
+      this.openDropdownColumn = columnValue;
     }
-
-    this.fetchData();
   }
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const target = event.target as HTMLElement;
 
+    // If clicked element is NOT inside .filterDropdown or .filterIcon, close dropdown
+    if (!target.closest('.filterDropdown') && !target.closest('.filterIcon')) {
+      this.openDropdownColumn = null;
+    }
+  }
   onCustomSort(column: number) {
     const existing = this.multiSortOrder.find(s => s.column === column);
     if (existing) {
@@ -228,54 +257,57 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     return sort.dir === 'asc' ? 'fa-sort-up' : 'fa-sort-down';
   }
 
-  fetchData() {
+ fetchData() {
     const isGlobalSearch = this.globalSearchValue && this.globalSearchValue.trim() !== '';
-    // Add columns for global search: all displayedColumns with searchable: true
+    console.log("🔎 Global Search Active:", isGlobalSearch, "Value:", this.globalSearchValue);
+
     const allColumns = isGlobalSearch
       ? this.displayedColumns.map(col => ({
         data: col,
         searchable: true
       }))
       : undefined;
+    console.log("🟢 All Columns for Global Search:", allColumns);
 
-    // Add only filtered columns for column search
-    const searchColumns = !isGlobalSearch
-      ? Object.entries(this.columnsSearch)
-        .filter(([_, value]) => value && value.trim() !== '')
-        .map(([key, value]) => ({
-          data: key,
-          searchable: true,
-          search: { value: value.trim() }
-        }))
-      : [];
+    const searchColumns = Object.entries(this.columnsSearch)
+      .filter(([_, value]) => value && value.trim() !== '')
+      .map(([key, value]) => ({
+        data: key,
+        searchable: true,
+        search: {
+          value: value.trim(),
+          type: this.columnsFilterType[key] || 'contains' // default to contains
+        }
+      }));
+    console.log("🟡 Column-Specific Filters:", searchColumns);
+
     const order = this.multiSortOrder.length > 0
       ? this.multiSortOrder
         .filter(s => typeof s.column === 'number')
         .map(s => {
-          console.log('Sorting index:', s.column, 'direction:', s.dir);
-          return {
-            column: s.column,
-            dir: s.dir
-          };
+          console.log('↕️ Sorting applied →', { columnIndex: s.column, direction: s.dir });
+          return { column: s.column, dir: s.dir };
         })
       : null;
+    console.log("🔵 Current Sort Order:", order);
+
     const globalSearch = isGlobalSearch
       ? { value: this.globalSearchValue.trim() }
       : null;
-    // ✅ Agar filter ya search applied hai → reset page to 1
+
     if (isGlobalSearch || Object.keys(this.columnsSearch).length > 0) {
       if (this.paginator) {
         this.paginator.firstPage();
+        console.log("📌 Paginator reset to first page due to search/filter");
       }
     }
+
     const start = this.paginator ? this.paginator.pageIndex * this.paginator.pageSize : 0;
     const pageno = this.paginator ? this.paginator.pageIndex + 1 : 1;
+    console.log("📏 Pagination → start:", start, "page no:", pageno);
 
-    const payload: any = {
-      start,
-      pageno
-    };
-    console.log("payload data ", payload)
+    const payload: any = { start, pageno };
+
     if (isGlobalSearch && allColumns) {
       payload.columns = allColumns;
       payload.search = globalSearch;
@@ -283,11 +315,56 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
       payload.columns = searchColumns;
     }
     if (order) payload.order = order;
+
+    console.log("📤 Final API Payload →", JSON.stringify(payload, null, 2));
+
+    // Send request
     this.dataFetchRequest.emit(payload);
+
+    // Wait for API response & table update
     setTimeout(() => {
       const currentData = this.dataSource.filteredData || [];
+      console.log("📥 Data received →", this.dataSource.data); // full raw data
+      console.log("📊 Rows after filter:", currentData.length);
+
       this.noMatchingData = currentData.length === 0;
+      console.log("⚠️ No matching data:", this.noMatchingData);
     }, 300);
+  }
+applyFilter(columnKey: string, filterValue: string, filterType: string) {
+    if (filterValue && filterValue.trim() !== '') {
+      this.columnsSearch[columnKey] = filterValue.trim();
+      this.columnsFilterType[columnKey] = filterType || 'contains';
+    } else {
+      delete this.columnsSearch[columnKey];
+      delete this.columnsFilterType[columnKey];
+    }
+
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+
+    this.fetchData();
+
+    console.log("🔍 Applied API filter →", {
+      columnKey,
+      type: this.columnsFilterType[columnKey],
+      value: this.columnsSearch[columnKey]
+    });
+  }
+  clearFilter(columnKey: string, inputRef: HTMLInputElement) {
+    inputRef.value = '';
+
+    delete this.columnsSearch[columnKey];
+    delete this.columnsFilterType[columnKey];
+
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+
+    this.fetchData();
+
+    console.log("🧹 Cleared filter for column:", columnKey);
   }
 
   resetToDefault() {

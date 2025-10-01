@@ -76,38 +76,61 @@ export class NonPatentComponent implements OnChanges {
   }
 
   onDataFetchRequest(payload: any) {
+    console.log("📤 Child emitted payload →", payload);
+  
     this.isFilterApplied = !!(payload?.search || payload?.columns);
+    console.log("🔍 Is filter applied? →", this.isFilterApplied);
+  
     // Remove stale filters from _currentChildAPIBody if they are not in payload
     if (!('columns' in payload)) {
+      console.log("🧹 Removing stale 'columns' filter from _currentChildAPIBody");
       delete this._currentChildAPIBody.columns;
     }
+  
     if (!('search' in payload)) {
+      console.log("🧹 Removing stale 'search' filter from _currentChildAPIBody");
       delete this._currentChildAPIBody.search;
     }
+  
     const requestBody = {
       ...this._currentChildAPIBody,
       ...payload
     };
-    console.log("dsjfdbdf bn", requestBody)
-    console.log("request body dsjfdbdf bn", requestBody)
     this._currentChildAPIBody = requestBody;
+  
+    console.log("📦 Final requestBody →", JSON.stringify(requestBody, null, 2));
+  
     this.handleSetLoading.emit(true);
-
-    this.mainSearchService.NonPatentSearchSpecific(requestBody).subscribe({
+  
+    this.mainSearchService.spcdbSearchSpecific(requestBody).subscribe({
       next: (result: any) => {
+        console.log("✅ API Response →", result);
+  
         this._data.rows = result?.data?.data || [];
+        console.log("📊 Rows received →", this._data.rows.length, "rows");
+  
         this.count = result?.data?.recordsFiltered ?? result?.data?.recordsTotal;
+        console.log("🔢 Count (recordsFiltered/recordsTotal) →", this.count);
+  
         this.totalPages = Math.ceil(this.count / this.pageSize);
+        console.log("📑 Total pages →", this.totalPages);
+  
         this._currentChildAPIBody.count = this.count;
+  
         this.searchByTable = true;
+        console.log("📌 searchByTable flag set →", this.searchByTable);
+  
         this.handleResultTabData.emit(this._data.rows);
+        console.log("📤 Emitting rows to handleResultTabData");
+  
         this.handleSetLoading.emit(false);
       },
       error: (err) => {
-        console.error('API Error:', err);
+        console.error("❌ API Error →", err);
         this.handleSetLoading.emit(false);
       },
       complete: () => {
+        console.log("✅ API call completed");
         this.handleSetLoading.emit(false);
       }
     });
