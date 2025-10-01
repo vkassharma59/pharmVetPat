@@ -44,9 +44,14 @@ export class PurpleBookCardComponent {
       const column_list = Auth_operations.getColumnList();
       if (column_list[this.resultTabs.purpleBook?.name]?.patentColumnList?.length > 0) {
         for (let col of column_list[this.resultTabs.purpleBook?.name]?.patentColumnList) {
+      if (column_list[this.resultTabs.purpleBook?.name]?.patentColumnList?.length > 0) {
+        for (let col of column_list[this.resultTabs.purpleBook?.name]?.patentColumnList) {
           this.us_column[col.value] = col.name;
         }
       }
+ 
+    if (column_list[this.resultTabs.purpleBook?.name]?.columns?.length > 0) {
+        for (let col of column_list[this.resultTabs.purpleBook?.name]?.columns) {
  
     if (column_list[this.resultTabs.purpleBook?.name]?.columns?.length > 0) {
         for (let col of column_list[this.resultTabs.purpleBook?.name]?.columns) {
@@ -55,13 +60,11 @@ export class PurpleBookCardComponent {
       }
       // if (column_list[this.resultTabs.purpleBook?.name]?.length > 0) {
       //   for (let col of column_list[this.resultTabs.purpleBook?.name]) {
-
       //     this.us_approval_column[col.value] = col.name;
       //   }
       // }
     
       // const tabName = this.resultTabs?.purpleBook?.name || 'US_APPROVAL';
-
       // this.us_approval_column = column_list?.[tabName];
     }
     
@@ -92,8 +95,8 @@ export class PurpleBookCardComponent {
    console.log('PurpleBookCardComponent initialized with data:', this._data);
   }
 
-
   ngOnChanges() {
+     console.log('PurpleBookCardComponent initialized with data:', this._data);
 
     if (this.data && Array.isArray(this.data.patent_list)) {
       this.patentData = this.data.patent_list;
@@ -119,14 +122,16 @@ export class PurpleBookCardComponent {
     return Object.keys(obj).length === 0;
   }
   allowedColumns: string[] = ['gbrn','products', 'bla_number','applicant_name','applicant_logo','proprietary_name','proper_name','jarvis_rn','drug_substance_flag','drug_product_flag','patent_use_code','submission_date','remark_s']; 
+  allowedColumns: string[] = ['gbrn','products', 'bla_number','applicant_name','applicant_logo','proprietary_name','proper_name','jarvis_rn','drug_substance_flag','drug_product_flag','patent_use_code','submission_date','remark_s']; 
 
   getObjectKeysOrdered(): string[] {
     return this.allowedColumns.filter(key => this.us_column?.hasOwnProperty(key));
   }
   getObjectKeys(obj: any): string[] {
     return obj ? Object.keys(obj) : [];
+  getObjectKeys(obj: any): string[] {
+    return obj ? Object.keys(obj) : [];
   }
-
   toggleMoreInfo() {
     this.MoreInfo = !this.MoreInfo;
   }
