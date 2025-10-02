@@ -85,43 +85,67 @@ export class ActivePatentComponent implements OnChanges {
 
   /** Common API Request */
   onDataFetchRequest(payload: any) {
-    console.log('[onDataFetchRequest] Requesting data with payload:', payload);
+    console.log("🔹 [onDataFetchRequest] Incoming payload:", payload);
   
-    this.isFilterApplied = !!(payload?.filters && Object.keys(payload.filters).length);
+    // ✅ Check if filter/search applied
+    this.isFilterApplied = !!(payload?.search || payload?.columns);
+    console.log("✅ isFilterApplied:", this.isFilterApplied);
   
+    // ✅ Remove empty fields from current API body
+    if (!('columns' in payload)) {
+      console.log("🗑️ Removing columns from _currentChildAPIBody");
+      delete this._currentChildAPIBody.columns;
+    }
+    if (!('search' in payload)) {
+      console.log("🗑️ Removing search from _currentChildAPIBody");
+      delete this._currentChildAPIBody.search;
+    }
+  
+    // ✅ Prepare final request body
     const requestBody = {
       ...this._currentChildAPIBody,
       ...payload
     };
+    console.log("📦 Final Request Body sent to API:", requestBody);
+  
+    // ✅ Save back to current API body
     this._currentChildAPIBody = requestBody;
   
+    // ✅ Emit loading true
     this.handleSetLoading.emit(true);
+    console.log("⏳ API Call started...");
   
+    // ✅ API Call
     this.mainSearchService.activePatentSearchSpecific(requestBody).subscribe({
       next: (result: any) => {
-        console.log('[onDataFetchRequest] API response:', result);
+        console.log("✅ API Response received:", result);
   
-        const resultData = result?.data || {};
-        this._data.rows = resultData?.data || [];
-        this.count = resultData?.recordsFiltered ?? resultData?.recordsTotal ?? 0;
-        this.totalPages = this.count ? Math.ceil(this.count / this.pageSize) : 0;
+        // ✅ Extract rows and counts
+        this._data.rows = result?.data?.data || [];
+        this.count = result?.data?.recordsFiltered ?? result?.data?.recordsTotal;
+        this.totalPages = Math.ceil(this.count / this.pageSize);
         this._currentChildAPIBody.count = this.count;
         this.searchByTable = true;
   
+        console.log("📊 Rows received:", this._data.rows.length);
+        console.log("📊 Total Count:", this.count);
+        console.log("📊 Total Pages:", this.totalPages);
+  
+        // ✅ Emit result
         this.handleResultTabData.emit(this._data.rows);
         this.handleSetLoading.emit(false);
-  
-        console.log('[onDataFetchRequest] Data rows:', this._data.rows);
-        console.log('[onDataFetchRequest] Total records:', this.count);
+        console.log("📤 Data emitted to parent");
       },
       error: (err) => {
-        console.error('[onDataFetchRequest] API Error:', err);
+        console.error("❌ API Error:", err);
+        this.handleSetLoading.emit(false);
+      },
+      complete: () => {
+        console.log("✅ API Call completed");
         this.handleSetLoading.emit(false);
       }
     });
   }
-
-  /** Filter Configs */
   filterConfigs = [
     {
       key: 'patent_type',

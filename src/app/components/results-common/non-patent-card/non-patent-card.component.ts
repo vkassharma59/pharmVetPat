@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, ViewChild, AfterViewInit, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnChanges, ViewChild, AfterViewInit, ChangeDetectorRef, EventEmitter, Output, SimpleChanges, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -40,6 +40,7 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
   data?: {
     data?: any[]; // Replace `any` with your actual data type
   };
+  openDropdownColumn: string | null = null;
   _currentChildAPIBody: any;
   displayedColumns: string[] = [];
   columnHeaders: { [key: string]: string } = {};
@@ -68,43 +69,46 @@ export class NonPatentCardComponent implements OnChanges, AfterViewInit {
   }
   searchText: string = '';
   searchColumn: string | undefined;
-
+ columnsFilterType: { [key: string]: string } = {};
   constructor(private cdr: ChangeDetectorRef,
     private mainSearchService: MainSearchService,
     private UserPriviledgeService: UserPriviledgeService
   ) { }
 
-  ngOnChanges(): void {
-    //console.log('columnDefs:', this.columnDefs);
-    // Reset counter only when the component is first loaded
-
-    if (this.columnDefs && this.columnDefs.length > 0) {
-      this.displayedColumns = [];
-      this.columnHeaders = {};
-      this.filterableColumns = [];
-
-      // Check which columns have at least one non-empty value
-      for (const col of this.columnDefs) {
-        const colValue = col.value;
-
-        const hasData = this.rowData?.some(row =>
-          row[colValue] !== null && row[colValue] !== undefined && row[colValue] !== ''
-        );
-
-        if (hasData) {
-          this.displayedColumns.push(colValue); // ✅ Only include columns with at least one value
-          this.columnHeaders[colValue] = col.label;
-          this.filterableColumns.push(colValue);
-        } else {
-          //console.log('🚫 Hiding column (empty data):', colValue);
+  ngOnChanges(changes: SimpleChanges): void {
+      if (changes['rowData']) {
+        console.log("📥 rowData received in child →", this.rowData);
+      }
+      if (changes['columnDefs']) {
+        console.log("📥 columnDefs received in child →", this.columnDefs);
+      }
+      if (this.columnDefs && this.columnDefs.length > 0) {
+        this.displayedColumns = [];
+        this.columnHeaders = {};
+        this.filterableColumns = [];
+  
+        // Check which columns have at least one non-empty value
+        for (const col of this.columnDefs) {
+          const colValue = col.value;
+  
+          const hasData = this.rowData?.some(row =>
+            row[colValue] !== null && row[colValue] !== undefined && row[colValue] !== ''
+          );
+  
+          if (hasData) {
+            this.displayedColumns.push(colValue); // ✅ Only include columns with at least one value
+            this.columnHeaders[colValue] = col.label;
+            this.filterableColumns.push(colValue);
+          } else {
+  
+          }
         }
       }
+      if (this.rowData) {
+        this.dataSource.data = this.rowData;
+        this.noMatchingData = this.rowData.length === 0;
+      }
     }
-    if (this.rowData) {
-      this.dataSource.data = this.rowData;
-      this.noMatchingData = this.rowData.length === 0;
-    }
-  }
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -154,14 +158,23 @@ if (this.paginator) {
     }
     this.fetchData();
   }
-
-  clearFilter(columnKey: string, inputRef: HTMLInputElement) {
-    inputRef.value = '';
-    delete this.columnsSearch[columnKey];
-     if (this.paginator) {
-      this.paginator.firstPage();
+toggleDropdown(columnValue: string) {
+    if (this.openDropdownColumn === columnValue) {
+      // If already open, close it
+      this.openDropdownColumn = null;
+    } else {
+      // Open this column's dropdown
+      this.openDropdownColumn = columnValue;
     }
-    this.fetchData();
+  }
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+
+    // If clicked element is NOT inside .filterDropdown or .filterIcon, close dropdown
+    if (!target.closest('.filterDropdown') && !target.closest('.filterIcon')) {
+      this.openDropdownColumn = null;
+    }
   }
   onCustomSort(column: number) {
     const existing = this.multiSortOrder.find(s => s.column === column);
@@ -175,7 +188,24 @@ if (this.paginator) {
 
     this.fetchData(); // Call API with updated sort order
   }
+ filterState(column: string, type: string) {
+    if (!type) {
+      // No Filter selected
+      delete this.columnsFilterType[column];
+      delete this.columnsSearch[column];
+    } else {
+      this.columnsFilterType[column] = type || 'contains';
+    }
 
+    console.log("🔍 Filter Payload →", {
+      column,
+      type: this.columnsFilterType[column],
+      value: this.columnsSearch[column]
+    });
+
+    this.fetchData();
+    this.openDropdownColumn = null; // dropdown close
+  }
   toggleSort(index: number): void {
     const existingSort = this.multiSortOrder.find(s => s.column === index);
     let newDir: 'asc' | 'desc' = 'asc';
@@ -271,8 +301,44 @@ if (this.paginator) {
     this.globalSearchValue = '';
     // Clear all input boxes in DOM (filters)
     this.filterInputs.forEach(inputRef => inputRef.nativeElement.value = '');
+    this.fetchData();
+  }
+   applyFilter(columnKey: string, filterValue: string, filterType: string) {
+    if (filterValue && filterValue.trim() !== '') {
+      this.columnsSearch[columnKey] = filterValue.trim();
+      this.columnsFilterType[columnKey] = filterType || 'contains';
+    } else {
+      delete this.columnsSearch[columnKey];
+      delete this.columnsFilterType[columnKey];
+    }
+
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
 
     this.fetchData();
+
+    console.log("🔍 Applied API filter →", {
+      columnKey,
+      type: this.columnsFilterType[columnKey],
+      value: this.columnsSearch[columnKey]
+    });
+  }
+
+  // ✅ clearFilter now only resets API filters
+  clearFilter(columnKey: string, inputRef: HTMLInputElement) {
+    inputRef.value = '';
+
+    delete this.columnsSearch[columnKey];
+    delete this.columnsFilterType[columnKey];
+
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+
+    this.fetchData();
+
+    console.log("🧹 Cleared filter for column:", columnKey);
   }
   fetchAndStoreVerticalLimits(): void {
     this.UserPriviledgeService.getverticalcategoryData().subscribe({
