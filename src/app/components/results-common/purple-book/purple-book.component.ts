@@ -189,8 +189,10 @@ export class PurpleBookComponent {
           rldFilters: rldFilters,
           applicantFilters,
           ingredientFilters: ingredientFilters,
+
         };
         this.usApiBody.filter_enable = false;
+
       },
       error: (err) => {
         console.error('[Filters] Error fetching US filters:', err);
@@ -219,6 +221,8 @@ export class PurpleBookComponent {
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
     this.handleSetLoading.emit(true);
     // this.usApiBody.filters = this.usApiBody.filters || {};
+
+
     if (value === '') {
       delete this.usApiBody.filters[filterKey];
       this.setFilterLabel(filterKey, '');
