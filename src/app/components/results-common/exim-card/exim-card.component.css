@@ -412,7 +412,7 @@ th {
 }
 
 .options {
-  width:30%;
+  width:6rem;
   position: absolute;
   border: 2px solid black;
   z-index: 999;
@@ -420,7 +420,7 @@ th {
   /* margin: 1rem; */
   text-align: justify;
   color: black;
-  margin-top: 1.5rem;
+  margin-top: 25%;
   background-color: white;
 }
 .options li {
