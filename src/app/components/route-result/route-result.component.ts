@@ -42,7 +42,7 @@ declare var bootstrap: any; // ✅ Add this here
     ImpurityComponent, ChemiTrackerComponent, ImpComponent, IndianComponent, ChemicalDirectoryComponent,
     JapanComponent, CanadaComponent, EuropeApprovalComponent, KoreaComponent, LitigationComponent,
     UsComponent, SpcdbComponent, EximComponent, RouteTabsComponent, ActivePatentComponent,
-    NgSwitch, NgSwitchCase, NgSwitchDefault, ScientificDocsComponent, GppdDbComponent, NonPatentComponent, VeterinaryUsApprovalComponent, DmfComponent,PurpleBookComponent],
+    NgSwitch, NgSwitchCase, NgSwitchDefault, ScientificDocsComponent, GppdDbComponent, NonPatentComponent, VeterinaryUsApprovalComponent, DmfComponent, PurpleBookComponent],
   templateUrl: './route-result.component.html',
   styleUrl: './route-result.component.css'
 })
@@ -71,7 +71,8 @@ export class RouteResultComponent {
     koreaApproval: "koreaOrangeBook",
     usApproval: "usOrangeBook",
     veterinaryUsApproval: "usGreenBook",
-    scientificDocs: "scientificDocs"
+    scientificDocs: "scientificDocs",
+    purpleBook: "purpleBook",
   };
   showTotalAfterTab: boolean = false;
   currentTabData: any = {}
