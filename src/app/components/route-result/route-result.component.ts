@@ -658,8 +658,6 @@ export class RouteResultComponent {
               // 'Report download is only allowed with premium ID, please updgrade to premium account.'
             );
             this.generatePDFloader = false;
-
-
             return;
           } else {
             this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
