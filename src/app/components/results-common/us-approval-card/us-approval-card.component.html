@@ -317,14 +317,15 @@
         style="align-items: center;text-align: center;">
 
         <td class="px-2 py-1">{{ item.patent_no }}
-          <div>
-            <a [href]="'https://worldwide.espacenet.com/patent/search?q=' + item?.patent_no" target="_blank">
-              <img class="mx-auto" style="height:35px;" src="assets/components/espace.png">
+          <div style="display: flex; justify-content: space-between; align-items: center; text-align: center; padding: 0 2rem;">
+            <a [href]="'https://worldwide.espacenet.com/patent/search?q=' + item?.patent_no" target="_blank" style="color: red;font-weight: 600;">
+              <i class="fa-solid fa-e"></i>
+            </a>
+            <a [href]="'https://patents.google.com/patent/' + item?.patent_no" target="_blank" style="color: blue;font-weight: 600;">
+              <!-- <img class="mx-auto" style="height:35px;" src="assets/components/GooglePatents.png"> --><i class="fa-brands fa-google"></i>
             </a>
           </div>
-          <a [href]="'https://patents.google.com/patent/' + item?.patent_no" target="_blank">
-            <img class="mx-auto" style="height:35px;" src="assets/components/GooglePatents.png">
-          </a>
+          
         </td>
 
         <td class="px-2 py-1">
