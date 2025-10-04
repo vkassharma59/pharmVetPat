@@ -54,17 +54,16 @@
           class="fas fa-download"></i>
         Full Report Download</button> -->
       <!-- Agar tab technicalRoutes hai -->
-      <button *ngIf="currentTabData?.name === 'technicalRoutes'" (click)="handleGeneratePdf()"
+      <!-- <button *ngIf="currentTabData?.name === 'technicalRoutes'" (click)="handleGeneratePdf()"
         [disabled]="generatePDFloader" title="Full Report Download" class="btn btn-outline-primary btn-sm me-2"
         style="color: white; border-color: white;">
         <i class="fas fa-download"></i>
         Full Report Download
-      </button>
+      </button> -->
 
       <!-- Agar tab technicalRoutes nahi hai -->
-      <button *ngIf="currentTabData?.name !== 'technicalRoutes' &&  currentTabData?.name !== 'impPatents' 
-         && currentTabData?.name !== 'chemiTracker' &&
-         ((index==0 && !generatePDFloader && isFullDownload && searchThrough !== 'synthesis-search') 
+      <button *ngIf="!showBackButton &&  
+         ((!generatePDFloader && isFullDownload && searchThrough !== 'synthesis-search') 
            || (showTotalAfterTab && showBackButton))" (click)="openDownloadModal(index)" [disabled]="generatePDFloader"
         title="Full Report Download" class="btn btn-outline-primary btn-sm me-2"
         style="color: white; border-color: white;">
