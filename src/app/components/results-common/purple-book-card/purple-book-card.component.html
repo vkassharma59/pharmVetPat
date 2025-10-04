@@ -546,11 +546,21 @@
     <tbody class="bg-white">
       <ng-container *ngIf="_data?.patentData?.length > 0; else noDataFound1">
         <tr *ngFor="let item of _data.patentData" class="custom-row-bg">
-          <td class="px-2 py-1" *ngFor="let key of getObjectKeys(us_column)">
+          <td class="px-2 py-1" *ngFor="let key of getObjectKeys(us_column)" style="align-items: center;text-align: center; justify-content: center;">
             <!-- {{ item[key] }} -->
             <!-- Check if column is patent_no -->
             <ng-container *ngIf="key === 'patent_number'; else normalCell">
-              <div class="flex flex-col items-center space-y-1">
+              <span style="display:flex; align-items: center; justify-content: center; ">{{ item[key] }}</span>
+              <div style="display: flex; justify-content: space-between; align-items: center; text-align: center; padding: 0 2rem;">
+                
+                <a [href]="'https://worldwide.espacenet.com/patent/search?q=' + item?.patent_number" target="_blank" style="color: red;font-weight: 600;">
+                  <i class="fa-solid fa-e"></i>
+                </a>
+                <a [href]="'https://patents.google.com/patent/' + item?.patent_number" target="_blank" style="color: blue;font-weight: 600;">
+                  <!-- <img class="mx-auto" style="height:35px;" src="assets/components/GooglePatents.png"> --><i class="fa-brands fa-google"></i>
+                </a>
+              </div>
+              <!-- <div class="flex flex-col items-center space-y-1">
                 <span>{{ item[key] }}</span>
                 <a [href]="'https://worldwide.espacenet.com/patent/search?q=' + item?.patent_number" target="_blank">
                   <img class="mx-auto" style="height:35px;" src="assets/components/espace.png">
@@ -558,7 +568,7 @@
                 <a [href]="'https://patents.google.com/patent/' + item?.patent_number" target="_blank">
                   <img class="mx-auto" style="height:35px;" src="assets/components/GooglePatents.png">
                 </a>
-              </div>
+              </div> -->
             </ng-container>
 
             <!-- Normal column value -->
