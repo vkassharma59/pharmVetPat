@@ -16,7 +16,6 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   styleUrl: './purple-book-card.component.css'
 })
 export class PurpleBookCardComponent {
-
   _data: any = [];
   MoreInfo: boolean = false;
   pageNo: number = 1;
@@ -37,18 +36,18 @@ export class PurpleBookCardComponent {
     if (value && Object.keys(value).length > 0) {
       PurpleBookCardComponent.apiCallCount++;
       this.localCount = PurpleBookCardComponent.apiCallCount;
-    
+
       this._data = value;
       this.resultTabs = this.utilityService.getAllTabsName();
-    
+
       const column_list = Auth_operations.getColumnList();
       if (column_list[this.resultTabs.purpleBook?.name]?.patentColumnList?.length > 0) {
         for (let col of column_list[this.resultTabs.purpleBook?.name]?.patentColumnList) {
           this.us_column[col.value] = col.name;
         }
       }
- 
-    if (column_list[this.resultTabs.purpleBook?.name]?.columns?.length > 0) {
+
+      if (column_list[this.resultTabs.purpleBook?.name]?.columns?.length > 0) {
         for (let col of column_list[this.resultTabs.purpleBook?.name]?.columns) {
           this.us_approval_column[col.value] = col.name;
         }
@@ -61,18 +60,18 @@ export class PurpleBookCardComponent {
       //     this.us_approval_column[col.value] = col.name;
       //   }
       // }
-    
+
       // const tabName = this.resultTabs?.purpleBook?.name || 'US_APPROVAL';
 
 
       // this.us_approval_column = column_list?.[tabName];
     }
-    
+
   }
   convertNewlinesToBr(text: string): string {
     return text?.replace(/\n/g, '<br>');
   }
-   showFull = false;
+  showFull = false;
   toggleView() {
     this.showFull = !this.showFull;
   }
@@ -83,8 +82,8 @@ export class PurpleBookCardComponent {
     private utilityService: UtilityService,
     private http: HttpClient,
     private sanitizer: DomSanitizer // ← ADD THIS
-  ) {}
-    isArray(value: any): boolean {
+  ) { }
+  isArray(value: any): boolean {
     return Array.isArray(value);
   }
   patentColumns: any[] = [];
@@ -92,9 +91,37 @@ export class PurpleBookCardComponent {
   productColumns: any[] = [];
   productData: any[] = [];
   ngOnInit() {
-   console.log('PurpleBookCardComponent initialized with data:', this._data);
+    console.log('PurpleBookCardComponent initialized with data:', this._data);
   }
+  // getVisibleColumns(): string[] {
+  //   // Get all keys from us_column
+  //   const allKeys = this.getObjectKeys(this.us_column);
 
+  //   // Filter keys to include only those which have at least one non-empty value in any row
+  //   return allKeys.filter(key => {
+  //     return this._data?.patentData?.some(item => {
+  //       const value = item[key];
+  //       return value !== null && value !== undefined && value !== '';
+  //     });
+  //   });
+  // }
+getVisibleColumns(): string[] {
+  const allKeys = this.getObjectKeys(this.us_column);
+
+  return allKeys.filter(key => {
+    return this._data?.patentData?.some(item => {
+      const value = item[key];
+
+      // If value is an array, check if it has at least one element
+      if (Array.isArray(value)) {
+        return value.length > 0;
+      }
+
+      // For strings, numbers, objects etc.
+      return value !== null && value !== undefined && value !== '';
+    });
+  });
+}
 
   ngOnChanges() {
 
@@ -123,7 +150,7 @@ export class PurpleBookCardComponent {
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
-  allowedColumns: string[] = ['gbrn','products', 'bla_number','applicant_name','applicant_logo','proprietary_name','proper_name','jarvis_rn','drug_substance_flag','drug_product_flag','patent_use_code','submission_date','remark_s']; 
+  allowedColumns: string[] = ['gbrn', 'products', 'bla_number', 'applicant_name', 'applicant_logo', 'proprietary_name', 'proper_name', 'jarvis_rn', 'drug_substance_flag', 'drug_product_flag', 'patent_use_code', 'submission_date', 'remark_s'];
 
   getObjectKeysOrdered(): string[] {
     return this.allowedColumns.filter(key => this.us_column?.hasOwnProperty(key));
@@ -137,7 +164,7 @@ export class PurpleBookCardComponent {
   toggleMoreInfo() {
     this.MoreInfo = !this.MoreInfo;
   }
-  getColumnName(value:any) {
+  getColumnName(value: any) {
     const colName = this.us_approval_column?.[value];
     // console.log(`getColumnName(${field}) =>`, colName);
     return colName // fallback display
@@ -193,14 +220,14 @@ export class PurpleBookCardComponent {
       environment.domainNameCompanyLogo +
       this._data?.commentry
     );
-  } 
+  }
   onImgError(event: Event) {
     const imgElement = event.target as HTMLImageElement;
-    imgElement.src =  '/assets/no-image.jpg';
+    imgElement.src = '/assets/no-image.jpg';
   }
   openImageModal(imageUrl: string): void {
     this.dialog.open(ImageModalComponent, {
-       width: 'auto',
+      width: 'auto',
       height: 'auto',
       panelClass: 'full-screen-modal',
       data: { dataImage: imageUrl },
@@ -212,7 +239,7 @@ export class PurpleBookCardComponent {
   openPopup(item: any): void {
     this.selectedPatent = item;
     this.viewPatent = !this.viewPatent;
-  
+
     // Format notes safely for innerHTML
     if (item?.notes) {
       this.formattedNotes = this.sanitizer.bypassSecurityTrustHtml(
@@ -221,10 +248,10 @@ export class PurpleBookCardComponent {
     } else {
       this.formattedNotes = '';
     }
-  
+
     console.log('Opening popup for:', item);
   }
-  
+
 
   closePopup(): void {
     this.selectedPatent = null;

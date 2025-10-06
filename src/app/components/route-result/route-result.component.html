@@ -82,8 +82,8 @@
     [activeTab]="activeTab"></chem-route-tabs>
 
   <!-- Main Content Section -->
-  <div *ngIf="shouldShowDownloadButton()" style="display: flex; justify-content: flex-end;">
-    <button *ngIf="isSplitDownload" (click)="handleGeneratePdf()" title="Download Single Route"
+  <div  style="display: flex; justify-content: flex-end;">
+    <button *ngIf="isSplitDownload" (click)="handleGeneratePDF(selectedIndex)" title="Download Single Route"
       class="btn btn-outline-primary btn-sm ">
       <i class="fas fa-download"></i>
     </button>
