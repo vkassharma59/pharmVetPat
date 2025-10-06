@@ -538,7 +538,7 @@ export class RouteResultComponent {
   //                 this.generatePDFloader = false;
   //                 return;
   //               }
-  //               //console.log(this.CurrentAPIBody, this.currentTabData.name, 'Selected Reports for PDF:', body_main.reports);
+  //              // console.log(this.CurrentAPIBody, this.currentTabData.name, 'Selected Reports for PDF:', body_main.reports);
   //               // Clone CurrentAPIBody and add required flags
   //               const pdf_body = {
   //                 ...this.CurrentAPIBody,
@@ -550,7 +550,7 @@ export class RouteResultComponent {
   //                 },
   //               };
 
-  //              // console.log('📄 Final PDF Request Body:', pdf_body);
+  //              console.log('📄 Final PDF Request Body:', pdf_body);
 
   //               this.serviceResultTabFiltersService.getGeneratePDF(pdf_body).subscribe({
   //                 next: (resp: any) => {
@@ -614,170 +614,355 @@ export class RouteResultComponent {
   //     },
   //   });
   // }
-  handleGeneratePdf() {
-    this.generatePDFloader = true;
-    this.handleSetLoading.emit(true);
-    const priviledge = localStorage.getItem('priviledge_json');
-    const priviledge_data = JSON.parse(priviledge || '');
+ handleGeneratePDF(index: number) {
+  this.generatePDFloader = true;
+  this.handleSetLoading.emit(true);
 
-    let todays_limit: any = '';
-    this.userPriviledgeService.getUserPriviledgesData().subscribe({
-      next: (res: any) => {
-        if (res && res?.data && res?.data?.user_info) {
-          const userInfo = res.data.user_info;
-          this.userAuth = {
-            name: userInfo.name,
-            email: userInfo.email,
-            user_id: userInfo.user_id,
-            auth_token: userInfo.auth_token,
-          };
-          let priviledge = `user_${this.userAuth?.user_id}`;
+  const priviledge = localStorage.getItem('priviledge_json');
+  const priviledge_data = JSON.parse(priviledge || '');
+  let todays_limit: any = '';
 
-          if (
-            typeof window !== 'undefined' &&
-            window.localStorage &&
-            userInfo?.priviledge_json
-          ) {
-            localStorage.setItem(
-              'priviledge_json',
-              JSON.stringify(userInfo?.privilege_json[priviledge])
-            );
-          }
-          let priviledge_data = userInfo?.privilege_json[priviledge];
-          if (
-            !priviledge_data ||
-            priviledge_data?.['pharmvetpat-mongodb']?.Download === 'false' ||
-            priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == '' ||
-            priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == 0 ||
-            priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == '0'
+  this.userPriviledgeService.getUserPriviledgesData().subscribe({
+    next: (res: any) => {
+      if (res?.data?.user_info) {
+        const userInfo = res.data.user_info;
 
-          ) {
-            this.handleSetLoading.emit(false);
-            this.OpenPriviledgeModal.emit(
-              'Your daily download limit is over for this platform.'
-              // 'Report download is only allowed with premium ID, please updgrade to premium account.'
-            );
-            this.generatePDFloader = false;
-            return;
-          } else {
-            this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
-              next: (res: any) => {
-                if (res && res?.data) {
-                  todays_limit = res.data;
-                  if (
-                    priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit -
-                    todays_limit?.downloadCount <=
-                    0
-                  ) {
-                    this.handleSetLoading.emit(false);
-                    this.OpenPriviledgeModal.emit(
-                      'Your daily download limit is over for this platform.'
-                    );
-                    this.generatePDFloader = false;
-                    return;
-                  }
+        this.userAuth = {
+          name: userInfo.name,
+          email: userInfo.email,
+          user_id: userInfo.user_id,
+          auth_token: userInfo.auth_token,
+        };
 
-                  if (
-                    priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit -
-                    todays_limit?.downloadCount >
-                    0
-                  ) {
+        const privKey = `user_${this.userAuth?.user_id}`;
 
-                    let pdf_body = { ...this.CurrentAPIBody };
-                    pdf_body.body['report_download'] = true;
-                    pdf_body.body['limit'] = this.getReportLimit();
-                    if (this.CurrentAPIBody?.currentTab === 'technicalRoutes') {
-                      pdf_body.api_url = this.apiUrls.technicalRoutes.synthesisSearch;
-                    }
-                    // ✅ Advance Search Case
-                    if (this.lastSearchData?.searchType === "advance Search") {
-                      //  const firstKeyword = this.CurrentAPIBody?.criteria?.[0]?.keyword || "";
-                      //  console.log("First Keyword >>>", firstKeyword);
-                      let firstKeyword = "";
-
-                      if (this.CurrentAPIBody?.criteria?.length > 0) {
-                        firstKeyword = this.CurrentAPIBody.criteria[0].keyword || "";
-                      } else if (this.CurrentAPIBody?.body?.criteria?.length > 0) {
-                        firstKeyword = this.CurrentAPIBody.body.criteria[0].keyword || "";
-                      }
-
-                      console.log("Extracted keyword >>>", firstKeyword);
-
-                      pdf_body.body = {
-                        report_download: true,
-                        limit: this.getReportLimit(),
-                        criteria: "",
-                        filter_enable: false,
-                        filters: {},
-                        keyword: firstKeyword,   // 👈 now value will come
-                        page_no: this.CurrentAPIBody.page_no || 1
-                      };
-                    }
-
-                    console.log("Final pdf_body >>>", pdf_body);
-
-
-
-                    this.serviceResultTabFiltersService
-                      .getGeneratePDF(
-                        pdf_body
-                      ).subscribe({
-                        next: (response: any) => {
-                          const file = new Blob([response.body], {
-                            type: 'application/pdf',
-                          });
-                          const contentDisposition = response.headers.get('content-disposition');
-                          const timestamp = new Date()
-                            .toISOString()
-                            .split('.')[0] // remove milliseconds
-                            .replace(/T/, '_') // replace T with _
-                            .replace(/:/g, '-'); // format time separator
-
-                          let filename = `Report_${timestamp}.pdf`;
-                          if (contentDisposition) {
-                            const match = contentDisposition.match(/filename="?([^"]+)"?/);
-                            if (match && match[1]) {
-                              filename = match[1];
-                            }
-                          }
-                          const fileURL = URL.createObjectURL(file);
-                          const a = document.createElement('a');
-                          a.href = fileURL;
-                          a.download = filename;
-                          document.body.appendChild(a); // Append anchor to body
-                          a.click(); // Trigger download
-                          document.body.removeChild(a); // Remove the anchor from body
-                          this.generatePDFloader = false;
-                          this.handleSetLoading.emit(false);
-                        },
-                        error: (err) => {
-                          this.generatePDFloader = false;
-                          this.handleSetLoading.emit(false);
-                          alert(err.response.message);
-                          console.error('Error downloading the PDF', err);
-                          // Handle error appropriately, e.g., show a notification to the user
-                        },
-                      });
-                  }
-                }
-              },
-              error: (err: any) => {
-                this.generatePDFloader = false;
-                this.handleSetLoading.emit(false);
-                console.error('Error downloading the PDF', err);
-                // Handle error appropriately, e.g., show a notification to the user
-              },
-            });
-          }
+        if (typeof window !== 'undefined' && window.localStorage && userInfo?.privilege_json) {
+          localStorage.setItem('priviledge_json', JSON.stringify(userInfo?.privilege_json[privKey]));
         }
-      },
-      error: (err: any) => {
-        this.generatePDFloader = false;
-        console.error('Error downloading the PDF', err);
-        // Handle error appropriately, e.g., show a notification to the user
-      },
-    });
-  }
+
+        const pharmaPrivilege = userInfo?.privilege_json[privKey]?.['pharmvetpat-mongodb'];
+
+        // ✅ Check privilege & limits
+        if (
+          !pharmaPrivilege ||
+          pharmaPrivilege.Download === 'false' ||
+          !pharmaPrivilege.DownloadCount ||
+          pharmaPrivilege.DownloadCount === 0 ||
+          pharmaPrivilege.DownloadCount === '0'
+        ) {
+          this.handleSetLoading.emit(false);
+          this.OpenPriviledgeModal.emit('Your daily download limit is over for this platform.');
+          this.generatePDFloader = false;
+          return;
+        }
+
+        // ✅ Check daily download limits
+        this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
+          next: (res: any) => {
+            if (res?.data) {
+              todays_limit = res.data;
+
+              if (pharmaPrivilege.DailyDownloadLimit - todays_limit.downloadCount <= 0) {
+                this.handleSetLoading.emit(false);
+                this.OpenPriviledgeModal.emit('Your daily download limit is over for this platform.');
+                this.generatePDFloader = false;
+                return;
+              }
+
+              // ✅ Identify correct ID depending on search type
+              let id: any = '';
+              const currentData = this.AllSetData[index];
+
+              switch (this.searchThrough) {
+                case searchTypes.chemicalStructure:
+                case searchTypes.intermediateSearch:
+                  id = currentData[this.resultTabWithKeys.chemicalDirectory.name]?.[0]?._id;
+                  break;
+
+                case searchTypes.synthesisSearch:
+                  id = currentData[this.resultTabWithKeys.technicalRoutes.name]?.ros_data?.[0]?._id;
+                  break;
+
+                case searchTypes.simpleSearch:
+                case searchTypes.advanceSearch:
+                default:
+                  id = currentData[this.resultTabWithKeys.productInfo.name]?.[0]?._id;
+                  break;
+              }
+
+              // ✅ Build request body with CURRENT TAB
+              let body_main: any = {
+                id: id,
+                reports: [],
+                limit: this.getReportLimit(),
+              };
+
+              const tabName = this.currentTabData?.name;
+              if (tabName) {
+                const mappedName = this.tabNameToReportKey[tabName] || tabName;
+                body_main.reports.push(mappedName);
+              }
+
+              if (body_main.reports.length === 0) {
+                alert('Please select at least 1 option');
+                this.handleSetLoading.emit(false);
+                this.generatePDFloader = false;
+                return;
+              }
+
+              // ✅ Decide API based on search type
+              let API_MAIN: any = {};
+              if (this.searchThrough === searchTypes.synthesisSearch) {
+                API_MAIN = {
+                  api_url: this.apiUrls.technicalRoutes.reportData,
+                  body: body_main,
+                };
+              } else if (
+                this.searchThrough === searchTypes.chemicalStructure ||
+                this.searchThrough === searchTypes.intermediateSearch
+              ) {
+                API_MAIN = {
+                  api_url: this.apiUrls.chemicalDirectory.reportData,
+                  body: body_main,
+                };
+              } else {
+                API_MAIN = {
+                  api_url: this.apiUrls.basicProductInfo.reportData,
+                  body: body_main,
+                };
+              }
+
+              // ✅ API Call
+              this.serviceResultTabFiltersService.getGeneratePDF(API_MAIN).subscribe({
+                next: (resp: any) => {
+                  const blob = new Blob([resp.body!], { type: 'application/pdf' });
+                  const contentDisposition = resp.headers.get('content-disposition');
+
+                  const timestamp = new Date()
+                    .toISOString()
+                    .split('.')[0]
+                    .replace(/T/, '_')
+                    .replace(/:/g, '-');
+
+                  let filenamePrefix = 'basicProductReport';
+
+                  if (
+                    this.searchThrough === searchTypes.chemicalStructure ||
+                    this.searchThrough === searchTypes.synthesisSearch ||
+                    this.searchThrough === searchTypes.intermediateSearch
+                  ) {
+                    filenamePrefix = 'technicalRouteReport';
+                  }
+
+                  let filename = `${filenamePrefix}_${timestamp}.pdf`;
+
+                  if (contentDisposition) {
+                    const match = contentDisposition.match(/filename="?([^"]+)"?/);
+                    if (match?.[1]) {
+                      filename = match[1];
+                    }
+                  }
+
+                  // ✅ Download PDF
+                  const fileURL = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = fileURL;
+                  a.download = filename;
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+
+                  this.generatePDFloader = false;
+                  this.handleSetLoading.emit(false);
+                },
+                error: (err: any) => {
+                  this.generatePDFloader = false;
+                  this.handleSetLoading.emit(false);
+                  console.error('Error downloading the PDF', err);
+                },
+              });
+            }
+          },
+          error: (e) => {
+            this.generatePDFloader = false;
+            this.handleSetLoading.emit(false);
+            console.error('Error:', e);
+          },
+        });
+      }
+    },
+    error: (e) => {
+      this.handleSetLoading.emit(false);
+      this.generatePDFloader = false;
+      console.error('Error:', e);
+    },
+  });
+}
+
+  // handleGeneratePdf() {
+  //   this.generatePDFloader = true;
+  //   this.handleSetLoading.emit(true);
+  //   const priviledge = localStorage.getItem('priviledge_json');
+  //   const priviledge_data = JSON.parse(priviledge || '');
+
+  //   let todays_limit: any = '';
+  //   this.userPriviledgeService.getUserPriviledgesData().subscribe({
+  //     next: (res: any) => {
+  //       if (res && res?.data && res?.data?.user_info) {
+  //         const userInfo = res.data.user_info;
+  //         this.userAuth = {
+  //           name: userInfo.name,
+  //           email: userInfo.email,
+  //           user_id: userInfo.user_id,
+  //           auth_token: userInfo.auth_token,
+  //         };
+  //         let priviledge = `user_${this.userAuth?.user_id}`;
+
+  //         if (
+  //           typeof window !== 'undefined' &&
+  //           window.localStorage &&
+  //           userInfo?.priviledge_json
+  //         ) {
+  //           localStorage.setItem(
+  //             'priviledge_json',
+  //             JSON.stringify(userInfo?.privilege_json[priviledge])
+  //           );
+  //         }
+  //         let priviledge_data = userInfo?.privilege_json[priviledge];
+  //         if (
+  //           !priviledge_data ||
+  //           priviledge_data?.['pharmvetpat-mongodb']?.Download === 'false' ||
+  //           priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == '' ||
+  //           priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == 0 ||
+  //           priviledge_data?.['pharmvetpat-mongodb']?.DownloadCount == '0'
+
+  //         ) {
+  //           this.handleSetLoading.emit(false);
+  //           this.OpenPriviledgeModal.emit(
+  //             'Your daily download limit is over for this platform.'
+  //             // 'Report download is only allowed with premium ID, please updgrade to premium account.'
+  //           );
+  //           this.generatePDFloader = false;
+  //           return;
+  //         } else {
+  //           this.userPriviledgeService.getUserTodayPriviledgesData().subscribe({
+  //             next: (res: any) => {
+  //               if (res && res?.data) {
+  //                 todays_limit = res.data;
+  //                 if (
+  //                   priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit -
+  //                   todays_limit?.downloadCount <=
+  //                   0
+  //                 ) {
+  //                   this.handleSetLoading.emit(false);
+  //                   this.OpenPriviledgeModal.emit(
+  //                     'Your daily download limit is over for this platform.'
+  //                   );
+  //                   this.generatePDFloader = false;
+  //                   return;
+  //                 }
+
+  //                 if (
+  //                   priviledge_data?.['pharmvetpat-mongodb']?.DailyDownloadLimit -
+  //                   todays_limit?.downloadCount >
+  //                   0
+  //                 ) {
+
+  //                   let pdf_body = { ...this.CurrentAPIBody };
+  //                   pdf_body.body['report_download'] = true;
+  //                   pdf_body.body['limit'] = this.getReportLimit();
+  //                   if (this.CurrentAPIBody?.currentTab === 'technicalRoutes') {
+  //                     pdf_body.api_url = this.apiUrls.technicalRoutes.synthesisSearch;
+  //                   }
+  //                   // ✅ Advance Search Case
+  //                   if (this.lastSearchData?.searchType === "advance Search") {
+  //                     //  const firstKeyword = this.CurrentAPIBody?.criteria?.[0]?.keyword || "";
+  //                     //  console.log("First Keyword >>>", firstKeyword);
+  //                     let firstKeyword = "";
+
+  //                     if (this.CurrentAPIBody?.criteria?.length > 0) {
+  //                       firstKeyword = this.CurrentAPIBody.criteria[0].keyword || "";
+  //                     } else if (this.CurrentAPIBody?.body?.criteria?.length > 0) {
+  //                       firstKeyword = this.CurrentAPIBody.body.criteria[0].keyword || "";
+  //                     }
+
+  //                     console.log("Extracted keyword >>>", firstKeyword);
+
+  //                     pdf_body.body = {
+  //                       report_download: true,
+  //                       limit: this.getReportLimit(),
+  //                       criteria: "",
+  //                       filter_enable: false,
+  //                       filters: {},
+  //                       keyword: firstKeyword,   // 👈 now value will come
+  //                       page_no: this.CurrentAPIBody.page_no || 1
+  //                     };
+  //                   }
+
+  //                   console.log("Final pdf_body >>>", pdf_body);
+
+
+
+  //                   this.serviceResultTabFiltersService
+  //                     .getGeneratePDF(
+  //                       pdf_body
+  //                     ).subscribe({
+  //                       next: (response: any) => {
+  //                         const file = new Blob([response.body], {
+  //                           type: 'application/pdf',
+  //                         });
+  //                         const contentDisposition = response.headers.get('content-disposition');
+  //                         const timestamp = new Date()
+  //                           .toISOString()
+  //                           .split('.')[0] // remove milliseconds
+  //                           .replace(/T/, '_') // replace T with _
+  //                           .replace(/:/g, '-'); // format time separator
+
+  //                         let filename = `Report_${timestamp}.pdf`;
+  //                         if (contentDisposition) {
+  //                           const match = contentDisposition.match(/filename="?([^"]+)"?/);
+  //                           if (match && match[1]) {
+  //                             filename = match[1];
+  //                           }
+  //                         }
+  //                         const fileURL = URL.createObjectURL(file);
+  //                         const a = document.createElement('a');
+  //                         a.href = fileURL;
+  //                         a.download = filename;
+  //                         document.body.appendChild(a); // Append anchor to body
+  //                         a.click(); // Trigger download
+  //                         document.body.removeChild(a); // Remove the anchor from body
+  //                         this.generatePDFloader = false;
+  //                         this.handleSetLoading.emit(false);
+  //                       },
+  //                       error: (err) => {
+  //                         this.generatePDFloader = false;
+  //                         this.handleSetLoading.emit(false);
+  //                         alert(err.response.message);
+  //                         console.error('Error downloading the PDF', err);
+  //                         // Handle error appropriately, e.g., show a notification to the user
+  //                       },
+  //                     });
+  //                 }
+  //               }
+  //             },
+  //             error: (err: any) => {
+  //               this.generatePDFloader = false;
+  //               this.handleSetLoading.emit(false);
+  //               console.error('Error downloading the PDF', err);
+  //               // Handle error appropriately, e.g., show a notification to the user
+  //             },
+  //           });
+  //         }
+  //       }
+  //     },
+  //     error: (err: any) => {
+  //       this.generatePDFloader = false;
+  //       console.error('Error downloading the PDF', err);
+  //       // Handle error appropriately, e.g., show a notification to the user
+  //     },
+  //   });
+  // }
 
   openDownloadModal(index: number | undefined) {
     if (index === undefined) return;
