@@ -7,7 +7,8 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  ViewChild
+  ViewChild,
+  AfterViewInit
 } from '@angular/core';
 import { FormControl, FormsModule } from '@angular/forms';
 import { NgClass, NgFor, NgIf } from '@angular/common';
@@ -22,10 +23,10 @@ import { DialogComponent } from '../../dialog/dialog.component';
 import { VideoTutorialComponent } from '../video-tutorial/video-tutorial.component';
 import { coerceStringArray } from '@angular/cdk/coercion';
 import { SharedRosService } from '../../shared-ros.service';
-import {AfterViewInit} from '@angular/core';
 import { CasRnService } from '../../services/casRn';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+
 @Component({
   selector: 'chem-pharma-database-search',
   standalone: true,
@@ -33,7 +34,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './pharma-database-search.component.html',
   styleUrl: './pharma-database-search.component.css'
 })
-export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnDestroy  {
+export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   keyword = new FormControl('');
   screenColumn = 'Select Filter';
   criteria = '';
@@ -48,10 +49,10 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
   auth: boolean = false;
   accountType: string = 'test';
   selectedItem: number = 0;
-  chemicalStructure: any = { filter: '' }
-  simpleSearch: any = {}
-  synthesisSearch: any = {}
-  intermediateSearch: any = { filter: '' }
+  chemicalStructure: any = { filter: '' };
+  simpleSearch: any = {};
+  synthesisSearch: any = {};
+  intermediateSearch: any = { filter: '' };
   advanceSearch: any = {
     autosuggestionList: [],
     dateType: '',
@@ -62,8 +63,9 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     startSales: null,
     endSales: null,
     filterInputs: [{ filter: '', keyword: '' }]
-  }
+  };
   private subscription!: Subscription;
+  private routerSub!: Subscription;
   receivedCasRn: string | null = null;
   receivedType: string | null = null;
   @Output() setLoadingState = new EventEmitter<any>();
@@ -91,43 +93,6 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     { type: 'CAS RN', value: 'CAS RN: 41429-16-7', label: 'CAS RN: 41429-16-7' },
     { type: 'Chemical Name', value: 'ethyne', label: 'ethyne' }
   ];
-
-
-  selectSuggestionSearch(suggestion: { type_label: string, value: string, label: string }) {
-    const { type_label, value, label } = suggestion;
-    this.simpleSearch.keyword = label;
-    this.simpleSearch.filter = type_label;
-    this.checkPriviledgeAndHandleSearch(searchTypes.simpleSearch);
-  }
-
-  advanceSearchSuggestion(suggestion: { type_label: string, value: string, label: string }) {
-    const { type_label, value, label } = suggestion;
-
-    // Initialize filterInputs array if not already
-    if (!Array.isArray(this.advanceSearch.filterInputs)) {
-      this.advanceSearch.filterInputs = [];
-    }
-    // Push the suggestion into filterInputs array
-    this.advanceSearch.filterInputs.push({
-      filter: type_label,
-      keyword: label
-    });
-
-    this.checkPriviledgeAndHandleSearch(searchTypes.advanceSearch);
-
-  }
-  synthesisSearchSuggestionSearch(synthsuggestion: { type: string, value: string, label: string }) {
-    const { type, value, label } = synthsuggestion;
-    this.synthesisSearch.keyword = label;
-    this.synthesisSearch.filter = type;
-    this.checkPriviledgeAndHandleSearch(searchTypes.synthesisSearch);
-  }
-  intermediateSearchSuggestionSearch(intersuggestion: { type_label: string, value: string, label: string }) {
-    const { type_label, value, label } = intersuggestion;
-    this.intermediateSearch.keyword = label;
-    this.intermediateSearch.filter = type_label;
-    this.checkPriviledgeAndHandleSearch(searchTypes.intermediateSearch);
-  }
 
   devStages: string[] = ['Stage 1', 'Stage 2', 'Stage 3'];
   innovators: string[] = ['Pfizer', 'Roche', 'Novartis'];
@@ -166,6 +131,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     private columnListService: ColumnListService,
     private casRnService: CasRnService,
     private route: ActivatedRoute,
+    private router: Router
   ) {
     this.searchTypes = searchTypes;
   }
@@ -175,45 +141,55 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     this.resultTabs = this.utilityService.getAllTabsName();
     this.getAllFilters();
     console.log("🔄 ngOnInit called - Search Page initialized");
-  
-    const type = localStorage.getItem("searchType");
-    const cas = localStorage.getItem("casRN");
-  
+
+    // Restore previously saved session state (if any)
+    this.restoreAllFromSession();
+
+    // restore cas/type auto-search info (as you had before)
+    const type = sessionStorage.getItem("searchType") || localStorage.getItem("searchType") || null;
+    const cas = sessionStorage.getItem("casRN") || localStorage.getItem("casRN") || null;
     console.log("📦 Loaded from storage -> type:", type, "| cas:", cas);
-  
+
     if (cas && type) {
       this.selectedCasRn = cas;
-  
+
       if (type === "synthesis") {
         this.synthesisSearch.keyword = cas;
         this.selectedItem = 2;
         console.log("🟦 Auto-filled synthesisSearch from storage:", cas);
         this.performSynthesisSearch();
         this.setLoadingState.emit(true);
-        localStorage.removeItem("searchType");
-        localStorage.removeItem("casRN");
+        sessionStorage.removeItem("searchType");
+        sessionStorage.removeItem("casRN");
       }
-  
+
       if (type === "intermediate") {
         this.intermediateSearch.keyword = cas;
         this.selectedItem = 1;
         console.log("🟩 Auto-filled intermediateSearch from storage:", cas);
         this.performIntermediateSearch();
         this.setLoadingState.emit(true);
-        localStorage.removeItem("searchType");
-        localStorage.removeItem("casRN");
+        sessionStorage.removeItem("searchType");
+        sessionStorage.removeItem("casRN");
       }
     } else {
       console.warn("⚠️ Nothing found in storage → skipping auto search");
     }
-  }  
-  
+
+    // Subscribe to router navigation to re-restore state on Back navigation
+    this.routerSub = this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        // restore state when navigation ends (useful for back button)
+        this.restoreAllFromSession();
+      }
+    });
+  }
+
   // ✅ Unified HostListener to close dropdowns
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
     const target = event.target as HTMLElement;
 
-    // Assuming you're using ViewChild for wrapper elements like devStageWrapper
     if (!target.closest('.dev-stage-container')) {
       this.showDevStageDropdown = false;
     }
@@ -222,23 +198,131 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       this.showInnovatorDropdown = false;
     }
 
-    // Add similar checks for other dropdowns
     // If you have autosuggestions lists:
     if (!target.closest('.suggestions-dropdown')) {
       this.simpleSearch.autosuggestionList = [];
       this.intermediateSearch.autosuggestionList = [];
-      this.advanceSearch.autosuggestionList = [];
+      // For advance, clear arrays
+      if (Array.isArray(this.advanceSearch?.autosuggestionList)) {
+        this.advanceSearch.autosuggestionList.forEach((_, i) => {
+          this.advanceSearch.autosuggestionList[i] = [];
+        });
+      }
     }
 
     // For dynamically generated filters
-    this.advanceSearch.autosuggestionList.forEach((_, i) => {
-      if (!target.closest(`#filter-input-${i}`)) {
-        this.advanceSearch.autosuggestionList[i] = [];
-      }
-    });
+    if (Array.isArray(this.advanceSearch?.autosuggestionList)) {
+      this.advanceSearch.autosuggestionList.forEach((_, i) => {
+        if (!target.closest(`#filter-input-${i}`)) {
+          this.advanceSearch.autosuggestionList[i] = [];
+        }
+      });
+    }
   }
 
+  // -----------------------
+  // Persistence Helpers
+  // -----------------------
 
+  /**
+   * Save a full search object in sessionStorage.
+   * Key naming convention:
+   *  - simpleSearch -> 'simpleSearch'
+   *  - chemicalStructure -> 'chemicalStructure'
+   *  - synthesisSearch -> 'synthesisSearch'
+   *  - intermediateSearch -> 'intermediateSearch'
+   *  - advanceSearch -> 'advanceSearch'
+   */
+  storeSearchState(searchType: string) {
+    try {
+      switch (searchType) {
+        case this.searchTypes.simpleSearch:
+          sessionStorage.setItem('simpleSearch', JSON.stringify(this.simpleSearch || {}));
+          break;
+        case this.searchTypes.chemicalStructure:
+          sessionStorage.setItem('chemicalStructure', JSON.stringify(this.chemicalStructure || {}));
+          break;
+        case this.searchTypes.synthesisSearch:
+          sessionStorage.setItem('synthesisSearch', JSON.stringify(this.synthesisSearch || {}));
+          break;
+        case this.searchTypes.intermediateSearch:
+          sessionStorage.setItem('intermediateSearch', JSON.stringify(this.intermediateSearch || {}));
+          break;
+        case this.searchTypes.advanceSearch:
+          sessionStorage.setItem('advanceSearch', JSON.stringify(this.advanceSearch || {}));
+          break;
+      }
+      // general debug
+      // console.log('Session saved for', searchType, sessionStorage.getItem(searchType));
+    } catch (e) {
+      console.error('Error saving search state:', e);
+    }
+  }
+
+  /**
+   * Restore state for a given search type from sessionStorage
+   */
+  restoreSearchState(searchType: string) {
+    try {
+      switch (searchType) {
+        case this.searchTypes.simpleSearch: {
+          const saved = sessionStorage.getItem('simpleSearch');
+          if (saved) this.simpleSearch = JSON.parse(saved);
+          break;
+        }
+        case this.searchTypes.chemicalStructure: {
+          const saved = sessionStorage.getItem('chemicalStructure');
+          if (saved) this.chemicalStructure = JSON.parse(saved);
+          break;
+        }
+        case this.searchTypes.synthesisSearch: {
+          const saved = sessionStorage.getItem('synthesisSearch');
+          if (saved) this.synthesisSearch = JSON.parse(saved);
+          break;
+        }
+        case this.searchTypes.intermediateSearch: {
+          const saved = sessionStorage.getItem('intermediateSearch');
+          if (saved) this.intermediateSearch = JSON.parse(saved);
+          break;
+        }
+        case this.searchTypes.advanceSearch: {
+          const saved = sessionStorage.getItem('advanceSearch');
+          if (saved) {
+            const parsed = JSON.parse(saved);
+            // Ensure filterInputs exists and is an array
+            if (!Array.isArray(parsed.filterInputs)) {
+              parsed.filterInputs = [{ filter: '', keyword: '' }];
+            }
+            this.advanceSearch = { ...this.advanceSearch, ...parsed };
+          }
+          break;
+        }
+      }
+    } catch (e) {
+      console.error('Error restoring search state:', e);
+    }
+  }
+
+  /**
+   * Restore all known search types (called on init and on navigation end)
+   */
+  restoreAllFromSession() {
+    this.restoreSearchState(this.searchTypes.simpleSearch);
+    this.restoreSearchState(this.searchTypes.chemicalStructure);
+    this.restoreSearchState(this.searchTypes.synthesisSearch);
+    this.restoreSearchState(this.searchTypes.intermediateSearch);
+    this.restoreSearchState(this.searchTypes.advanceSearch);
+
+    // Optionally restore activeSearchTab if saved
+    const savedTab = sessionStorage.getItem('activeSearchTab');
+    if (savedTab) {
+      this.activeSearchTab = savedTab;
+    }
+  }
+
+  // -----------------------
+  // Existing methods (unchanged but now call storeSearchState at safe spots)
+  // -----------------------
 
   getAllFilters() {
     this.getChemicalStructureFilters();
@@ -261,12 +345,15 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
   selectDevStage(stage: string) {
     this.advanceSearch.devStage = stage;
     this.showDevStageDropdown = false;
-
+    // persist
+    this.storeSearchState(this.searchTypes.advanceSearch);
   }
 
   selectInnovator(name: string) {
     this.advanceSearch.innovator = name;
     this.showInnovatorDropdown = false;
+    // persist
+    this.storeSearchState(this.searchTypes.advanceSearch);
   }
 
   handleDevStageChange() {
@@ -286,12 +373,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     if (column === 'DEVELOPMENT_STAGE') keyword = this.advanceSearch.devStage;
     if (column === 'INNOVATOR_ORIGINATOR') keyword = this.advanceSearch.innovator;
     console.log("keyword", keyword, "column", column, "isFocus", isFocus);
-    // if (!keyword || keyword.length < 2) {
-    //   if (column === 'DEVELOPMENT_STAGE') this.filteredDevStages = [];
-    //   if (column === 'INNOVATOR_ORIGINATOR') this.filteredInnovators = [];
-    //   return;
-    // }
-    // Clear suggestions if input is empty or very short
+
     if (!isFocus && (!keyword || keyword.length < 3)) {
       if (column === 'DEVELOPMENT_STAGE') this.filteredDevStages = [];
       if (column === 'INNOVATOR_ORIGINATOR') this.filteredInnovators = [];
@@ -316,18 +398,25 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       switch (searchType) {
         case searchTypes.simpleSearch:
           this.getSimpleSearchSuggestions();
+          // persist on typing (safe)
+          this.storeSearchState(this.searchTypes.simpleSearch);
           break;
         case searchTypes.chemicalStructure:
           this.getChemicalStructureSuggestions();
+          this.storeSearchState(this.searchTypes.chemicalStructure);
           break;
         case searchTypes.synthesisSearch:
           this.getSynthesisSearchSuggestions();
+          this.storeSearchState(this.searchTypes.synthesisSearch);
           break;
         case searchTypes.intermediateSearch:
           this.getIntermediateSearchSuggestions();
+          this.storeSearchState(this.searchTypes.intermediateSearch);
           break;
         case searchTypes.advanceSearch:
           this.getAdvanceSearchSuggestions(index);
+          // persist advance object
+          this.storeSearchState(this.searchTypes.advanceSearch);
           break;
       }
     } catch (err) {
@@ -339,6 +428,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     const lastFilter = this.advanceSearch.filterInputs[this.advanceSearch.filterInputs.length - 1];
     if (lastFilter?.filter && lastFilter?.keyword) {
       this.advanceSearch.filterInputs.push({ filter: '', keyword: '' });
+      this.storeSearchState(this.searchTypes.advanceSearch);
     } else {
       this.dialog.open(DialogComponent, {
         data: {
@@ -353,10 +443,10 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
 
   removeFilter(index: number) {
     this.advanceSearch.filterInputs.splice(index, 1);
+    this.storeSearchState(this.searchTypes.advanceSearch);
   }
 
   getAdvanceSearchSuggestions(index: number) {
-
     this.advanceSearch.autosuggestionList = [];
     if (this.advanceSearch.filterInputs[index].keyword === '') {
       if (typeof index !== 'undefined') {
@@ -364,7 +454,6 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       }
       return;
     }
-
     if (this.advanceSearch?.filterInputs[index]?.keyword?.length < 3) return;
 
     this.mainSearchService
@@ -410,6 +499,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
         error: (e) => console.error(e),
       });
   }
+
   isSearchEnabled(): boolean {
     const {
       filterInputs,
@@ -444,7 +534,6 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     // ✅ Scroll to top after component loads
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }
-
 
   isInputEnabled(): boolean {
     return !!(this.intermediateSearch.filter && this.intermediateSearch.keyword?.trim());
@@ -484,30 +573,76 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
         error: (e) => console.error(e),
       });
   }
+
+  // -----------------------
+  // Suggestion selection & persistence integration (minimal changes)
+  // -----------------------
+
+  selectSuggestionSearch(suggestion: { type_label: string, value: string, label: string }) {
+    const { type_label, value, label } = suggestion;
+    this.simpleSearch.keyword = label;
+    this.simpleSearch.filter = type_label;
+    // persist the whole simpleSearch object
+    this.storeSearchState(this.searchTypes.simpleSearch);
+    this.checkPriviledgeAndHandleSearch(searchTypes.simpleSearch);
+  }
+
+  advanceSearchSuggestion(suggestion: { type_label: string, value: string, label: string }) {
+    const { type_label, value, label } = suggestion;
+    if (!Array.isArray(this.advanceSearch.filterInputs)) {
+      this.advanceSearch.filterInputs = [];
+    }
+    this.advanceSearch.filterInputs.push({
+      filter: type_label,
+      keyword: label
+    });
+    // persist
+    this.storeSearchState(this.searchTypes.advanceSearch);
+    this.checkPriviledgeAndHandleSearch(searchTypes.advanceSearch);
+  }
+
+  synthesisSearchSuggestionSearch(synthsuggestion: { type: string, value: string, label: string }) {
+    const { type, value, label } = synthsuggestion;
+    this.synthesisSearch.keyword = label;
+    this.synthesisSearch.filter = type;
+    this.storeSearchState(this.searchTypes.synthesisSearch);
+    this.checkPriviledgeAndHandleSearch(searchTypes.synthesisSearch);
+  }
+
+  intermediateSearchSuggestionSearch(intersuggestion: { type_label: string, value: string, label: string }) {
+    const { type_label, value, label } = intersuggestion;
+    this.intermediateSearch.keyword = label;
+    this.intermediateSearch.filter = type_label;
+    this.storeSearchState(this.searchTypes.intermediateSearch);
+    this.checkPriviledgeAndHandleSearch(searchTypes.intermediateSearch);
+  }
+
   clearInputAndSuggetions(searchType: string = '') {
     this.showSuggestions = false;
-  
+
     switch (searchType) {
       case searchTypes.simpleSearch:
         this.simpleSearch = {};
-        sessionStorage.removeItem('simpleSearch.keyword');
-        sessionStorage.removeItem('simpleSearch.filter');
+        sessionStorage.removeItem('simpleSearch');
         break;
-  
+
       case searchTypes.chemicalStructure:
         this.chemicalStructure = { filter: '' };
         this.getChemicalStructureFilters();
+        sessionStorage.removeItem('chemicalStructure');
         break;
-  
+
       case searchTypes.synthesisSearch:
         this.synthesisSearch = {};
+        sessionStorage.removeItem('synthesisSearch');
         break;
-  
+
       case searchTypes.intermediateSearch:
         this.intermediateSearch = { filter: '' };
         this.getintermediateSearchFilters();
+        sessionStorage.removeItem('intermediateSearch');
         break;
-  
+
       case searchTypes.advanceSearch:
         this.advanceSearch = {
           autosuggestionList: [],
@@ -517,26 +652,29 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
           ]
         };
         this.getAdvanceSearchFilters();
+        sessionStorage.removeItem('advanceSearch');
         break;
-  
+
       // ✅ New case: clear everything
       case 'ALL':
         // Simple Search
         this.simpleSearch = {};
-        sessionStorage.removeItem('simpleSearch.keyword');
-        sessionStorage.removeItem('simpleSearch.filter');
-  
+        sessionStorage.removeItem('simpleSearch');
+
         // Chemical Structure
         this.chemicalStructure = { filter: '' };
         this.getChemicalStructureFilters();
-  
+        sessionStorage.removeItem('chemicalStructure');
+
         // Synthesis
         this.synthesisSearch = {};
-  
+        sessionStorage.removeItem('synthesisSearch');
+
         // Intermediate
         this.intermediateSearch = { filter: '' };
         this.getintermediateSearchFilters();
-  
+        sessionStorage.removeItem('intermediateSearch');
+
         // Advance
         this.advanceSearch = {
           autosuggestionList: [],
@@ -546,11 +684,12 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
           ]
         };
         this.getAdvanceSearchFilters();
-  
+        sessionStorage.removeItem('advanceSearch');
+
         break;
     }
   }
-  
+
   handleSuggestionClick(value: any, searchType = '', index: number = 0) {
     this.showSuggestions = false;
 
@@ -563,8 +702,8 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
         this.simpleSearch.autosuggestionList = [];
 
         // ✅ Save both keyword and filter for persistence
-        sessionStorage.setItem('simpleSearch.keyword', value);
-        sessionStorage.setItem('simpleSearch.filter', this.simpleSearch.filter || '');
+        // store full object
+        this.storeSearchState(this.searchTypes.simpleSearch);
 
         this.checkPriviledgeAndHandleSearch(this.searchTypes.simpleSearch);
 
@@ -581,6 +720,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
         this.chemicalStructure.keyword = value;
         this.chemicalStructure.autosuggestionList = [];
 
+        this.storeSearchState(this.searchTypes.chemicalStructure);
         this.checkPriviledgeAndHandleSearch(this.searchTypes.chemicalStructure)
         setTimeout(() => {
           this.chemicalStructureKeywordInput?.nativeElement?.focus();
@@ -590,6 +730,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       case searchTypes.synthesisSearch:
         this.synthesisSearch.keyword = value;
         this.synthesisSearch.autosuggestionList = [];
+        this.storeSearchState(this.searchTypes.synthesisSearch);
         this.checkPriviledgeAndHandleSearch(this.searchTypes.synthesisSearch);
         setTimeout(() => {
           this.synthesisSearchkeywordInput?.nativeElement?.focus();
@@ -599,7 +740,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       case searchTypes.intermediateSearch:
         this.intermediateSearch.keyword = value;
         this.intermediateSearch.autosuggestionList = [];
-
+        this.storeSearchState(this.searchTypes.intermediateSearch);
         this.checkPriviledgeAndHandleSearch(this.searchTypes.intermediateSearch);
 
         setTimeout(() => {
@@ -610,8 +751,8 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       case searchTypes.advanceSearch:
         this.advanceSearch.filterInputs[index].keyword = value;
         this.advanceSearch.autosuggestionList[index] = [];
-        sessionStorage.setItem('advanceSearch.keyword', value);
-        sessionStorage.setItem('advanceSearch.filter', this.advanceSearch.filter || '');
+        // persist entire advanceSearch
+        this.storeSearchState(this.searchTypes.advanceSearch);
         this.checkPriviledgeAndHandleSearch(this.searchTypes.advanceSearch);
 
         break;
@@ -657,20 +798,18 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     return !(mainInput?.filter?.trim() && mainInput?.keyword?.trim());
   }
 
-
-
   checkPriviledgeAndHandleSearch(searchType: string = '') {
     const { startSales, endSales, filterInputs, simpleSearch, devStage, innovator } = this.advanceSearch;
 
     // ✅ Save simpleSearch values if this is a simple search
     if (searchType === this.searchTypes.simpleSearch) {
-      sessionStorage.setItem('simpleSearch.keyword', this.simpleSearch.keyword || '');
-      sessionStorage.setItem('simpleSearch.filter', this.simpleSearch.filter || '');
+      // store whole object
+      this.storeSearchState(this.searchTypes.simpleSearch);
     }
     if (searchType === this.searchTypes.advanceSearch) {
-      sessionStorage.setItem('advanceSearch.keyword', this.advanceSearch.keyword || '');
-      sessionStorage.setItem('advanceSearch.filter', this.advanceSearch.filter || '');
+      this.storeSearchState(this.searchTypes.advanceSearch);
     }
+
     // 🚨 Validate sales range if only one value is given
     if (startSales && !endSales) {
       this.priviledgeModal.emit('Please enter End Range.');
@@ -942,7 +1081,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       order_by: '',
       keyword: this.synthesisSearch?.keyword
     };
-  this.sharedRosService.setSearchData('synthesis Search', this.synthesisSearch?.keyword, this.criteria);
+    this.sharedRosService.setSearchData('synthesis Search', this.synthesisSearch?.keyword, this.criteria);
 
     const tech_API = this.apiUrls.technicalRoutes.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
@@ -973,9 +1112,12 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       },
     });
   }
+
   showContent(searchTab: string) {
     this.activeSearchTab = searchTab;
     this.showSuggestions = false;
+    // persist active tab
+    sessionStorage.setItem('activeSearchTab', this.activeSearchTab);
 
     // Do NOT reset input values — just optionally refocus the relevant input
     setTimeout(() => {
@@ -996,7 +1138,6 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     }, 0);
   }
 
-
   private performChemicalStructureSearch(): void {
     Auth_operations.setActiveformValues({
       column: this.column,
@@ -1013,7 +1154,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       order_by: '',
       keyword: this.chemicalStructure?.keyword
     };
-  this.sharedRosService.setSearchData('chemicalStructure', this.chemicalStructure?.keyword, this.chemicalStructure?.filter);
+    this.sharedRosService.setSearchData('chemicalStructure', this.chemicalStructure?.keyword, this.chemicalStructure?.filter);
 
     const tech_API = this.apiUrls.chemicalDirectory.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
@@ -1047,21 +1188,21 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
 
   private performIntermediateSearch(): void {
     // Force set filter and keyword so that UI me bhi dikhe
-    this.intermediateSearch.filter = "cas_rn";  
-    this.intermediateSearch.keyword = this.intermediateSearch.keyword || "74-86-2";  
-  
+    this.intermediateSearch.filter = "cas_rn";
+    this.intermediateSearch.keyword = this.intermediateSearch.keyword || "74-86-2";
+
     console.log("🔹 Setting UI values", {
       filter: this.intermediateSearch.filter,
       keyword: this.intermediateSearch.keyword
     });
-  
+
     Auth_operations.setActiveformValues({
       column: this.column,
       keyword: this.intermediateSearch.keyword,
       screenColumn: this.screenColumn,
       activeForm: searchTypes.intermediateSearch
     });
-  
+
     const body = {
       page_no: 1,
       filter_enable: false,
@@ -1070,21 +1211,21 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       keyword: this.intermediateSearch?.keyword,
       criteria: this.intermediateSearch?.filter
     };
-  
+
     this.sharedRosService.setSearchData(
       'intermediateSearch',
       this.intermediateSearch?.keyword,
       this.intermediateSearch?.filter
     );
-  
+
     console.log("Intermediate search body", body);
-  
+
     const tech_API = this.apiUrls.chemicalDirectory.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.chemicalDirectory.name, response);
-  
+
         this.mainSearchService.getChemicalStructureResults(body).subscribe({
           next: (res: any) => {
             this.showResultFunction.emit({
@@ -1108,7 +1249,6 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       },
     });
   }
-  
 
   openTutorialModal() {
     const dialogRef = this.dialog.open(VideoTutorialComponent, {
@@ -1121,12 +1261,16 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
   chemicalStructureSearch(type: string, value: string) {
     this.chemicalStructure.keyword = value;
     this.chemicalStructure.filter = type;
+    this.storeSearchState(this.searchTypes.chemicalStructure);
     this.checkPriviledgeAndHandleSearch(searchTypes.chemicalStructure);
   }
 
   ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
+    }
+    if (this.routerSub) {
+      this.routerSub.unsubscribe();
     }
   }
 }
