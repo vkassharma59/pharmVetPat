@@ -624,6 +624,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       case searchTypes.simpleSearch:
         this.simpleSearch = {};
         sessionStorage.removeItem('simpleSearch');
+        this.getSimpleSearchSuggestions();
         break;
 
       case searchTypes.chemicalStructure:
