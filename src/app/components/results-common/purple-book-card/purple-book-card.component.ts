@@ -34,40 +34,41 @@ export class PurpleBookCardComponent {
   }
   set data(value: any) {
     if (value && Object.keys(value).length > 0) {
+      console.group('🔍 [PurpleBookCard] Incoming API Data');
+      console.log('Full Data:', JSON.parse(JSON.stringify(value)));
+      console.log('Patent Data:', value.patentData);
+      console.groupEnd();
+  
       PurpleBookCardComponent.apiCallCount++;
       this.localCount = PurpleBookCardComponent.apiCallCount;
-
       this._data = value;
       this.resultTabs = this.utilityService.getAllTabsName();
-
       const column_list = Auth_operations.getColumnList();
+      console.group('📋 Column List Debug');
+      console.log('Raw column_list:', column_list);
+      console.log('Result Tabs:', this.resultTabs);
+      console.groupEnd();
+  
+      if (column_list[this.resultTabs.purpleBook?.name]?.patentColumnList?.length > 0) {
+        for (let col of column_list[this.resultTabs.purpleBook?.name]?.patentColumnList) {
       if (column_list[this.resultTabs.purpleBook?.name]?.patentColumnList?.length > 0) {
         for (let col of column_list[this.resultTabs.purpleBook?.name]?.patentColumnList) {
           this.us_column[col.value] = col.name;
         }
       }
-
       if (column_list[this.resultTabs.purpleBook?.name]?.columns?.length > 0) {
         for (let col of column_list[this.resultTabs.purpleBook?.name]?.columns) {
           this.us_approval_column[col.value] = col.name;
         }
       }
-      // if (column_list[this.resultTabs.purpleBook?.name]?.length > 0) {
-      //   for (let col of column_list[this.resultTabs.purpleBook?.name]) {
-
-
-
-      //     this.us_approval_column[col.value] = col.name;
-      //   }
-      // }
-
-      // const tabName = this.resultTabs?.purpleBook?.name || 'US_APPROVAL';
-
-
-      // this.us_approval_column = column_list?.[tabName];
+  
+      console.group('🧩 Column Mapping Results');
+      console.log('us_column (Patent Columns):', this.us_column);
+      console.log('us_approval_column (Approval Columns):', this.us_approval_column);
+      console.groupEnd();
     }
-
-  }
+      }}}
+  
   convertNewlinesToBr(text: string): string {
     return text?.replace(/\n/g, '<br>');
   }
@@ -105,37 +106,52 @@ export class PurpleBookCardComponent {
   //     });
   //   });
   // }
-getVisibleColumns(): string[] {
-  const allKeys = this.getObjectKeys(this.us_column);
-
-  return allKeys.filter(key => {
-    return this._data?.patentData?.some(item => {
-      const value = item[key];
-
-      // If value is an array, check if it has at least one element
-      if (Array.isArray(value)) {
-        return value.length > 0;
+  getVisibleColumns(): string[] {
+    const allKeys = this.getObjectKeys(this.us_column);
+    console.debug('📚 All possible column keys:', allKeys);
+  
+    const visible = allKeys.filter(key => {
+      const hasValue = this._data?.patentData?.some(item => {
+        const value = item[key];
+        if (Array.isArray(value)) return value.length > 0;
+        return value !== null && value !== undefined && value !== '';
+      });
+      if (!hasValue) {
+        console.warn(`⚠️ Column "${key}" hidden (no values in data)`);
       }
-
-      // For strings, numbers, objects etc.
-      return value !== null && value !== undefined && value !== '';
+      return hasValue;
     });
-  });
-}
+  
+    console.debug('✅ Visible columns after filtering:', visible);
+    return visible;
+  }
+  
 
   ngOnChanges() {
-
-
-
+    console.group('🔄 [PurpleBookCard] ngOnChanges triggered');
+    console.log('Current _data:', JSON.parse(JSON.stringify(this._data)));
+    console.log('Received data input:', this.data);
+  
     if (this.data && Array.isArray(this.data.patent_list)) {
       this.patentData = this.data.patent_list;
+      console.log('✅ Patent Data (list):', this.patentData);
       this.patentColumns = this.data.patentColumnList;
+    } else if (this.data?.patentData) {
+      console.log('✅ Patent Data (object style):', this.data.patentData);
+      this.patentData = this.data.patentData;
+    } else {
+      console.warn('⚠️ No patent data found in this._data');
     }
+  
     if (this.data && Array.isArray(this.data.product_list)) {
       this.productData = this.data.product_list;
+      console.log('✅ Product Data:', this.productData);
       this.productColumns = this.data.productColumnList;
     }
+  
+    console.groupEnd();
   }
+  
   objectValues(obj: any): any[] {
     return Object.values(obj);
   }
@@ -150,7 +166,7 @@ getVisibleColumns(): string[] {
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
-  allowedColumns: string[] = ['gbrn', 'products', 'bla_number', 'applicant_name', 'applicant_logo', 'proprietary_name', 'proper_name', 'jarvis_rn', 'drug_substance_flag', 'drug_product_flag', 'patent_use_code', 'submission_date', 'remark_s'];
+  allowedColumns: string[] = ['gbrn','products', 'bla_number','applicant_name','applicant_logo','proprietary_name','proper_name','jarvis_rn','drug_substance_flag','drug_product_flag','patent_use_code','submission_date','remark_s']; 
 
   getObjectKeysOrdered(): string[] {
     return this.allowedColumns.filter(key => this.us_column?.hasOwnProperty(key));
@@ -158,9 +174,6 @@ getVisibleColumns(): string[] {
   getObjectKeys(obj: any): string[] {
     return obj ? Object.keys(obj) : [];
   }
-
-
-
   toggleMoreInfo() {
     this.MoreInfo = !this.MoreInfo;
   }
@@ -224,6 +237,7 @@ getVisibleColumns(): string[] {
   onImgError(event: Event) {
     const imgElement = event.target as HTMLImageElement;
     imgElement.src = '/assets/no-image.jpg';
+    imgElement.src = '/assets/no-image.jpg';
   }
   openImageModal(imageUrl: string): void {
     this.dialog.open(ImageModalComponent, {
@@ -236,11 +250,18 @@ getVisibleColumns(): string[] {
   isPopupOpen = false;
   selectedPatent: any = null;
   viewPatent: boolean = false;
+
+
+
   openPopup(item: any): void {
+    console.group('🪟 Popup Opened for Patent Item');
+    console.log('Selected item:', item);
+    console.log('All patentData items:', this._data?.patentData);
+    console.groupEnd();
+  
     this.selectedPatent = item;
     this.viewPatent = !this.viewPatent;
-
-    // Format notes safely for innerHTML
+  
     if (item?.notes) {
       this.formattedNotes = this.sanitizer.bypassSecurityTrustHtml(
         item.notes.replace(/\n/g, '<br>')
@@ -248,11 +269,8 @@ getVisibleColumns(): string[] {
     } else {
       this.formattedNotes = '';
     }
-
-    console.log('Opening popup for:', item);
   }
-
-
+  
   closePopup(): void {
     this.selectedPatent = null;
     this.viewPatent = false;

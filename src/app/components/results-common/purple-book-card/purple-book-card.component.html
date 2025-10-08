@@ -78,6 +78,18 @@
           {{ _data?.bla_number }}
         </p>
       </div>
+      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.bla_number && getColumnName('bla_type')">
+        <h6 class="font-bold text-indigo-900">
+          {{ getColumnName('bla_type') }}
+          <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+            (click)="handleCopy(_data?.bla_type, copyBtn)">
+            <i class="fas fa-copy"></i>
+          </span>
+        </h6>
+        <p class="text-wrap max-h-12 whitespace-normal">
+          {{ _data?.bla_type }}
+        </p>
+      </div>
       <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12"
         *ngIf="_data?.proprietary_name && getColumnName('proprietary_name')">
         <h6 class="font-bold text-indigo-900">
@@ -115,14 +127,15 @@
 
       <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.strength && getColumnName('strength')">
         <h6 class="font-bold text-indigo-900">
-          {{ getColumnName('applicant') }}
+          {{ getColumnName('strength') }}
+          {{ getColumnName('strength') }}
           <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
             (click)="handleCopy(_data?.strength, copyBtn)">
             <i class="fas fa-copy"></i>
           </span>
         </h6>
         <p class="text-wrap max-h-12 whitespace-normal">
-          {{ _data?.strength }}
+          {{ _data?.strength}}
         </p>
       </div>
       <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dosage_form && getColumnName('dosage_form')">
@@ -247,7 +260,7 @@
         </p>
       </div>
       <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12"
-        *ngIf="_data?.submission_type && getColumnName('submission_type ')">
+        *ngIf="_data?.submission_type && getColumnName('submission_type')">
         <h6 class="font-bold text-indigo-900">
           {{ getColumnName('submission_type') }}
           <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -263,7 +276,7 @@
 
 
       <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12"
-        *ngIf="_data?.license_number && getColumnName('license_number ')">
+        *ngIf="_data?.license_number && getColumnName('license_number')">
         <h6 class="font-bold text-indigo-900">
           {{ getColumnName('license_number') }}
           <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -273,11 +286,11 @@
           </span>
         </h6>
         <p class="text-wrap max-h-12 whitespace-normal">
-          {{ _data?.license_number }}
+          {{ _data?.license_number}}
         </p>
       </div>
       <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12"
-        *ngIf="_data?.product_number && getColumnName('product_number ')">
+        *ngIf="_data?.product_number && getColumnName('product_number')">
         <h6 class="font-bold text-indigo-900">
           {{ getColumnName('product_number') }}
           <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -302,7 +315,7 @@
         </p>
       </div>
       <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12"
-        *ngIf="_data?.date_of_first_licensure && getColumnName('date_of_first_licensure ')">
+        *ngIf="_data?.date_of_first_licensure && getColumnName('date_of_first_licensure')">
         <h6 class="font-bold text-indigo-900">
           {{ getColumnName('date_of_first_licensure') }}
           <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -330,7 +343,7 @@
         </p>
       </div>
       <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12"
-        *ngIf="_data?.first_interchangeable_exclusivity_exp_date && getColumnName('first_interchangeable_exclusivity_exp_date ')">
+        *ngIf="_data?.first_interchangeable_exclusivity_exp_date && getColumnName('first_interchangeable_exclusivity_exp_date')">
         <h6 class="font-bold text-indigo-900">
           {{ getColumnName('first_interchangeable_exclusivity_exp_date') }}
           <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -344,7 +357,7 @@
         </p>
       </div>
       <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12"
-        *ngIf="_data?.ref_product_exclusivity_exp_date && getColumnName('ref_product_exclusivity_exp_date ')">
+        *ngIf="_data?.ref_product_exclusivity_exp_date && getColumnName('ref_product_exclusivity_exp_date')">
         <h6 class="font-bold text-indigo-900">
           {{ getColumnName('ref_product_exclusivity_exp_date') }}
           <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
@@ -382,7 +395,8 @@
           {{ _data?.note }}
         </p>
       </div>
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.remarks && getColumnName('remarks ')">
+      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.remarks && getColumnName('remarks')">
+      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.remarks && getColumnName('remarks')">
         <h6 class="font-bold text-indigo-900">
           {{ getColumnName('remarks') }}
           <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.remarks, copyBtn)">
@@ -394,7 +408,7 @@
           {{ _data?.remarks }}
         </p>
       </div>
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.docs && getColumnName('docs ')">
+      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.docs && getColumnName('docs')">
         <h6 class="font-bold text-indigo-900">
           {{ getColumnName('docs') }}
           <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.docs, copyBtn)">

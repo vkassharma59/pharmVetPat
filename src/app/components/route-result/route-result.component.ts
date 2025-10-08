@@ -34,6 +34,7 @@ import { DmfComponent } from '../results-common/dmf/dmf.component';
 import { SharedRosService } from '../../shared-ros.service';
 import { AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { PurpleBookComponent } from '../results-common/purple-book/purple-book.component';
+import { CasRnService } from '../../services/casRn';
 declare var bootstrap: any; // ✅ Add this here
 @Component({
   selector: 'chem-route-results',
@@ -218,6 +219,9 @@ export class RouteResultComponent {
   handleBack() {
     this.sharedRosService.clearSearchData();
     this.backFunction.emit(false);
+    localStorage.removeItem("searchType");
+    localStorage.removeItem("casRN");
+    console.log("removed");
   }
 
 
