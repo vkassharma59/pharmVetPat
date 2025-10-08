@@ -552,7 +552,7 @@
     <thead class="bg-gray-800 text-white">
       <tr>
         <th class="px-3 py-2 text-sm font-normal tracking-wide uppercase border-r border-gray-600"
-          *ngFor="let key of getObjectKeys(us_column)">
+          *ngFor="let key of getVisibleColumns()">
           {{ getColumnName1(key) }}
         </th>
       </tr>
@@ -560,17 +560,23 @@
     <tbody class="bg-white">
       <ng-container *ngIf="_data?.patentData?.length > 0; else noDataFound1">
         <tr *ngFor="let item of _data.patentData" class="custom-row-bg">
-          <td class="px-2 py-1" *ngFor="let key of getObjectKeys(us_column)">
+          <td class="px-2 py-1" *ngFor="let key of getVisibleColumns()"
+            style="align-items: center;text-align: center; justify-content: center;">
             <!-- {{ item[key] }} -->
             <!-- Check if column is patent_no -->
             <ng-container *ngIf="key === 'patent_number'; else normalCell">
-              <div class="flex flex-col items-center space-y-1">
-                <span>{{ item[key] }}</span>
-                <a [href]="'https://worldwide.espacenet.com/patent/search?q=' + item?.patent_number" target="_blank">
-                  <img class="mx-auto" style="height:35px;" src="assets/components/espace.png">
+              <span style="display:flex; align-items: center; justify-content: center; ">{{ item[key] }}</span>
+              <div style="display: flex; justify-content: center; gap: 10px; margin-top: 4px;">
+                <!-- Espacenet (E) -->
+                <a [href]="'https://worldwide.espacenet.com/patent/search?q=' + item?.patent_number" target="_blank"
+                  style="color: red; font-weight: 600;">
+                  <i class="fa-solid fa-e"></i>
                 </a>
-                <a [href]="'https://patents.google.com/patent/' + item?.patent_number" target="_blank">
-                  <img class="mx-auto" style="height:35px;" src="assets/components/GooglePatents.png">
+
+                <!-- Google Patents (G) -->
+                <a [href]="'https://patents.google.com/patent/' + item?.patent_number" target="_blank"
+                  style="color: blue; font-weight: 600;">
+                  <i class="fa-brands fa-google"></i>
                 </a>
               </div>
             </ng-container>
@@ -579,13 +585,20 @@
             <ng-template #normalCell>
               {{ item[key] }}
             </ng-template>
-
+            <ng-container *ngIf="key === 'note' && item[key]">
+              <button (click)="openPopup(item)"
+                class="button text-white text-xs px-2 py-1 rounded hover:bg-yellow-700 mt-1" style="width:120px"
+                data-bs-toggle="modal" data-bs-target="#viewPatentModal">
+                VIEW PATENT CLAIMS
+              </button>
+            </ng-container>
           </td>
         </tr>
       </ng-container>
       <ng-template #noDataFound1>
         <tr class="custom-row-bg">
-          <td class="text-left" [attr.colspan]="getObjectKeys(us_column).length">
+          <td class="text-center" style="font-weight: 500;font-size: 16px;padding:5px;"
+            [attr.colspan]="getObjectKeys(us_column).length">
             No Patent Info Data Found!
           </td>
         </tr>
