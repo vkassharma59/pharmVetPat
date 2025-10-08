@@ -43,7 +43,6 @@ export class PurpleBookCardComponent {
       this.localCount = PurpleBookCardComponent.apiCallCount;
       this._data = value;
       this.resultTabs = this.utilityService.getAllTabsName();
-  
       const column_list = Auth_operations.getColumnList();
       console.group('📋 Column List Debug');
       console.log('Raw column_list:', column_list);
@@ -55,7 +54,6 @@ export class PurpleBookCardComponent {
           this.us_column[col.value] = col.name;
         }
       }
-  
       if (column_list[this.resultTabs.purpleBook?.name]?.columns?.length > 0) {
         for (let col of column_list[this.resultTabs.purpleBook?.name]?.columns) {
           this.us_approval_column[col.value] = col.name;
