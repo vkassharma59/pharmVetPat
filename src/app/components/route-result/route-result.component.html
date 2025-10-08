@@ -63,7 +63,7 @@
 
       <!-- Agar tab technicalRoutes nahi hai -->
       <button *ngIf="!showBackButton &&  
-         ((!generatePDFloader && isFullDownload && searchThrough !== 'synthesis-search') 
+         ((!generatePDFloader && isFullDownload) 
            || (showTotalAfterTab && showBackButton))" (click)="openDownloadModal(index)" [disabled]="generatePDFloader"
         title="Full Report Download" class="btn btn-outline-primary btn-sm me-2"
         style="color: white; border-color: white;">
