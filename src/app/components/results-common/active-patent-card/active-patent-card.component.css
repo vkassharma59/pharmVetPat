@@ -408,7 +408,7 @@ th {
   z-index: 9999 !important;   /* upar dikhane ke liye */
   max-height: 200px;   /* optional scroll */
   overflow-y: auto;
-  margin-left: 2.5rem;
+  margin-left: 30%;
 }
 
 .options {
@@ -418,7 +418,7 @@ th {
   font-size: 0.8rem;
   text-align: justify;
   color: black;
-  margin-top: 1.5rem;
+  margin-top: 15%;
   background-color: white;
 }
 .options li {

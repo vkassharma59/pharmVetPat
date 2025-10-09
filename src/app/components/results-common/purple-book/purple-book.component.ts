@@ -63,31 +63,31 @@ export class PurpleBookComponent {
 
   filterConfigs = [
     {
-      key: 'ingredient',
-      label: 'Select Ingredient',
-      dataKey: 'ingredientFilters',
-      filterType: 'ingredient',
-      dropdownState: false
-    },
-    {
-      key: 'rld',
-      label: 'Select RLD',
-      dataKey: 'rldFilters',
-      filterType: 'rld',
-      dropdownState: false
-    },
-    {
-      key: 'appl_type',
-      label: 'Select Appl Type',
-      dataKey: 'applFilters',
-      filterType: 'appl_type',
-      dropdownState: false
-    },
-    {
       key: 'applicant',
       label: 'Select Applicant',
       dataKey: 'applicantFilters',
       filterType: 'applicant',
+      dropdownState: false
+    },
+    {
+      key: 'proprietary_name',
+      label: 'Select Proprietary Name',
+      dataKey: 'proprietaryNameFilters',
+      filterType: 'proprietary_name',
+      dropdownState: false
+    },
+    {
+      key: 'proper_name',
+      label: 'Select Proper Name',
+      dataKey: 'properNameFilters',
+      filterType: 'proper_name',
+      dropdownState: false
+    },
+    {
+      key: 'bla_type',
+      label: 'Select BLA Type',
+      dataKey: 'blaTypeFilters',
+      filterType: 'bla_type',
       dropdownState: false
     },
     {
@@ -165,7 +165,7 @@ export class PurpleBookComponent {
     this.usApiBody.filter_enable = true;
     this.mainSearchService.purpleBookSearchSpecific(this.usApiBody).subscribe({
       next: (res: any) => {
-        const applFilters = res?.data?.appl_type?.map(item => ({
+        const properNameFilters = res?.data?.proper_name?.map(item => ({
           name: item.name,
           value: item.value
         })) || [];
@@ -173,7 +173,11 @@ export class PurpleBookComponent {
           name: item.name,
           value: item.value
         })) || [];
-        const rldFilters = res?.data?.rld?.map(item => ({
+        const proprietaryNameFilters = res?.data?.proprietary_name?.map(item => ({
+          name: item.name,
+          value: item.value
+        })) || [];
+        const blaTypeFilters = res?.data?.bla_type?.map(item => ({
           name: item.name,
           value: item.value
         })) || [];
@@ -181,16 +185,12 @@ export class PurpleBookComponent {
           name: item.name,
           value: item.value
         })) || [];
-        const ingredientFilters = res?.data?.ingredient?.map(item => ({
-          name: item.name,
-          value: item.value
-        })) || [];
         this.usFilters = {
-          applFilters,
+          properNameFilters: properNameFilters,
           strengthFilters,
-          rldFilters: rldFilters,
+          proprietaryNameFilters: proprietaryNameFilters,
           applicantFilters,
-          ingredientFilters: ingredientFilters,
+          blaTypeFilters: blaTypeFilters,
 
 
 
@@ -207,17 +207,16 @@ export class PurpleBookComponent {
     });
   }
 
-
   setFilterLabel(filterKey: string, label: string) {
     this.filterConfigs = this.filterConfigs.map((item) => {
       if (item.key === filterKey) {
         if (label === '') {
           switch (filterKey) {
-            case 'appl_type': label = 'Application Type'; break;
-            case 'rld': label = 'Select RLD'; break;
-            case 'applicant': label = 'Applicant Filters'; break;
-            case 'strength': label = 'Strengths'; break;
-            case 'ingredient': label = 'Select Ingredient'; break;
+            case 'proper_name': label = 'Select Proper Name'; break;
+            case 'proprietary_name': label = 'Select Proprietary Name'; break;
+            case 'applicant': label = 'Select Applicant Filters'; break;
+            case 'strength': label = 'Select Strengths'; break;
+            case 'bla_type': label = 'Select BLA Type'; break;
           }
         }
         return { ...item, label: label };
@@ -291,11 +290,11 @@ export class PurpleBookComponent {
     this.filterConfigs = this.filterConfigs.map(config => {
       let defaultLabel = '';
       switch (config.key) {
-        case 'appl_type': defaultLabel = 'Application Type'; break;
-        case 'rld': defaultLabel = 'Select RLD'; break;
-        case 'applicant': defaultLabel = 'Applicant Filters'; break;
-        case 'strength': defaultLabel = 'Strengths'; break;
-        case 'ingredient': defaultLabel = 'Select Ingredient'; break;
+        case 'proper_name': defaultLabel = 'Select Proper Name'; break;
+        case 'proprietary_name': defaultLabel = 'Select Proprietary Name'; break;
+        case 'applicant': defaultLabel = 'Select Applicant Filters'; break;
+        case 'strength': defaultLabel = 'Select Strengths'; break;
+        case 'bla_type': defaultLabel = 'Select BLA Type'; break;
       }
       return { ...config, label: defaultLabel, dropdownState: false };
     });
@@ -350,4 +349,3 @@ export class PurpleBookComponent {
   }
 
 }
-
