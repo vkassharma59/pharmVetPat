@@ -408,7 +408,7 @@ th {
   z-index: 9999 !important;   /* upar dikhane ke liye */
   max-height: 200px;   /* optional scroll */
   overflow-y: auto;
-  margin-left: 2.5rem;
+  margin-left: 30%;
 }
 
 .options {

@@ -159,8 +159,8 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
         console.log("🟦 Auto-filled synthesisSearch from storage:", cas);
         this.performSynthesisSearch();
         this.setLoadingState.emit(true);
-        sessionStorage.removeItem("searchType");
-        sessionStorage.removeItem("casRN");
+        localStorage.removeItem("searchType");
+        localStorage.removeItem("casRN");
       }
 
       if (type === "intermediate") {
@@ -169,8 +169,8 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
         console.log("🟩 Auto-filled intermediateSearch from storage:", cas);
         this.performIntermediateSearch();
         this.setLoadingState.emit(true);
-        sessionStorage.removeItem("searchType");
-        sessionStorage.removeItem("casRN");
+        localStorage.removeItem("searchType");
+        localStorage.removeItem("casRN");
       }
     } else {
       console.warn("⚠️ Nothing found in storage → skipping auto search");
@@ -220,19 +220,6 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     }
   }
 
-  // -----------------------
-  // Persistence Helpers
-  // -----------------------
-
-  /**
-   * Save a full search object in sessionStorage.
-   * Key naming convention:
-   *  - simpleSearch -> 'simpleSearch'
-   *  - chemicalStructure -> 'chemicalStructure'
-   *  - synthesisSearch -> 'synthesisSearch'
-   *  - intermediateSearch -> 'intermediateSearch'
-   *  - advanceSearch -> 'advanceSearch'
-   */
   storeSearchState(searchType: string) {
     try {
       switch (searchType) {
@@ -259,9 +246,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     }
   }
 
-  /**
-   * Restore state for a given search type from sessionStorage
-   */
+  
   restoreSearchState(searchType: string) {
     try {
       switch (searchType) {
@@ -303,9 +288,6 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     }
   }
 
-  /**
-   * Restore all known search types (called on init and on navigation end)
-   */
   restoreAllFromSession() {
     this.restoreSearchState(this.searchTypes.simpleSearch);
     this.restoreSearchState(this.searchTypes.chemicalStructure);
@@ -319,10 +301,6 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       this.activeSearchTab = savedTab;
     }
   }
-
-  // -----------------------
-  // Existing methods (unchanged but now call storeSearchState at safe spots)
-  // -----------------------
 
   getAllFilters() {
     this.getChemicalStructureFilters();
@@ -573,10 +551,6 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
         error: (e) => console.error(e),
       });
   }
-
-  // -----------------------
-  // Suggestion selection & persistence integration (minimal changes)
-  // -----------------------
 
   selectSuggestionSearch(suggestion: { type_label: string, value: string, label: string }) {
     const { type_label, value, label } = suggestion;
