@@ -15,37 +15,28 @@
     <div class="col-md-12">
       <div class="pt-2">
         <label class="form-label"> Response Email:</label>
-        <input
-          type="email"
-          [(ngModel)]="email"
-          class="form-control no-focus-outline w-full"
-          id="email"
-          placeholder="Enter email"
-          name="email"
-        />
+        <input type="email" [(ngModel)]="email" class="form-control no-focus-outline w-full" id="email"
+          placeholder="Enter email" name="email" />
       </div>
       <div class="pt-2">
         <label>Comments:</label>
-        <textarea
-          class="form-control no-focus-outline"
-          rows="5"
-          [(ngModel)]="comment"
-          id="comment"
-          name="text"
-          placeholder="Write your comment here..."
-        ></textarea>
+        <textarea class="form-control no-focus-outline" rows="5" [(ngModel)]="comment" id="comment" name="text"
+          placeholder="Write your comment here..."></textarea>
         <p class="pt-3.5">Your Search Query :-</p>
         <p class="ps-1 text-[#0032A0]">{{search}}</p>
       </div>
-      <button
-        (click)="handleSendRaiseQuery()"
-        class="btn btn-primary ps-3 rounded-2xl w-full mt-3"
-        type="button"
-      >
+      <div class="pt-2">
+        <label for="file">Attach an Image (optional):</label>
+        <input type="file" class="form-control no-focus-outline" id="file" (change)="onFileSelected($event)"
+          accept="image/*" />
+        <p *ngIf="fileSizeError" class="text-danger">
+          File size must not exceed 2MB.
+        </p>
+      </div>
+      <button (click)="handleSendRaiseQuery()" class="btn btn-primary ps-3 rounded-2xl w-full mt-3" type="button">
         Send
       </button>
     </div>
-
     <p class="ps-2 pt-3 text-stone-500 text-center">
       ChemRobotics Team happy to serve you! Your query will be answered soon.
     </p>
