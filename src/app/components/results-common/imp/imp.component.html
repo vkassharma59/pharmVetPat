@@ -2,57 +2,58 @@
   <!-- <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
     Total Records : {{ currentChildAPIBody?.count }}
   </button> -->
-  <div class="flex flex-wrap gap-3">
-    <button mat-raised-button [disabled]="isExportingExcel"
-      class="px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
-        (click)="downloadExcel()">
+  <ng-container *ngIf="_data?.length > 0">
+    <div class="flex flex-wrap gap-3">
+      <button mat-raised-button [disabled]="isExportingExcel"
+        class="px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]" (click)="downloadExcel()">
         <span *ngIf="!isExportingExcel">Download Excel <i class="fa-solid fa-download"></i></span>
         <span *ngIf="isExportingExcel"><i class="fa fa-spinner fa-spin"></i> Exporting...</span>
       </button>
-  <div class="dropdown" *ngFor="let configData of filterConfigs" #dropdownRef>
-  <!-- Dropdown Button -->
-  <button class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
-    type="button" id="configData.key" (click)="onFilterButtonClick(configData.key)">
-    {{ configData.label | truncate:20 }}
-  </button>
+      <div class="dropdown" *ngFor="let configData of filterConfigs" #dropdownRef>
+        <!-- Dropdown Button -->
+        <button class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
+          type="button" id="configData.key" (click)="onFilterButtonClick(configData.key)">
+          {{ configData.label | truncate:20 }}
+        </button>
 
-  <!-- Dropdown Menu -->
-  <ul *ngIf="configData.dropdownState" class="dropdown-menu w-66 max-h-60 overflow-y-auto z-30 p-2">
-    <li (click)="handleSelectFilter(configData.key, '')" class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
-      <span class="block text-sm font-medium text-gray-700">View All</span>
-    </li>
-    <li *ngFor="let data of impPatentFilters[configData.dataKey]"
-      (click)="handleSelectFilter(configData.key, data.value, data.name)"
-      class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
-      <span class="block text-sm whitespace-normal break-words leading-snug text-gray-800">
-        {{ data?.name || data?.value }}
-      </span>
-    </li>
-  </ul>
-</div>
+        <!-- Dropdown Menu -->
+        <ul *ngIf="configData.dropdownState" class="dropdown-menu w-66 max-h-60 overflow-y-auto z-30 p-2">
+          <li (click)="handleSelectFilter(configData.key, '')"
+            class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
+            <span class="block text-sm font-medium text-gray-700">View All</span>
+          </li>
+          <li *ngFor="let data of impPatentFilters[configData.dataKey]"
+            (click)="handleSelectFilter(configData.key, data.value, data.name)"
+            class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
+            <span class="block text-sm whitespace-normal break-words leading-snug text-gray-800">
+              {{ data?.name || data?.value }}
+            </span>
+          </li>
+        </ul>
+      </div>
 
 
-    <!-- Clear Button -->
-    <button (click)="clear()" class="clear btn btn-outline-primary">
-      <i class="fa-solid fa-rotate"></i>
-    </button>
-  </div>
-
+      <!-- Clear Button -->
+      <button (click)="clear()" class="clear btn btn-outline-primary">
+        <i class="fa-solid fa-rotate"></i>
+      </button>
+    </div>
+  </ng-container>
 </div>
 <ng-container *ngIf="_data.length > 0; else noData">
   <ng-container *ngFor="let dataItem of _data; let i = index">
 
-   <div class="py-4">
+    <div class="py-4">
       <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
 
         <span
           class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-normal h-[37px] flex justify-center items-center">
           Patent
           {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
-        </span> 
+        </span>
 
       </div>
-   </div>
+    </div>
 
     <chem-imp-patents-card class="card" [data]="dataItem"></chem-imp-patents-card>
   </ng-container>
@@ -62,7 +63,8 @@
 </ng-container>
 <ng-template #noData>
   <div class="card">
-    <div class="card-header text-white bg-primary" style="background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);">
+    <div class="card-header text-white bg-primary"
+      style="background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);">
       {{resultTabs.impPatents?.label}}
     </div>
     <div class="card-body">

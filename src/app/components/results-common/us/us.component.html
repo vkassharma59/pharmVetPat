@@ -1,8 +1,8 @@
-
-  <div  class="child-route-count-wrapper justify-end">
-    <!-- <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
+<div class="child-route-count-wrapper justify-end">
+  <!-- <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
       Total Records : {{ currentChildAPIBody?.count }}
     </button> -->
+  <ng-container *ngIf="_data?.length > 0">
     <div class="flex flex-wrap gap-3">
       <div class="dropdown" *ngFor="let configData of filterConfigs" #dropdownRef>
         <!-- Dropdown Button -->
@@ -33,7 +33,8 @@
         <i class="fa-solid fa-rotate"></i>
       </button>
     </div>
-  </div>
+  </ng-container>
+</div>
 <ng-container *ngIf="_data?.length > 0; else noData">
   <ng-container *ngFor="let dataItem of _data; let i = index">
     <div class="py-4">
@@ -46,7 +47,8 @@
       </div>
     </div>
 
-    <app-us-approval-card class="card" (handleChangeTabData)="handleResultTabData.emit($event)" [data]="dataItem"></app-us-approval-card>
+    <app-us-approval-card class="card" (handleChangeTabData)="handleResultTabData.emit($event)"
+      [data]="dataItem"></app-us-approval-card>
 
 
   </ng-container>
