@@ -1,31 +1,34 @@
 <div class="child-route-count-wrapper justify-end">
-  <div class="flex flex-wrap gap-3">
-    <div class="dropdown" *ngFor="let configData of filterConfigs" #dropdownRef>
+  <ng-container *ngIf="_data?.length > 0">
+    <div class="flex flex-wrap gap-3">
+      <div class="dropdown" *ngFor="let configData of filterConfigs" #dropdownRef>
 
 
-      <button class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
-        type="button" id="configData.key" (click)="onFilterButtonClick(configData.key)">
-        {{ configData.label | truncate:20 }}
+        <button class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
+          type="button" id="configData.key" (click)="onFilterButtonClick(configData.key)">
+          {{ configData.label | truncate:20 }}
+        </button>
+
+
+        <ul *ngIf="configData.dropdownState" class="dropdown-menu w-66 max-h-60 overflow-y-auto z-30 p-2">
+          <li (click)="handleSelectFilter(configData.key, '')"
+            class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
+            <span class="block text-sm font-medium text-gray-700">View All</span>
+          </li>
+          <li *ngFor="let data of usFilters[configData.dataKey]"
+            (click)="handleSelectFilter(configData.key, data.value , data.name )"
+            class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
+            <span class="block text-sm whitespace-normal break-words leading-snug text-gray-800">
+              {{ data?.name || data?.value || data }}
+            </span>
+          </li>
+        </ul>
+      </div>
+      <button (click)="clear()" class="clear btn btn-outline-primary">
+        <i class="fa-solid fa-rotate"></i>
       </button>
-
-
-      <ul *ngIf="configData.dropdownState" class="dropdown-menu w-66 max-h-60 overflow-y-auto z-30 p-2">
-        <li (click)="handleSelectFilter(configData.key, '')" class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
-          <span class="block text-sm font-medium text-gray-700">View All</span>
-        </li>
-        <li *ngFor="let data of usFilters[configData.dataKey]"
-          (click)="handleSelectFilter(configData.key, data.value , data.name )"
-          class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
-          <span class="block text-sm whitespace-normal break-words leading-snug text-gray-800">
-            {{ data?.name || data?.value || data }}
-          </span>
-        </li>
-      </ul>
     </div>
-    <button (click)="clear()" class="clear btn btn-outline-primary">
-      <i class="fa-solid fa-rotate"></i>
-    </button>
-  </div>
+  </ng-container>
 </div>
 <ng-container *ngIf="_data?.length > 0; else noData">
   <ng-container *ngFor="let dataItem of _data; let i = index">
