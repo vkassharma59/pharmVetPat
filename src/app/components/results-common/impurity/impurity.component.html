@@ -2,56 +2,59 @@
   <!-- <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
     Total Records : {{ _currentChildAPIBody?.count }}
   </button> -->
-  <div class="flex flex-wrap gap-3">
-    <div class="dropdown-container" #dropdownMenu>
-      <button (click)="handleFilter()" class="dropdown-toggle">
-        {{ category_value }}
-      </button>
+  <ng-container *ngIf="_data?.length > 0">
+    <div class="flex flex-wrap gap-3">
+      <div class="dropdown-container" #dropdownMenu>
+        <button (click)="handleFilter()" class="dropdown-toggle">
+          {{ category_value }}
+        </button>
 
-      <ul *ngIf="isOpen" class="dropdown-menu">
-        <li (click)="handleSelectFilter('')">View All</li>
-        <li *ngFor="let data of category_filters" (click)="handleSelectFilter(data.value)">
-          {{ data.name }}
-        </li>
-      </ul>
+        <ul *ngIf="isOpen" class="dropdown-menu">
+          <li (click)="handleSelectFilter('')">View All</li>
+          <li *ngFor="let data of category_filters" (click)="handleSelectFilter(data.value)">
+            {{ data.name }}
+          </li>
+        </ul>
+      </div>
+      <button (click)="clear()" class="clear btn btn-outline-primary">
+        <i class="fa-solid fa-rotate"></i>
+      </button>
     </div>
-    <button (click)="clear()" class="clear btn btn-outline-primary">
-      <i class="fa-solid fa-rotate"></i>
-    </button>
-  </div>
+  </ng-container>
 </div>
 
 <ng-container *ngIf="_data.length > 0; else noData">
-    <ng-container *ngFor="let dataItem of _data; let i = index">
-        <div class="py-4">
-            <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
-                <span
-                    class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-normal h-[37px] flex justify-center items-center">
-                    Impurity
-                    {{ (((_currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
-                </span>
-            </div>
+  <ng-container *ngFor="let dataItem of _data; let i = index">
+    <div class="py-4">
+      <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
+        <span
+          class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-normal h-[37px] flex justify-center items-center">
+          Impurity
+          {{ (((_currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
+        </span>
+      </div>
 
-        </div>
+    </div>
 
-        <chem-impurity-card class="card" [data]="dataItem"></chem-impurity-card>
-    </ng-container>
-    <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"
-        (handleChangeTabData)="handleResultTabData.emit($event)"
-        (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
+    <chem-impurity-card class="card" [data]="dataItem"></chem-impurity-card>
+  </ng-container>
+  <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"
+    (handleChangeTabData)="handleResultTabData.emit($event)"
+    (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
 </ng-container>
 <ng-template #noData>
-    <div class="card">
-        <div class="card-header text-white bg-primary" style="background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);">
-            {{resultTabs?.impurity?.label}}
-        </div>
-        <div class="card-body">
-            <ng-container *ngIf="loadingService.getLoading(resultTabs.impurity.name, index); else noDataText">
-              <div class="loading-text">Loading<span class="dots"></span></div>
-            </ng-container>
-            <ng-template #noDataText>
-              <p>No Data found!</p>
-            </ng-template>
-        </div>
+  <div class="card">
+    <div class="card-header text-white bg-primary"
+      style="background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);">
+      {{resultTabs?.impurity?.label}}
     </div>
+    <div class="card-body">
+      <ng-container *ngIf="loadingService.getLoading(resultTabs.impurity.name, index); else noDataText">
+        <div class="loading-text">Loading<span class="dots"></span></div>
+      </ng-container>
+      <ng-template #noDataText>
+        <p>No Data found!</p>
+      </ng-template>
+    </div>
+  </div>
 </ng-template>
