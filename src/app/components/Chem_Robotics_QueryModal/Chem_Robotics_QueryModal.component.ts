@@ -24,6 +24,9 @@ export class Chem_Robotics_QueryModalComponent {
   comment: any;
   platform: any;
   search = '';
+  selectedFile: File | null = null;
+  fileSizeError: boolean = false;
+  isSubmitDisabled: boolean = true;
 
   ngOnInit() {
     this.auth = localStorage.getItem('auth');
@@ -35,6 +38,12 @@ export class Chem_Robotics_QueryModalComponent {
     } else {
       this.search = this.data.raise_query_object?.criteria[0]?.keyword;
     }
+    this.validateForm();
+  }
+
+  validateForm() {
+    this.isSubmitDisabled =
+      !this.email || !this.comment || this.fileSizeError;
   }
 
   handleSendRaiseQuery() {
@@ -66,5 +75,16 @@ export class Chem_Robotics_QueryModalComponent {
   }
   onClose() {
     this.dialogRef.close();
+  }
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.selectedFile = input.files ? input.files[0] : null;
+
+    if (this.selectedFile && this.selectedFile.size > 2 * 1024 * 1024) {
+      this.fileSizeError = true;
+    } else {
+      this.fileSizeError = false;
+    }
+    this.validateForm();
   }
 }

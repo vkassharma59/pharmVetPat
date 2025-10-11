@@ -90,7 +90,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
   ];
   synthsuggestionsList = [
     { type: 'Chemical Name', value: 'Sitagliptin', label: 'Sitagliptin' },
-    { type: 'CAS RN', value: 'CAS RN: 41429-16-7', label: 'CAS RN: 41429-16-7' },
+    // { type: 'CAS RN', value: 'CAS RN: 41429-16-7', label: 'CAS RN: 41429-16-7' },
     { type: 'Chemical Name', value: 'ethyne', label: 'ethyne' }
   ];
 

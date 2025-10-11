@@ -119,6 +119,8 @@ export class RouteResultComponent {
     this.selectedIndex = index;
   }
 
+  searchTypes = searchTypes
+
   @Input()
   get dataItem() {
     return this._dataItem;
@@ -133,7 +135,6 @@ export class RouteResultComponent {
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
   }
-
 
   lastSearchData: { searchType: string, keyword: string, criteria: any } | null = null;
   constructor(
@@ -177,6 +178,8 @@ export class RouteResultComponent {
     this.isSplitDownload =
       Userdata?.['pharmvetpat-mongodb']?.SplitDownload == 'true' ? true : false;
     this.isDownloadPermit = Account_type == 'premium' ? true : false;
+    this.selectDefaultDownloadTabs();
+
   }
   // get showBackButton(): boolean {
   //   return this.currentTabData?.name !== this.initialTab?.name;
@@ -191,6 +194,7 @@ export class RouteResultComponent {
     const isMultipleLoop = this.activeIndex !== null;
     // Tab change ho ya activeIndex set ho → show button
     return isDifferentFromInitial || isMultipleLoop;
+    
   }
 
   getCurrentTabCount(): number {
@@ -1205,7 +1209,24 @@ export class RouteResultComponent {
       },
     });
   }
-
+  selectDefaultDownloadTabs() {
+    this.resultTabs.forEach(tab => (this.SingleDownloadCheckbox[tab.name] = false));
+    
+    if (this.searchThrough) {
+      this.resultTabs.forEach(tab => {
+        if (
+          (this.searchThrough === this.searchTypes.simpleSearch && tab.name === this.resultTabWithKeys.productInfo.name) ||
+          (this.searchThrough === this.searchTypes.synthesisSearch && tab.name === this.resultTabWithKeys.technicalRoutes.name) ||
+          (this.searchThrough === this.searchTypes.chemicalStructure && tab.name === this.resultTabWithKeys.chemicalDirectory.name) ||
+          (this.searchThrough === this.searchTypes.intermediateSearch && tab.name === this.resultTabWithKeys.chemicalDirectory.name) ||
+          (this.searchThrough === this.searchTypes.advanceSearch && tab.name === this.resultTabWithKeys.productInfo.name)
+        ) {
+          this.SingleDownloadCheckbox[tab.name] = true;
+        }
+      });
+    }
+  }
+  
   onChemicalDirectoryActiveTabChange(tabName: string) {
     this.activeTab = tabName;
   }
