@@ -24,7 +24,7 @@ export class VeterinaryUsApprovalComponent {
   isPopupOpen = false;
   searchThrough: string = '';
   resultTabs: any = {};
-
+  filterOrSearchSource: 'filter' | 'search' | null = null;
   _currentChildAPIBody: any = {};
   _data: any = [];
   @Input() index: any;
@@ -168,7 +168,7 @@ export class VeterinaryUsApprovalComponent {
   }
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
-    console.log('🎯 handleSelectFilter: key=', filterKey, 'value=', value, 'name=', name);
+    this.filterOrSearchSource = 'filter';
     this.handleSetLoading.emit(true);
     this.vetenaryusApiBody.filters = this.vetenaryusApiBody.filters || {};
 
@@ -222,8 +222,8 @@ export class VeterinaryUsApprovalComponent {
     this.handleResultTabData.emit(eventData); // Optional — needed if parent needs it
   }
   clear() {
-    console.log('🧹 Clearing filters...');
     this.filterConfigs = this.filterConfigs.map(config => {
+      this.filterOrSearchSource = 'filter';
       let defaultLabel = '';
       switch (config.key) {
         case 'ingredient': defaultLabel = 'All Ingredients'; break;

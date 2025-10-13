@@ -52,7 +52,7 @@ export class JapanComponent {
   japanApiBody: any;
   japanFilters: any = {};
   lastClickedFilterKey: string | null = null;
-
+  filterOrSearchSource: 'filter' | 'search' | null = null;
   filterConfigs = [
     {
       key: 'company',
@@ -163,6 +163,7 @@ export class JapanComponent {
   }
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    this.filterOrSearchSource = 'filter';
     this.handleSetLoading.emit(true);
 
     if (value === '') {
@@ -222,6 +223,7 @@ export class JapanComponent {
   }
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
+      this.filterOrSearchSource = null;
       let defaultLabel = '';
       switch (config.key) {
         case 'company': defaultLabel = 'company'; break;

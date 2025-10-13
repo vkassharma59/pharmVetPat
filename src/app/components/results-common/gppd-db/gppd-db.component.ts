@@ -33,7 +33,7 @@ export class GppdDbComponent implements OnChanges {
   isFilterApplied: boolean = false;
   count: number = 0;
   totalPages: number = 0;
-
+  filterOrSearchSource: 'filter' | 'search' | null = null;
   get pageSize(): number {
     return this._currentChildAPIBody?.pageSize || 25;
   }
@@ -199,6 +199,7 @@ export class GppdDbComponent implements OnChanges {
   }
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    this.filterOrSearchSource = 'filter';
     this.handleSetLoading.emit(true);
     this.gppdApiBody.filters = this.gppdApiBody.filters || {};
 
@@ -261,6 +262,7 @@ export class GppdDbComponent implements OnChanges {
   clear() {
     // Reset filter labels
     this.filterConfigs = this.filterConfigs.map(config => {
+      this.filterOrSearchSource = null;
       let defaultLabel = '';
       switch (config.key) {
         case 'company': defaultLabel = 'All Company'; break;

@@ -21,8 +21,7 @@ export class DmfComponent {
   @Output() handleSetLoading = new EventEmitter<boolean>();
   @ViewChild('dropdownMenu') dropdownMenuRef!: ElementRef;
   @ViewChildren('dropdownRef') dropdownRefs!: QueryList<ElementRef>;
-
-
+  filterOrSearchSource: 'filter' | 'search' | null = null;
   searchThrough: string = '';
   resultTabs: any = {};
   isOpen: boolean = false;
@@ -199,6 +198,7 @@ export class DmfComponent {
     });
   }
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    this.filterOrSearchSource = 'filter';
     this.handleSetLoading.emit(true);
     // this.dmfApiBody.filters = this.dmfApiBody.filters || {};
     if (value === '') {
@@ -247,6 +247,7 @@ export class DmfComponent {
   }
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
+      this.filterOrSearchSource = null;
       let defaultLabel = '';
       switch (config.key) {
         case 'country_dmf_holder': defaultLabel = 'Country'; break;

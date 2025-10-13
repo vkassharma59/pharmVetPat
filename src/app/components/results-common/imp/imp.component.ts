@@ -30,7 +30,7 @@ export class ImpComponent {
 
   @ViewChildren('dropdownRef') dropdownRefs!: QueryList<ElementRef>;
   lastClickedFilterKey: string | null = null;
-
+  filterOrSearchSource: 'filter' | 'search' | null = null;
   searchThrough: string = '';
   resultTabs: any = {};
   _data: any = [];
@@ -181,6 +181,7 @@ export class ImpComponent {
   }
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    this.filterOrSearchSource = 'filter';
     this.handleSetLoading.emit(true);
     // Handle `order_by` separately
     // Handle `order_by` separately
@@ -246,6 +247,7 @@ export class ImpComponent {
 
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
+      this.filterOrSearchSource = null; 
       let defaultLabel = '';
       switch (config.key) {
         case 'product': defaultLabel = 'Select Product'; break;

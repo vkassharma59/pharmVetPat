@@ -24,7 +24,7 @@ import { TruncatePipe } from '../../../pipes/truncate.pipe';
   styleUrl: './non-patent.component.css'
 })
 export class NonPatentComponent implements OnChanges {
-
+  filterOrSearchSource: 'filter' | 'search' | null = null;
   _data: any = { columns: [], rows: [] }; // expected structure
   _currentChildAPIBody: any;
   searchByTable: boolean = false;
@@ -216,6 +216,7 @@ export class NonPatentComponent implements OnChanges {
   }
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    this.filterOrSearchSource = 'filter';
     this.handleSetLoading.emit(true);
     this.nonPatentApiBody.filters = this.nonPatentApiBody.filters || {};
 
@@ -282,6 +283,7 @@ export class NonPatentComponent implements OnChanges {
 
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
+      this.filterOrSearchSource = null; 
       let defaultLabel = '';
       switch (config.key) {
         // case 'order': defaultLabel = 'Order By'; break;

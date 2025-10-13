@@ -396,267 +396,298 @@
         </p>
       </div>
       <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.remarks && getColumnName('remarks')">
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.remarks && getColumnName('remarks')">
-        <h6 class="font-bold text-indigo-900">
-          {{ getColumnName('remarks') }}
-          <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.remarks, copyBtn)">
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.remarks && getColumnName('remarks')">
+          <h6 class="font-bold text-indigo-900">
+            {{ getColumnName('remarks') }}
+            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+              (click)="handleCopy(_data?.remarks, copyBtn)">
 
-            <i class="fas fa-copy"></i>
-          </span>
-        </h6>
-        <p class="text-wrap max-h-12 whitespace-normal">
-          {{ _data?.remarks }}
-        </p>
-      </div>
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.docs && getColumnName('docs')">
-        <h6 class="font-bold text-indigo-900">
-          {{ getColumnName('docs') }}
-          <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.docs, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="text-wrap max-h-12 whitespace-normal">
+            {{ _data?.remarks }}
+          </p>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.docs && getColumnName('docs')">
+          <h6 class="font-bold text-indigo-900">
+            {{ getColumnName('docs') }}
+            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.docs, copyBtn)">
 
-            <i class="fas fa-copy"></i>
-          </span>
-        </h6>
-        <p class="text-wrap max-h-12 whitespace-normal">
-          {{ _data?.docs }}
-        </p>
-      </div>
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dummy_1 && getColumnName('dummy_1')">
-        <h6 class="font-bold text-indigo-900">
-          {{ getColumnName('dummy_1') }}
-          <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.dummy_1, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="text-wrap max-h-12 whitespace-normal">
+            {{ _data?.docs }}
+          </p>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dummy_1 && getColumnName('dummy_1')">
+          <h6 class="font-bold text-indigo-900">
+            {{ getColumnName('dummy_1') }}
+            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+              (click)="handleCopy(_data?.dummy_1, copyBtn)">
 
-            <i class="fas fa-copy"></i>
-          </span>
-        </h6>
-        <p class="text-wrap max-h-12 whitespace-normal">
-          {{ _data?.dummy_1 }}
-        </p>
-      </div>
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dummy_2 && getColumnName('dummy_2')">
-        <h6 class="font-bold text-indigo-900">
-          {{ getColumnName('dummy_2') }}
-          <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.dummy_2, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="text-wrap max-h-12 whitespace-normal">
+            {{ _data?.dummy_1 }}
+          </p>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dummy_2 && getColumnName('dummy_2')">
+          <h6 class="font-bold text-indigo-900">
+            {{ getColumnName('dummy_2') }}
+            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+              (click)="handleCopy(_data?.dummy_2, copyBtn)">
 
-            <i class="fas fa-copy"></i>
-          </span>
-        </h6>
-        <p class="text-wrap max-h-12 whitespace-normal">
-          {{ _data?.dummy_2 }}
-        </p>
-      </div>
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dummy_3 && getColumnName('dummy_3')">
-        <h6 class="font-bold text-indigo-900">
-          {{ getColumnName('dummy_3') }}
-          <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.dummy_3, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="text-wrap max-h-12 whitespace-normal">
+            {{ _data?.dummy_2 }}
+          </p>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dummy_3 && getColumnName('dummy_3')">
+          <h6 class="font-bold text-indigo-900">
+            {{ getColumnName('dummy_3') }}
+            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+              (click)="handleCopy(_data?.dummy_3, copyBtn)">
 
-            <i class="fas fa-copy"></i>
-          </span>
-        </h6>
-        <p class="text-wrap max-h-12 whitespace-normal">
-          {{ _data?.dummy_3 }}
-        </p>
-      </div>
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dummy_4 && getColumnName('dummy_4')">
-        <h6 class="font-bold text-indigo-900">
-          {{ getColumnName('dummy_4') }}
-          <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.dummy_4, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="text-wrap max-h-12 whitespace-normal">
+            {{ _data?.dummy_3 }}
+          </p>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dummy_4 && getColumnName('dummy_4')">
+          <h6 class="font-bold text-indigo-900">
+            {{ getColumnName('dummy_4') }}
+            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+              (click)="handleCopy(_data?.dummy_4, copyBtn)">
 
-            <i class="fas fa-copy"></i>
-          </span>
-        </h6>
-        <p class="text-wrap max-h-12 whitespace-normal">
-          {{ _data?.dummy_4 }}
-        </p>
-      </div>
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dummy_5 && getColumnName('dummy_5')">
-        <h6 class="font-bold text-indigo-900">
-          {{ getColumnName('dummy_5') }}
-          <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.dummy_5, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="text-wrap max-h-12 whitespace-normal">
+            {{ _data?.dummy_4 }}
+          </p>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dummy_5 && getColumnName('dummy_5')">
+          <h6 class="font-bold text-indigo-900">
+            {{ getColumnName('dummy_5') }}
+            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+              (click)="handleCopy(_data?.dummy_5, copyBtn)">
 
-            <i class="fas fa-copy"></i>
-          </span>
-        </h6>
-        <p class="text-wrap max-h-12 whitespace-normal">
-          {{ _data?.dummy_5}}
-        </p>
-      </div>
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dummy_6 && getColumnName('dummy_6')">
-        <h6 class="font-bold text-indigo-900">
-          {{ getColumnName('dummy_6') }}
-          <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.dummy_6, copyBtn)">
-            <i class="fas fa-copy"></i>
-          </span>
-        </h6>
-        <p class="text-wrap max-h-12 whitespace-normal">
-          {{ _data?.dummy_6}}
-        </p>
-      </div>
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dummy_7 && getColumnName('dummy_7')">
-        <h6 class="font-bold text-indigo-900">
-          {{ getColumnName('dummy_7') }}
-          <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.dummy_7, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="text-wrap max-h-12 whitespace-normal">
+            {{ _data?.dummy_5}}
+          </p>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dummy_6 && getColumnName('dummy_6')">
+          <h6 class="font-bold text-indigo-900">
+            {{ getColumnName('dummy_6') }}
+            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+              (click)="handleCopy(_data?.dummy_6, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="text-wrap max-h-12 whitespace-normal">
+            {{ _data?.dummy_6}}
+          </p>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dummy_7 && getColumnName('dummy_7')">
+          <h6 class="font-bold text-indigo-900">
+            {{ getColumnName('dummy_7') }}
+            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+              (click)="handleCopy(_data?.dummy_7, copyBtn)">
 
-            <i class="fas fa-copy"></i>
-          </span>
-        </h6>
-        <p class="text-wrap max-h-12 whitespace-normal">
-          {{ _data?.dummy_7}}
-        </p>
-      </div>
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dummy_8 && getColumnName('dummy_8')">
-        <h6 class="font-bold text-indigo-900">
-          {{ getColumnName('dummy_8') }}
-          <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.dummy_8, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="text-wrap max-h-12 whitespace-normal">
+            {{ _data?.dummy_7}}
+          </p>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dummy_8 && getColumnName('dummy_8')">
+          <h6 class="font-bold text-indigo-900">
+            {{ getColumnName('dummy_8') }}
+            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+              (click)="handleCopy(_data?.dummy_8, copyBtn)">
 
-            <i class="fas fa-copy"></i>
-          </span>
-        </h6>
-        <p class="text-wrap max-h-12 whitespace-normal">
-          {{ _data?.dummy_8}}
-        </p>
-      </div>
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dummy_9 && getColumnName('dummy_9')">
-        <h6 class="font-bold text-indigo-900">
-          {{ getColumnName('dummy_9') }}
-          <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn (click)="handleCopy(_data?.dummy_9, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="text-wrap max-h-12 whitespace-normal">
+            {{ _data?.dummy_8}}
+          </p>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dummy_9 && getColumnName('dummy_9')">
+          <h6 class="font-bold text-indigo-900">
+            {{ getColumnName('dummy_9') }}
+            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+              (click)="handleCopy(_data?.dummy_9, copyBtn)">
 
-            <i class="fas fa-copy"></i>
-          </span>
-        </h6>
-        <p class="text-wrap max-h-12 whitespace-normal">
-          {{ _data?.dummy_9}}
-        </p>
-      </div>
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dummy_10 && getColumnName('dummy_10')">
-        <h6 class="font-bold text-indigo-900">
-          {{ getColumnName('dummy_10') }}
-          <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
-            (click)="handleCopy(_data?.dummy_10, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="text-wrap max-h-12 whitespace-normal">
+            {{ _data?.dummy_9}}
+          </p>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" *ngIf="_data?.dummy_10 && getColumnName('dummy_10')">
+          <h6 class="font-bold text-indigo-900">
+            {{ getColumnName('dummy_10') }}
+            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+              (click)="handleCopy(_data?.dummy_10, copyBtn)">
 
-            <i class="fas fa-copy"></i>
-          </span>
-        </h6>
-        <p class="text-wrap max-h-12 whitespace-normal">
-          {{ _data?.dummy_10}}
-        </p>
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="text-wrap max-h-12 whitespace-normal">
+            {{ _data?.dummy_10}}
+          </p>
+        </div>
       </div>
+
     </div>
-
   </div>
-</div>
 
-<!-- ==============  Table-Header=========== -->
+  <!-- ==============  Table-Header=========== -->
 
-<div class="overflow-x-auto ">
-  <table class="w-full border border-gray-300 text-xs">
-    <thead class="bg-gray-800 text-white">
-      <tr>
-        <th class="px-3 py-2 text-sm font-normal tracking-wide uppercase border-r border-gray-600"
-          *ngFor="let key of getVisibleColumns()">
-          {{ getColumnName1(key) }}
-        </th>
-      </tr>
-    </thead>
-    <tbody class="bg-white">
-      <ng-container *ngIf="_data?.patentData?.length > 0; else noDataFound1">
-        <tr *ngFor="let item of _data.patentData" class="custom-row-bg">
-          <td class="px-2 py-1" *ngFor="let key of getVisibleColumns()"
-            style="align-items: center;text-align: center; justify-content: center;">
-            <!-- {{ item[key] }} -->
-            <!-- Check if column is patent_no -->
-            <ng-container *ngIf="key === 'patent_number'; else normalCell">
-              <span style="display:flex; align-items: center; justify-content: center; ">{{ item[key] }}</span>
-              <div style="display: flex; justify-content: center; gap: 10px; margin-top: 4px;">
-                <!-- Espacenet (E) -->
-                <a [href]="'https://worldwide.espacenet.com/patent/search?q=' + item?.patent_number" target="_blank"
-                  style="color: red; font-weight: 600;">
-                  <i class="fa-solid fa-e"></i>
-                </a>
-
-                <!-- Google Patents (G) -->
-                <a [href]="'https://patents.google.com/patent/' + item?.patent_number" target="_blank"
-                  style="color: blue; font-weight: 600;">
-                  <i class="fa-brands fa-google"></i>
-                </a>
-              </div>
-            </ng-container>
-
-            <!-- Normal column value -->
-            <ng-template #normalCell>
-              {{ item[key] }}
-            </ng-template>
-            <ng-container *ngIf="key === 'note' && item[key]">
-              <button (click)="openPopup(item)"
-                class="button text-white text-xs px-2 py-1 rounded hover:bg-yellow-700 mt-1" style="width:120px"
-                data-bs-toggle="modal" data-bs-target="#viewPatentModal">
-                VIEW PATENT CLAIMS
-              </button>
-            </ng-container>
-          </td>
+  <div class="overflow-x-auto ">
+    <table class="w-full border border-gray-300 text-xs">
+      <thead class="bg-gray-800 text-white">
+        <tr>
+          <th class="px-3 py-2 text-sm font-normal tracking-wide uppercase border-r border-gray-600"
+            *ngFor="let key of getVisibleColumns()">
+            {{ getColumnName1(key) }}
+          </th>
         </tr>
-      </ng-container>
-      <ng-template #noDataFound1>
-        <tr class="custom-row-bg">
-          <td class="text-center" style="font-weight: 500;font-size: 16px;padding:5px;"
-            [attr.colspan]="getObjectKeys(us_column).length">
-            No Patent Info Data Found!
-          </td>
-        </tr>
-      </ng-template>
+      </thead>
+      <tbody class="bg-white">
+        <ng-container *ngIf="_data?.patentData?.length > 0; else noDataFound1">
+          <tr *ngFor="let item of _data.patentData" class="custom-row-bg">
+            <td class="px-2 py-1" *ngFor="let key of getVisibleColumns()"
+              style="align-items: center;text-align: center; justify-content: center;">
+              <!-- {{ item[key] }} -->
+              <!-- Check if column is patent_no -->
+              <ng-container *ngIf="key === 'patent_number'; else normalCell">
+                <span style="display:flex; align-items: center; justify-content: center; ">{{ item[key] }}</span>
+                <div style="display: flex; justify-content: center; gap: 10px; margin-top: 4px;">
+                  <!-- Espacenet (E) -->
+                  <a [href]="'https://worldwide.espacenet.com/patent/search?q=' + item?.patent_number" target="_blank"
+                    style="color: red; font-weight: 600;">
+                    <i class="fa-solid fa-e"></i>
+                  </a>
 
-    </tbody>
-  </table>
+                  <!-- Google Patents (G) -->
+                  <a [href]="'https://patents.google.com/patent/' + item?.patent_number" target="_blank"
+                    style="color: blue; font-weight: 600;">
+                    <i class="fa-brands fa-google"></i>
+                  </a>
+                </div>
+              </ng-container>
 
-</div>
+              <ng-template #normalCell>
+                <ng-container *ngIf="key === 'patent_detail'; else normalText">
+                  <div style="
+                  max-width: 400px;
+                  max-height: 89px;
+                  overflow-y: auto;
+                  white-space: pre-wrap;
+                  text-align: left;
+                  /* font-size: 11px; */
+                  padding: 4px;
+                ">
+                    {{ item[key] }}
+                  </div>
+                </ng-container>
+                <ng-template #normalText>
+                  {{ item[key] }}
+                </ng-template>
+              </ng-template>
+              <ng-container *ngIf="key === 'note' && item[key]">
+                <button (click)="openPopup(item)"
+                  class="button text-white text-xs px-2 py-1 rounded hover:bg-yellow-700 mt-1" style="width:120px"
+                  data-bs-toggle="modal" data-bs-target="#viewPatentModal">
+                  VIEW PATENT CLAIMS
+                </button>
+              </ng-container>
+            </td>
+          </tr>
+        </ng-container>
+        <ng-template #noDataFound1>
+          <tr class="custom-row-bg">
+            <td class="text-center" style="font-weight: 500;font-size: 16px;padding:5px;"
+              [attr.colspan]="getObjectKeys(us_column).length">
+              No Patent Info Data Found!
+            </td>
+          </tr>
+        </ng-template>
 
-<hr style="border: 5px solid blue;">
+      </tbody>
+    </table>
+    <app-child-pagning-table
+    [childPaginationData]="childPaginationData"
+    [isFilterApplied]="isFilterApplied"
+    [currentChildAPIBody]="currentChildAPIBody"
+    (handleChangeTabData)="handleChildPageChange($event)"
+    (setLoading)="handleSetLoading($event)">
+  </app-child-pagning-table>
+  
+  </div>
 
-<!-- Modal -->
-<div class="modal fade" id="viewPatentModal" tabindex="-1" aria-labelledby="viewPatentModalLabel" aria-hidden="true"
-  style="margin-top: 5%;">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content p-4" style="max-height: 90vh; overflow-y: auto;">
+  <hr style="border: 5px solid blue;">
 
-      <div class="modal-header border-bottom-0">
-        <h5 class="modal-title text-primary fw-bold" id="viewPatentModalLabel">Patent Claims</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <!-- Modal -->
+  <div class="modal fade" id="viewPatentModal" tabindex="-1" aria-labelledby="viewPatentModalLabel" aria-hidden="true"
+    style="margin-top: 5%;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content p-4" style="max-height: 90vh; overflow-y: auto;">
+
+        <div class="modal-header border-bottom-0">
+          <h5 class="modal-title text-primary fw-bold" id="viewPatentModalLabel">Patent Claims</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body pt-0" *ngIf="selectedPatent">
+          <h6 class="text-dark fw-bold"></h6>
+          <p class="text-muted mb-2" [innerHTML]="formattedNotes"></p>
+
+        </div>
+
+
+        <div class="modal-footer border-top-0">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        </div>
+
       </div>
-
-      <div class="modal-body pt-0" *ngIf="selectedPatent">
-        <h6 class="text-dark fw-bold"></h6>
-        <p class="text-muted mb-2" [innerHTML]="formattedNotes"></p>
-
-      </div>
-
-
-      <div class="modal-footer border-top-0">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-      </div>
-
     </div>
   </div>
-</div>
 
-<div class="modal fade" id="remarkModal" tabindex="-1" aria-labelledby="remarkModalLabel" aria-hidden="true"
-  style="margin-top: 5%;">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content p-4" style="max-height: 90vh; overflow-y: auto;">
+  <div class="modal fade" id="remarkModal" tabindex="-1" aria-labelledby="remarkModalLabel" aria-hidden="true"
+    style="margin-top: 5%;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content p-4" style="max-height: 90vh; overflow-y: auto;">
 
-      <div class="modal-header border-bottom-0">
-        <h5 class="modal-title text-primary fw-bold" id="remarkModalLabel">Patent Remarks</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-header border-bottom-0">
+          <h5 class="modal-title text-primary fw-bold" id="remarkModalLabel">Patent Remarks</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body pt-0" *ngIf="selectedPatent">
+          <h6 class="text-dark fw-bold">Remarks:</h6>
+          <p class="text-muted mb-2">{{ selectedPatent.remark_s }}</p>
+        </div>
+
+        <div class="modal-footer border-top-0">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        </div>
+
+
       </div>
-
-      <div class="modal-body pt-0" *ngIf="selectedPatent">
-        <h6 class="text-dark fw-bold">Remarks:</h6>
-        <p class="text-muted mb-2">{{ selectedPatent.remark_s }}</p>
-      </div>
-
-      <div class="modal-footer border-top-0">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-      </div>
-
-
     </div>
   </div>
-</div>

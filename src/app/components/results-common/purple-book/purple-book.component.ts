@@ -60,6 +60,7 @@ export class PurpleBookComponent {
   usApiBody: any;
   usFilters: any = {};
   lastClickedFilterKey: string | null = null;
+  filterOrSearchSource: 'filter' | 'search' | null = null;
 
   filterConfigs = [
     {
@@ -225,6 +226,7 @@ export class PurpleBookComponent {
     });
   }
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    this.filterOrSearchSource = 'filter'; 
     this.handleSetLoading.emit(true);
     // this.usApiBody.filters = this.usApiBody.filters || {};
 
@@ -288,6 +290,7 @@ export class PurpleBookComponent {
 
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
+      this.filterOrSearchSource = null; 
       let defaultLabel = '';
       switch (config.key) {
         case 'proper_name': defaultLabel = 'Select Proper Name'; break;
