@@ -39,7 +39,7 @@ export class EuropeApprovalComponent {
   emaApiBody: any;
   emaFilters: any = {};
   lastClickedFilterKey: string | null = null;
-
+  filterOrSearchSource: 'filter' | 'search' | null = null;
   filterConfigs = [
     {
       key: 'marketing_authorisation_holder',
@@ -153,6 +153,7 @@ export class EuropeApprovalComponent {
   }
   
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    this.filterOrSearchSource = 'filter';
     this.handleSetLoading.emit(true);
  
  if (value === '') {
@@ -206,6 +207,7 @@ export class EuropeApprovalComponent {
 
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
+      this.filterOrSearchSource = null;
       let defaultLabel = '';
       switch (config.key) {
         case 'marketing_authorisation_holder': defaultLabel = 'Marketing Authorisation Holder'; break;

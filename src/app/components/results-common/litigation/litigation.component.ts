@@ -32,7 +32,7 @@ export class LitigationComponent {
   litigFilters: any = {};
   lastClickedFilterKey: string | null = null;
   _data: any = [];
-
+  filterOrSearchSource: 'filter' | 'search' | null = null;
 
   filterConfigs = [
     {
@@ -139,6 +139,7 @@ export class LitigationComponent {
     });
   }
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    this.filterOrSearchSource = 'filter';
        this.handleSetLoading.emit(true);
     // this.litigApiBody.filters = this.litigApiBody.filters || {};
     if (value === '') {
@@ -191,6 +192,7 @@ export class LitigationComponent {
   }
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
+      this.filterOrSearchSource = null;
       let defaultLabel = '';
       switch (config.key) {
         case 'country': defaultLabel = 'Country'; break;

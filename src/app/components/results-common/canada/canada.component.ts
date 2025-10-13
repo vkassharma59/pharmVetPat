@@ -33,7 +33,7 @@ export class CanadaComponent implements OnInit {
 
   @Input() index: any;
   @Input() tabName?: string;
-
+  filterOrSearchSource: 'filter' | 'search' | null = null;
   _data: any = [];
   @Input()
   get data() {
@@ -183,6 +183,7 @@ export class CanadaComponent implements OnInit {
     });
   }
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    this.filterOrSearchSource = 'filter';
     this.handleSetLoading.emit(true);
     this.canadaPatentApiBody.filters = this.canadaPatentApiBody.filters || {};
     // Set or remove the filter
@@ -237,6 +238,7 @@ export class CanadaComponent implements OnInit {
   clear() {
     // Reset all filter labels
     this.filterConfigs = this.filterConfigs.map(config => {
+      this.filterOrSearchSource = null;
       let defaultLabel = '';
       switch (config.key) {
         case 'product_name': defaultLabel = 'Select Product'; break;

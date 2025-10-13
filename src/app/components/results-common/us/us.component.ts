@@ -32,6 +32,7 @@ export class UsComponent {
   resultTabs: any = {};
   searchByTable: boolean = false;
   _data: any = [];
+  filterOrSearchSource: 'filter' | 'search' | null = null;
   @Input()
   get data() {
     console.log("hfkjhf", this.data);
@@ -219,6 +220,7 @@ export class UsComponent {
     });
   }
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    this.filterOrSearchSource = 'filter';
     this.handleSetLoading.emit(true);
    // this.usApiBody.filters = this.usApiBody.filters || {};
 
@@ -280,6 +282,7 @@ export class UsComponent {
 
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
+      this.filterOrSearchSource = 'filter';
       let defaultLabel = '';
       switch (config.key) {
         case 'appl_type': defaultLabel = 'Application Type'; break;

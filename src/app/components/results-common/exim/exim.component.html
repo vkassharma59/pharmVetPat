@@ -3,7 +3,7 @@
     <!-- <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
       Total Records : {{currentChildAPIBody?.count }}
     </button> -->
-    <ng-container *ngIf="_data?.length > 0">
+    <ng-container *ngIf="_data?.length > 0 || filterOrSearchSource === 'filter'">
     <div class="flex flex-wrap gap-3">
       <div class="dropdown" *ngFor="let configData of filterConfigs" #dropdownRef>
     <!-- Dropdown Button -->

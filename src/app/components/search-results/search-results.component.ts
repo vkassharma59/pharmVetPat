@@ -90,13 +90,23 @@ export class SearchResultsComponent {
 
   ngOnChanges(_changes: any) {
     console.log('------------SearchResultsComponent', this.CurrentAPIBody);
+  
+    // Extract last part of api_url (like 'simple-search') and store it
+    if (this.CurrentAPIBody?.api_url) {
+      const urlParts = this.CurrentAPIBody.api_url.replace(/\/+$/, '').split('/');
+      this.CurrentAPIBody.extractedSearchType = urlParts[urlParts.length - 1]; // store here
+      console.log('Extracted search type:', this.CurrentAPIBody.extractedSearchType);
+    }
+  
     this.paginationRerenderTrigger = !this.paginationRerenderTrigger;
+  
     if (this.CurrentAPIBody?.body?.filters) {
       this.FilterObjectLength =
-        Object.keys(this.CurrentAPIBody?.body?.filters).length !== 0;
+        Object.keys(this.CurrentAPIBody.body.filters).length !== 0;
     }
-
   }
+  
+  
   ngOnInit(): void {
     const params = new URLSearchParams(window.location.search);
     const type = params.get('type');
@@ -409,18 +419,16 @@ export class SearchResultsComponent {
   }
 
   private performTechnicalRouteSearch(resultTabData: any): void {
-    if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+    if (!resultTabData?.searchWith || !resultTabData?.searchWithValue) {
       this.allDataSets[resultTabData.index][this.resultTabs.technicalRoutes.name] = {};
       this.setLoadingState.emit(false);
       return;
     }
-
-    if (this.childApiBody?.[resultTabData.index]) {
-      this.childApiBody[resultTabData.index][this.resultTabs.technicalRoutes.name] = {};
-    } else {
+  
+    if (!this.childApiBody?.[resultTabData.index]) {
       this.childApiBody[resultTabData.index] = {};
     }
-
+  
     this.childApiBody[resultTabData.index][this.resultTabs?.technicalRoutes.name] = {
       api_url: this.apiUrls.technicalRoutes.searchSpecific,
       search_type: resultTabData?.searchWith,
@@ -430,28 +438,32 @@ export class SearchResultsComponent {
       filters: {},
       order_by: '',
       index: resultTabData.index,
-      count: 0
-    }
-
+      count: 0,
+      searchBy: this.CurrentAPIBody?.extractedSearchType // dynamically sent here
+    };
+  
     const tech_API = this.apiUrls.technicalRoutes.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.technicalRoutes.name, response);
-
-        this.mainSearchService.technicalRoutesSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs?.technicalRoutes.name]).subscribe({
-          next: (result: any) => {
-            this.childApiBody[resultTabData.index][this.resultTabs?.technicalRoutes.name].count = result?.data?.ros_count;
-            this.allDataSets[resultTabData.index][this.resultTabs.technicalRoutes.name] = result?.data;
-            this.setLoadingState.emit(false);
-            this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, resultTabData.index, false);
-          },
-          error: (e) => {
-            console.error('Error during main search:', e);
-            this.setLoadingState.emit(false);
-            this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, resultTabData.index, false);
-          },
-        });
+  
+        this.mainSearchService
+          .technicalRoutesSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs?.technicalRoutes.name])
+          .subscribe({
+            next: (result: any) => {
+              this.childApiBody[resultTabData.index][this.resultTabs?.technicalRoutes.name].count =
+                result?.data?.ros_count;
+              this.allDataSets[resultTabData.index][this.resultTabs.technicalRoutes.name] = result?.data;
+              this.setLoadingState.emit(false);
+              this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, resultTabData.index, false);
+            },
+            error: (e) => {
+              console.error('Error during main search:', e);
+              this.setLoadingState.emit(false);
+              this.loadingService.setLoading(this.resultTabs.technicalRoutes.name, resultTabData.index, false);
+            },
+          });
       },
       error: (e) => {
         console.error('Error fetching column list:', e);
@@ -460,9 +472,14 @@ export class SearchResultsComponent {
       },
     });
   }
+  
 
-
-
+  private extractSearchTypeFromUrl(url: string): string {
+    if (!url) return '';
+    const parts = url.replace(/\/+$/, '').split('/');
+    return parts[parts.length - 1]; // e.g., 'simple-search'
+  }
+  
   private perforProductInfoSearch(resultTabData: any): void {
 
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {

@@ -25,6 +25,7 @@ import { TruncatePipe } from '../../../pipes/truncate.pipe';
   styleUrl: './spcdb.component.css'
 })
 export class SpcdbComponent implements OnChanges {
+  filterOrSearchSource: 'filter' | 'search' | null = null;
   _data: any = { columns: [], rows: [] }; // expected structure
   _currentChildAPIBody: any;
   searchByTable: boolean = false;
@@ -207,6 +208,7 @@ export class SpcdbComponent implements OnChanges {
   }
 
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    this.filterOrSearchSource = 'filter';
     this.handleSetLoading.emit(true);
     this.spcdApiBody.filters = this.spcdApiBody.filters || {};
 
@@ -269,6 +271,7 @@ export class SpcdbComponent implements OnChanges {
   clear() {
     // Reset filter labels
     this.filterConfigs = this.filterConfigs.map(config => {
+      this.filterOrSearchSource = null; 
       let defaultLabel = '';
       switch (config.key) {
         case 'country': defaultLabel = 'All Country'; break;

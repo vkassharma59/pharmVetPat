@@ -46,20 +46,53 @@ export class Chem_Robotics_QueryModalComponent {
       !this.email || !this.comment || this.fileSizeError;
   }
 
+  // handleSendRaiseQuery() {
+  //   if (!this.email || !this.comment) {
+  //     return alert('All Fields are required');
+  //   }
+  //   this.dialogRef.close();
+  //   this.data.handleLoading.emit(true);
+  //   this.LoginService.query(
+  //     this.email,
+  //     this.comment,
+  //     this.data.raise_query_object,
+  //     this.platform,
+  //     this.search,
+  //     this.auth.auth_token
+  //   ).subscribe({
+  //     next: (res) => {
+  //       this.data.handleLoading.emit(false);
+  //       alert('Query Sent');
+  //     },
+  //     error: (e) => {
+  //       console.error('Error:', e);
+  //       this.data.handleLoading.emit(false);
+  //       if (!e.status) {
+  //         alert(e.message);
+  //       }
+  //     },
+  //   });
+  // }
   handleSendRaiseQuery() {
-    if (!this.email || !this.comment) {
-      return alert('All Fields are required');
+    if (this.isSubmitDisabled) {
+      return; // Prevent accidental submission
     }
+
+    const formData = new FormData();
+    formData.append('email', this.email);
+    formData.append('comment', this.comment);
+    formData.append('query', JSON.stringify(this.data.raise_query_object));
+    formData.append('platform', this.platform);
+    formData.append('search', this.search);
+
+    if (this.selectedFile) {
+      formData.append('file', this.selectedFile);
+    }
+
     this.dialogRef.close();
     this.data.handleLoading.emit(true);
-    this.LoginService.query(
-      this.email,
-      this.comment,
-      this.data.raise_query_object,
-      this.platform,
-      this.search,
-      this.auth.auth_token
-    ).subscribe({
+
+    this.LoginService.queryWithFile(formData, this.auth.auth_token).subscribe({
       next: (res) => {
         this.data.handleLoading.emit(false);
         alert('Query Sent');
@@ -67,9 +100,7 @@ export class Chem_Robotics_QueryModalComponent {
       error: (e) => {
         console.error('Error:', e);
         this.data.handleLoading.emit(false);
-        if (!e.status) {
-          alert(e.message);
-        }
+        alert(e.message || 'Error occurred while sending the query.');
       },
     });
   }
