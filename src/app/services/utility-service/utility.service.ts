@@ -35,6 +35,14 @@ const RESULT_TABS = [
 })
 
 export class UtilityService {
+  
+  toTitleCase(str: string): string {
+    if (!str) return '';
+    return str
+      .replace(/_/g, ' ') // replace underscores with spaces
+      .toLowerCase()
+      .replace(/\b\w/g, (char) => char.toUpperCase()); // capitalize each word
+  }
 
   private tabsSubject = new BehaviorSubject(RESULT_TABS);
   tabs$ = this.tabsSubject.asObservable();

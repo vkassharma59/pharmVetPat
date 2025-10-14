@@ -17,6 +17,8 @@ import { MainSearchService } from '../../../services/main-search/main-search.ser
 import * as ExcelJS from 'exceljs';
 import { UserPriviledgeService } from '../../../services/user_priviledges/user-priviledge.service';
 import { environment } from '../../../../environments/environment';
+import { UtilityService } from '../../../services/utility-service/utility.service';
+import { Auth_operations } from '../../../Utils/SetToken';
 @Component({
   selector: 'app-active-patent-card',
   standalone: true,
@@ -42,6 +44,9 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
     data?: any[];
   };
   _currentChildAPIBody: any;
+  static apiCallCount: number = 0;
+  resultTabs: any = {};
+  localCount: number = 0;
   displayedColumns: string[] = [];
   columnHeaders: { [key: string]: string } = {};
   filterableColumns: string[] = [];
@@ -58,6 +63,7 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
   globalSearchValue: string = '';
   columns: any;
   selectedIndex: number | null = null;
+  active_patent_column: any = {};
   get pageSize(): number {
     return this._currentChildAPIBody?.length || 25;
   }
@@ -74,13 +80,29 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
     return this._currentChildAPIBody;
   }
   set currentChildAPIBody(value: any) {
-    this._currentChildAPIBody = value;
+    if (value && Object.keys(value).length > 0) {
+      ActivePatentCardComponent.apiCallCount++;
+      this.localCount = ActivePatentCardComponent.apiCallCount;
+      this._currentChildAPIBody = value;
+  
+      this.resultTabs = this.utilityService.getAllTabsName();
+      const column_list = Auth_operations.getColumnList();
+  
+      if (column_list[this.resultTabs.activePatent?.name]?.length > 0) {
+        for (let i = 0; i < column_list[this.resultTabs.activePatent.name].length; i++) {
+          this.active_patent_column[column_list[this.resultTabs.activePatent.name][i].value] =
+            column_list[this.resultTabs.activePatent.name][i].name;
+        }
+      }
+    }
   }
+  
   searchText: string = '';
   searchColumn: string | undefined;
   columnsFilterType: { [key: string]: string } = {};
   constructor(private cdr: ChangeDetectorRef,
     private mainSearchService: MainSearchService,
+    private utilityService: UtilityService,
     private UserPriviledgeService: UserPriviledgeService
   ) { }
 
@@ -151,7 +173,8 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
   ngOnInit() {
     // Pehle columns le aao
     this.mainSearchService.getactivePatentColumnList().subscribe((columns: any) => {
-      this.columns = columns; // yeh table ke liye headers hain
+      this.columns = columns;
+      console.log('coumns headers', this.columns) // yeh table ke liye headers hain
     });
 
     // Fir data le aao
@@ -167,6 +190,9 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
     });
   }
 
+  getColumnName(value: any) {
+    return this.active_patent_column[value];
+  }
   showDetails(item: any, index: number) {
     this.selectedItem = item;
     this.selectedIndex = index + 1; // numbering maintain
@@ -563,14 +589,14 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
     this.getAllDataFromApi().subscribe(data => {
       const workbook = new ExcelJS.Workbook();
       const worksheet = workbook.addWorksheet('Exported Data');
-
+  
       // Define header columns
       const columns = this.displayedColumns.map(col => ({
         header: this.toTitleCase(col),
         key: col,
       }));
       worksheet.columns = columns;
-
+  
       // Add formatted data rows
       data.forEach(row => {
         const formattedRow: any = {};
@@ -585,36 +611,47 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
         });
         worksheet.addRow(formattedRow);
       });
-
-      // ✅ ADD AUTO-WIDTH ADJUSTMENT HERE
+  
+      // ✅ Adjust column width (make shorter)
       this.displayedColumns.forEach((col, index) => {
         const excelCol = worksheet.getColumn(index + 1);
         let maxLength = col.length;
-
+  
         excelCol.eachCell({ includeEmpty: true }, cell => {
           const cellValue = cell.value ? cell.value.toString() : '';
           if (cellValue.length > maxLength) {
             maxLength = cellValue.length;
           }
         });
-
-        excelCol.width = maxLength + 6;
+  
+        // Reduce overall width slightly (previously +6)
+        excelCol.width = Math.min(maxLength + 2, 75); // Cap width at 35 chars
       });
-
+  
+      // ✅ Adjust row height for better readability
+      worksheet.eachRow((row, rowNumber) => {
+        if (rowNumber === 1) {
+          row.height = 30; // Header taller
+        } else {
+          row.height = 200; // Normal rows
+        }
+        row.alignment = { vertical: 'middle', wrapText: true }; // Ensure multi-line text wraps
+      });
+  
       // Style header row
       const headerRow = worksheet.getRow(1);
       headerRow.eachCell(cell => {
         cell.font = {
           bold: true,
           color: { argb: 'FFFFFFFF' },
-          size: 15
+          size: 13
         };
         cell.fill = {
           type: 'pattern',
           pattern: 'solid',
-          fgColor: { argb: 'FF4169E1' } // Dark blue
+          fgColor: { argb: 'FF4169E1' } // Blue
         };
-        cell.alignment = { horizontal: 'center' };
+        cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
         cell.border = {
           top: { style: 'thin' },
           bottom: { style: 'thin' },
@@ -622,7 +659,7 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
           right: { style: 'thin' },
         };
       });
-
+  
       // Save workbook
       workbook.xlsx.writeBuffer().then(buffer => {
         const blob = new Blob([buffer], {
@@ -633,8 +670,6 @@ export class ActivePatentCardComponent implements OnChanges, AfterViewInit {
       });
     });
   }
-
-
 
   // ✅ Optional: Capitalize headers
   toTitleCase(str: string): string {
