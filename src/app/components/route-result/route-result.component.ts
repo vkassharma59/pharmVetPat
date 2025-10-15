@@ -135,7 +135,7 @@ export class RouteResultComponent {
   set currentChildAPIBody(value: any) {
     this._currentChildAPIBody = value;
   }
-
+  firstActiveTabName: string | null = null;
   lastSearchData: { searchType: string, keyword: string, criteria: any } | null = null;
   constructor(
     private dialog: MatDialog,
@@ -179,6 +179,7 @@ export class RouteResultComponent {
       Userdata?.['pharmvetpat-mongodb']?.SplitDownload == 'true' ? true : false;
     this.isDownloadPermit = Account_type == 'premium' ? true : false;
     this.selectDefaultDownloadTabs();
+    this.setFirstActiveTab();
 
   }
   // get showBackButton(): boolean {
@@ -188,7 +189,11 @@ export class RouteResultComponent {
   // get showBackButton(): boolean {
   //   return this.currentTabData?.name !== this.initialTab?.name;
   // }
-
+  setFirstActiveTab() {
+    if (!this.firstActiveTabName && this.currentTabData?.name) {
+      this.firstActiveTabName = this.currentTabData.name;
+    }
+  }
   get showBackButton(): boolean {
     const isDifferentFromInitial = this.currentTabData?.name !== this.initialTab?.name;
     const isMultipleLoop = this.activeIndex !== null;
