@@ -37,6 +37,7 @@ export class DmfComponent {
   dmfFilters: any = {};
   lastClickedFilterKey: string | null = null;
   countryConfigRaw: any[] = [];
+  isExportingExcel: boolean = false;
   @Input()
   get data() {
     console.log('Getting data in Component:', this._data);
@@ -316,18 +317,52 @@ export class DmfComponent {
       });
     }
   }
+  downloadExcel(): void {
+    this.isExportingExcel = true;
+    this._currentChildAPIBody = {
+      ...this.dmfApiBody,
+      filters: { ...this.dmfApiBody.filters }
+    };
+  
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  
+    // 🔥 Filter visible columns only
+    const resultTabs = this.utilityService.getAllTabsName();
+    const columnList = Auth_operations.getColumnList();
+    const visibleColumns = (columnList[resultTabs['dmf']?.name] || [])
+      .filter(col => col.is_visible !== false)
+      .map(col => col.value);
+  
+    // Add visible column filter to your API body (optional, if backend supports it)
+    this._currentChildAPIBody.visible_columns = visibleColumns;
+  
+    this.mainSearchService.dmfDownloadExcel(this._currentChildAPIBody).subscribe({
+      next: (res: Blob) => {
+        const blob = new Blob([res], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        });
+        const url = window.URL.createObjectURL(blob);
+  
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Tech-supplier.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+  
+        window.URL.revokeObjectURL(url);
+        this.isExportingExcel = false;
+        window.scrollTo(0, scrollTop);
+      },
+      error: (err) => {
+        console.error("Excel download error:", err);
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          filter_enable: false
+        };
+        this.isExportingExcel = false;
+        window.scrollTo(0, scrollTop);
+      },
+    });
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

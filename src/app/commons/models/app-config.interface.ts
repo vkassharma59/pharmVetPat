@@ -33,6 +33,7 @@ export interface AppConfig {
     dmf: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
     };
     chemicalDirectory: {
       filterColumns: string;

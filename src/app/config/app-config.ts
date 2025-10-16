@@ -37,6 +37,7 @@ export const AppConfigValues: AppConfig = {
       dmf: {
         searchSpecific: `${appUrl.apiUrl}/tech-supplier/search-specific`,
         columnList: `${appUrl.apiUrl}/tech-supplier/column-list`,
+        downloadexcel: `${appUrl.localApiUrl}/tech-supplier/download-excel`,
       },
       chemicalDirectory: {
         filterColumns: `${appUrl.apiUrl}/chemical-directory/filter-columns`,
