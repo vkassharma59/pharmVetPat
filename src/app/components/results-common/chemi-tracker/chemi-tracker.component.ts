@@ -215,46 +215,87 @@ export class ChemiTrackerComponent {
 
     this.handleSelectFilter;
   }
-downloadExcel(): void {
-  this.isExportingExcel = true;
-  this._currentChildAPIBody = {
-    ...this.chemiAPIBody,
-    filters: { ...this.chemiAPIBody.filters }
-  };
+  downloadExcel(): void {
+    this.isExportingExcel = true;
+    this._currentChildAPIBody = {
+      ...this.chemiAPIBody,
+      filters: { ...this.chemiAPIBody.filters }
+    };
 
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-  this.mainSearchService.chemiTrackerdownloadexcel(
-    this._currentChildAPIBody
-  ).subscribe({
-    next: (res: Blob) => {
-        const blob = new Blob([res], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      });
-      const url = window.URL.createObjectURL(blob);
+    this.mainSearchService.chemiTrackerdownloadexcel(this._currentChildAPIBody).subscribe({
+      next: async (res: Blob) => {
+        try {
+          // Step 1: Read response as ArrayBuffer
+          const arrayBuffer = await res.arrayBuffer();
+          const XLSX = await import('xlsx');
+          const workbook = XLSX.read(arrayBuffer, { type: 'array' });
 
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'ChemiTrackerData.xlsx';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+          const jsonData: any[] = XLSX.utils.sheet_to_json(worksheet);
 
-      window.URL.revokeObjectURL(url);
-      this.isExportingExcel = false;
-      window.scrollTo(0, scrollTop);
-    },
-    error: (err) => {
-      console.error("Excel download error:", err);
-      this._currentChildAPIBody = {
-        ...this._currentChildAPIBody,
-        filter_enable: false
-      };
-      this.isExportingExcel = false;
-      window.scrollTo(0, scrollTop);
-    },
-  });
-}
+          if (!jsonData.length) {
+            this.isExportingExcel = false;
+            return;
+          }
+
+          // Step 2: Identify columns that actually have values
+          const keys = Object.keys(jsonData[0]);
+          const validKeys = keys.filter((k: string) =>
+            jsonData.some((row: any) => row[k] !== null && row[k] !== undefined && row[k] !== '')
+          );
+
+          // Step 3: Remove empty columns
+          const filteredData = jsonData.map((row: any) => {
+            const filteredRow: any = {};
+            validKeys.forEach((k: string) => (filteredRow[k] = row[k]));
+            return filteredRow;
+          });
+
+          // Step 4: Create new worksheet and workbook
+          const newWorksheet = XLSX.utils.json_to_sheet(filteredData, { skipHeader: false });
+          const colWidths = validKeys.map((key) => ({ wch: Math.max(key.length, 90) }));
+          // Minimum width 20 characters (aap change kar sakte ho)
+          newWorksheet['!cols'] = colWidths;
+          const newWorkbook = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(newWorkbook, newWorksheet, 'FilteredData');
+
+          // Step 5: Convert workbook to Blob for download
+          const excelBuffer = XLSX.write(newWorkbook, { bookType: 'xlsx', type: 'array' });
+          const blob = new Blob([excelBuffer], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          });
+
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'Chemi-Tracker-Excel.xlsx';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+
+          this.isExportingExcel = false;
+          window.scrollTo(0, scrollTop);
+        } catch (error) {
+          console.error("Excel processing error:", error);
+          this.isExportingExcel = false;
+          window.scrollTo(0, scrollTop);
+        }
+      },
+      error: (err) => {
+        console.error("Excel download error:", err);
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          filter_enable: false
+        };
+        this.isExportingExcel = false;
+        window.scrollTo(0, scrollTop);
+      },
+    });
+  }
 
 
 }
