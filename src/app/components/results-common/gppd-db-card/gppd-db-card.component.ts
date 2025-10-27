@@ -83,40 +83,40 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
     private UserPriviledgeService: UserPriviledgeService
   ) { }
 
- ngOnChanges(changes: SimpleChanges): void {
-     if (changes['rowData']) {
-       console.log("📥 rowData received in child →", this.rowData);
-     }
-     if (changes['columnDefs']) {
-       console.log("📥 columnDefs received in child →", this.columnDefs);
-     }
-     if (this.columnDefs && this.columnDefs.length > 0) {
-       this.displayedColumns = [];
-       this.columnHeaders = {};
-       this.filterableColumns = [];
- 
-       // Check which columns have at least one non-empty value
-       for (const col of this.columnDefs) {
-         const colValue = col.value;
- 
-         const hasData = this.rowData?.some(row =>
-           row[colValue] !== null && row[colValue] !== undefined && row[colValue] !== ''
-         );
- 
-         if (hasData) {
-           this.displayedColumns.push(colValue); // ✅ Only include columns with at least one value
-           this.columnHeaders[colValue] = col.label;
-           this.filterableColumns.push(colValue);
-         } else {
- 
-         }
-       }
-     }
-     if (this.rowData) {
-       this.dataSource.data = this.rowData;
-       this.noMatchingData = this.rowData.length === 0;
-     }
-   }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['rowData']) {
+      console.log("📥 rowData received in child →", this.rowData);
+    }
+    if (changes['columnDefs']) {
+      console.log("📥 columnDefs received in child →", this.columnDefs);
+    }
+    if (this.columnDefs && this.columnDefs.length > 0) {
+      this.displayedColumns = [];
+      this.columnHeaders = {};
+      this.filterableColumns = [];
+
+      // Check which columns have at least one non-empty value
+      for (const col of this.columnDefs) {
+        const colValue = col.value;
+
+        const hasData = this.rowData?.some(row =>
+          row[colValue] !== null && row[colValue] !== undefined && row[colValue] !== ''
+        );
+
+        if (hasData) {
+          this.displayedColumns.push(colValue); // ✅ Only include columns with at least one value
+          this.columnHeaders[colValue] = col.label;
+          this.filterableColumns.push(colValue);
+        } else {
+
+        }
+      }
+    }
+    if (this.rowData) {
+      this.dataSource.data = this.rowData;
+      this.noMatchingData = this.rowData.length === 0;
+    }
+  }
   onFlagError(event: any) {
     event.target.src = 'assets/images/flag.png';
   }
@@ -206,7 +206,7 @@ export class GppdDbCardComponent implements OnChanges, AfterViewInit {
   getCountryUrl(value: any) {
     return `${environment.baseUrl}${environment.countryNameLogoDomain}${value?.country}.png`;
   }
-toggleDropdown(columnValue: string) {
+  toggleDropdown(columnValue: string) {
     if (this.openDropdownColumn === columnValue) {
       // If already open, close it
       this.openDropdownColumn = null;
@@ -257,7 +257,7 @@ toggleDropdown(columnValue: string) {
     return sort.dir === 'asc' ? 'fa-sort-up' : 'fa-sort-down';
   }
 
- fetchData() {
+  fetchData() {
     const isGlobalSearch = this.globalSearchValue && this.globalSearchValue.trim() !== '';
     console.log("🔎 Global Search Active:", isGlobalSearch, "Value:", this.globalSearchValue);
 
@@ -331,7 +331,7 @@ toggleDropdown(columnValue: string) {
       console.log("⚠️ No matching data:", this.noMatchingData);
     }, 300);
   }
-applyFilter(columnKey: string, filterValue: string, filterType: string) {
+  applyFilter(columnKey: string, filterValue: string, filterType: string) {
     if (filterValue && filterValue.trim() !== '') {
       this.columnsSearch[columnKey] = filterValue.trim();
       this.columnsFilterType[columnKey] = filterType || 'contains';
@@ -560,6 +560,15 @@ applyFilter(columnKey: string, filterValue: string, filterType: string) {
 
       });
     });
+  }
+  isValidUrl(value: string): boolean {
+    if (!value) return false;
+    try {
+      const url = new URL(value);
+      return ['http:', 'https:'].includes(url.protocol);
+    } catch (e) {
+      return false;
+    }
   }
 
   // ✅ Optional: Capitalize headers

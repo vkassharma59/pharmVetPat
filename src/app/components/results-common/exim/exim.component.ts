@@ -35,7 +35,7 @@ export class EximComponent implements OnChanges {
   isFilterApplied: boolean = false; // agar filter lagana hai to true karenge
   count: number = 0;
   totalPages: number = 0;
-
+  filterOrSearchSource: 'filter' | 'search' | null = null;
   get pageSize(): number {
     return this._currentChildAPIBody?.length || 25;
   }
@@ -285,8 +285,7 @@ export class EximComponent implements OnChanges {
     });
   }
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
-    console.log('🔍 Filter change detected:', { filterKey, value, name });
-
+    this.filterOrSearchSource = 'filter';
     this.handleSetLoading.emit(true);
     this.eximApiBody.filters = this.eximApiBody.filters || {};
 
@@ -379,6 +378,7 @@ export class EximComponent implements OnChanges {
 
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
+      this.filterOrSearchSource = null;
       let defaultLabel = '';
       switch (config.key) {
         case 'CHAPTER': defaultLabel = 'All Chapter'; break;

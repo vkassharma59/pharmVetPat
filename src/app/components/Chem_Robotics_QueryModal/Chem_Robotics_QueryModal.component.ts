@@ -9,7 +9,7 @@ import { LoginService } from '../../services/LoginService/login.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './Chem_Robotics_QueryModal.component.html',
-  styleUrl: './Chem_Robotics_QueryModal.component.css',
+  styleUrls: ['./Chem_Robotics_QueryModal.component.css'], // ✅ corrected 'styleUrl' to 'styleUrls'
 })
 export class Chem_Robotics_QueryModalComponent {
   constructor(
@@ -32,7 +32,10 @@ export class Chem_Robotics_QueryModalComponent {
     this.auth = localStorage.getItem('auth');
     this.auth = JSON.parse(this.auth);
     this.email = this.auth.email;
-    this.platform = 'technical-routes';
+
+    // ✅ Updated platform name
+    this.platform = 'pharmVetPat-N';
+
     if (this.data.raise_query_object?.keyword) {
       this.search = this.data.raise_query_object.keyword;
     } else {
@@ -47,19 +50,25 @@ export class Chem_Robotics_QueryModalComponent {
   }
 
   handleSendRaiseQuery() {
-    if (!this.email || !this.comment) {
-      return alert('All Fields are required');
+    if (this.isSubmitDisabled) {
+      return; // Prevent accidental submission
     }
+
+    const formData = new FormData();
+    formData.append('email', this.email);
+    formData.append('comment', this.comment);
+    formData.append('query', JSON.stringify(this.data.raise_query_object));
+    formData.append('platform', this.platform); // ✅ uses 'pharmVetPat-N'
+    formData.append('search', this.search);
+
+    if (this.selectedFile) {
+      formData.append('file', this.selectedFile);
+    }
+
     this.dialogRef.close();
     this.data.handleLoading.emit(true);
-    this.LoginService.query(
-      this.email,
-      this.comment,
-      this.data.raise_query_object,
-      this.platform,
-      this.search,
-      this.auth.auth_token
-    ).subscribe({
+
+    this.LoginService.queryWithFile(formData, this.auth.auth_token).subscribe({
       next: (res) => {
         this.data.handleLoading.emit(false);
         alert('Query Sent');
@@ -67,15 +76,15 @@ export class Chem_Robotics_QueryModalComponent {
       error: (e) => {
         console.error('Error:', e);
         this.data.handleLoading.emit(false);
-        if (!e.status) {
-          alert(e.message);
-        }
+        alert(e.message || 'Error occurred while sending the query.');
       },
     });
   }
+
   onClose() {
     this.dialogRef.close();
   }
+
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     this.selectedFile = input.files ? input.files[0] : null;

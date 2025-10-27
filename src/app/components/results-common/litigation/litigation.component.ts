@@ -32,7 +32,9 @@ export class LitigationComponent {
   litigFilters: any = {};
   lastClickedFilterKey: string | null = null;
   _data: any = [];
-
+  @Input() keyword: string = '';
+  isExportingExcel: boolean = false;
+  filterOrSearchSource: 'filter' | 'search' | null = null;
 
   filterConfigs = [
     {
@@ -139,6 +141,7 @@ export class LitigationComponent {
     });
   }
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    this.filterOrSearchSource = 'filter';
        this.handleSetLoading.emit(true);
     // this.litigApiBody.filters = this.litigApiBody.filters || {};
     if (value === '') {
@@ -191,6 +194,7 @@ export class LitigationComponent {
   }
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
+      this.filterOrSearchSource = null;
       let defaultLabel = '';
       switch (config.key) {
         case 'country': defaultLabel = 'Country'; break;
@@ -246,6 +250,89 @@ export class LitigationComponent {
         console.error('[copyText] ❌ Failed to copy text:', err);
       });
     }
+  }
+  downloadExcel(): void {
+    this.isExportingExcel = true;
+  
+    // Prepare request body
+    this._currentChildAPIBody = {
+      ...this.litigApiBody,
+      filters: { ...this.litigApiBody.filters },
+      filter_enable: false
+    };
+  
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  
+    this.mainSearchService.litigationdownloadexcel(this._currentChildAPIBody).subscribe({
+      next: async (res: Blob) => {
+        try {
+          // Step 1: Read response as ArrayBuffer
+          const arrayBuffer = await res.arrayBuffer();
+          const XLSX = await import('xlsx');
+          const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+  
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+          const jsonData: any[] = XLSX.utils.sheet_to_json(worksheet);
+  
+          if (!jsonData.length) {
+            this.isExportingExcel = false;
+            return;
+          }
+  
+          // Step 2: Identify columns that actually have values
+          const keys = Object.keys(jsonData[0]);
+          const validKeys = keys.filter((k: string) =>
+            jsonData.some((row: any) => row[k] !== null && row[k] !== undefined && row[k] !== '')
+          );
+  
+          // Step 3: Remove empty columns
+          const filteredData = jsonData.map((row: any) => {
+            const filteredRow: any = {};
+            validKeys.forEach((k: string) => (filteredRow[k] = row[k]));
+            return filteredRow;
+          });
+  
+          // Step 4: Create new worksheet and workbook
+          const newWorksheet = XLSX.utils.json_to_sheet(filteredData, { skipHeader: false });
+          const colWidths = validKeys.map((key) => ({ wch: Math.max(key.length, 90) }));
+          newWorksheet['!cols'] = colWidths;
+          const newWorkbook = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(newWorkbook, newWorksheet, 'FilteredData');
+  
+          // Step 5: Convert workbook to Blob for download
+          const excelBuffer = XLSX.write(newWorkbook, { bookType: 'xlsx', type: 'array' });
+          const blob = new Blob([excelBuffer], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          });
+  
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'Litigation.xlsx';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+  
+          this.isExportingExcel = false;
+          window.scrollTo(0, scrollTop);
+        } catch (error) {
+          console.error('Excel processing error:', error);
+          this.isExportingExcel = false;
+          window.scrollTo(0, scrollTop);
+        }
+      },
+      error: (err) => {
+        console.error('Excel download error:', err);
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          filter_enable: false
+        };
+        this.isExportingExcel = false;
+        window.scrollTo(0, scrollTop);
+      }
+    });
   }
   
 }

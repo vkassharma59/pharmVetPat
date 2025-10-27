@@ -49,20 +49,34 @@ export class DmfCardComponent implements OnDestroy{
 
   set data(value: any) {
     if (value && Object.keys(value).length > 0) {
-      // this.noMatchingData = false;
       DmfCardComponent.apiCallCount++;
       this.localCount = DmfCardComponent.apiCallCount;
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
-      if (column_list[this.resultTabs.dmf?.name]?.length > 0) {
-        for (let i = 0; i < column_list[this.resultTabs.dmf.name].length; i++) {
-          const col = column_list[this.resultTabs.dmf.name][i];
-          this.dmf_column[col.value] = col.name;
-        }
+  
+      const dmfColumns = column_list[this.resultTabs.dmf?.name] || [];
+  
+      // Filter only visible columns based on backend config
+      this.columns = dmfColumns.filter(col => col.is_visible !== false);
+  
+      // Create a lookup map for easier access in the template
+      this.dmf_column = {};
+      for (const col of this.columns) {
+        this.dmf_column[col.value] = col.name;
       }
-      this._data = value;
+  
+      // Remove hidden data keys from incoming data
+      const filteredData = {};
+      Object.keys(value).forEach(key => {
+        if (this.dmf_column[key]) {
+          filteredData[key] = value[key];
+        }
+      });
+  
+      this._data = filteredData;
     }
   }
+  
   // @Input()
   // get currentChildAPIBody() {
   //   return this._currentChildAPIBody;

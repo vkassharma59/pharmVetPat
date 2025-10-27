@@ -8,6 +8,13 @@
     </div> -->
 
   <ng-container *ngFor="let dataItem of _data; let i = index">
+    <div class="flex flex-wrap gap-3" style="margin-left: 67rem;">
+      <button mat-raised-button [disabled]="isExportingExcel"
+        class="px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]" (click)="downloadExcel()">
+        <span *ngIf="!isExportingExcel">Download Excel <i class="fa-solid fa-download"></i></span>
+        <span *ngIf="isExportingExcel"><i class="fa fa-spinner fa-spin"></i> Exporting...</span>
+      </button>
+    </div>
     <div class="py-4">
       <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
         <span
@@ -25,7 +32,7 @@
     (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
 </ng-container>
 <ng-template #noData>
-  <div class="card">
+  <div class="card"  style="background-color: #ffffff; margin-top: 2rem;">
     <div class="card-header text-white bg-primary"
       style="background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);">
       {{resultTabs.koreaApproval?.label}}

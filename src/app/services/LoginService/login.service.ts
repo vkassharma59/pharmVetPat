@@ -17,6 +17,7 @@ export class LoginService {
 
   private apiUrl = AppConfigValues.appUrls;
   private auth_token = Auth_operations.getToken();
+  private raise_query = environment.raise_query;
 
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -73,4 +74,17 @@ export class LoginService {
     // }
     return throwError(error.error);
   }
+  queryWithFile(formData: FormData, accessToken: string): Observable<any> {
+    const accessHeaders = new HttpHeaders({
+      'access-token': accessToken,
+      'api-key': environment.headerApiKey,
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
+    });
+
+    return this.http
+      .post<any>(this.raise_query, formData, { headers: accessHeaders })
+      .pipe(catchError(this.handleError));
+  }
+
 }

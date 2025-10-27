@@ -47,7 +47,12 @@ export class MainSearchService {
       .post(this.apiUrls.chemicalDirectory.autoSuggestions, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
-
+  ChemicalStructuredownloadexcel(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.chemicalDirectory.downloadexcel, body, { headers: this.headers, responseType: 'blob' as 'json' })
+      .pipe(catchError(this.handleError));
+  }
   getAdvanceSearchSuggestions(props: any): Observable<any> {
     const body = props;
     return this.http
@@ -125,7 +130,12 @@ export class MainSearchService {
       .post(this.apiUrls.basicProductInfo.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
-
+  basicProductdownloadexcel(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.basicProductInfo.downloadexcel, body, { headers: this.headers, responseType: 'blob' as 'json' })
+      .pipe(catchError(this.handleError));
+  }
   chemicalDirectorySearchSpecific(props: any): Observable<any> {
     const body = props;
     return this.http
@@ -138,6 +148,13 @@ export class MainSearchService {
       .post(this.apiUrls.impurity.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
+  impuritydownloadexcel(props: any): Observable<Blob> {
+    return this.http.post(this.apiUrls.impurity.downloadexcel, props, {
+      headers: this.headers, // include Content-Type: application/json
+      responseType: 'blob'
+    }).pipe(catchError(this.handleError));
+  }
+  
   chemiTrackerSearchSpecific(props: any): Observable<any> {
     const body = props;
     return this.http
@@ -168,7 +185,12 @@ export class MainSearchService {
       .post(this.apiUrls.japanApproval.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
-
+  japanApprovaldownloadexcel(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.japanApproval.downloadexcel, body, { headers: this.headers, responseType: 'blob' as 'json' })
+      .pipe(catchError(this.handleError));
+  }
   koreaApprovalSearchSpecific(props: any): Observable<any> {
     const body = props;
     return this.http
@@ -182,11 +204,22 @@ export class MainSearchService {
       .post(this.apiUrls.indianMedicine.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
-
+  indianMedicinedownloadexcel(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.indianMedicine.downloadexcel, body, { headers: this.headers, responseType: 'blob' })
+      .pipe(catchError(this.handleError));
+  }
   litigationSearchSpecific(props: any): Observable<any> {
     const body = props;
     return this.http
       .post(this.apiUrls.litigation.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
+  litigationdownloadexcel(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.litigation.downloadexcel, body, { headers: this.headers, responseType: 'blob' as 'json' })
       .pipe(catchError(this.handleError));
   }
   gppdDbSearchSpecific(props: any): Observable<any> {
@@ -204,6 +237,12 @@ export class MainSearchService {
     const body = props;
     return this.http
       .post(this.apiUrls.scientificDocs.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
+  scientificDocsdownloadexcel(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.scientificDocs.downloadexcel, body, { headers: this.headers, responseType: 'blob' })
       .pipe(catchError(this.handleError));
   }
   getScientificDocsColumnList(): Observable<any> {
@@ -254,6 +293,12 @@ export class MainSearchService {
       .post(this.apiUrls.purpleBook.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
+  purpleBookdownloadexcel(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.purpleBook.downloadexcel, body, { headers: this.headers, responseType: 'blob' as 'json' })
+      .pipe(catchError(this.handleError));
+  }
   veterinaryusApprovalSearchSpecific(props: any): Observable<any> {
     const body = props;
     return this.http
@@ -299,7 +344,12 @@ export class MainSearchService {
       .post(this.apiUrls.dmf.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
-
+  dmfDownloadExcel(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.dmf.downloadexcel, body, { headers: this.headers, responseType: 'blob' as 'json' })
+      .pipe(catchError(this.handleError));
+  }
   private handleError(error: HttpErrorResponse): Observable<never> {
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred:', error.error.message);

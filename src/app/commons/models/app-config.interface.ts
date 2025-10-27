@@ -20,6 +20,7 @@ export interface AppConfig {
       advanceSearchResults: string;
       productHighlights: string;
       reportData: string;
+      downloadexcel: string;
     };
     technicalRoutes: {
       filterColumnList: string;
@@ -33,6 +34,7 @@ export interface AppConfig {
     dmf: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
     };
     chemicalDirectory: {
       filterColumns: string;
@@ -42,10 +44,12 @@ export interface AppConfig {
       autoSuggestions: string;
       columnList: string;
       reportData: string;
+      downloadexcel: string;
     };
     impurity: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
     };
     impPatents: {
       searchSpecific: string;
@@ -63,6 +67,7 @@ export interface AppConfig {
     japanApproval: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
     };
     koreaApproval: {
       searchSpecific: string;
@@ -75,14 +80,18 @@ export interface AppConfig {
     purpleBook: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
     },
     indianMedicine: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
     };
     litigation: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
+      
     };
     spcDb: {
       searchSpecific: string;
@@ -112,6 +121,7 @@ export interface AppConfig {
     scientificDocs: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
     };
     eximData: {
       searchSpecific: string;

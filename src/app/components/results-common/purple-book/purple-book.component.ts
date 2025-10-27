@@ -31,6 +31,8 @@ export class PurpleBookComponent {
   searchThrough: string = '';
   resultTabs: any = {};
   searchByTable: boolean = false;
+  @Input() keyword: string = '';
+  isExportingExcel: boolean = false;
   _data: any = [];
   @Input()
   get data() {
@@ -57,9 +59,10 @@ export class PurpleBookComponent {
   }
   @Input() index: any;
   @Input() tabName?: string;
-  usApiBody: any;
-  usFilters: any = {};
+  purpleApiBody: any;
+  purpleFilters: any = {};
   lastClickedFilterKey: string | null = null;
+  filterOrSearchSource: 'filter' | 'search' | null = null;
 
   filterConfigs = [
     {
@@ -145,8 +148,8 @@ export class PurpleBookComponent {
     }
   }
   ngOnInit(): void {
-    this.usApiBody = { ...this.currentChildAPIBody };
-    this.usApiBody.filters = this.usApiBody.filters || {};
+    this.purpleApiBody = { ...this.currentChildAPIBody };
+    this.purpleApiBody.filters = this.purpleApiBody.filters || {};
     this.handleFetchFilters();
   }
   onFilterButtonClick(filterKey: string) {
@@ -162,8 +165,8 @@ export class PurpleBookComponent {
     });
   }
   handleFetchFilters() {
-    this.usApiBody.filter_enable = true;
-    this.mainSearchService.purpleBookSearchSpecific(this.usApiBody).subscribe({
+    this.purpleApiBody.filter_enable = true;
+    this.mainSearchService.purpleBookSearchSpecific(this.purpleApiBody).subscribe({
       next: (res: any) => {
         const properNameFilters = res?.data?.proper_name?.map(item => ({
           name: item.name,
@@ -185,7 +188,7 @@ export class PurpleBookComponent {
           name: item.name,
           value: item.value
         })) || [];
-        this.usFilters = {
+        this.purpleFilters = {
           properNameFilters: properNameFilters,
           strengthFilters,
           proprietaryNameFilters: proprietaryNameFilters,
@@ -195,14 +198,14 @@ export class PurpleBookComponent {
 
 
         };
-        this.usApiBody.filter_enable = false;
-        this.usApiBody.filter_enable = false;
+        this.purpleApiBody.filter_enable = false;
+        this.purpleApiBody.filter_enable = false;
 
 
       },
       error: (err) => {
         console.error('[Filters] Error fetching US filters:', err);
-        this.usApiBody.filter_enable = false;
+        this.purpleApiBody.filter_enable = false;
       }
     });
   }
@@ -225,16 +228,17 @@ export class PurpleBookComponent {
     });
   }
   handleSelectFilter(filterKey: string, value: any, name?: string): void {
+    this.filterOrSearchSource = 'filter'; 
     this.handleSetLoading.emit(true);
-    // this.usApiBody.filters = this.usApiBody.filters || {};
+    // this.purpleApiBody.filters = this.purpleApiBody.filters || {};
 
 
 
     if (value === '') {
-      delete this.usApiBody.filters[filterKey];
+      delete this.purpleApiBody.filters[filterKey];
       this.setFilterLabel(filterKey, '');
     } else {
-      this.usApiBody.filters[filterKey] = value;
+      this.purpleApiBody.filters[filterKey] = value;
       this.setFilterLabel(filterKey, name || '');
     }
 
@@ -244,8 +248,8 @@ export class PurpleBookComponent {
     }));
 
     this._currentChildAPIBody = {
-      ...this.usApiBody,
-      filters: { ...this.usApiBody.filters }
+      ...this.purpleApiBody,
+      filters: { ...this.purpleApiBody.filters }
     };
     console.log(`[API] Current API body for ${filterKey}:`, this._currentChildAPIBody);
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -288,6 +292,7 @@ export class PurpleBookComponent {
 
   clear() {
     this.filterConfigs = this.filterConfigs.map(config => {
+      this.filterOrSearchSource = null; 
       let defaultLabel = '';
       switch (config.key) {
         case 'proper_name': defaultLabel = 'Select Proper Name'; break;
@@ -299,9 +304,9 @@ export class PurpleBookComponent {
       return { ...config, label: defaultLabel, dropdownState: false };
     });
 
-    this.usApiBody.filters = {};
+    this.purpleApiBody.filters = {};
     this._currentChildAPIBody = {
-      ...this.usApiBody,
+      ...this.purpleApiBody,
       filters: {}
     };
 
@@ -346,6 +351,89 @@ export class PurpleBookComponent {
         console.error('Failed to copy text: ', err);
       });
     }
+  }
+  downloadExcel(): void {
+    this.isExportingExcel = true;
+  
+    // Prepare request body
+    this._currentChildAPIBody = {
+      ...this.purpleApiBody,
+      filters: { ...this.purpleApiBody.filters },
+      filter_enable: false
+    };
+  
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  
+    this.mainSearchService.purpleBookdownloadexcel(this._currentChildAPIBody).subscribe({
+      next: async (res: Blob) => {
+        try {
+          // Step 1: Read response as ArrayBuffer
+          const arrayBuffer = await res.arrayBuffer();
+          const XLSX = await import('xlsx');
+          const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+  
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+          const jsonData: any[] = XLSX.utils.sheet_to_json(worksheet);
+  
+          if (!jsonData.length) {
+            this.isExportingExcel = false;
+            return;
+          }
+  
+          // Step 2: Identify columns that actually have values
+          const keys = Object.keys(jsonData[0]);
+          const validKeys = keys.filter((k: string) =>
+            jsonData.some((row: any) => row[k] !== null && row[k] !== undefined && row[k] !== '')
+          );
+  
+          // Step 3: Remove empty columns
+          const filteredData = jsonData.map((row: any) => {
+            const filteredRow: any = {};
+            validKeys.forEach((k: string) => (filteredRow[k] = row[k]));
+            return filteredRow;
+          });
+  
+          // Step 4: Create new worksheet and workbook
+          const newWorksheet = XLSX.utils.json_to_sheet(filteredData, { skipHeader: false });
+          const colWidths = validKeys.map((key) => ({ wch: Math.max(key.length, 90) }));
+          newWorksheet['!cols'] = colWidths;
+          const newWorkbook = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(newWorkbook, newWorksheet, 'FilteredData');
+  
+          // Step 5: Convert workbook to Blob for download
+          const excelBuffer = XLSX.write(newWorkbook, { bookType: 'xlsx', type: 'array' });
+          const blob = new Blob([excelBuffer], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          });
+  
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'Purple-Book.xlsx';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+  
+          this.isExportingExcel = false;
+          window.scrollTo(0, scrollTop);
+        } catch (error) {
+          console.error('Excel processing error:', error);
+          this.isExportingExcel = false;
+          window.scrollTo(0, scrollTop);
+        }
+      },
+      error: (err) => {
+        console.error('Excel download error:', err);
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          filter_enable: false
+        };
+        this.isExportingExcel = false;
+        window.scrollTo(0, scrollTop);
+      }
+    });
   }
 
 }

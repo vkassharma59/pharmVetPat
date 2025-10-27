@@ -2,6 +2,7 @@ export const environment = {
     production: false,
     apiUrl: 'https://apilive.chemrobotics.com',
     devApiUrl: 'https://apidev.chemrobotics.com', // API Base URL
+    localApiUrl: 'http://localhost:3000', // Local API Base URL
     headerApiKey: 'AzI0f64MzcpKE1rNmlJzTfb8PTfcdQ9y',
     baseUrl: 'https://www.chemrobotics.com',
     domainNameCompanyLogo: '/agropat/images/innovators_logo/',
@@ -15,6 +16,7 @@ export const environment = {
     countryNameLogoDomain2: '/agropat/images/',  
     baseUrlProduct: 'https://imd.chemrobotics.com',
     productImages: '/assets/img/ProductImages/',
-    platform:'PharmVetPat'
+    platform:'PharmVetPat',
+    raise_query: 'https://apilive.chemrobotics.com/raise-query'
   };
   

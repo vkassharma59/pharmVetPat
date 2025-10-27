@@ -1,9 +1,12 @@
 <div class="child-route-count-wrapper justify-end">
-  <ng-container *ngIf="_data?.length > 0">
-    <div class="flex flex-wrap gap-3">
+  <ng-container *ngIf="_data?.length > 0 || filterOrSearchSource === 'filter'">
+    <div class="flex flex-wrap gap-3" *ngIf="_data?.length > 0">
+      <button mat-raised-button [disabled]="isExportingExcel"
+      class="px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]" (click)="downloadExcel()">
+      <span *ngIf="!isExportingExcel">Download Excel <i class="fa-solid fa-download"></i></span>
+      <span *ngIf="isExportingExcel"><i class="fa fa-spinner fa-spin"></i> Exporting...</span>
+    </button>
       <div class="dropdown" *ngFor="let configData of filterConfigs" #dropdownRef>
-
-
         <button class="dropdown-toggle px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
           type="button" id="configData.key" (click)="onFilterButtonClick(configData.key)">
           {{ configData.label | truncate:20 }}
@@ -15,7 +18,7 @@
             class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
             <span class="block text-sm font-medium text-gray-700">View All</span>
           </li>
-          <li *ngFor="let data of usFilters[configData.dataKey]"
+          <li *ngFor="let data of purpleFilters[configData.dataKey]"
             (click)="handleSelectFilter(configData.key, data.value , data.name )"
             class="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
             <span class="block text-sm whitespace-normal break-words leading-snug text-gray-800">
@@ -51,7 +54,7 @@
     (setLoading)="handleSetLoading.emit($event)"></app-child-paging>
 </ng-container>
 <ng-template #noData>
-  <div class="card" style="background-color: #ffffff;">
+  <div class="card" style="background-color: #ffffff; margin-top: 2rem;">
     <div class="card-header text-white bg-primary">
       {{resultTabs.purpleBook?.label}}
     </div>

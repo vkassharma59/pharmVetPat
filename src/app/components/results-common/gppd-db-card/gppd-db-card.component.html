@@ -78,7 +78,7 @@
 
                   <div style="position:relative; display:flex; overflow:visible; padding:0; width:40px;">
                     <!-- Search icon -->
-                   <button class="filterIcon" (click)="toggleDropdown(column.value); $event.stopPropagation()">
+                    <button class="filterIcon" (click)="toggleDropdown(column.value); $event.stopPropagation()">
                       <i class="fa-solid fa-filter"></i>
                     </button>
 
@@ -151,10 +151,22 @@
                         </div>
                       </ng-template>
                       <ng-template #defaultCell>
-                        <div style="word-break:break-word;" class="scrollable-text">
-                          {{ element[column.value] }}
+                        <div style="word-break: break-word;" class="scrollable-text">
+                          <!-- ✅ Check if the value is a valid URL -->
+                          <ng-container *ngIf="isValidUrl(element[column.value]); else normalText">
+                            <a [href]="element[column.value]" target="_blank" rel="noopener noreferrer"
+                              style="color: #1a73e8; text-decoration: underline;">
+                              {{ element[column.value] }}
+                            </a>
+                          </ng-container>
+
+                          <!-- Default text if not URL -->
+                          <ng-template #normalText>
+                            {{ element[column.value] }}
+                          </ng-template>
                         </div>
                       </ng-template>
+
                     </span>
                   </ng-template>
                 </ng-container>

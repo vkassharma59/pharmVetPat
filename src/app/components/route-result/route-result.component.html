@@ -62,14 +62,14 @@
       </button> -->
 
       <!-- Agar tab technicalRoutes nahi hai -->
-      <button *ngIf="!showBackButton &&  
-         ((!generatePDFloader && isFullDownload) 
-           || (showTotalAfterTab && showBackButton))" (click)="openDownloadModal(index)" [disabled]="generatePDFloader"
-        title="Full Report Download" class="btn btn-outline-primary btn-sm me-2"
-        style="color: white; border-color: white;">
+      <button *ngIf="currentTabData?.name === firstActiveTabName && 
+             ((!generatePDFloader && isFullDownload) || (showTotalAfterTab && showBackButton))"
+        (click)="openDownloadModal(index)" [disabled]="generatePDFloader" title="Full Report Download"
+        class="btn btn-outline-primary btn-sm me-2" style="color: white; border-color: white;">
         <i class="fas fa-download"></i>
         Full Report Download
       </button>
+
       <div *ngIf="index==0 && searchThrough != 'synthesis-search'  || showTotalAfterTab && showBackButton">
         <button (click)="OpenQueryModal()" style="color: white; border-color: white;"
           class="btn btn-outline-primary btn-sm me-2">Raise
@@ -82,7 +82,7 @@
     [activeTab]="activeTab"></chem-route-tabs>
 
   <!-- Main Content Section -->
-  <div style="display: flex; justify-content: flex-end;">
+  <div style="display: flex; justify-content: flex-end; margin-top: -2rem;">
     <button *ngIf="isSplitDownload && hasTabData(selectedIndex)" (click)="handleGeneratePDF(selectedIndex)"
       title="Download Single Route" class="btn btn-outline-primary btn-sm">
       <i class="fas fa-download"></i>
@@ -94,7 +94,7 @@
       <chem-product-info [data]="_dataItem.productInfo"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.productInfo.name]" [index]="index"
         [tabName]="resultTabWithKeys.productInfo.name" (handleSetLoading)="handleSetLoading.emit($event)"
-        (handleResultTabData)="handleChildPaginationSearch.emit($event)">
+        (handleResultTabData)="handleChildPaginationSearch.emit($event)" [keyword]="searchKeyword"> 
       </chem-product-info>
     </ng-container>
     <ng-container *ngSwitchCase="resultTabWithKeys.technicalRoutes.name">
@@ -123,7 +123,7 @@
       <chem-impurity [data]="_dataItem.impurity"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.impurity.name]" [index]="index"
         [tabName]="resultTabWithKeys.impurity.name" (handleSetLoading)="handleSetLoading.emit($event)"
-        (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-impurity>
+        (handleResultTabData)="handleChildPaginationSearch.emit($event)" [keyword]="searchKeyword"></chem-impurity>
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.chemiTracker.name">

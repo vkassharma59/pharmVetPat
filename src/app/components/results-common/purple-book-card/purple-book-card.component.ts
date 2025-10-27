@@ -7,15 +7,19 @@ import { CommonModule } from '@angular/common';
 import { ImageModalComponent } from '../../../commons/image-modal/image-modal.component';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { ChildPagningTableComponent } from '../../../commons/child-pagning-table/child-pagning-table.component';
 
 @Component({
   selector: 'app-purple-book-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ChildPagningTableComponent],
   templateUrl: './purple-book-card.component.html',
   styleUrl: './purple-book-card.component.css'
 })
 export class PurpleBookCardComponent {
+  isFilterApplied: boolean = false;
+  childPaginationData: any = {};
+  loading: boolean = false;
   _data: any = [];
   MoreInfo: boolean = false;
   pageNo: number = 1;
@@ -38,7 +42,7 @@ export class PurpleBookCardComponent {
       console.log('Full Data:', JSON.parse(JSON.stringify(value)));
       console.log('Patent Data:', value.patentData);
       console.groupEnd();
-  
+
       PurpleBookCardComponent.apiCallCount++;
       this.localCount = PurpleBookCardComponent.apiCallCount;
       this._data = value;
@@ -48,27 +52,29 @@ export class PurpleBookCardComponent {
       console.log('Raw column_list:', column_list);
       console.log('Result Tabs:', this.resultTabs);
       console.groupEnd();
-  
+
       if (column_list[this.resultTabs.purpleBook?.name]?.patentColumnList?.length > 0) {
         for (let col of column_list[this.resultTabs.purpleBook?.name]?.patentColumnList) {
-      if (column_list[this.resultTabs.purpleBook?.name]?.patentColumnList?.length > 0) {
-        for (let col of column_list[this.resultTabs.purpleBook?.name]?.patentColumnList) {
-          this.us_column[col.value] = col.name;
+          if (column_list[this.resultTabs.purpleBook?.name]?.patentColumnList?.length > 0) {
+            for (let col of column_list[this.resultTabs.purpleBook?.name]?.patentColumnList) {
+              this.us_column[col.value] = col.name;
+            }
+          }
+          if (column_list[this.resultTabs.purpleBook?.name]?.columns?.length > 0) {
+            for (let col of column_list[this.resultTabs.purpleBook?.name]?.columns) {
+              this.us_approval_column[col.value] = col.name;
+            }
+          }
+
+          console.group('🧩 Column Mapping Results');
+          console.log('us_column (Patent Columns):', this.us_column);
+          console.log('us_approval_column (Approval Columns):', this.us_approval_column);
+          console.groupEnd();
         }
       }
-      if (column_list[this.resultTabs.purpleBook?.name]?.columns?.length > 0) {
-        for (let col of column_list[this.resultTabs.purpleBook?.name]?.columns) {
-          this.us_approval_column[col.value] = col.name;
-        }
-      }
-  
-      console.group('🧩 Column Mapping Results');
-      console.log('us_column (Patent Columns):', this.us_column);
-      console.log('us_approval_column (Approval Columns):', this.us_approval_column);
-      console.groupEnd();
     }
-      }}}
-  
+  }
+
   convertNewlinesToBr(text: string): string {
     return text?.replace(/\n/g, '<br>');
   }
@@ -93,6 +99,16 @@ export class PurpleBookCardComponent {
   productData: any[] = [];
   ngOnInit() {
     console.log('PurpleBookCardComponent initialized with data:', this._data);
+  
+  // Initialize pagination setup
+  this.currentChildAPIBody = {
+    page_no: 1,
+    start: 0,
+    length: 25,
+    count: this._data?.recordsTotal || 0
+  };
+
+  this.childPaginationData = this._data;
   }
   // getVisibleColumns(): string[] {
   //   // Get all keys from us_column
@@ -109,7 +125,7 @@ export class PurpleBookCardComponent {
   getVisibleColumns(): string[] {
     const allKeys = this.getObjectKeys(this.us_column);
     console.debug('📚 All possible column keys:', allKeys);
-  
+
     const visible = allKeys.filter(key => {
       const hasValue = this._data?.patentData?.some(item => {
         const value = item[key];
@@ -121,17 +137,36 @@ export class PurpleBookCardComponent {
       }
       return hasValue;
     });
-  
+
     console.debug('✅ Visible columns after filtering:', visible);
     return visible;
   }
-  
 
+  handleChildPageChange(updatedApiBody: any) {
+    console.log("📤 Pagination requested new data with body:", updatedApiBody);
+  
+    // Save the new API body for current state
+    this.currentChildAPIBody = updatedApiBody;
+  
+    // Example: make your API call or emit event here
+    // You can adapt this to use your service if needed
+    this.loading = true;
+    // Suppose you already have _data containing results
+    // Here you can update it after fetching new data
+    setTimeout(() => {
+      console.log("✅ Simulated page data loaded for page:", updatedApiBody.page_no);
+      this.loading = false;
+    }, 500);
+  }
+
+  handleSetLoading(state: boolean) {
+    this.loading = state;
+  }
   ngOnChanges() {
     console.group('🔄 [PurpleBookCard] ngOnChanges triggered');
     console.log('Current _data:', JSON.parse(JSON.stringify(this._data)));
     console.log('Received data input:', this.data);
-  
+
     if (this.data && Array.isArray(this.data.patent_list)) {
       this.patentData = this.data.patent_list;
       console.log('✅ Patent Data (list):', this.patentData);
@@ -142,16 +177,16 @@ export class PurpleBookCardComponent {
     } else {
       console.warn('⚠️ No patent data found in this._data');
     }
-  
+
     if (this.data && Array.isArray(this.data.product_list)) {
       this.productData = this.data.product_list;
       console.log('✅ Product Data:', this.productData);
       this.productColumns = this.data.productColumnList;
     }
-  
+
     console.groupEnd();
   }
-  
+
   objectValues(obj: any): any[] {
     return Object.values(obj);
   }
@@ -166,7 +201,7 @@ export class PurpleBookCardComponent {
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0;
   }
-  allowedColumns: string[] = ['gbrn','products', 'bla_number','applicant_name','applicant_logo','proprietary_name','proper_name','jarvis_rn','drug_substance_flag','drug_product_flag','patent_use_code','submission_date','remark_s']; 
+  allowedColumns: string[] = ['gbrn', 'products', 'bla_number', 'applicant_name', 'applicant_logo', 'proprietary_name', 'proper_name', 'jarvis_rn', 'drug_substance_flag', 'drug_product_flag', 'patent_use_code', 'submission_date', 'remark_s'];
 
   getObjectKeysOrdered(): string[] {
     return this.allowedColumns.filter(key => this.us_column?.hasOwnProperty(key));
@@ -258,10 +293,10 @@ export class PurpleBookCardComponent {
     console.log('Selected item:', item);
     console.log('All patentData items:', this._data?.patentData);
     console.groupEnd();
-  
+
     this.selectedPatent = item;
     this.viewPatent = !this.viewPatent;
-  
+
     if (item?.notes) {
       this.formattedNotes = this.sanitizer.bypassSecurityTrustHtml(
         item.notes.replace(/\n/g, '<br>')
@@ -270,7 +305,7 @@ export class PurpleBookCardComponent {
       this.formattedNotes = '';
     }
   }
-  
+
   closePopup(): void {
     this.selectedPatent = null;
     this.viewPatent = false;
