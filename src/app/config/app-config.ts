@@ -38,7 +38,7 @@ export const AppConfigValues: AppConfig = {
       dmf: {
         searchSpecific: `${appUrl.apiUrl}/tech-supplier/search-specific`,
         columnList: `${appUrl.apiUrl}/tech-supplier/column-list`,
-        downloadexcel: `${appUrl.localApiUrl}/tech-supplier/download-excel`,
+        downloadexcel: `${appUrl.devApiUrl}/tech-supplier/download-excel`,
       },
       chemicalDirectory: {
         filterColumns: `${appUrl.apiUrl}/chemical-directory/filter-columns`,
@@ -48,6 +48,7 @@ export const AppConfigValues: AppConfig = {
         autoSuggestions: `${appUrl.apiUrl}/chemical-directory/auto-suggestions`,
         columnList: `${appUrl.apiUrl}/chemical-directory/column-list`,
         reportData: `${appUrl.apiUrl}/chemical-directory/report-data`,
+        downloadexcel: `${appUrl.devApiUrl}/chemical-directory/download-excel`,
       },
       impurity: {
         searchSpecific: `${appUrl.apiUrl}/impurity/search-specific`,
@@ -70,6 +71,7 @@ export const AppConfigValues: AppConfig = {
       japanApproval: {
         searchSpecific: `${appUrl.apiUrl}/japan-pmda/search-specific`,
         columnList: `${appUrl.apiUrl}/japan-pmda/column-list`,
+        downloadexcel: `${appUrl.devApiUrl}/japan-pmda/download-excel`,
       },
       koreaApproval: {
         searchSpecific: `${appUrl.apiUrl}/korea-orange-book/search-specific`,
@@ -99,10 +101,12 @@ export const AppConfigValues: AppConfig = {
       indianMedicine: {
         searchSpecific: `${appUrl.apiUrl}/indian-medicine/search-specific`,
         columnList: `${appUrl.apiUrl}/indian-medicine/column-list`,
+        downloadexcel: `${appUrl.devApiUrl}/indian-medicine/download-excel`,
       },
       litigation: {
         searchSpecific: `${appUrl.apiUrl}/litigation/search-specific`,
         columnList: `${appUrl.apiUrl}/litigation/column-list`,
+        downloadexcel: `${appUrl.devApiUrl}/litigation/download-excel`,
       },
       spcDb: {
         searchSpecific: `${appUrl.devApiUrl}/spc/search-specific`,
@@ -120,10 +124,12 @@ export const AppConfigValues: AppConfig = {
       scientificDocs: {
         searchSpecific: `${appUrl.apiUrl}/scientific-docs/search-specific`,
         columnList: `${appUrl.apiUrl}/scientific-docs/column-list`,
+        downloadexcel: `${appUrl.devApiUrl}/scientific-docs/download-excel`
       },
       eximData: {
         searchSpecific: `${appUrl.apiUrl}/ximm/search-specific`,
         columnList: `${appUrl.apiUrl}/ximm/column-list`,
+        
       },
       user: {
         privilegeApi: `${appUrl.apiUrl}/user-info`,
