@@ -23,7 +23,8 @@ export const AppConfigValues: AppConfig = {
         advanceAutoSuggestions: `${appUrl.apiUrl}/basic-product-info/advance-auto-suggestions`,
         advanceSearchResults: `${appUrl.apiUrl}/basic-product-info/advance-search`,
         productHighlights:`${appUrl.apiUrl}/basic-product-info/product-highlight`,//683eccdfe449b3512e3ec59b
-        reportData: `${appUrl.apiUrl}/basic-product-info/report-data`
+        reportData: `${appUrl.apiUrl}/basic-product-info/report-data`,
+        downloadexcel: `${appUrl.devApiUrl}/basic-product-info/download-excel`,
       },
       technicalRoutes: {
         filterColumnList: `${appUrl.apiUrl}/technical-routes/filter-column-list`,
@@ -51,6 +52,7 @@ export const AppConfigValues: AppConfig = {
       impurity: {
         searchSpecific: `${appUrl.apiUrl}/impurity/search-specific`,
         columnList: `${appUrl.apiUrl}/impurity/column-list`,
+        downloadexcel: `${appUrl.devApiUrl}/impurity/download-excel`,
       },
       impPatents: {
         searchSpecific: `${appUrl.apiUrl}/imp-patents/search-specific`,
@@ -80,6 +82,7 @@ export const AppConfigValues: AppConfig = {
       purpleBook: {
         searchSpecific: `${appUrl.apiUrl}/purple-book/search-specific`,
         columnList: `${appUrl.apiUrl}/purple-book/column-list`,
+        downloadexcel: `${appUrl.devApiUrl}/purple-book/download-excel`,
       },
       veterinaryUsApproval: {
         searchSpecific: `${appUrl.apiUrl}/green-book-us/search-specific`,

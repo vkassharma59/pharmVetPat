@@ -94,7 +94,7 @@
       <chem-product-info [data]="_dataItem.productInfo"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.productInfo.name]" [index]="index"
         [tabName]="resultTabWithKeys.productInfo.name" (handleSetLoading)="handleSetLoading.emit($event)"
-        (handleResultTabData)="handleChildPaginationSearch.emit($event)">
+        (handleResultTabData)="handleChildPaginationSearch.emit($event)" [keyword]="searchKeyword"> 
       </chem-product-info>
     </ng-container>
     <ng-container *ngSwitchCase="resultTabWithKeys.technicalRoutes.name">
@@ -123,7 +123,7 @@
       <chem-impurity [data]="_dataItem.impurity"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.impurity.name]" [index]="index"
         [tabName]="resultTabWithKeys.impurity.name" (handleSetLoading)="handleSetLoading.emit($event)"
-        (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-impurity>
+        (handleResultTabData)="handleChildPaginationSearch.emit($event)" [keyword]="searchKeyword"></chem-impurity>
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.chemiTracker.name">

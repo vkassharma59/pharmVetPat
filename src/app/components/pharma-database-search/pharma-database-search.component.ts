@@ -48,6 +48,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
   LimitValue = '';
   auth: boolean = false;
   accountType: string = 'test';
+  searchKeyword: string = '';
   selectedItem: number = 0;
   chemicalStructure: any = { filter: '' };
   simpleSearch: any = {};
@@ -911,27 +912,42 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
 
   private performSimpleSearch(): void {
 
+    const keyword = this.simpleSearch?.keyword?.trim();
+    if (!keyword) {
+      alert('Please enter a keyword before searching.');
+      return;
+    }
+  
     Auth_operations.setActiveformValues({
       column: this.column,
-      keyword: this.simpleSearch?.keyword,
+      keyword: keyword,
       screenColumn: this.screenColumn,
       activeForm: searchTypes.simpleSearch,
-    })
+    });
+  
     const body = {
       criteria: this.criteria,
       page_no: 1,
       filter_enable: false,
       filters: {},
       order_by: '',
-      keyword: this.simpleSearch?.keyword
+      keyword: keyword,
     };
-    this.sharedRosService.setSearchData('Simple Search', this.simpleSearch?.keyword, this.criteria);
+  
+    this.searchKeyword = keyword;
+  
+    // ✅ Store globally so any component (like BasicRouteComponent) can use it later
+    this.mainSearchService.simpleSearchKeyword = keyword;
+  
+    // ✅ For reference/history tracking
+    this.sharedRosService.setSearchData('Simple Search', keyword, this.criteria);
+  
     const tech_API = this.apiUrls.basicProductInfo.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.productInfo.name, response);
-
+  
         this.mainSearchService.getSimpleSearchResults(body).subscribe({
           next: (res: any) => {
             this.showResultFunction.emit({
@@ -955,6 +971,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       },
     });
   }
+  
 
   private isValidDate(date) {
     return !isNaN(Date.parse(date));
@@ -1047,7 +1064,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       screenColumn: this.screenColumn,
       activeForm: searchTypes.synthesisSearch,
     });
-
+    
     const body = {
       criteria: this.criteria,
       page_no: 1,

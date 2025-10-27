@@ -20,6 +20,7 @@ export interface AppConfig {
       advanceSearchResults: string;
       productHighlights: string;
       reportData: string;
+      downloadexcel: string;
     };
     technicalRoutes: {
       filterColumnList: string;
@@ -47,6 +48,7 @@ export interface AppConfig {
     impurity: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
     };
     impPatents: {
       searchSpecific: string;
@@ -76,6 +78,7 @@ export interface AppConfig {
     purpleBook: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
     },
     indianMedicine: {
       searchSpecific: string;
