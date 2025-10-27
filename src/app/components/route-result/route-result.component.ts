@@ -93,6 +93,7 @@ export class RouteResultComponent {
   activeTab: string = '';
   report_download = true;
   isDownloadAvailable: any = false;
+  searchKeyword: string = '';
   @Output() handleSetLoading: EventEmitter<any> = new EventEmitter<any>();
   @Output() backFunction: EventEmitter<any> = new EventEmitter<any>();
   @Output() onResultTabChange = new EventEmitter<any>();

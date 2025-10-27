@@ -125,7 +125,12 @@ export class MainSearchService {
       .post(this.apiUrls.basicProductInfo.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
-
+  basicProductdownloadexcel(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.basicProductInfo.downloadexcel, body, { headers: this.headers, responseType: 'blob' as 'json' })
+      .pipe(catchError(this.handleError));
+  }
   chemicalDirectorySearchSpecific(props: any): Observable<any> {
     const body = props;
     return this.http
@@ -138,6 +143,13 @@ export class MainSearchService {
       .post(this.apiUrls.impurity.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
+  impuritydownloadexcel(props: any): Observable<Blob> {
+    return this.http.post(this.apiUrls.impurity.downloadexcel, props, {
+      headers: this.headers, // include Content-Type: application/json
+      responseType: 'blob'
+    }).pipe(catchError(this.handleError));
+  }
+  
   chemiTrackerSearchSpecific(props: any): Observable<any> {
     const body = props;
     return this.http
@@ -252,6 +264,12 @@ export class MainSearchService {
     const body = props;
     return this.http
       .post(this.apiUrls.purpleBook.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
+  purpleBookdownloadexcel(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.purpleBook.downloadexcel, body, { headers: this.headers, responseType: 'blob' as 'json' })
       .pipe(catchError(this.handleError));
   }
   veterinaryusApprovalSearchSpecific(props: any): Observable<any> {
