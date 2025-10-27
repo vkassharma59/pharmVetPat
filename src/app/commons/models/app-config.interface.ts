@@ -44,6 +44,7 @@ export interface AppConfig {
       autoSuggestions: string;
       columnList: string;
       reportData: string;
+      downloadexcel: string;
     };
     impurity: {
       searchSpecific: string;
@@ -66,6 +67,7 @@ export interface AppConfig {
     japanApproval: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
     };
     koreaApproval: {
       searchSpecific: string;
@@ -83,10 +85,13 @@ export interface AppConfig {
     indianMedicine: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
     };
     litigation: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
+      
     };
     spcDb: {
       searchSpecific: string;
@@ -116,6 +121,7 @@ export interface AppConfig {
     scientificDocs: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
     };
     eximData: {
       searchSpecific: string;
