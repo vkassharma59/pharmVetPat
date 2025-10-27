@@ -37,6 +37,7 @@ export class ChemicalDirectoryComponent implements OnChanges {
   set data(value: any) {
     this._data = value;
     this.handleResultTabData.emit(this._data || []);
+    
   }
 
   get data() {
