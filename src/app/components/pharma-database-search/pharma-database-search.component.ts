@@ -1131,53 +1131,76 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
   }
 
   private performChemicalStructureSearch(): void {
+    console.log('🔍 Starting Chemical Structure Search...');
+  
+    // ✅ Set current active form in Auth operations
     Auth_operations.setActiveformValues({
       column: this.column,
       keyword: this.chemicalStructure?.keyword,
       screenColumn: this.screenColumn,
       activeForm: searchTypes.chemicalStructure
     });
-
-    const body = {
-      criteria: this.chemicalStructure?.filter,
+  
+    const filterType = this.chemicalStructure?.filter?.toLowerCase() || '';
+    const keyword = this.chemicalStructure?.keyword?.trim() || '';
+  
+    // ✅ Construct API body according to senior’s instructions
+    const body: any = {
       page_no: 1,
       filter_enable: false,
       filters: {},
       order_by: '',
-      keyword: this.chemicalStructure?.keyword
+      criteria: filterType,
+      keyword: keyword,
+  
+      // ✅ Always send these fields for chemical form search
+      formType: 'chemical',
+      CAS_RN: filterType === 'cas_rn' ? keyword : '',
+      chemicalName: filterType === 'chemicalname' ? keyword : ''
     };
-    this.sharedRosService.setSearchData('chemicalStructure', this.chemicalStructure?.keyword, this.chemicalStructure?.filter);
-
+  
+    console.log('🧪 Final Chemical Search Body:', body);
+  
+    // ✅ Store search data globally
+    this.sharedRosService.setSearchData('chemicalStructure', keyword, filterType);
+  
+    // ✅ Fetch dynamic columns for Chemical Directory
     const tech_API = this.apiUrls.chemicalDirectory.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.chemicalDirectory.name, response);
-
+  
+        // ✅ Make API request for Chemical Structure Search
         this.mainSearchService.getChemicalStructureResults(body).subscribe({
           next: (res: any) => {
+            console.log('🎯 Chemical Search API Response:', res);
+  
+            // ✅ Pass results to parent component / tab
             this.showResultFunction.emit({
               body,
               API_URL: this.apiUrls.chemicalDirectory.intermediateApplicationSearch,
               currentTab: this.resultTabs.chemicalDirectory.name,
               actual_value: '',
             });
+  
             this.chemSearchResults.emit(res?.data);
             this.setLoadingState.emit(false);
           },
           error: (e) => {
-            console.error('Error during main search:', e);
+            console.error('❌ Error during Chemical Search:', e);
             this.setLoadingState.emit(false);
           },
         });
       },
       error: (e) => {
-        console.error('Error fetching column list:', e);
+        console.error('❌ Error fetching Column List:', e);
         this.setLoadingState.emit(false);
       },
     });
   }
-
+  
+  
   private performIntermediateSearch(): void {
     // Force set filter and keyword so that UI me bhi dikhe
     this.intermediateSearch.filter = "cas_rn";
