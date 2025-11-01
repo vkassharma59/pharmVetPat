@@ -1133,73 +1133,82 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
   private performChemicalStructureSearch(): void {
     console.log('🔍 Starting Chemical Structure Search...');
   
-    // ✅ Set current active form in Auth operations
+    this.setLoadingState.emit(true);
+  
+    // ✅ Save current active search info
     Auth_operations.setActiveformValues({
       column: this.column,
       keyword: this.chemicalStructure?.keyword,
       screenColumn: this.screenColumn,
-      activeForm: searchTypes.chemicalStructure
+      activeForm: searchTypes.chemicalStructure,
     });
   
-    const filterType = this.chemicalStructure?.filter?.toLowerCase() || '';
-    const keyword = this.chemicalStructure?.keyword?.trim() || '';
+    const filterType = (this.chemicalStructure?.filter || '').toLowerCase().trim();
+    const keyword = (this.chemicalStructure?.keyword || '').trim();
   
-    // ✅ Construct API body according to senior’s instructions
+    if (!keyword) {
+      console.warn('⚠️ Keyword is empty, skipping search.');
+      this.setLoadingState.emit(false);
+      return;
+    }
+  
+    // ✅ Construct API body exactly as required by Swagger format
     const body: any = {
+      criteria: filterType || 'smiles_code', // default fallback
+      keyword: keyword,                      // must always be string
       page_no: 1,
-      filter_enable: false,
-      filters: {},
+      filter_enable: true,
       order_by: '',
-      criteria: filterType,
-      keyword: keyword,
-  
-      // ✅ Always send these fields for chemical form search
       formType: 'chemical',
-      CAS_RN: filterType === 'cas_rn' ? keyword : '',
-      chemicalName: filterType === 'chemicalname' ? keyword : ''
+  
+      // ✅ Include both CAS_RN and chemicalName fields properly
+      filters: {
+        CAS_RN: filterType === 'cas_rn' ? keyword : '',
+        chemicalName: filterType === 'chemicalname' ? keyword : '',
+      },
     };
   
-    console.log('🧪 Final Chemical Search Body:', body);
+    console.log('🧪 Final Chemical Search Body:', JSON.stringify(body, null, 2));
   
-    // ✅ Store search data globally
+    // ✅ Store this search globally
     this.sharedRosService.setSearchData('chemicalStructure', keyword, filterType);
   
-    // ✅ Fetch dynamic columns for Chemical Directory
+    // ✅ Fetch column list before making search API call
     const tech_API = this.apiUrls.chemicalDirectory.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
-        const response = res?.data?.columns;
+        const response = res?.data?.columns || [];
         Auth_operations.setColumnList(this.resultTabs.chemicalDirectory.name, response);
   
-        // ✅ Make API request for Chemical Structure Search
+        // ✅ Main API call
+        const apiUrl = this.apiUrls.chemicalDirectory.intermediateApplicationSearch;
         this.mainSearchService.getChemicalStructureResults(body).subscribe({
           next: (res: any) => {
             console.log('🎯 Chemical Search API Response:', res);
   
-            // ✅ Pass results to parent component / tab
+            // ✅ Emit results & API info
             this.showResultFunction.emit({
               body,
-              API_URL: this.apiUrls.chemicalDirectory.intermediateApplicationSearch,
+              API_URL: apiUrl,
               currentTab: this.resultTabs.chemicalDirectory.name,
               actual_value: '',
             });
   
-            this.chemSearchResults.emit(res?.data);
+            this.chemSearchResults.emit(res?.data || []);
             this.setLoadingState.emit(false);
           },
-          error: (e) => {
-            console.error('❌ Error during Chemical Search:', e);
+          error: (err) => {
+            console.error('❌ Error during Chemical Search:', err);
             this.setLoadingState.emit(false);
           },
         });
       },
-      error: (e) => {
-        console.error('❌ Error fetching Column List:', e);
+      error: (err) => {
+        console.error('❌ Error fetching Column List:', err);
         this.setLoadingState.emit(false);
       },
     });
   }
-  
   
   private performIntermediateSearch(): void {
     // Force set filter and keyword so that UI me bhi dikhe
