@@ -350,6 +350,16 @@ export class MainSearchService {
       .post(this.apiUrls.dmf.downloadexcel, body, { headers: this.headers, responseType: 'blob' as 'json' })
       .pipe(catchError(this.handleError));
   }
+  generateSingleTabReport(props: any): Observable<Blob> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.pdfGeneration.generatePdf, body, {
+        headers: this.headers,
+        responseType: 'blob' // PDF download ke liye important
+      })
+      .pipe(catchError(this.handleError));
+  }
+  
   private handleError(error: HttpErrorResponse): Observable<never> {
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred:', error.error.message);
