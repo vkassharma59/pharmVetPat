@@ -202,8 +202,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .child-route-count-wrapper {
   display: flex;
-  /* justify-content: flex-start; */
   padding: 10px 0;
+  margin-right: 3rem;
+  margin-top: -2.7rem;
 }
 
 .child-route-count {

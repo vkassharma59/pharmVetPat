@@ -82,12 +82,17 @@
     [activeTab]="activeTab"></chem-route-tabs>
 
   <!-- Main Content Section -->
-  <div style="display: flex; justify-content: flex-end; margin-top: -2rem;">
-    <button *ngIf="isSplitDownload && hasTabData(selectedIndex)" (click)="handleGeneratePDF(selectedIndex)"
-      title="Download Single Route" class="btn btn-outline-primary btn-sm">
+  <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+    <button
+      *ngIf="isSplitDownload && hasTabData(selectedIndex)"
+      (click)="handleGeneratePDF(selectedIndex)"
+      title="Download Single Route"
+      class="btn btn-outline-primary btn-sm"
+    >
       <i class="fas fa-download"></i>
     </button>
   </div>
+  
 
   <div [ngSwitch]="activeTab || currentTabData?.name">
     <ng-container *ngSwitchCase="resultTabWithKeys.productInfo.name">
