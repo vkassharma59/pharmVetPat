@@ -21,6 +21,7 @@ import { MainSearchService } from '../../services/main-search/main-search.servic
 import { PaginationComponent } from '../../commons/pagination/pagination.component';
 import { ResultTabComponent } from '../../commons/result-tab/result-tab.component';
 import { LoadingService } from '../../services/loading-service/loading.service';
+import { CasRnService } from '../../services/casRn';
 @Component({
   selector: 'chem-search-results',
   standalone: true,
@@ -30,6 +31,7 @@ import { LoadingService } from '../../services/loading-service/loading.service';
     ResultTabComponent,
     RouteResultComponent,
     PaginationComponent,
+    //casrn import kr diyah abh aon ko bas ismein bejnah values ko from pharmdatabase and fir exim mein call karva na h 
 
   ],
   templateUrl: './search-results.component.html',
@@ -67,7 +69,7 @@ export class SearchResultsComponent {
   currentTabData: any = {};
   childApiBody: any = [];
   FilterObjectLength = false;
-
+  chemicalStructure: any = { filter: '' };
   @ViewChild('priviledgeModal') priviledgeModal!: ElementRef;
   searchTypes: any;
 
@@ -77,7 +79,8 @@ export class SearchResultsComponent {
     private userPriviledgeService: UserPriviledgeService,
     private columnListService: ColumnListService,
     private mainSearchService: MainSearchService,
-    private loadingService: LoadingService // <-- add this
+    private loadingService: LoadingService, // <-- add this
+    private casRnService: CasRnService
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
@@ -1631,69 +1634,89 @@ export class SearchResultsComponent {
     });
   }
   private eximDataSearch(resultTabData: any): void {
-
-    const pageSize = 25;
-    const page_no = 1
-    if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
-      this.allDataSets[resultTabData.index][this.resultTabs.eximData.name] = {};
-      this.setLoadingState.emit(false);
-      return;
-    }
-
-    if (this.childApiBody?.[resultTabData.index]) {
-      this.childApiBody[resultTabData.index][this.resultTabs.eximData.name] = {};
-    } else {
-      this.childApiBody[resultTabData.index] = {};
-    }
-
-    // Step 1: Prepare API body
-    this.childApiBody[resultTabData.index][this.resultTabs.eximData.name] = {
-      api_url: this.apiUrls.eximData.searchSpecific,
-      keyword: resultTabData?.searchWithValue,
-      draw: 1,
-      page_no: 1,
-      start: (page_no - 1) * pageSize,
-      length: pageSize
-    };
-    // Step 2: Fetch Column List First
-    this.columnListService.getColumnList(this.apiUrls.eximData.columnList).subscribe({
-      next: (res: any) => {
-        const columnList = res?.data?.columns || [];
-        Auth_operations.setColumnList(this.resultTabs.eximData.name, columnList);
-
-        if (!this.allDataSets[resultTabData.index]) {
-          this.allDataSets[resultTabData.index] = {};
-        }
-        // ✅ SAVE to pass to component
-        this.allDataSets[resultTabData.index][this.resultTabs.eximData.name] = {
-          columns: columnList,  // <- for <app-scientific-docs-card>
-          rows: []              // <- we’ll fill this after searchSpecific
-        };
-
-        // Step 4: Call main search API
-        this.mainSearchService.EximDataSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.eximData.name]).subscribe({
-          next: (result: any) => {
-            const dataRows = result?.data?.data || [];
-            // ✅ Append search result (rows) to saved structure
-            this.allDataSets[resultTabData.index][this.resultTabs.eximData.name].rows = dataRows;
-            this.childApiBody[resultTabData.index][this.resultTabs.eximData.name].count = result?.data?.recordsTotal;
-            this.setLoadingState.emit(false);
-            this.loadingService.setLoading(this.resultTabs.eximData.name, resultTabData.index, false);
-          },
-          error: (e) => {
-            console.error('Error during main search:', e);
-            this.setLoadingState.emit(false);
-            this.loadingService.setLoading(this.resultTabs.eximData.name, resultTabData.index, false);
-          },
-        });
-      },
-      error: (e) => {
-        console.error('Error fetching column list:', e);
+    this.casRnService.casRn$.subscribe((stored) => {
+      console.log('📦 Stored CAS_RN Data:', stored);
+  
+      const CAS_RN = stored?.CAS_RN || '';
+      const chemicalName = stored?.chemicalName || '';
+  
+      const pageSize = 25;
+      const page_no = 1;
+  
+      if (!resultTabData?.searchWith || !resultTabData?.searchWithValue) {
+        this.allDataSets[resultTabData.index][this.resultTabs.eximData.name] = {};
         this.setLoadingState.emit(false);
-        this.loadingService.setLoading(this.resultTabs.eximData.name, resultTabData.index, false);
-      },
+        return;
+      }
+  
+      if (!this.childApiBody[resultTabData.index]) {
+        this.childApiBody[resultTabData.index] = {};
+      }
+  
+      let extractedSearchType = '';
+      const apiUrl = this.apiUrls.chemicalDirectory.intermediateApplicationSearch;
+  
+      if (apiUrl) {
+        const urlParts = apiUrl.replace(/\/+$/, '').split('/');
+        extractedSearchType = urlParts[urlParts.length - 1];
+      }
+  
+      // ✅ FIX keyword rule with default values
+      let keywordPayload: any = {
+        CAS_RN: CAS_RN || 'DEFAULT_CAS_RN',
+        chemicalName: chemicalName || 'Sitagliptin'
+      };
+  
+      this.childApiBody[resultTabData.index][this.resultTabs.eximData.name] = {
+        api_url: this.apiUrls.eximData.searchSpecific,
+        searchBy: extractedSearchType,
+        keyword: keywordPayload, // ✅ always valid object now
+        draw: 1,
+        page_no: page_no,        // ✅ ensure not undefined
+        start: (page_no - 1) * pageSize,
+        length: pageSize
+      };
+  
+      console.log('📤 Final EXIM Payload:', this.childApiBody[resultTabData.index][this.resultTabs.eximData.name]);
+  
+      // Column list + API calling
+      this.columnListService.getColumnList(this.apiUrls.eximData.columnList).subscribe({
+        next: (res: any) => {
+          const columnList = res?.data?.columns || [];
+          Auth_operations.setColumnList(this.resultTabs.eximData.name, columnList);
+  
+          this.allDataSets[resultTabData.index][this.resultTabs.eximData.name] = {
+            columns: columnList,
+            rows: []
+          };
+  
+          this.mainSearchService
+            .EximDataSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.eximData.name])
+            .subscribe({
+              next: (result: any) => {
+                const dataRows = result?.data?.data || [];
+                this.allDataSets[resultTabData.index][this.resultTabs.eximData.name].rows = dataRows;
+  
+                this.childApiBody[resultTabData.index][this.resultTabs.eximData.name].count =
+                  result?.data?.recordsTotal;
+  
+                this.setLoadingState.emit(false);
+                this.loadingService.setLoading(this.resultTabs.eximData.name, resultTabData.index, false);
+              },
+              error: () => {
+                this.setLoadingState.emit(false);
+                this.loadingService.setLoading(this.resultTabs.eximData.name, resultTabData.index, false);
+              }
+            });
+        },
+        error: () => {
+          this.setLoadingState.emit(false);
+          this.loadingService.setLoading(this.resultTabs.eximData.name, resultTabData.index, false);
+        }
+      });
     });
   }
+  
   private performDMFSearch(resultTabData: any): void {
 
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
