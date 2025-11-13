@@ -30,6 +30,7 @@ export interface AppConfig {
       synthesisSearch: string;
       searchSpecific: string;
       reportData: string;
+      downloadexcel: string;
     };
     dmf: {
       searchSpecific: string;

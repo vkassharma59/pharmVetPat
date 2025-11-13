@@ -53,6 +53,13 @@
     </div>
   </div>
 </div>
+<div class="flex flex-wrap gap-3" style="margin-left: 65rem;margin-top: -2.1rem;">
+  <button mat-raised-button [disabled]="isExportingExcel"
+    class="px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]" (click)="downloadExcel()">
+    <span *ngIf="!isExportingExcel">Download Excel <i class="fa-solid fa-download"></i></span>
+    <span *ngIf="isExportingExcel"><i class="fa fa-spinner fa-spin"></i> Exporting...</span>
+  </button>
+</div>
     <ng-container
       *ngIf="currentChildAPIBody && !isEmptyObject(currentChildAPIBody) && searchThrough !== 'synthesis-search'">
       <chem-child-result-tab [dataItem]="_data?.ros_data"   [CurrentAPIBody]="CurrentAPIBody"  [currentAPIData]="currentChildAPIBody"

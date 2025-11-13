@@ -34,6 +34,7 @@ export const AppConfigValues: AppConfig = {
         synthesisSearch: `${appUrl.apiUrl}/technical-routes/synthesis-search`,
         searchSpecific: `${appUrl.apiUrl}/technical-routes/search-specific`,
         reportData: `${appUrl.apiUrl}/technical-routes/report-data`,
+        downloadexcel: `${appUrl.devApiUrl}/technical-routes/download-excel`,
       },
       dmf: {
         searchSpecific: `${appUrl.apiUrl}/tech-supplier/search-specific`,
