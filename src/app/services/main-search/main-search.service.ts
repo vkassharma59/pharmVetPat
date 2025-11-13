@@ -123,7 +123,12 @@ export class MainSearchService {
       .post(this.apiUrls.technicalRoutes.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
-
+  technicalRoutesdownloadexcel(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.technicalRoutes.downloadexcel, body, { headers: this.headers, responseType: 'blob' as 'json' })
+      .pipe(catchError(this.handleError));
+  }
   basicProductSearchSpecific(props: any): Observable<any> {
     const body = props;
     return this.http
