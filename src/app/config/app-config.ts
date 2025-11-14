@@ -64,10 +64,12 @@ export const AppConfigValues: AppConfig = {
       europeApproval: {
         searchSpecific: `${appUrl.apiUrl}/ema/search-specific`,
         columnList: `${appUrl.apiUrl}/ema/column-list`,
+        downloadexcel: `${appUrl.devApiUrl}/ema/download-excel`,
       },
       canadaApproval: {
         searchSpecific: `${appUrl.apiUrl}/health-canada/search-specific`,
         columnList: `${appUrl.apiUrl}/health-canada/column-list`,
+        downloadexcel: `${appUrl.devApiUrl}/health-canada/download-excel`,
       },
       japanApproval: {
         searchSpecific: `${appUrl.apiUrl}/japan-pmda/search-specific`,

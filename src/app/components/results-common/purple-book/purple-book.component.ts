@@ -63,6 +63,7 @@ export class PurpleBookComponent {
   purpleFilters: any = {};
   lastClickedFilterKey: string | null = null;
   filterOrSearchSource: 'filter' | 'search' | null = null;
+  pageSize = 25;
 
   filterConfigs = [
     {
@@ -132,21 +133,23 @@ export class PurpleBookComponent {
     // Fix 1: Wrap _data in array if it's not one already
     if (this._data && !Array.isArray(this._data)) {
       this.patentData = [this._data];
-
     } else if (Array.isArray(this._data)) {
       this.patentData = this._data;
-
-    } else {
-      console.warn('⚠️ patentData is missing or not valid');
     }
+  
+    // ⭐ FIX: Update pageSize every time new paginated results come
+    if (Array.isArray(this._data)) {
+      this.pageSize = this._data.length;   // <-- Correct dynamic update
+    } else {
+      this.pageSize = 1;
+    }
+  
     // Fix 2: Handle column definitions
     if (this.currentChildAPIBody?.columnList?.patentColumnList?.length) {
       this.patentColumns = this.currentChildAPIBody.columnList.patentColumnList;
-
-    } else {
-      console.warn('⚠️ patentColumns not available from currentChildAPIBody');
     }
   }
+  
   ngOnInit(): void {
     this.purpleApiBody = { ...this.currentChildAPIBody };
     this.purpleApiBody.filters = this.purpleApiBody.filters || {};
@@ -251,11 +254,9 @@ export class PurpleBookComponent {
       ...this.purpleApiBody,
       filters: { ...this.purpleApiBody.filters }
     };
-    console.log(`[API] Current API body for ${filterKey}:`, this._currentChildAPIBody);
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     this.mainSearchService.purpleBookSearchSpecific(this._currentChildAPIBody).subscribe({
       next: (res) => {
-        console.log(`[API] Filtered result for ${filterKey}:`, res?.data);
         const resultData = res?.data || {};
         // ✅ Updating count if needed:
         this._currentChildAPIBody = {
@@ -274,6 +275,18 @@ export class PurpleBookComponent {
       }
     });
   }
+  // handleChangeTabData(updatedData: any) {
+  //   this._data = updatedData?.purple_book_data || updatedData || [];
+  //   this.pageSize = this._data.length;
+  //   this.patentData = this._data;       // update UI table list
+  // }
+  updatePageData(event: any) {
+    if (event?.purple_book_data) {
+      this._data = event.purple_book_data;
+      this.pageSize = this._data.length;  // update page size
+      this.currentChildAPIBody.count = event.purple_book_count;
+    }
+  }  
   sortPatentData(data: any[], order: string): any[] {
     if (!Array.isArray(data)) return [];
 
@@ -351,89 +364,5 @@ export class PurpleBookComponent {
         console.error('Failed to copy text: ', err);
       });
     }
-  }
-  // downloadExcel(): void {
-  //   this.isExportingExcel = true;
-  
-  //   // Prepare request body
-  //   this._currentChildAPIBody = {
-  //     ...this.purpleApiBody,
-  //     filters: { ...this.purpleApiBody.filters },
-  //     filter_enable: false
-  //   };
-  
-  //   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  
-  //   this.mainSearchService.purpleBookdownloadexcel(this._currentChildAPIBody).subscribe({
-  //     next: async (res: Blob) => {
-  //       try {
-  //         // Step 1: Read response as ArrayBuffer
-  //         const arrayBuffer = await res.arrayBuffer();
-  //         const XLSX = await import('xlsx');
-  //         const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-  
-  //         const sheetName = workbook.SheetNames[0];
-  //         const worksheet = workbook.Sheets[sheetName];
-  //         const jsonData: any[] = XLSX.utils.sheet_to_json(worksheet);
-  
-  //         if (!jsonData.length) {
-  //           this.isExportingExcel = false;
-  //           return;
-  //         }
-  
-  //         // Step 2: Identify columns that actually have values
-  //         const keys = Object.keys(jsonData[0]);
-  //         const validKeys = keys.filter((k: string) =>
-  //           jsonData.some((row: any) => row[k] !== null && row[k] !== undefined && row[k] !== '')
-  //         );
-  
-  //         // Step 3: Remove empty columns
-  //         const filteredData = jsonData.map((row: any) => {
-  //           const filteredRow: any = {};
-  //           validKeys.forEach((k: string) => (filteredRow[k] = row[k]));
-  //           return filteredRow;
-  //         });
-  
-  //         // Step 4: Create new worksheet and workbook
-  //         const newWorksheet = XLSX.utils.json_to_sheet(filteredData, { skipHeader: false });
-  //         const colWidths = validKeys.map((key) => ({ wch: Math.max(key.length, 90) }));
-  //         newWorksheet['!cols'] = colWidths;
-  //         const newWorkbook = XLSX.utils.book_new();
-  //         XLSX.utils.book_append_sheet(newWorkbook, newWorksheet, 'FilteredData');
-  
-  //         // Step 5: Convert workbook to Blob for download
-  //         const excelBuffer = XLSX.write(newWorkbook, { bookType: 'xlsx', type: 'array' });
-  //         const blob = new Blob([excelBuffer], {
-  //           type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-  //         });
-  
-  //         const url = window.URL.createObjectURL(blob);
-  //         const a = document.createElement('a');
-  //         a.href = url;
-  //         a.download = 'Purple-Book.xlsx';
-  //         document.body.appendChild(a);
-  //         a.click();
-  //         document.body.removeChild(a);
-  //         window.URL.revokeObjectURL(url);
-  
-  //         this.isExportingExcel = false;
-  //         window.scrollTo(0, scrollTop);
-  //       } catch (error) {
-  //         console.error('Excel processing error:', error);
-  //         this.isExportingExcel = false;
-  //         window.scrollTo(0, scrollTop);
-  //       }
-  //     },
-  //     error: (err) => {
-  //       console.error('Excel download error:', err);
-  //       this._currentChildAPIBody = {
-  //         ...this._currentChildAPIBody,
-  //         filter_enable: false
-  //       };
-  //       this.isExportingExcel = false;
-  //       window.scrollTo(0, scrollTop);
-  //     }
-  //   });
-  // }
-
+ }
 }

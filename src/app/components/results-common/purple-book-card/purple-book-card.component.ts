@@ -38,20 +38,12 @@ export class PurpleBookCardComponent {
   }
   set data(value: any) {
     if (value && Object.keys(value).length > 0) {
-      console.group('🔍 [PurpleBookCard] Incoming API Data');
-      console.log('Full Data:', JSON.parse(JSON.stringify(value)));
-      console.log('Patent Data:', value.patentData);
-      console.groupEnd();
 
       PurpleBookCardComponent.apiCallCount++;
       this.localCount = PurpleBookCardComponent.apiCallCount;
       this._data = value;
       this.resultTabs = this.utilityService.getAllTabsName();
       const column_list = Auth_operations.getColumnList();
-      console.group('📋 Column List Debug');
-      console.log('Raw column_list:', column_list);
-      console.log('Result Tabs:', this.resultTabs);
-      console.groupEnd();
 
       if (column_list[this.resultTabs.purpleBook?.name]?.patentColumnList?.length > 0) {
         for (let col of column_list[this.resultTabs.purpleBook?.name]?.patentColumnList) {
@@ -65,11 +57,6 @@ export class PurpleBookCardComponent {
               this.us_approval_column[col.value] = col.name;
             }
           }
-
-          console.group('🧩 Column Mapping Results');
-          console.log('us_column (Patent Columns):', this.us_column);
-          console.log('us_approval_column (Approval Columns):', this.us_approval_column);
-          console.groupEnd();
         }
       }
     }
@@ -98,7 +85,6 @@ export class PurpleBookCardComponent {
   productColumns: any[] = [];
   productData: any[] = [];
   ngOnInit() {
-    console.log('PurpleBookCardComponent initialized with data:', this._data);
   
   // Initialize pagination setup
   this.currentChildAPIBody = {
@@ -124,7 +110,6 @@ export class PurpleBookCardComponent {
   // }
   getVisibleColumns(): string[] {
     const allKeys = this.getObjectKeys(this.us_column);
-    console.debug('📚 All possible column keys:', allKeys);
 
     const visible = allKeys.filter(key => {
       const hasValue = this._data?.patentData?.some(item => {
@@ -133,18 +118,14 @@ export class PurpleBookCardComponent {
         return value !== null && value !== undefined && value !== '';
       });
       if (!hasValue) {
-        console.warn(`⚠️ Column "${key}" hidden (no values in data)`);
       }
       return hasValue;
     });
 
-    console.debug('✅ Visible columns after filtering:', visible);
     return visible;
   }
 
   handleChildPageChange(updatedApiBody: any) {
-    console.log("📤 Pagination requested new data with body:", updatedApiBody);
-  
     // Save the new API body for current state
     this.currentChildAPIBody = updatedApiBody;
   
@@ -154,7 +135,6 @@ export class PurpleBookCardComponent {
     // Suppose you already have _data containing results
     // Here you can update it after fetching new data
     setTimeout(() => {
-      console.log("✅ Simulated page data loaded for page:", updatedApiBody.page_no);
       this.loading = false;
     }, 500);
   }
@@ -163,28 +143,18 @@ export class PurpleBookCardComponent {
     this.loading = state;
   }
   ngOnChanges() {
-    console.group('🔄 [PurpleBookCard] ngOnChanges triggered');
-    console.log('Current _data:', JSON.parse(JSON.stringify(this._data)));
-    console.log('Received data input:', this.data);
 
     if (this.data && Array.isArray(this.data.patent_list)) {
       this.patentData = this.data.patent_list;
-      console.log('✅ Patent Data (list):', this.patentData);
       this.patentColumns = this.data.patentColumnList;
     } else if (this.data?.patentData) {
-      console.log('✅ Patent Data (object style):', this.data.patentData);
       this.patentData = this.data.patentData;
-    } else {
-      console.warn('⚠️ No patent data found in this._data');
-    }
-
+    } 
     if (this.data && Array.isArray(this.data.product_list)) {
       this.productData = this.data.product_list;
-      console.log('✅ Product Data:', this.productData);
       this.productColumns = this.data.productColumnList;
     }
 
-    console.groupEnd();
   }
 
   objectValues(obj: any): any[] {
@@ -214,7 +184,6 @@ export class PurpleBookCardComponent {
   }
   getColumnName(value: any) {
     const colName = this.us_approval_column?.[value];
-    // console.log(`getColumnName(${field}) =>`, colName);
     return colName // fallback display
   }
 
@@ -289,11 +258,6 @@ export class PurpleBookCardComponent {
 
 
   openPopup(item: any): void {
-    console.group('🪟 Popup Opened for Patent Item');
-    console.log('Selected item:', item);
-    console.log('All patentData items:', this._data?.patentData);
-    console.groupEnd();
-
     this.selectedPatent = item;
     this.viewPatent = !this.viewPatent;
 

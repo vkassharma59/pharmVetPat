@@ -60,10 +60,12 @@ export interface AppConfig {
     europeApproval: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
     };
     canadaApproval: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
     };
     japanApproval: {
       searchSpecific: string;
