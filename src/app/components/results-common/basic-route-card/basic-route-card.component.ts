@@ -35,6 +35,26 @@ export class BasicRouteCardComponent {
   showViewMore: boolean = false;
   @ViewChild('synonymBlock') synonymBlock!: ElementRef;
   isOverflowing = false;
+  isOpen = false;
+
+  documents = [
+    { title: "CERTIFICATE", url: "https://dummy.link/doc1.pdf" },
+    { title: "FACT SHEET", url: "https://dummy.link/doc2.pdf" },
+    { title: "INDIAN PROD. PAT. 1", url: "https://dummy.link/doc3.pdf" },
+    { title: "INDIAN PROD. PAT. 2", url: "https://dummy.link/doc4.pdf" },
+    { title: "MEMORANDUM", url: "https://dummy.link/doc5.pdf" },
+    { title: "POLYMORPHISM CHAPTER", url: "https://dummy.link/doc6.pdf" },
+  ];
+
+  toggle() {
+    this.isOpen = !this.isOpen;
+  }
+
+  openDoc(url: string) {
+    window.open(url, "_blank");
+  }
+
+
   @Input()
   get data() {
     return this._data;

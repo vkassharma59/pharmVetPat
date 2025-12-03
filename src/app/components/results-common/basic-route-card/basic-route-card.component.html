@@ -16,12 +16,12 @@
 <div class="card-body">
   <div class="pb-3 mb-3 px-2 rounded-lg" *ngIf="!isEmptyObject(_data); else noData">
     <div class="row">
-      <div style="padding-top:7px;flex-wrap: wrap; justify-content:space-between; display:flex;">
+      <!-- <div style="padding-top:7px;flex-wrap: wrap; justify-content:space-between; display:flex;">
         <span>
-          <span style="font-weight: 500;font-size: 16px;" >
+          <span style="font-weight: 500;font-size: 16px;">
             {{ showFull ? (_data?.ACTIVE_INGREDIENT || '') : (_data?.ACTIVE_INGREDIENT | slice:0:200) }}
             <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
-                      (click)="handleCopy(_data?.ACTIVE_INGREDIENT, copyBtn)"><i class="fas fa-copy"></i></span>
+              (click)="handleCopy(_data?.ACTIVE_INGREDIENT, copyBtn)"><i class="fas fa-copy"></i></span>
             <ng-container *ngIf="_data?.ACTIVE_INGREDIENT?.length > 200">
               <span (click)="toggleView()" style="color: black; cursor: pointer;border-bottom: 1px dotted;">
                 {{ showFull ? '... View Less' : '...View More' }}
@@ -29,8 +29,56 @@
             </ng-container>
           </span>
         </span>
+       
+      </div> -->
+
+      <div style="padding-top:7px; display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap;">
+
+        <!-- LEFT SIDE: ACTIVE INGREDIENT -->
+        <span style="flex:1; min-width: 55%;">
+          <span style="font-weight: 500; font-size: 16px;">
+            {{ showFull ? (_data?.ACTIVE_INGREDIENT || '') : (_data?.ACTIVE_INGREDIENT | slice:0:200) }}
+      
+            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+              (click)="handleCopy(_data?.ACTIVE_INGREDIENT, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+      
+            <ng-container *ngIf="_data?.ACTIVE_INGREDIENT?.length > 200">
+              <span (click)="toggleView()" style="color: black; cursor: pointer; border-bottom: 1px dotted;">
+                {{ showFull ? '... View Less' : '...View More' }}
+              </span>
+            </ng-container>
+          </span>
+        </span>
+      
+        <!-- RIGHT SIDE: DATA AVAILABILITY BOX -->
+        <div class="box" style="min-width: 30%; position: relative;">
+          <!-- Header Button -->
+          <button class="header-btn" (click)="toggle()">
+            DATA AVAILABILITY
+            <i class="fa fa-angle-down arrow" [class.rotate]="isOpen"></i>
+          </button>
+        
+          <!-- Accordion Body as Overlay -->
+          <div class="content-overlay" *ngIf="isOpen">
+            <div class="doc-list">
+              <button 
+                class="doc-btn" 
+                *ngFor="let item of documents" 
+                (click)="openDoc(item.url)">
+                <i class="fa fa-download mr-1"></i>
+                <span>{{ item.title }}</span>
+                <i class="fa fa-check ml-1"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
       </div>
-      <div class="d-flex justify-content-between align-items-center py-2 flex-sm-row flex-column text-center">
+      
+      <!-- <div class="d-flex justify-content-between align-items-center py-2 flex-sm-row flex-column text-center">
         <p class="mb-2 mb-sm-0 px-3 py-2 w-50 w-sm-auto"
           style="background-color:rgba(0, 52, 129, 0.882); color: white;font-weight:500;font-size:16px ;border-radius: 5px;">
           Generic Constraining Date (GCD): {{ getUpdationDate(_data?.GENERIC_CONSTRAINING_DATE)}}
@@ -44,8 +92,56 @@
           </button>
           <button (click)="viewProduct()" class="btn btn-success w-50 w-sm-auto">{{(toggleProductHighlights) ? 'Hide
             Product Highlight' : 'View Product Highlight'}}</button>
+
+            <p class="mb-2 mb-sm-0 px-3 py-2 w-50 w-sm-auto"
+            style="background-color:rgba(0, 52, 129, 0.882); color:white; font-weight:500; font-size:16px; border-radius:5px;">
+            {{ _data?.YEAR_OF_DISCOVERY ? getColumnName('YEAR_OF_DISCOVERY') + ': ' + _data.YEAR_OF_DISCOVERY : 'No Discovery Data' }}
+         </p>
+        </div> 
+      </div>      -->
+    
+      
+      <div class="equal-box-row mt-2">
+
+        <div class="equal-btn"
+          style="background-color:rgba(0, 52, 129, 0.882); color: white;font-weight:500;font-size:16px ;border-radius: 5px;">
+          Generic Constraining Date (GCD): {{ getUpdationDate(_data?.GENERIC_CONSTRAINING_DATE) }}
+        </div>
+
+        <button class="equal-btn btn btn-primary" [disabled]="!_data?.INCHIKEY">
+          <a href="https://patentscope.wipo.int/search/en/result.jsf?inchikey={{_data?.INCHIKEY}}" target="_blank"
+            style="color:white;text-decoration:none;">
+            View Updated Patent at Patent Scope (WIPO)
+          </a>
+        </button>
+
+        <button class="equal-btn btn btn-success" (click)="viewProduct()">
+          {{ toggleProductHighlights ? 'Hide Product Highlight' : 'View Product Highlight' }}
+        </button>
+
+       
+
+      </div>
+      <div class="equal-box-row mt-2">
+        <div class="equal-btn"
+        *ngIf="_data?.dummy_11 && getColumnName('dummy_11')"
+          style="background-color:rgba(0, 52, 129, 0.882); color: white;font-weight:500;font-size:16px ;border-radius: 5px;">
+          {{ _data?.dummy_11 ? getColumnName('dummy_11') + ': ' + getUpdationDate(_data.dummy_11) : 'No Data' }}
+          <!-- {{ getColumnName('dummy_11') }}: {{ _data?.dummy_11 ?? '2022-07-05' }} -->
+        </div>
+        <div class="equal-btn"
+        *ngIf="_data?.dummy_2 && getColumnName('dummy_2')"
+          style="background-color:rgba(0, 52, 129, 0.882); color: white;font-weight:500;font-size:16px ;border-radius: 5px;">
+          {{ _data?.dummy_2 ? getColumnName('dummy_2') + ': ' + getUpdationDate(_data.dummy_2) : 'No Data' }}
+          <!-- {{ getColumnName('dummy_2') }}: {{ _data?.dummy_2 ?? '2022-07-05' }} -->
+        </div>
+        <div class="equal-btn"
+        *ngIf="_data?.YEAR_OF_DISCOVERY && getColumnName('YEAR_OF_DISCOVERY')"
+          style="background-color:rgba(0, 52, 129, 0.882); color: white;font-weight:500;font-size:16px ;border-radius: 5px;">
+          {{ _data?.YEAR_OF_DISCOVERY ? getColumnName('YEAR_OF_DISCOVERY') + ': ' + _data.YEAR_OF_DISCOVERY : 'No Data' }}
         </div>
       </div>
+
       <div *ngIf="toggleProductHighlights" class="col-md-12 product-hilight-box product-hilight-section0"
         style="background-color: #F5FBFF;">
         <h3 class="text-center ph-box-main-title">Product Highlight</h3>
@@ -281,6 +377,28 @@
               </p>
             </div>
           </div>
+          <div *ngIf="_data?.dummy_10 && getColumnName('dummy_10')" class="col-md-3">
+            <div class="pt-3">
+              <h1 class="font-bold" style="color:#312e81;">{{ getColumnName("dummy_10") }}
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.dummy_10, copyBtn)"><i class="fas fa-copy"></i></span>
+              </h1>
+              <p class="pt-2 text-justify max-h-20 overflow-auto">
+                {{ _data?.dummy_10 }}
+              </p>
+            </div>
+          </div>
+          <div *ngIf="_data?.dummy_7 && getColumnName('dummy_7')" class="col-md-3">
+            <div class="pt-3">
+              <h1 class="font-bold" style="color:#312e81;">{{ getColumnName("dummy_7") }}
+                <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+                  (click)="handleCopy(_data?.dummy_7, copyBtn)"><i class="fas fa-copy"></i></span>
+              </h1>
+              <p class="pt-2 text-justify max-h-20 overflow-auto">
+                {{ _data?.dummy_7 }}
+              </p>
+            </div>
+          </div>
 
           <div *ngIf="_data?.UNIQUE_INGRE_IDENTI_UNII && getColumnName('UNIQUE_INGRE_IDENTI_UNII')" class="col-md-3">
             <div class="pt-3">
@@ -454,7 +572,7 @@
               </p>
             </div>
           </div>
-           <div *ngIf="_data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE && getColumnName('PEDIATRIC_DRUG_EXCLUSIVITY_PDE')"
+          <div *ngIf="_data?.PEDIATRIC_DRUG_EXCLUSIVITY_PDE && getColumnName('PEDIATRIC_DRUG_EXCLUSIVITY_PDE')"
             class="col-md-3">
             <div class="pt-3 ">
               <h1 class="font-bold" style="color:#312e81;">
