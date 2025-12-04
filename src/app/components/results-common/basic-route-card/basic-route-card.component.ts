@@ -22,6 +22,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class BasicRouteCardComponent {
   isLoadingUI = true;
+  basePath = "https://www.chemrobotics.com/agropat/pdf/gsda/docs/";
   static apiCallCount: number = 0; // Global static counter
   localCount: number = 0; // Instance-specific counter
   productHighlights: any[] = [];
@@ -36,24 +37,9 @@ export class BasicRouteCardComponent {
   @ViewChild('synonymBlock') synonymBlock!: ElementRef;
   isOverflowing = false;
   isOpen = false;
-
-  documents = [
-    { title: "CERTIFICATE", url: "https://dummy.link/doc1.pdf" },
-    { title: "FACT SHEET", url: "https://dummy.link/doc2.pdf" },
-    { title: "INDIAN PROD. PAT. 1", url: "https://dummy.link/doc3.pdf" },
-    { title: "INDIAN PROD. PAT. 2", url: "https://dummy.link/doc4.pdf" },
-    { title: "MEMORANDUM", url: "https://dummy.link/doc5.pdf" },
-    { title: "POLYMORPHISM CHAPTER", url: "https://dummy.link/doc6.pdf" },
-  ];
-
-  toggle() {
-    this.isOpen = !this.isOpen;
-  }
-
-  openDoc(url: string) {
-    window.open(url, "_blank");
-  }
-
+  documents: any[] = [];
+  
+ 
 
   @Input()
   get data() {
@@ -108,12 +94,24 @@ export class BasicRouteCardComponent {
       console.log('Resetting apiCallCount to 0');
       BasicRouteCardComponent.apiCallCount = 0;
     }
+    if (this._data?.data_availability?.length) {
+      this.documents = this._data.data_availability; // Auto mapping
+    }
   }
   ngAfterViewInit() {
     setTimeout(() => {
       this.checkOverflow();
     });
   }
+ 
+  toggle() {
+    this.isOpen = !this.isOpen;
+  }
+  openDoc(file: string) {
+    const fullUrl = this.basePath + file;
+    window.open(fullUrl, "_blank");
+  }
+  
 
   checkOverflow() {
     const el = this.synonymBlock?.nativeElement;

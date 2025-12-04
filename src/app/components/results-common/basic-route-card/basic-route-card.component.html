@@ -53,14 +53,12 @@
         </span>
       
         <!-- RIGHT SIDE: DATA AVAILABILITY BOX -->
-        <div class="box" style="min-width: 30%; position: relative;">
-          <!-- Header Button -->
+        <!-- <div class="box" style="min-width: 30%; position: relative;">
           <button class="header-btn" (click)="toggle()">
             DATA AVAILABILITY
             <i class="fa fa-angle-down arrow" [class.rotate]="isOpen"></i>
           </button>
         
-          <!-- Accordion Body as Overlay -->
           <div class="content-overlay" *ngIf="isOpen">
             <div class="doc-list">
               <button 
@@ -73,9 +71,31 @@
               </button>
             </div>
           </div>
+        </div> -->
+        
+        <div class="box" style="min-width: 30%; position: relative;" *ngIf="_data?.data_availability?.length">
+  
+          <button class="header-btn" (click)="toggle()">
+            DATA AVAILABILITY
+            <i class="fa fa-angle-down arrow" [class.rotate]="isOpen"></i>
+          </button>
+        
+          <div class="content-overlay" *ngIf="isOpen">
+            <div class="doc-list">
+              <button 
+                class="doc-btn" 
+                *ngFor="let item of documents"
+                (click)="openDoc(item.documents)">
+                
+                <i class="fa fa-download mr-1"></i>
+                <span>{{ item.name_of_documents }}</span>
+                <i class="fa fa-check ml-1"></i>
+        
+              </button>
+            </div>
+          </div>
         </div>
-        
-        
+         
       </div>
       
       <!-- <div class="d-flex justify-content-between align-items-center py-2 flex-sm-row flex-column text-center">
@@ -515,7 +535,7 @@
               </p>
             </div>
           </div>
-          <div *ngIf="_data?.YEAR_OF_DISCOVERY && getColumnName('YEAR_OF_DISCOVERY')" class="col-md-3 mt-2">
+          <!-- <div *ngIf="_data?.YEAR_OF_DISCOVERY && getColumnName('YEAR_OF_DISCOVERY')" class="col-md-3 mt-2">
             <div class="pt-3">
               <h1 class="font-bold" style="color:#312e81;">
                 {{ getColumnName("YEAR_OF_DISCOVERY") }}
@@ -526,7 +546,7 @@
                 {{ _data?.YEAR_OF_DISCOVERY }}
               </p>
             </div>
-          </div>
+          </div> -->
           <div *ngIf="_data?.LAUNCHING_YEAR && getColumnName('LAUNCHING_YEAR')" class="col-md-3 mt-2">
             <div class="pt-3">
               <h1 class="font-bold" style="color:#312e81;">{{ getColumnName("LAUNCHING_YEAR") }}
@@ -586,7 +606,7 @@
               </p>
             </div>
           </div>
-          <div *ngIf="_data?.GENERIC_CONSTRAINING_DATE && getColumnName('GENERIC_CONSTRAINING_DATE')" class="col-md-4">
+          <!-- <div *ngIf="_data?.GENERIC_CONSTRAINING_DATE && getColumnName('GENERIC_CONSTRAINING_DATE')" class="col-md-4">
             <div class="pt-3">
               <h1 class="font-bold" style="color:#312e81;">
                 {{ getColumnName("GENERIC_CONSTRAINING_DATE") }}:
@@ -597,7 +617,7 @@
                 {{ getUpdationDate(_data?.GENERIC_CONSTRAINING_DATE) }}
               </p>
             </div>
-          </div>
+          </div> -->
         </div>
 
         <div *ngIf="_data?.SYNONYMSCOMMON_NAME && getColumnName('SYNONYMSCOMMON_NAME')" class="col-md-12">
@@ -1420,7 +1440,7 @@
             </div>
           </div>
 
-          <div *ngIf="_data?.dummy_2 && getColumnName('dummy_2')" class="col-md-12">
+          <!-- <div *ngIf="_data?.dummy_2 && getColumnName('dummy_2')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold" style="color:#312e81;">
                 {{ getColumnName("dummy_2") }}
@@ -1431,7 +1451,7 @@
 
               </p>
             </div>
-          </div>
+          </div> -->
 
           <div *ngIf="_data?.dummy_3 && getColumnName('dummy_3')" class="col-md-12">
             <div class="pt-3 mt-3">
@@ -1483,7 +1503,7 @@
             </div>
           </div>
 
-          <div *ngIf="_data?.dummy_7 && getColumnName('dummy_7')" class="col-md-12">
+          <!-- <div *ngIf="_data?.dummy_7 && getColumnName('dummy_7')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold" style="color:#312e81;">
                 {{ getColumnName("dummy_7") }}
@@ -1494,7 +1514,7 @@
 
               </p>
             </div>
-          </div>
+          </div> -->
 
           <div *ngIf="_data?.dummy_8 && getColumnName('dummy_8')" class="col-md-12">
             <div class="pt-3 mt-3">
@@ -1517,12 +1537,11 @@
                   (click)="handleCopy(_data?.dummy_9, copyBtn)"><i class="fas fa-copy"></i></span>
               </h1>
               <p class="text-justify max-h-28 overflow-auto" innerHTML="convertNewlinesToBreaks(_data?.dummy_9,200)">
-
               </p>
             </div>
           </div>
 
-          <div *ngIf="_data?.dummy_10 && getColumnName('dummy_10')" class="col-md-12">
+          <!-- <div *ngIf="_data?.dummy_10 && getColumnName('dummy_10')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold" style="color:#312e81;">
                 {{ getColumnName("dummy_10") }}
@@ -1533,9 +1552,9 @@
 
               </p>
             </div>
-          </div>
+          </div> -->
 
-          <div *ngIf="_data?.dummy_11 && getColumnName('dummy_11')" class="col-md-12">
+          <!-- <div *ngIf="_data?.dummy_11 && getColumnName('dummy_11')" class="col-md-12">
             <div class="pt-3 mt-3">
               <h1 class="font-bold" style="color:#312e81;">
                 {{ getColumnName("dummy_11") }}
@@ -1546,7 +1565,7 @@
 
               </p>
             </div>
-          </div>
+          </div> -->
 
           <div *ngIf="_data?.dummy_12 && getColumnName('dummy_12')" class="col-md-12">
             <div class="pt-3 mt-3">

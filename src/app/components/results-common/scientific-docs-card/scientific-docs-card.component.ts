@@ -35,7 +35,7 @@ import { Auth_operations } from '../../../Utils/SetToken';
 })
 
 export class ScientificDocsCardComponent  {
-
+  basePath = "https://www.chemrobotics.com/agropat/pdf/gsda/docs/";
   _data: any = [];
   noMatchingData: boolean = false;
   MoreInfo: boolean = false;
@@ -87,6 +87,10 @@ export class ScientificDocsCardComponent  {
     if (ScientificDocsCardComponent.apiCallCount === 0) {
       ScientificDocsCardComponent.apiCallCount = 0;
     }
+  }
+  openDoc(file: string) {
+    const fullUrl = this.basePath + file;
+    window.open(fullUrl, "_blank");
   }
   getImageUrl(data: any): string {
     return (
