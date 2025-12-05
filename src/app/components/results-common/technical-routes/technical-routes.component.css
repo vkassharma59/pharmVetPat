@@ -200,3 +200,13 @@ a:active.btn::after {
   top: 1px;
   left: 1px;
 }
+.filter{
+  margin-left: 65rem;
+  margin-top: -2.1rem;
+}
+@media screen and (max-width: 1400px) {
+.filter{
+  margin-left: 51rem;
+}
+  
+}

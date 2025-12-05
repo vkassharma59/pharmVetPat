@@ -87,4 +87,12 @@
     padding: 0.5rem;
     box-sizing: border-box;
   }
-
+  .filter{
+    margin-left: 21rem;
+  }
+  @media screen and (max-width: 1400px) {
+  .filter{
+    margin-left: 0rem;
+  }
+    
+  }
