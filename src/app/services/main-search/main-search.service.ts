@@ -123,7 +123,12 @@ export class MainSearchService {
       .post(this.apiUrls.technicalRoutes.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
-
+  technicalRoutesdownloadexcel(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.technicalRoutes.downloadexcel, body, { headers: this.headers, responseType: 'blob' as 'json' })
+      .pipe(catchError(this.handleError));
+  }
   basicProductSearchSpecific(props: any): Observable<any> {
     const body = props;
     return this.http
@@ -177,6 +182,12 @@ export class MainSearchService {
     const body = props;
     return this.http
       .post(this.apiUrls.canadaApproval.searchSpecific, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
+  canadadownloadexcel(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.canadaApproval.downloadexcel, body, { headers: this.headers, responseType: 'blob' as 'json' })
       .pipe(catchError(this.handleError));
   }
   japanApprovalSearchSpecific(props: any): Observable<any> {
@@ -275,6 +286,12 @@ export class MainSearchService {
       .post(this.apiUrls.europeApproval.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
+  europeApprovaldownloadexcel(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.europeApproval.downloadexcel, body, { headers: this.headers, responseType: 'blob' as 'json' })
+      .pipe(catchError(this.handleError));
+  }
   getusApprovalColumnList(): Observable<any> {
     return this.http
       .get(this.apiUrls.usApproval.columnList, { headers: this.headers })
@@ -350,6 +367,16 @@ export class MainSearchService {
       .post(this.apiUrls.dmf.downloadexcel, body, { headers: this.headers, responseType: 'blob' as 'json' })
       .pipe(catchError(this.handleError));
   }
+  generateSingleTabReport(props: any): Observable<Blob> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.pdfGeneration.generatePdf, body, {
+        headers: this.headers,
+        responseType: 'blob' // PDF download ke liye important
+      })
+      .pipe(catchError(this.handleError));
+  }
+  
   private handleError(error: HttpErrorResponse): Observable<never> {
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred:', error.error.message);

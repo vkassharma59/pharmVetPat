@@ -153,9 +153,6 @@ export class IndianComponent {
       });
     }
     
-    /**
-     * 🧩 Fallback: export on-screen data only with non-empty columns
-     */
     private exportLocalData(): void {
       if (!this._data || !this._data.length) {
         alert('No data available to export.');

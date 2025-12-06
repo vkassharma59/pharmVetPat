@@ -202,3 +202,13 @@ p{
     box-sizing: border-box;
   }
 
+  .filter{
+    margin-left: 35rem;
+    
+  }
+  @media screen and (max-width: 1400px) {
+  .filter{
+    margin-left: 20rem;
+  }
+    
+  }

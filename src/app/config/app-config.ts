@@ -34,6 +34,7 @@ export const AppConfigValues: AppConfig = {
         synthesisSearch: `${appUrl.apiUrl}/technical-routes/synthesis-search`,
         searchSpecific: `${appUrl.apiUrl}/technical-routes/search-specific`,
         reportData: `${appUrl.apiUrl}/technical-routes/report-data`,
+        downloadexcel: `${appUrl.devApiUrl}/technical-routes/download-excel`,
       },
       dmf: {
         searchSpecific: `${appUrl.apiUrl}/tech-supplier/search-specific`,
@@ -63,10 +64,12 @@ export const AppConfigValues: AppConfig = {
       europeApproval: {
         searchSpecific: `${appUrl.apiUrl}/ema/search-specific`,
         columnList: `${appUrl.apiUrl}/ema/column-list`,
+        downloadexcel: `${appUrl.devApiUrl}/ema/download-excel`,
       },
       canadaApproval: {
         searchSpecific: `${appUrl.apiUrl}/health-canada/search-specific`,
         columnList: `${appUrl.apiUrl}/health-canada/column-list`,
+        downloadexcel: `${appUrl.devApiUrl}/health-canada/download-excel`,
       },
       japanApproval: {
         searchSpecific: `${appUrl.apiUrl}/japan-pmda/search-specific`,

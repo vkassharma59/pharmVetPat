@@ -30,6 +30,7 @@ export interface AppConfig {
       synthesisSearch: string;
       searchSpecific: string;
       reportData: string;
+      downloadexcel: string;
     };
     dmf: {
       searchSpecific: string;
@@ -59,10 +60,12 @@ export interface AppConfig {
     europeApproval: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
     };
     canadaApproval: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
     };
     japanApproval: {
       searchSpecific: string;

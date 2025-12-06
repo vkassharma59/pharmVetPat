@@ -21,6 +21,7 @@ import { MainSearchService } from '../../services/main-search/main-search.servic
 import { PaginationComponent } from '../../commons/pagination/pagination.component';
 import { ResultTabComponent } from '../../commons/result-tab/result-tab.component';
 import { LoadingService } from '../../services/loading-service/loading.service';
+import { CasRnService } from '../../services/casRn';
 @Component({
   selector: 'chem-search-results',
   standalone: true,
@@ -30,6 +31,7 @@ import { LoadingService } from '../../services/loading-service/loading.service';
     ResultTabComponent,
     RouteResultComponent,
     PaginationComponent,
+    //casrn import kr diyah abh aon ko bas ismein bejnah values ko from pharmdatabase and fir exim mein call karva na h 
 
   ],
   templateUrl: './search-results.component.html',
@@ -67,7 +69,7 @@ export class SearchResultsComponent {
   currentTabData: any = {};
   childApiBody: any = [];
   FilterObjectLength = false;
-
+  chemicalStructure: any = { filter: '' };
   @ViewChild('priviledgeModal') priviledgeModal!: ElementRef;
   searchTypes: any;
 
@@ -77,7 +79,8 @@ export class SearchResultsComponent {
     private userPriviledgeService: UserPriviledgeService,
     private columnListService: ColumnListService,
     private mainSearchService: MainSearchService,
-    private loadingService: LoadingService // <-- add this
+    private loadingService: LoadingService, // <-- add this
+    private casRnService: CasRnService
   ) {
     this.resultTabs = this.utilityService.getAllTabsName();
     this.searchThrough = Auth_operations.getActiveformValues().activeForm;
@@ -90,23 +93,23 @@ export class SearchResultsComponent {
 
   ngOnChanges(_changes: any) {
     console.log('------------SearchResultsComponent', this.CurrentAPIBody);
-  
+
     // Extract last part of api_url (like 'simple-search') and store it
     if (this.CurrentAPIBody?.api_url) {
       const urlParts = this.CurrentAPIBody.api_url.replace(/\/+$/, '').split('/');
       this.CurrentAPIBody.extractedSearchType = urlParts[urlParts.length - 1]; // store here
       console.log('Extracted search type:', this.CurrentAPIBody.extractedSearchType);
     }
-  
+
     this.paginationRerenderTrigger = !this.paginationRerenderTrigger;
-  
+
     if (this.CurrentAPIBody?.body?.filters) {
       this.FilterObjectLength =
         Object.keys(this.CurrentAPIBody.body.filters).length !== 0;
     }
   }
-  
-  
+
+
   ngOnInit(): void {
     const params = new URLSearchParams(window.location.search);
     const type = params.get('type');
@@ -424,11 +427,11 @@ export class SearchResultsComponent {
       this.setLoadingState.emit(false);
       return;
     }
-  
+
     if (!this.childApiBody?.[resultTabData.index]) {
       this.childApiBody[resultTabData.index] = {};
     }
-  
+
     this.childApiBody[resultTabData.index][this.resultTabs?.technicalRoutes.name] = {
       api_url: this.apiUrls.technicalRoutes.searchSpecific,
       search_type: resultTabData?.searchWith,
@@ -441,13 +444,13 @@ export class SearchResultsComponent {
       count: 0,
       searchBy: this.CurrentAPIBody?.extractedSearchType // dynamically sent here
     };
-  
+
     const tech_API = this.apiUrls.technicalRoutes.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.technicalRoutes.name, response);
-  
+
         this.mainSearchService
           .technicalRoutesSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs?.technicalRoutes.name])
           .subscribe({
@@ -472,14 +475,14 @@ export class SearchResultsComponent {
       },
     });
   }
-  
+
 
   private extractSearchTypeFromUrl(url: string): string {
     if (!url) return '';
     const parts = url.replace(/\/+$/, '').split('/');
     return parts[parts.length - 1]; // e.g., 'simple-search'
   }
-  
+
   private perforProductInfoSearch(resultTabData: any): void {
 
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
@@ -1398,7 +1401,6 @@ export class SearchResultsComponent {
       length: pageSize
     };
 
-
     // Step 2: Fetch Column List First
     this.columnListService.getColumnList(this.apiUrls.spcDb.columnList).subscribe({
       next: (res: any) => {
@@ -1632,68 +1634,217 @@ export class SearchResultsComponent {
   }
   private eximDataSearch(resultTabData: any): void {
 
-    const pageSize = 25;
-    const page_no = 1
-    if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {
+    const activeForm = Auth_operations.getActiveformValues()?.activeForm;
+
+    // -----------------------------------------------------
+    // CASE 1: CHEMICAL STRUCTURE or INTERMEDIATE SEARCH
+    // -----------------------------------------------------
+    if (
+      activeForm === searchTypes.chemicalStructure ||
+      activeForm === searchTypes.intermediateSearch
+    ) {
+      console.log("⚡ EXIM: Special Payload for Chemical / Intermediate Search");
+
+      // Read stored values from CAS_RN service
+      const stored = this.casRnService.getCasRn();
+
+      let keywordPayload: any = {};
+
+      // --------------------------------------------------------------------
+      // INTERMEDIATE SEARCH FIX: always make CAS_RN an array (supports multiple)
+      // --------------------------------------------------------------------
+      if (activeForm === searchTypes.intermediateSearch && stored?.CAS_RN) {
+        keywordPayload.CAS_RN = Array.isArray(stored.CAS_RN)
+          || [stored.CAS_RN] || stored.CAS_RN;
+        console.log("💡 CAS_RN after array conversion (Intermediate):", keywordPayload.CAS_RN);
+      }
+
+      // Chemical search handling (unchanged)
+      if (activeForm === searchTypes.chemicalStructure && stored?.chemicalName) {
+        keywordPayload.chemicalName = Array.isArray(stored.chemicalName)
+          || stored.chemicalName;
+        console.log("💡 chemicalName after array conversion (Chemical):", keywordPayload.chemicalName);
+      }
+
+      // Fallback to resultTabData if keywordPayload is empty
+      if (Object.keys(keywordPayload).length === 0) {
+        keywordPayload =
+          typeof resultTabData?.searchWithValue === "string"
+            ? { CAS_RN: [resultTabData.searchWithValue] }
+            : resultTabData?.searchWithValue || {};
+        console.log("💡 Fallback keywordPayload from resultTabData:", keywordPayload);
+      }
+
+      console.log("📤 FINAL keywordPayload ready for API:", keywordPayload);
+      const chemicalInfo = resultTabData?.dataItem?.chemicalDirectory?.[0];
+      function parseCAS(rawCas: string = "") {
+        if (!rawCas) return rawCas;
+      
+        // Split into lines
+        const parts = rawCas
+          .split(/[\n\r]+/)
+          .map(x => x.trim())
+          .filter(x => x);
+      
+        // Extract only valid CAS patterns
+        const casList = parts.filter(x => /^\d{2,7}-\d{2}-\d$/.test(x));
+      
+        // If multiple CAS found → return array
+        if (casList.length > 1) {
+          return casList;
+        }
+      
+        // If single CAS → return string
+        if (casList.length === 1) {
+          return casList[0];
+        }
+      
+        // Otherwise return raw as fallback
+        return rawCas.trim();
+      }
+      
+
+      console.log("eximPC DB API B----------ody", resultTabData);
+
+      const specialPayload = {
+        searchBy: "intermediate-application-search",
+        keyword: {
+          CAS_RN: parseCAS(chemicalInfo.cas_rn),
+          chemicalName: chemicalInfo.chemical_name?.trim()
+      
+        },
+        filter_enable: false,
+        draw: 1,
+        start: 0,
+        length: 10
+      };
+      console.log("eximPC DB API Body", specialPayload);
+
+      // Store prepared payload
+      if (!this.childApiBody[resultTabData.index]) {
+        this.childApiBody[resultTabData.index] = {};
+      }
+      this.childApiBody[resultTabData.index][this.resultTabs.eximData.name] =
+        specialPayload;
+
+      console.log("📤 FINAL EXIM SPECIAL PAYLOAD:", specialPayload);
+
+      // Fetch Columns First → Then Make API Call
+      this.columnListService
+        .getColumnList(this.apiUrls.eximData.columnList)
+        .subscribe({
+          next: (res: any) => {
+            const columnList = res?.data?.columns || [];
+            Auth_operations.setColumnList(this.resultTabs.eximData.name, columnList);
+
+            this.allDataSets[resultTabData.index][this.resultTabs.eximData.name] = {
+              columns: columnList,
+              rows: []
+            };
+
+            this.mainSearchService
+              .EximDataSearchSpecific(specialPayload)
+              .subscribe({
+                next: (res: any) => {
+                  console.log("💡 EXIM API RAW RESPONSE:", res);
+                  this.allDataSets[resultTabData.index][this.resultTabs.eximData.name].rows =
+                    res?.data?.data || [];
+                    this.childApiBody[resultTabData.index][this.resultTabs.eximData.name].count = res?.data?.recordsTotal;
+                  this.setLoadingState.emit(false);
+                  this.loadingService.setLoading(this.resultTabs.eximData.name, resultTabData.index, false);
+
+                },
+                error: (err) => {
+                  console.error("❌ EXIM API ERROR:", err);
+                  this.setLoadingState.emit(false);
+                  this.loadingService.setLoading(this.resultTabs.eximData.name, resultTabData.index, false);
+
+                }
+              });
+          },
+          error: (err) => {
+            console.error("❌ EXIM Column List Error:", err);
+            this.setLoadingState.emit(false);
+            this.loadingService.setLoading(this.resultTabs.eximData.name, resultTabData.index, false);
+
+          }
+        });
+
+      return;
+    }
+
+    // -----------------------------------------------------
+    // CASE 2: NORMAL EXIM SEARCH
+    // -----------------------------------------------------
+    if (!resultTabData?.searchWith || !resultTabData?.searchWithValue) {
       this.allDataSets[resultTabData.index][this.resultTabs.eximData.name] = {};
       this.setLoadingState.emit(false);
       return;
     }
 
-    if (this.childApiBody?.[resultTabData.index]) {
-      this.childApiBody[resultTabData.index][this.resultTabs.eximData.name] = {};
-    } else {
+    if (!this.childApiBody[resultTabData.index]) {
       this.childApiBody[resultTabData.index] = {};
     }
 
-    // Step 1: Prepare API body
-    this.childApiBody[resultTabData.index][this.resultTabs.eximData.name] = {
+    const pageSize = 25;
+    const page_no = 1;
+
+    const normalPayload = {
       api_url: this.apiUrls.eximData.searchSpecific,
       keyword: resultTabData?.searchWithValue,
       draw: 1,
-      page_no: 1,
+      page_no: page_no,
       start: (page_no - 1) * pageSize,
       length: pageSize
     };
-    // Step 2: Fetch Column List First
-    this.columnListService.getColumnList(this.apiUrls.eximData.columnList).subscribe({
-      next: (res: any) => {
-        const columnList = res?.data?.columns || [];
-        Auth_operations.setColumnList(this.resultTabs.eximData.name, columnList);
 
-        if (!this.allDataSets[resultTabData.index]) {
-          this.allDataSets[resultTabData.index] = {};
-        }
-        // ✅ SAVE to pass to component
-        this.allDataSets[resultTabData.index][this.resultTabs.eximData.name] = {
-          columns: columnList,  // <- for <app-scientific-docs-card>
-          rows: []              // <- we’ll fill this after searchSpecific
-        };
+    this.childApiBody[resultTabData.index][this.resultTabs.eximData.name] =
+      normalPayload;
 
-        // Step 4: Call main search API
-        this.mainSearchService.EximDataSearchSpecific(this.childApiBody[resultTabData.index][this.resultTabs.eximData.name]).subscribe({
-          next: (result: any) => {
-            const dataRows = result?.data?.data || [];
-            // ✅ Append search result (rows) to saved structure
-            this.allDataSets[resultTabData.index][this.resultTabs.eximData.name].rows = dataRows;
-            this.childApiBody[resultTabData.index][this.resultTabs.eximData.name].count = result?.data?.recordsTotal;
-            this.setLoadingState.emit(false);
-            this.loadingService.setLoading(this.resultTabs.eximData.name, resultTabData.index, false);
-          },
-          error: (e) => {
-            console.error('Error during main search:', e);
-            this.setLoadingState.emit(false);
-            this.loadingService.setLoading(this.resultTabs.eximData.name, resultTabData.index, false);
-          },
-        });
-      },
-      error: (e) => {
-        console.error('Error fetching column list:', e);
+    console.log("📤 EXIM Normal Payload:", normalPayload);
+
+    this.columnListService
+      .getColumnList(this.apiUrls.eximData.columnList)
+      .subscribe({
+        next: (res: any) => {
+          const columnList = res?.data?.columns || [];
+          Auth_operations.setColumnList(this.resultTabs.eximData.name, columnList);
+
+          this.allDataSets[resultTabData.index][this.resultTabs.eximData.name] = {
+            columns: columnList,
+            rows: []
+          };
+
+          this.mainSearchService
+            .EximDataSearchSpecific(normalPayload)
+            .subscribe({
+              next: (result: any) => {
+                this.allDataSets[resultTabData.index][this.resultTabs.eximData.name].rows =
+                  result?.data?.data || [];
+                  this.childApiBody[resultTabData.index][this.resultTabs.eximData.name].count = result?.data?.recordsTotal;
+
+                this.setLoadingState.emit(false);
+                this.loadingService.setLoading(this.resultTabs.eximData.name, resultTabData.index, false);
+              },
+              error: (err) => {
+               // console.error("❌ EXIM API ERROR:", err);
+                this.setLoadingState.emit(false);
+                this.loadingService.setLoading(this.resultTabs.eximData.name, resultTabData.index, false);
+              }
+              
+            });
+        },
+       error: (err) => {
+        //console.error("❌ EXIM API ERROR:", err);
         this.setLoadingState.emit(false);
         this.loadingService.setLoading(this.resultTabs.eximData.name, resultTabData.index, false);
-      },
-    });
+
+      }
+      });
   }
+
+
+
   private performDMFSearch(resultTabData: any): void {
 
     if (resultTabData?.searchWith === '' || resultTabData?.searchWithValue === '') {

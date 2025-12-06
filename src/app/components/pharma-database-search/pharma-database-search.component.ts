@@ -1131,93 +1131,128 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
   }
 
   private performChemicalStructureSearch(): void {
+    console.log('🔍 Starting Chemical Structure Search...');
+  
+    this.setLoadingState.emit(true);
+  
     Auth_operations.setActiveformValues({
       column: this.column,
       keyword: this.chemicalStructure?.keyword,
       screenColumn: this.screenColumn,
-      activeForm: searchTypes.chemicalStructure
+      activeForm: searchTypes.chemicalStructure,
     });
-
-    const body = {
-      criteria: this.chemicalStructure?.filter,
+  
+    const filterType = (this.chemicalStructure?.filter || '').toLowerCase().trim();
+    const keyword = (this.chemicalStructure?.keyword || '').trim();
+    console.log('keyword',keyword);
+    if (!keyword) {
+      this.setLoadingState.emit(false);
+      return;
+    }
+  
+    const body: any = {
+      criteria: filterType || 'smiles_code',
+      keyword,
       page_no: 1,
-      filter_enable: false,
-      filters: {},
+      filter_enable: true,
       order_by: '',
-      keyword: this.chemicalStructure?.keyword
+      formType: 'chemical',
+  
+      filters: {
+        CAS_RN: filterType === 'cas_rn' ? keyword : '',
+        chemicalName:keyword ,
+      },
     };
-    this.sharedRosService.setSearchData('chemicalStructure', this.chemicalStructure?.keyword, this.chemicalStructure?.filter);
-
+  
+    console.log('🧪 Final Chemical Search Body:', body);
+  
+    this.casRnService.setCasRn(
+      'intermediate',
+      filterType === 'cas_rn' ? keyword : undefined,
+      keyword
+    );
+  
     const tech_API = this.apiUrls.chemicalDirectory.columnList;
+  
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
-        const response = res?.data?.columns;
+        const response = res?.data?.columns || [];
         Auth_operations.setColumnList(this.resultTabs.chemicalDirectory.name, response);
-
+  
+        const apiUrl = this.apiUrls.chemicalDirectory.intermediateApplicationSearch;
+  
         this.mainSearchService.getChemicalStructureResults(body).subscribe({
           next: (res: any) => {
             this.showResultFunction.emit({
               body,
-              API_URL: this.apiUrls.chemicalDirectory.intermediateApplicationSearch,
+              API_URL: apiUrl,
               currentTab: this.resultTabs.chemicalDirectory.name,
               actual_value: '',
             });
-            this.chemSearchResults.emit(res?.data);
+  
+            this.chemSearchResults.emit(res?.data || []);
             this.setLoadingState.emit(false);
           },
-          error: (e) => {
-            console.error('Error during main search:', e);
-            this.setLoadingState.emit(false);
-          },
+          error: () => this.setLoadingState.emit(false),
         });
       },
-      error: (e) => {
-        console.error('Error fetching column list:', e);
-        this.setLoadingState.emit(false);
-      },
+      error: () => this.setLoadingState.emit(false),
     });
   }
-
+  
   private performIntermediateSearch(): void {
-    // Force set filter and keyword so that UI me bhi dikhe
-    this.intermediateSearch.filter = "cas_rn";
-    this.intermediateSearch.keyword = this.intermediateSearch.keyword || "74-86-2";
-
-    console.log("🔹 Setting UI values", {
+    // Force set filter and keyword so that UI shows values
+    this.intermediateSearch.filter = this.intermediateSearch.filter ;
+    this.intermediateSearch.keyword = this.intermediateSearch.keyword ;
+  
+    console.log("🔹 Intermediate Search invoked:", {
       filter: this.intermediateSearch.filter,
       keyword: this.intermediateSearch.keyword
     });
-
+  
     Auth_operations.setActiveformValues({
       column: this.column,
       keyword: this.intermediateSearch.keyword,
       screenColumn: this.screenColumn,
       activeForm: searchTypes.intermediateSearch
     });
-
+  
+    const filterType = (this.intermediateSearch.filter || '').toLowerCase().trim();
+    const keyword = (this.intermediateSearch.keyword || '').trim();
+  
+    // Build body (if you still use it somewhere)
     const body = {
       page_no: 1,
       filter_enable: false,
       filters: {},
       order_by: '',
-      keyword: this.intermediateSearch?.keyword,
-      criteria: this.intermediateSearch?.filter
+      keyword: keyword,
+      criteria: filterType
     };
-
+  
+    // CORRECT setCasRn: put CAS_RN only when searched by CAS, and chemicalName only when searched by name
+    const casValue = filterType === 'cas_rn' ? keyword : '';
+    const nameValue = filterType !== 'cas_rn' ? keyword : '';
+  
+    console.log("🔁 Setting CasRnService with:", { casValue, nameValue, filterType });
+  
+    // IMPORTANT: this calls service setCasRn
+    this.casRnService.setCasRn('intermediate', casValue, nameValue);
+  
+    // Save to shared for EXIM component if used
     this.sharedRosService.setSearchData(
       'intermediateSearch',
       this.intermediateSearch?.keyword,
       this.intermediateSearch?.filter
     );
-
-    console.log("Intermediate search body", body);
-
+  
+    // fetch columns + results (unchanged)
     const tech_API = this.apiUrls.chemicalDirectory.columnList;
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.chemicalDirectory.name, response);
-
+  
         this.mainSearchService.getChemicalStructureResults(body).subscribe({
           next: (res: any) => {
             this.showResultFunction.emit({
@@ -1241,7 +1276,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       },
     });
   }
-
+  
   openTutorialModal() {
     const dialogRef = this.dialog.open(VideoTutorialComponent, {
       width: '800px',

@@ -1,0 +1,10 @@
+.filter{
+    margin-left: 65rem;
+    margin-top: -2.1rem;
+}
+@media screen and (max-width: 1400px) {
+  .filter{
+    margin-left: 48rem;
+  }
+    
+}

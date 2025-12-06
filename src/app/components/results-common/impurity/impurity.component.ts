@@ -170,153 +170,83 @@ export class ImpurityComponent {
   }
   downloadExcel(): void {
     this.isExportingExcel = true;
-  
-    // 🧠 Get keyword safely from possible sources
-    const keyword =
-      (this.keyword && this.keyword.trim()) ||
-      (this.currentChildAPIBody?.keyword?.trim()) ||
-      (this.ImpurityBody?.keyword?.trim()) ||
-      (this.mainSearchService as any)?.simpleSearchKeyword?.trim() ||
-      '';
-  
-    if (!keyword) {
-      alert('Please perform a search before downloading Excel.');
-      this.isExportingExcel = false;
-      return;
-    }
-  
-    // Determine page number if available, else default to 1
-    const page_no =
-      this.ImpurityBody?.page_no && !isNaN(this.ImpurityBody.page_no)
-        ? Number(this.ImpurityBody.page_no)
-        : 1;
-  
-    // Build API body with keyword and page number
     this._currentChildAPIBody = {
       ...this.ImpurityBody,
-      keyword,
-      page_no,
+      filters: { ...this.ImpurityBody.filters }
     };
-  
-    console.log('✅ Final Impurity Excel download body:', this._currentChildAPIBody);
-  
+
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  
-    this.mainSearchService.impuritydownloadexcel(this._currentChildAPIBody).subscribe({
+
+    this.mainSearchService.impPatentsdownloadexcel(this._currentChildAPIBody).subscribe({
       next: async (res: Blob) => {
         try {
-          if (!res || res.size === 0) {
-            console.warn('⚠️ Empty response from backend. Exporting local data.');
-            this.exportLocalData();
-            this.isExportingExcel = false;
-            return;
-          }
-  
-          // Parse Excel from Blob
+          // Step 1: Read response as ArrayBuffer
           const arrayBuffer = await res.arrayBuffer();
           const XLSX = await import('xlsx');
           const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-  
+
           const sheetName = workbook.SheetNames[0];
           const worksheet = workbook.Sheets[sheetName];
           const jsonData: any[] = XLSX.utils.sheet_to_json(worksheet);
-  
+
           if (!jsonData.length) {
-            console.warn('⚠️ Excel sheet is empty. Exporting local data instead.');
-            this.exportLocalData();
             this.isExportingExcel = false;
             return;
           }
-  
-          // 🧩 Filter columns that have actual data
-          const validKeys = Object.keys(jsonData[0]).filter((key) =>
-            jsonData.some((row) => {
-              const val = row[key];
-              return val !== null && val !== undefined && val !== '';
-            })
+
+          // Step 2: Identify columns that actually have values
+          const keys = Object.keys(jsonData[0]);
+          const validKeys = keys.filter((k: string) =>
+            jsonData.some((row: any) => row[k] !== null && row[k] !== undefined && row[k] !== '')
           );
-  
-          const cleanedData = jsonData.map((row) => {
-            const newRow: any = {};
-            validKeys.forEach((key) => (newRow[key] = row[key]));
-            return newRow;
+
+          // Step 3: Remove empty columns
+          const filteredData = jsonData.map((row: any) => {
+            const filteredRow: any = {};
+            validKeys.forEach((k: string) => (filteredRow[k] = row[k]));
+            return filteredRow;
           });
-  
-          // 🧾 Create new worksheet only with valid columns
-          const newWorksheet = XLSX.utils.json_to_sheet(cleanedData, { skipHeader: false });
-          newWorksheet['!cols'] = validKeys.map((key) => ({
-            wch: Math.min(Math.max(key.length, 25), 80),
-          }));
-  
+
+          // Step 4: Create new worksheet and workbook
+          const newWorksheet = XLSX.utils.json_to_sheet(filteredData, { skipHeader: false });
+          const colWidths = validKeys.map((key) => ({ wch: Math.max(key.length, 90) }));
+          // Minimum width 20 characters (aap change kar sakte ho)
+          newWorksheet['!cols'] = colWidths;
           const newWorkbook = XLSX.utils.book_new();
           XLSX.utils.book_append_sheet(newWorkbook, newWorksheet, 'FilteredData');
-  
+
+          // Step 5: Convert workbook to Blob for download
           const excelBuffer = XLSX.write(newWorkbook, { bookType: 'xlsx', type: 'array' });
           const blob = new Blob([excelBuffer], {
-            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
           });
-  
-          // 🪄 Trigger download
+
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;
-          a.download = 'Impurity-Data.xlsx';
+          a.download = 'Impurity.xlsx';
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
           window.URL.revokeObjectURL(url);
-  
-          console.log('✅ Excel downloaded successfully with filtered columns (Impurity).');
+
           this.isExportingExcel = false;
           window.scrollTo(0, scrollTop);
         } catch (error) {
-          console.error('Excel processing error (Impurity):', error);
+          console.error("Excel processing error:", error);
           this.isExportingExcel = false;
-          this.exportLocalData();
+          window.scrollTo(0, scrollTop);
         }
       },
       error: (err) => {
-        console.error('Excel download error (Impurity):', err);
-        console.warn('⚠️ Falling back to local data export due to API error.');
+        console.error("Excel download error:", err);
+        this._currentChildAPIBody = {
+          ...this._currentChildAPIBody,
+          filter_enable: false
+        };
         this.isExportingExcel = false;
-        this.exportLocalData();
         window.scrollTo(0, scrollTop);
       },
     });
   }
-  
-  private exportLocalData(): void {
-    if (!this._data || !this._data.length) {
-      alert('No data available to export.');
-      return;
-    }
-  
-    import('xlsx').then((XLSX) => {
-      const validKeys = Object.keys(this._data[0]).filter((key) =>
-        this._data.some((row) => {
-          const val = row[key];
-          return val !== null && val !== undefined && val !== '';
-        })
-      );
-  
-      const filteredData = this._data.map((row) => {
-        const newRow: any = {};
-        validKeys.forEach((key) => (newRow[key] = row[key]));
-        return newRow;
-      });
-  
-      const worksheet = XLSX.utils.json_to_sheet(filteredData);
-      worksheet['!cols'] = validKeys.map((key) => ({
-        wch: Math.min(Math.max(key.length, 25), 80),
-      }));
-  
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, 'LocalData');
-      XLSX.writeFile(workbook, 'Impurity-Local.xlsx');
-  
-      console.log('✅ Exported local data successfully with filtered columns (Impurity).');
-    });
-  }
-  
-  
 }

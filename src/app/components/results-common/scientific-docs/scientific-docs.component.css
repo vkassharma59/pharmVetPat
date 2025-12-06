@@ -1,456 +1,496 @@
 .filter-pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-  }
-  
-  /* ✅ Card-style Table */
-  .mat-elevation-z8 {
-    padding: 20px;
-    border-radius: 8px;
-    background: #fff;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  ::ng-deep .mat-sort-header-arrow,
-  ::ng-deep .mat-sort-header-arrow .mat-sort-header-stem,
-  ::ng-deep .mat-sort-header-arrow .mat-sort-header-indicator {
-    display: none !important;
-    opacity: 0 !important;
-    width: 0 !important;
-    height: 0 !important;
-  }
-  
-  /* ✅ Form Fields (Smaller Input Box) */
-  mat-form-field {
-    width: 100px; /* Decreased input width */
-    font-size: 12px; /* Smaller text */
-  }
-  
-  .filter-field input {
-    height: 24px;  /* Decreased height */
-    font-size: 12px;
-    padding: 2px 5px;
-  }
-  
-  /* ✅ Table Styling */
-  .mat-table {
-    width: 100%;
-    min-width: 800px;
-    border-collapse: collapse;
-    border: 2px solid #8E24AA; /* Purple border */
-  }
-  
-  /* ✅ Table Header */
-  .mat-header-cell {
-    background-color: #8B008B !important;
-    color: white !important;
-    font-weight: bold;
-    text-align: center;
-    padding: 14px;
-    font-size: 16px; /* Increased font size */
-  }
-  
-  /* ✅ Table Data Cells */
-  .mat-cell {
-    text-align: center;
-    padding: 12px;
-    font-size: 14px;
-    border-bottom: 1px solid #8E24AA;
-    height: 50px; /* Increased row height */
-  }
-  
-  /* ✅ Alternating Row Colors */
-  /* tr:nth-child(even) td {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+/* ✅ Card-style Table */
+.mat-elevation-z8 {
+  padding: 20px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+::ng-deep .mat-sort-header-arrow,
+::ng-deep .mat-sort-header-arrow .mat-sort-header-stem,
+::ng-deep .mat-sort-header-arrow .mat-sort-header-indicator {
+  display: none !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* ✅ Form Fields (Smaller Input Box) */
+mat-form-field {
+  width: 100px;
+  /* Decreased input width */
+  font-size: 12px;
+  /* Smaller text */
+}
+
+.filter-field input {
+  height: 24px;
+  /* Decreased height */
+  font-size: 12px;
+  padding: 2px 5px;
+}
+
+/* ✅ Table Styling */
+.mat-table {
+  width: 100%;
+  min-width: 800px;
+  border-collapse: collapse;
+  border: 2px solid #8E24AA;
+  /* Purple border */
+}
+
+/* ✅ Table Header */
+.mat-header-cell {
+  background-color: #8B008B !important;
+  color: white !important;
+  font-weight: bold;
+  text-align: center;
+  padding: 14px;
+  font-size: 16px;
+  /* Increased font size */
+}
+
+/* ✅ Table Data Cells */
+.mat-cell {
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+  border-bottom: 1px solid #8E24AA;
+  height: 50px;
+  /* Increased row height */
+}
+
+/* ✅ Alternating Row Colors */
+/* tr:nth-child(even) td {
     background-color: #E1BEE7; /* Light Pink 
   }
   
   tr:nth-child(odd) td {
     background-color: #F3E5F5; /* Light Purple 
   } */
-  
-  /* ✅ Hover Effect */
-  .mat-table tbody tr:hover td {
-    background-color: #D8BFD8 !important; /* Soft Purple */
-    transition: 0.3s ease-in-out;
-  }
-  
-  /* ✅ Fixed Paginator */
-  .mat-paginator {
-    position: sticky;
-    bottom: 0;
-    background: #673AB7; /* Purple */
-    color: white;
-    z-index: 10;
-  }
-  
-  /* ✅ Scrollable Table */
-  .table-container {
-    width: 100%;
-    /* overflow-x: auto; */
-    max-height: 500px;
-    margin-top: 2rem;
-    border: 1px solid #ccc;
-  }
-  
-  /* ✅ Buttons 
+
+/* ✅ Hover Effect */
+.mat-table tbody tr:hover td {
+  background-color: #D8BFD8 !important;
+  /* Soft Purple */
+  transition: 0.3s ease-in-out;
+}
+
+/* ✅ Fixed Paginator */
+.mat-paginator {
+  position: sticky;
+  bottom: 0;
+  background: #673AB7;
+  /* Purple */
+  color: white;
+  z-index: 10;
+}
+
+/* ✅ Scrollable Table */
+.table-container {
+  width: 100%;
+  /* overflow-x: auto; */
+  max-height: 500px;
+  margin-top: 2rem;
+  border: 1px solid #ccc;
+}
+
+/* ✅ Buttons 
   header background #e02b33*/
-  button {
-    text-transform: none;
-    margin: 5px;
-    padding: 8px 12px;
-    font-size: 14px;
-    border-radius: 5px;
-  }
-  
-  /* ✅ Button Colors */
-  button[color="primary"] {
-    background-color: #07a2f0;
-    color: white;
-  }
-  
-  button[color="accent"] {
-    background-color: #07a2f0;
-    color: white;
-  }
-  
-  button[color="warn"] {
-    background-color: #07a2f0;
-    color: white;
-  }
-  
-  
-  .mat-sort-header-arrow {
-    display: none !important;
-  }
-  .dropdown-item{
-    position: absolute;
-      top: 133%;
-      left: 2px;
-      z-index: 3;
-      background-color: white;
-      border: 1px solid #ccc;
-      min-width: 200px;
-      padding: 0;
-      margin: 0;
-      list-style-type: none;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      display: block;
-      overflow-x: auto;
-      max-height: 400px;
-      color: black;
-      border-radius: 18px;
-      box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
-  
-  }
-  .dropdown-item:hover{
-    position: absolute;
-      top: 133%;
-      left: 2px;
-      z-index: 3;
-      background-color: white;
-      border: 1px solid #ccc;
-      min-width: 200px;
-      padding: 0;
-      margin: 0;
-      list-style-type: none;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      display: block;
-      overflow-x: auto;
-      max-height: 400px;
-      color: black;
-      border-radius: 18px;
-  }
-  .dropdown-item li:hover{
-    
-      background-color: rgb(191, 222, 228);
-      
-  }
-  .dropdown-item li{
-    font-size: 18px;
-    margin-bottom: 8px;
-    z-index: 5;
-    align-items: center;
-    text-align: left;
-    padding: 6px 24px;
-  }
-  
-  ::ng-deep .mat-sort-header-arrow {
-    opacity: 1 !important;  /* Always show sorting icon */
-    transform: none !important;
-    background-color: #e02b33;
-    color:white;
-  }
-  
-  .custom-table {
-    width: 100%;
-    min-width: 1000px;
-    border-spacing: 0;
-    border-collapse: collapse;
-  }
-  
-  .mat-header-cell {
-    background-color: #d32f2f; /* Red header */
-    color: white;
-    font-weight: bold;
-    text-align: center;
-  }
-  
-  .mat-cell, .mat-header-cell {
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: center;
-    vertical-align: middle;
-  }
-  
-  .header-content {
-    display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color:#3886d8;
-      margin: 5px;
-  }
-  
-  .filter-input {
-    width: 100%;
-    background: white;
-    border-radius: 4px;
-    margin-top: 4px;
-  }
-  
-  .mat-form-field-appearance-fill .mat-form-field-flex {
-    background-color: #def1ff;
-  }
-  
-  .mat-form-field-appearance-fill .mat-form-field-outline {
-    color: #d32f2f;
-  }
-  
-  .flag-img {
-    width: 40px;
-    height: 25px;
-  }
-  
-  .structure-img {
-    height: 100px;
-  }
-  
-  .table-row:nth-child(even) {
-    background-color: #eff9ff;
-  }
-  
-  /* Strongest style override for Angular Material header cells */
-  :host ::ng-deep .mat-header-cell {
-    background-color: #73d4ff !important;  /* Red background */
-    color: white !important;
-    font-weight: bold;
-    border-right: 1px solid #ffffff55;
-  }
-  
-  /* Optional: Make input box white inside red header */
-  :host ::ng-deep .mat-header-cell input {
-    background-color: #73d4ff !important;
-    color: black !important;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
-  }
-  
-  
-  
-  /* Container to position buttons absolutely */
-  .scroll-buttons {
-    position: relative;
-    top: 0;
-    bottom: 0;
-    width: 100%;
-    pointer-events: none; /* Allow clicks to pass through unless on button */
-  }
-  .scroll-btn.left {
-    left: 0px;
-  }
-  
-  .scroll-btn.right {
-    right: 8px;
-  }
-  .table-wrapper {
-    position: relative;
-    height: 427px;  
-    overflow: hidden;
-  }
-  
-  .table-scroll-container {
-    overflow-y: auto;
-    height: 100%;
-  }
-  
-  .mat-header-row {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    background-color: #73d4ff !important;
-    color: white;
-  }
-  
-  mat-header-cell {
-    position: sticky;
-    background-color: #73d4ff;
-    color:white;
-  }
-  .header-scroll-buttons {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    /* padding: 0 8px; */
-    z-index: 5;
-    pointer-events: none; /* Pass clicks except for buttons */
-  }
-  
-  .scroll-btn {
-    pointer-events: auto;
-    background: #4ebbf2;
+button {
+  text-transform: none;
+  margin: 5px;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+/* ✅ Button Colors */
+button[color="primary"] {
+  background-color: #07a2f0;
+  color: white;
+}
+
+button[color="accent"] {
+  background-color: #07a2f0;
+  color: white;
+}
+
+button[color="warn"] {
+  background-color: #07a2f0;
+  color: white;
+}
+
+
+.mat-sort-header-arrow {
+  display: none !important;
+}
+
+.dropdown-item {
+  position: absolute;
+  top: 133%;
+  left: 2px;
+  z-index: 3;
+  background-color: white;
+  border: 1px solid #ccc;
+  min-width: 200px;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: block;
+  overflow-x: auto;
+  max-height: 400px;
+  color: black;
+  border-radius: 18px;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+
+}
+
+.dropdown-item:hover {
+  position: absolute;
+  top: 133%;
+  left: 2px;
+  z-index: 3;
+  background-color: white;
+  border: 1px solid #ccc;
+  min-width: 200px;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: block;
+  overflow-x: auto;
+  max-height: 400px;
+  color: black;
+  border-radius: 18px;
+}
+
+.dropdown-item li:hover {
+
+  background-color: rgb(191, 222, 228);
+
+}
+
+.dropdown-item li {
+  font-size: 18px;
+  margin-bottom: 8px;
+  z-index: 5;
+  align-items: center;
+  text-align: left;
+  padding: 6px 24px;
+}
+
+::ng-deep .mat-sort-header-arrow {
+  opacity: 1 !important;
+  /* Always show sorting icon */
+  transform: none !important;
+  background-color: #e02b33;
+  color: white;
+}
+
+.custom-table {
+  width: 100%;
+  min-width: 1000px;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.mat-header-cell {
+  background-color: #d32f2f;
+  /* Red header */
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+.mat-cell,
+.mat-header-cell {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #3886d8;
+  margin: 5px;
+}
+
+.filter-input {
+  width: 100%;
+  background: white;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: #def1ff;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-outline {
+  color: #d32f2f;
+}
+
+.flag-img {
+  width: 40px;
+  height: 25px;
+}
+
+.structure-img {
+  height: 100px;
+}
+
+.table-row:nth-child(even) {
+  background-color: #eff9ff;
+}
+
+/* Strongest style override for Angular Material header cells */
+:host ::ng-deep .mat-header-cell {
+  background-color: #73d4ff !important;
+  /* Red background */
+  color: white !important;
+  font-weight: bold;
+  border-right: 1px solid #ffffff55;
+}
+
+/* Optional: Make input box white inside red header */
+:host ::ng-deep .mat-header-cell input {
+  background-color: #73d4ff !important;
+  color: black !important;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+
+
+/* Container to position buttons absolutely */
+.scroll-buttons {
+  position: relative;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  pointer-events: none;
+  /* Allow clicks to pass through unless on button */
+}
+
+.scroll-btn.left {
+  left: 0px;
+}
+
+.scroll-btn.right {
+  right: 8px;
+}
+
+.table-wrapper {
+  position: relative;
+  height: 427px;
+  overflow: hidden;
+}
+
+.table-scroll-container {
+  overflow-y: auto;
+  height: 100%;
+}
+
+.mat-header-row {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: #73d4ff !important;
+  color: white;
+}
+
+mat-header-cell {
+  position: sticky;
+  background-color: #73d4ff;
+  color: white;
+}
+
+.header-scroll-buttons {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  /* padding: 0 8px; */
+  z-index: 5;
+  pointer-events: none;
+  /* Pass clicks except for buttons */
+}
+
+.scroll-btn {
+  pointer-events: auto;
+  background: #4ebbf2;
   background: linear-gradient(284deg, rgba(78, 187, 242, 1) 0%, rgba(29, 154, 204, 1) 25%, rgba(3, 109, 171, 1) 100%);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    font-size: 20px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    margin-top: 1rem;
-    padding: 0;
-  }
-  
-  .scroll-container {
-    overflow-x: auto;
-    white-space: nowrap;
-    /* padding: 2rem; */
-  }
-  th{
-    background-color: #73d4ff;
-  }
-  .scrollable-text {
-    max-height: 4.5em; /* Approx. 3 lines */
-    overflow-y: auto;
-    display: -webkit-box;
-    -webkit-line-clamp:3;
-    -webkit-box-orient: vertical;
-    text-overflow: ellipsis;
-    white-space: normal;
-    line-height: 1.5em;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  margin-top: 1rem;
+  padding: 0;
+}
+
+.scroll-container {
+  overflow-x: auto;
+  white-space: nowrap;
+  /* padding: 2rem; */
+}
+
+th {
+  background-color: #73d4ff;
+}
+
+.scrollable-text {
+  max-height: 4.5em;
+  /* Approx. 3 lines */
+  overflow-y: auto;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  white-space: normal;
+  line-height: 1.5em;
   margin: 10px;
-    padding-right: 8px; /* for scrollbar space */
-  }
-  .scrollable-text::-webkit-scrollbar {
-    width: 4px;
-    height: 0px;
-  }
-  .scrollable-text::-webkit-scrollbar-thumb {
-    border-radius: 2px;
-    background: #312e81;
+  padding-right: 8px;
+  /* for scrollbar space */
+}
+
+.scrollable-text::-webkit-scrollbar {
+  width: 4px;
+  height: 0px;
+}
+
+.scrollable-text::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background: #312e81;
+
+}
+
+/* Track */
+.scrollable-text::-webkit-scrollbar-track {
+  background: #f1f1f1e7;
+}
+
+.filters {
+  font-size: small;
+  justify-content: space-between;
+  margin: 0.25rem;
+
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  padding: 10px 20px;
+  background-color: #f8faff;
+  border: 2px solid #0032a0;
+  color: #0032a0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  min-width: 200px;
+  /* z-index: 1; */
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: block;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 220px;
+  max-width: 220px;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+
+}
+
+.dropdown-menu li {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f0f0f0;
+}
+
+.clear {
+  border-radius: 50%;
+  font-weight: 700;
+  border: 1px solid #0032A0;
+  color: #0032A0;
+}
+
+.clear:hover {
+  background-color: #ccc;
+  color: #f0f0f0;
+}
+
+.dropdown-container {
+  position: relative;
+  width: 250px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  background: white;
+  border: 1px solid #ccc;
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 50;
+  width: 100%;
+}
+
+input {
+  width: 100%;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+.filter{
+  margin-left: 65rem;
+  margin-top: -2.1rem;
+}
+@media screen and (max-width: 1400px) {
+.filter{
+  margin-left: 48rem;
+}
   
-  }
-  /* Track */
-  .scrollable-text::-webkit-scrollbar-track {
-    background: #f1f1f1e7;
-  }
-  .filters {
-    font-size: small;
-    justify-content: space-between;
-    margin: 0.25rem;
-  
-  }
-  
-  .dropdown {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .dropdown-container {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .dropdown-toggle {
-    padding: 10px 20px;
-    background-color: #f8faff;
-    border: 2px solid #0032a0;
-    color: #0032a0;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .dropdown-menu {
-    position: absolute;
-    top: 110%;
-    left: 0;
-    background-color: white;
-    border: 1px solid #ccc;
-    min-width: 200px;
-    /* z-index: 1; */
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    display: block;
-    overflow-x: auto;
-    overflow-y: auto;
-    max-height: 220px;
-    max-width: 220px;
-    white-space: normal;
-    word-break: break-word;
-    overflow-wrap: anywhere;
-  
-  }
-  
-  .dropdown-menu li {
-    padding: 10px 15px;
-    cursor: pointer;
-  }
-  
-  .dropdown-menu li:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .clear {
-    border-radius: 50%;
-    font-weight: 700;
-    border: 1px solid #0032A0;
-    color: #0032A0;
-  }
-  
-  .clear:hover {
-    background-color: #ccc;
-    color: #f0f0f0;
-  }
-  .dropdown-container {
-    position: relative;
-    width: 250px;
-  }
-    .dropdown-menu {
-      position: absolute;
-      top: 100%;
-      background: white;
-      border: 1px solid #ccc;
-      max-height: 250px;
-      overflow-y: auto;
-      z-index: 50;
-      width: 100%;
-    }
-  
-    input {
-      width: 100%;
-      padding: 0.5rem;
-      box-sizing: border-box;
-    }
-  
-  
+}
