@@ -1,9 +1,19 @@
 <ng-container *ngIf="_data.length > 0; else noData">
-  <div class="flex flex-wrap gap-3 filter">
+  <div class="flex flex-wrap justify-end gap-3 pr-4" style="margin-top: 0.5rem;">
+    <!-- Download Excel Button -->
     <button mat-raised-button [disabled]="isExportingExcel"
       class="px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]" (click)="downloadExcel()">
       <span *ngIf="!isExportingExcel">Download Excel <i class="fa-solid fa-download"></i></span>
       <span *ngIf="isExportingExcel"><i class="fa fa-spinner fa-spin"></i> Exporting...</span>
+    </button>
+    <!-- Download PDF Button -->
+    <button
+      *ngIf="isSplitDownload && hasTabDataFlag"
+      (click)="handlePDFDownload.emit(selectedIndex)"
+      title="Download Single Route"
+      class="btn btn-outline-primary btn-sm"
+      >
+      <i class="fas fa-download"></i>
     </button>
   </div>
   <!-- <div *ngIf="currentChildAPIBody?.count" class="child-route-count-wrapper justify-between">
