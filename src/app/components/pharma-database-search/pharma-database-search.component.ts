@@ -347,15 +347,15 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     );
   }
 
-  handleChangeKeywordDL(column: 'DEVELOPMENT_STAGE' | 'INNOVATOR_ORIGINATOR', isFocus: boolean = false) {
+  handleChangeKeywordDL(column: 'DEVELOPMENT_STAGE' | 'dummy_4', isFocus: boolean = false) {
     let keyword = '';
     if (column === 'DEVELOPMENT_STAGE') keyword = this.advanceSearch.devStage;
-    if (column === 'INNOVATOR_ORIGINATOR') keyword = this.advanceSearch.innovator;
+    if (column === 'dummy_4') keyword = this.advanceSearch.innovator;
     console.log("keyword", keyword, "column", column, "isFocus", isFocus);
 
     if (!isFocus && (!keyword || keyword.length < 3)) {
       if (column === 'DEVELOPMENT_STAGE') this.filteredDevStages = [];
-      if (column === 'INNOVATOR_ORIGINATOR') this.filteredInnovators = [];
+      if (column === 'dummy_4') this.filteredInnovators = [];
       return;
     }
     const payload = { column, keyword };
@@ -365,7 +365,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
         const list = res?.data?.suggestions || [];
         console.log("list", list);
         if (column === 'DEVELOPMENT_STAGE') this.filteredDevStages = list;
-        if (column === 'INNOVATOR_ORIGINATOR') this.filteredInnovators = list;
+        if (column === 'dummy_4') this.filteredInnovators = list;
       },
       error: (err) => console.error('❌ API Error:', err)
     });
@@ -434,11 +434,13 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       return;
     }
     if (this.advanceSearch?.filterInputs[index]?.keyword?.length < 3) return;
+     console.log("Fbgnnn----------",this.advanceSearch.filterInputs[index].filter)
 
     this.mainSearchService
       .getAdvanceSearchSuggestions({ column: this.advanceSearch.filterInputs[index].filter, keyword: this.advanceSearch?.filterInputs[index]?.keyword })
       .subscribe({
         next: (res: any) => {
+          console.log("Fbgnnn",res?.data?.suggestions)
           this.advanceSearch.autosuggestionList[index] = res?.data?.suggestions;
         },
         error: (e) => console.error(e),

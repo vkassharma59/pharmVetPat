@@ -28,7 +28,11 @@ import { Auth_operations } from '../../../Utils/SetToken';
 export class ScientificDocsComponent {
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
+  @Output() handlePDFDownload = new EventEmitter<number>();
   @Input() currentChildAPIBody: any;
+  @Input() isSplitDownload: boolean = false;
+  @Input() hasTabDataFlag: boolean = false;
+  @Input() selectedIndex: number = 0;
   searchThrough: string = '';
   resultTabs: any = {};
   isExportingExcel: boolean = false;
