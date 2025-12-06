@@ -2,6 +2,113 @@
     color: blue;
     font-weight: bold;
  }
+ .equal-btn {
+  flex: 1;
+  min-width: 230px; /* Mobile view me wrap ho sake */
+  text-align: center;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 12px;        /* Same height for all */
+  border-radius: 5px;
+  color: white;
+}
+.equal-box-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.box {
+  background: #F5FBFF; /* light background */
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  position: relative; /* important for overlay positioning */
+}
+
+.header-btn {
+  width: 100%;
+  background: #2E6FC3; /* dark blue */
+  color: #fff;         
+  border: none;
+  padding: 10px 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-btn .arrow {
+  transition: 0.3s;
+}
+
+.header-btn .arrow.rotate {
+  transform: rotate(180deg);
+}
+
+/* Overlay content */
+.content-overlay {
+  position: absolute;
+  top: 100%; /* header button के नीचे */
+  left: 0;
+  width: 100%; /* पूरे user width में */
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  padding: 10px;
+  z-index: 999;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background: #F5FBFF;
+  
+}
+/* LIST of buttons */
+.doc-list {
+  display: flex;
+  flex-wrap: wrap; /* items next line में जाएँगे अगर space नहीं है */
+  gap: 8px;
+}
+
+/* ChemRobotics style small pill buttons */
+.doc-btn {
+  /* background: #2E6FC3;   
+  color: #fff;
+  border: 1px solid #021f66; 
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 13px;
+  display: inline-flex;   
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  white-space: nowrap;    
+  flex-shrink: 0;         
+   */
+  background: #2E6FC3; /* default dark blue */
+  color: #fff;
+  border: 1px solid #021f66;
+  border-radius: 4px;  /* pill shape */
+  padding: 6px 12px;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.3s ease; 
+}
+
+.doc-btn:hover { 
+
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* hover shadow */
+  transform: translateY(-2px); /* subtle lift effect */
+}
+
+.doc-btn i {
+  font-size: 12px;
+}
+
+
 
 /* Add to your CSS file or component styles */
 .custom-alert {

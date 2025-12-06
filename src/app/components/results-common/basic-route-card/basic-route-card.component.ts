@@ -22,6 +22,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class BasicRouteCardComponent {
   isLoadingUI = true;
+  basePath = "https://www.chemrobotics.com/agropat/pdf/gsda/docs/";
   static apiCallCount: number = 0; // Global static counter
   localCount: number = 0; // Instance-specific counter
   productHighlights: any[] = [];
@@ -35,6 +36,11 @@ export class BasicRouteCardComponent {
   showViewMore: boolean = false;
   @ViewChild('synonymBlock') synonymBlock!: ElementRef;
   isOverflowing = false;
+  isOpen = false;
+  documents: any[] = [];
+  
+ 
+
   @Input()
   get data() {
     return this._data;
@@ -88,12 +94,24 @@ export class BasicRouteCardComponent {
       console.log('Resetting apiCallCount to 0');
       BasicRouteCardComponent.apiCallCount = 0;
     }
+    if (this._data?.data_availability?.length) {
+      this.documents = this._data.data_availability; // Auto mapping
+    }
   }
   ngAfterViewInit() {
     setTimeout(() => {
       this.checkOverflow();
     });
   }
+ 
+  toggle() {
+    this.isOpen = !this.isOpen;
+  }
+  openDoc(file: string) {
+    const fullUrl = this.basePath + file;
+    window.open(fullUrl, "_blank");
+  }
+  
 
   checkOverflow() {
     const el = this.synonymBlock?.nativeElement;

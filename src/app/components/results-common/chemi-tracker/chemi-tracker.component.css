@@ -138,3 +138,13 @@ h4 {
   background-color: #ccc;
   color: #f0f0f0;
 }
+.filter{
+  margin-left: 38rem;
+  margin-top: -2.1rem;
+}
+@media screen and (max-width: 1400px) {
+.filter{
+  margin-left: 23rem;
+}
+  
+}
