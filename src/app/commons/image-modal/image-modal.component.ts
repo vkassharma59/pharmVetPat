@@ -17,7 +17,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrl: './image-modal.component.css',
 })
 export class ImageModalComponent implements AfterViewInit {
-  @ViewChild('mainDiv', { static: true }) mainDiv!: ElementRef;
+  @ViewChild('mainDiv', { static: false }) mainDiv!: ElementRef;
 
   zoomArr: number[] = [1, 1.2, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3];
   indexofArr: number = 0;
@@ -36,44 +36,43 @@ export class ImageModalComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     console.log('compactView (after view init):', this.data.compactView);
-    this.applyZoom();
   }
 
   zoomIn() {
     if (this.indexofArr < this.zoomArr.length - 1) {
       this.indexofArr++;
-      this.applyZoom();
+      this.currentZoom = this.zoomArr[this.indexofArr];
+      this.applyZoomToMainDiv();
     }
   }
 
   zoomOut() {
     if (this.indexofArr > 0) {
       this.indexofArr--;
-      this.applyZoom();
+      this.currentZoom = this.zoomArr[this.indexofArr];
+      this.applyZoomToMainDiv();
     }
   }
 
-  applyZoom() {
-    this.currentZoom = this.zoomArr[this.indexofArr];
+  applyZoomToMainDiv() {
+    // Only apply to mainDiv if it exists (compactView mode)
+    if (this.mainDiv?.nativeElement) {
+      this.renderer.setStyle(
+        this.mainDiv.nativeElement,
+        'transform',
+        `scale(${this.currentZoom})`
+      );
 
-    // Apply scaling
-    this.renderer.setStyle(
-      this.mainDiv.nativeElement,
-      'transform',
-      `scale(${this.currentZoom})`
-    );
+      this.renderer.setStyle(
+        this.mainDiv.nativeElement,
+        'transform-origin',
+        'top left'
+      );
 
-    // Keep zoom centered
-    this.renderer.setStyle(
-      this.mainDiv.nativeElement,
-      'transform-origin',
-      'top left'
-    );
-
-    // Ensure scrolling is possible when zoomed in
-    const parent = this.mainDiv.nativeElement.parentElement;
-    if (parent) {
-      this.renderer.setStyle(parent, 'overflow', 'auto');
+      const parent = this.mainDiv.nativeElement.parentElement;
+      if (parent) {
+        this.renderer.setStyle(parent, 'overflow', 'auto');
+      }
     }
   }
 
