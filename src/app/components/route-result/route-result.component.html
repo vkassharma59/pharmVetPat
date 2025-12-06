@@ -84,7 +84,12 @@
   <!-- Main Content Section -->
   <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
     <button
-      *ngIf="isSplitDownload && hasTabData(selectedIndex)"
+      *ngIf="isSplitDownload && hasTabData(selectedIndex) 
+        && activeTab !== resultTabWithKeys.chemicalDirectory.name 
+        && activeTab !== resultTabWithKeys.technicalRoutes.name
+        && activeTab !== resultTabWithKeys.koreaApproval.name
+        && activeTab !== resultTabWithKeys.indianMedicine.name
+        && activeTab !== resultTabWithKeys.scientificDocs.name"
       (click)="handleGeneratePDF(selectedIndex)"
       title="Download Single Route"
       class="btn btn-outline-primary btn-sm"
@@ -108,7 +113,11 @@
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.technicalRoutes.name]" [index]="index"
         [tabName]="resultTabWithKeys.technicalRoutes.name" (handleSetLoading)="handleSetLoading.emit($event)"
         (resetPagination)="resetPagination.emit($event)"
-        (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-technical-route>
+        (handleResultTabData)="handleChildPaginationSearch.emit($event)"
+        [isSplitDownload]="isSplitDownload"
+        [hasTabDataFlag]="hasTabData(selectedIndex)"
+        [selectedIndex]="selectedIndex"
+        (handlePDFDownload)="handleGeneratePDF($event)"></chem-technical-route>
     </ng-container>
     <ng-container *ngSwitchCase="resultTabWithKeys.dmf.name">
       <app-dmf [data]="_dataItem.dmf" [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.dmf.name]"
@@ -120,7 +129,11 @@
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.chemicalDirectory.name]" [index]="index"
         [tabName]="resultTabWithKeys.chemicalDirectory.name" (handleSetLoading)="handleSetLoading.emit($event)"
         (handleResultTabData)="handleChildPaginationSearch.emit($event)"
-        (handleROSChange)="handleROSChange.emit($event)" (activeTabChange)="onChemicalDirectoryActiveTabChange($event)">
+        (handleROSChange)="handleROSChange.emit($event)" (activeTabChange)="onChemicalDirectoryActiveTabChange($event)"
+        [isSplitDownload]="isSplitDownload"
+        [hasTabDataFlag]="hasTabData(selectedIndex)"
+        [selectedIndex]="selectedIndex"
+        (handlePDFDownload)="handleGeneratePDF($event)">
       </chemical-directory>
     </ng-container>
 
@@ -184,14 +197,22 @@
       <chem-korea [data]="_dataItem.koreaApproval"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.koreaApproval.name]" [index]="index"
         [tabName]="resultTabWithKeys.koreaApproval.name" (handleSetLoading)="handleSetLoading.emit($event)"
-        (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-korea>
+        (handleResultTabData)="handleChildPaginationSearch.emit($event)"
+        [isSplitDownload]="isSplitDownload"
+        [hasTabDataFlag]="hasTabData(selectedIndex)"
+        [selectedIndex]="selectedIndex"
+        (handlePDFDownload)="handleGeneratePDF($event)"></chem-korea>
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.indianMedicine.name">
       <chem-indian [data]="_dataItem.indianMedicine"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.indianMedicine.name]" [index]="index"
         [tabName]="resultTabWithKeys.indianMedicine.name" (handleSetLoading)="handleSetLoading.emit($event)"
-        (handleResultTabData)="handleChildPaginationSearch.emit($event)"></chem-indian>
+        (handleResultTabData)="handleChildPaginationSearch.emit($event)"
+        [isSplitDownload]="isSplitDownload"
+        [hasTabDataFlag]="hasTabData(selectedIndex)"
+        [selectedIndex]="selectedIndex"
+        (handlePDFDownload)="handleGeneratePDF($event)"></chem-indian>
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.litigation.name">
@@ -239,7 +260,11 @@
       <app-scientific-docs [data]="_dataItem.scientificDocs"
         [currentChildAPIBody]="_currentChildAPIBody?.[resultTabWithKeys.scientificDocs.name]" [index]="index"
         [tabName]="resultTabWithKeys.scientificDocs.name" (handleSetLoading)="handleSetLoading.emit($event)"
-        (handleResultTabData)="handleChildPaginationSearch.emit($event)"></app-scientific-docs>
+        (handleResultTabData)="handleChildPaginationSearch.emit($event)"
+        [isSplitDownload]="isSplitDownload"
+        [hasTabDataFlag]="hasTabData(selectedIndex)"
+        [selectedIndex]="selectedIndex"
+        (handlePDFDownload)="handleGeneratePDF($event)"></app-scientific-docs>
     </ng-container>
 
     <ng-container *ngSwitchCase="resultTabWithKeys.eximData.name">

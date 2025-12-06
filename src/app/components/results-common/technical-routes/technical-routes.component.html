@@ -19,7 +19,7 @@
     </div>
     <div class="col-md-6">
       <div class="p-2">
-        <a (click)="handleToggleViewProduct()" class="btn">Click to View Application of Intermediates</a>
+        <a (click)="handleToggleViewProduct()" class="btn1">Click to View Application of Intermediates</a>
       </div>
       <!-- <button
           class="px-3 py-2 bg-[#FFCD04] text-black rounded-full"
@@ -30,62 +30,76 @@
     </div>
   </div>
 
- <div *ngIf="viewProduct"
-  class="fixed top-0 left-0 h-screen w-screen backdrop-blur-sm py-3 flex justify-center items-center z-30">
-  <div class="relative bg-white rounded-md max-w-[70vw] border-2 border-[#0032A0]">
-    <!-- Header -->
-    <div class="sticky top-0 flex items-center bg-white rounded-md border-b">
-      <span class="text-left text-lg hover:cursor-pointer my-2 px-3" (click)="handleToggleViewProduct()">
-        X
-      </span>
-      <div class="flex justify-center items-center flex-grow">
-        <h1 class="text-center text-lg font-bold">
-          Application of Intermediate
-        </h1>
+  <div *ngIf="viewProduct"
+    class="fixed top-0 left-0 h-screen w-screen backdrop-blur-sm py-3 flex justify-center items-center z-30">
+    <div class="relative bg-white rounded-md max-w-[70vw] border-2 border-[#0032A0]">
+      <!-- Header -->
+      <div class="sticky top-0 flex items-center bg-white rounded-md border-b">
+        <span class="text-left text-lg hover:cursor-pointer my-2 px-3" (click)="handleToggleViewProduct()">
+          X
+        </span>
+        <div class="flex justify-center items-center flex-grow">
+          <h1 class="text-center text-lg font-bold">
+            Application of Intermediate
+          </h1>
+        </div>
       </div>
-    </div>
 
-    <!-- Scrollable List -->
-    <div class="scroll px-8 py-3 overflow-auto max-h-[50vh] rounded-md" *ngIf="_data?.uniq_products?.length > 0">
-      <div *ngFor="let data of _data?.uniq_products; let i = index" class="py-1">
-        <span class="text-base">{{ i + 1 }}&nbsp;&nbsp;{{ data }}</span>
+      <!-- Scrollable List -->
+      <div class="scroll px-8 py-3 overflow-auto max-h-[50vh] rounded-md" *ngIf="_data?.uniq_products?.length > 0">
+        <div *ngFor="let data of _data?.uniq_products; let i = index" class="py-1">
+          <span class="text-base">{{ i + 1 }}&nbsp;&nbsp;{{ data }}</span>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="flex flex-wrap gap-3 filter" >
-  <button mat-raised-button [disabled]="isExportingExcel"
-    class="px-3 py-2 rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]" (click)="downloadExcel()">
-    <span *ngIf="!isExportingExcel">Download Excel <i class="fa-solid fa-download"></i></span>
-    <span *ngIf="isExportingExcel"><i class="fa fa-spinner fa-spin"></i> Exporting...</span>
-  </button>
-</div>
-    <ng-container
-      *ngIf="currentChildAPIBody && !isEmptyObject(currentChildAPIBody) && searchThrough !== 'synthesis-search'">
-      <chem-child-result-tab [dataItem]="_data?.ros_data"   [CurrentAPIBody]="CurrentAPIBody"  [currentAPIData]="currentChildAPIBody"
-        (handleChangeTabData)="handleResultTabData.emit($event)" (resetPagination)="resetPagination.emit($event)"
-        (setLoading)="handleSetLoading.emit($event)"></chem-child-result-tab>
-    </ng-container>
-    <ng-container>
-      <!-- <div  class="child-route-count-wrapper">
+  <div class="flex flex-wrap justify-end gap-3 pr-4" style="margin-top: 0.5rem;">
+    <!-- Download Excel Button -->
+    <button mat-raised-button [disabled]="isExportingExcel"
+      class="px-3 py-2 w-full sm:w-auto rounded-md bg-[#F8FAFF] border-2 border-[#0032A0] text-[#0032A0]"
+      (click)="downloadExcel()">
+      <span *ngIf="!isExportingExcel">
+        Download Excel <i class="fa-solid fa-download"></i>
+      </span>
+      <span *ngIf="isExportingExcel">
+        <i class="fa fa-spinner fa-spin"></i> Exporting...
+      </span>
+    </button>
+    <!-- Download PDF Button -->
+    <button *ngIf="isSplitDownload && hasTabDataFlag" (click)="handlePDFDownload.emit(selectedIndex)"
+      title="Download Single Route" class="btn btn-outline-primary btn-sm">
+      <i class="fas fa-download"></i>
+    </button>
+  </div>
+
+  <ng-container
+    *ngIf="currentChildAPIBody && !isEmptyObject(currentChildAPIBody) && searchThrough !== 'synthesis-search'">
+    <chem-child-result-tab [dataItem]="_data?.ros_data" [CurrentAPIBody]="CurrentAPIBody"
+      [currentAPIData]="currentChildAPIBody" (handleChangeTabData)="handleResultTabData.emit($event)"
+      (resetPagination)="resetPagination.emit($event)"
+      (setLoading)="handleSetLoading.emit($event)"></chem-child-result-tab>
+  </ng-container>
+  <ng-container>
+    <!-- <div  class="child-route-count-wrapper">
         <button class="child-route-count child-route-count-btn" style="background-color: #f8faff;">
           Total Records : {{ currentChildAPIBody?.count }} 
         </button>
       </div> -->
-       <ng-container *ngIf="_data?.ros_data?.length > 0; else noData">
+    <ng-container *ngIf="_data?.ros_data?.length > 0; else noData">
       <ng-container *ngFor="let dataItem of _data?.ros_data; let i = index">
         <div class="py-4" *ngIf="searchThrough !== 'synthesis-search'">
           <div class="relative flex justify-center items-center h-[1px] bg-[#DEE5F6]">
             <span
               class="routes text-center border-[1px] px-3 py-2 bg-[#0032A0] border-[#DEE5F6] rounded-md text-white text-[14px] leading-[17.07px] font-normal h-[37px] flex justify-center items-center">
-             ROS
+              ROS
               {{ (((currentChildAPIBody?.page_no ?? 1) - 1) * 25) + (i + 1) }}
             </span>
           </div>
 
         </div>
 
-        <chem-technical-route-card class="card" [data]="dataItem"  [index]="index" [itemid]="itemid" [CurrentAPIBody]="CurrentAPIBody"></chem-technical-route-card>
+        <chem-technical-route-card class="card" [data]="dataItem" [index]="index" [itemid]="itemid"
+          [CurrentAPIBody]="CurrentAPIBody"></chem-technical-route-card>
       </ng-container>
       <app-child-paging *ngIf="currentChildAPIBody?.count > 25" [currentChildAPIBody]="currentChildAPIBody"
         (handleChangeTabData)="handleResultTabData.emit($event)"
@@ -93,8 +107,9 @@
     </ng-container>
   </ng-container>
   <ng-template #noData>
-    <div class="card"  style="background-color: #ffffff; margin-top: 2rem;">
-      <div class="card-header text-white bg-primary" style="background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);">
+    <div class="card" style="background-color: #ffffff; margin-top: 2rem;">
+      <div class="card-header text-white bg-primary"
+        style="background: linear-gradient(90deg, rgb(0, 52, 129) 0%, rgb(46 111 195) 35%, rgb(113, 178, 211) 100%);">
         {{resultTabs.technicalRoutes?.label}}
       </div>
       <div class="card-body">

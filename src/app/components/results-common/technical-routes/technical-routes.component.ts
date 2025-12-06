@@ -21,12 +21,16 @@ export class TechnicalRoutesComponent {
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() resetPagination = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
+  @Output() handlePDFDownload = new EventEmitter<number>();
   @Input() currentChildAPIBody: any;
   @Input() specialCount: any;
   @Input() CurrentAPIBody: any;
   @Input() MainDataResultShow: any;
   @Input() index: any;
   @Input() tabName: string | undefined;
+  @Input() isSplitDownload: boolean = false;
+  @Input() hasTabDataFlag: boolean = false;
+  @Input() selectedIndex: number = 0;
   searchThrough: string = '';
   isExportingExcel: boolean = false;
   _currentChildAPIBody: any;

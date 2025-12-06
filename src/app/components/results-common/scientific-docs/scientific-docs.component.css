@@ -6,6 +6,10 @@
   margin-top: 5px;
   margin-bottom: 5px;
 }
+.btn-outline-primary:hover{
+  background: #bddaf2;
+ background: linear-gradient(90deg, rgba(189, 218, 242, 1) 0%, rgba(56, 130, 194, 1) 50%, rgba(6, 109, 199, 1) 100%);
+ }
 
 /* ✅ Card-style Table */
 .mat-elevation-z8 {
