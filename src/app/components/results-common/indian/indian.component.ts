@@ -20,7 +20,11 @@ export class IndianComponent {
   
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
+  @Output() handlePDFDownload = new EventEmitter<number>();
   @Input() currentChildAPIBody: any;
+  @Input() isSplitDownload: boolean = false;
+  @Input() hasTabDataFlag: boolean = false;
+  @Input() selectedIndex: number = 0;
   isExportingExcel: boolean = false;
   filterOrSearchSource: 'filter' | 'search' | null = null;
   @Input() keyword: string = '';

@@ -28,7 +28,11 @@ export class ChemicalDirectoryComponent implements OnChanges {
   @Output() handleSetLoading = new EventEmitter<boolean>();
   @Output() activeTabChange = new EventEmitter<string>();
   @Output() handleROSChange = new EventEmitter<any>();
+  @Output() handlePDFDownload = new EventEmitter<number>();
   @Input() CurrentAPIBody: any;
+  @Input() isSplitDownload: boolean = false;
+  @Input() hasTabDataFlag: boolean = false;
+  @Input() selectedIndex: number = 0;
   private _currentChildAPIBody: any;
   @Input() keyword: string = '';
   isExportingExcel: boolean = false;

@@ -232,8 +232,8 @@
           <div class="position-relative">
             <input type="text" class="form-control" placeholder="Select Innovator Originator"
               [(ngModel)]="advanceSearch.innovator"
-              (focus)="showInnovatorDropdown = true; handleChangeKeywordDL('INNOVATOR_ORIGINATOR', true)"
-              (input)="handleChangeKeywordDL('INNOVATOR_ORIGINATOR')" />
+              (focus)="showInnovatorDropdown = true; handleChangeKeywordDL('dummy_4', true)"
+              (input)="handleChangeKeywordDL('dummy_4')" />
 
 
             <div *ngIf="showInnovatorDropdown"
@@ -241,7 +241,7 @@
               style="width: 100%; max-height: 250px; overflow-y: auto">
 
               <input type="text" class="form-control mb-2" placeholder="Search" [(ngModel)]="advanceSearch.innovator"
-                (input)="handleChangeKeywordDL('INNOVATOR_ORIGINATOR')" />
+                (input)="handleChangeKeywordDL('dummy_4')" />
 
               <div *ngFor="let innovator of filteredInnovators" class="px-2 py-1 hover:bg-light cursor-pointer"
                 (click)="selectInnovator(innovator)">

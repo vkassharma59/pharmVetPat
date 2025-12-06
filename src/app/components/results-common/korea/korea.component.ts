@@ -21,9 +21,13 @@ export class KoreaComponent {
 
   @Output() handleResultTabData = new EventEmitter<any>();
   @Output() handleSetLoading = new EventEmitter<boolean>();
+  @Output() handlePDFDownload = new EventEmitter<number>();
   @Input() currentChildAPIBody: any;
   @Input() index: any;
   @Input() tabName?: string;
+  @Input() isSplitDownload: boolean = false;
+  @Input() hasTabDataFlag: boolean = false;
+  @Input() selectedIndex: number = 0;
   searchThrough: string = '';
   _currentChildAPIBody: any;
   koreaApiBody: any;
