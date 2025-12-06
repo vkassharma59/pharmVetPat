@@ -1200,6 +1200,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     });
   }
   
+
   private performIntermediateSearch(): void {
     // Force set filter and keyword so that UI shows values
     this.intermediateSearch.filter = this.intermediateSearch.filter ;
@@ -1261,6 +1262,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
               currentTab: this.resultTabs.chemicalDirectory.name,
               actual_value: '',
             });
+            console.log("Intermediate search results api url", this.apiUrls.chemicalDirectory.intermediateApplicationSearch );
             this.chemSearchResults.emit(res?.data);
             this.setLoadingState.emit(false);
           },
