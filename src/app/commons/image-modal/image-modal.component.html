@@ -1,36 +1,37 @@
 <div class="flex w-full max-h-screen overflow-auto" *ngIf="data.compactView">
-  <div class="relative flex items-center justify-center">
-    <!-- Added flex and justify-center -->
-    <div class="relative">
+  <div class="relative flex items-center justify-center w-full">
+    <!-- Scrollable wrapper for zoom -->
+    <div class="overflow-auto max-w-full max-h-screen">
       <div class="maindiv z-10 flex items-center justify-center" #mainDiv>
-        <!-- Added justify-center -->
         <img
           [src]="data.dataImage"
           alt="Zoomable Image"
-          class="h-screen object-contain"
+          class="h-screen object-contain transition-transform duration-300 ease-in-out"
+          [style.transform]="'scale(' + currentZoom + ')'"
+          [style.transform-origin]="'center center'"
         />
       </div>
     </div>
   </div>
 
- <!-- Compact View -->
-<div class="absolute right-4  flex flex-row gap-3 z-20 p-2">
-  <button
-    class="w-10 h-10 flex justify-center items-center bg-[#0032A0] rounded-full text-white shadow-lg"
-    (click)="zoomIn()"
-  >
-    <i class="fa-solid fa-plus text-xl"></i>
-  </button>
+  <!-- Compact View Zoom Buttons -->
+  <div class="absolute right-4  flex flex-row gap-3 z-20 p-2">
+    <button
+      class="w-10 h-10 flex justify-center items-center bg-[#0032A0] rounded-full text-white shadow-lg hover:bg-[#0047CC] cursor-pointer"
+      (click)="zoomIn()"
+      type="button"
+    >
+      <i class="fa-solid fa-plus text-xl"></i>
+    </button>
 
-  <button
-    class="w-10 h-10 flex justify-center items-center bg-[#0032A0] rounded-full text-white shadow-lg"
-    (click)="zoomOut()"
-  >
-    <i class="fa-solid fa-minus text-xl"></i>
-  </button>
-</div>
-
-<!-- Modal Zoom Buttons -->
+    <button
+      class="w-10 h-10 flex justify-center items-center bg-[#0032A0] rounded-full text-white shadow-lg hover:bg-[#0047CC] cursor-pointer"
+      (click)="zoomOut()"
+      type="button"
+    >
+      <i class="fa-solid fa-minus text-xl"></i>
+    </button>
+  </div>
 
 </div>
 <div class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center" (click)="closeModal()" *ngIf="!data.compactView">
@@ -58,14 +59,16 @@
 
 <div *ngIf="showZoomControls" class="absolute top-2 right-2 flex flex-row gap-2 z-10">
   <button
-    class="w-10 h-10 flex justify-center items-center bg-blue-800 text-white rounded-full shadow-lg"
+    type="button"
+    class="w-10 h-10 flex justify-center items-center bg-blue-800 text-white rounded-full shadow-lg hover:bg-blue-900 cursor-pointer"
     (click)="zoomIn()"
   >
     <i class="fa-solid fa-plus text-lg"></i>
   </button>
 
   <button
-    class="w-10 h-10 flex justify-center items-center bg-blue-800 text-white rounded-full shadow-lg"
+    type="button"
+    class="w-10 h-10 flex justify-center items-center bg-blue-800 text-white rounded-full shadow-lg hover:bg-blue-900 cursor-pointer"
     (click)="zoomOut()"
   >
     <i class="fa-solid fa-minus text-lg"></i>
