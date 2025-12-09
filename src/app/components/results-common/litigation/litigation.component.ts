@@ -251,86 +251,140 @@ export class LitigationComponent {
       });
     }
   }
+  private formatDate(): string {
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const now = new Date();
+    return `${now.getDate()}-${months[now.getMonth()]}-${now.getFullYear()}`;
+  }
+  
+  // Convert Logo into Base64
+  private async loadImageAsBase64(imagePath: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      fetch(imagePath)
+        .then(res => res.blob())
+        .then(blob => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.onerror = () => reject();
+          reader.readAsDataURL(blob);
+        })
+        .catch(() => reject());
+    });
+  }
+  
+  
+  // ⭐ MASTER EXCEL EXPORT FUNCTION — Header + Logo + Row Expand + Wrap Text
+  private async createExcelWithHeader(data: any[], titleKeyword: string): Promise<Blob> {
+    const ExcelJS = await import('exceljs');
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Litigation');
+    let validKeys = Object.keys(data[0] || {}).filter(key =>
+      data.some(row => row[key] !== null && row[key] !== undefined && row[key] !== '')
+    );
+    validKeys = validKeys.filter(k => k.toLowerCase() !== 'gbrn');
+  
+    const dateStr = this.formatDate();
+    const searchTerm = `SEARCH: ${titleKeyword}`;
+    const title = `Litigation DATA REPORT`;
+    const keyword = `SEARCH: ${titleKeyword}`;
+  
+    // ==== Header Row with Logo ====
+    const headerRow = worksheet.addRow([]);
+    headerRow.height = 70;
+  
+    try {
+      const logoBase64 = await this.loadImageAsBase64('assets/images/logo.png');
+      const img = workbook.addImage({ base64: logoBase64, extension:'png' });
+      worksheet.addImage(img,{ tl:{col:0,row:0}, ext:{width:170,height:70} });
+      worksheet.getColumn(1).width = 20;
+    } catch {}
+  
+    worksheet.mergeCells('B1:C1');
+    const titleCell = worksheet.getCell('B1');
+    titleCell.value = title;
+    titleCell.font = { bold:true, size:15, color:{argb:'FF0032A0'} };
+    titleCell.alignment = {horizontal:'center',vertical:'middle'};
+  
+    worksheet.getCell('D1').value = dateStr;
+    worksheet.getCell('D1').font = { bold:true };
+    worksheet.getCell('D1').alignment = {horizontal:'center',vertical:'middle',wrapText:true};
+  
+    worksheet.getCell('E1').value = keyword;
+    worksheet.getCell('E1').font = { bold:true };
+    worksheet.getCell('E1').alignment = {horizontal:'center',vertical:'middle',wrapText:true};
+  
+    worksheet.addRow([]);
+    worksheet.addRow([]);
+  
+    // ==== Column Headers ====
+    const keys = Object.keys(data[0]);
+    const headerRow2 = worksheet.addRow(keys);
+    headerRow2.height = 35;
+    headerRow2.eachCell(cell => {
+      cell.font = { bold:true };
+      cell.alignment = {horizontal:"center",vertical:"middle",wrapText:true};
+      cell.border = { top:{style:'thin'}, bottom:{style:'thin'} };
+    });
+  
+    worksheet.views = [{ state:'frozen', ySplit:4 }];
+  
+    // ==== Data with Wrap Text + Auto Height ====
+    data.forEach(row => {
+      const excelRow = worksheet.addRow(keys.map(k => row[k] ?? ''));
+      excelRow.eachCell(cell => cell.alignment = {wrapText:true,vertical:"top"});
+      excelRow.commit();
+    });
+  
+    // ==== Column Auto Width ====
+    keys.forEach((key,i)=>{
+      worksheet.getColumn(i+1).width = Math.min(Math.max(key.length * 2,30),60);
+    });
+  
+    const buffer = await workbook.xlsx.writeBuffer();
+    return new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+  }
+  
   downloadExcel(): void {
     this.isExportingExcel = true;
   
-    // Prepare request body
-    this._currentChildAPIBody = {
-      ...this.litigApiBody,
-      filters: { ...this.litigApiBody.filters },
-      filter_enable: false
-    };
-  
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
   
+    this._currentChildAPIBody = { ...this.litigApiBody, filters:{...this.litigApiBody.filters} };
+  
     this.mainSearchService.litigationdownloadexcel(this._currentChildAPIBody).subscribe({
-      next: async (res: Blob) => {
-        try {
-          // Step 1: Read response as ArrayBuffer
-          const arrayBuffer = await res.arrayBuffer();
+      next: async(res:Blob)=>{
+        try{
+          const buffer = await res.arrayBuffer();
           const XLSX = await import('xlsx');
-          const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+          const wb = XLSX.read(buffer,{type:'array'});
+          const sheet = wb.Sheets[wb.SheetNames[0]];
+          const jsonData:any[] = XLSX.utils.sheet_to_json(sheet);
   
-          const sheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[sheetName];
-          const jsonData: any[] = XLSX.utils.sheet_to_json(worksheet);
+          if(!jsonData.length){ this.isExportingExcel=false; return;}
   
-          if (!jsonData.length) {
-            this.isExportingExcel = false;
-            return;
-          }
+          // clean empty cols
+          const keys = Object.keys(jsonData[0]).filter(k=>jsonData.some(r=>r[k]));
+          const finalData = jsonData.map(r=>{ let obj:any={}; keys.forEach(k=>obj[k]=r[k]); return obj; });
   
-          // Step 2: Identify columns that actually have values
-          const keys = Object.keys(jsonData[0]);
-          const validKeys = keys.filter((k: string) =>
-            jsonData.some((row: any) => row[k] !== null && row[k] !== undefined && row[k] !== '')
-          );
+          // 🔥 Generate styled excel with header
+          const blob = await this.createExcelWithHeader(finalData,this.searchThrough);
   
-          // Step 3: Remove empty columns
-          const filteredData = jsonData.map((row: any) => {
-            const filteredRow: any = {};
-            validKeys.forEach((k: string) => (filteredRow[k] = row[k]));
-            return filteredRow;
-          });
-  
-          // Step 4: Create new worksheet and workbook
-          const newWorksheet = XLSX.utils.json_to_sheet(filteredData, { skipHeader: false });
-          const colWidths = validKeys.map((key) => ({ wch: Math.max(key.length, 90) }));
-          newWorksheet['!cols'] = colWidths;
-          const newWorkbook = XLSX.utils.book_new();
-          XLSX.utils.book_append_sheet(newWorkbook, newWorksheet, 'FilteredData');
-  
-          // Step 5: Convert workbook to Blob for download
-          const excelBuffer = XLSX.write(newWorkbook, { bookType: 'xlsx', type: 'array' });
-          const blob = new Blob([excelBuffer], {
-            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-          });
-  
-          const url = window.URL.createObjectURL(blob);
+          const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
-          a.href = url;
-          a.download = 'Litigation.xlsx';
-          document.body.appendChild(a);
+          a.href=url;
+          a.download='Litigation.xlsx';
           a.click();
-          document.body.removeChild(a);
-          window.URL.revokeObjectURL(url);
+          URL.revokeObjectURL(url);
   
-          this.isExportingExcel = false;
-          window.scrollTo(0, scrollTop);
-        } catch (error) {
-          console.error('Excel processing error:', error);
-          this.isExportingExcel = false;
-          window.scrollTo(0, scrollTop);
-        }
+        }catch(e){ console.error(e); }
+  
+        this.isExportingExcel=false;
+        window.scrollTo(0,scrollTop);
       },
-      error: (err) => {
-        console.error('Excel download error:', err);
-        this._currentChildAPIBody = {
-          ...this._currentChildAPIBody,
-          filter_enable: false
-        };
-        this.isExportingExcel = false;
-        window.scrollTo(0, scrollTop);
+      error:(err)=>{
+        console.error(err);
+        this.isExportingExcel=false;
+        window.scrollTo(0,scrollTop);
       }
     });
   }

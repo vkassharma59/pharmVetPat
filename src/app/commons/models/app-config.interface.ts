@@ -75,6 +75,7 @@ export interface AppConfig {
     koreaApproval: {
       searchSpecific: string;
       columnList: string;
+      downloadexcel: string;
     };
     usApproval: {
       searchSpecific: string;

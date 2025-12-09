@@ -208,7 +208,12 @@ export class MainSearchService {
       .post(this.apiUrls.koreaApproval.searchSpecific, body, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
-
+  koreaApprovaldownloadexcel(props: any): Observable<any> {
+    const body = props;
+    return this.http
+      .post(this.apiUrls.koreaApproval.downloadexcel, body, { headers: this.headers, responseType: 'blob' as 'json' })
+      .pipe(catchError(this.handleError));
+  }
   indianMedicineSearchSpecific(props: any): Observable<any> {
     const body = props;
     return this.http
