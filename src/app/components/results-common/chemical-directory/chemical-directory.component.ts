@@ -41,7 +41,7 @@ export class ChemicalDirectoryComponent implements OnChanges {
   set data(value: any) {
     this._data = value;
     this.handleResultTabData.emit(this._data || []);
-    
+
   }
 
   get data() {
@@ -89,17 +89,17 @@ export class ChemicalDirectoryComponent implements OnChanges {
     console.log("✅ Updated data from pagination:", newData);
   }
 
- onROSChange(event: any) {
-  console.log('📥 Received ROS change from child:', event);
-}
+  onROSChange(event: any) {
+    console.log('📥 Received ROS change from child:', event);
+  }
 
   onActiveTabChange(tabName: string) {
-       this.activeTabChange.emit(tabName);    
+    this.activeTabChange.emit(tabName);
   }
   // Helper function to format date
   private formatDate(): string {
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 
-                    'July', 'August', 'September', 'October', 'November', 'December'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'];
     const now = new Date();
     return `${now.getDate()}-${months[now.getMonth()]}-${now.getFullYear()}`;
   }
@@ -125,117 +125,128 @@ export class ChemicalDirectoryComponent implements OnChanges {
     const workbook = new ExcelJS.Workbook();
     const tabLabel = this.resultTabs.chemicalDirectory?.label || 'Chemical Directory';
     const worksheet = workbook.addWorksheet(tabLabel);
-
-    // Get valid keys
-    const validKeys = Object.keys(data[0] || {}).filter((key) =>
-      data.some((row) => {
-        const val = row[key];
-        return val !== null && val !== undefined && val !== '';
-      })
+  
+    //================= KEYS & HIDE GBRN =================//
+    let validKeys = Object.keys(data[0] || {}).filter(key =>
+      data.some(row => row[key] !== null && row[key] !== undefined && row[key] !== '')
     );
-
+    validKeys = validKeys.filter(k => k.toLowerCase() !== 'gbrn');
+  
     const dateStr = this.formatDate();
-    const searchTerm = `SEARCH TERM : ${keyword}`;
-    const title = `${tabLabel.toUpperCase()} Data Report`;
-
-    // Row 1: Header row with logo, title, date, search term
+    const searchTerm = `SEARCH: ${keyword}`;
+    const title = `${tabLabel.toUpperCase()} (BUILDING BLOCK) DATA REPORT`;
+  
+    //================= HEADER WITH LOGO =================//
     const headerRow = worksheet.addRow([]);
-    headerRow.height = 50;
-
-    // Add logo image
+    headerRow.height = 80;  // ⬆ increased header height
+  
     try {
       const logoBase64 = await this.loadImageAsBase64('assets/images/logo.png');
-      const logoId = workbook.addImage({
-        base64: logoBase64,
-        extension: 'png',
-      });
-      worksheet.addImage(logoId, {
-        tl: { col: 0, row: 0 },
-        ext: { width: 80, height: 45 }
-      });
-    } catch (e) {
-      console.warn('Could not load logo:', e);
-    }
-
-    // Set title in cell B1
-    worksheet.getCell('B1').value = title;
-    worksheet.getCell('B1').font = { 
-      bold: true, 
-      size: 14, 
-      color: { argb: 'FF0032A0' } // Blue color
-    };
-    worksheet.getCell('B1').alignment = { vertical: 'middle', horizontal: 'left' };
-    worksheet.mergeCells('B1:E1');
-
-    // Set date in cell F1
-    worksheet.getCell('F1').value = dateStr;
-    worksheet.getCell('F1').font = { bold: true, size: 11 };
-    worksheet.getCell('F1').alignment = { vertical: 'middle', horizontal: 'center' };
-    worksheet.mergeCells('F1:H1');
-
-    // Set search term in cell I1
-    worksheet.getCell('I1').value = searchTerm;
-    worksheet.getCell('I1').font = { bold: true, size: 11 };
-    worksheet.getCell('I1').alignment = { vertical: 'middle', horizontal: 'left' };
-    worksheet.mergeCells('I1:N1');
-
-    // Row 2 & 3: Empty rows for spacing
+      const img = workbook.addImage({ base64: logoBase64, extension: 'png' });
+  
+      // ⬆ Increase logo display area
+      worksheet.addImage(img, { tl:{ col:0, row:0 }, ext:{ width:180, height:80 } });
+      
+      // Make column for logo wider
+      worksheet.getColumn(1).width = 28;  // ←⭐ wider space for logo
+    } catch {}
+  
+    //================= TITLE + DATE =================//
+    worksheet.mergeCells('B1:D1');
+    const titleCell = worksheet.getCell('B1');
+    titleCell.value = title;
+    titleCell.font = { bold:true, size:15, color:{argb:'FF0032A0'} };
+    titleCell.alignment = { horizontal:'center', vertical:'middle' };
+  
+    worksheet.getCell('E1').value = dateStr;
+    worksheet.getCell('E1').font = { bold:true };
+    worksheet.getCell('E1').alignment = { horizontal:'center', vertical:'middle', wrapText:true };
+  
+    worksheet.getCell('F1').value = searchTerm;
+    worksheet.getCell('F1').font = { bold:true };
+    worksheet.getCell('F1').alignment = { horizontal:'center', vertical:'middle', wrapText:true };
+  
     worksheet.addRow([]);
     worksheet.addRow([]);
-
-    // Row 4: Column headers (simple format like before)
-    const columnHeaderRow = worksheet.addRow(validKeys);
-    columnHeaderRow.font = { bold: true };
-
-    // Add data rows (simple format - no styling, just like before)
-    data.forEach((row) => {
-      worksheet.addRow(validKeys.map(key => row[key] ?? ''));
+  
+    //================= Column Header =================//
+    const headerRow2 = worksheet.addRow(validKeys);
+    headerRow2.height = 35; // bigger heading row
+    headerRow2.eachCell(cell => {
+      cell.font = { bold:true };
+      cell.alignment = { vertical:"middle", horizontal:"center", wrapText:true };
+      cell.border = { top:{style:'thin'}, bottom:{style:'thin'} };
     });
-
-    // Set column widths (increased for better readability)
-    validKeys.forEach((key, index) => {
-      const colNumber = index + 1;
-      // Column 2 and 3 - reduced width
-      if (colNumber === 2 || colNumber === 3) {
-        worksheet.getColumn(colNumber).width = 10;
-      } else {
-        worksheet.getColumn(colNumber).width = Math.min(Math.max(key.length + 10, 25), 60);
-      }
+  
+    worksheet.views = [{ state:'frozen', ySplit:4 }];
+  
+    //================= Data Rows (global height increased) =================//
+    data.forEach(row => {
+      const excelRow = worksheet.addRow(validKeys.map(k => row[k] ?? ''));
+      excelRow.height = 100;
+    
+      excelRow.eachCell((cell, colNumber) => {
+    
+        const key = validKeys[colNumber - 1]; // Get actual column key name
+    
+        // 📌 Default style
+        cell.alignment = { wrapText:true, vertical:"middle", horizontal:"left" };
+    
+        // 🎨 Apply **light blue background to chemical_name**
+        if (key.toLowerCase() === 'chemical_name') {
+          cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'D6EAF8' }  // Light Blue HEX → ExcelJS format
+          };
+          cell.font = { bold:true };   // Optional if you want bold text also
+        }
+      });
+    
+      excelRow.commit();
     });
-
-    // Generate blob
+    
+  
+    //================= Auto Width =================//
+    validKeys.forEach((key, i) => {
+      const col = worksheet.getColumn(i+1);
+      const maxLength = Math.max(
+        key.length + 5,
+        ...data.map(r => (r[key] ? String(r[key]).length : 5))
+      );
+      col.width = Math.min(Math.max(maxLength * 0.65, 22), 60); // Wider & wrapped
+    });
+  
     const buffer = await workbook.xlsx.writeBuffer();
-    return new Blob([buffer], { 
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
-    });
+    return new Blob([buffer], { type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
   }
-
+  
   downloadExcel(): void {
     this.isExportingExcel = true;
-  
+
     // 🧠 Safely get keyword
     const keyword =
       this.keyword?.trim() ||
       this.currentChildAPIBody?.keyword?.trim() ||
       this.chemicalDirectoryApiBody?.keyword?.trim() ||
       '';
-  
+
     if (!keyword) {
       alert('Please perform a search before downloading Excel.');
       this.isExportingExcel = false;
       return;
     }
-  
+
     // ✅ Prepare API request body
     this._currentChildAPIBody = {
       ...this.chemicalDirectoryApiBody,
       keyword,
     };
-  
+
     console.log('✅ Final Excel download body:', this._currentChildAPIBody);
-  
+
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  
+
     this.mainSearchService.chemicalDirectorySearchSpecific(this._currentChildAPIBody).subscribe({
       next: async (res: Blob) => {
         try {
@@ -245,22 +256,22 @@ export class ChemicalDirectoryComponent implements OnChanges {
             this.isExportingExcel = false;
             return;
           }
-  
+
           const arrayBuffer = await res.arrayBuffer();
           const XLSX = await import('xlsx');
           const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-  
+
           const sheetName = workbook.SheetNames[0];
           const worksheet = workbook.Sheets[sheetName];
           const jsonData: any[] = XLSX.utils.sheet_to_json(worksheet);
-  
+
           if (!jsonData.length) {
             console.warn('⚠️ Excel sheet is empty. Exporting local data instead.');
             this.exportLocalData(keyword);
             this.isExportingExcel = false;
             return;
           }
-  
+
           // ✅ Remove empty columns dynamically
           const validKeys = Object.keys(jsonData[0]).filter((key) =>
             jsonData.some((row) => {
@@ -268,7 +279,7 @@ export class ChemicalDirectoryComponent implements OnChanges {
               return val !== null && val !== undefined && val !== '';
             })
           );
-  
+
           const cleanedData = jsonData.map((row) => {
             const newRow: any = {};
             validKeys.forEach((key) => (newRow[key] = row[key]));
@@ -277,7 +288,7 @@ export class ChemicalDirectoryComponent implements OnChanges {
 
           // ✅ Create Excel with styled header using ExcelJS
           const blob = await this.createExcelWithHeader(cleanedData, keyword);
-  
+
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;
@@ -286,7 +297,7 @@ export class ChemicalDirectoryComponent implements OnChanges {
           a.click();
           document.body.removeChild(a);
           window.URL.revokeObjectURL(url);
-  
+
           console.log('✅ Excel downloaded successfully with header.');
           this.isExportingExcel = false;
           window.scrollTo(0, scrollTop);
@@ -305,20 +316,20 @@ export class ChemicalDirectoryComponent implements OnChanges {
       },
     });
   }
-  
+
   private async exportLocalData(keyword: string = ''): Promise<void> {
     if (!this._data || !this._data.length) {
       alert('No data available to export.');
       return;
     }
-    
+
     const validKeys = Object.keys(this._data[0]).filter((key) =>
       this._data.some((row: any) => {
         const val = row[key];
         return val !== null && val !== undefined && val !== '';
       })
     );
-  
+
     const filteredData = this._data.map((row: any) => {
       const newRow: any = {};
       validKeys.forEach((key) => (newRow[key] = row[key]));
@@ -327,7 +338,7 @@ export class ChemicalDirectoryComponent implements OnChanges {
 
     // Create Excel with styled header using ExcelJS
     const blob = await this.createExcelWithHeader(filteredData, keyword);
-    
+
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -336,7 +347,7 @@ export class ChemicalDirectoryComponent implements OnChanges {
     a.click();
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
-  
+
     console.log('✅ Exported local data successfully with styled header.');
   }
 

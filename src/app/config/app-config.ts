@@ -79,6 +79,7 @@ export const AppConfigValues: AppConfig = {
       koreaApproval: {
         searchSpecific: `${appUrl.apiUrl}/korea-orange-book/search-specific`,
         columnList: `${appUrl.apiUrl}/korea-orange-book/column-list`,
+        downloadexcel: `${appUrl.devApiUrl}/orange-book-us/download-excel`,
       },
       usApproval: {
         searchSpecific: `${appUrl.apiUrl}/orange-book-us/search-specific`,
