@@ -127,14 +127,9 @@ h2{
   position: relative;
   display: inline-block;
   padding: 15px 25px;
-  /* background-color: #FFE800;  */
-  /* $yellow */
-  
-  text-transform: uppercase;
-  color: #404040; /* $brown */
+  background-color: #FFE800;  
   font-family: arial;
   letter-spacing: 1px;
-  
   box-shadow: -6px 6px 0 #404040; /* $brown */
   text-decoration: none;
 }
