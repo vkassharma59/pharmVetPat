@@ -55,6 +55,18 @@
             {{ _data?.product_no }}
           </p>
         </div>
+        <div class="col-md-9 col-sm-8" *ngIf="_data?.route && getColumnName('route')">
+          <h6 class="font-bold text-indigo-900">
+            {{ getColumnName('route') }}
+            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+              (click)="handleCopy(_data?.route, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="text-wrap max-h-12 whitespace-normal">
+            {{ _data?.route }}
+          </p>
+        </div>
         <div class="col-md-9 col-sm-8" *ngIf="_data?.trade_name && getColumnName('trade_name')">
           <h6 class="font-bold text-indigo-900">
             {{ getColumnName('trade_name') }}
@@ -87,6 +99,19 @@
           </h6>
           <p class="text-wrap max-h-12 whitespace-normal">
             {{ _data?.ingredient }}
+          </p>
+        </div>
+
+        <div class="col-md-9 col-sm-8" *ngIf="_data?.strength && getColumnName('strength')">
+          <h6 class="font-bold text-indigo-900">
+            {{ getColumnName('strength') }}
+            <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+              (click)="handleCopy(_data?.strength, copyBtn)">
+              <i class="fas fa-copy"></i>
+            </span>
+          </h6>
+          <p class="text-wrap max-h-12 whitespace-normal">
+            {{ _data?.strength }}
           </p>
         </div>
 
