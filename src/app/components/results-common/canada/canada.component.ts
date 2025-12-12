@@ -118,10 +118,6 @@ export class CanadaComponent implements OnInit {
   ngOnInit(): void {
     this.canadaPatentApiBody = { ...this.currentChildAPIBody };
     this.canadaPatentApiBody.filters = this.canadaPatentApiBody.filters || {};
-
-    console.log('[ngOnInit] Initial canadaPatentApiBody:', JSON.stringify(this.canadaPatentApiBody, null, 2));
-
-  //  this.handleFetchFilters();
   }
 
 
@@ -211,14 +207,11 @@ export class CanadaComponent implements OnInit {
     };
     this._currentChildAPIBody = updatedBody;
 
-    console.log('📤 Sending API Request:', updatedBody);
-
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
     this.mainSearchService.canadaApprovalSearchSpecific(updatedBody).subscribe({
       next: (res) => {
         let resultData = res?.data || {};
-        console.log('📤  Request:', res.data);
 
         this._currentChildAPIBody = {
           ...updatedBody,
@@ -355,14 +348,12 @@ export class CanadaComponent implements OnInit {
   
     worksheet.views = [{ state:'frozen', ySplit:4 }];
   
-    // ==== Data with Wrap Text + Auto Height ====
     data.forEach(row => {
       const excelRow = worksheet.addRow(keys.map(k => row[k] ?? ''));
       excelRow.eachCell(cell => cell.alignment = {wrapText:true,vertical:"top"});
       excelRow.commit();
     });
   
-    // ==== Column Auto Width ====
     keys.forEach((key,i)=>{
       worksheet.getColumn(i+1).width = Math.min(Math.max(key.length * 2,30),60);
     });
