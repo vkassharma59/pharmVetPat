@@ -244,12 +244,13 @@ export class EuropeApprovalComponent {
     window.scrollTo(0, 0);
   }
   private formatDate(): string {
-    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const months = [
+      'January','February','March','April','May','June',
+      'July','August','September','October','November','December'
+    ];
     const now = new Date();
     return `${now.getDate()}-${months[now.getMonth()]}-${now.getFullYear()}`;
   }
-  
-  // Convert Logo into Base64
   private async loadImageAsBase64(imagePath: string): Promise<string> {
     return new Promise((resolve, reject) => {
       fetch(imagePath)
@@ -263,119 +264,213 @@ export class EuropeApprovalComponent {
         .catch(() => reject());
     });
   }
-  private async createExcelWithHeader(data: any[], titleKeyword: string): Promise<Blob> {
+  
+  private async createExcelWithHeader(
+    data: any[],
+    titleKeyword: string
+  ): Promise<Blob> {
+  
     const ExcelJS = await import('exceljs');
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('EMA');
   
-    let validKeys = Object.keys(data[0] || {}).filter(key =>
-      data.some(row => row[key] !== null && row[key] !== undefined && row[key] !== '')
-    );
-    validKeys = validKeys.filter(k => k.toLowerCase() !== 'gbrn');
-  
+    // ================= HEADER INFO =================
     const dateStr = this.formatDate();
-    const title = `EMA Report`;
+    const title = 'EMA Report';
     const keyword = `SEARCH: ${titleKeyword}`;
   
-    // ==== Header Row with Logo ====
+    // ================= HEADER ROW (LOGO) =================
     const headerRow = worksheet.addRow([]);
     headerRow.height = 70;
   
     try {
       const logoBase64 = await this.loadImageAsBase64('assets/images/logo.png');
-      const img = workbook.addImage({ base64: logoBase64, extension:'png' });
-      worksheet.addImage(img,{ tl:{col:0,row:0}, ext:{width:170,height:70} });
+      const img = workbook.addImage({ base64: logoBase64, extension: 'png' });
+  
+      worksheet.addImage(img, {
+        tl: { col: 0, row: 0 },
+        ext: { width: 170, height: 70 }
+      });
+  
       worksheet.getColumn(1).width = 20;
     } catch {}
   
     worksheet.mergeCells('B1:C1');
     const titleCell = worksheet.getCell('B1');
     titleCell.value = title;
-    titleCell.font = { bold:true, size:15, color:{argb:'FF0032A0'} };
-    titleCell.alignment = {horizontal:'center',vertical:'middle'};
+    titleCell.font = { bold: true, size: 15, color: { argb: 'FF0032A0' } };
+    titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
   
     worksheet.getCell('D1').value = dateStr;
-    worksheet.getCell('D1').font = { bold:true };
-    worksheet.getCell('D1').alignment = {horizontal:'center',vertical:'middle',wrapText:true};
+    worksheet.getCell('D1').font = { bold: true };
+    worksheet.getCell('D1').alignment = {
+      horizontal: 'center',
+      vertical: 'middle',
+      wrapText: true
+    };
   
     worksheet.getCell('E1').value = keyword;
-    worksheet.getCell('E1').font = { bold:true };
-    worksheet.getCell('E1').alignment = {horizontal:'center',vertical:'middle',wrapText:true};
+    worksheet.getCell('E1').font = { bold: true };
+    worksheet.getCell('E1').alignment = {
+      horizontal: 'center',
+      vertical: 'middle',
+      wrapText: true
+    };
   
     worksheet.addRow([]);
     worksheet.addRow([]);
   
-    // ==== Column Headers ====
-    const keys = Object.keys(data[0]);
-    const headerRow2 = worksheet.addRow(keys);
+    // ================= COLUMN HEADERS (FROM EXCEL 5th ROW) =================
+    const headers = Object.keys(data[0] || {}).filter(h => h);
+  
+    const headerRow2 = worksheet.addRow(headers);
     headerRow2.height = 35;
+  
     headerRow2.eachCell(cell => {
-      cell.font = { bold:true };
-      cell.alignment = {horizontal:"center",vertical:"middle",wrapText:true};
-      cell.border = { top:{style:'thin'}, bottom:{style:'thin'} };
+      cell.font = { bold: true };
+      cell.alignment = {
+        horizontal: 'center',
+        vertical: 'middle',
+        wrapText: true
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        bottom: { style: 'thin' }
+      };
     });
   
-    worksheet.views = [{ state:'frozen', ySplit:4 }];
+    worksheet.views = [{ state: 'frozen', ySplit: 4 }];
   
-    // ==== Data with Wrap Text + Auto Height ====
+    // ================= DATA ROWS =================
     data.forEach(row => {
-      const excelRow = worksheet.addRow(keys.map(k => row[k] ?? ''));
-      excelRow.eachCell(cell => cell.alignment = {wrapText:true,vertical:"top"});
-      excelRow.commit();
+      const excelRow = worksheet.addRow(
+        headers.map(h => row[h] ?? '')
+      );
+  
+      excelRow.eachCell(cell => {
+        cell.alignment = { wrapText: true, vertical: 'top' };
+      });
     });
   
-    // ==== Column Auto Width ====
-    keys.forEach((key,i)=>{
-      worksheet.getColumn(i+1).width = Math.min(Math.max(key.length * 2,30),60);
+    // ================= AUTO WIDTH =================
+    headers.forEach((key, i) => {
+      worksheet.getColumn(i + 1).width =
+        Math.min(Math.max(key.length * 2, 30), 60);
+    });
+  
+    // ================= 🔥 HIDE EMPTY COLUMNS =================
+    worksheet.columns.forEach(col => {
+      if (!col || typeof col.eachCell !== 'function') return;
+  
+      let hasData = false;
+  
+      col.eachCell({ includeEmpty: false }, (cell, rowNumber) => {
+        if (rowNumber > 4 && cell.value !== null && cell.value !== '') {
+          hasData = true;
+        }
+      });
+  
+      if (!hasData) {
+        col.hidden = true;
+      }
     });
   
     const buffer = await workbook.xlsx.writeBuffer();
-    return new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+    return new Blob([buffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    });
   }
   
   downloadExcel(): void {
     this.isExportingExcel = true;
   
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollTop =
+      window.pageYOffset || document.documentElement.scrollTop;
   
-    this._currentChildAPIBody = { ...this.emaApiBody, filters:{...this.emaApiBody.filters} };
+    this._currentChildAPIBody = {
+      ...this.emaApiBody,
+      filters: { ...this.emaApiBody.filters }
+    };
   
-    this.mainSearchService.europeApprovaldownloadexcel(this._currentChildAPIBody).subscribe({
-      next: async(res:Blob)=>{
-        try{
-          const buffer = await res.arrayBuffer();
-          const XLSX = await import('xlsx');
-          const wb = XLSX.read(buffer,{type:'array'});
-          const sheet = wb.Sheets[wb.SheetNames[0]];
-          const jsonData:any[] = XLSX.utils.sheet_to_json(sheet);
+    this.mainSearchService
+      .europeApprovaldownloadexcel(this._currentChildAPIBody)
+      .subscribe({
+        next: async (res: Blob) => {
+          try {
+            const buffer = await res.arrayBuffer();
+            const XLSX = await import('xlsx');
+            const wb = XLSX.read(buffer, { type: 'array' });
+            const sheet = wb.Sheets[wb.SheetNames[0]];
   
-          if(!jsonData.length){ this.isExportingExcel=false; return;}
+            // 🔥 RAW DATA
+            const rawData: any[][] = XLSX.utils.sheet_to_json(sheet, {
+              header: 1,
+              defval: ''
+            });
   
-          // clean empty cols
-          const keys = Object.keys(jsonData[0]).filter(k=>jsonData.some(r=>r[k]));
-          const finalData = jsonData.map(r=>{ let obj:any={}; keys.forEach(k=>obj[k]=r[k]); return obj; });
+            if (!rawData.length) {
+              this.isExportingExcel = false;
+              return;
+            }
   
-          // 🔥 Generate styled excel with header
-          const blob = await this.createExcelWithHeader(finalData,this.searchThrough);
+            // 🔥 5th row as header
+            const headerRow = rawData[3];
+            const dataRows = rawData.slice(4);
   
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href=url;
-          a.download='EMA.xlsx';
-          a.click();
-          URL.revokeObjectURL(url);
+            // Build JSON
+            const jsonData = dataRows.map(row => {
+              const obj: any = {};
+              headerRow.forEach((key, index) => {
+                if (key) {
+                  obj[key] = row[index] ?? '';
+                }
+              });
+              return obj;
+            });
   
-        }catch(e){ console.error(e); }
+            // 🔥 Remove fully empty columns
+            const finalData = jsonData.map(r => {
+              const obj: any = {};
+              Object.keys(r).forEach(k => {
+                if (jsonData.some(row => row[k])) {
+                  obj[k] = r[k];
+                }
+              });
+              return obj;
+            });
   
-        this.isExportingExcel=false;
-        window.scrollTo(0,scrollTop);
-      },
-      error:(err)=>{
-        console.error(err);
-        this.isExportingExcel=false;
-        window.scrollTo(0,scrollTop);
-      }
-    });
+            if (!finalData.length) {
+              this.isExportingExcel = false;
+              return;
+            }
+  
+            const blob = await this.createExcelWithHeader(
+              finalData,
+              this.searchThrough
+            );
+  
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'EMA.xlsx';
+            a.click();
+            URL.revokeObjectURL(url);
+  
+          } catch (e) {
+            console.error(e);
+          }
+  
+          this.isExportingExcel = false;
+          window.scrollTo(0, scrollTop);
+        },
+        error: err => {
+          console.error(err);
+          this.isExportingExcel = false;
+          window.scrollTo(0, scrollTop);
+        }
+      });
   }
+  
+  
 }
 

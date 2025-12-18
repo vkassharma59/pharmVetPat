@@ -38,10 +38,18 @@
         <span class="text-left text-lg hover:cursor-pointer my-2 px-3" (click)="handleToggleViewProduct()">
           X
         </span>
-        <div class="flex justify-center items-center flex-grow">
+        <div class="flex justify-center items-center flex-grow gap-3">
           <h1 class="text-center text-lg font-bold">
             Application of Intermediate
           </h1>
+        </div>
+        <div class="justify-end">
+          <button
+          #copyBtn
+          class="flex items-center gap-2 text-sm px-3 py-1 bg-[#0032A0] text-white rounded hover:bg-blue-800"
+          (click)="copyAllApplications(copyBtn)">
+          <i class="fa fa-copy"></i>
+        </button>
         </div>
       </div>
 
