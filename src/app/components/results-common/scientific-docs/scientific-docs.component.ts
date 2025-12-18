@@ -82,86 +82,74 @@ export class ScientificDocsComponent {
   }
 
   // Create Excel with header using ExcelJS
-  private async createExcelWithHeader(data: any[], keyword: string): Promise<Blob> {
+  private async createExcelWithHeader(data: any[], titleKeyword: string): Promise<Blob> {
     const ExcelJS = await import('exceljs');
     const workbook = new ExcelJS.Workbook();
-    const tabLabel = this.resultTabs.scientificDocs?.label || 'scientificDocs';
-    const worksheet = workbook.addWorksheet(tabLabel);
+    const worksheet = workbook.addWorksheet('Scientific Docs');
   
-    //================= KEYS & HIDE GBRN =================//
     let validKeys = Object.keys(data[0] || {}).filter(key =>
       data.some(row => row[key] !== null && row[key] !== undefined && row[key] !== '')
     );
     validKeys = validKeys.filter(k => k.toLowerCase() !== 'gbrn');
   
     const dateStr = this.formatDate();
-    const searchTerm = `SEARCH: ${keyword}`;
-    const title = `${tabLabel.toUpperCase()} (BUILDING BLOCK) DATA REPORT`;
+    const title = `Scientific Docs`;
+    const keyword = `SEARCH: ${titleKeyword}`;
   
-    //================= HEADER WITH LOGO =================//
+    // ==== Header Row with Logo ====
     const headerRow = worksheet.addRow([]);
-    headerRow.height = 80;  // ⬆ increased header height
+    headerRow.height = 70;
   
     try {
       const logoBase64 = await this.loadImageAsBase64('assets/images/logo.png');
-      const img = workbook.addImage({ base64: logoBase64, extension: 'png' });
-  
-      // ⬆ Increase logo display area
-      worksheet.addImage(img, { tl:{ col:0, row:0 }, ext:{ width:180, height:80 } });
-      
-      // Make column for logo wider
-      worksheet.getColumn(1).width = 28;  // ←⭐ wider space for logo
+      const img = workbook.addImage({ base64: logoBase64, extension:'png' });
+      worksheet.addImage(img,{ tl:{col:0,row:0}, ext:{width:170,height:70} });
+      worksheet.getColumn(1).width = 20;
     } catch {}
   
-    //================= TITLE + DATE =================//
-    worksheet.mergeCells('B1:K1');
+    worksheet.mergeCells('B1:C1');
     const titleCell = worksheet.getCell('B1');
     titleCell.value = title;
     titleCell.font = { bold:true, size:15, color:{argb:'FF0032A0'} };
-    titleCell.alignment = { horizontal:'center', vertical:'middle' };
+    titleCell.alignment = {horizontal:'center',vertical:'middle'};
   
-    worksheet.getCell('L1').value = dateStr;
-    worksheet.getCell('L1').font = { bold:true };
-    worksheet.getCell('L1').alignment = { horizontal:'center', vertical:'middle', wrapText:true };
+    worksheet.getCell('D1').value = dateStr;
+    worksheet.getCell('D1').font = { bold:true };
+    worksheet.getCell('D1').alignment = {horizontal:'center',vertical:'middle',wrapText:true};
   
-    worksheet.getCell('M1').value = searchTerm;
-    worksheet.getCell('M1').font = { bold:true };
-    worksheet.getCell('1').alignment = { horizontal:'center', vertical:'middle', wrapText:true };
+    worksheet.getCell('E1').value = keyword;
+    worksheet.getCell('E1').font = { bold:true };
+    worksheet.getCell('E1').alignment = {horizontal:'center',vertical:'middle',wrapText:true};
   
     worksheet.addRow([]);
     worksheet.addRow([]);
   
-    //================= Column Header =================//
-    const headerRow2 = worksheet.addRow(validKeys);
-    headerRow2.height = 35; // bigger heading row
-    headerRow2.eachCell(cell => {
-      cell.font = { bold:true };
-      cell.alignment = { vertical:"middle", horizontal:"center", wrapText:true };
-      cell.border = { top:{style:'thin'}, bottom:{style:'thin'} };
-    });
+    // ==== Column Headers ====
+    const keys = Object.keys(data[0]);
+    const headerRow2 = worksheet.addRow(keys);
+    // headerRow2.height = 35;
+    // headerRow2.eachCell(cell => {
+    //   cell.font = { bold:true };
+    //   cell.alignment = {horizontal:"center",vertical:"middle",wrapText:true};
+    //   cell.border = { top:{style:'thin'}, bottom:{style:'thin'} };
+    // });
   
     worksheet.views = [{ state:'frozen', ySplit:4 }];
   
-    //================= Data Rows (global height increased) =================//
+    // ==== Data with Wrap Text + Auto Height ====
     data.forEach(row => {
-      const excelRow = worksheet.addRow(validKeys.map(k => row[k] ?? ''));
-      excelRow.height = 100;     // ⭐ increase row height visible clearly
-      excelRow.eachCell(cell => cell.alignment = { wrapText:true, vertical:"middle", horizontal:"left" });
+      const excelRow = worksheet.addRow(keys.map(k => row[k] ?? ''));
+      excelRow.eachCell(cell => cell.alignment = {wrapText:true,vertical:"top"});
       excelRow.commit();
     });
   
-    //================= Auto Width =================//
-    validKeys.forEach((key, i) => {
-      const col = worksheet.getColumn(i+1);
-      const maxLength = Math.max(
-        key.length + 5,
-        ...data.map(r => (r[key] ? String(r[key]).length : 5))
-      );
-      col.width = Math.min(Math.max(maxLength * 0.65, 22), 60); // Wider & wrapped
+    // ==== Column Auto Width ====
+    keys.forEach((key,i)=>{
+      worksheet.getColumn(i+1).width = Math.min(Math.max(key.length * 2,30),60);
     });
   
     const buffer = await workbook.xlsx.writeBuffer();
-    return new Blob([buffer], { type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    return new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
   }
   
   downloadExcel(): void {
@@ -235,7 +223,7 @@ export class ScientificDocsComponent {
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;
-          a.download = 'Scientific-Docs.xlsx';
+          a.download = 'Scientific Docs.xlsx';
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
@@ -285,7 +273,7 @@ export class ScientificDocsComponent {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'Scientific-Docs.xlsx';
+    a.download = 'Scientific Docs.xlsx';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
