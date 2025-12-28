@@ -143,10 +143,15 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     this.getAllFilters();
     console.log("🔄 ngOnInit called - Search Page initialized");
 
-    // Restore previously saved session state (if any)
-    this.restoreAllFromSession();
+    const savedParams = localStorage.getItem('urlSearchParams');
+    console.log("Retrieved savedParams from localStorage:", savedParams);
+  if (savedParams) {
+    const params = JSON.parse(savedParams);
 
-    // restore cas/type auto-search info (as you had before)
+    this.restoreFormFromURLParams(params);
+    return;
+  }
+    this.restoreAllFromSession();
     const type = sessionStorage.getItem("searchType") || localStorage.getItem("searchType") || null;
     const cas = sessionStorage.getItem("casRN") || localStorage.getItem("casRN") || null;
     console.log("📦 Loaded from storage -> type:", type, "| cas:", cas);
@@ -302,7 +307,58 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       this.activeSearchTab = savedTab;
     }
   }
-
+  restoreFormFromURLParams(params: any) {
+    console.log('🔁 restoreFormFromURLParams', params);
+  
+    switch (params.searchType) {
+  
+      case 'simple_search':
+        this.simpleSearch = {
+          ...this.simpleSearch,
+          keyword: params.keyword || ''
+        };
+        break;
+  
+      case 'advance_search':
+        this.advanceSearch = {
+          ...this.advanceSearch,
+          keyword: params.keyword || '',
+          filterInputs: params.cas ? [{
+            filter: 'CAS_RN',
+            keyword: params.cas,
+            operator: null
+          }] : []
+        };
+        break;
+  
+      case 'synthesis_search':
+        this.synthesisSearch = {
+          ...this.synthesisSearch,
+          keyword: params.keyword || ''
+        };
+        break;
+  
+      case 'chemical_structure':
+        this.chemicalStructure = {
+          ...this.chemicalStructure,
+          filter: params.filter || 'smiles_code',
+          keyword: params.keyword || ''
+        };
+        break;
+  
+      case 'intermediate_search':
+        this.intermediateSearch = {
+          ...this.intermediateSearch,
+          filter: params.filter || 'cas_rn',
+          keyword: params.keyword || ''
+        };
+        break;
+    }
+  
+    console.log('✅ Form state updated', this.simpleSearch);
+  }
+  
+  
   getAllFilters() {
     this.getChemicalStructureFilters();
     this.getintermediateSearchFilters();
@@ -912,29 +968,38 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     }
   }
 
-  private performSimpleSearch(): void {
+  private performSimpleSearch(fromURL: boolean = false,
+    urlData?: { keyword?: string; cas?: string }): void {
 
-    const keyword = this.simpleSearch?.keyword?.trim();
-    if (!keyword) {
-      alert('Please enter a keyword before searching.');
+      const keyword = fromURL
+      ? (urlData?.keyword || '').trim()
+      : this.simpleSearch?.keyword?.trim();
+    
+    const cas = fromURL
+      ? (urlData?.cas || '').trim()
+      : null;
+    
+    if (!keyword && !cas) {
+      alert('Please enter a keyword or CAS before searching.');
       return;
     }
-  
+    this.setLoadingState.emit(true);
     Auth_operations.setActiveformValues({
       column: this.column,
       keyword: keyword,
       screenColumn: this.screenColumn,
       activeForm: searchTypes.simpleSearch,
     });
-  
     const body = {
       criteria: this.criteria,
       page_no: 1,
       filter_enable: false,
       filters: {},
       order_by: '',
-      keyword: keyword,
+      keyword: keyword || '',
+      cas: cas || null,
     };
+    
   
     this.searchKeyword = keyword;
   
@@ -973,38 +1038,73 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       },
     });
   }
+  public triggerSimpleSearchFromURL(params: {
+    keyword?: string;
+    cas?: string;
+  }) {
+    console.log('[URL → SIMPLE SEARCH]', params);
   
-
+    // UI sync (optional but good UX)
+    this.simpleSearch = {
+      ...this.simpleSearch,
+      keyword: params.keyword || '',
+    };
+  
+    this.performSimpleSearch(true, params);
+  }
+  
   private isValidDate(date) {
     return !isNaN(Date.parse(date));
   }
 
-  private performAdvancedSearch(): void {
+  private performAdvancedSearch(
+    fromURL: boolean = false,
+    urlData?: {
+      column?: string;
+      keyword?: string;
+      cas?: string;
+    }
+  ): void {
+    this.setLoadingState.emit(true);
+    // 🔹 If coming from URL, sync values into advanceSearch model
+    if (fromURL && urlData) {
+      this.advanceSearch = {
+        ...this.advanceSearch,
+        filterInputs: [
+          {
+            filter: urlData.column || 'casrn',
+            keyword: urlData.cas || urlData.keyword || '',
+            operator: 'OR'
+          }
+        ]
+      };
+    }
+  
     Auth_operations.setActiveformValues({
       column: this.column,
       keyword: '',
       screenColumn: this.screenColumn,
       activeForm: searchTypes.advanceSearch,
     });
-
+  
     const validFilters = this.advanceSearch?.filterInputs
       ?.filter(input => input.filter?.trim() && input.keyword?.trim());
-
+  
     const hasValidCriteria = validFilters && validFilters.length > 0;
-
+  
     const criteria = hasValidCriteria
       ? validFilters.map((input, index) => ({
-        ...(index > 0 ? { operator: input.operator || 'OR' } : {}),
-        column: input.filter,
-        keyword: input.keyword
-      }))
+          ...(index > 0 ? { operator: input.operator || 'OR' } : {}),
+          column: input.filter?.toUpperCase(),
+          keyword: input.keyword
+        }))
       : undefined;
-
+  
     const hasValidDateFilters =
       this.advanceSearch?.dateType &&
       this.isValidDate(this.advanceSearch?.startDate) &&
       this.isValidDate(this.advanceSearch?.endDate);
-
+  
     const body = {
       ...(hasValidCriteria && { criteria }),
       ...(hasValidDateFilters && {
@@ -1016,30 +1116,36 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       }),
       ...(this.advanceSearch?.devStage && { development_stage: this.advanceSearch.devStage }),
       ...(this.advanceSearch?.innovator && { innovators: this.advanceSearch.innovator }),
-      ...(this.advanceSearch?.startSales !== null &&
-        this.advanceSearch?.startSales !== undefined &&
-        this.advanceSearch?.endSales !== null &&
-        this.advanceSearch?.endSales !== undefined && {
-        sale_range: {
-          start: this.advanceSearch.startSales,
-          end: this.advanceSearch.endSales
-        }
+      ...(this.advanceSearch?.startSales != null &&
+        this.advanceSearch?.endSales != null && {
+          sale_range: {
+            start: this.advanceSearch.startSales,
+            end: this.advanceSearch.endSales
+          }
       }),
       page_no: 1
     };
-    console.log("Advance Search API Body", body);
-    this.sharedRosService.setSearchData('advance Search', this.advanceSearch?.keyword, this.criteria);
+  
+    console.log('Advance Search API Body', body);
+  
+    this.sharedRosService.setSearchData(
+      'Advance Search',
+      validFilters?.[0]?.keyword || '',
+      criteria
+    );
+  
     const tech_API = this.apiUrls.basicProductInfo.columnList;
+  
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
         const response = res?.data?.columns;
         Auth_operations.setColumnList(this.resultTabs.productInfo.name, response);
+  
         this.mainSearchService.getAdvanceSearchResults(body).subscribe({
           next: (res: any) => {
             this.showResultFunction.emit({
               body,
-             // apiBody,
-              API_URL: this.apiUrls.basicProductInfo.simpleSearchResults,
+              API_URL: this.apiUrls.basicProductInfo.advanceSearchResults,
               currentTab: this.resultTabs.productInfo.name,
               actual_value: '',
             });
@@ -1047,7 +1153,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
             this.setLoadingState.emit(false);
           },
           error: (e) => {
-            console.error('Error during main search:', e);
+            console.error('Error during advance search:', e);
             this.setLoadingState.emit(false);
           },
         });
@@ -1058,31 +1164,70 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       },
     });
   }
+  public triggerAdvancedSearchFromURL(params: {
+    column?: string;
+    keyword?: string;
+    cas?: string;
+  }) {
+    console.log('[URL → ADVANCE SEARCH]', params);
+  
+    this.performAdvancedSearch(true, params);
+  }
+    
 
-  private performSynthesisSearch(): void {
+  private performSynthesisSearch(
+    fromURL: boolean = false,
+    urlData?: {
+      keyword?: string;
+      column?: string;
+    }
+  ): void {
+    this.setLoadingState.emit(true);
+    // 🔹 URL → UI sync
+    if (fromURL && urlData) {
+      this.synthesisSearch = {
+        ...this.synthesisSearch,
+        keyword: urlData.keyword || ''
+      };
+  
+      // Normalize column if needed later
+      this.column = urlData.column
+        ? urlData.column.toUpperCase()
+        : this.column;
+    }
+  
     Auth_operations.setActiveformValues({
-      column: this.column,
+      column: this.column?.toUpperCase(), // ✅ UPPERCASE
       keyword: this.synthesisSearch?.keyword,
       screenColumn: this.screenColumn,
       activeForm: searchTypes.synthesisSearch,
     });
-    
+  
     const body = {
       criteria: this.criteria,
       page_no: 1,
       filter_enable: false,
       filters: {},
       order_by: '',
-      keyword: this.synthesisSearch?.keyword
+      keyword: this.synthesisSearch?.keyword || ''
     };
-    this.sharedRosService.setSearchData('synthesis Search', this.synthesisSearch?.keyword, this.criteria);
-
+  
+    this.sharedRosService.setSearchData(
+      'Synthesis Search',
+      this.synthesisSearch?.keyword,
+      this.criteria
+    );
+  
     const tech_API = this.apiUrls.technicalRoutes.columnList;
+  
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
         const response = res?.data?.columns;
-        Auth_operations.setColumnList(this.resultTabs.technicalRoutes.name, response);
-
+        Auth_operations.setColumnList(
+          this.resultTabs.technicalRoutes.name,
+          response
+        );
+  
         this.mainSearchService.getSyntheticSearchResults(body).subscribe({
           next: (res: any) => {
             this.showResultFunction.emit({
@@ -1095,7 +1240,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
             this.setLoadingState.emit(false);
           },
           error: (e) => {
-            console.error('Error during main search:', e);
+            console.error('Error during synthesis search:', e);
             this.setLoadingState.emit(false);
           },
         });
@@ -1106,6 +1251,16 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       },
     });
   }
+
+  public triggerSynthesisSearchFromURL(params: {
+    keyword?: string;
+    column?: string;
+  }) {
+    console.log('[URL → SYNTHESIS SEARCH]', params);
+  
+    this.performSynthesisSearch(true, params);
+  }
+  
 
   showContent(searchTab: string) {
     this.activeSearchTab = searchTab;
@@ -1132,28 +1287,46 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     }, 0);
   }
 
-  private performChemicalStructureSearch(): void {
-    console.log('🔍 Starting Chemical Structure Search...');
+  private performChemicalStructureSearch(
+    fromURL: boolean = false,
+    urlData?: {
+      filter?: string;
+      keyword?: string;
+    }
+  ): void {
   
+    console.log('🔍 Starting Chemical Structure Search...');
     this.setLoadingState.emit(true);
   
+    // 🔹 URL → UI sync
+    if (fromURL && urlData) {
+      this.chemicalStructure = {
+        ...this.chemicalStructure,
+        filter: urlData.filter || 'smiles_code',
+        keyword: urlData.keyword || ''
+      };
+    }
+  
+    const filterType = (this.chemicalStructure?.filter || 'smiles_code')
+      .toLowerCase()
+      .trim(); // ✅ MUST be lowercase
+  
+    const keyword = (this.chemicalStructure?.keyword || '').trim();
+  
     Auth_operations.setActiveformValues({
-      column: this.column,
-      keyword: this.chemicalStructure?.keyword,
+      column: filterType.toUpperCase(), // ✅ UI needs uppercase
+      keyword,
       screenColumn: this.screenColumn,
       activeForm: searchTypes.chemicalStructure,
     });
   
-    const filterType = (this.chemicalStructure?.filter || '').toLowerCase().trim();
-    const keyword = (this.chemicalStructure?.keyword || '').trim();
-    console.log('keyword',keyword);
     if (!keyword) {
       this.setLoadingState.emit(false);
       return;
     }
   
     const body: any = {
-      criteria: filterType || 'smiles_code',
+      criteria: filterType, // ✅ lowercase (CRITICAL FIX)
       keyword,
       page_no: 1,
       filter_enable: true,
@@ -1161,8 +1334,8 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       formType: 'chemical',
   
       filters: {
-        CAS_RN: filterType === 'cas_rn' ? keyword : '',
-        chemicalName:keyword ,
+        CAS_RN: filterType === 'cas_rn' ? keyword : '', // ✅ backend expects this key
+        chemicalName: keyword,
       },
     };
   
@@ -1179,9 +1352,13 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
         const response = res?.data?.columns || [];
-        Auth_operations.setColumnList(this.resultTabs.chemicalDirectory.name, response);
+        Auth_operations.setColumnList(
+          this.resultTabs.chemicalDirectory.name,
+          response
+        );
   
-        const apiUrl = this.apiUrls.chemicalDirectory.intermediateApplicationSearch;
+        const apiUrl =
+          this.apiUrls.chemicalDirectory.intermediateApplicationSearch;
   
         this.mainSearchService.getChemicalStructureResults(body).subscribe({
           next: (res: any) => {
@@ -1202,59 +1379,101 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     });
   }
   
-
-  private performIntermediateSearch(): void {
-    // Force set filter and keyword so that UI shows values
-    this.intermediateSearch.filter = this.intermediateSearch.filter ;
-    this.intermediateSearch.keyword = this.intermediateSearch.keyword ;
+  public triggerChemicalStructureSearchFromURL(params: {
+    filter?: string;
+    keyword?: string;
+  }) {
+    console.log('[URL → CHEMICAL STRUCTURE SEARCH]', params);
   
-    console.log("🔹 Intermediate Search invoked:", {
+    this.performChemicalStructureSearch(true, params);
+  }
+    
+  
+  private performIntermediateSearch(
+    fromURL: boolean = false,
+    urlData?: {
+      filter?: string;
+      keyword?: string;
+    }
+  ): void {
+  
+    // 🔹 URL → UI sync
+    if (fromURL && urlData) {
+      this.intermediateSearch = {
+        ...this.intermediateSearch,
+        filter: urlData.filter || 'cas_rn',
+        keyword: urlData.keyword || ''
+      };
+    }
+  
+    console.log('🔹 Intermediate Search invoked:', {
       filter: this.intermediateSearch.filter,
       keyword: this.intermediateSearch.keyword
     });
   
+    this.setLoadingState.emit(true);
+  
+    const filterType = (this.intermediateSearch.filter || '')
+      .toLowerCase()
+      .trim(); // ✅ MUST be lowercase
+  
+    const keyword = (this.intermediateSearch.keyword || '').trim();
+  
     Auth_operations.setActiveformValues({
-      column: this.column,
-      keyword: this.intermediateSearch.keyword,
+      column: filterType.toUpperCase(), // ✅ UI/state
+      keyword,
       screenColumn: this.screenColumn,
       activeForm: searchTypes.intermediateSearch
     });
   
-    const filterType = (this.intermediateSearch.filter || '').toLowerCase().trim();
-    const keyword = (this.intermediateSearch.keyword || '').trim();
+    if (!keyword) {
+      this.setLoadingState.emit(false);
+      return;
+    }
   
-    // Build body (if you still use it somewhere)
+    // 🔹 Build API body (criteria must be lowercase)
     const body = {
       page_no: 1,
       filter_enable: false,
       filters: {},
       order_by: '',
-      keyword: keyword,
-      criteria: filterType
+      keyword,
+      criteria: filterType // ✅ lowercase
     };
   
-    // CORRECT setCasRn: put CAS_RN only when searched by CAS, and chemicalName only when searched by name
+    // 🔹 Correct CAS / Name handling
     const casValue = filterType === 'cas_rn' ? keyword : '';
     const nameValue = filterType !== 'cas_rn' ? keyword : '';
   
-    console.log("🔁 Setting CasRnService with:", { casValue, nameValue, filterType });
+    console.log('🔁 Setting CasRnService with:', {
+      casValue,
+      nameValue,
+      filterType
+    });
   
-    // IMPORTANT: this calls service setCasRn
-    this.casRnService.setCasRn('intermediate', casValue, nameValue);
-  
-    // Save to shared for EXIM component if used
-    this.sharedRosService.setSearchData(
-      'intermediateSearch',
-      this.intermediateSearch?.keyword,
-      this.intermediateSearch?.filter
+    this.casRnService.setCasRn(
+      'intermediate',
+      casValue,
+      nameValue
     );
   
-    // fetch columns + results (unchanged)
+    // 🔹 Save for shared usage
+    this.sharedRosService.setSearchData(
+      'intermediateSearch',
+      keyword,
+      filterType
+    );
+  
+    // 🔹 Fetch columns + results
     const tech_API = this.apiUrls.chemicalDirectory.columnList;
+  
     this.columnListService.getColumnList(tech_API).subscribe({
       next: (res: any) => {
-        const response = res?.data?.columns;
-        Auth_operations.setColumnList(this.resultTabs.chemicalDirectory.name, response);
+        const response = res?.data?.columns || [];
+        Auth_operations.setColumnList(
+          this.resultTabs.chemicalDirectory.name,
+          response
+        );
   
         this.mainSearchService.getChemicalStructureResults(body).subscribe({
           next: (res: any) => {
@@ -1269,7 +1488,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
             this.setLoadingState.emit(false);
           },
           error: (e) => {
-            console.error('Error during main search:', e);
+            console.error('Error during intermediate search:', e);
             this.setLoadingState.emit(false);
           },
         });
@@ -1280,6 +1499,15 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       },
     });
   }
+
+  public triggerIntermediateSearchFromURL(params: {
+    filter?: string;
+    keyword?: string;
+  }) {
+    console.log('[URL → INTERMEDIATE SEARCH]', params);
+    this.performIntermediateSearch(true, params);
+  }
+  
   
   openTutorialModal() {
     const dialogRef = this.dialog.open(VideoTutorialComponent, {
