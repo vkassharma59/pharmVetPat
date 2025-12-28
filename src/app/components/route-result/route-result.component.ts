@@ -226,13 +226,14 @@ export class RouteResultComponent {
     this.backFunction1.emit();
   }
   handleBack() {
+    const savedSearch = this.sharedRosService.getSearchData();
+    console.log('Saved Search Data on Back:', savedSearch);
     const cleanUrl = window.location.origin + window.location.pathname;
-    window.history.replaceState({}, '', cleanUrl);
+    window.history.replaceState({}, '', cleanUrl); 
     this.sharedRosService.clearSearchData();
     this.backFunction.emit(false);
     localStorage.removeItem("searchType");
     localStorage.removeItem("casRN");
-    console.log("removed");
   }
 
 

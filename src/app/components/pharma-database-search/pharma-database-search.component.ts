@@ -144,19 +144,14 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     console.log("🔄 ngOnInit called - Search Page initialized");
 
     const savedParams = localStorage.getItem('urlSearchParams');
-
+    console.log("Retrieved savedParams from localStorage:", savedParams);
   if (savedParams) {
     const params = JSON.parse(savedParams);
 
     this.restoreFormFromURLParams(params);
-
-    // ❌ auto-search yahan nahi karna
     return;
   }
-    // Restore previously saved session state (if any)
     this.restoreAllFromSession();
-
-    // restore cas/type auto-search info (as you had before)
     const type = sessionStorage.getItem("searchType") || localStorage.getItem("searchType") || null;
     const cas = sessionStorage.getItem("casRN") || localStorage.getItem("casRN") || null;
     console.log("📦 Loaded from storage -> type:", type, "| cas:", cas);
@@ -313,31 +308,56 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     }
   }
   restoreFormFromURLParams(params: any) {
+    console.log('🔁 restoreFormFromURLParams', params);
+  
     switch (params.searchType) {
   
-      case this.searchTypes.simpleSearch:
-        this.simpleSearch.keyword = params.value || '';
+      case 'simple_search':
+        this.simpleSearch = {
+          ...this.simpleSearch,
+          keyword: params.keyword || ''
+        };
         break;
   
-      case this.searchTypes.advanceSearch:
-        this.advanceSearch.keyword = params.value || '';
+      case 'advance_search':
+        this.advanceSearch = {
+          ...this.advanceSearch,
+          keyword: params.keyword || '',
+          filterInputs: params.cas ? [{
+            filter: 'CAS_RN',
+            keyword: params.cas,
+            operator: null
+          }] : []
+        };
         break;
   
-      case this.searchTypes.synthesisSearch:
-        this.synthesisSearch.keyword = params.value || '';
+      case 'synthesis_search':
+        this.synthesisSearch = {
+          ...this.synthesisSearch,
+          keyword: params.keyword || ''
+        };
         break;
   
-      case this.searchTypes.chemicalStructure:
-        this.chemicalStructure.filter = params.filter || 'smiles_code';
-        this.chemicalStructure.keyword = params.value || '';
+      case 'chemical_structure':
+        this.chemicalStructure = {
+          ...this.chemicalStructure,
+          filter: params.filter || 'smiles_code',
+          keyword: params.keyword || ''
+        };
         break;
   
-      case this.searchTypes.intermediateSearch:
-        this.intermediateSearch.filter = params.filter || 'cas_rn';
-        this.intermediateSearch.keyword = params.value || '';
+      case 'intermediate_search':
+        this.intermediateSearch = {
+          ...this.intermediateSearch,
+          filter: params.filter || 'cas_rn',
+          keyword: params.keyword || ''
+        };
         break;
     }
+  
+    console.log('✅ Form state updated', this.simpleSearch);
   }
+  
   
   getAllFilters() {
     this.getChemicalStructureFilters();

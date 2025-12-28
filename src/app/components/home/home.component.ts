@@ -153,8 +153,15 @@ export class HomeComponent implements OnInit {
   }
   
   saveURLSearchParamsToLocalStorage(params: any) {
+    console.log('💾 saveURLSearchParamsToLocalStorage CALLED');
+    console.log('➡️ Params received:', params);
+  
     localStorage.setItem('urlSearchParams', JSON.stringify(params));
+  
+    const stored = localStorage.getItem('urlSearchParams');
+    console.log('✅ Stored in localStorage:', stored);
   }
+  
   
   handleSearchResults(data: any) {
     this.allDataSets = this.utilityService.getDataStates();
