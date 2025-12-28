@@ -200,7 +200,7 @@ export class RouteResultComponent {
     const isMultipleLoop = this.activeIndex !== null;
     // Tab change ho ya activeIndex set ho → show button
     return isDifferentFromInitial || isMultipleLoop;
-    
+
   }
 
   getCurrentTabCount(): number {
@@ -226,6 +226,8 @@ export class RouteResultComponent {
     this.backFunction1.emit();
   }
   handleBack() {
+    const cleanUrl = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, '', cleanUrl);
     this.sharedRosService.clearSearchData();
     this.backFunction.emit(false);
     localStorage.removeItem("searchType");
@@ -814,11 +816,11 @@ export class RouteResultComponent {
   hasTabData(index: number): boolean {
     const currentData = this.AllSetData[index];
     const tabName = this.currentTabData?.name;
-  
+
     if (!tabName || !currentData) return false;
-  
+
     let tabData: any[] = [];
-  
+
     // Handle different tab types
     switch (tabName) {
       case this.resultTabWithKeys.technicalRoutes.name:
@@ -827,10 +829,10 @@ export class RouteResultComponent {
       default:
         tabData = currentData[tabName] || [];
     }
-  
+
     return Array.isArray(tabData) && tabData.length > 0;
   }
-  
+
 
   // handleGeneratePdf() {
   //   this.generatePDFloader = true;
@@ -1217,7 +1219,7 @@ export class RouteResultComponent {
   }
   selectDefaultDownloadTabs() {
     this.resultTabs.forEach(tab => (this.SingleDownloadCheckbox[tab.name] = false));
-    
+
     if (this.searchThrough) {
       this.resultTabs.forEach(tab => {
         if (
@@ -1232,7 +1234,7 @@ export class RouteResultComponent {
       });
     }
   }
-  
+
   onChemicalDirectoryActiveTabChange(tabName: string) {
     this.activeTab = tabName;
   }

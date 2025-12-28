@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
     actual_value: '',
   };
 
-
+  @ViewChild('searchForm') searchForm!: pharmaDatabaseSearchComponent;
   @ViewChild('priviledgeModal') priviledgeModal!: ElementRef;
   resultTabs: any = {};
 
@@ -65,7 +65,11 @@ export class HomeComponent implements OnInit {
       this.user = null;
     }
   }
-
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.handleURLBasedSearch();
+    });
+  }
   activeAccordion: string | null = null;
 
   openCloseAccordion(key: string, event?: Event): void {
@@ -99,7 +103,59 @@ export class HomeComponent implements OnInit {
       this.loading = data;
     }, 100);
   }
+  handleURLBasedSearch() {
+    if (!localStorage.getItem('auth')) return;
+  
+    const params = new URLSearchParams(window.location.search);
+  
+    const searchType = params.get('searchtype');
+    const keyword = params.get('value');
+    const cas = params.get('cas');
+    const column = params.get('column');
+    const filter = params.get('filter');
+    console.log('[URL SEARCH]', { searchType, keyword, filter });
+    const urlParams = { searchType, keyword, filter, column, cas };
 
+    // ✅ STORE URL PARAMS
+    this.saveURLSearchParamsToLocalStorage(urlParams);
+  
+    if (searchType === 'simple_search') {
+      this.searchForm.triggerSimpleSearchFromURL({
+        keyword: keyword || '',
+        cas: cas || '',
+      });
+    }
+    if (searchType === 'advance_search') {
+      this.searchForm.triggerAdvancedSearchFromURL({
+        column: column || 'casrn',
+        keyword: keyword || '',
+        cas: cas || '',
+      });
+    }
+    if (searchType === 'synthesis_search') {
+      this.searchForm.triggerSynthesisSearchFromURL({
+        keyword: keyword || '',
+        column: column || '',
+      });
+    }
+    if (searchType === 'chemical_structure') {
+      this.searchForm.triggerChemicalStructureSearchFromURL({
+        filter: filter || 'smiles_code',
+        keyword: keyword || '',
+      });
+    }
+    if (searchType === 'intermediate_search') {
+      this.searchForm.triggerIntermediateSearchFromURL({
+        filter: params.get('filter') || 'cas_rn',
+        keyword: params.get('value') || '',
+      });
+    }
+  }
+  
+  saveURLSearchParamsToLocalStorage(params: any) {
+    localStorage.setItem('urlSearchParams', JSON.stringify(params));
+  }
+  
   handleSearchResults(data: any) {
     this.allDataSets = this.utilityService.getDataStates();
     this.searchData = { ...data };

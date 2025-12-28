@@ -2,7 +2,7 @@
     <ng-container *ngIf="user; else elseBlock">
         <!-- Search Section -->
         <div>
-            <chem-pharma-database-search
+            <chem-pharma-database-search #searchForm
                 *ngIf="!showResult"
                 (setLoadingState)="handleLoading($event)"
                 (showResultFunction)="handleShowResult($event)"
