@@ -286,16 +286,245 @@ export class ImpComponent {
 
     window.scrollTo(0, 0);
   }
-
+  // private formatDate(): string {
+  //   const months = [
+  //     'January','February','March','April','May','June',
+  //     'July','August','September','October','November','December'
+  //   ];
+  //   const now = new Date();
+  //   return `${now.getDate()}-${months[now.getMonth()]}-${now.getFullYear()}`;
+  // }
+  // private async loadImageAsBase64(imagePath: string): Promise<string> {
+  //   return new Promise((resolve, reject) => {
+  //     fetch(imagePath)
+  //       .then(res => res.blob())
+  //       .then(blob => {
+  //         const reader = new FileReader();
+  //         reader.onloadend = () => resolve(reader.result as string);
+  //         reader.onerror = () => reject();
+  //         reader.readAsDataURL(blob);
+  //       })
+  //       .catch(() => reject());
+  //   });
+  // }
+  
+  // private async createExcelWithHeader(
+  //   data: any[],
+  //   titleKeyword: string
+  // ): Promise<Blob> {
+  
+  //   const ExcelJS = await import('exceljs');
+  //   const workbook = new ExcelJS.Workbook();
+  //   const worksheet = workbook.addWorksheet('IMP PATENT');
+  
+  //   // ================= HEADER INFO =================
+  //   const dateStr = this.formatDate();
+  //   const title = 'IMP PATENT REPORT';
+  //   const keyword = `SEARCH: ${titleKeyword}`;
+  
+  //   // ================= HEADER ROW (LOGO) =================
+  //   const headerRow = worksheet.addRow([]);
+  //   headerRow.height = 70;
+  
+  //   try {
+  //     const logoBase64 = await this.loadImageAsBase64('assets/images/logo.png');
+  //     const img = workbook.addImage({ base64: logoBase64, extension: 'png' });
+  
+  //     worksheet.addImage(img, {
+  //       tl: { col: 0, row: 0 },
+  //       ext: { width: 170, height: 70 }
+  //     });
+  
+  //     worksheet.getColumn(1).width = 20;
+  //   } catch {}
+  
+  //   worksheet.mergeCells('B1:C1');
+  //   const titleCell = worksheet.getCell('B1');
+  //   titleCell.value = title;
+  //   titleCell.font = { bold: true, size: 15, color: { argb: 'FF0032A0' } };
+  //   titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
+  
+  //   worksheet.getCell('D1').value = dateStr;
+  //   worksheet.getCell('D1').font = { bold: true };
+  //   worksheet.getCell('D1').alignment = {
+  //     horizontal: 'center',
+  //     vertical: 'middle',
+  //     wrapText: true
+  //   };
+  
+  //   worksheet.getCell('E1').value = keyword;
+  //   worksheet.getCell('E1').font = { bold: true };
+  //   worksheet.getCell('E1').alignment = {
+  //     horizontal: 'center',
+  //     vertical: 'middle',
+  //     wrapText: true
+  //   };
+  
+  //   worksheet.addRow([]);
+  //   worksheet.addRow([]);
+  
+  //   // ================= COLUMN HEADERS (FROM EXCEL 5th ROW) =================
+  //   const headers = Object.keys(data[0] || {}).filter(h => h);
+  
+  //   const headerRow2 = worksheet.addRow(headers);
+  //   headerRow2.height = 35;
+  
+  //   headerRow2.eachCell(cell => {
+  //     cell.font = { bold: true };
+  //     cell.alignment = {
+  //       horizontal: 'center',
+  //       vertical: 'middle',
+  //       wrapText: true
+  //     };
+  //     cell.border = {
+  //       top: { style: 'thin' },
+  //       bottom: { style: 'thin' }
+  //     };
+  //   });
+  
+  //   worksheet.views = [{ state: 'frozen', ySplit: 4 }];
+  
+  //   // ================= DATA ROWS =================
+  //   data.forEach(row => {
+  //     const excelRow = worksheet.addRow(
+  //       headers.map(h => row[h] ?? '')
+  //     );
+  
+  //     excelRow.eachCell(cell => {
+  //       cell.alignment = { wrapText: true, vertical: 'top' };
+  //     });
+  //   });
+  
+  //   // ================= AUTO WIDTH =================
+  //   headers.forEach((key, i) => {
+  //     worksheet.getColumn(i + 1).width =
+  //       Math.min(Math.max(key.length * 2, 30), 60);
+  //   });
+  
+  //   // ================= 🔥 HIDE EMPTY COLUMNS =================
+  //   worksheet.columns.forEach(col => {
+  //     if (!col || typeof col.eachCell !== 'function') return;
+  
+  //     let hasData = false;
+  
+  //     col.eachCell({ includeEmpty: false }, (cell, rowNumber) => {
+  //       if (rowNumber > 4 && cell.value !== null && cell.value !== '') {
+  //         hasData = true;
+  //       }
+  //     });
+  
+  //     if (!hasData) {
+  //       col.hidden = true;
+  //     }
+  //   });
+  
+  //   const buffer = await workbook.xlsx.writeBuffer();
+  //   return new Blob([buffer], {
+  //     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  //   });
+  // }
+  
+  // downloadExcel(): void {
+  //   this.isExportingExcel = true;
+  
+  //   const scrollTop =
+  //     window.pageYOffset || document.documentElement.scrollTop;
+  
+  //   this._currentChildAPIBody = {
+  //     ...this.impPatentApiBody,
+  //     filters: { ...this.impPatentApiBody.filters }
+  //   };
+  
+  //   this.mainSearchService
+  //     .impPatentsdownloadexcel(this._currentChildAPIBody)
+  //     .subscribe({
+  //       next: async (res: Blob) => {
+  //         try {
+  //           const buffer = await res.arrayBuffer();
+  //           const XLSX = await import('xlsx');
+  //           const wb = XLSX.read(buffer, { type: 'array' });
+  //           const sheet = wb.Sheets[wb.SheetNames[0]];
+  
+  //           // 🔥 RAW DATA
+  //           const rawData: any[][] = XLSX.utils.sheet_to_json(sheet, {
+  //             header: 1,
+  //             defval: ''
+  //           });
+  
+  //           if (!rawData.length) {
+  //             this.isExportingExcel = false;
+  //             return;
+  //           }
+  
+  //           // 🔥 5th row as header
+  //           const headerRow = rawData[3];
+  //           const dataRows = rawData.slice(4);
+  
+  //           // Build JSON
+  //           const jsonData = dataRows.map(row => {
+  //             const obj: any = {};
+  //             headerRow.forEach((key, index) => {
+  //               if (key) {
+  //                 obj[key] = row[index] ?? '';
+  //               }
+  //             });
+  //             return obj;
+  //           });
+  
+  //           // 🔥 Remove fully empty columns
+  //           const finalData = jsonData.map(r => {
+  //             const obj: any = {};
+  //             Object.keys(r).forEach(k => {
+  //               if (jsonData.some(row => row[k])) {
+  //                 obj[k] = r[k];
+  //               }
+  //             });
+  //             return obj;
+  //           });
+  
+  //           if (!finalData.length) {
+  //             this.isExportingExcel = false;
+  //             return;
+  //           }
+  
+  //           const blob = await this.createExcelWithHeader(
+  //             finalData,
+  //             this.searchThrough
+  //           );
+  
+  //           const url = URL.createObjectURL(blob);
+  //           const a = document.createElement('a');
+  //           a.href = url;
+  //           a.download = 'IMP PATENT.xlsx';
+  //           a.click();
+  //           URL.revokeObjectURL(url);
+  
+  //         } catch (e) {
+  //           console.error(e);
+  //         }
+  
+  //         this.isExportingExcel = false;
+  //         window.scrollTo(0, scrollTop);
+  //       },
+  //       error: err => {
+  //         console.error(err);
+  //         this.isExportingExcel = false;
+  //         window.scrollTo(0, scrollTop);
+  //       }
+  //     });
+  // }
   downloadExcel(): void {
     this.isExportingExcel = true;
+  
+    // Prepare request body
     this._currentChildAPIBody = {
       ...this.impPatentApiBody,
-      filters: { ...this.impPatentApiBody.filters }
+      filters: { ...this.impPatentApiBody.filters },
+      filter_enable: false
     };
-
+  
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
+  
     this.mainSearchService.impPatentsdownloadexcel(this._currentChildAPIBody).subscribe({
       next: async (res: Blob) => {
         try {
@@ -303,69 +532,68 @@ export class ImpComponent {
           const arrayBuffer = await res.arrayBuffer();
           const XLSX = await import('xlsx');
           const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-
+  
           const sheetName = workbook.SheetNames[0];
           const worksheet = workbook.Sheets[sheetName];
           const jsonData: any[] = XLSX.utils.sheet_to_json(worksheet);
-
+  
           if (!jsonData.length) {
             this.isExportingExcel = false;
             return;
           }
-
+  
           // Step 2: Identify columns that actually have values
           const keys = Object.keys(jsonData[0]);
           const validKeys = keys.filter((k: string) =>
             jsonData.some((row: any) => row[k] !== null && row[k] !== undefined && row[k] !== '')
           );
-
+  
           // Step 3: Remove empty columns
           const filteredData = jsonData.map((row: any) => {
             const filteredRow: any = {};
             validKeys.forEach((k: string) => (filteredRow[k] = row[k]));
             return filteredRow;
           });
-
+  
           // Step 4: Create new worksheet and workbook
           const newWorksheet = XLSX.utils.json_to_sheet(filteredData, { skipHeader: false });
           const colWidths = validKeys.map((key) => ({ wch: Math.max(key.length, 90) }));
-          // Minimum width 20 characters (aap change kar sakte ho)
           newWorksheet['!cols'] = colWidths;
           const newWorkbook = XLSX.utils.book_new();
           XLSX.utils.book_append_sheet(newWorkbook, newWorksheet, 'FilteredData');
-
+  
           // Step 5: Convert workbook to Blob for download
           const excelBuffer = XLSX.write(newWorkbook, { bookType: 'xlsx', type: 'array' });
           const blob = new Blob([excelBuffer], {
             type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
           });
-
+  
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;
-          a.download = 'ImpPatentData_Filtered.xlsx';
+          a.download = 'IMP.xlsx';
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
           window.URL.revokeObjectURL(url);
-
+  
           this.isExportingExcel = false;
           window.scrollTo(0, scrollTop);
         } catch (error) {
-          console.error("Excel processing error:", error);
+          console.error('Excel processing error:', error);
           this.isExportingExcel = false;
           window.scrollTo(0, scrollTop);
         }
       },
       error: (err) => {
-        console.error("Excel download error:", err);
+        console.error('Excel download error:', err);
         this._currentChildAPIBody = {
           ...this._currentChildAPIBody,
           filter_enable: false
         };
         this.isExportingExcel = false;
         window.scrollTo(0, scrollTop);
-      },
+      }
     });
   }
 }

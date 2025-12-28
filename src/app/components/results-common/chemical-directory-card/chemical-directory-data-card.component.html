@@ -1317,6 +1317,8 @@
     <!-- {{ localCount }}. {{resultTabs?.chemicalDirectory?.label}} >>  -->
     <span style="color:#0032a0; font-size: 17px; font-weight:600;padding-left: 10px;">
      {{showFull ? (_data?.chemical_name || '' ) : (_data?.chemical_name | slice:0:200) }} 
+     <span class="mx-1 hover:cursor-pointer text-[#0032A0]" #copyBtn
+     (click)="handleCopy(_data?.chemical_name, copyBtn)"><i class="fas fa-copy"></i></span>
     <ng-container *ngIf="_data?.chemical_name?.length > 200">
       <span (click)="toggleView()" style="color: black; cursor: pointer; border-bottom: 1px dotted;">
         {{ showFull ? '... View Less' : '... View More' }}
