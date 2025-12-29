@@ -142,16 +142,23 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
     this.resultTabs = this.utilityService.getAllTabsName();
     this.getAllFilters();
     console.log("🔄 ngOnInit called - Search Page initialized");
-
     const savedParams = localStorage.getItem('urlSearchParams');
-    console.log("Retrieved savedParams from localStorage:", savedParams);
-  if (savedParams) {
-    const params = JSON.parse(savedParams);
-
-    this.restoreFormFromURLParams(params);
-    return;
-  }
+    console.log("📦 Retrieved savedParams:", savedParams);
+  
+    if (savedParams) {
+      try {
+        const params = JSON.parse(savedParams);
+  
+        this.restoreFormFromURLParams(params);
+  
+        console.log("✅ Form restored from URL params", params);
+    // Restore previously saved session state (if any)
     this.restoreAllFromSession();
+      } catch (error) {
+        console.error("❌ Error parsing savedParams:", error);
+      }
+    }
+    // restore cas/type auto-search info (as you had before)
     const type = sessionStorage.getItem("searchType") || localStorage.getItem("searchType") || null;
     const cas = sessionStorage.getItem("casRN") || localStorage.getItem("casRN") || null;
     console.log("📦 Loaded from storage -> type:", type, "| cas:", cas);
@@ -190,6 +197,7 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       }
     });
   }
+
 
   // ✅ Unified HostListener to close dropdowns
   @HostListener('document:click', ['$event'])
@@ -1396,15 +1404,16 @@ export class pharmaDatabaseSearchComponent implements OnInit, AfterViewInit, OnD
       keyword?: string;
     }
   ): void {
-  
-    // 🔹 URL → UI sync
-    if (fromURL && urlData) {
-      this.intermediateSearch = {
-        ...this.intermediateSearch,
-        filter: urlData.filter || 'cas_rn',
-        keyword: urlData.keyword || ''
-      };
-    }
+   /* 🔥 ENSURE FILTER IS ALWAYS SET */
+   if (fromURL && urlData) {
+    this.intermediateSearch.filter = urlData.filter || 'cas_rn';
+    this.intermediateSearch.keyword = urlData.keyword || '';
+  }
+
+  // 👇 BUTTON CLICK CASE (THIS WAS MISSING)
+  if (!this.intermediateSearch.filter) {
+    this.intermediateSearch.filter = 'cas_rn'; // ✅ default
+  }
   
     console.log('🔹 Intermediate Search invoked:', {
       filter: this.intermediateSearch.filter,

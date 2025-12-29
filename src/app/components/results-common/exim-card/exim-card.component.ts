@@ -52,6 +52,7 @@ export class EximCardComponent implements OnChanges, AfterViewInit {
   multiSortOrder: { column: number, dir: 'asc' | 'desc' }[] = [];
   noMatchingData: boolean = false;
   globalSearchValue: string = '';
+  searchThrough: string = '';
   get pageSize(): number {
     return this._currentChildAPIBody?.length || 25;
   }
@@ -467,88 +468,219 @@ isISODate(value: any): boolean {
       this.isExportingCSV = false;
     });
   }
-
-
-  // 4️⃣ Download Excel
+  private formatDate(): string {
+    const months = [
+      'January','February','March','April','May','June',
+      'July','August','September','October','November','December'
+    ];
+    const now = new Date();
+    return `${now.getDate()}-${months[now.getMonth()]}-${now.getFullYear()}`;
+  }
+  private async loadImageAsBase64(imagePath: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      fetch(imagePath)
+        .then(res => res.blob())
+        .then(blob => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.onerror = () => reject();
+          reader.readAsDataURL(blob);
+        })
+        .catch(() => reject());
+    });
+  }
+  
+  private async createExcelWithHeader(
+    data: any[],
+    titleKeyword: string
+  ): Promise<Blob> {
+  
+    const ExcelJS = await import('exceljs');
+    const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('EXIM');
+  
+    // ================= HEADER INFO =================
+    const dateStr = this.formatDate();
+    const title = 'EXIM DATA REPORT';
+    const keyword = `SEARCH: ${titleKeyword}`;
+  
+    // ================= HEADER ROW (LOGO) =================
+    const headerRow = worksheet.addRow([]);
+    headerRow.height = 70;
+  
+    try {
+      const logoBase64 = await this.loadImageAsBase64('assets/images/logo.png');
+      const img = workbook.addImage({ base64: logoBase64, extension: 'png' });
+  
+      worksheet.addImage(img, {
+        tl: { col: 0, row: 0 },
+        ext: { width: 170, height: 70 }
+      });
+  
+      worksheet.getColumn(1).width = 20;
+    } catch {}
+  
+    worksheet.mergeCells('B1:C1');
+    const titleCell = worksheet.getCell('B1');
+    titleCell.value = title;
+    titleCell.font = { bold: true, size: 15, color: { argb: 'FF0032A0' } };
+    titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
+  
+    worksheet.getCell('D1').value = dateStr;
+    worksheet.getCell('D1').font = { bold: true };
+    worksheet.getCell('D1').alignment = {
+      horizontal: 'center',
+      vertical: 'middle',
+      wrapText: true
+    };
+  
+    worksheet.getCell('E1').value = keyword;
+    worksheet.getCell('E1').font = { bold: true };
+    worksheet.getCell('E1').alignment = {
+      horizontal: 'center',
+      vertical: 'middle',
+      wrapText: true
+    };
+  
+    worksheet.addRow([]);
+    worksheet.addRow([]);
+  
+    // ================= COLUMN HEADERS (FROM EXCEL 5th ROW) =================
+    const headers = Object.keys(data[0] || {}).filter(h => h);
+  
+    const headerRow2 = worksheet.addRow(headers);
+    headerRow2.height = 35;
+  
+    headerRow2.eachCell(cell => {
+      cell.font = { bold: true };
+      cell.alignment = {
+        horizontal: 'center',
+        vertical: 'middle',
+        wrapText: true
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        bottom: { style: 'thin' }
+      };
+    });
+  
+    worksheet.views = [{ state: 'frozen', ySplit: 4 }];
+  
+    // ================= DATA ROWS =================
+    data.forEach(row => {
+      const excelRow = worksheet.addRow(
+        headers.map(h => row[h] ?? '')
+      );
+  
+      excelRow.eachCell(cell => {
+        cell.alignment = { wrapText: true, vertical: 'top' };
+      });
+    });
+  
+    // ================= AUTO WIDTH =================
+    headers.forEach((key, i) => {
+      worksheet.getColumn(i + 1).width =
+        Math.min(Math.max(key.length * 2, 30), 60);
+    });
+  
+    // ================= 🔥 HIDE EMPTY COLUMNS =================
+    worksheet.columns.forEach(col => {
+      if (!col || typeof col.eachCell !== 'function') return;
+  
+      let hasData = false;
+  
+      col.eachCell({ includeEmpty: false }, (cell, rowNumber) => {
+        if (rowNumber > 4 && cell.value !== null && cell.value !== '') {
+          hasData = true;
+        }
+      });
+  
+      if (!hasData) {
+        col.hidden = true;
+      }
+    });
+  
+    const buffer = await workbook.xlsx.writeBuffer();
+    return new Blob([buffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    });
+  }
   // 4️⃣ Download Excel
   downloadExcel(): void {
     this.isExportingExcel = true;
-    this.isExportingExcel = true;
-    this.getAllDataFromApi().subscribe(data => {
-      const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet('Exported Data');
-
-      // Define header columns
-      const columns = this.displayedColumns.map(col => ({
-        header: this.toTitleCase(col),
-        key: col,
-      }));
-      worksheet.columns = columns;
-
-      // Add formatted data rows
-      data.forEach(row => {
-        const formattedRow: any = {};
-        this.displayedColumns.forEach(col => {
-          let value = row[col];
-          if (Array.isArray(value)) {
-            value = value.join(', ');
-          } else if (typeof value === 'object' && value !== null) {
-            value = JSON.stringify(value);
+  
+    const scrollTop =
+      window.pageYOffset || document.documentElement.scrollTop;
+  
+    this.getAllDataFromApi().subscribe({
+      next: async (data: any[]) => {
+        try {
+          if (!data || !data.length) {
+            this.isExportingExcel = false;
+            return;
           }
-          formattedRow[col] = value !== undefined ? value : '';
-        });
-        worksheet.addRow(formattedRow);
-      });
-
-      // ✅ ADD AUTO-WIDTH ADJUSTMENT HERE
-      this.displayedColumns.forEach((col, index) => {
-        const excelCol = worksheet.getColumn(index + 1);
-        let maxLength = col.length;
-
-        excelCol.eachCell({ includeEmpty: true }, cell => {
-          const cellValue = cell.value ? cell.value.toString() : '';
-          if (cellValue.length > maxLength) {
-            maxLength = cellValue.length;
+  
+          // ================= BUILD DATA SAME FORMAT =================
+          const jsonData = data.map(row => {
+            const obj: any = {};
+            this.displayedColumns.forEach(col => {
+              let value = row[col];
+  
+              if (Array.isArray(value)) {
+                value = value.join(', ');
+              } else if (typeof value === 'object' && value !== null) {
+                value = JSON.stringify(value);
+              }
+  
+              obj[this.toTitleCase(col)] = value ?? '';
+            });
+            return obj;
+          });
+  
+          // ================= REMOVE FULLY EMPTY COLUMNS =================
+          const finalData = jsonData.map(r => {
+            const obj: any = {};
+            Object.keys(r).forEach(k => {
+              if (jsonData.some(row => row[k])) {
+                obj[k] = r[k];
+              }
+            });
+            return obj;
+          });
+  
+          if (!finalData.length) {
+            this.isExportingExcel = false;
+            return;
           }
-        });
-
-        excelCol.width = maxLength + 6;
-      });
-
-      // Style header row
-      const headerRow = worksheet.getRow(1);
-      headerRow.eachCell(cell => {
-        cell.font = {
-          bold: true,
-          color: { argb: 'FFFFFFFF' },
-          size: 15
-        };
-        cell.fill = {
-          type: 'pattern',
-          pattern: 'solid',
-          fgColor: { argb: 'FF4169E1' } // Dark blue
-        };
-        cell.alignment = { horizontal: 'center' };
-        cell.border = {
-          top: { style: 'thin' },
-          bottom: { style: 'thin' },
-          left: { style: 'thin' },
-          right: { style: 'thin' },
-        };
-      });
-
-      // Save workbook
-      workbook.xlsx.writeBuffer().then(buffer => {
-        const blob = new Blob([buffer], {
-          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        });
-        saveAs(blob, 'ExportedDataFormatted.xlsx');
+  
+          // ================= CREATE EXCEL (COMMON FUNCTION) =================
+          const blob = await this.createExcelWithHeader(
+            finalData,
+            this.searchThrough || 'ALL DATA'
+          );
+  
+          // ================= DOWNLOAD =================
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'EXIM.xlsx';
+          a.click();
+          URL.revokeObjectURL(url);
+  
+        } catch (err) {
+          console.error(err);
+        }
+  
         this.isExportingExcel = false;
+        window.scrollTo(0, scrollTop);
+      },
+      error: err => {
+        console.error(err);
         this.isExportingExcel = false;
-      });
+        window.scrollTo(0, scrollTop);
+      }
     });
   }
-
   // ✅ Optional: Capitalize headers
   toTitleCase(str: string): string {
     return str.replace(/_/g, ' ')

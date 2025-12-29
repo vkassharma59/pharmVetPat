@@ -31,8 +31,37 @@ export class SharedRosService {
   //     const data = { searchType, keyword, criteria };
   //     localStorage.setItem('lastSearchData', JSON.stringify(data));
   //   }
-
   setSearchData(searchType: string, keyword: string, criteria: any): void {
+    this.clearSearchData();
+
+    let displayValue = '';
+    console.log("searchType:", searchType, "keyword:", keyword, "criteria:", criteria);
+    // CASE 1: Advanced Search (criteria is array)
+    if (Array.isArray(criteria) && criteria.length > 0) {
+      displayValue = criteria.map(c => `${c.column}: ${c.keyword}`).join(', ');
+    }
+    // CASE 2b: Column-based Simple Search (criteria is string + keyword)
+    else if (typeof criteria === 'string' && criteria.trim() !== '' && keyword) {
+      displayValue = `${criteria}: ${keyword}`;
+    }
+    // CASE 2a: Normal Simple Search (only keyword)
+    else if (keyword) {
+      displayValue = keyword;
+    }
+    // Fallback
+    else {
+      displayValue = 'No search data';
+    }
+
+    const data = { searchType, keyword, criteria, displayValue };
+    localStorage.setItem(this.storageKey, JSON.stringify(data));
+  }
+  // Get last search data
+  getSearchData(): { searchType: string, keyword: string, criteria: any } | null {
+    const data = localStorage.getItem('lastSearchData');
+    return data ? JSON.parse(data) : null;
+  }
+  setSearchData1(searchType: string, keyword: string, criteria: any): void {
     this.clearSearchData();
 
     let displayValue = '';
@@ -78,7 +107,7 @@ export class SharedRosService {
   /**
    * Get last search data (used on BACK)
    */
-  getSearchData(): {
+  getSearchData1(): {
     searchType: string;
     keyword: string;
     criteria: any;
